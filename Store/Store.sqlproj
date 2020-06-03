@@ -23,6 +23,7 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultSchema>NIS</DefaultSchema>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -72,5 +73,16 @@
     <Build Include="UserLogin.sql" />
     <Build Include="UserLoginActivityHistory.sql" />
     <Build Include="UserRoleMap.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Page.sql" />
+    <Build Include="PageType.sql" />
+    <Build Include="PageWidgetMap.sql" />
+    <Build Include="Schedule.sql" />
+    <Build Include="Statement.sql" />
+    <Build Include="StatementPageMap.sql" />
+    <Build Include="Widget.sql" />
+    <Build Include="WidgetType.sql" />
+    <Build Include="NISSchema.sql" />
   </ItemGroup>
 </Project>
