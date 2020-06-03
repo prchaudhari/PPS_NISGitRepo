@@ -57,5 +57,20 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tenant Manager" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Asset.sql" />
+    <Build Include="AssetLibrary.sql" />
+    <Build Include="AssetPathSetting.sql" />
+    <Build Include="Role.sql" />
+    <Build Include="RolePrivilege.sql" />
+    <Build Include="User.sql" />
+    <Build Include="Tenant Manager\Tenant.sql" />
+    <Build Include="Tenant Manager\TenantManagerSchema.sql" />
+    <Build Include="UserCredentialHistory.sql" />
+    <Build Include="UserLogin.sql" />
+    <Build Include="UserLoginActivityHistory.sql" />
+    <Build Include="UserRoleMap.sql" />
   </ItemGroup>
 </Project>
