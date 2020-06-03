@@ -7,7 +7,7 @@ CREATE TABLE [NIS].[Widget] (
     [WidgetSetting] NVARCHAR (MAX) NOT NULL,
     [TenantCode]    NVARCHAR (50)  NOT NULL,
     [IsDeleted]     BIT            NOT NULL,
-	[IsActive]      BIT            NOT NULL
+	[IsActive]      BIT            NOT NULL,
 	[LastUpdatedDate] DateTime  NULL,
 	[UpdateBy] BIGINT NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)

@@ -11,7 +11,7 @@
 	[Status] NVARCHAR(50) NOT NULL,	
 	[IsActive] BIT NOT NULL, 
     [IsDeleted] BIT NOT NULL, 
-    [TenantCode] NVARCHAR(50) NOT NULL
+    [TenantCode] NVARCHAR(50) NOT NULL,
 	[LastUpdatedDate] DateTime  NULL,
 	[UpdateBy] BIGINT NOT NULL,
 )
