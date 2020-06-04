@@ -4,7 +4,7 @@ CREATE TABLE [NIS].[Widget] (
     [ProductTypeId]     NVARCHAR (50)  NOT NULL,
     [WidgetTypeId]    NVARCHAR (50)  NOT NULL,
     [WidgetName]    NVARCHAR (100)  NOT NULL,
-    [WidgetSetting] NVARCHAR (MAX) NOT NULL,
+    [IsConfigurable]     BIT            NOT NULL,
     [TenantCode]    NVARCHAR (50)  NOT NULL,
     [IsDeleted]     BIT            NOT NULL,
 	[IsActive]      BIT            NOT NULL,
