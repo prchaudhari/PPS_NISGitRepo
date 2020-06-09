@@ -57,12 +57,11 @@
     <Compile Include="Role.cs" />
     <Compile Include="RolePrivilege.cs" />
     <Compile Include="RolePrivilegeOperation.cs" />
+    <Compile Include="Search Parameter\UserSearchParameter.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Widget.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SearchParameter\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{8c2d7fe4-c754-46d8-a590-3981eff6bad8}</Project>

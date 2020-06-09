@@ -9,6 +9,44 @@ namespace nIS
     /// </summary>
     public partial class ModelConstant
     {
+
+        #region Common
+        /// <summary>
+        /// The common section key
+        /// </summary>
+        public const string COMMON_SECTION = "FMS";
+
+        /// <summary>
+        /// Invalid Pagin Parameter
+        /// </summary>
+        public const string INVALID_PAGING_PARAMETER = "InvalidPagingParameter";
+
+        /// <summary>
+        ///Invalid sort parameter
+        /// </summary>
+        public const string INVALID_SORT_PARAMETER = "InvalidSortParameter";
+
+        /// <summary>
+        /// Key for tenant code
+        /// </summary>
+        public const string TENANT_CODE_KEY = "TenantCode";
+
+        /// <summary>
+        /// Default identifier for the tenant
+        /// </summary>
+        public const string DEFAULT_TENANT_CODE = "00000000-0000-0000-0000-000000000000";
+
+        /// <summary>
+        /// The time zone key
+        /// </summary>
+        public const string TIME_ZONE_KEY = "Timezone";
+
+        /// <summary>
+        /// The off set key
+        /// </summary>
+        public const string OFF_SET_KEY = "Offset";
+        #endregion
+
         #region Widget
 
         /// <summary>

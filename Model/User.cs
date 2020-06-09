@@ -40,6 +40,11 @@ namespace nIS
         private string contactNumber = string.Empty;
 
         /// <summary>
+        /// The user NoofAttempts.
+        /// </summary>
+        private long noofAttempts = 0;
+
+        /// <summary>
         /// The user image.
         /// </summary>
         private string image = string.Empty;
@@ -53,6 +58,12 @@ namespace nIS
         /// The user status
         /// </summary>
         private bool isActive = true;
+
+        /// <summary>
+        /// The user isLocked status
+        /// </summary>
+        private bool isLocked = true;
+
 
         /// <summary>
         /// The role
@@ -89,7 +100,7 @@ namespace nIS
             }
         }
 
-      
+
         /// <summary>
         /// Gets or sets user first name.
         /// </summary>
@@ -183,6 +194,38 @@ namespace nIS
             set
             {
                 this.isActive = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets isLocked field.
+        /// </summary>
+        [Description("Is Locked")]
+        public bool IsLocked
+        {
+            get
+            {
+                return this.isLocked;
+            }
+            set
+            {
+                this.isLocked = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets no of attempt field.
+        /// </summary>
+        [Description("No of attempt")]
+        public long NoofAttempts
+        {
+            get
+            {
+                return this.noofAttempts;
+            }
+            set
+            {
+                this.noofAttempts = value;
             }
         }
 
