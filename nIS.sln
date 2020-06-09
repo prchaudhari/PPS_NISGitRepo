@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.757
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{F0D96183-2E1E-4919-ACBC-B9297EFA4633}"
 EndProject
@@ -20,6 +20,17 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationEngine", "ValidationEngine\ValidationEngine.csproj", "{D0A399AF-38E5-4A15-8BB4-78BA4A578FFC}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Store", "Store\Store.sqlproj", "{97CD0AE3-2361-4935-99B9-A93BF49ACB19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{B5B42337-A14B-44FE-BDFE-82C9D1D73980}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration Manager", "Configuration Manager", "{EBDFD02F-354E-4ECD-941E-0417C3EA2EA5}"
+	ProjectSection(SolutionItems) = preProject
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Exception.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Exception.dll
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Manager.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Manager.dll
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Model.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Model.dll
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Repository.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Repository.dll
+		References\Configuration Manager\Websym.Core.ConfigurationManager.Utility.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Utility.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +79,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EBDFD02F-354E-4ECD-941E-0417C3EA2EA5} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE2FF880-80B7-4CAC-ABF3-0464E99CA78C}
