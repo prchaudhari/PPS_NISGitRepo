@@ -32,34 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration Manager", "Co
 		References\Configuration Manager\Websym.Core.ConfigurationManager.Utility.dll = References\Configuration Manager\Websym.Core.ConfigurationManager.Utility.dll
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{C020822D-A6FC-4F3A-87E4-5E4BB007181E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entity Manager", "Entity Manager", "{F4ED8371-A44E-4DA2-8577-DE41F01F46AB}"
-	ProjectSection(SolutionItems) = preProject
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Exception.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Exception.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Manager.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Manager.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Model.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Model.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Repository.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Repository.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Utility.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Entity Manager\Websym.Core.EntityManager.Utility.dll
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Event manager", "Event manager", "{E2E68E0A-7BC8-4D82-A3A2-B7E63BCEC34A}"
-	ProjectSection(SolutionItems) = preProject
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Exception.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Exception.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Manager.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Manager.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Model.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Model.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Repository.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Repository.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Utility.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Event Manager\Websym.Core.EventManager.Utility.dll
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resource Manager", "Resource Manager", "{EBFB00FA-136B-4C6F-AB1D-A132E599744D}"
-	ProjectSection(SolutionItems) = preProject
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Exception.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Exception.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Manager.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Manager.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Model.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Model.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Repository.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Repository.dll
-		..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Utility.dll = ..\AssetWise\FeatureBranch\v1.0.1.20-AWS\References\Resource Manager\Websym.Core.ResourceManager.Utility.dll
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{C020822D-A6FC-4F3A-87E4-5E4BB007181E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,9 +88,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EBDFD02F-354E-4ECD-941E-0417C3EA2EA5} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
-		{F4ED8371-A44E-4DA2-8577-DE41F01F46AB} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
-		{E2E68E0A-7BC8-4D82-A3A2-B7E63BCEC34A} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
-		{EBFB00FA-136B-4C6F-AB1D-A132E599744D} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE2FF880-80B7-4CAC-ABF3-0464E99CA78C}
