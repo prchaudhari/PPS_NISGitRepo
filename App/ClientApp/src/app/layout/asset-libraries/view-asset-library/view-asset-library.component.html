@@ -1,0 +1,109 @@
+<div class="main-container">
+  <div class="page-title">
+    <span class="xs-title"> Asset Library Details</span>
+  </div>
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-header bg-white d-flex justify-content-between">
+      <div>
+        <label class="m-0">Details</label>
+      </div>
+      <div>
+        <button type="button" id="btnCollapsedDetails"
+                class="toggle-btn border-0 p-0 bg-transparent"
+                (click)="isCollapsedDetails = !isCollapsedDetails"
+                [attr.aria-expanded]="!isCollapsedDetails"
+                aria-controls="collapseDetails">
+          <span class="fa" [ngClass]="!isCollapsedDetails? 'fa-angle-down' : 'fa-angle-right'"></span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body" id="collapseDetails" [ngbCollapse]="isCollapsedDetails">
+      <div class="row form-group">
+        <div class="col-md-6 col-lg-4">
+          <label id="lblRoleName" for="inputRoleName">Name</label>
+          <div>Asset 01</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-lg-6">
+          <label id="lblDescription">Description</label>
+          <div>-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-header  bg-white d-flex justify-content-between">
+      <div>
+        <label class="m-0">Assets</label>
+      </div>
+      <div>
+        <button type="button" id="btnCollapsedPermissions"
+                class="toggle-btn border-0 p-0 bg-transparent"
+                (click)="isCollapsedAssets = !isCollapsedAssets"
+                [attr.aria-expanded]="!isCollapsedAssets" aria-controls="collapsedAssets">
+          <span class="fa" [ngClass]="!isCollapsedAssets? 'fa-angle-down' : 'fa-angle-right'"></span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body rtl-checkbox parent-rtl" id="collapsedAssets" [ngbCollapse]="isCollapsedAssets">
+
+      <div class="d-flex justify-content-center mb-0">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
+          </mat-paginator>
+        </div>
+      </div>
+
+      <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+        <!-- Position Column -->
+        <ng-container matColumnDef="name">
+          <th class="width30" mat-header-cell *matHeaderCellDef mat-sort-header>
+            Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.name}}
+
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="updatedby">
+          <th class="width30" mat-header-cell *matHeaderCellDef mat-sort-header>
+            Last Updated By
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.updatedby}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th class="width30" mat-header-cell *matHeaderCellDef mat-sort-header>
+            Last Updated Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.date}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th class="width5" mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="action-btns btn-tbl-action">
+              <button type="button" title="Download" id="btnUpdate"><span class="fa fa-download"></span></button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-fill mr-2" id="btnSave">Update</button>
+      <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete">Delete</button>
+      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+    </div>
+  </div>
+</div>
