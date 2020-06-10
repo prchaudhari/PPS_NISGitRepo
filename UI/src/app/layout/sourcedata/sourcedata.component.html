@@ -1,0 +1,128 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2"> Source Data</span>
+      <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+    </div>
+    <div>
+      <button class="btn-add btn-cust" id="btnAddUsers">
+        <span class="fa fa-file-excel-o btn-icon-cust btn-icon-fill"></span> Export
+      </button>
+    </div>
+  </div>
+  <!--desktop view start-->
+  <div class="card border-0 mb-3 card-shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
+          </mat-paginator>
+        </div>
+      </div>
+      <div class="widget-area-grid padding-0">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+          <!-- Position Column -->
+          <ng-container matColumnDef="date">
+            <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+            <td mat-cell *matCellDef="let element">{{element.date}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="time">
+            <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Time</th>
+            <td mat-cell *matCellDef="let element">{{element.time}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="page">
+            <th class="width25" mat-header-cell *matHeaderCellDef mat-sort-header> Page </th>
+            <td mat-cell *matCellDef="let element">{{element.page}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="widget">
+            <th class="width25" mat-header-cell *matHeaderCellDef mat-sort-header> Widget </th>
+            <td mat-cell *matCellDef="let element">{{element.widget}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="userId">
+            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> User Id </th>
+            <td mat-cell *matCellDef="let element">{{element.userId}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!--<div class="grid-msg" *ngIf="dataSource.length === 0">No Records Found</div>-->
+      </div>
+    </div>
+  </div>
+  <!--desktop view end-->
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+    </div>
+  </div>
+  <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+    <div class="filter-head">
+      <label class="m-0">Apply Filter</label>
+    </div>
+    <div class="filter-body-left d-flex flex-column stylescrollbar">
+      <div class="form-group">
+        <label>User Id</label>
+        <input type="text" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Page</label>
+        <input type="text" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Widget</label>
+        <input type="text" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Start Date</label>
+        <div class="position-relative">
+          <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate">
+          <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+            <i class="fa fa-calendar"></i>
+          </span>
+          <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>End Date</label>
+        <div class="position-relative">
+          <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filtershiftenddate">
+          <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
+            <i class="fa fa-calendar"></i>
+          </span>
+          <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+        </div>
+      </div>
+    </div>
+    <!--[ngClass]="filterClass"-->
+    <div class="filter-footer">
+      <ul class="nav">
+        <li class="nav-item width33" title="Search">
+          <a class="nav-link p-0">
+            <span class="fa fa-check"></span>
+          </a>
+        </li>
+        <li class="nav-item width33" title="Reset">
+          <a class="nav-link p-0">
+            <span class="fa fa-refresh"></span>
+          </a>
+        </li>
+        <li class="nav-item width33" title="Close" (click)="closeFilter()">
+          <a class="nav-link p-0">
+            <span class="fa fa-close"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>
+
+

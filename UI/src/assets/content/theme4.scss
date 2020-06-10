@@ -1,0 +1,615 @@
+.theme4 {
+  font-size: 13px;
+  /*font-family: 'Roboto', sans-serif;*/
+  color: rgba(255,255,255,.7) !important;
+  background: #212121;
+  overflow-x: hidden;
+  letter-spacing: 0.2px;
+  $bg-theme: #393939;
+  $color-theme: #e2801c;
+  $bg-sidebar: #393939;
+  $border-bottom: #464444;
+  $bg-controls: #464646;
+  $border-controls: #464646;
+  $color-theme-green: #e2801c;
+  /*$color-theme-blue: #606A96;*/
+  $color-theme-blue: rgba(255,255,255,.8);
+  $color-sidepanel: #1d2142;
+  $color-control-btns: #2b2a2a;
+  $btn-bg-fill: #d27319;
+  $btn-bg: #e2801c;
+  $btn-table-bg: #4e4b4b;
+  $btn-table-color: rgba(255,255,255,.7);
+  $gridline-color: #e1e1e1;
+  $bg-theme-danger: #ce0a0a;
+
+  .login-right {
+    color: rgba(0,0,0,.7);
+  }
+
+  .bg-light {
+    background-color: $bg-theme !important;
+    border: solid thin $bg-controls;
+  }
+
+  .input-group-text {
+    background: $color-control-btns;
+    border-color: $color-control-btns;
+    color: rgba(255,255,255,.7);
+  }
+
+  .border {
+    border: 1px solid $border-bottom !important;
+  }
+
+  .example-list {
+    background: #313131;
+  }
+
+  .example-box {
+    border: solid 1px $bg-controls;
+    color: $color-theme-blue;
+    background: $bg-controls;
+  }
+
+  .widget-action {
+    color: $color-theme-blue;
+    background: transparent;
+  }
+
+  .widget-action span:hover {
+    color: #fff;
+  }
+
+  .side-popup .btn-footer-fill {
+    background: $bg-sidebar;
+    color: $color-theme-blue;
+  }
+
+  .toggle-btn {
+    color: #fff;
+  }
+
+  .card-header {
+    background-image: linear-gradient(#101010, #393939);
+    border: none !important;
+    border-radius: 10px;
+  }
+
+  .card-tile {
+    border: 8px solid #212121 !important;
+    border-radius: 16px !important;
+  }
+
+  .top-bar {
+    background-color: $bg-sidebar;
+  }
+
+  .tbl-scroll th:first-child, .tbl-scroll td:first-child {
+    background: $bg-theme;
+  }
+
+
+  .cust-modal .close {
+    background-color: $btn-bg !important;
+  }
+
+  gridster-preview {
+    background: transparent;
+  }
+
+  .custom-control-input:checked ~ .custom-control-label::before {
+    border-color: $btn-bg;
+    background-color: $btn-bg;
+  }
+
+  .jqx-checkbox-check-checked {
+    background: $btn-bg url(../images/check.png) center center no-repeat;
+    background-size: 8px;
+    border-radius: 4px;
+  }
+
+  .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+    background-image: url(../images/check.png);
+  }
+
+  .mat-select-panel:not([class*=mat-elevation-z]) {
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+  }
+
+  .mat-select-panel .mat-option {
+    line-height: 2.5em;
+    height: 2.5em;
+  }
+
+  .mat-select-panel {
+    background: #393939;
+    border: solid thin #212121;
+  }
+
+  .pagination-mat .mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    line-height: 20px;
+    border-radius: 4px;
+    margin-right: 4px;
+    color: rgba(255, 255, 255, 0.7);
+    background: #4e4b4b;
+    border: solid thin #4e4b4b;
+  }
+
+  .mat-form-field-infix {
+    color: rgba(255, 255, 255, 0.7);
+    background: #4e4b4b;
+    border: solid thin #4e4b4b;
+    height: 25px;
+    line-height: 22px;
+    border-radius: 4px;
+    padding-left: 5px;
+  }
+
+
+  .colortheme {
+    color: $color-theme;
+  }
+  /* side bar styles*/
+  .side-bar-container {
+    background-color: $bg-sidebar;
+  }
+
+  .side-bar-footer {
+    background-color: $color-theme-green;
+    border-top: solid thin $btn-bg-fill;
+  }
+
+  .filter-footer li {
+    text-align: center;
+    border-color: $border-bottom;
+  }
+
+  .side-bar-footer li {
+    border-right: 1px solid $border-bottom;
+  }
+
+  .filter-footer .nav-item .btn-footer-fill:hover, .filter-footer .nav-item:hover {
+    background: $bg-theme;
+    cursor: pointer;
+    color: $color-theme-green;
+  }
+
+  .side-bar-ul, .side-bar-li, .side-bar-li a {
+    width: 100%;
+    color: $color-theme-blue;
+  }
+
+
+  .side-bar-li a:hover {
+    background-color: $bg-controls;
+    color: #fff;
+  }
+
+
+
+  .active-li {
+    background: $color-theme-green;
+    position: relative;
+  }
+
+  .active-li-submenu {
+    background: $bg-theme;
+  }
+
+
+  .active-li a, .active-li-submenu a {
+    color: #fff !important;
+  }
+
+  .active-li a:hover {
+    background: $color-theme-green;
+    color: #fff;
+  }
+  /* top navigation */
+  .dropdown-item:focus, .dropdown-item:hover {
+    background: #e1e1e1;
+  }
+
+  .dropdown-menu.show .dropdown-item.active, .dropdown-menu.show .dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: $color-theme-green;
+  }
+  /* main container */
+  /* table grid */
+  .table-resources td {
+    border-top: solid thin $border-bottom;
+  }
+
+  .table-cust td {
+    border-top: 1px solid $border-bottom !important;
+    border-bottom: 1px solid $border-bottom !important;
+  }
+
+  .action-btns button {
+    color: $btn-table-color;
+    background: $btn-table-bg;
+    border: solid thin #1c3539;
+    border-radius: 3px;
+  }
+
+  .action-btns button:hover {
+    color: rgba(255, 255, 255, 1);
+    background: $color-theme-green;
+  }
+
+  .page-title {
+    color: $color-theme-blue;
+  }
+
+  .btn-footer-outline {
+    background: #fff;
+    color: $color-theme-green;
+    border: solid thin $color-theme-green;
+  }
+
+  .btn-footer-fill {
+    background: $color-theme-green;
+    color: #fff;
+  }
+
+  .btn-add {
+    background: $btn-bg;
+    color: #ffffff;
+    border: none;
+  }
+
+  .btn-add-outline {
+    background: transparent;
+    color: $color-theme-green;
+    border: solid thin $color-theme-green;
+    padding-top: 0;
+  }
+
+  .btn-add-outline-grey {
+    background: transparent;
+    color: #413f3f;
+    border: solid thin #e1e1e1;
+    padding-top: 0;
+  }
+
+  .btn-icon-fill {
+    background: $btn-bg-fill;
+  }
+
+  .btn-icon-outline {
+    background: transparent;
+    border-right: solid thin #e27f22;
+  }
+
+  .btn-icon-outline-grey {
+    background: transparent;
+    border-right: solid thin #e1e1e1;
+  }
+  /*scrollbar*/
+  /* for chrom*/
+  .stylescrollbar::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+
+  .stylescrollbar-width::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+  /* filter panel*/
+  .side-popup {
+    background: $bg-sidebar;
+  }
+
+  .filter-popup {
+    background: $bg-sidebar;
+  }
+
+  .filter-head {
+    border-bottom: solid thin $border-bottom;
+    background: $bg-sidebar;
+  }
+
+  .filter-footer {
+    background: $bg-sidebar;
+    box-shadow: 0 0 3px rgba(21, 28, 53, 1);
+  }
+
+  .datetime-icon {
+    background: $color-control-btns;
+  }
+
+  gridster .gridster-column {
+    border-left: 1px solid $bg-controls !important;
+    border-right: 1px solid $bg-controls !important;
+  }
+
+  gridster .gridster-row {
+    border-top: 1px solid $bg-controls !important;
+    border-bottom: 1px solid $bg-controls !important;
+  }
+
+
+  gridster {
+    background-color: transparent !important;
+    height: 100%;
+  }
+  /* dashboard widgets 8 */
+  gridster-item {
+    background-color: transparent !important;
+    border-radius: 4px 4px 4px 4px !important;
+  }
+
+  .widget {
+    width: 100%;
+    background-color: $bg-theme;
+    box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+    height: 100%;
+    border-radius: 4px 4px 4px 4px;
+    cursor: move;
+  }
+
+  .widget-header {
+    background: $bg-theme;
+  }
+
+  .widget-area-value {
+    width: 100%;
+    padding: 10px;
+    height: calc(100% - 40px);
+    overflow: hidden;
+    float: left;
+    border-radius: 0px 0px 4px 4px;
+    background: $bg-theme;
+  }
+
+  .widget-value {
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    position: relative;
+    font-weight: 600;
+    height: calc(100% - 30px);
+    float: left;
+  }
+
+  .widget-value span {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    direction: ltr;
+  }
+
+  .widget-footer {
+    width: 100%;
+    height: auto;
+    line-height: 30px;
+    /*border-top: solid thin $border-bottom;*/
+    float: left;
+    text-align: center;
+    font-weight: 300;
+    font-size: 14px;
+  }
+
+  .widget-sidebar {
+    background-color: $bg-sidebar;
+  }
+
+  .widget-sidebar .jqx-widget-content {
+    border-color: $bg-sidebar;
+    background: $bg-sidebar;
+    color: rgba(255,255,255,.7);
+  }
+  /* end */
+  .hide-radio input[type="radio"]:checked + img {
+    border: 2px solid $color-theme-green;
+    border-radius: 4px;
+  }
+
+  .hide-radio input[type="radio"]:checked + span {
+    border: 2px solid $color-theme;
+    color: $color-theme;
+    border-radius: 10px;
+  }
+
+  .widget-card span {
+    background: $bg-controls;
+    border: 2px solid $bg-controls;
+  }
+
+
+  .list-row-small {
+    border-bottom: solid thin $border-bottom;
+  }
+
+  .hamburger-dashboard {
+    background: $bg-theme;
+    border: none;
+    color: #fff;
+    height: 50px;
+    width: 60px;
+    position: fixed;
+    top: 0;
+    cursor: pointer;
+    z-index: 999;
+  }
+
+
+  .dashboard-title {
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    line-height: 50px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    background: $bg-theme;
+    width: 20%;
+  }
+
+  .owl-dt-timer-content .owl-dt-timer-input {
+    font-size: 14px;
+  }
+
+  .owl-dt-container {
+    background: $bg-controls;
+  }
+
+  .owl-dt-calendar-table .owl-dt-calendar-cell-content {
+    color: $color-theme-blue;
+  }
+
+  .owl-dt-calendar-table .owl-dt-calendar-cell-today:not(.owl-dt-calendar-cell-selected) {
+    color: $color-theme-green;
+    border-color: $color-theme-green;
+  }
+
+  .owl-dt-control-button .owl-dt-control-button-content {
+    color: $color-theme-blue;
+  }
+
+  .owl-dt-calendar-table .owl-dt-calendar-cell-selected {
+    color: rgba(255,255,255,.85) !important;
+    background: $color-theme-green;
+  }
+
+  .owl-dt-timer-content .owl-dt-timer-input {
+    background: $color-theme-blue;
+    border: solid thin $color-theme-blue;
+    color: $bg-theme;
+    font-size: 14px;
+  }
+
+  .owl-dt-calendar-table .owl-dt-calendar-header .owl-dt-weekdays th {
+    color: rgba(255,255,255,.7);
+  }
+
+  .owl-dt-calendar-table .owl-dt-calendar-cell-active:focus > .owl-dt-calendar-cell-content:not(.owl-dt-calendar-cell-selected), .owl-dt-calendar-table :not(.owl-dt-calendar-cell-disabled):hover > .owl-dt-calendar-cell-content:not(.owl-dt-calendar-cell-selected) {
+    background-color: $color-theme;
+    color: #fff;
+  }
+
+  .owl-dt-container-buttons {
+    color: $color-theme-blue;
+  }
+
+  .height100 {
+    height: 100%
+  }
+
+  .form-control:disabled, .form-control[readonly] {
+    cursor: not-allowed;
+  }
+
+  .custom-file-label {
+    background: $bg-controls;
+    border: solid thin $border-controls;
+    color: $color-theme-blue;
+  }
+
+  .custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: $color-theme-green;
+  }
+
+  .card-filter {
+    background-color: #f5f5f5;
+    border-radius: 0 !important;
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid $border-bottom !important;
+  }
+
+  .border-card {
+    border: solid thin $border-bottom !important;
+  }
+
+  .dash-icon-bg-1 {
+    background: transparent;
+  }
+
+  .dash-icon-bg-2 {
+    background: transparent;
+  }
+
+  .dash-icon-bg-3 {
+    background: transparent;
+  }
+
+  .dash-icon-bg-4 {
+    background: transparent;
+  }
+
+
+  .card-bg-1 {
+    background-image: linear-gradient(#1b1919, #393939) !important;
+  }
+
+  .card-bg-2 {
+    background-image: linear-gradient(#1b1919, #393939) !important;
+  }
+
+  .card-bg-3 {
+    background-image: linear-gradient(#1b1919, #393939) !important;
+  }
+
+  .card-bg-4 {
+    background-image: linear-gradient(#1b1919, #393939) !important;
+  }
+
+  .card {
+    background-color: $bg-theme;
+    border: 1px solid $bg-theme;
+    border-radius: 10px;
+  }
+
+  .form-control {
+    background-color: $bg-controls !important;
+    border: 1px solid $border-controls;
+    font-size: 13px;
+    color: #fff;
+  }
+
+  .op-icons {
+    font-size: 24px;
+    color: $color-theme-blue;
+  }
+
+  .btn-footer-fill-delete {
+    background: $bg-theme-danger;
+  }
+
+  .btn-footer-fill-delete:focus {
+    outline: none;
+  }
+  /*******only for dark theme end********/
+  /******************************************************************************************************
+    RESPONSIVE
+    /*******************************************************************************************************/
+  @media only screen and (max-width:767px) {
+
+    .xs-actions {
+      background: $bg-theme;
+      border: solid thin $border-controls;
+    }
+  }
+}
+/*.dummycircle {
+    background: repeating-linear-gradient(-60deg, red, red 5px, #fff 5px, #fff 15px);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid red;
+}*/

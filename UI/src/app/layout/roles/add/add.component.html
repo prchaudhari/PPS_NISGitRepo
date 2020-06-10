@@ -1,0 +1,391 @@
+<div class="main-container">
+  <div class="page-title">
+    <span class="xs-title">Add Role</span>
+  </div>
+    <div class="card border-0 mb-2 card-shadow">
+      <div class="card-header bg-white d-flex justify-content-between">
+        <div>
+          <label class="m-0">Details</label>
+        </div>
+        <div>
+          <button type="button" id="btnCollapsedDetails"
+                  class="toggle-btn border-0 p-0 bg-transparent"
+                  (click)="isCollapsedDetails = !isCollapsedDetails"
+                  [attr.aria-expanded]="!isCollapsedDetails"
+                  aria-controls="collapseDetails">
+            <span class="fa" [ngClass]="!isCollapsedDetails? 'fa-angle-down' : 'fa-angle-right'"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body" id="collapseDetails" [ngbCollapse]="isCollapsedDetails">
+        <div class="row form-group">
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblRoleName" for="inputRoleName">Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="inputRoleName" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-lg-6">
+            <label id="lblDescription">Description</label>
+            <textarea class="form-control" rows="3" id="txtDescription" ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card border-0 mb-2 card-shadow">
+      <div class="card-header  bg-white d-flex justify-content-between">
+        <div>
+          <label class="m-0">Permissions</label>
+        </div>
+        <div>
+          <button type="button" id="btnCollapsedPermissions"
+                  class="toggle-btn border-0 p-0 bg-transparent"
+                  (click)="isCollapsedPermissions = !isCollapsedPermissions"
+                  [attr.aria-expanded]="!isCollapsedPermissions" aria-controls="collapsedPermissions">
+            <span class="fa" [ngClass]="!isCollapsedPermissions? 'fa-angle-down' : 'fa-angle-right'"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body rtl-checkbox parent-rtl" id="collapsedPermissions" [ngbCollapse]="isCollapsedPermissions">
+        <!--repeat-->
+        <div class="custom-control custom-checkbox mb-4">
+          <input class="custom-control-input" type="checkbox" id="allPermisions">
+          <label class="custom-control-label">Select All</label>
+        </div>
+        <!--repeat start-->
+        <div class="card mb-2 card-shadow border-0">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">Dashboard</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" />
+              <label class="custom-control-label">Select All</label>
+            </div>
+          </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Create </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Edit </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Delete </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">View </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--repeat end-->
+        <!--repeat start-->
+        <div class="card mb-2 card-shadow border-0">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">Users</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" />
+              <label class="custom-control-label">Select All</label>
+            </div>
+          </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Create </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Edit </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Delete </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">View </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--repeat end-->
+        <!--repeat start-->
+        <div class="card mb-2 card-shadow border-0">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">Widgets</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" />
+              <label class="custom-control-label">Select All</label>
+            </div>
+          </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Create </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Edit </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Delete </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">View </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--repeat end-->
+        <!--repeat start-->
+        <div class="card mb-2 card-shadow border-0">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">Pages</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" />
+              <label class="custom-control-label">Select All</label>
+            </div>
+          </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Create </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Edit </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Delete </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">View </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--repeat end-->
+        <!--repeat start-->
+        <div class="card mb-2 card-shadow border-0">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">Statement Definitions</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" />
+              <label class="custom-control-label">Select All</label>
+            </div>
+          </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Create </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Edit </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Delete </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">View </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--repeat end-->
+        <!--repeat start-->
+        <div class="card mb-2 card-shadow border-0">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">Schedule Management</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" />
+              <label class="custom-control-label">Select All</label>
+            </div>
+          </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Create </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Edit </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Delete </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">View </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--repeat end-->
+        <!--repeat start-->
+        <div class="card mb-2 card-shadow border-0">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">Logs</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" />
+              <label class="custom-control-label">Select All</label>
+            </div>
+          </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Create </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Edit </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Delete </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">View </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--repeat end-->
+        <!--repeat start-->
+        <div class="card mb-2 card-shadow border-0">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">Analytics</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox" />
+              <label class="custom-control-label">Select All</label>
+            </div>
+          </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Create </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Edit </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">Delete </label>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" />
+                  <label class="custom-control-label">View </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--repeat end-->
+      </div>
+    </div>
+    <div class="card border-0 mt-4 mb-3 bg-transparent">
+      <div class="card-body p-0">
+        <button class="btn-footer-fill mr-2" id="btnSave">Save</button>
+        <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="main-container">
+  <div class="page-title">
+    <span class="xs-title">Add Page</span>
+  </div>
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-body">
+      <div class="row form-group">
+        <div class="col-md-4 col-lg-4">
+          <label id="lblName" for="inputRoleName">Name</label>
+          <input type="text" class="form-control" id="lblName" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-lg-4">
+          <label id="lblTemplate" for="inputRoleName">Page Type</label>
+          <select class="form-control">
+            <option selected>Select</option>
+            <option>Home</option>
+            <option>Saving Account</option>
+            <option>Current Account</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-fill mr-2" id="btnSave">Save</button>
+      <button class="btn-footer-fill mr-2" id="btnSave" (click)="navigationTodashboardDesigner()">Next</button>
+      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+    </div>
+  </div>
+</div>

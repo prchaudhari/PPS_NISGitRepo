@@ -1,0 +1,87 @@
+<div class="main-container">
+  <div class="page-title">
+    <span class="xs-title">Update Profile  </span>
+  </div>
+
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-body" id="collapseDetails">
+      <div class="row">
+        <div class="col-md-4 col-sm-5 col-12 form-group">
+          <div class="profile-avtar-box">
+            <div class="image-preview mb-3">
+              <img src="assets/images/user.jpg" class="profile-avtar selected-avatar" />
+            </div>
+            <div>
+              <label for="upload-photo" class="m-0 font-weight-normal"> Update Avatar</label>
+              <input type="file" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
+            </div>
+          </div>
+          <div style="clear:both"></div>
+        </div>
+        <div class="col-md-8 col-sm-7 col-xs-12">
+
+          <div class="row">
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <label for="inputFirstName">First Name</label>
+              <input type="text" class="form-control" id="inputFirstName" value="Super">
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <label for="inputLastName">Last Name</label>
+              <input type="text" class="form-control" id="inputLastName" value="Admin">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <label for="inputEmail">Email Id</label>
+              <input type="email" class="form-control" id="inputEmail" value="admin@1234">
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <div class="row">
+                <div class="col-5 col-md-5 col-sm-5 col-xs-5 p-rtl">
+                  <label for="inputCountryCode">Country Code</label>
+                  <input list="countrycode" class="form-control" value="India +91">
+                  <datalist id="countrycode">
+                    <option selected value="India +91">
+                    <option value="USA +1">
+                    <option value="UAE +971">
+                  </datalist>
+                </div>
+                <div class="col-7 col-md-7 col-sm-7 col-xs-7 pl-1">
+                  <label for="inputMobileNumber">Mobile No.</label>
+                  <input type="text" class="form-control" value="8756000989">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <label for="inputRole" class="m-0">Role</label>
+              <div>Super Admin</div>
+            </div>
+            <div class="col-lg-5 col-sm-6 form-group">
+              <label>  Theme</label>
+              <!--thems-->
+              <div class="themes">
+                <ul class="list-inline mb-0">
+                  <li class="list-inline-item" id="theme0" (click)="theme0()" [ngClass]="isTheme0Active? 'themeactive':''"></li>
+                  <li class="list-inline-item" id="theme1" (click)="theme1()" [ngClass]="isTheme1Active? 'themeactive':''"></li>
+                  <li class="list-inline-item" id="theme2" (click)="theme2()" [ngClass]="isTheme2Active? 'themeactive':''"></li>
+                  <li class="list-inline-item" id="theme3" (click)="theme3()" [ngClass]="isTheme3Active? 'themeactive':''"></li>
+                  <li class="list-inline-item" id="theme4" (click)="theme4()" [ngClass]="isTheme4Active? 'themeactive':''"></li>
+                  <li class="list-inline-item" id="theme5" (click)="theme5()" [ngClass]="isTheme5Active? 'themeactive':''"></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-fill mr-2">Save</button>
+      <button class="btn-footer-outline" (click)="backClicked()">Cancel</button>
+
+    </div>
+  </div>
+</div>
