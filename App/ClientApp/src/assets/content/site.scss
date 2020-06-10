@@ -453,6 +453,7 @@
     height: 28px;
     font-size: 16px;
     cursor: pointer;
+    padding: 0px;
   }
 
   .action-btns-no-order button {
@@ -1630,8 +1631,9 @@
   .themeactive {
     border: 2px solid #00ff0a !important;
   }
- .disabled-cursor{
-    cursor:not-allowed;
+
+  .disabled-cursor {
+    cursor: not-allowed;
   }
 
   @media only screen and (max-width:1024px) {
@@ -1746,8 +1748,8 @@
       height: 80px;
     }
 
-     .login-control span{
-      color:#000;
+    .login-control span {
+      color: #000;
     }
 
     .login-left {
