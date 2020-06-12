@@ -12,6 +12,17 @@
         <EntityTypeShape EntityType="NISModel.UserRoleMapRecord" Width="1.625" PointX="0.75" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.RoleRecord" Width="1.75" PointX="2.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.RolePrivilegeRecord" Width="1.75" PointX="2.75" PointY="1.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.AssetRecord" Width="1.75" PointX="2.75" PointY="2" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.AssetLibraryRecord" Width="1.75" PointX="2.75" PointY="2.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.AssetPathSettingRecord" Width="1.75" PointX="4.875" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.PageRecord" Width="1.75" PointX="2.75" PointY="3.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.PageTypeRecord" Width="1.75" PointX="4.875" PointY="1.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.PageWidgetMapRecord" Width="1.75" PointX="4.875" PointY="2" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ScheduleRecord" Width="1.75" PointX="7" PointY="2" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.StatementRecord" Width="1.75" PointX="7" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.StatementPageMapRecord" Width="1.75" PointX="7" PointY="1.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.WidgetRecord" Width="1.75" PointX="4.875" PointY="2.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.TenantRecord" Width="1.75" PointX="7" PointY="2.625" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
