@@ -60,6 +60,7 @@
     <Compile Include="Role.cs" />
     <Compile Include="RolePrivilege.cs" />
     <Compile Include="RolePrivilegeOperation.cs" />
+    <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserLogin.cs" />
