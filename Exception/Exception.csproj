@@ -41,16 +41,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionStringNotFoundException.cs" />
     <Compile Include="Constants\ExceptionConstant.cs" />
     <Compile Include="Constants\UserConstant.cs" />
+    <Compile Include="InvalidEncryptedDataException.cs" />
     <Compile Include="InvalidSearchParameterException.cs" />
     <Compile Include="InvalidTenantException.cs" />
     <Compile Include="NullArgumentException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryStoreNotAccessibleException.cs" />
     <Compile Include="TenantNotFoundException.cs" />
+    <Compile Include="User\AlreadyUsedPasswordException.cs" />
     <Compile Include="User\DuplicateUserFoundException.cs" />
+    <Compile Include="User\InvalidPasswordFormatException.cs" />
     <Compile Include="User\InvalidUserException.cs" />
+    <Compile Include="User\InvalidUserPasswordException.cs" />
+    <Compile Include="User\LastUsedPasswordException.cs" />
+    <Compile Include="User\UserLockedException.cs" />
     <Compile Include="User\UserNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup />

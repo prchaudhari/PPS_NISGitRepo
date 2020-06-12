@@ -21,6 +21,11 @@ namespace nIS
         private string identifier = string.Empty;
 
         /// <summary>
+        /// The user identifier to skip
+        /// </summary>
+        private string userIdentifierToSkip = string.Empty;
+
+        /// <summary>
         /// The user name
         /// </summary>
         private string firstName = string.Empty;
@@ -39,6 +44,16 @@ namespace nIS
         /// The user email.
         /// </summary>
         private string emailAddress = string.Empty;
+
+        /// <summary>
+        /// The tenant code
+        /// </summary>
+        private string tenantCode;
+
+        /// <summary>
+        /// The role privileges flag
+        /// </summary>
+        private bool? isRolePrivilegesRequired = null;
 
         /// <summary>
         /// The skill status
@@ -71,7 +86,22 @@ namespace nIS
             }
         }
 
-      
+        /// <summary>
+        /// Gets or sets user identifier to skip
+        /// </summary>
+        [Description("User Identifier To Skip")]
+        public string UserIdentifierToSkip
+        {
+            get
+            {
+                return this.userIdentifierToSkip;
+            }
+            set
+            {
+                this.userIdentifierToSkip = value;
+            }
+        }
+
         /// <summary>
         /// Get or sets the  value of user name
         /// </summary>
@@ -121,22 +151,6 @@ namespace nIS
         }
 
         /// <summary>
-        /// Get or sets the value of user status
-        /// </summary>
-        [Description("IsActive")]
-        public bool? IsActive
-        {
-            get
-            {
-                return this.isActive;
-            }
-            set
-            {
-                this.isActive = value;
-            }
-        }
-
-        /// <summary>
         /// Get or sets the value of user email
         /// </summary>
         [Description("Email Address")]
@@ -149,6 +163,54 @@ namespace nIS
             set
             {
                 this.emailAddress = value;
+            }
+        }
+
+        /// <summary>
+        /// Get or sets the value of user status
+        /// </summary>
+        [Description("IsActive")]
+        public bool? IsRolePrivilegesRequired
+        {
+            get
+            {
+                return this.isRolePrivilegesRequired;
+            }
+            set
+            {
+                this.isRolePrivilegesRequired = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets tenant code
+        /// </summary>
+        public string TenantCode
+        {
+            get
+            {
+                return tenantCode;
+            }
+            set
+            {
+                tenantCode = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Get or sets the value of user status
+        /// </summary>
+        [Description("IsActive")]
+        public bool? IsActive
+        {
+            get
+            {
+                return this.isActive;
+            }
+            set
+            {
+                this.isActive = value;
             }
         }
 

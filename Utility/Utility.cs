@@ -2,21 +2,26 @@
 {
     #region References
 
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
     using System.Net;
-    using System.Text;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-  
-    using System.Net.Mail;
     using System.Net.Http;
+    using System.Net.Mail;
+    //using Websym.Core.ConfigurationManager;
+    //using Websym.Core.ResourceManager;
+    //using Websym.Core.EventManager;
+    //using Websym.Core.NotificationEngine;
     using System.Reflection;
-    using System.Net.Http.Headers;
-    using System.Threading.Tasks;
+    using System.Text;
+    using Websym.Core.ConfigurationManager;
+
+    //using Microsoft.Practices.Unity;
+
     #endregion
 
     public class Utility : IUtility
@@ -70,6 +75,100 @@
         }
 
         /// <summary>
+        /// This method executes the web request using the specified parameters.
+        /// </summary>
+        /// <param name="instanceURL">The instance URL.</param>
+        /// <param name="controller">The controller.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="objectData">The object data.</param>
+        /// <param name="tenantKey">The tenant key.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="toBeSerailzied">This property should be set to be true if passing object data as primitive data type.</param>
+        /// <returns>
+        /// Returns the response object
+        /// </returns>
+        public string ExecuteWebRequest(string instanceURL, string controller, string action, string objectData, string tenantKey, string tenantCode, bool toBeSerailzied = false)
+        {
+            string responseFromServer = string.Empty;
+            try
+            {
+                WebRequest request = WebRequest.Create(instanceURL + "/" + controller + "/" + action);
+                HttpWebResponse response = null;
+                request.Headers.Add(tenantKey, tenantCode);
+                request.Method = "POST";
+                string postData = toBeSerailzied ? JsonConvert.SerializeObject(objectData) : objectData;
+                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                request.ContentType = "application/json";
+                request.ContentLength = byteArray.Length;
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                try
+                {
+                    response = (HttpWebResponse)request.GetResponse();
+                    dataStream = response.GetResponseStream();
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        if (dataStream != null)
+                        {
+                            StreamReader reader = new StreamReader(dataStream);
+                            responseFromServer = reader.ReadToEnd();
+                            reader.Close();
+                            dataStream.Close();
+                        }
+                    }
+                }
+                catch (WebException webException)
+                {
+                    response = (HttpWebResponse)webException.Response;
+                    dataStream = response.GetResponseStream();
+                    if (dataStream != null)
+                    {
+                        StreamReader reader = new StreamReader(dataStream);
+                        responseFromServer = reader.ReadToEnd();
+                        reader.Close();
+                        dataStream.Close();
+
+                        JObject jObject = JsonConvert.DeserializeObject<JObject>(responseFromServer);
+                        throw new Exception(jObject["Error"]["Message"].ToString());
+                    }
+                }
+
+                return responseFromServer;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the configuration values from configuration manager component.
+        /// </summary>
+        /// <param name="configurationSearchParameter">The configuration search parameter.</param>
+        /// <param name="configurationBaseURLKey">The configuration base URL key.</param>
+        /// <param name="tenantKey">The tenant key.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns the list of configuration section
+        /// </returns>
+        public IList<Websym.Core.ConfigurationManager.ConfigurationSection> GetConfigurationValues(ConfigurationSearchParameter configurationSearchParameter, string configurationBaseURLKey, string tenantKey, string tenantCode)
+        {
+
+            IList<Websym.Core.ConfigurationManager.ConfigurationSection> configurationSectionList = null;
+            try
+            {
+
+                return configurationSectionList;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
         /// This method gets the connection string from configuration manager as per the specified key.
         /// </summary>
         /// <param name="section">The section.</param>
@@ -83,27 +182,26 @@
         public string GetConnectionString(string section, string configurationKey, string configurationBaseURLKey, string tenantKey, string tenantCode)
         {
             string sqlConnectionString = string.Empty;
-            //return sqlConnectionString = @"metadata=res://*/FMSDataContext.csdl|res://*/FMSDataContext.ssdl|res://*/FMSDataContext.msl;provider=System.Data.SqlClient;provider connection string=';data source=WSPL_LAP_044;initial catalog=FMS;persist security info=True;user id=sa;password=admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
             try
             {
                 //return System.Configuration.ConfigurationManager.ConnectionStrings["FMSEntitiesDataContext"].ConnectionString;
-                //ConfigurationSearchParameter configurationSearchParameter = new ConfigurationSearchParameter();
-                //configurationSearchParameter.SectionName = section;
-                //configurationSearchParameter.ConfigurationKey = configurationKey;
+                ConfigurationSearchParameter configurationSearchParameter = new ConfigurationSearchParameter();
+                configurationSearchParameter.SectionName = section;
+                configurationSearchParameter.ConfigurationKey = configurationKey;
 
-                //IList<Websym.Core.ConfigurationManager.ConfigurationSection> configurationSectionList = this.GetConfigurationValues(configurationSearchParameter, configurationBaseURLKey, tenantKey, tenantCode);
-                //if (configurationSectionList != null && configurationSectionList.Count > 0)
-                //{
-                //    if (configurationSectionList[0].ConfigurationItems != null && configurationSectionList[0].ConfigurationItems.Count > 0)
-                //    {
-                //        sqlConnectionString = configurationSectionList[0].ConfigurationItems[0].Value;
-                //    }
-                //}
-
-                sqlConnectionString = "Data Source=WSPL_LAP_012;Initial Catalog=tezevaqaDB;User ID=sa;Password=Admin@123";
+                IList<Websym.Core.ConfigurationManager.ConfigurationSection> configurationSectionList = this.GetConfigurationValues(configurationSearchParameter, configurationBaseURLKey, tenantKey, tenantCode);
+                if (configurationSectionList != null && configurationSectionList.Count > 0)
+                {
+                    if (configurationSectionList[0].ConfigurationItems != null && configurationSectionList[0].ConfigurationItems.Count > 0)
+                    {
+                        sqlConnectionString = configurationSectionList[0].ConfigurationItems[0].Value;
+                    }
+                }
 
                 sqlConnectionString = sqlConnectionString.EndsWith(";") ? sqlConnectionString : sqlConnectionString + ";";
-                sqlConnectionString = @"metadata=res://*/FMSDataContext.csdl|res://*/FMSDataContext.ssdl|res://*/FMSDataContext.msl;provider=System.Data.SqlClient;provider connection string=';" + sqlConnectionString + "multipleactiveresultsets=True;application name=EntityFramework';";
+                // sqlConnectionString = "metadata=res://*/nVidYoDataContext.csdl|res://*/nVidYoDataContext.ssdl|res://*/nVidYoDataContext.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=192.168.100.7;Initial Catalog=nvidyo;User ID=sa;Password=Admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
+
+                sqlConnectionString = @"metadata=res://*/nVidYoDataContext.csdl|res://*/nVidYoDataContext.ssdl|res://*/nVidYoDataContext.msl;provider=System.Data.SqlClient;provider connection string=';" + sqlConnectionString + "multipleactiveresultsets=True;application name=EntityFramework';";
             }
             catch (Exception exception)
             {
@@ -111,6 +209,107 @@
             }
 
             return sqlConnectionString;
+        }
+
+        /// <summary>
+        /// This method gets this list of localized resources as per the specified search parameter
+        /// </summary>
+        /// <param name="resourceSearchParameter">The resource search parameter.</param>
+        /// <param name="resourceBaseURLKey">The resource base URL key.</param>
+        /// <param name="tenantKey">The tenant key.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns the list of resources for a particular locale
+        /// </returns>
+        //public IList<Resource> GetResources(ResourceSearchParameter resourceSearchParameter, string resourceBaseURLKey, string tenantKey, string tenantCode)
+        //{
+        //    IList<Resource> resources = null;
+        //    try
+        //    {
+        //        string resourceBaseURL = System.Configuration.ConfigurationManager.AppSettings[resourceBaseURLKey];
+        //        resources = JsonConvert.DeserializeObject<List<Resource>>(this.ExecuteWebRequest(resourceBaseURL, "Resource", "Get", JsonConvert.SerializeObject(resourceSearchParameter), tenantKey, tenantCode.ToString()));
+
+        //        return resources;
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        throw exception;
+        //    }
+        //}
+
+        /// <summary>
+        /// This method gets this list of localized resources for cshtml as per the specified search parameter
+        /// </summary>
+        /// <param name="culture">The culture name</param>
+        /// <param name="sectionName">The UI section name</param>
+        /// <param name="resourceBaseUrl">The base url</param>
+        /// <param name="tenantKey">The Tenant key</param>
+        /// <param name="defaultTenant">The default tenant code.</param>
+        /// <returns></returns>
+        public Dictionary<string, string> GetResourcesForUI(string culture, string sectionName, string resourceBaseUrl, string tenantKey, string defaultTenant)
+        {
+            Dictionary<string, string> resourceItems = new Dictionary<string, string>();
+            //try
+            //{
+            //    ResourceSearchParameter resourceSearchParameter = new ResourceSearchParameter();
+            //    resourceSearchParameter.Locale = culture;
+            //    resourceSearchParameter.SectionName = sectionName;
+            //    IList<Resource> resourceList = this.GetResources(resourceSearchParameter, resourceBaseUrl, tenantKey, defaultTenant);
+            //    if (resourceList.Count > 0)
+            //    {
+            //        resourceList.ToList().ForEach(section => section.ResourceSections.ToList()
+            //        .ForEach(item => item.ResourceItems.ToList()
+            //        .ForEach(data => resourceItems.Add(data.Key, data.Value))));
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+            //}
+
+            return resourceItems;
+        }
+
+        /// <summary>
+        /// This method helps to send mail.
+        /// </summary>
+        /// <param name="mail">MailMessage object</param>
+        /// <param name="applicationSMTPClientHost">Application smtp client host</param>
+        /// <param name="applicationSMTPClientPort">Application smtp client port</param>
+        /// <param name="applicationEmailPassword">Application email password</param>
+        /// <param name="tenantCode">The tenant code</param>
+        public void SendMail(MailMessage mail, string applicationSMTPClientHost, int applicationSMTPClientPort, string applicationEmailPassword, string tenantCode)
+        {
+            try
+            {
+                var emailFromAddress = System.Configuration.ConfigurationManager.AppSettings["FromEmailAddress"];
+                var displayName = System.Configuration.ConfigurationManager.AppSettings["MailDisplayName"];
+                var password = System.Configuration.ConfigurationManager.AppSettings["FromEmailAddressPassword"];
+                bool enableSSL = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["EnableSSL"]);
+                var smtpAddress = System.Configuration.ConfigurationManager.AppSettings["SMTPServer"];
+                var portNumber = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["SMTPPort"]);
+                //string smtpAddress = "smtp.gmail.com";
+                //int portNumber = 587;
+                //bool enableSSL = true;
+                //string emailFromAddress = "nvidyo@n4mative.net";
+                //string password = "Gauch022";
+                //string displayName = "nVidYo Team";
+
+                mail.From = new MailAddress(emailFromAddress, displayName);
+
+                using (SmtpClient smtp = new SmtpClient(smtpAddress, portNumber))
+                {
+                    smtp.EnableSsl = enableSSL;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential(emailFromAddress, password);
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.Send(mail);
+                }
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
         }
 
         #region Platform 
@@ -143,10 +342,8 @@
 
                 client.BaseAddress = new Uri(baseURL);
                 HttpResponseMessage response = null;
-                //response = client.PostAsync(baseURL + actionPath, new Content(parameters)).Result;
-                string inputJson = Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
-                HttpContent inputContent = new StringContent(inputJson, Encoding.UTF8, "application/json");
-                response = client.PostAsync(baseURL + actionPath, inputContent).Result;
+                // response = client.PostAsync(baseURL + actionPath, new Content(parameters)).Result;
+                //response = client.PostAsJsonAsync(baseURL + actionPath, parameters).Result;
                 string responseString = response.Content.ReadAsStringAsync().Result;
 
                 return response;
@@ -228,7 +425,7 @@
 
                 client.BaseAddress = new Uri(baseURL);
                 HttpResponseMessage response = null;
-               // response = client.(baseURL + actionPath, parameters).Result;
+                //response = client.PutAsJsonAsync(baseURL + actionPath, parameters).Result;
                 return response;
             }
             catch (Exception exception)
@@ -325,8 +522,8 @@
         //{
         //    try
         //    {
-        //        string eventManagerBaseURL = ConfigurationManager.AppSettings["EventManagerBaseURL"]?.ToString();
-        //        string subscriptionManagerBaseURL = ConfigurationManager.AppSettings["SubscriptionManagerBaseURL"]?.ToString();
+        //        string eventManagerBaseURL = System.Configuration.ConfigurationManager.AppSettings["EventManagerBaseURL"]?.ToString();
+        //        string subscriptionManagerBaseURL = System.Configuration.ConfigurationManager.AppSettings["SubscriptionManagerBaseURL"]?.ToString();
         //        IDictionary<string, string> headerValues = new Dictionary<string, string>();
         //        headerValues.Add("TenantCode", tenantCode);
 
@@ -371,7 +568,7 @@
         //{
         //    try
         //    {
-        //        string notificationManagerBaseURL = ConfigurationManager.AppSettings["NotificationEngineApiUrl"]?.ToString();
+        //        string notificationManagerBaseURL = System.Configuration.ConfigurationManager.AppSettings["NotificationEngineApiUrl"]?.ToString();
         //        IDictionary<string, string> headerValues = new Dictionary<string, string>();
         //        headerValues.Add("TenantCode", tenantCode);
 
@@ -389,103 +586,7 @@
         //    }
         //}
 
-        #endregion
+        #endregion       
 
-        #region Chat Engin API call utility
-
-        /// <summary>
-        /// This method implements HTTP posts request.
-        /// </summary>
-        /// <param name="baseURL">The base URL.</param>
-        /// <param name="actionPath">The action path.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="timeout">The Time out in milliseconds.</param>
-        /// <param name="contentType">The MIME type for request data.</param>
-        /// <returns>HttpResponseMessage.</returns>
-        public HttpResponseMessage HttpChatPostRequest(string baseURL, string fullPath, string token, object parameters = null, double timeout = 0)
-        {
-            HttpResponseMessage response = null;
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.BaseAddress = new Uri(baseURL);
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    using (StringContent content = new StringContent(JsonConvert.SerializeObject(parameters), Encoding.Default, "application/json"))
-                    {
-                        response = httpClient.PostAsync(baseURL + fullPath, content).Result;
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-            return response;
-        }
-
-        /// <summary>
-        /// This method implements HTTP posts request.
-        /// </summary>
-        /// <param name="baseURL">The base URL.</param>
-        /// <param name="actionPath">The action path.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="timeout">The Time out in milliseconds.</param>
-        /// <param name="contentType">The MIME type for request data.</param>
-        /// <returns>HttpResponseMessage.</returns>
-        public HttpResponseMessage HttpChatGETRequest(string baseURL, string fullPath, string token, object parameters = null, double timeout = 0)
-        {
-            HttpResponseMessage response = null;
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.BaseAddress = new Uri(baseURL);
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    //using (StringContent content = new StringContent(JsonConvert.SerializeObject(parameters), Encoding.Default, "application/json"))
-                    //{
-                    response = httpClient.GetAsync(baseURL + fullPath).Result;
-                    //}
-                }
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-            return response;
-        }
-
-        /// <summary>
-        /// This method implements HTTP posts request.
-        /// </summary>
-        /// <param name="baseURL">The base URL.</param>
-        /// <param name="actionPath">The action path.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="timeout">The Time out in milliseconds.</param>
-        /// <param name="contentType">The MIME type for request data.</param>
-        /// <returns>HttpResponseMessage.</returns>
-        public HttpResponseMessage HttpChatPutRequest(string baseURL, string fullPath, string token, object parameters = null, double timeout = 0)
-        {
-            HttpResponseMessage response = null;
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    httpClient.BaseAddress = new Uri(baseURL);
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    using (StringContent content = new StringContent(JsonConvert.SerializeObject(parameters), Encoding.Default, "application/json"))
-                    {
-                        response = httpClient.PutAsync(baseURL + fullPath, content).Result;
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-            return response;
-        }
-
-        #endregion
     }
 }

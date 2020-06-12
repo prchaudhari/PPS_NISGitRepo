@@ -45,6 +45,44 @@ namespace nIS
         /// The off set key
         /// </summary>
         public const string OFF_SET_KEY = "Offset";
+
+        /// <summary>
+        /// The nVidYo connection string key
+        /// </summary>
+        public const string NIS_CONNECTION_STRING = "nISConnectionString";
+
+        /// <summary>
+        /// The key for configuration base URL
+        /// </summary>
+        public const string CONFIGURATON_BASE_URL = "ConfigurationBaseURL";
+
+        /// <summary>
+        /// The key for resource base URL
+        /// </summary>
+        public const string RESOURCE_BASE_URL = "ResourceBaseURL";
+
+        /// <summary>
+        /// The tenant base URL
+        /// </summary>
+        public const string TENANT_BASE_URL = "TenantManagerAPIURL";
+
+        #endregion
+
+        #region Operations
+        /// <summary>
+        /// Indicates add operation constant value.
+        /// </summary>
+        public const string ADD_OPERATION = "AddOperation";
+
+        /// <summary>
+        /// Indicates update operation constant value..
+        /// </summary>
+        public const string UPDATE_OPERATION = "UpdateOperation";
+
+        /// <summary>
+        /// Indicates delete operation constant value.
+        /// </summary>
+        public const string DELETE_OPERATION = "DeleteOperation";
         #endregion
 
         #region Widget
@@ -161,6 +199,35 @@ namespace nIS
         /// Invalid operation name
         /// </summary>
         public const string INVALIDOPERATIONNAME = "InvalidOperationName";
+
+        #endregion
+
+        #region Mail contents
+
+        /// <summary>
+        /// Indicates mail subject when user will be added.
+        /// </summary>
+        public const string NEWLYADDEDUSERMAILSUBJECT = "NewlyAddedUserMailSubject";
+
+        /// <summary>
+        /// Indicates mail message when user will be added.
+        /// </summary>
+        public const string NEWLYADDEDUSERMAILMESSAGE = "NewlyAddedUserMailMessage";
+
+        /// <summary>
+        /// Indicates the link which will attach with mail for reset password.
+        /// </summary>
+        public const string CHANGEPASSWORDLINK = "ChangePasswordLink";
+
+        /// <summary>
+        /// Indicates mail subject when user is going to change password.
+        /// </summary>
+        public const string USERFORGOTPASSWORDSUBJECT = "UserForgotPasswordSubject";
+
+        /// <summary>
+        /// Indicates mail message when user is going to change password.
+        /// </summary>
+        public const string USERFORGOTPASSWORDMESSAGE = "UserForgotPasswordMessage";
 
         #endregion
     }

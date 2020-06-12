@@ -46,6 +46,15 @@ namespace nIS
         /// </summary>
         public const string NULLARGUMENT_EXCEPTION = "NullArgumentException";
 
+        /// <summary>
+        /// The invalid connection string
+        /// </summary>
+        public const string INVALID_CONNECTIONSTRING_EXCEPTION = "msgConnectionStringNotFoundException";
+
+        /// <summary>
+        /// The invalid encrypted data exception
+        /// </summary>
+        public const string INVALID_ENCRYPTED_DATA_EXCEPTION = "InvalidEncryptedDataException";
         #endregion
     }
 }

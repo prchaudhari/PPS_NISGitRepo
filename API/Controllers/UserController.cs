@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+
     #region References
 
     using System;
@@ -15,6 +16,7 @@ namespace nIS
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
+    using System.Web.Http.Cors;
     using Unity;
 
     #endregion
@@ -22,6 +24,8 @@ namespace nIS
     /// <summary>
     /// This class represent api controller for user
     /// </summary>
+    [EnableCors("*", "*", "*", "*")]
+    [RoutePrefix("User")]
     public class UserController : ApiController
     {
         #region Private Members
@@ -152,7 +156,6 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 users = this.userManager.GetUsers(userSearchParameter, tenantCode);
-
                 HttpContext.Current.Response.AppendHeader("recordCount", this.userManager.GetUserCount(userSearchParameter, tenantCode).ToString());
             }
             catch (Exception exception)
@@ -183,6 +186,7 @@ namespace nIS
                 userSearchParameter.Identifier = userIdentifier.ToString();
                 userSearchParameter.SortParameter.SortColumn = "Id";
                 users = this.userManager.GetUsers(userSearchParameter, tenantCode);
+
                 if (users?.Count <= 0)
                 {
                     throw new UserNotFoundException(tenantCode);
@@ -241,6 +245,157 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 result = this.userManager.DeActivateUser(userIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Login password activity related api
+
+        /// <summary>
+        /// This api controller helps to change or update password.
+        /// </summary>
+        /// <param name="newPassword">
+        /// User's new password
+        /// </param>
+        /// <param name="encryptedText">
+        /// Encrypted text
+        /// </param>
+        /// <returns>
+        /// Returns true if successfully done.
+        /// </returns>
+        [HttpGet]
+        public bool Confirm(string newPassword, string encryptedText)
+        {
+            try
+            {
+                string tenantCode = ModelConstant.DEFAULT_TENANT_CODE;
+                bool result = this.userManager.ChangePassword(newPassword, encryptedText, tenantCode);
+
+                return result;
+            }
+            catch (Exception cautchException)
+            {
+                throw cautchException;
+            }
+        }
+
+        /// <summary>
+        /// This api controller helps to change or update password.
+        /// </summary>
+        /// <param name="user">User object.</param>
+        /// <returns>
+        /// Returns true if successfully updated password.
+        /// </returns>
+        [HttpGet]
+        public bool ChangePassword(string userEmail, string oldPassword, string newPassword)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.userManager.ChangePassword(userEmail, oldPassword, newPassword, tenantCode);
+            }
+            catch (Exception cautchException)
+            {
+                throw cautchException;
+            }
+        }
+
+        /// <summary>
+        /// This api controller method will send a mail for reset password.
+        /// </summary>
+        /// <param name="userEmail">
+        /// User email address.
+        /// </param>
+        /// <returns>
+        /// If mail will send successfully for reset passsword, it will return true.
+        /// </returns>
+        [HttpGet]
+        public bool ResetPassword(string userEmail)
+        {
+            try
+            {
+                string tenantCode = ModelConstant.DEFAULT_TENANT_CODE;
+                return this.userManager.ResetUserPassword(userEmail, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        #endregion
+
+        #region Get User Login Activity API
+
+        /// <summary>
+        /// This is responsible for get user login activity based on their user identifier
+        /// </summary>
+        /// <param name="useridentifier"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IList<UserLoginActivityHistory> LogInActivity(string useridentifier)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.userManager.GetUserLogInActivityHistory(useridentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        #endregion
+
+        #region Unlock User
+
+        /// <summary>
+        /// This method used to activate user
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier</param>
+        /// <returns>Returns true if activated successfully otherwise false</returns>
+        [HttpGet]
+        public bool Unlock(long userIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.userManager.UnlockUser(userIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region lock User
+
+        /// <summary>
+        /// This method used to lock user
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier</param>
+        /// <returns>Returns true if lockec successfully otherwise false</returns>
+        [HttpGet]
+        public bool Lock(long userIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.userManager.LockUser(userIdentifier, tenantCode);
             }
             catch (Exception exception)
             {

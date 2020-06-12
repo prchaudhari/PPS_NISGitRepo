@@ -46,8 +46,11 @@
   <ItemGroup>
     <Compile Include="Common\BaseEntity.cs" />
     <Compile Include="Common\BaseSearchEntity.cs" />
+    <Compile Include="Common\CountryConstant.cs" />
     <Compile Include="Common\ModelConstant.cs" />
     <Compile Include="Common\PagingParameter.cs" />
+    <Compile Include="Country.cs" />
+    <Compile Include="Enum\Activity.cs" />
     <Compile Include="Enum\SearchMode.cs" />
     <Compile Include="Enum\SortOrder.cs" />
     <Compile Include="Common\SortParameter.cs" />
@@ -59,6 +62,8 @@
     <Compile Include="RolePrivilegeOperation.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserLogin.cs" />
+    <Compile Include="UserLoginActivityHistory.cs" />
     <Compile Include="Widget.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -19,11 +19,22 @@ namespace nIS
             : base("name=NISEntities")
         {
         }
-    
+        public NISEntities(string connectionString)
+                             : base(connectionString)
+        {
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<UserRecord> UserRecords { get; set; }
+        public virtual DbSet<UserCredentialHistoryRecord> UserCredentialHistoryRecords { get; set; }
+        public virtual DbSet<UserLoginRecord> UserLoginRecords { get; set; }
+        public virtual DbSet<UserLoginActivityHistoryRecord> UserLoginActivityHistoryRecords { get; set; }
+        public virtual DbSet<UserRoleMapRecord> UserRoleMapRecords { get; set; }
+        public virtual DbSet<RoleRecord> RoleRecords { get; set; }
+        public virtual DbSet<RolePrivilegeRecord> RolePrivilegeRecords { get; set; }
     }
 }

@@ -51,6 +51,70 @@ namespace nIS
         IList<User> GetUsers(UserSearchParameter userSearchParameter, string tenantCode);
 
         /// <summary>
+        /// This method's reference helps to update user's password to database.
+        /// </summary>
+        /// <param name="userLoginDetail">User login object.</param>
+        /// <param name="tenantCode">The tenant code.</param> 
+        /// <returns>It will return true if successfully updated password.</returns>
+        bool ChangePassword(UserLogin userLoginDetail, string tenantCode);
+
+        /// <summary>
+        /// This method,s reference will validate user login.
+        /// </summary>
+        /// <param name="userIdentifier">User identifier</param>
+        /// <param name="password">User password</param>
+        /// <returns>
+        /// If password is correct then it will return true otherwise false.
+        /// </returns>
+        bool IsAuthenticatedUser(string userIdentifier, string password, string tenantCode);
+
+        /// <summary>
+        /// This method's reference will add users credential.
+        /// </summary>
+        /// <param name="userLoginDetails">
+        /// User login object.
+        /// </param>
+        void AddUsersCredential(IList<UserLogin> userLoginDetails, string tenantCode);
+
+        /// <summary>
+        /// This method's reference will helps to get user loagin detail.
+        /// </summary>
+        /// <param name="userIdentifier">
+        /// User identifier.
+        /// </param>
+        /// <param name="tenantCode">
+        /// The tenant code
+        /// </param>
+        /// <returns>
+        /// It will return UserLogin object.
+        /// </returns>
+        UserLogin GetUserAuthenticationDetail(string userIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This is responsible for update no of attaempts of user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        bool UpdateUsersNoOfAttempts(string userIdentifier, string tenantCode);
+
+        /// <summary>
+        ///  This is responsible for update locked status of user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        bool LockUser(long userIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method helps to unlock the users
+        /// </summary>
+        /// <param name="userIdentifier">The customer identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if customer activated successfully false otherwise</returns>
+        bool UnlockUser(long userIdentifier, string tenantCode);
+
+        /// <summary>
         /// This method helps to activate the users
         /// </summary>
         /// <param name="userIdentifier">The customer identifier</param>
@@ -74,8 +138,47 @@ namespace nIS
         /// <returns>Role count</returns>
         int GetUserCount(UserSearchParameter userSearchParameter, string tenantCode);
 
+        /// <summary>
+        /// This method determines uniqueness of elements in repository.
+        /// </summary>
+        /// <param name="roles">The roles to save.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns name="result">
+        /// Returns true if all elements are not present in repository, false otherwise.
+        /// </returns>
+        bool IsDuplicateUserEmailAndMobileNumber(IList<User> users, string operation, string tenantCode);
 
+        /// <summary>
+        /// This is responsible for password history validation
+        /// </summary>
+        /// <param name="userIdentifier"></param>
+        /// <param name="newPassword"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        bool IsPasswordHistoryValidation(string userIdentifier, string newPassword, string tenantCode);
 
+        /// <summary>
+        /// This method's reference will add users credential.
+        /// </summary>
+        /// <param name="userLoginDetails">
+        /// User login object.
+        /// </param>
+        void AddUsersCredentialHistory(IList<UserLogin> userLoginDetails, string tenantCode);
+
+        /// <summary>
+        /// This is responsible for adding user login activity
+        /// </summary>
+        /// <param name="userLoginDetails"></param>
+        /// <param name="tenantCode"></param>
+        bool AddUserLogInActivityHistory(IList<UserLoginActivityHistory> userLoginDetails, string tenantCode);
+
+        /// <summary>
+        /// This method helps to retrieve list of user login activity
+        /// </summary>
+        /// <param name="userIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        IList<UserLoginActivityHistory> GetUserLogInActivityHistory(string userIdentifier, string tenantCode);
 
     }
 }
