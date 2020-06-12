@@ -1184,7 +1184,7 @@ namespace nIS
                             Identifier = roleRecord.Id,
                             Name = roleRecord.Name,
                             Description = roleRecord.Description,
-                            IsActive = roleRecord.IsActive,
+                           
                             RolePrivileges = rolePrivilegeRecords?.Where(item => item.RoleIdentifier == roleRecord.Id)
                             .GroupBy(item => item.EntityName)
                             .Select(item => new RolePrivilege()

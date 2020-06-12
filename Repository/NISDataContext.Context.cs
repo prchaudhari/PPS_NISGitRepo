@@ -20,7 +20,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                          : base(connectionString)
+                         : base(connectionString)
         {
         }
 
@@ -34,7 +34,6 @@ namespace nIS
         public virtual DbSet<UserLoginRecord> UserLoginRecords { get; set; }
         public virtual DbSet<UserLoginActivityHistoryRecord> UserLoginActivityHistoryRecords { get; set; }
         public virtual DbSet<UserRoleMapRecord> UserRoleMapRecords { get; set; }
-        public virtual DbSet<RoleRecord> RoleRecords { get; set; }
         public virtual DbSet<RolePrivilegeRecord> RolePrivilegeRecords { get; set; }
         public virtual DbSet<AssetRecord> AssetRecords { get; set; }
         public virtual DbSet<AssetLibraryRecord> AssetLibraryRecords { get; set; }
@@ -47,5 +46,6 @@ namespace nIS
         public virtual DbSet<StatementPageMapRecord> StatementPageMapRecords { get; set; }
         public virtual DbSet<WidgetRecord> WidgetRecords { get; set; }
         public virtual DbSet<TenantRecord> TenantRecords { get; set; }
+        public virtual DbSet<RoleRecord> RoleRecords { get; set; }
     }
 }

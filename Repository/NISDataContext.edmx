@@ -294,7 +294,6 @@
           <EntitySet Name="UserLoginRecords" EntityType="NISModel.UserLoginRecord" />
           <EntitySet Name="UserLoginActivityHistoryRecords" EntityType="NISModel.UserLoginActivityHistoryRecord" />
           <EntitySet Name="UserRoleMapRecords" EntityType="NISModel.UserRoleMapRecord" />
-          <EntitySet Name="RoleRecords" EntityType="NISModel.RoleRecord" />
           <EntitySet Name="RolePrivilegeRecords" EntityType="NISModel.RolePrivilegeRecord" />
           <EntitySet Name="AssetRecords" EntityType="NISModel.AssetRecord" />
           <EntitySet Name="AssetLibraryRecords" EntityType="NISModel.AssetLibraryRecord" />
@@ -307,6 +306,7 @@
           <EntitySet Name="StatementPageMapRecords" EntityType="NISModel.StatementPageMapRecord" />
           <EntitySet Name="WidgetRecords" EntityType="NISModel.WidgetRecord" />
           <EntitySet Name="TenantRecords" EntityType="NISModel.TenantRecord" />
+          <EntitySet Name="RoleRecords" EntityType="NISModel.RoleRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -363,17 +363,6 @@
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int64" Nullable="false" />
           <Property Name="RoleId" Type="Int64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RoleRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RolePrivilegeRecord">
           <Key>
@@ -568,6 +557,16 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="RoleRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -631,17 +630,6 @@
               <MappingFragment StoreEntitySet="UserRoleMap">
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RoleRecords">
-            <EntityTypeMapping TypeName="NISModel.RoleRecord">
-              <MappingFragment StoreEntitySet="Role">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -847,6 +835,17 @@
                 <ScalarProperty Name="TenantDescription" ColumnName="TenantDescription" />
                 <ScalarProperty Name="TenantName" ColumnName="TenantName" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleRecords">
+            <EntityTypeMapping TypeName="NISModel.RoleRecord">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
