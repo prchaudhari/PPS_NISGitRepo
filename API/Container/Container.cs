@@ -33,7 +33,6 @@ namespace nIS
             unityContainer.RegisterType<IUserRepository, SQLUserRepository>();
             unityContainer.RegisterType<IRoleRepository, SQLRoleRepository>();
 
-          
 
 
 

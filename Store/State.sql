@@ -1,0 +1,8 @@
+﻿CREATE TABLE [NIS].[State]
+(
+	[Id] BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
+    [Name] NVARCHAR(100) NOT NULL,
+    [CountryId]BIGINT NOT NULL,
+	[IsActive] BIT NOT NULL,
+	[IsDeleted] BIT NOT NULL 
+)

@@ -59,6 +59,8 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tenant Manager" />
+    <Folder Include="Seed Data Scripts" />
+    <Folder Include="Configuration Manager" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Asset.sql" />
@@ -73,6 +75,13 @@
     <Build Include="UserLogin.sql" />
     <Build Include="UserLoginActivityHistory.sql" />
     <Build Include="UserRoleMap.sql" />
+    <None Include="Seed Data Scripts\City.sql" />
+    <None Include="Seed Data Scripts\State.sql" />
+    <None Include="Seed Data Scripts\Country.sql" />
+    <Build Include="City.sql" />
+    <Build Include="State.sql" />
+    <Build Include="Country.sql" />
+    <Build Include="Configuration Manager\ConfigurationManager.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />
@@ -84,5 +93,10 @@
     <Build Include="Widget.sql" />
     <Build Include="WidgetType.sql" />
     <Build Include="NISSchema.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Seed Data Scripts\Tenant.sql" />
+    <None Include="Seed Data Scripts\Configuration.sql" />
+    <Build Include="Configuration Manager\ConfigurationManagerSchema.sql" />
   </ItemGroup>
 </Project>

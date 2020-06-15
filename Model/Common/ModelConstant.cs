@@ -14,7 +14,7 @@ namespace nIS
         /// <summary>
         /// The common section key
         /// </summary>
-        public const string COMMON_SECTION = "FMS";
+        public const string COMMON_SECTION = "nIS";
 
         /// <summary>
         /// Invalid Pagin Parameter
