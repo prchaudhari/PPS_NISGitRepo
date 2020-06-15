@@ -24,9 +24,11 @@ namespace nIS
         {
             IUnityContainer unityContainer = new UnityContainer();
             unityContainer.RegisterType<Websym.Core.ConfigurationManager.IConfigurationRepository, Websym.Core.ConfigurationManager.SQLTableConfigurationRepository>();
+            unityContainer.RegisterType<Websym.Core.TenantManager.ITenantRepository, Websym.Core.TenantManager.SQLAzureTenantRepository>();
             unityContainer.RegisterType<Websym.Core.EntityManager.IEntityRepository, Websym.Core.EntityManager.SQLAzureEntityRepository>();
             unityContainer.RegisterType<Websym.Core.EventManager.IEventRepository, Websym.Core.EventManager.SQLAzureEventRepository>();
 
+          
             unityContainer.RegisterType<IUtility, Utility>();
             unityContainer.RegisterType<IValidationEngine, ValidationEngine>();
             unityContainer.RegisterType<ICryptoManager, CryptoManager>();

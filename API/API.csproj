@@ -145,24 +145,43 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Unity.Abstractions, Version=5.11.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.11.7\lib\net46\Unity.Abstractions.dll</HintPath>
+    <Reference Include="Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.3.3.1\lib\net46\Unity.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Container, Version=5.11.8.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.11.7\lib\net46\Unity.Container.dll</HintPath>
+    <Reference Include="Unity.Container, Version=5.8.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.8.11\lib\net46\Unity.Container.dll</HintPath>
     </Reference>
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.ConfigurationManager.Manager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Manager.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.ConfigurationManager.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Repository.dll</HintPath>
     </Reference>
+    <Reference Include="Websym.Core.EntityManager.Manager">
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Manager.dll</HintPath>
+    </Reference>
     <Reference Include="Websym.Core.EntityManager.Repository">
       <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Repository.dll</HintPath>
     </Reference>
+    <Reference Include="Websym.Core.EventManager.Manager">
+      <HintPath>..\References\Event Manager\Websym.Core.EventManager.Manager.dll</HintPath>
+    </Reference>
     <Reference Include="Websym.Core.EventManager.Repository">
       <HintPath>..\References\Event Manager\Websym.Core.EventManager.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.ResourceManager.Model">
+      <HintPath>..\References\Resource Manager\Websym.Core.ResourceManager.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.TenantManager.Manager">
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Manager.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.TenantManager.Repository">
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Repository.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +216,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="libman.json" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

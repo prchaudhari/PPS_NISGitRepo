@@ -54,11 +54,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entity Manager", "Entity Ma
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resource Manager", "Resource Manager", "{33C4BC59-7894-4178-A5F1-357B346C8CF5}"
 	ProjectSection(SolutionItems) = preProject
-		References\Resource Manager\Websym.Core.ResourceManager.Exception.dll = References\Resource Manager\Websym.Core.ResourceManager.Exception.dll
-		References\Resource Manager\Websym.Core.ResourceManager.Manager.dll = References\Resource Manager\Websym.Core.ResourceManager.Manager.dll
 		References\Resource Manager\Websym.Core.ResourceManager.Model.dll = References\Resource Manager\Websym.Core.ResourceManager.Model.dll
-		References\Resource Manager\Websym.Core.ResourceManager.Repository.dll = References\Resource Manager\Websym.Core.ResourceManager.Repository.dll
-		References\Resource Manager\Websym.Core.ResourceManager.Utility.dll = References\Resource Manager\Websym.Core.ResourceManager.Utility.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tenant Manager", "Tenant Manager", "{8F106082-6B72-4D09-8396-0F3C177B304A}"
+	ProjectSection(SolutionItems) = preProject
+		References\Tenant Manager\Websym.Core.TenantManager.Exception.dll = References\Tenant Manager\Websym.Core.TenantManager.Exception.dll
+		References\Tenant Manager\Websym.Core.TenantManager.Manager.dll = References\Tenant Manager\Websym.Core.TenantManager.Manager.dll
+		References\Tenant Manager\Websym.Core.TenantManager.Model.dll = References\Tenant Manager\Websym.Core.TenantManager.Model.dll
+		References\Tenant Manager\Websym.Core.TenantManager.Repository.dll = References\Tenant Manager\Websym.Core.TenantManager.Repository.dll
+		References\Tenant Manager\Websym.Core.TenantManager.Utility.dll = References\Tenant Manager\Websym.Core.TenantManager.Utility.dll
 	EndProjectSection
 EndProject
 Global
@@ -118,6 +123,7 @@ Global
 		{C9003CD2-40C5-45A1-9C3A-BD4EE451CD30} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 		{F4D1AD6D-B95C-4AEC-A8C3-15E390F57BFB} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 		{33C4BC59-7894-4178-A5F1-357B346C8CF5} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
+		{8F106082-6B72-4D09-8396-0F3C177B304A} = {B5B42337-A14B-44FE-BDFE-82C9D1D73980}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE2FF880-80B7-4CAC-ABF3-0464E99CA78C}
