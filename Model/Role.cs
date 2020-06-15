@@ -120,22 +120,6 @@ namespace nIS
                 this.description = value;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the isactive.
-        /// </summary>
-        [Description("Is Active")]
-        public bool IsActive
-        {
-            get
-            {
-                return this.isActive;
-            }
-            set
-            {
-                this.isActive = value;
-            }
-        }
         #endregion
 
         #region Public Methods

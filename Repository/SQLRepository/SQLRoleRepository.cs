@@ -381,15 +381,6 @@ namespace nIS
                 }
             }
 
-            if (searchParameter.IsActive == null)
-            {
-                queryString.Append("(IsActive.Equals(true) or IsActive.Equals(false)) and ");
-            }
-            else
-            {
-                queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.IsActive));
-            }
-
             queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false) ", tenantCode));
 
             return queryString.ToString();
