@@ -27,6 +27,48 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ClientApp\src\app\layout\users\user.ts" />
+    <None Remove="ClientApp\src\app\shared\modules\pagination\pagination.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication-routing.module.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.component.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.module.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.service.spec.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\roles\role.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.spec.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\login\login.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\constants\configConstants.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\constants\constants.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\enums\search-mode.enum.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\enums\sort-order.enum.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\modules\message\messagebox.component.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\modules\pagination\custom-template.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\modules\pagination\pagination-controls.component.spec.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\modules\pagination\pagination-controls.component.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\modules\pagination\pagination-controls.directive.spec.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\modules\pagination\pagination-controls.directive.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\modules\pagination\template.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\models\roleEntity.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\models\rolePrivilege.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\pipes\array-sort-pipe.pipe.spec.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\pipes\array-sort-pipe.pipe.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\pipes\filter.pipe.spec.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\pipes\filter.pipe.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\pipes\shared-pipes.module.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\urlConfiguration\urlconfiguration.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\cellsrenderer.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\local-storage.service.spec.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\local-storage.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\mesage-dialog.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\resource.service.spec.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\shared\services\resource.service.ts" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
