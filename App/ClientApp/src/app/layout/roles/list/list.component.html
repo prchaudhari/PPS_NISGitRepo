@@ -26,21 +26,27 @@
         <!-- Position Column -->
         <ng-container matColumnDef="name">
           <th class="width40 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-          <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+          <td mat-cell *matCellDef="let role">{{role.Name}}</td>
         </ng-container>
 
         <ng-container matColumnDef="description">
           <th class="width48 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-          <td mat-cell *matCellDef="let element">{{element.Description}} </td>
+          <td mat-cell *matCellDef="let role">{{role.Description}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th class="width12 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
-          <td mat-cell *matCellDef="let element">
+          <td mat-cell *matCellDef="let role">
             <div class="action-btns btn-tbl-action">
-              <button type="button" title="View" id="btnView" routerLink="View"><span class="fa fa-file-text-o"></span></button>
-              <button type="button" title="Update" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
-              <button type="button" title="Delete" id="btnDelete"><span class="fa fa-trash-o"></span></button>
+              <button type="button" id="btnViewRole" (click)="navigateToRoleView(role)">
+                    <span class="fa fa-file-text-o"></span>
+                </button>
+                <button type="button" id="btnUpdateRole" (click)="navigateToRoleEdit(role)">
+                    <span class="fa fa-pencil-square-o"></span>
+                </button>
+                <button type="button" id="btnDeleteRole" (click)="deleteRole(role)">
+                    <span class="fa fa-trash-o"></span>
+                </button>
             </div>
           </td>
         </ng-container>
@@ -66,23 +72,23 @@
     <!--[ngClass]="filterClass"-->
     <div class="filter-footer">
       <ul class="nav">
-        <li class="nav-item width33" title="Search">
-          <a class="nav-link p-0">
-            <span class="fa fa-check"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Reset">
-          <a class="nav-link p-0">
-            <span class="fa fa-refresh"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Close" (click)="closeFilter()">
-          <a class="nav-link p-0">
-            <span class="fa fa-close"></span>
-          </a>
-        </li>
+          <li class="nav-item width33" id="liSearchFilter" title="Search">
+              <a class="nav-link p-0" (click)="searchFilter('search')">
+                  <span class="fa fa-check"></span>
+              </a>
+          </li>
+          <li class="nav-item width33" id="liResetFilter" title="Reset">
+              <a class="nav-link p-0" (click)="searchFilter('reset')">
+                  <span class="fa fa-refresh"></span>
+              </a>
+          </li>
+          <li class="nav-item width33" id="liCloseFilter" title="Close" (click)="isFilter=!isFilter">
+              <a class="nav-link p-0">
+                  <span class="fa fa-close"></span>
+              </a>
+          </li>
       </ul>
-    </div>
+  </div>
   </div>
 </div>
 

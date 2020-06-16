@@ -21,13 +21,13 @@
         <div class="row form-group">
           <div class="col-md-4 col-lg-3">
             <label id="lblRoleName" for="inputRoleName">Name</label>
-         <div>Role 01</div>
+         <div>{{RoleName}}</div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-8 col-lg-6">
             <label id="lblDescription">Description</label>
-            <div>Lorem Ipsum has been the industrys standard</div>
+            <div>{{RoleDesc}}</div>
           </div>
         </div>
       </div>
@@ -48,110 +48,19 @@
       </div>
       <div class="card-body rtl-checkbox parent-rtl" id="collapsedPermissions" [ngbCollapse]="isCollapsedPermissions">
         <!--repeat start-->
-        <div class="card mb-2 card-shadow border-0">
+        <div class="card mb-2 card-shadow border-0" *ngFor="let role of rolePrivileges;trackBy: trackByFn">
           <div class="card-header d-flex justify-content-between">
             <div>
-              <label class="m-0">Dashboard</label>
+              <label class="m-0">{{role.EntityName}}</label>
             </div>
           </div>
           <div class="card-body pt-2 pb-1 chk-container">
             <div class="row">
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
+              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group" *ngFor="let operation of role.Operation;trackBy: trackByFn">
                 <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked />
-                  <label class="custom-control-label">Create </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked />
-                  <label class="custom-control-label">Edit </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" />
-                  <label class="custom-control-label">Delete </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked/>
-                  <label class="custom-control-label">View </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--repeat end-->
-        <!--repeat start-->
-        <div class="card mb-2 card-shadow border-0">
-          <div class="card-header d-flex justify-content-between">
-            <div>
-              <label class="m-0">Users</label>
-            </div>
-          </div>
-          <div class="card-body pt-2 pb-1 chk-container">
-            <div class="row">
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked />
-                  <label class="custom-control-label">Create </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked />
-                  <label class="custom-control-label">Edit </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" />
-                  <label class="custom-control-label">Delete </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked />
-                  <label class="custom-control-label">View </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--repeat end-->
-        <!--repeat start-->
-        <div class="card mb-2 card-shadow border-0">
-          <div class="card-header d-flex justify-content-between">
-            <div>
-              <label class="m-0">Pages</label>
-            </div>
-          </div>
-          <div class="card-body pt-2 pb-1 chk-container">
-            <div class="row">
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked />
-                  <label class="custom-control-label">Create </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked />
-                  <label class="custom-control-label">Edit </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" />
-                  <label class="custom-control-label">Delete </label>
-                </div>
-              </div>
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" checked />
-                  <label class="custom-control-label">View </label>
+                  <input class="custom-control-input" type="checkbox" name="roleprivilege"
+                            id="{{operation.Name}}Roleprivilege{{trackByFn}}" [checked]="operation.IsEnabled" disabled />
+                    <label class="custom-control-label">{{operation.Name}}</label>
                 </div>
               </div>
             </div>
@@ -164,7 +73,7 @@
       <div class="card-body p-0">
         <button class="btn-footer-fill mr-2" id="btnSave">Update</button>
         <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete">Delete</button>
-        <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+        <button class="btn-footer-outline" id="btnCancel" (click)="navigateToRoleList()">Cancel</button>
       </div>
     </div>
 </div>

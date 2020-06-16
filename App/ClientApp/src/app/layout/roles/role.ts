@@ -6,6 +6,7 @@ export interface Role {
     "Description":string;
     "Status":string;
     "Privileges":[];
+    "RolePrivileges": [];
     "RolePrivilegesIdentifiers":[]
 }
 

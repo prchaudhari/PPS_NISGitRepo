@@ -35,7 +35,7 @@ export class HttpIntercepter implements HttpInterceptor {
         if (excludedURLs.some(item => request.url.indexOf(item) == -1)) {
             request = request.clone({
               setHeaders: {
-                //Authorization: 'Bearer ' + localStorage.getItem('Token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
                 'Content-Type': 'application/json',
                 'TenantCode': tenantCode
               }
@@ -44,7 +44,7 @@ export class HttpIntercepter implements HttpInterceptor {
           else {
             request = request.clone({
               setHeaders: {
-                Authorization: 'Bearer ' + localStorage.getItem('Token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
                 'enctype': 'multipart/form-data',
                 'TenantCode': tenantCode
               }
