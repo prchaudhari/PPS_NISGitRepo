@@ -8,14 +8,12 @@ import { AddComponent } from './add/add.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { SharedModule } from '../../shared/modules/shared.module';
 
 @NgModule({
   declarations: [ListComponent, ViewComponent, AddComponent],
   imports: [
     CommonModule,
-    SharedModule,
-    UsersRoutingModule, MatPaginatorModule, MatSortModule, MatTableModule
+      UsersRoutingModule, MatPaginatorModule, MatSortModule, MatTableModule
   ]
 })
 export class UsersModule { }
