@@ -199,7 +199,8 @@ namespace nIS
                 { "UserPrimaryEmailAddress" , stringData[2]},
                 { "TenantCode", stringData[3] },
                 { "SerializedUserClaims", stringData[4] },
-                { "RoleName", stringData[5] }
+                { "RoleName", stringData[5] },
+                { "RoleIdentifier", stringData[6] }
             };
             return new AuthenticationProperties(data);
         }
