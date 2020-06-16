@@ -1,7 +1,7 @@
 export class URLConfiguration {
 
   //Role Url Method
-  public static get roleGetUrl(): string { return "Role/Get" };
+  public static get roleGetUrl(): string { return "Role/List" };
   public static get roleAddUrl(): string { return "Role/Add" };
   public static get roleUpdateUrl(): string { return "Role/Update" };
   public static get roleDeleteUrl(): string { return "Role/Delete" };

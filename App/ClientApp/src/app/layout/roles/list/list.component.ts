@@ -1,22 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { HttpClient, HttpResponse, HttpHeaders, HttpEvent } from '@angular/common/http';
+import { LoginService } from '../../../login/login.service';
+import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { Constants } from 'src/app/shared/constants/constants';
 
 export interface ListElement {
     name: string;
     description: string;
 }
-
-const List_Data: ListElement[] = [
-    { name: 'Role 01', description: 'Lorem Ipsum has been the industrys standard'},
-    { name: 'Role 02', description: '-'},
-    { name: 'Role 03', description: 'Lorem Ipsum has been the industry'},
-    { name: 'Role 04', description: '-'},
-    { name: 'Role 05', description: 'dummy text ever since the 1500s'},
-    { name: 'Role 06', description: 'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s'},
-    { name: 'Role 07', description: 'dummy text ever since the 1500s'}
-];
 
 @Component({
   selector: 'app-list',
@@ -29,6 +25,8 @@ export class ListComponent implements OnInit {
     public pageSize = 5;
     public currentPage = 0;
     public totalSize = 0;
+    public roleList: any = [];
+
     closeFilter() {
         this.isFilter = !this.isFilter;
     }
@@ -38,9 +36,36 @@ export class ListComponent implements OnInit {
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+    constructor(
+        private loginService: LoginService,
+        private http: HttpClient,
+        private localstorageservice: LocalStorageService,
+        private spinner: NgxUiLoaderService,
+        private injector: Injector,
+        private _messageDialogService: MessageDialogService,
+      ) {
+        this.getRoles();
+      }
 
     ngOnInit() {
-        this.dataSource = new MatTableDataSource(List_Data);
+
+    }
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+    }
+
+    async getRoles() {
+        let searchParameter: any = {};
+        searchParameter.PagingParameter = {};
+        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.SortParameter = {};
+        searchParameter.SortParameter.SortColumn = Constants.Name;
+        searchParameter.SortParameter.SortOrder = Constants.Ascending;
+        searchParameter.SearchMode = Constants.Contains;
+        //searchParameter.GetPrivileges = true;
+        this.roleList =await this.loginService.getRoles(searchParameter);
+        this.dataSource = new MatTableDataSource(this.roleList);
         this.dataSource.sort = this.sort;
 
         //to hide tooltip
@@ -49,12 +74,7 @@ export class ListComponent implements OnInit {
         paginatorIntl.previousPageLabel = '';
         paginatorIntl.firstPageLabel = '';
         paginatorIntl.lastPageLabel = '';
+      }
 
-    }
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-
-    }
-    constructor() { }
  
 }
