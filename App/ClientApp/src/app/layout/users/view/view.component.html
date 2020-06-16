@@ -18,27 +18,27 @@
           <div class="row">
             <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
               <label>First Name</label>
-              <div>John</div>
+              <div>{{userRecord.FirstName}}</div>
             </div>
             <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
               <label>Last Name</label>
-              <div>Doe</div>
+              <div>{{userRecord.LastName}}</div>
             </div>
           </div>
           <div class="row">
             <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
               <label>Email Id</label>
-              <div>john@qbcd.com</div>
+              <div>{{userRecord.EmailAddress}}</div>
             </div>
             <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
               <label>Mobile No.</label>
-              <div>+91 76443656099</div>
+              <div>{{userRecord.ContactNumber}}</div>
             </div>
           </div>
           <div class="row">
             <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
               <label>Role</label>
-              <div>Admin</div>
+              <div>{{userRecord.Roles[0].Name}}</div>
             </div>
           </div>
 
@@ -50,7 +50,7 @@
     <div class="card-body p-0">
       <button class="btn-footer-fill mr-2" id="btnSave">Update</button>
       <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete">Delete</button>
-      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+      <button class="btn-footer-outline" id="btnCancel" (click)="backClicked()">Cancel</button>
     </div>
   </div>
 </div>
