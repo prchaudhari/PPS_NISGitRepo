@@ -101,14 +101,15 @@ namespace nIS
 
             //Add is asset connected value in claim
 
-            string[] propertyData = new string[6]
+            string[] propertyData = new string[7]
             {
                 user.Identifier.ToString(),
                 user.FirstName + " " + user.LastName,
                 user.EmailAddress,
                 user.TenantCode,
                 (userCliams?.Count>0?JsonConvert.SerializeObject(userCliams):string.Empty),
-                (user.Roles.Count() > 0 ? user.Roles[0].Name : "")
+                (user.Roles.Count() > 0 ? user.Roles[0].Name : ""),
+                (user.Roles.Count() > 0 ? user.Roles[0].Identifier.ToString() : "")
             };
 
             AuthenticationTicket ticket = new AuthenticationTicket(claimIdentity, CreateProperties(propertyData));

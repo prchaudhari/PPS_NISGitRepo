@@ -41,7 +41,6 @@ export class LoginService {
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    "IPAddress": '185.93.3.123'
                 },
                 observe: 'response'
             }

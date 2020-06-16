@@ -10,7 +10,7 @@
         </div>
       </div>
       <!--login form-->
-      <div id="login-frm" *ngIf="isLogin">
+      <div id="login-frm" [formGroup]="loginForm" *ngIf="isLoginFlag">
         <div class="row mb-4">
           <div class="col-sm-12 text-center">
             <h4 style="font-weight:normal"> Welcome </h4>
@@ -21,7 +21,7 @@
           <div class="col-sm-12 mt-4">
             <div class="login-control">
               <span class="fa fa-user"></span>
-              <input type="text" class="txtLogin" placeholder="User name" autocomplete="off">
+              <input type="text" class="txtLogin" placeholder="User name" autocomplete="off" formControlName="userName">
             </div>
           </div>
         </div>
@@ -29,7 +29,7 @@
           <div class="col-sm-12">
             <div class="login-control">
               <span class="fa fa-lock"></span>
-              <input type="password" class="txtLogin" placeholder="Password" autocomplete="off">
+              <input type="password" class="txtLogin" placeholder="Password" autocomplete="off" formControlName="password">
             </div>
           </div>
         </div>

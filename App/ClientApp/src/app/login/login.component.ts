@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   public UserIdentifier;
   public errorMsg: boolean;
   public Locale;
-  public isLoginFlag: boolean;
+  public isLoginFlag: boolean = true;
   public isForgotPassword: boolean = false;
   public roleList: any = [];
   public loginResources = {};
@@ -66,7 +66,8 @@ export class LoginComponent implements OnInit {
     private injector: Injector,
     private _messageDialogService: MessageDialogService,
   ) {
-    this.getResources();
+    //this.getResources();
+
   }
 
   ngOnInit() {
@@ -107,7 +108,7 @@ export class LoginComponent implements OnInit {
     if (this.loginFormValidaton()) {
       let loginObj: any = {
         grant_type: 'password',
-        client_id: 'c7d0f3f8-37bf-40bf-8ca9-9fb4b577f6b8',
+        client_id: '00000000-0000-0000-0000-000000000000',
         username: this.loginForm.value.userName,
         password: this.loginForm.value.password
       }
@@ -129,27 +130,27 @@ export class LoginComponent implements OnInit {
         let access_token = data.access_token;
         let token_type = data.token_type;
         let userData: any = {};
-        this.UserIdentifier = userData.UserIdentifier;
+        this.UserIdentifier = data.UserIdentifier;
         userData.UserIdentifier = data.UserIdentifier;
         userData.UserName = data.UserName;
         userData.UserPrimaryEmailAddress = data.UserPrimaryEmailAddress;
         userData.TenantCode = data.TenantCode;
-        userData.UserCode = data.UserCode;
+        //userData.UserCode = data.UserCode;
         userData.RoleIdentifier = data.RoleIdentifier;
-        userData.PreferedLanguageCode = data.PreferedLanguageCode;
-        userData.UserTheme = data.UserTheme;
+        //userData.PreferedLanguageCode = data.PreferedLanguageCode;
+        //userData.UserTheme = data.UserTheme;
         userData.Privileges = [];
         localStorage.setItem('token', access_token);
         this.localstorageservice.SetCurrentUser(data);
         let userName = userData.UserName;
         localStorage.setItem("currentUserName", userName);
         localStorage.setItem("currentUserTheme", userData.UserTheme);
-        userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);
+        //userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);
         localStorage.setItem('userClaims', JSON.stringify(userData));
         //conditional code for theme
-        this.handleTheme(userData.UserTheme);
+        //this.handleTheme(userData.UserTheme);
         //this.navigateToLandingPage();
-        this.route.navigate(['roles']);
+        this.route.navigate(['layout/dashboard']);
       }
     }, (error: HttpResponse<any>) => {
       this.spinner.stop();
