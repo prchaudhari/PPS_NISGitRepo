@@ -69,7 +69,14 @@ export class LoginComponent implements OnInit {
     //this.getResources();
 
   }
-
+  isForgotPassswordForm() {
+    this.isForgotPassword = true;
+    this.isLoginFlag = false;
+  }
+  isLoginForm() {
+    this.isForgotPassword = false;
+    this.isLoginFlag = true;
+  }
   ngOnInit() {
     this.loginForm = this.fb.group({
       userName: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
