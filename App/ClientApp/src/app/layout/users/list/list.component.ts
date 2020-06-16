@@ -1,4 +1,5 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
+
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,7 +17,7 @@ import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.serv
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { ResourceService } from 'src/app/shared/services/resource.service';
 import { User } from '../user';
-
+import { LoginService } from '../../../login/login.service';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -27,6 +28,7 @@ export class ListComponent implements OnInit {
   public isFilter: boolean = false;
   public userList;
   public userLists = [];
+  public roleList = [];
   public dataAdapter: any = [];
   public columns = [];
   public actionCellsrenderer: any;
@@ -46,7 +48,6 @@ export class ListComponent implements OnInit {
   public Locale;
   public sectionStr;
   public userClaimsRolePrivilegeOperations;
-  public roleList;
   public roleListsArr: any = [];
   public roleListSource: any[] = []
   public lockSlider: boolean = false;
@@ -149,7 +150,8 @@ export class ListComponent implements OnInit {
     private fb: FormBuilder,
     private spinner: NgxUiLoaderService,
     private _messageDialogService: MessageDialogService,
-    private injector: Injector
+    private injector: Injector,
+    private loginService: LoginService,
   ) {
     //remove localstorage item.
     router.events.subscribe(e => {
@@ -180,6 +182,10 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     // this.getUserdetail();
+    this.getRoles();
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    this.loggedInUserIdentifier = userClaimsDetail.UserIdentifier;
     this.fetchUserRecord();
   }
 
@@ -315,7 +321,19 @@ export class ListComponent implements OnInit {
     searchParameter.ActivationStatus = this.UserFilter.ActivationStatus;
     this.getUserdetail(searchParameter);
   }
-
+  async getRoles() {
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = Constants.Name;
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    //searchParameter.GetPrivileges = true;
+    this.roleList = await this.loginService.getRoles(searchParameter);
+    
+  }
   //Function to navigate to view page of perticular user detail--
   viewUser(user) {
     let queryParams = {
@@ -405,7 +423,7 @@ export class ListComponent implements OnInit {
 
   //this method helps to navigate to add
   navigateToAddUser() {
-    this.router.navigate(['user', 'userAdd']);
+    this.router.navigate(['user', 'Add']);
   }
 
   //User filter function--
@@ -421,10 +439,8 @@ export class ListComponent implements OnInit {
         MobileNumber: null,
         OrganisationUnitIdentifier: null,
         RoleIdentifier: null,
-        DesignationIdentifier: null,
-        PreferedLanguageIdentifier: null,
-        LockStatus: 3,
-        ActivationStatus: 3,
+        LockStatus: 0,
+        ActivationStatus: 0,
       };
      
       this.isFilter = !this.isFilter;
@@ -444,26 +460,8 @@ export class ListComponent implements OnInit {
       if (this.UserFilter.FirstName != null) {
         searchParameter.FirstName = this.UserFilter.FirstName;
       }
-      if (this.UserFilter.LastName != null) {
-        searchParameter.LastName = this.UserFilter.LastName;
-      }
-      if (this.UserFilter.Code != null) {
-        searchParameter.Code = this.UserFilter.Code;
-      }
       if (this.UserFilter.EmailAddress != null) {
         searchParameter.EmailAddress = this.UserFilter.EmailAddress;
-      }
-      if (this.UserFilter.MobileNumber != null) {
-        searchParameter.MobileNumber = this.UserFilter.MobileNumber;
-      }
-      if (this.UserFilter.OrganisationUnitIdentifier != null) {
-        searchParameter.OrganisationUnitIdentifier = this.UserFilter.OrganisationUnitIdentifier;
-      }
-      if (this.UserFilter.DesignationIdentifier != null) {
-        searchParameter.DesignationIdentifier = this.UserFilter.DesignationIdentifier;
-      }
-      if (this.UserFilter.PreferedLanguageIdentifier != null) {
-        searchParameter.PreferedLanguageIdentifier = this.UserFilter.PreferedLanguageIdentifier;
       }
       if (this.UserFilter.RoleIdentifier != null) {
         searchParameter.RoleIdentifier = this.UserFilter.RoleIdentifier;

@@ -55,12 +55,12 @@
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputRole">Role</label>
-               <select class="form-control">
-                 <option>Admin</option>
-                 <option>Producer</option>
-                 <option>Creator</option>
-                 <option>Publisher</option>
-               </select>
+                <select [(ngModel)]="User.RoleIdentifier" class="form-control">
+                  <option *ngIf="User.RoleIdentifier==0"> Select</option>
+                  <option *ngFor="let role of roleList; let i = index" [value]="roleList[i].Identifier">
+                    {{roleList[i].Name}}
+                  </option>
+                </select>
               </div>
             </div>
 

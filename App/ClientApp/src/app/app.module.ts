@@ -20,7 +20,6 @@ import { HttpIntercepter } from './core/interceptors/http-intercepter';
 import { AuthGuard, UnAuthorisedUrlGuard } from './core/guard';
 import { AuthenticationModule } from './authentication/authentication.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +37,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
     BootstrapModalModule.forRoot({ container: document.body }),
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
-    SharedModule,
     AuthenticationModule
   ],
   providers: [

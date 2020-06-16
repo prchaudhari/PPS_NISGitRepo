@@ -5,10 +5,12 @@
       <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
     </div>
     <div>
-      <button class="btn-add btn-cust" id="btnAddUsers" routerLink="Add">
+      <button class="btn-add btn-cust" id="btnAddUsers" routerLink="Add" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Create' }))">
         <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> User
       </button>
-
+      <!--<button class="btn-add btn-cust" id="btnAddUsers" routerLink="Add">
+        <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> User
+      </button>-->
     </div>
   </div>
   <!--desktop view start-->
@@ -44,15 +46,16 @@
               <td class="width15 ip-w-5">{{user.Role.IsLock}}</td>
               <td class="width15 ip-w-35">
                 <!--<div class="action-btns btn-tbl-action">
-                  <button type="button" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'View' }))" (click)="viewUser(user)" title="View" id="btnView"><span class="fa fa-file-text-o"></span></button>
-                  <button type="button" *ngIf="(user.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" (click)="editUser(user)" title="Update" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
-                  <button type="button" *ngIf="(user.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Delete' }))" (click)="deleteUser(user)" title="Delete" id="btnDelete"><span class="fa fa-trash-o"></span></button>
-                  <button type="button" (click)="unLockUser(user)" title="Unlock" id="btnUnlock" *ngIf="user.IsLocked && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Unlock' }))"><span class="fa fa-unlock-alt"></span></button>
-                </div>-->
+            <button type="button" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'View' }))" (click)="viewUser(user)" title="View" id="btnView"><span class="fa fa-file-text-o"></span></button>
+            <button type="button" *ngIf="(user.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" (click)="editUser(user)" title="Update" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
+            <button type="button" *ngIf="(user.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Delete' }))" (click)="deleteUser(user)" title="Delete" id="btnDelete"><span class="fa fa-trash-o"></span></button>
+            <button type="button" (click)="unLockUser(user)" title="Unlock" id="btnUnlock" *ngIf="user.IsLocked && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Unlock' }))"><span class="fa fa-unlock-alt"></span></button>
+          </div>-->
               </td>
             </tr>
           </tbody>
         </table>
+
       </div>
     </div>
   </div>
@@ -96,25 +99,26 @@
     <div class="filter-body-left d-flex flex-column stylescrollbar">
       <div class="form-group">
         <label>Name</label>
-        <input type="text" class="form-control">
+        <input [(ngModel)]="UserFilter.FirstName" type="text" class="form-control">
       </div>
       <div class="form-group">
         <label>Email Id</label>
-        <input type="text" class="form-control">
+        <input [(ngModel)]="UserFilter.EmailAddress" type="text" class="form-control">
       </div>
       <div class="form-group">
         <label>Role</label>
-        <select class="form-control">
+        <select [(ngModel)]="UserFilter.RoleIdentifier" class="form-control">
           <option> Select</option>
-          <option> Admin</option>
-          <option> Producer</option>
+          <option *ngFor="let role of roleList; let i = index" [value]="roleList[i].Identifier">
+            {{roleList[i].Name}}
+          </option>
         </select>
       </div>
       <div class="form-group">
         <label>Lock Status</label>
         <div>
           <label class="switch d-block">
-            <input type="checkbox">
+            <input type="checkbox" [(ngModel)]="UserFilter.LockStatus">
             <span class="slider round"></span>
           </label>
         </div>
@@ -124,7 +128,7 @@
         <label>Activation Status</label>
         <div>
           <label class="switch d-block">
-            <input type="checkbox">
+            <input type="checkbox" [(ngModel)]="UserFilter.ActivationStatus">
             <span class="slider round"></span>
           </label>
         </div>
@@ -133,12 +137,12 @@
     <!--[ngClass]="filterClass"-->
     <div class="filter-footer">
       <ul class="nav">
-        <li class="nav-item width33" title="Search">
+        <li class="nav-item width33" title="Search"  (click)="filterSetUp('Search')">
           <a class="nav-link p-0">
             <span class="fa fa-check"></span>
           </a>
         </li>
-        <li class="nav-item width33" title="Reset">
+        <li class="nav-item width33" title="Reset"  (click)="filterSetUp('Reset')">
           <a class="nav-link p-0">
             <span class="fa fa-refresh"></span>
           </a>
