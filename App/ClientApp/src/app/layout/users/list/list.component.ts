@@ -423,7 +423,7 @@ export class ListComponent implements OnInit {
 
   //this method helps to navigate to add
   navigateToAddUser() {
-    this.router.navigate(['user', 'Add']);
+    this.router.navigate(['user', 'userAdd']);
   }
 
   //User filter function--

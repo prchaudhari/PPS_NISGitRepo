@@ -152,7 +152,7 @@ export class LoginComponent implements OnInit {
         let userName = userData.UserName;
         localStorage.setItem("currentUserName", userName);
         localStorage.setItem("currentUserTheme", userData.UserTheme);
-        //userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);
+        userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);
         localStorage.setItem('userClaims', JSON.stringify(userData));
         //conditional code for theme
         //this.handleTheme(userData.UserTheme);
@@ -179,15 +179,18 @@ export class LoginComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = Constants.Name;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
-    searchParameter.GetPrivileges = true;
+    searchParameter.IsRequiredRolePrivileges = true;
     searchParameter.Identifiers = roleIdentifier;
     this.roleList = await this.loginService.getRoles(searchParameter);
     if (this.roleList.length > 0) {
       this.roleList.forEach(role => {
-        role.Privileges.forEach(privilege => {
-          if (!this.rolePrivilegeExists(privilege.EntityName, privilege.Operation)) {
-            this.commonRolePrivileges.push(privilege);
-          }
+        role.RolePrivileges.forEach(privilege => {
+          privilege.RolePrivilegeOperations.forEach(operation => {
+            if (!this.rolePrivilegeExists(privilege.EntityName, operation.Operation)) {
+              var obj = { EntityName: privilege.EntityName, Operation: operation.Operation }
+              this.commonRolePrivileges.push(obj);
+            }
+          });
         });
       });
     }

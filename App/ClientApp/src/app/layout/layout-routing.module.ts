@@ -15,7 +15,7 @@ const routes: Routes = [
         component: LayoutComponent,
         children: [
             { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule) },
-            { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule) },
+            { path: 'user', loadChildren: () => import('./users/users.module').then(m => m.UsersModule) },
             { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
             { path: 'pages', loadChildren: () => import('./template/template.module').then(m => m.TemplateModule) },
             { path: 'schedulemanagement', loadChildren: () => import('./schedule-management/schedule-management.module').then(m => m.ScheduleManagementModule) },

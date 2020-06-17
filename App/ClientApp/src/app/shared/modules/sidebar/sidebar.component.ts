@@ -36,7 +36,7 @@ export class SidebarComponent implements OnInit {
         this.route.navigate(['/layout/roles']);
     }
     navigateToUser() {
-        this.route.navigate(['/layout/users']);
+        this.route.navigate(['/layout/user']);
     }
     navigateToWidgets() {
         this.route.navigate(['/layout/widgets']);
