@@ -112,7 +112,7 @@ export class ViewComponent implements OnInit {
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
     searchParameter.SortParameter = {};
-    searchParameter.SortParameter.SortColumn = Constants.UserCode;
+    searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     this.spinner.start();
@@ -121,16 +121,11 @@ export class ViewComponent implements OnInit {
       this.userRecord = this.userViewArray[0];
       this.profileImageList = this.userViewArray[0].ProfileImage;
       if (this.profileImageList.URL == "" || this.profileImageList.URL == undefined) {
-        this.userImage = "assets/images/user.jpg"
+        this.userImage = "assets/images/user.png"
       }
       else {
         this.userImage = this.profileImageList.URL;
       }
-      this.roleList = this.userViewArray[0].Roles;
-      this.roleList.forEach(element => {
-        this.roleName = element.Name;
-        this.roleDescription = element.Description;
-      })
     }
   }
 
@@ -166,7 +161,7 @@ export class ViewComponent implements OnInit {
 
   //function written to delete user--
   deleteUser() {
-    let message = this.userViewResources['msgConfirmation'] == undefined ? this.ResourceLoadingFailedMsg : this.userViewResources['msgConfirmation']
+    let message = "Are you sure you want to delete this user?"
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
         let isDeleted = await this.service.deleteUser(this.UserIdentifier);

@@ -228,23 +228,23 @@ export class ListComponent implements OnInit {
     //     this.isRecordFound = true;
     // }
     if (this.userLists.length == 0 && this.isFilterDone == true) {
-      let message = this.userListResources['msgRecordNotFoundError'] == undefined ? this.ResourceLoadingFailedMsg : this.userListResources['msgRecordNotFoundError']
-      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
-        if (data == true) {
-          this.UserFilter.FirstName = null;
-          this.UserFilter.LastName = null;
-          this.UserFilter.Code = null;
-          this.UserFilter.EmailAddress = null;
-          this.UserFilter.OrganisationUnitIdentifier = null;
-          this.UserFilter.MobileNumber = null;
-          this.UserFilter.DesignationIdentifier = null;
-          this.UserFilter.RoleIdentifier = null;
-          this.UserFilter.PreferedLanguageIdentifier = null;
-          this.UserFilter.LockStatus = null;
-          this.UserFilter.ActivationStatus = null;
-          this.fetchUserRecord();
-        }
-      });
+      let message = "User not found"
+      //this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+      //  if (data == true) {
+      //    this.UserFilter.FirstName = null;
+      //    this.UserFilter.LastName = null;
+      //    this.UserFilter.Code = null;
+      //    this.UserFilter.EmailAddress = null;
+      //    this.UserFilter.OrganisationUnitIdentifier = null;
+      //    this.UserFilter.MobileNumber = null;
+      //    this.UserFilter.DesignationIdentifier = null;
+      //    this.UserFilter.RoleIdentifier = null;
+      //    this.UserFilter.PreferedLanguageIdentifier = null;
+      //    this.UserFilter.LockStatus = null;
+      //    this.UserFilter.ActivationStatus = null;
+      //    this.fetchUserRecord();
+      //  }
+      //});
     }
     this.dataSource = new MatTableDataSource<Element>(this.userLists);
     this.dataSource.paginator = this.paginator;

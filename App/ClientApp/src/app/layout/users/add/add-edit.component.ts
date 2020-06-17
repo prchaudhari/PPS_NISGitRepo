@@ -34,12 +34,16 @@ export class UserAddEditComponent implements OnInit {
   public userRoleLists = [];
   public source: string[] = [];
   public countrycodeList = [];
-  public countrycodeLists = [];
+  public countrycodeLists = [
+    {"CountryNameCode": "India +91", "DialingCode": "+91"},
+    {"CountryNameCode": "USA +1", "DialingCode": "+1"},
+    { "CountryNameCode": "UAE +971", "DialingCode": "+971"}
+];
   public countrycodesource = [];
   public selectedAll: any;
   public allRoles;
   public userId;
-  public User = {RoleIdentifier:0}
+  public User = {RoleIdentifier:0,Image:'', CountryCode:''}
   public addUser: boolean = true;
   public editUser: boolean;
   public roleName;
@@ -225,6 +229,11 @@ export class UserAddEditComponent implements OnInit {
     searchParameter.SearchMode = Constants.Contains;
     //searchParameter.GetPrivileges = true;
     this.roleList = await this.loginService.getRoles(searchParameter);
+    if (this.userEditModeOn) {
+       
+        this.fillUserDetail();
+      
+    }
   }
 
 
@@ -305,10 +314,6 @@ export class UserAddEditComponent implements OnInit {
       this.userFormErrorObject.showUserLastNameError = true;
       return false;
     }
-    if (this.userFormGroup.controls.code.invalid) {
-      this.userFormErrorObject.showUserCodeError = true;
-      return false;
-    }
     if (this.userFormGroup.controls.email.invalid) {
       this.userFormErrorObject.showUserEmailError = true;
       return false;
@@ -326,6 +331,16 @@ export class UserAddEditComponent implements OnInit {
     return true;
   }
 
+  public onRoleSelected(event) {
+    const value = event.target.value;
+    this.User.RoleIdentifier = Number(value);
+    console.log(value);
+  }
+  public onCountrySelected(event) {
+    const value = event.target.value;
+    this.User.CountryCode = value
+    console.log(value);
+  }
   //Function to add user--
   onSubmit() {
     if (this.userFormValidaton()) {
@@ -333,8 +348,8 @@ export class UserAddEditComponent implements OnInit {
       
 
       let selectedroleArray = [];
-      this.roleLists.forEach(role => {
-        if (role.IsEnabled == true) {
+      this.roleList.forEach(role => {
+        if (role.Identifier==this.User.RoleIdentifier) {
           selectedroleArray.push({
             "Identifier": role.Identifier,
             "Name": role.Name,
@@ -347,13 +362,12 @@ export class UserAddEditComponent implements OnInit {
         "FirstName": this.userFormGroup.value.firstName,
         "LastName": this.userFormGroup.value.lastName,
         "EmailAddress": this.userFormGroup.value.email,
-        "MobileNumber": selectedCountryCode + '-' + this.userFormGroup.value.mobileNumber,
+        "ContactNumber": this.User.CountryCode+"-"+this.userFormGroup.value.mobileNumber,
         "Roles": selectedroleArray,
-        "PreferredLanguage": selectedLang,
+        "Image":this.User.Image,
       }
       if (this.userEditModeOn) {
         userObject.Identifier = this.params.Routeparams.passingparams.UserIdentifier;
-        userObject.ResourceIdentifier = this.resourceId;
         userObject.IsActive = false;
         userObject.IsLocked = false;
       }
@@ -369,27 +383,12 @@ export class UserAddEditComponent implements OnInit {
   //Api called here to save record
   saveRecord(userObject) {
     var formData = new FormData()
-    var UserArr: any = [];
-    var userObj: any = {};
-    userObj.UserData = userObject;
-    userObj.Resources = [];
-    UserArr.push(userObj);
-    for (var j = 0; j < this.fileArray.length; j++) {
-      var resourceObj: any = {};
-      resourceObj.Identifier = j;
-      resourceObj.File = this.fileArray[j];
-      UserArr[0].Resources.push(resourceObj);
-    }
-    for (var i = 0; i < UserArr.length; i++) {
-      formData.append('Users[' + i + '][UserData]', JSON.stringify(UserArr[i].UserData));
-      for (var j = 0; j < UserArr[i].Resources.length; j++) {
-        formData.append('Users[' + i + '][Resources][' + j + '][Identifier]', UserArr[i].Resources[j].Identifier);
-        formData.append('Users[' + i + '][Resources][' + j + '][File]', UserArr[i].Resources[j].File);
-      }
-    }
+    var UserArr= [];
+    UserArr.push(userObject);
+   
     //debugger
     this.spinner.start();
-    this.service.saveUser(formData, this.userEditModeOn).subscribe(data => {
+    this.service.saveUser(UserArr, this.userEditModeOn).subscribe(data => {
       this.spinner.stop();
       if (data == true) {
         let message = Constants.recordAddedMessage;
@@ -415,15 +414,13 @@ export class UserAddEditComponent implements OnInit {
     this.UserIdentifier = this.params.Routeparams.passingparams.UserIdentifier
     let userService = this.injector.get(UserService);
     let searchParameter: any = {};
-    searchParameter.GetResources = true;
-    searchParameter.GetRoles = true;
-    searchParameter.GetOrganisationUnits = true;
-    searchParameter.Identifiers = this.UserIdentifier;
+    searchParameter.IsRolePrivilegesRequired = true;
+    searchParameter.Identifier = this.UserIdentifier;
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
     searchParameter.SortParameter = {};
-    searchParameter.SortParameter.SortColumn = Constants.UserCode;
+    searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     this.spinner.stop();
@@ -441,7 +438,7 @@ export class UserAddEditComponent implements OnInit {
       }
       this.userRoleLists = userObject.Roles;
       let mobileNo, countryDiallingCode;
-      let mobileNoArr = userObject.MobileNumber.split('-');
+      let mobileNoArr = userObject.ContactNumber.split('-');
       if (mobileNoArr.length > 1) {
         countryDiallingCode = mobileNoArr[0];
         mobileNo = mobileNoArr[1];
@@ -452,17 +449,11 @@ export class UserAddEditComponent implements OnInit {
       this.userFormGroup.patchValue({
         firstName: userObject.FirstName,
         lastName: userObject.LastName,
-        code: userObject.Code,
         email: userObject.EmailAddress,
         mobileNumber: mobileNo,
       })
-      var selectedCountryIdentifier;
-      this.countrycodeLists.forEach(country => {
-        if (country.DialingCode == countryDiallingCode) {
-          selectedCountryIdentifier = country.Identifier;
-        }
-      })
-      if (selectedCountryIdentifier)
+      this.User.RoleIdentifier = this.userRoleLists[0].Identifier;
+      this.User.CountryCode = mobileNoArr[0];
       this.activeSlider = userObject.IsActive;
       this.lockSlider = userObject.IsLocked;
       this.allowAccessSlider = userObject.AllowAccessOnOperatorConsole;

@@ -1,8 +1,9 @@
 <div class="main-container">
   <div class="page-title">
-    <span class="xs-title"> Add User  </span>
+    <span class="xs-title" *ngIf="userEditModeOn == false"> Add User  </span>
+    <span class="xs-title" *ngIf="userEditModeOn == true"> Update User  </span>
   </div>
-
+  <form [formGroup]="userFormGroup" name="userForm" autocomplete="on" novalidate>
     <div class="card border-0 mb-2 card-shadow">
       <div class="card-body" id="collapseDetails">
         <div class="row">
@@ -13,7 +14,7 @@
               </div>
               <div>
                 <label for="upload-photo" class="m-0 font-weight-normal"> Upload Avatar</label>
-                <input type="file" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
+                <input [(ngModel)]="User.Image"  type="file" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
               </div>
             </div>
             <div style="clear:both"></div>
@@ -22,32 +23,79 @@
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputFirstName">First Name</label><span class="text-danger ml-2">*</span>
-                <input type="text" class="form-control" id="inputFirstName">
+                <input type="text" class="form-control" id="inputFirstName" [formGroup]="userFormGroup" formControlName="firstName">
+                <div class="validation-msg" style="color:red" *ngIf="firstName.touched && firstName.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="firstName.errors?.pattern">
+                      Invalid first name
+                    </li>
+                    <li class="text-danger" *ngIf="firstName.errors?.required">
+                      First name required
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputLastName">Last Name</label><span class="text-danger ml-2">*</span>
-                <input type="text" class="form-control" id="inputLastName">
+                <input type="text" class="form-control" id="inputLastName" formControlName="lastName">
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="userFormErrorObject.showUserLastNameError" style="list-style-type:none">
+                    <li class="text-danger" *ngIf="lastName.errors?.pattern">
+                      Invalid last name
+                    </li>
+                    <li class="text-danger" *ngIf="lastName.errors?.required">
+                      last name required
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputEmail">Email Id</label><span class="text-danger ml-2">*</span>
-                <input type="email" class="form-control" id="inputEmail">
+                <input type="email" class="form-control" id="inputEmail" formControlName="email">
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="userFormErrorObject.showUserEmailError" style="list-style-type:none">
+                    <li class="text-danger" *ngIf="email.errors?.pattern">
+                      Invalid email address
+                    </li>
+                    <li class="text-danger" *ngIf="email.errors?.required">
+                      Email address required
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <div class="row">
                   <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
                     <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
-                    <input list="countrycode" class="form-control" placeholder="select">
-                    <datalist id="countrycode">
-                      <option value="India +91">
-                      <option value="USA +1">
-                      <option value="UAE +971">
-                    </datalist>
+                    <select [(ngModel)]="User.CountryCode" (change)='onCountrySelected($event)' class="form-control">
+                      <option *ngIf="User.CountryCode==''"> Select</option>
+                      <option *ngFor="let role of countrycodeLists; let i = index" [value]="countrycodeLists[i].DialingCode">
+                        {{countrycodeLists[i].CountryNameCode}}
+                      </option>
+                    </select>
                   </div>
                   <div class="col-7 col-md-7 col-sm-6 col-xs-7 pl-1">
                     <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" formControlName="mobileNumber">
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="userFormErrorObject.showUserMobileNumberError"
+                          style="list-style-type:none">
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.minlength">
+                          Mobile number should not be less than 10 digits
+                        </li>
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.maxlength">
+                          Mobile number should not be greater than 10 digits
+                        </li>
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.pattern">
+                          Invalid mobile number
+                        </li>
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.required">
+                          Mobile number required
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -55,12 +103,20 @@
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputRole">Role</label>
-                <select [(ngModel)]="User.RoleIdentifier" class="form-control">
+  
+                <select [(ngModel)]="User.RoleIdentifier" (change) = 'onRoleSelected($event)' class="form-control">
                   <option *ngIf="User.RoleIdentifier==0"> Select</option>
                   <option *ngFor="let role of roleList; let i = index" [value]="roleList[i].Identifier">
                     {{roleList[i].Name}}
                   </option>
                 </select>
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="userFormErrorObject.roleShowError" style="list-style-type:none">
+                    <li class="text-danger">
+                      Please select role
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -71,9 +127,10 @@
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
         <button class="btn-footer-fill mr-2" style="background:#1c9c14;">Verify</button>
-        <button class="btn-footer-fill mr-2">Save</button>
+        <button class="btn-footer-fill mr-2" (click)="onSubmit()">Save</button>
         <button class="btn-footer-outline" (click)="navigateToListPage()">Cancel</button>
-     
+
       </div>
     </div>
+  </form>
 </div>

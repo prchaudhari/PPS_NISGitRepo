@@ -273,6 +273,30 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntities = new NISEntities(this.connectionString))
                 {
+                    if (validationEngine.IsValidLong(userSearchParameter.RoleIdentifier))
+                    {
+                        StringBuilder stringBuilderObject = new StringBuilder();
+                        //stringBuilderObject.Append("(" + string.Join("or ", userSearchParameter.RoleIdentifier.ToString().Split(',').Select(item => string.Format("Id.Equals(\"{0}\") ", item)).ToList()) + ") and IsDeleted.Equals(false)");
+                        string query = string.Format("Id= {0} and IsDeleted.Equals(false)", userSearchParameter.RoleIdentifier);
+                        IList<RoleRecord> roleRecords = nISEntities.RoleRecords.Where(query).AsQueryable().ToList();
+
+                        if (roleRecords?.Count > 0)
+                        {
+                            stringBuilderObject.Clear();
+                            stringBuilderObject.Append("(" + string.Join("or ", roleRecords.Select(item => string.Format("RoleId={0} ", item.Id)).ToList()) + ")");
+
+                            IList<UserRoleMapRecord> userRoleMapRecords = nISEntities.UserRoleMapRecords.Where(stringBuilderObject.ToString()).AsQueryable().ToList();
+
+                            if (userRoleMapRecords?.Count > 0)
+                            {
+                                stringBuilderObject.Clear();
+
+                                stringBuilderObject.Append(string.Join(",", userRoleMapRecords.Select(x => x.UserId).Distinct().ToList()));
+
+                                userSearchParameter.Identifier += stringBuilderObject.ToString();
+                            }
+                        }
+                    }
                     string whereClause = this.WhereClauseGenerator(userSearchParameter, tenantCode);
                     userRecords = new List<UserRecord>();
                     if (userSearchParameter.PagingParameter.PageIndex > 0 && userSearchParameter.PagingParameter.PageSize > 0)
@@ -1053,7 +1077,7 @@ namespace nIS
 
                 if (validationEngine.IsValidText(searchParameter.Identifier))
                 {
-                    queryString.Append(string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + " and ");
+                    queryString.Append("("+string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
                 }
 
                 if (validationEngine.IsValidText(searchParameter.UserIdentifierToSkip))
@@ -1081,7 +1105,7 @@ namespace nIS
 
                 if (validationEngine.IsValidText(searchParameter.EmailAddress))
                 {
-                    queryString.Append(queryString.Length > 0 ? " and " : string.Empty);
+                    //queryString.Append(queryString.Length > 0 ? " and " : string.Empty);
                     if (searchParameter.SearchMode == SearchMode.Equals)
                     {
                         queryString.Append(string.Format("EmailAddress.Equals(\"{0}\") and ", searchParameter.EmailAddress));
@@ -1184,7 +1208,7 @@ namespace nIS
                             Identifier = roleRecord.Id,
                             Name = roleRecord.Name,
                             Description = roleRecord.Description,
-                           
+
                             RolePrivileges = rolePrivilegeRecords?.Where(item => item.RoleIdentifier == roleRecord.Id)
                             .GroupBy(item => item.EntityName)
                             .Select(item => new RolePrivilege()
