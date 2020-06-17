@@ -69,6 +69,8 @@ export class ListComponent implements OnInit {
   public ouList: any[] = []
   public ouName;
   public isFilterDone = false;
+  displayedColumns: string[] = ['name', 'email', 'mobileno', 'role', 'active', 'lock', 'actions'];
+  dataSource = new MatTableDataSource<any>();
 
   public lockStatusArray: any[] = [
     {
@@ -101,8 +103,6 @@ export class ListComponent implements OnInit {
   ];
 
   public array: any;
-  public displayedColumns = ['', '', '', '', ''];
-  public dataSource: any;
 
   public pageSize = 5;
   public currentPage = 0;

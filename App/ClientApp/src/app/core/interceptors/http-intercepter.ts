@@ -12,61 +12,61 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Injectable()
 export class HttpIntercepter implements HttpInterceptor {
-    constructor(
-        private commonService: CommonService,
-        private injector: Injector,
-        private localstorageservice: LocalStorageService,
-        private messageDialogService: MessageDialogService,
-        private uiLoader: NgxUiLoaderService,
-    ) {
+  constructor(
+    private commonService: CommonService,
+    private injector: Injector,
+    private localstorageservice: LocalStorageService,
+    private messageDialogService: MessageDialogService,
+    private uiLoader: NgxUiLoaderService,
+  ) {
+  }
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const headers = {};
+    const router = this.injector.get(Router);
+
+
+    // Add URLs to be excluded, especially file upload URLs
+    const excludedURLs = [
+      'API/login', '/asset/upload'
+    ];
+    var currentUser = this.localstorageservice.GetCurrentUser();
+    let tenantCode
+    if (currentUser != null) {
+      tenantCode = currentUser.TenantCode;
+
     }
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const headers = {};
-        const router = this.injector.get(Router);
-        
-        var currentUser = this.localstorageservice.GetCurrentUser();
-        let tenantCode = currentUser.TenantCode;
-
-        // Add URLs to be excluded, especially file upload URLs
-        const excludedURLs = [
-        '/asset/upload',
-        ];
-
-        if (excludedURLs.some(item => request.url.indexOf(item) == -1)) {
-            request = request.clone({
-              setHeaders: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'application/json',
-                'TenantCode': tenantCode
-              }
-            });
-          }
-          else {
-            request = request.clone({
-              setHeaders: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'enctype': 'multipart/form-data',
-                'TenantCode': tenantCode
-              }
-            });
-          }
-
-          return next.handle(request);            
-    }
-
-    handleError(error: Error | HttpErrorResponse) {
-        if (error instanceof HttpErrorResponse) {
-          // Server or connection error happened
-          if (!navigator.onLine) {
-            // Handle offline error
-            console.log('Network error');
-          } else {
-            // Handle Http Error (error.status === 403, 404...)
-          }
-        } else {
-          // Handle Client Error (Angular Error, ReferenceError...)     
+    var currentUser = this.localstorageservice.GetCurrentUser();
+    // Add Authorization Header If Already LoggedIn User
+    if (currentUser) {
+      headers['Authorization'] = currentUser.token_type + ' ' + currentUser.access_token;
+      headers['TenantCode'] = currentUser.TenantCode;
+      if (headers['Content-Type'] != null) {
+        if (request.url != 'https://localhost:API/Login') {
+          headers['Content-Type'] = 'application/json';
         }
-        // Log the error anyway
-        console.error('It happens: ', error);
       }
+    }
+    // Hold the request object
+    const req = request.clone({
+      setHeaders: headers
+    });
+
+    return next.handle(req);
+  }
+
+  handleError(error: Error | HttpErrorResponse) {
+    if (error instanceof HttpErrorResponse) {
+      // Server or connection error happened
+      if (!navigator.onLine) {
+        // Handle offline error
+        console.log('Network error');
+      } else {
+        // Handle Http Error (error.status === 403, 404...)
+      }
+    } else {
+      // Handle Client Error (Angular Error, ReferenceError...)     
+    }
+    // Log the error anyway
+    console.error('It happens: ', error);
+  }
 }

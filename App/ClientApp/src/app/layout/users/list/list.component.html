@@ -24,36 +24,61 @@
         </div>
       </div>
       <div class="widget-area-grid padding-0">
-        <table class="table table-cust" id="tblUser">
-          <thead>
-            <tr>
-              <th class="width25 ip-w-20">Name</th>
-              <th class="width15 ip-w-15">Email</th>
-              <th class="width10 ip-w-10">Mobile No.</th>
-              <th class="width10 ip-w-10">Role</th>
-              <th class="width10 ip-w-5">Active</th>
-              <th class="width10 ip-w-5">Lock</th>
-              <th class="width10 ip-w-35">Actions</th>
-            </tr>
-          </thead>
-          <tbody *ngIf="userLists?.length>0">
-            <tr *ngFor="let user of dataSource">
-              <td class="width25 ip-w-20"><img class="user-img" [src]="user.profileImageUrl"><span class="user-name">{{user.FirstName}} {{user.LastName}}</span></td>
-              <td class="width15 ip-w-15">{{user.EmailAddress}}</td>
-              <td class="width15 ip-w-10">{{user.MobileNumber}}</td>
-              <td class="width15 ip-w-10">{{user.Role.Name}}</td>
-              <td class="width15 ip-w-5">{{user.Role.IsActive}}</td>
-              <td class="width15 ip-w-5">{{user.Role.IsLock}}</td>
-              <td class="width15 ip-w-35">
-                <!--<div class="action-btns btn-tbl-action">
-            <button type="button" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'View' }))" (click)="viewUser(user)" title="View" id="btnView"><span class="fa fa-file-text-o"></span></button>
-            <button type="button" *ngIf="(user.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" (click)="editUser(user)" title="Update" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
-            <button type="button" *ngIf="(user.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Delete' }))" (click)="deleteUser(user)" title="Delete" id="btnDelete"><span class="fa fa-trash-o"></span></button>
-            <button type="button" (click)="unLockUser(user)" title="Unlock" id="btnUnlock" *ngIf="user.IsLocked && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Unlock' }))"><span class="fa fa-unlock-alt"></span></button>
-          </div>-->
-              </td>
-            </tr>
-          </tbody>
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+          <!-- Position Column -->
+          <ng-container matColumnDef="name">
+            <th class="width20  ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element"><img class="user-img" src="assets/images/user.jpg"><span class="user-name">{{element.FirstName}}</span> </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="email">
+            <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.EmailAddress}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="mobileno">
+            <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.ContactNumber}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="role">
+            <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+            <td mat-cell *matCellDef="let element"> {{element.Roles[0].Name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="active">
+            <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
+            <td mat-cell *matCellDef="let element">
+              <span class="fa fa-toggle-on text-success font20" title="element.IsActive"></span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="lock">
+            <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header> Lock </th>
+            <td mat-cell *matCellDef="let element">
+              <span class="fa fa-toggle-on text-secondary font20" title="element.IsLock"></span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th class="width20 ip-w-35" mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="action-btns btn-tbl-action">
+                <button type="button" title="View" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'View' }))" (click)="viewUser(element)" id="btnView" routerLink="View"><span class="fa fa-file-text-o"></span></button>
+                <button type="button" title="Update" *ngIf="(element.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" (click)="editUser(element)" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
+                <button type="button" title="Delete" *ngIf="(element.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Delete' }))" (click)="deleteUser(element)" id="btnDelete" data-toggle="modal" data-target="#confirmModal"><span class="fa fa-trash-o"></span></button>
+                <button type="button" title="Reset Password" id="btnDelete"><span class="fa fa-refresh"></span></button>
+                <button type="button" (click)="unLockUser(element)" title="Lock User"><span class="fa fa-unlock-alt"></span></button>
+                <button type="button" title="Deactivate User" *ngIf="(element.Identifier != loggedInUserIdentifier) && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))"><span class="fa fa-toggle-on text-success"></span></button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
       </div>
@@ -137,12 +162,12 @@
     <!--[ngClass]="filterClass"-->
     <div class="filter-footer">
       <ul class="nav">
-        <li class="nav-item width33" title="Search"  (click)="filterSetUp('Search')">
+        <li class="nav-item width33" title="Search" (click)="filterSetUp('Search')">
           <a class="nav-link p-0">
             <span class="fa fa-check"></span>
           </a>
         </li>
-        <li class="nav-item width33" title="Reset"  (click)="filterSetUp('Reset')">
+        <li class="nav-item width33" title="Reset" (click)="filterSetUp('Reset')">
           <a class="nav-link p-0">
             <span class="fa fa-refresh"></span>
           </a>
