@@ -144,20 +144,25 @@ export class AddComponent implements OnInit {
         if (this.roleFormValidaton()) {
             let privileges = [];
             for (var i = 0; i < this.entityList.length; i++) {
+                let roleEntityObj: any = {};
+                roleEntityObj.EntityName = this.entityList[i].EntityName;
+                let rolePrivileges = [];
                 for (var j = 0; j < this.entityList[i].Operation.length; j++) {
                     if (this.entityList[i].Operation[j].IsEnabled) {
                         let obj: any = {};
-                        obj.EntityName = this.entityList[i].EntityName;
+                        obj.IsEnabled = true;
                         obj.Operation = this.entityList[i].Operation[j].operation;
-                        privileges.push(obj);
+                        rolePrivileges.push(obj);
                     }
                 }
+                roleEntityObj.RolePrivilegeOperations = rolePrivileges;
+                privileges.push(roleEntityObj);
             }
             let roleObject: any = {
                 Name: this.roleFormGroup.value.roleName,
                 Description: this.roleFormGroup.value.roleDescription,
-                Privileges: privileges,
-                Status: true,
+                RolePrivileges: privileges,
+                //Status: true,
             }
             if (this.roleEditModeOn && localStorage.getItem('roleparams')) {
                 roleObject.Identifier = this.params.Routeparams.passingparams.RoleIdentifier
@@ -168,16 +173,18 @@ export class AddComponent implements OnInit {
 
     //method written to save role
     async saveRecord(roleRecord) {
+        this.uiLoader.start();
         let roleArray = [];
         roleArray.push(roleRecord);
         let roleService = this.injector.get(RoleService);
         let isRecordSaved = await roleService.saveRole(roleArray, this.roleEditModeOn);
+        this.uiLoader.stop();
         if (isRecordSaved) {
             let message = Constants.recordAddedMessage;
             if (this.roleEditModeOn) {
                 message = Constants.recordUpdatedMessage;
             }
-            this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+            //this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
             this.navigateToListPage()
         }
     }
@@ -242,19 +249,40 @@ export class AddComponent implements OnInit {
               "Operation" : [
                 {
                   "operation": "Create",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "Edit",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "Delete",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "View",
-                  "IsEnabled":true
+                  "IsEnabled":false
+                }
+              ]
+            },
+            {
+              "EntityName" : "User",
+              "Operation" : [
+                {
+                  "operation": "Create",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "Edit",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "Delete",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "View",
+                  "IsEnabled":false
                 }
               ]
             },
@@ -263,19 +291,19 @@ export class AddComponent implements OnInit {
               "Operation" : [
                 {
                   "operation": "Create",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "Edit",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "Delete",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "View",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 }
               ]
             },
@@ -284,19 +312,19 @@ export class AddComponent implements OnInit {
               "Operation" : [
                 {
                   "operation": "Create",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "Edit",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "Delete",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "View",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 }
               ]
             },
@@ -305,23 +333,26 @@ export class AddComponent implements OnInit {
               "Operation" : [
                 {
                   "operation": "Create",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "Edit",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "Delete",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 },
                 {
                   "operation": "View",
-                  "IsEnabled":true
+                  "IsEnabled":false
                 }
               ]
             }
           ];
+          if (this.roleEditModeOn == true && localStorage.getItem('roleparams')) {
+              this.getRoleInfoRecord();
+          }
           this.uiLoader.stop();
     }
 
@@ -335,10 +366,10 @@ export class AddComponent implements OnInit {
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = Constants.Name;
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
-      searchParameter.SearchMode = Constants.Contains;
-      searchParameter.GetPrivileges = true;
+      searchParameter.SearchMode = Constants.Exact;
+      searchParameter.IsRequiredRolePrivileges = true;
       if (this.RoleIdentifier != null)
-          searchParameter.Identifiers = this.RoleIdentifier;
+          searchParameter.Identifier = this.RoleIdentifier;
       this.rolRecord = await roleService.getRoles(searchParameter);
       this.rolRecord.forEach(roleObject => {
           this.roleFormGroup.patchValue({
@@ -346,16 +377,18 @@ export class AddComponent implements OnInit {
               roleDescription: roleObject.Description,
           })
           for (let i = 0; i < this.rolRecord.length; i++) {
-              this.checkedRole = this.rolRecord[i].Privileges
+              this.checkedRole = this.rolRecord[i].RolePrivileges
           }
           //console.log(this.checkedRole)
           for (let i = 0; i < this.checkedRole.length; i++) {
               for (let count = 0; count < this.entityList.length; count++) {
                   if (this.entityList[count].EntityName == this.checkedRole[i].EntityName) {
                       for (let innercount = 0; innercount < this.entityList[count].Operation.length; innercount++) {
-                          if (this.entityList[count].Operation[innercount].operation == this.checkedRole[i].Operation) {
+                        for (let innercnt = 0; innercnt < this.checkedRole[i].RolePrivilegeOperations.length; innercnt++) {
+                          if (this.entityList[count].Operation[innercount].operation == this.checkedRole[i].RolePrivilegeOperations[innercnt].Operation) {
                               this.entityList[count].Operation[innercount].IsEnabled = true;
                           }
+                        }
                       }
                   }
               }

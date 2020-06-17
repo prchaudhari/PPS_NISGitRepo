@@ -178,9 +178,9 @@ export class LoginComponent implements OnInit {
     searchParameter.SortParameter = {};
     searchParameter.SortParameter.SortColumn = Constants.Name;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
-    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.SearchMode = Constants.Exact;
     searchParameter.IsRequiredRolePrivileges = true;
-    searchParameter.Identifiers = roleIdentifier;
+    searchParameter.Identifier = roleIdentifier;
     this.roleList = await this.loginService.getRoles(searchParameter);
     if (this.roleList.length > 0) {
       this.roleList.forEach(role => {

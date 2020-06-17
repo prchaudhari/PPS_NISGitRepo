@@ -121,10 +121,10 @@ export class ViewComponent implements OnInit {
         searchParameter.SortParameter = {};
         searchParameter.SortParameter.SortColumn = Constants.Name;
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
-        searchParameter.SearchMode = Constants.Contains;
+        searchParameter.SearchMode = Constants.Exact;
         searchParameter.IsRequiredRolePrivileges = true
         if (this.RoleIdentifier != null)
-            searchParameter.Identifiers = this.RoleIdentifier;
+            searchParameter.Identifier = this.RoleIdentifier;
 
         this.roleView = await roleService.getRoles(searchParameter);
         let rolePrivileges = [];

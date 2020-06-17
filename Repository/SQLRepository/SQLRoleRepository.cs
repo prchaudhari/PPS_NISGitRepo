@@ -194,6 +194,52 @@ namespace nIS
 
                     nISEntitiesDataContext.SaveChanges();
                 }
+
+                IList<RoleRecord> retrievedRoleRecords = new List<RoleRecord>();
+                IList<RolePrivilegeRecord> rolePrivilegeRecords = new List<RolePrivilegeRecord>();
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    retrievedRoleRecords = nISEntitiesDataContext.RoleRecords.Where(i => i.TenantCode == tenantCode).ToList();
+
+                    roles.ToList().ForEach(item =>
+                    {
+                        item.Identifier = retrievedRoleRecords.ToList().Where(rolefd => rolefd.Name == item.Name && rolefd.TenantCode == tenantCode).FirstOrDefault().Id;
+                        
+                        var existingRolePrivilege = nISEntitiesDataContext.RolePrivilegeRecords.Where(itm => itm.RoleIdentifier == item.Identifier).ToList();
+                        nISEntitiesDataContext.RolePrivilegeRecords.RemoveRange(existingRolePrivilege);
+                        nISEntitiesDataContext.SaveChanges();
+
+                        if (item.RolePrivileges?.Count > 0)
+                        {
+                            item.RolePrivileges.ToList().ForEach(previlegeItem =>
+                            {
+                                previlegeItem.RolePrivilegeOperations.ToList().ForEach(operation =>
+                                {
+                                    rolePrivilegeRecords.Add(new RolePrivilegeRecord()
+                                    {
+                                        RoleIdentifier = item.Identifier,
+                                        EntityName = previlegeItem.EntityName,
+                                        Operation = operation.Operation,
+                                        IsEnable = operation.IsEnabled
+                                    });
+                                });
+                            });
+                        }
+                    });
+                }
+
+                //add roleprivileges
+                if (rolePrivilegeRecords?.Count > 0)
+                {
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.RolePrivilegeRecords.AddRange(rolePrivilegeRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
+                }
+
+                result = true;
             }
 
             catch (Exception exception)
