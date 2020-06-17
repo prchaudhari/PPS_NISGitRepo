@@ -9,13 +9,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../../shared/modules/shared.module';
 
 @NgModule({
   declarations: [ListComponent, ViewComponent, AddComponent],
   imports: [
     CommonModule,
       RolesRoutingModule, MatPaginatorModule, MatSortModule, MatTableModule,FormsModule,
-      ReactiveFormsModule, NgbModule
+      ReactiveFormsModule, NgbModule, SharedModule
   ]
 })
 export class RolesModule { }

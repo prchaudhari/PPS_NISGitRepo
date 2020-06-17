@@ -9,10 +9,30 @@ const routes: Routes = [
     {
         path: '',
         children: [
-            { path: '', component: ListComponent },
-            { path: 'Add', component: AddComponent },
-            { path: 'View', component: ViewComponent },
-            { path: 'List', component: ListComponent }
+            // { path: '', component: ListComponent },
+            // { path: 'Add', component: AddComponent },
+            // { path: 'View', component: ViewComponent },
+            // { path: 'List', component: ListComponent },
+            {
+                path: '',
+                data: { 'Operation': 'View' },
+                component: ListComponent,
+            },
+            {
+                path: 'View',
+                data: { 'Operation': 'View' },
+                component: ViewComponent,
+            },
+            {
+                path: 'Edit',
+                data: { 'Operation': 'Edit' },
+                component: AddComponent,
+            },
+            {
+                path: 'Add',
+                data: { 'Operation': 'Create' },
+                component: AddComponent,
+            }
         ]
     }
 ];

@@ -110,7 +110,14 @@ export class ListComponent implements OnInit {
                 filterRoleName: [null],
             }
         );
-        this.backParamCheck()
+        //this.backParamCheck();
+        var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+        if (userClaimsDetail) {
+            this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+        }
+        else {
+            this.userClaimsRolePrivilegeOperations = [];
+        }
     }
 
     //Function to call preferred language from the localstorage--
@@ -118,11 +125,11 @@ export class ListComponent implements OnInit {
         var ResourcesArr = this.localstorageservice.GetResource();
         var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
         if (userClaimsDetail) {
-            this.Locale = userClaimsDetail.PreferedLanguageCode;
+            //this.Locale = userClaimsDetail.PreferedLanguageCode;
             this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
         }
         else {
-            this.Locale = 'enUS';
+            //this.Locale = 'enUS';
             this.userClaimsRolePrivilegeOperations = [];
         }
         if (ResourcesArr != null) {
@@ -242,7 +249,7 @@ export class ListComponent implements OnInit {
     //this method helps to navigate to add
     navigateToRoleAdd() {
         const router = this.injector.get(Router);
-        router.navigate(['roles', 'add']);
+        router.navigate(['roles', 'Add']);
     }
 
     //this method helps to navigate edit
@@ -260,12 +267,13 @@ export class ListComponent implements OnInit {
         }
         localStorage.setItem("roleparams", JSON.stringify(queryParams))
         const router = this.injector.get(Router);
-        router.navigate(['roles', 'Add']);
+        router.navigate(['roles', 'Edit']);
     }
 
     //function written to delete role
     deleteRole(role: Role) {
-        let message = this.roleListResources['msgConfirmation'] == undefined ? this.ResourceLoadingFailedMsg : this.roleListResources['msgConfirmation']
+        debugger
+        let message = 'Do you really want to delete role ?';
         this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
             if (isConfirmed) {
                 let roleData = [{
@@ -273,7 +281,7 @@ export class ListComponent implements OnInit {
                 }];
                 let isDependencyPresent = await this.roleService.checkDependency(roleData);
                 if (isDependencyPresent) {
-                    let msg = this.roleListResources['msgDependencyPresent'] == undefined ? this.ResourceLoadingFailedMsg : this.roleListResources['msgDependencyPresent'];
+                    let msg = 'Dependency present';
                     this._messageDialogService.openDialogBox('Error', msg, Constants.msgBoxError);
                 }
                 else {
