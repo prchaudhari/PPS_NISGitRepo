@@ -29,21 +29,22 @@ export class UserAddEditComponent implements OnInit {
   public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z-0-9' ]*";
   public onlyNumbers = '[0-9]*';
   public errorMsg: boolean;
-  public roleList;
+  public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
   public roleLists: any = [];
   public userRoleLists = [];
   public source: string[] = [];
   public countrycodeList = [];
   public countrycodeLists = [
-    {"CountryNameCode": "India +91", "DialingCode": "+91"},
-    {"CountryNameCode": "USA +1", "DialingCode": "+1"},
-    { "CountryNameCode": "UAE +971", "DialingCode": "+971"}
-];
+    { "CountryNameCode": "Please select", "DialingCode": "" },
+    { "CountryNameCode": "India +91", "DialingCode": "+91" },
+    { "CountryNameCode": "USA +1", "DialingCode": "+1" },
+    { "CountryNameCode": "UAE +971", "DialingCode": "+971" }
+  ];
   public countrycodesource = [];
   public selectedAll: any;
   public allRoles;
   public userId;
-  public User = {RoleIdentifier:0,Image:'', CountryCode:''}
+  public User = { RoleIdentifier: 0, Image: '', CountryCode: '' }
   public addUser: boolean = true;
   public editUser: boolean;
   public roleName;
@@ -196,24 +197,20 @@ export class UserAddEditComponent implements OnInit {
   ngOnInit() {
     // User form validations.
     this.userFormGroup = this.formBuilder.group({
-      firstName: [null, Validators.compose([Validators.required,
+      firstName: [null, Validators.compose([Validators.required, Validators.minLength(2),
       Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
-      lastName: [null, Validators.compose([Validators.required,
+      lastName: [null, Validators.compose([Validators.required, Validators.minLength(2),
       Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
-      code: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required,
       Validators.pattern(this.emailRegex)])],
-      countryCode: [null, Validators.required],
       mobileNumber: [null, Validators.compose([Validators.required,
       Validators.maxLength(10),
       Validators.minLength(10),
       Validators.pattern(this.onlyNumbers)])],
-      orgnisationUnit: [null],
-      designation: [null],
-      preferredLanguage: [null],
-      profilePictire: [null]
+      UserRole: [0, Validators.compose([Validators.required])],
+      CountryCode: ['', Validators.compose([Validators.required])]
     })
-   
+
     this.getRole();
   }
 
@@ -228,11 +225,14 @@ export class UserAddEditComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //searchParameter.GetPrivileges = true;
-    this.roleList = await this.loginService.getRoles(searchParameter);
+    var copy = await this.loginService.getRoles(searchParameter);
+    copy.forEach(role => {
+      this.roleList.push(role);
+    })
     if (this.userEditModeOn) {
-       
-        this.fillUserDetail();
-      
+
+      this.fillUserDetail();
+
     }
   }
 
@@ -294,7 +294,7 @@ export class UserAddEditComponent implements OnInit {
   }
 
   //custom validation check
-  userFormValidaton(): boolean {
+  userFormValidaton(){
     this.userFormErrorObject.showProfilePictureSizeError = false;
     this.userFormErrorObject.showUserFirstNameError = false;
     this.userFormErrorObject.showUserLastNameError = false;
@@ -318,53 +318,102 @@ export class UserAddEditComponent implements OnInit {
       this.userFormErrorObject.showUserEmailError = true;
       return false;
     }
-   
+
     if (this.userFormGroup.controls.mobileNumber.invalid) {
       this.userFormErrorObject.showUserMobileNumberError = true;
       return false;
     }
-    
+
     if (this.User.RoleIdentifier == 0) {
       this.userFormErrorObject.roleShowError = true;
+      return false;
+    }
+    if (this.User.CountryCode = '') {
+      this.userFormErrorObject.showCountryCodeError = true;
       return false;
     }
     return true;
   }
 
+  saveButtonValidation(): boolean {
+
+    if (this.imageSize > 4194304) {
+      return true;
+    }
+    if (this.userFormGroup.controls.firstName.invalid) {
+      return true;
+    }
+    if (this.userFormGroup.controls.lastName.invalid) {
+      return true;
+    }
+    if (this.userFormGroup.controls.email.invalid) {
+      return true;
+    }
+
+    if (this.userFormGroup.controls.mobileNumber.invalid) {
+      return true;
+    }
+
+    if (this.User.RoleIdentifier == 0) {
+      return true;
+    }
+    if (this.User.CountryCode = '') {
+      return true;
+    }
+    return false;
+  }
+
   public onRoleSelected(event) {
+
     const value = event.target.value;
-    this.User.RoleIdentifier = Number(value);
-    console.log(value);
+    if (value == "0") {
+      this.userFormErrorObject.roleShowError = true;
+      this.User.RoleIdentifier = 0;
+
+    }
+    else {
+      this.userFormErrorObject.roleShowError = false;
+
+      this.User.RoleIdentifier = Number(value);
+
+    }
   }
   public onCountrySelected(event) {
+
     const value = event.target.value;
-    this.User.CountryCode = value
+    if (value == "") {
+      this.userFormErrorObject.showCountryCodeError = true;
+      this.User.CountryCode = ''
+    }
+    else {
+      this.userFormErrorObject.showCountryCodeError = false;
+
+      this.User.CountryCode = value
+
+    }
+
     console.log(value);
   }
   //Function to add user--
   onSubmit() {
     if (this.userFormValidaton()) {
-      var selectedCountryCode = "";
-      
 
       let selectedroleArray = [];
       this.roleList.forEach(role => {
-        if (role.Identifier==this.User.RoleIdentifier) {
+        if (role.Identifier == this.User.RoleIdentifier) {
           selectedroleArray.push({
             "Identifier": role.Identifier,
             "Name": role.Name,
-            "Status": role.Status
           });
         }
       })
-      let selectedLang: any = {}
       let userObject: any = {
         "FirstName": this.userFormGroup.value.firstName,
         "LastName": this.userFormGroup.value.lastName,
         "EmailAddress": this.userFormGroup.value.email,
-        "ContactNumber": this.User.CountryCode+"-"+this.userFormGroup.value.mobileNumber,
+        "ContactNumber": this.User.CountryCode + "-" + this.userFormGroup.value.mobileNumber,
         "Roles": selectedroleArray,
-        "Image":this.User.Image,
+        "Image": this.User.Image,
       }
       if (this.userEditModeOn) {
         userObject.Identifier = this.params.Routeparams.passingparams.UserIdentifier;
@@ -383,16 +432,16 @@ export class UserAddEditComponent implements OnInit {
   //Api called here to save record
   saveRecord(userObject) {
     var formData = new FormData()
-    var UserArr= [];
+    var UserArr = [];
     UserArr.push(userObject);
-   
+
     //debugger
     this.spinner.start();
     this.service.saveUser(UserArr, this.userEditModeOn).subscribe(data => {
       this.spinner.stop();
       if (data == true) {
         let message = Constants.recordAddedMessage;
-        if (this.userEditModeOn && localStorage.getItem('userRouteparams')) {
+        if (this.userEditModeOn) {
           message = Constants.recordUpdatedMessage;
         }
         this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
@@ -451,7 +500,11 @@ export class UserAddEditComponent implements OnInit {
         lastName: userObject.LastName,
         email: userObject.EmailAddress,
         mobileNumber: mobileNo,
+        UserRole: this.userRoleLists[0].Identifier,
+        CountryCode: mobileNoArr[0]
       })
+      this.userFormGroup.controls['UserRole'].setValue(this.userRoleLists[0].Identifier);
+      this.userFormGroup.controls['CountryCode'].setValue(mobileNoArr[0]);
       this.User.RoleIdentifier = this.userRoleLists[0].Identifier;
       this.User.CountryCode = mobileNoArr[0];
       this.activeSlider = userObject.IsActive;
@@ -460,7 +513,7 @@ export class UserAddEditComponent implements OnInit {
       this.notificationSlider = userObject.ReceiveAlertNotifications;
       this.Theme = userObject.Theme;
       //ou
-     
+
       //role
       setTimeout(() => {
         this.userRoleLists.forEach(userRole => {

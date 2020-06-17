@@ -1125,7 +1125,14 @@ namespace nIS
                 {
                     queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.IsActive));
                 }
-
+                if (searchParameter.ActivationStatus != null)
+                {
+                    queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.ActivationStatus));
+                }
+                if (searchParameter.LockStatus != null)
+                {
+                    queryString.Append(string.Format("IsLocked.Equals({0}) and ", searchParameter.LockStatus));
+                }
                 queryString.Append("IsDeleted.Equals(false)");
             }
 

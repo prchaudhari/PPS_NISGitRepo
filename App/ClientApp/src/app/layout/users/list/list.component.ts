@@ -121,8 +121,8 @@ export class ListComponent implements OnInit {
     RoleIdentifier: null,
     DesignationIdentifier: null,
     PreferedLanguageIdentifier: null,
-    LockStatus: 3,
-    ActivationStatus: 3,
+    LockStatus: null,
+    ActivationStatus: null,
   };
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -439,8 +439,8 @@ export class ListComponent implements OnInit {
         MobileNumber: null,
         OrganisationUnitIdentifier: null,
         RoleIdentifier: null,
-        LockStatus: 0,
-        ActivationStatus: 0,
+        LockStatus: null,
+        ActivationStatus: null,
       };
      
       this.isFilter = !this.isFilter;

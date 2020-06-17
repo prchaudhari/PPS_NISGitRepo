@@ -29,6 +29,9 @@
                     <li class="text-danger" *ngIf="firstName.errors?.pattern">
                       Invalid first name
                     </li>
+                    <li class="text-danger" *ngIf="firstName.errors?.minlength">
+                      First name length should not be less than 2
+                    </li>
                     <li class="text-danger" *ngIf="firstName.errors?.required">
                       First name required
                     </li>
@@ -45,6 +48,9 @@
                     </li>
                     <li class="text-danger" *ngIf="lastName.errors?.required">
                       last name required
+                    </li>
+                    <li class="text-danger" *ngIf="lastName.errors?.minlength">
+                      Last name length should not be less than 2
                     </li>
                   </ul>
                 </div>
@@ -69,12 +75,16 @@
                 <div class="row">
                   <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
                     <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
-                    <select [(ngModel)]="User.CountryCode" (change)='onCountrySelected($event)' class="form-control">
-                      <option *ngIf="User.CountryCode==''"> Select</option>
-                      <option *ngFor="let role of countrycodeLists; let i = index" [value]="countrycodeLists[i].DialingCode">
-                        {{countrycodeLists[i].CountryNameCode}}
-                      </option>
+                    <select formControlName="CountryCode" (change)='onCountrySelected($event)' class="form-control">
+                      <option *ngFor="let role of countrycodeLists" [value]="role.DialingCode">{{role.CountryNameCode}}</option>
                     </select>
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="userFormErrorObject.showCountryCodeError" style="list-style-type:none">
+                        <li class="text-danger">
+                          Please select country code
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                   <div class="col-7 col-md-7 col-sm-6 col-xs-7 pl-1">
                     <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
@@ -102,13 +112,17 @@
             </div>
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
-                <label for="inputRole">Role</label>
-  
-                <select [(ngModel)]="User.RoleIdentifier" (change) = 'onRoleSelected($event)' class="form-control">
+                <label for="inputRole">Role</label><span class="text-danger ml-2">*</span>
+
+                <!--<select [(ngModel)]="User.RoleIdentifier" (change)='onRoleSelected($event)' class="form-control">
                   <option *ngIf="User.RoleIdentifier==0"> Select</option>
                   <option *ngFor="let role of roleList; let i = index" [value]="roleList[i].Identifier">
                     {{roleList[i].Name}}
                   </option>
+                </select>-->
+
+                <select formControlName="UserRole" (change)="onRoleSelected($event)" class="form-control">
+                  <option *ngFor="let role of roleList" [value]="role.Identifier">{{role.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
                   <ul *ngIf="userFormErrorObject.roleShowError" style="list-style-type:none">
@@ -127,7 +141,7 @@
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
         <button class="btn-footer-fill mr-2" style="background:#1c9c14;">Verify</button>
-        <button class="btn-footer-fill mr-2" (click)="onSubmit()">Save</button>
+        <button class="btn-footer-fill mr-2" [disabled]="saveButtonValidation()" (click)="onSubmit()">Save</button>
         <button class="btn-footer-outline" (click)="navigateToListPage()">Cancel</button>
 
       </div>

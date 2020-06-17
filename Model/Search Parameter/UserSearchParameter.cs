@@ -61,6 +61,16 @@ namespace nIS
         private bool? isActive = null;
 
         /// <summary>
+        /// The lock Status 
+        /// </summary>
+        private bool? lockStatus = null;
+
+        /// <summary>
+        /// The skill status
+        /// </summary>
+        private bool? activationStatus = null;
+
+        /// <summary>
         /// The utility object
         /// </summary>
         private IUtility utility = new Utility();
@@ -213,7 +223,37 @@ namespace nIS
                 this.isActive = value;
             }
         }
+        /// <summary>
+        /// Get or sets the value of user status
+        /// </summary>
+        [Description("ActivationStatus")]
+        public bool? ActivationStatus
+        {
+            get
+            {
+                return this.activationStatus;
+            }
+            set
+            {
+                this.activationStatus = value;
+            }
+        }
 
+        /// <summary>
+        /// Get or sets the value of user status
+        /// </summary>
+        [Description("LockStatus")]
+        public bool? LockStatus
+        {
+            get
+            {
+                return this.lockStatus;
+            }
+            set
+            {
+                this.lockStatus = value;
+            }
+        }
         #endregion
 
         #region Public methods
