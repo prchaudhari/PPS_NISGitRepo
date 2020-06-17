@@ -14,7 +14,7 @@
               </div>
               <div>
                 <label for="upload-photo" class="m-0 font-weight-normal"> Upload Avatar</label>
-                <input [(ngModel)]="User.Image"  type="file" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
+                <input formControlName="Image" type="file" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
               </div>
             </div>
             <div style="clear:both"></div>
@@ -23,7 +23,7 @@
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputFirstName">First Name</label><span class="text-danger ml-2">*</span>
-                <input type="text" class="form-control" id="inputFirstName" [formGroup]="userFormGroup" formControlName="firstName">
+                <input type="text" class="form-control" id="inputFirstName" formControlName="firstName">
                 <div class="validation-msg" style="color:red" *ngIf="firstName.touched && firstName.errors">
                   <ul style="list-style-type:none">
                     <li class="text-danger" *ngIf="firstName.errors?.pattern">
@@ -140,7 +140,7 @@
     </div>
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
-        <button class="btn-footer-fill mr-2" style="background:#1c9c14;">Verify</button>
+        <!-- <button class="btn-footer-fill mr-2" style="background:#1c9c14;">Verify</button> -->
         <button class="btn-footer-fill mr-2" [disabled]="saveButtonValidation()" (click)="onSubmit()">Save</button>
         <button class="btn-footer-outline" (click)="navigateToListPage()">Cancel</button>
 

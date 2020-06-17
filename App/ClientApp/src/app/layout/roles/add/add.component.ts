@@ -94,7 +94,7 @@ export class AddComponent implements OnInit {
       private _messageDialogService: MessageDialogService,
       private router: Router,
       private localstorageservice: LocalStorageService,
-      private spinner: NgxUiLoaderService,
+     // private spinner: NgxUiLoaderService,
       private roleService: RoleService ) {
           router.events.subscribe(e => {
             if (e instanceof NavigationEnd) {

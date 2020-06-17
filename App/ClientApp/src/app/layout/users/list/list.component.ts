@@ -72,6 +72,8 @@ export class ListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'email', 'mobileno', 'role', 'active', 'lock', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
+  public sortedUserList = [];
+
   public lockStatusArray: any[] = [
     {
       'Identifier': 1,
@@ -126,6 +128,7 @@ export class ListComponent implements OnInit {
   };
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
@@ -178,6 +181,32 @@ export class ListComponent implements OnInit {
       this.UserFilter.LockStatus = this.params.Routeparams.filteredparams.LockStatus;
       this.UserFilter.ActivationStatus = this.params.Routeparams.filteredparams.ActivationStatus;
     }
+
+    this.sortedUserList = this.userLists.slice();
+  }
+
+  sortData(sort: MatSort) {
+    const data = this.userLists.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedUserList = data;
+      return;
+    }
+
+    this.sortedUserList = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name': return compareStr(a.FirstName, b.FirstName, isAsc);
+        case 'email': return compareStr(a.EmailAddress, b.EmailAddress, isAsc);
+        case 'mobileno': return compareNumber(a.ContactNumber, b.ContactNumber, isAsc);
+        case 'role': return compareStr(a.Roles[0].Name, b.Roles[0].Name, isAsc);
+        default: return 0;
+      }
+    });
+    this.dataSource = new MatTableDataSource<any>(this.sortedUserList);
+    this.dataSource.sort = this.sort;
+    this.array = this.sortedUserList;
+    this.totalSize = this.array.length;
+    this.iterator();
   }
 
   ngOnInit() {
@@ -477,4 +506,12 @@ export class ListComponent implements OnInit {
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
+}
+
+function compareStr(a: string, b: string, isAsc: boolean) {
+  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareNumber(a: number, b: number, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

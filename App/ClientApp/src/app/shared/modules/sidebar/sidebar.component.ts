@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, HostListener, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
+import { LoginService } from '../../../login/login.service';
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -68,7 +70,38 @@ export class SidebarComponent implements OnInit {
     navigateToAnalytics() {
         this.route.navigate(['/layout/analytics']);
     }
-    constructor(private route: Router) {
+
+    async logout() {
+        // let loginService = this.injector.get(LoginService);
+        // var userData = JSON.parse(localStorage.getItem('userClaims'));
+        // let data = [{
+        //     "UserIdentifier": userData.UserIdentifier,
+        // }];
+        // let isLoggedOut = await loginService.logoutUser(data);
+        // if (isLoggedOut == true) {
+        //     localStorage.removeItem('currentUserName');
+        //     localStorage.removeItem('user');
+        //     // localStorage.removeItem('AuthorisedResources');
+        //     // localStorage.removeItem('selectedLangugage');
+        //     // localStorage.removeItem('AuthorizedEnglishResources');
+        //     // localStorage.removeItem('ApiResources');
+        //     localStorage.removeItem('userClaims');
+        //     localStorage.removeItem('token');
+        //     //localStorage.removeItem('currentUserTheme');
+        //     this.route.navigate(['login']);
+        // }
+
+        localStorage.removeItem('currentUserName');
+        localStorage.removeItem('currentUserTheme');
+        //localStorage.removeItem('user');
+        localStorage.removeItem('userClaims');
+        localStorage.removeItem('token');
+        this.route.navigate(['login']);
+    }
+
+    constructor(private route: Router, 
+        private injector: Injector,
+        private loginService: LoginService) {
     }
 
     ngOnInit() {

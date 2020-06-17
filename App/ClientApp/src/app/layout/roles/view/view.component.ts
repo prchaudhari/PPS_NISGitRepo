@@ -40,6 +40,7 @@ export class ViewComponent implements OnInit {
     public Name;
     public role: Role;
     public userClaimsRolePrivilegeOperations;
+    public isRolePrivilegeIsAssigned: boolean = true;
 
     constructor(
         private injector: Injector,
@@ -136,7 +137,8 @@ export class ViewComponent implements OnInit {
             rolePrivileges = this.roleView[i].RolePrivileges;
         }
 
-        if(rolePrivileges != null) {
+        if(rolePrivileges != null && rolePrivileges.length != 0) {
+            this.isRolePrivilegeIsAssigned = true;
           for (let i = 0; i < rolePrivileges.length; i++) {
               if (!this.rolePrivilegeExists(rolePrivileges[i].EntityName)) {
                   let obj: any = {};
@@ -162,6 +164,8 @@ export class ViewComponent implements OnInit {
                   }
               }
           }
+        }else {
+            this.isRolePrivilegeIsAssigned = false;
         }
     }
 
@@ -197,7 +201,7 @@ export class ViewComponent implements OnInit {
 
     //function written to delete role
     deleteRole() {
-        let message = this.roleViewResources['msgConfirmation'] == undefined ? this.ResourceLoadingFailedMsg : this.roleViewResources['msgConfirmation']
+        let message = 'Are you sure, you want to delete this record?'
         this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
             if (isConfirmed) {
                 let roleData = [{
@@ -205,7 +209,7 @@ export class ViewComponent implements OnInit {
                 }];
                 let isDependencyPresent = await this.roleService.checkDependency(roleData);
                 if (isDependencyPresent) {
-                    let msg = this.roleViewResources['msgDependencyPresent'] == undefined ? this.ResourceLoadingFailedMsg : this.roleViewResources['msgDependencyPresent'];
+                    let msg = 'Dependency present..!!';
                     this._messageDialogService.openDialogBox('Error', msg, Constants.msgBoxError);
                 }
                 else {

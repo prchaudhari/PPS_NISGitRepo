@@ -21,6 +21,7 @@ import { LoginService } from '../../../login/login.service';
 @Component({
   selector: 'app-user-add-edit',
   templateUrl: './add-edit.component.html',
+  styleUrls: ['./add-edit.component.scss']
 
 })
 export class UserAddEditComponent implements OnInit {
@@ -208,7 +209,8 @@ export class UserAddEditComponent implements OnInit {
       Validators.minLength(10),
       Validators.pattern(this.onlyNumbers)])],
       UserRole: [0, Validators.compose([Validators.required])],
-      CountryCode: ['', Validators.compose([Validators.required])]
+      CountryCode: ['', Validators.compose([Validators.required])],
+      Image: [null]
     })
 
     this.getRole();
@@ -301,7 +303,7 @@ export class UserAddEditComponent implements OnInit {
     this.userFormErrorObject.showUserEmailError = false;
     this.userFormErrorObject.showCountryCodeError = false;
     this.userFormErrorObject.showUserMobileNumberError = false;
-    this.userFormErrorObject.roleShowError = false
+    this.userFormErrorObject.roleShowError = false;
     if (this.imageSize > 4194304) {
       this.userFormErrorObject.showProfilePictureSizeError = true;
       return false;
@@ -411,18 +413,18 @@ export class UserAddEditComponent implements OnInit {
         "FirstName": this.userFormGroup.value.firstName,
         "LastName": this.userFormGroup.value.lastName,
         "EmailAddress": this.userFormGroup.value.email,
-        "ContactNumber": this.User.CountryCode + "-" + this.userFormGroup.value.mobileNumber,
+        "ContactNumber": this.userFormGroup.value.CountryCode + "-" + this.userFormGroup.value.mobileNumber,
         "Roles": selectedroleArray,
-        "Image": this.User.Image,
+        "Image": this.userFormGroup.value.Image,
       }
       if (this.userEditModeOn) {
         userObject.Identifier = this.params.Routeparams.passingparams.UserIdentifier;
-        userObject.IsActive = false;
+        userObject.IsActive = true;
         userObject.IsLocked = false;
       }
       else {
-        userObject.IsActive = this.activeSlider;
-        userObject.IsLocked = this.lockSlider;
+        userObject.IsActive = true;
+        userObject.IsLocked = true;
       }
       //console.log(userObject)
       this.saveRecord(userObject);
@@ -435,7 +437,6 @@ export class UserAddEditComponent implements OnInit {
     var UserArr = [];
     UserArr.push(userObject);
 
-    //debugger
     this.spinner.start();
     this.service.saveUser(UserArr, this.userEditModeOn).subscribe(data => {
       this.spinner.stop();
@@ -444,7 +445,7 @@ export class UserAddEditComponent implements OnInit {
         if (this.userEditModeOn) {
           message = Constants.recordUpdatedMessage;
         }
-        this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+        //this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
         this.navigateToListPage();
       }
     }, (error: HttpResponse<any>) => {

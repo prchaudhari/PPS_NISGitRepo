@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
   public loginResources = {};
   public ResourceLoadingFailedMsg = "Resouce Loading Failed..";
   public commonRolePrivileges = [];
+  public loginErrorMsg: string = '';
 
   // login form error Obj created.
   public loginFormErrorObject: any = {
@@ -112,6 +113,8 @@ export class LoginComponent implements OnInit {
 
   //Form validtion check on login click--
   OnSubmit() {
+    this.loginErrorMsg = '';
+    this.errorMsg = false;
     if (this.loginFormValidaton()) {
       let loginObj: any = {
         grant_type: 'password',
@@ -157,6 +160,7 @@ export class LoginComponent implements OnInit {
         //conditional code for theme
         //this.handleTheme(userData.UserTheme);
         //this.navigateToLandingPage();
+        this.loginErrorMsg = '';
         this.route.navigate(['layout/dashboard']);
       }
     }, (error: HttpResponse<any>) => {
@@ -164,7 +168,9 @@ export class LoginComponent implements OnInit {
       if (error["error"]) {
         if (error["error"].error_description) {
           let errorMessage = error["error"].error_description;
-          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+          this.loginErrorMsg = errorMessage;
+          this.errorMsg = true;
+          //this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       }
     });

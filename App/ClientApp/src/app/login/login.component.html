@@ -33,24 +33,29 @@
             </div>
           </div>
         </div>
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <div class="col-sm-12">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
               <label class="custom-control-label" for="defaultUnchecked">Remember me</label>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="row mb-2">
           <div class="col-sm-12 mt-4">
             <button type="button" class="btn btn-default btn-block" (click)="OnSubmit()">Login</button>
-            <!--<small class="form-text text-muted">{{msg}}</small>-->
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-sm-12 text-center">
             <a class="text-info" (click)="isForgotPassswordForm()"> Forgot Password ?</a>
           </div>
+        </div>
+
+        <div class="row mb-3" *ngIf='errorMsg'>
+          <div class="col-sm-12 text-center">
+            <p class="text-danger">{{loginErrorMsg}}</p>
+          </div>>
         </div>
       </div>
 

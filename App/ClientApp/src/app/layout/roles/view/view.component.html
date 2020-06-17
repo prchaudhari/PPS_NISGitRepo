@@ -48,20 +48,31 @@
       </div>
       <div class="card-body rtl-checkbox parent-rtl" id="collapsedPermissions" [ngbCollapse]="isCollapsedPermissions">
         <!--repeat start-->
-        <div class="card mb-2 card-shadow border-0" *ngFor="let role of rolePrivileges;trackBy: trackByFn">
-          <div class="card-header d-flex justify-content-between">
-            <div>
-              <label class="m-0">{{role.EntityName}}</label>
+        <div *ngIf="isRolePrivilegeIsAssigned">
+          <div class="card mb-2 card-shadow border-0" *ngFor="let role of rolePrivileges;trackBy: trackByFn">
+            <div class="card-header d-flex justify-content-between">
+              <div>
+                <label class="m-0">{{role.EntityName}}</label>
+              </div>
+            </div>
+            <div class="card-body pt-2 pb-1 chk-container">
+              <div class="row">
+                <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group" *ngFor="let operation of role.Operation;trackBy: trackByFn">
+                  <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" name="roleprivilege"
+                              id="{{operation.Name}}Roleprivilege{{trackByFn}}" [checked]="operation.IsEnabled" disabled />
+                      <label class="custom-control-label">{{operation.Name}}</label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="card-body pt-2 pb-1 chk-container">
-            <div class="row">
-              <div class="col-sm-4 col-md-3 col-lg-3 col-6 form-group" *ngFor="let operation of role.Operation;trackBy: trackByFn">
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" name="roleprivilege"
-                            id="{{operation.Name}}Roleprivilege{{trackByFn}}" [checked]="operation.IsEnabled" disabled />
-                    <label class="custom-control-label">{{operation.Name}}</label>
-                </div>
+        </div>
+        <div *ngIf="!isRolePrivilegeIsAssigned">
+          <div class="card mb-2 card-shadow border-0">
+            <div class="card-header d-flex justify-content-between">
+              <div>
+                <label class="m-0">No Permissions assigned to this role.</label>
               </div>
             </div>
           </div>

@@ -9,8 +9,8 @@ import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.serv
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { ResourceService } from 'src/app/shared/services/resource.service';
-import { jqxDropDownListComponent } from 'jqwidgets-ng/jqxdropdownlist';
 import { MatPaginator } from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface ListElement {
@@ -50,7 +50,10 @@ export class ListComponent implements OnInit {
     public previousPageLabel: string;
     public isFilterDone = false;
 
+    public sortedRoleList : Role[] = [];
+
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     public handlePage(e: any) {
         this.currentPage = e.pageIndex;
@@ -63,6 +66,7 @@ export class ListComponent implements OnInit {
         const start = this.currentPage * this.pageSize;
         const part = this.array.slice(start, end);
         this.dataSource = part;
+        this.dataSource.sort = this.sort;
     }
     //Getters for Role Forms
     get filterRoleName() {
@@ -100,7 +104,31 @@ export class ListComponent implements OnInit {
         //     // this.getRoleRecords(null)
         //     //this.backParamCheck()
         // }
+
+        this.sortedRoleList = this.roleList.slice();
     }
+
+    sortData(sort: MatSort) {
+        const data = this.roleList.slice();
+        if (!sort.active || sort.direction === '') {
+          this.sortedRoleList = data;
+          return;
+        }
+
+        this.sortedRoleList = data.sort((a, b) => {
+          const isAsc = sort.direction === 'asc';
+          switch (sort.active) {
+            case 'name': return compareStr(a.Name, b.Name, isAsc);
+            case 'description': return compareStr(a.Description == null ? '': a.Description, b.Description == null ? '': b.Description, isAsc);
+            default: return 0;
+          }
+        });
+        this.dataSource = new MatTableDataSource<Role>(this.sortedRoleList);
+        this.dataSource.sort = this.sort;
+        this.array = this.sortedRoleList;
+        this.totalSize = this.array.length;
+        this.iterator();
+      }
 
     //method called on initialization
     ngOnInit() {
@@ -191,7 +219,8 @@ export class ListComponent implements OnInit {
             });
         }
         this.dataSource = new MatTableDataSource<Role>(this.roleList);
-        this.dataSource.paginator = this.paginator;
+        //this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.array = this.roleList;
         this.totalSize = this.array.length;
         this.iterator();
@@ -272,8 +301,7 @@ export class ListComponent implements OnInit {
 
     //function written to delete role
     deleteRole(role: Role) {
-        debugger
-        let message = 'Do you really want to delete role ?';
+        let message = 'Are you sure, you want to delete this record?';
         this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
             if (isConfirmed) {
                 let roleData = [{
@@ -281,7 +309,7 @@ export class ListComponent implements OnInit {
                 }];
                 let isDependencyPresent = await this.roleService.checkDependency(roleData);
                 if (isDependencyPresent) {
-                    let msg = 'Dependency present';
+                    let msg = 'Dependency present ..!!';
                     this._messageDialogService.openDialogBox('Error', msg, Constants.msgBoxError);
                 }
                 else {
@@ -335,3 +363,11 @@ export class ListComponent implements OnInit {
     }
  
 }
+
+function compareStr(a: string, b: string, isAsc: boolean) {
+    return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+  
+  function compareNumber(a: number, b: number, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }

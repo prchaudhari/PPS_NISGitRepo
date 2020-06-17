@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RolesRoutingModule } from './roles-routing.module';
 import { ListComponent } from './list/list.component';
@@ -8,7 +9,6 @@ import { AddComponent } from './add/add.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/modules/shared.module';
 
 @NgModule({
