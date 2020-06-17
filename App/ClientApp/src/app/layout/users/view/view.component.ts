@@ -107,7 +107,7 @@ export class ViewComponent implements OnInit {
   async fillUserDetail() {
     let userService = this.injector.get(UserService);
     let searchParameter: any = {};
-    searchParameter.Identifiers = this.UserIdentifier;
+    searchParameter.Identifier = this.UserIdentifier;
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
