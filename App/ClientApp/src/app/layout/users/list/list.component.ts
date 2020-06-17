@@ -385,7 +385,7 @@ export class ListComponent implements OnInit {
 
   //function written to delete user--
   deleteUser(user: User) {
-    let message = this.userListResources['msgConfirmation'] == undefined ? this.ResourceLoadingFailedMsg : this.userListResources['msgConfirmation']
+    let message = "Are you sure you want to delete this record?";
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
         //let isDependencyPresent = await this.service.checkDependency(user.Identifier);
