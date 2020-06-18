@@ -340,6 +340,7 @@ namespace nIS
                             Identifier = roleRecord.Id,
                             Name = roleRecord.Name,
                             Description = roleRecord.Description,
+                            IsActive = !roleRecord.IsDeleted,
                             RolePrivileges = rolePrivilegeRecords?.Where(item => item.RoleIdentifier == roleRecord.Id)
                             .GroupBy(item => item.EntityName)
                             .Select(item => new RolePrivilege()
@@ -392,6 +393,118 @@ namespace nIS
             return roleCount;
         }
 
+        #region Activate Role
+
+        /// <summary>
+        /// This method helps to activate the role
+        /// </summary>
+        /// <param name="roleIdentifier">The role identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if role activated successfully false otherwise</returns>
+        public bool ActivateRole(long roleIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<RoleRecord> roleRecords = nISEntitiesDataContext.RoleRecords.Where(itm => itm.Id == roleIdentifier).ToList();
+                    if (roleRecords == null || roleRecords.Count <= 0)
+                    {
+                        throw new RoleNotFoundException(tenantCode);
+                    }
+
+                    roleRecords.ToList().ForEach(item =>
+                    {
+                        item.IsDeleted = false;
+                    });
+
+                    nISEntitiesDataContext.SaveChanges();
+                }
+                result = true;
+                return result;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        #endregion
+
+        #region Deactivate Role
+
+        /// <summary>
+        /// This method helps to deactivate the role
+        /// </summary>
+        /// <param name="roleIdentifier">The role identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if role deactivated successfully false otherwise</returns>
+        public bool DeActivateRole(long roleIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<RoleRecord> roleRecords = nISEntitiesDataContext.RoleRecords.Where(itm => itm.Id == roleIdentifier).ToList();
+                    if (roleRecords == null || roleRecords.Count <= 0)
+                    {
+                        throw new RoleNotFoundException(tenantCode);
+                    }
+
+                    roleRecords.ToList().ForEach(item =>
+                    {
+                        item.IsDeleted = true;
+                    });
+
+                    nISEntitiesDataContext.SaveChanges();
+                }
+                result = true;
+                return result;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+		/// this method is used to get the user list which is assigned to the role and ou
+		/// </summary>
+		/// <param name="roleIdentifier"></param>
+		/// <param name="tenantCode"></param>
+		/// <returns></returns>
+		public bool CheckUserAssociatedWithRole(long roleIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(connectionString))
+                {
+                    var query = from userRole in nISEntitiesDataContext.UserRoleMapRecords
+                                join user in nISEntitiesDataContext.UserRecords on userRole.UserId equals user.Id
+                                where userRole.RoleId == roleIdentifier && user.IsActive == true
+                                select userRole;
+
+                    result = query.Distinct().ToList().Count > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
+
         #endregion
 
         #region Private Methods
@@ -427,7 +540,7 @@ namespace nIS
                 }
             }
 
-            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false) ", tenantCode));
+            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
 
             return queryString.ToString();
         }

@@ -32,6 +32,14 @@ export class HttpClientService {
         return this.responseData;
     }
 
+    public CallGetHttp(httpMethod: string, httpAction: string,  params?: any, header?:any) : Observable<any>{
+      
+      let url = ConfigConstants.BaseURL + httpAction;
+      httpMethod = httpMethod.toUpperCase();
+      const req = new HttpRequest('GET', url);          
+      this.responseData = this.http.request(req);
+      return this.responseData;
+  }
     
 
 }

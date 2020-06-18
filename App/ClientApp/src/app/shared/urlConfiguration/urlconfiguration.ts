@@ -9,7 +9,7 @@ export class URLConfiguration {
   public static get roleGetEntities(): string { return "Entity/Get" };
   public static get roleActivate(): string { return "Role/Activate" };
   public static get roleDeactivate(): string { return "Role/Deactivate" };
-  public static get roleCheckDeleteDependencyUrl(): string { return "Role/IsDeleteDependency" };
+  public static get roleCheckIsDeactivateDependencyUrl(): string { return "Role/IsDeactivateDependency" };
 
 
   //User Url Method

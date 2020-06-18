@@ -47,9 +47,17 @@
                       *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Role',Operation: 'Edit' }))">
                   <span class="fa fa-pencil-square-o"></span>
               </button>
-              <button type="button" id="btnDeleteRole" (click)="deleteRole(role)"
+              <!-- <button type="button" id="btnDeleteRole" (click)="deleteRole(role)"
                       *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Role',Operation: 'Delete' }))" >
                   <span class="fa fa-trash-o"></span>
+              </button> -->
+              <button type="button" title="Deactivate User" (click)="DeactivateRole(role)"
+                *ngIf="((role.IsActive && (userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Role',Operation: 'Edit' })))">
+                <span class="fa fa-toggle-on text-success"></span>
+              </button>
+              <button type="button" title="Activate User" (click)="ActivateRole(role)"
+                *ngIf="((!role.IsActive && (userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Role',Operation: 'Edit' })))">
+                <span class="fa fa-toggle-off text-success"></span>
               </button>
           </div>
           </td>

@@ -120,6 +120,23 @@ namespace nIS
                 this.description = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the role id.
+        /// </summary>
+        [Description("IsActive")]
+        public bool IsActive
+        {
+            get
+            {
+                return this.isActive;
+            }
+            set
+            {
+                this.isActive = value;
+            }
+        }
+
         #endregion
 
         #region Public Methods

@@ -56,5 +56,30 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns>Role count</returns>
         int GetRoleCount(RoleSearchParameter roleSearchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method reference to activate roles
+        /// </summary>
+        /// <param name="roleIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        bool ActivateRole(long roleIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method reference to deactivate roles
+        /// </summary>
+        /// <param name="roleIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        bool DeActivateRole(long roleIdentifier, string tenantCode);
+
+        /// <summary>
+        /// this method is used to get the user list which is assigned to the role and ou
+        /// </summary>
+        /// <param name="roleIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        bool CheckUserAssociatedWithRole(long roleIdentifier, string tenantCode);
+
     }
 }

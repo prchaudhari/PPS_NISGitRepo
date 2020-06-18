@@ -257,6 +257,9 @@
   <ItemGroup>
     <Content Include="libman.json" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\nis-api - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nis-api - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nis-api - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

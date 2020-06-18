@@ -161,6 +161,70 @@ namespace nIS
             return roles.First();
         }
 
+        /// <summary>
+        /// This method helps to activate the role
+        /// </summary>
+        /// <param name="roleIdentifier">The role identifier</param>       
+        /// <returns>True if role activated successfully false otherwise</returns>
+        [HttpGet]
+        public bool Activate(long roleIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                this.roleManager.ActivateRole(roleIdentifier, tenantCode);
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// This method helps to activate the role
+        /// </summary>
+        /// <param name="roleIdentifier">The role identifier</param>       
+        /// <returns>True if role activated successfully false otherwise</returns>
+        [HttpGet]
+        public bool IsDeactivateDependency(long roleIdentifier)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.roleManager.CheckUserAssociatedWithRole(roleIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to deactivate the role
+        /// </summary>
+        /// <param name="roleIdentifier">The role identifier</param>       
+        /// <returns>True if role deactivated successfully false otherwise</returns>
+        [HttpGet]
+        public bool Deactivate(long roleIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                this.roleManager.DeactivateRole(roleIdentifier, tenantCode);
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
         #endregion
 
     }

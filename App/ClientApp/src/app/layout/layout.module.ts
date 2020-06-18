@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutComponent } from './layout.component';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -18,6 +19,8 @@ import { SourcedataComponent } from './sourcedata/sourcedata.component';
     declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent],
   imports: [
     CommonModule,
+    FormsModule,
+        ReactiveFormsModule,
     LayoutRoutingModule,
     SharedModule,
       RouterModule,

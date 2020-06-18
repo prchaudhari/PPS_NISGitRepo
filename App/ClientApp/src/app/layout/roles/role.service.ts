@@ -19,6 +19,7 @@ export class RoleService {
   public isRecordSaved: boolean = false;
   public isDependencyPresent: boolean = false;
   public isRecordDeleted = {};
+  public resultFlag = {};
 
   constructor(private http: HttpClient,
     private injector: Injector,
@@ -103,9 +104,9 @@ public async checkDependency(postData): Promise<boolean> {
     if (postData.length > 0) {
         identifier = postData[0].Identifier;
     }
-    let requestUrl = URLConfiguration.roleCheckDeleteDependencyUrl + '?Identifier=' + identifier;
+    let requestUrl = URLConfiguration.roleCheckIsDeactivateDependencyUrl + '?roleIdentifier=' + identifier;
     this.uiLoader.start();
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
         .then((httpEvent: HttpEvent<any>) => {
             if (httpEvent.type == HttpEventType.Response) {
                 this.uiLoader.stop();
@@ -148,6 +149,60 @@ public async deleteRole(postData): Promise<boolean> {
             this.isRecordDeleted = false
         });
     return <boolean>this.isRecordDeleted;
+}
+
+//method to call api of delete role.
+public async deactivateRole(postData): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let identifier = null;
+    if (postData.length > 0) {
+        identifier = postData[0].Identifier;
+    }
+    let requestUrl = URLConfiguration.roleDeactivate + '?roleIdentifier=' + identifier;
+    this.uiLoader.start();
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+        .then((httpEvent: HttpEvent<any>) => {
+            if (httpEvent.type == HttpEventType.Response) {
+                this.uiLoader.stop();
+                if (httpEvent["status"] === 200) {
+                    this.resultFlag = true
+                }
+                else {
+                    this.resultFlag = false
+                }
+            }
+        }, (error: HttpResponse<any>) => {
+            this.uiLoader.stop();
+            this.resultFlag = false
+        });
+    return <boolean>this.resultFlag;
+}
+
+//method to call api of delete role.
+public async activateRole(postData): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let identifier = null;
+    if (postData.length > 0) {
+        identifier = postData[0].Identifier;
+    }
+    let requestUrl = URLConfiguration.roleActivate + '?roleIdentifier=' + identifier;
+    this.uiLoader.start();
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+        .then((httpEvent: HttpEvent<any>) => {
+            if (httpEvent.type == HttpEventType.Response) {
+                this.uiLoader.stop();
+                if (httpEvent["status"] === 200) {
+                    this.resultFlag = true
+                }
+                else {
+                    this.resultFlag = false
+                }
+            }
+        }, (error: HttpResponse<any>) => {
+            this.uiLoader.stop();
+            this.resultFlag = false
+        });
+    return <boolean>this.resultFlag;
 }
 
 }

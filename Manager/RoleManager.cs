@@ -184,6 +184,47 @@ namespace nIS
             return roleCount;
         }
 
+        /// <summary>
+        /// This method helps to activate the customers
+        /// </summary>
+        /// <param name="roleIdentifier">The role identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if role activated successfully false otherwise</returns>
+        public bool ActivateRole(long roleIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.roleRepository.ActivateRole(roleIdentifier, tenantCode);
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// This method helps to deactivate the role
+        /// </summary>
+        /// <param name="roleIdentifier">The role identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if role deactivated successfully false otherwise</returns>
+        public bool DeactivateRole(long roleIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.roleRepository.DeActivateRole(roleIdentifier, tenantCode);
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
         #endregion
 
         #region Private Methods
@@ -244,6 +285,18 @@ namespace nIS
             catch (Exception exception)
             {
                 throw exception;
+            }
+        }
+
+        public bool CheckUserAssociatedWithRole(long roleIdentifier, string tenantCode)
+        {
+            try
+            {              
+                return this.roleRepository.CheckUserAssociatedWithRole(roleIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

@@ -7,6 +7,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
+import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 
@@ -90,6 +91,7 @@ export class AddComponent implements OnInit {
     constructor(private _location: Location,
       private formbuilder: FormBuilder,
       private injector: Injector,
+      private _dialogService: DialogService,
       private uiLoader: NgxUiLoaderService,
       private _messageDialogService: MessageDialogService,
       private router: Router,
@@ -184,7 +186,7 @@ export class AddComponent implements OnInit {
             if (this.roleEditModeOn) {
                 message = Constants.recordUpdatedMessage;
             }
-            //this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+            this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
             this.navigateToListPage()
         }
     }

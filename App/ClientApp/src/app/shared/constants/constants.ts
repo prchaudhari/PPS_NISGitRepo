@@ -5,6 +5,8 @@ export class Constants {
     public static get genericServiceErrorMessage(): string { return "FaktoryWize Service not accessible" };
     public static get recordAddedMessage(): string { return "Record added successfully." };
     public static get recordDeletedMessage(): string { return "Record deleted successfully." };
+    public static get recordDeactivatedMessage(): string { return "Record deactivated successfully." };
+    public static get recordActivatedMessage(): string { return "Record activated successfully." };
     public static get recordUnlockedMessage(): string { return "User Unlocked successfully." };
     public static get recordUpdatedMessage(): string { return "Record updated successfully." };
     public static get changePasswordMessage(): string { return "Password changed successfully." };

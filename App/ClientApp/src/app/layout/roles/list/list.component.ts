@@ -324,6 +324,37 @@ export class ListComponent implements OnInit {
         });
     }
 
+    async DeactivateRole(role: Role) {
+        let roleData = [{
+            "Identifier": role.Identifier,
+        }];
+        let isDependencyPresent = await this.roleService.checkDependency(roleData);
+        if (isDependencyPresent) {
+            let msg = 'Dependency present ..!!';
+            this._messageDialogService.openDialogBox('Error', msg, Constants.msgBoxError);
+        }
+        else {
+            let resultFlag = await this.roleService.deactivateRole(roleData);
+            if (resultFlag) {
+                let messageString = Constants.recordDeactivatedMessage;
+                this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+                this.getRoleRecords(null);
+            }
+        }
+    }
+
+    async ActivateRole(role: Role) {
+        let roleData = [{
+            "Identifier": role.Identifier,
+        }];
+        let resultFlag = await this.roleService.activateRole(roleData);
+            if (resultFlag) {
+                let messageString = Constants.recordActivatedMessage;
+                this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+                this.getRoleRecords(null);
+            }
+    }
+
     //to get filter data as it is 
     backParamCheck() {
         if (localStorage.getItem('roleparams')) {
