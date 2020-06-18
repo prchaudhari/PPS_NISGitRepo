@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from '../user.service';
 import { HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import { DialogService } from 'ng2-bootstrap-modal';
+import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { MsgBoxComponent } from 'src/app/shared/modules/message/messagebox.component';
 import { Constants } from 'src/app/shared/constants/constants';
 import { NgxUiLoaderService } from 'ngx-ui-loader';

@@ -7,7 +7,7 @@ import { HttpClient, HttpResponse, HttpEvent, HttpEventType } from '@angular/com
 import { UserService } from '../user.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { CellRenderService } from 'src/app/shared/services/cellsrenderer';
-import { DialogService } from 'ng2-bootstrap-modal';
+import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { Constants } from 'src/app/shared/constants/constants';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';

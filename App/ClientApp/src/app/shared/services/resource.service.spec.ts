@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ResourceService } from './resource.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DialogService } from 'ng2-bootstrap-modal';
+import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 
 
 describe('ResourceService', () => {

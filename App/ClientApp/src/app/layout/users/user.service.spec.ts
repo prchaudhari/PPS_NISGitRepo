@@ -4,7 +4,7 @@
 //import { Injector } from '@angular/core';
 //import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 //import { RouterTestingModule } from '@angular/router/testing';
-//import { DialogService } from 'ng2-bootstrap-modal';
+//import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 //import { HttpEvent, HttpEventType } from '@angular/common/http';
 //import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfiguration';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
-import { DialogService } from 'ng2-bootstrap-modal';
+import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient, HttpResponse, HttpHeaders, HttpEvent } from '@angular/common/http';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';

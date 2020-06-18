@@ -13,7 +13,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { MsgBoxComponent } from './shared/modules/message/messagebox.component';
-import { BootstrapModalModule } from 'ng2-bootstrap-modal';
+import { BootstrapModalModule } from '@tomblue/ng2-bootstrap-modal';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { HttpIntercepter } from './core/interceptors/http-intercepter';

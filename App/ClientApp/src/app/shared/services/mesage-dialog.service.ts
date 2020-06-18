@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DialogService } from 'ng2-bootstrap-modal';
+import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { MsgBoxComponent } from 'src/app/shared/modules/message/messagebox.component';
 import { Observable } from 'rxjs';
 @Injectable({
