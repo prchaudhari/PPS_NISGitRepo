@@ -66,7 +66,8 @@ export class ProfileComponent implements OnInit {
         { "CountryNameCode": "Please select", "DialingCode": "" },
         { "CountryNameCode": "India +91", "DialingCode": "+91" },
         { "CountryNameCode": "USA +1", "DialingCode": "+1" },
-        { "CountryNameCode": "UAE +971", "DialingCode": "+971" }
+        { "CountryNameCode": "UAE +971", "DialingCode": "+971" },
+        { "CountryNameCode": "ZAF +27", "DialingCode": "+27" }
       ];
 
     constructor(private _location: Location,

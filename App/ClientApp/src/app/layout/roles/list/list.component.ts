@@ -325,22 +325,21 @@ export class ListComponent implements OnInit {
     }
 
     async DeactivateRole(role: Role) {
-        let roleData = [{
-            "Identifier": role.Identifier,
-        }];
-        let isDependencyPresent = await this.roleService.checkDependency(roleData);
-        if (isDependencyPresent) {
-            let msg = 'Dependency present ..!!';
-            this._messageDialogService.openDialogBox('Error', msg, Constants.msgBoxError);
-        }
-        else {
-            let resultFlag = await this.roleService.deactivateRole(roleData);
-            if (resultFlag) {
-                let messageString = Constants.recordDeactivatedMessage;
-                this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-                this.getRoleRecords(null);
+        let message = "Are you sure, you want to deactivate this record?";
+        this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+            if (isConfirmed) {
+                let roleData = [{
+                    "Identifier": role.Identifier,
+                }];
+                
+                let resultFlag = await this.roleService.deactivateRole(roleData);
+                if (resultFlag) {
+                    let messageString = Constants.recordDeactivatedMessage;
+                    this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+                    this.getRoleRecords(null);
+                }
             }
-        }
+        });
     }
 
     async ActivateRole(role: Role) {
