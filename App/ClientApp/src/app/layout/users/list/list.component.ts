@@ -285,12 +285,6 @@ export class ListComponent implements OnInit {
     this.array = this.userLists;
     this.totalSize = this.array.length;
     this.iterator();
-    //to hide tooltip
-    const paginatorIntl = this.paginator._intl;
-    paginatorIntl.nextPageLabel = '';
-    paginatorIntl.previousPageLabel = '';
-    paginatorIntl.firstPageLabel = '';
-    paginatorIntl.lastPageLabel = '';
 
     if (this.userLists.length > 0) {
     }

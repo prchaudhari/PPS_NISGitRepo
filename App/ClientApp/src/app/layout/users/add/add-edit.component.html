@@ -10,15 +10,23 @@
           <div class="col-md-3 col-sm-4 col-12 form-group">
             <div class="profile-avtar-box">
 
-              <div *ngIf="image; else imageIcon">
-                <img [src]="image" class="profile-avtar selected-avatar">
+              <!--letter image-->
+              <div class="ltr-img">
+                <span>T</span>
+                <span>S</span>
+              </div>
+
+              <div *ngIf="image; else imageIcon" class="image-preview">
+                <img [src]="image" class="profile-avtar">
               </div>
               <!--<div class="image-preview mb-3">
                 <img src="assets/images/user.jpg" class="profile-avtar selected-avatar" />
               </div>-->
 
               <ng-template #imageIcon>
-                <img src="assets/images/user.png" class="profile-avtar selected-avatar" />
+                <div class="image-preview">
+                  <img src="assets/images/user.png" class="profile-avtar" />
+                </div>
               </ng-template>
               <div>
                 <label for="upload-photo" class="m-0 font-weight-normal"> Upload Avatar</label>

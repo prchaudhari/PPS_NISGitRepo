@@ -225,11 +225,11 @@ export class ListComponent implements OnInit {
         this.totalSize = this.array.length;
         this.iterator();
         //to hide tooltip
-        const paginatorIntl = this.paginator._intl;
-        paginatorIntl.nextPageLabel = '';
-        paginatorIntl.previousPageLabel = '';
-        paginatorIntl.firstPageLabel = '';
-        paginatorIntl.lastPageLabel = '';
+        //const paginatorIntl = this.paginator._intl;
+        //paginatorIntl.nextPageLabel = '';
+        //paginatorIntl.previousPageLabel = '';
+        //paginatorIntl.firstPageLabel = '';
+        //paginatorIntl.lastPageLabel = '';
     }
 
     //This method has been used for fetching search records
