@@ -99,7 +99,7 @@ export class UserService {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.userUnlockUrl + "?" + "identifier=" + postData;
     this.uiLoader.start();
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -119,9 +119,9 @@ export class UserService {
 
   public async activate(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.userActivate + "?" + "identifier=" + postData;
+    let requestUrl = URLConfiguration.userActivate + "?" + "userIdentifier=" + postData;
     this.uiLoader.start();
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -141,9 +141,9 @@ export class UserService {
 
   public async deactivate(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.userDeactivate + "?" + "identifier=" + postData;
+    let requestUrl = URLConfiguration.userDeactivate + "?" + "userIdentifier=" + postData;
     this.uiLoader.start();
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();

@@ -146,7 +146,7 @@ export class LoginComponent implements OnInit {
 
     let operationUrl = ConfigConstants.BaseURL + 'User/ResetPassword';
     this.spinner.start();
-    this._http.get(operationUrl, { params })
+    this.http.get(operationUrl, { params })
       .subscribe(data => {
         this.spinner.stop();
         this._messageDialogService.openDialogBox('Success', "Reset password link sent successfully.Please check your email.", Constants.msgBoxSuccess);

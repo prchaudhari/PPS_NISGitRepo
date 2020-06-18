@@ -437,7 +437,7 @@ export class ListComponent implements OnInit {
 
   //function written to unlock user--
   unLockUser(user: User) {
-    let message = this.userListResources['msgUnlockConfirmation'] == undefined ? this.ResourceLoadingFailedMsg : this.userListResources['msgUnlockConfirmation']
+    let message = "Do you want to unlock user??"
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
         this.isLoaderActive = true;
@@ -460,7 +460,7 @@ export class ListComponent implements OnInit {
           this.isLoaderActive = true;
           let isDeleted = await this.service.deactivate(user.Identifier);
           if (isDeleted) {
-            let messageString = Constants.recordUnlockedMessage;
+            let messageString = "User deactivated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
             this.fetchUserRecord();
           }
@@ -475,7 +475,7 @@ export class ListComponent implements OnInit {
           this.isLoaderActive = true;
           let isDeleted = await this.service.activate(user.Identifier);
           if (isDeleted) {
-            let messageString = Constants.recordUnlockedMessage;
+            let messageString = "User activated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
             this.fetchUserRecord();
           }
