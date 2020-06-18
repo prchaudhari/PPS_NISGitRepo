@@ -451,6 +451,40 @@ export class ListComponent implements OnInit {
     });
   }
 
+  activeDeactiveUser(user: User) {
+    let message;
+    if (user.IsActive) {
+       message = "Do you really want to deactivate user?"
+      this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+        if (isConfirmed) {
+          this.isLoaderActive = true;
+          let isDeleted = await this.service.deactivate(user.Identifier);
+          if (isDeleted) {
+            let messageString = Constants.recordUnlockedMessage;
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.fetchUserRecord();
+          }
+        }
+      });
+    }
+    else {
+      message = "Do you really want to activate user?"
+
+      this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+        if (isConfirmed) {
+          this.isLoaderActive = true;
+          let isDeleted = await this.service.activate(user.Identifier);
+          if (isDeleted) {
+            let messageString = Constants.recordUnlockedMessage;
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.fetchUserRecord();
+          }
+        }
+      });
+    }
+   
+  }
+
   //this method helps to navigate to add
   navigateToAddUser() {
     this.router.navigate(['user', 'userAdd']);

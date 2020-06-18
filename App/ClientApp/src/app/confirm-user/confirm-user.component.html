@@ -17,33 +17,46 @@
             <p class="m-0" style="font-weight:normal"> Please reset your password to login to the system </p>
           </div>
           <div class="mb-4">
-            <label>{{status}}</label>
+         
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-sm-12 mt-4">
-            <div class="login-control">
-             
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><span class="fa fa-lock"></span></span>
+              </div>
               <input type="password" class="form-control" placeholder="New Password" [(ngModel)]="newPassword" id="newPassword">
+              <div class="input-group-append">
+                <button class="btn input-group-text fa fa-eye" type="button"></button>
+              </div>
             </div>
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col-sm-12">
-            <div class="login-control">
-            
+          <div class="col-sm-12 mt-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><span class="fa fa-lock"></span></span>
+              </div>
               <input type="password" class="form-control" placeholder="Re-enter Password" [(ngModel)]="confirmPassword" id="confirmPassword">
+              <div class="input-group-append">
+                <button class="btn input-group-text fa fa-eye" type="button"></button>
+              </div>
             </div>
           </div>
         </div>
        
         <div class="row mb-2">
-          <div class="col-sm-12 mt-4">
+          <div class="col-sm-12 mt-3">
             <button type="button" class="btn btn-default btn-block" (click)="onSubmit()">Submit</button>
-            <!--<small class="form-text text-muted">{{msg}}</small>-->
+            <div class="validation-msg text-center" style="color:red">
+              <label>{{status}}</label>
+            </div>
           </div>
-          <div class="col-sm-12 mt-4">
-              <a ui-sref="login" (click)="onCancel()">Back</a>
+         
+          <div class="col-sm-12 mt-3 text-center">
+            <a ui-sref="login" (click)="onCancel()">Back</a>
           </div>
         </div>
         

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { LoginService } from './login.service';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { HttpClient, HttpResponse, HttpHeaders, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpHeaders, HttpEvent ,HttpParams} from '@angular/common/http';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
@@ -33,7 +33,8 @@ export class LoginComponent implements OnInit {
   public ResourceLoadingFailedMsg = "Resouce Loading Failed..";
   public commonRolePrivileges = [];
   public loginErrorMsg: string = '';
-
+  public status;
+  public result;
   // login form error Obj created.
   public loginFormErrorObject: any = {
     showUserNameError: false,
@@ -128,7 +129,37 @@ export class LoginComponent implements OnInit {
       //this.errorMsg = true;
     }
   };
+  onForgotPasswordSubmit(): boolean {
+    if (this.userEmail == undefined || this.userEmail == null) {
+      this.status = "Please enter Email ID";
+      return this.result = false;
+    }
+    if (this.userEmail != undefined && this.userEmail != null) {
+      if (this.userEmail.length == 0) {
+        this.status = "Please enter Email ID";
+        return this.result = false;
+      }
+    }
 
+    let params = new HttpParams();
+    params = params.append('userEmail', this.userEmail);
+
+    let operationUrl = ConfigConstants.BaseURL + 'User/ResetPassword';
+    this.spinner.start();
+    this._http.get(operationUrl, { params })
+      .subscribe(data => {
+        this.spinner.stop();
+        this._messageDialogService.openDialogBox('Success', "Reset password link sent successfully.Please check your email.", Constants.msgBoxSuccess);
+      },
+        error => {
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this.spinner.stop();
+        },
+        () => {
+          this.spinner.stop();
+        }
+      );
+  } 
   //Login functinality--
   checkLogin(loginObj) {
     this.spinner.start();
@@ -153,6 +184,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', access_token);
         this.localstorageservice.SetCurrentUser(data);
         let userName = userData.UserName;
+        
+        localStorage.setItem("UserEmail", userData.UserPrimaryEmailAddress);
         localStorage.setItem("currentUserName", userName);
         localStorage.setItem("currentUserTheme", userData.UserTheme);
         userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);

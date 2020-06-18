@@ -74,13 +74,14 @@
           <div class="col-sm-12 mt-4">
             <div class="login-control">
               <span class="fa fa-envelope"></span>
-              <input type="email" class="txtLogin" placeholder="Email Id">
+              <input type="email" class="txtLogin" placeholder="Email Id" [(ngModel)]="userEmail">
             </div>
           </div>
         </div>
         <div class="row mb-2">
           <div class="col-sm-12 mt-4">
-            <button type="button" class="btn btn-default btn-block">Submit</button>
+            <button type="button" class="btn btn-default btn-block" (click)="onForgotPasswordSubmit()">Submit</button>
+            <label id="emailHelp" class="form-text text-danger text-left"> {{status}}</label>
           </div>
         </div>
         <div class="row mb-3">

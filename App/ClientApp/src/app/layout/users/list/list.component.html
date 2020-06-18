@@ -34,7 +34,7 @@
               <!--<img class="user-img" src="assets/images/user.png">-->
 
               <!--for letter image-->
-              <span class="user-img-ltr"><span>T</span><span>S</span></span>
+              <span class="user-img-ltr"><span>{{element.FirstName.charAt(0)}}</span><span>{{element.LastName.charAt(0)}}</span></span>
               <span class="user-name"> {{element.FirstName}} {{element.LastName}}</span>
             </td>
           </ng-container>
@@ -83,7 +83,7 @@
                 <button type="button" [disabled]="!element.IsActive" title="Update" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" (click)="editUser(element)" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
                 <!--<button type="button" title="Delete" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Delete' }))" (click)="deleteUser(element)" id="btnDelete" data-toggle="modal" data-target="#confirmModal"><span class="fa fa-trash-o"></span></button>-->
                 <button type="button" (click)="unLockUser(element)" title="Lock User"><span class="fa fa-unlock-alt"></span></button>
-                <button type="button" title="Deactivate User" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))"><span class="fa fa-toggle-on text-success"></span></button>
+                <button type="button" (click)="activeDeactiveUser(element)" title="Deactivate User" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))"><span class="fa fa-toggle-on text-success"></span></button>
               </div>
             </td>
           </ng-container>

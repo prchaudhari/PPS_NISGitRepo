@@ -23,7 +23,8 @@ export class URLConfiguration {
   public static get getDesignationUrl(): string { return "Designation/Get" };
   public static get getLanguageUrl(): string { return "Locale/Get" };
   public static get getHierarchyOrganizationUnitUrl(): string { return "OrganisationUnit/GetOragnaisationUnitHierarchy" };
-
+ public static get userActivate(): string { return "User/Activate" };
+  public static get userDeactivate(): string { return "User/Deactivate" };
   //Change password--
   public static get changePasswordUrl(): string { return "User/ChangePassword" };
 
