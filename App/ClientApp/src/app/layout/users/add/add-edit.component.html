@@ -9,12 +9,20 @@
         <div class="row">
           <div class="col-md-3 col-sm-4 col-12 form-group">
             <div class="profile-avtar-box">
-              <div class="image-preview mb-3">
-                <img src="assets/images/user.jpg" class="profile-avtar selected-avatar" />
+
+              <div *ngIf="image; else imageIcon">
+                <img [src]="image" class="profile-avtar selected-avatar">
               </div>
+              <!--<div class="image-preview mb-3">
+                <img src="assets/images/user.jpg" class="profile-avtar selected-avatar" />
+              </div>-->
+
+              <ng-template #imageIcon>
+                <img src="assets/images/user.png" class="profile-avtar selected-avatar" />
+              </ng-template>
               <div>
                 <label for="upload-photo" class="m-0 font-weight-normal"> Upload Avatar</label>
-                <input formControlName="Image" type="file" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
+                <input type="file" (change)="onFileChanged($event)" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
               </div>
             </div>
             <div style="clear:both"></div>

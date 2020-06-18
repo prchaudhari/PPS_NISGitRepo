@@ -244,18 +244,17 @@ export class ListComponent implements OnInit {
     }
     this.userLists = await this.service.getUser(searchParameter);
     this.userLists.forEach(el => {
-      if (el.ProfileImage) {
-        if (el.ProfileImage.ThumbnailURL) {
-          this.profileImage = el.ProfileImage.ThumbnailURL;
-          el.profileImageUrl = el.ProfileImage.ThumbnailURL;
+      //if (el.ProfileImage) {
+        if (el.Image != '' && el.Image != null) {
+          el.Image = el.Image;
         }
         else {
-          el.profileImageUrl = "assets/images/user.jpg";
+          el.Image = "assets/images/user.png";
         }
-      }
-      else {
-        el.profileImageUrl = "assets/images/user.jpg";
-      }
+      //}
+      //else {
+      //  el.Image = "assets/images/user.png";
+      //}
      
     })
 

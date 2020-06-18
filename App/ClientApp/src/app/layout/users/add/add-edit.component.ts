@@ -37,10 +37,12 @@ export class UserAddEditComponent implements OnInit {
   public countrycodeList = [];
   public countrycodeLists = [
     { "CountryNameCode": "Please select", "DialingCode": "" },
-    { "CountryNameCode": "India +91", "DialingCode": "+91" },
+    { "CountryNameCode": "IND +91", "DialingCode": "+91" },
     { "CountryNameCode": "USA +1", "DialingCode": "+1" },
-    { "CountryNameCode": "UAE +971", "DialingCode": "+971" }
+    { "CountryNameCode": "UAE +971", "DialingCode": "+971" },
+    { "CountryNameCode": "ZAF +27", "DialingCode": "+27" }
   ];
+  image: string;
   public countrycodesource = [];
   public selectedAll: any;
   public allRoles;
@@ -238,7 +240,21 @@ export class UserAddEditComponent implements OnInit {
     }
   }
 
-
+  onFileChanged(event) {
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      if (reader.DONE == 2) {
+        this.image = reader.result.toString();
+        //console.log('reader.result');
+        //console.log(this.image);
+      }
+    };
+    reader.onerror = function (error) {
+      //console.log('Error: ', error);
+    };
+  }
 
   traverse(stationList) {
     var key;
@@ -415,7 +431,7 @@ export class UserAddEditComponent implements OnInit {
         "EmailAddress": this.userFormGroup.value.email,
         "ContactNumber": this.userFormGroup.value.CountryCode + "-" + this.userFormGroup.value.mobileNumber,
         "Roles": selectedroleArray,
-        "Image": this.userFormGroup.value.Image,
+        "Image": this.image,
       }
       if (this.userEditModeOn) {
         userObject.Identifier = this.params.Routeparams.passingparams.UserIdentifier;
@@ -475,6 +491,7 @@ export class UserAddEditComponent implements OnInit {
     searchParameter.SearchMode = Constants.Contains;
     this.spinner.stop();
     this.usersList = await userService.getUser(searchParameter);
+
     this.usersList.forEach(userObject => {
       this.resourceId = userObject.ResourceIdentifier
       this.previewUrl = [];
@@ -510,9 +527,7 @@ export class UserAddEditComponent implements OnInit {
       this.User.CountryCode = mobileNoArr[0];
       this.activeSlider = userObject.IsActive;
       this.lockSlider = userObject.IsLocked;
-      this.allowAccessSlider = userObject.AllowAccessOnOperatorConsole;
-      this.notificationSlider = userObject.ReceiveAlertNotifications;
-      this.Theme = userObject.Theme;
+      this.image = userObject.Image;
       //ou
 
       //role
