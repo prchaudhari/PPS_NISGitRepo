@@ -19,12 +19,13 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { HttpIntercepter } from './core/interceptors/http-intercepter';
 import { AuthGuard, UnAuthorisedUrlGuard } from './core/guard';
 import { AuthenticationModule } from './authentication/authentication.module';
-
+import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MsgBoxComponent
+    MsgBoxComponent,
+    ConfirmUserComponent
   ],
   imports: [
     BrowserModule,

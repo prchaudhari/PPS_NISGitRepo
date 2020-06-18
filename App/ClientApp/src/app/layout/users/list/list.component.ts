@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,7 +10,6 @@ import { CellRenderService } from 'src/app/shared/services/cellsrenderer';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Constants } from 'src/app/shared/constants/constants';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { PaginationInstance } from 'src/app/shared/modules/pagination/pagination.module';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
@@ -25,10 +24,12 @@ import { LoginService } from '../../../login/login.service';
 })
 
 export class ListComponent implements OnInit {
+
+  userFormGroup: FormGroup;
   public isFilter: boolean = false;
   public userList;
   public userLists = [];
-  public roleList = [];
+  public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
   public dataAdapter: any = [];
   public columns = [];
   public actionCellsrenderer: any;
@@ -144,6 +145,7 @@ export class ListComponent implements OnInit {
   }
 
   constructor(private http: HttpClient,
+    private formBuilder: FormBuilder,
     private service: UserService,
     private router: Router,
     private route: ActivatedRoute,
@@ -211,6 +213,10 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     // this.getUserdetail();
+    this.userFormGroup = this.formBuilder.group({
+      UserRole: [0, Validators.compose([])]
+      
+    })
     this.getRoles();
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
@@ -222,7 +228,7 @@ export class ListComponent implements OnInit {
   ngAfterViewInit(): void {
     
   }
-
+ 
   //Get api for fetching User details--
   async getUserdetail(searchParameter) {
     this.spinner.start();
@@ -360,8 +366,10 @@ export class ListComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //searchParameter.GetPrivileges = true;
-    this.roleList = await this.loginService.getRoles(searchParameter);
-    
+    var copy = await this.loginService.getRoles(searchParameter);
+    copy.forEach(role => {
+      this.roleList.push(role);
+    })
   }
   //Function to navigate to view page of perticular user detail--
   viewUser(user) {
@@ -454,7 +462,16 @@ export class ListComponent implements OnInit {
   navigateToAddUser() {
     this.router.navigate(['user', 'userAdd']);
   }
+  public onRoleSelected(event) {
+    const value = event.target.value;
+    if (value == "0") {
+      this.UserFilter.RoleIdentifier = null;
+    }
+    else {
+      this.UserFilter.RoleIdentifier = Number(value);
 
+    }
+  }
   //User filter function--
   filterSetUp(searchType) {
     this.isFilterDone = true;
@@ -505,6 +522,24 @@ export class ListComponent implements OnInit {
   //Function to close the filter popup--
   closeFilter() {
     this.isFilter = !this.isFilter;
+  }
+
+  activationEventCheck(event) {
+    if (event.checked) {
+      this.UserFilter.ActivationStatus = true
+    }
+    else {
+      this.UserFilter.ActivationStatus = false;
+    }
+  }
+
+  lockEventCheck(event) {
+    if (event.checked) {
+      this.UserFilter.LockStatus = true;
+    }
+    else {
+      this.UserFilter.LockStatus = false;
+    }
   }
 }
 

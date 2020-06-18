@@ -125,7 +125,7 @@
     <div class="filter-head">
       <label class="m-0">Apply Filter</label>
     </div>
-    <div class="filter-body-left d-flex flex-column stylescrollbar">
+    <form [formGroup]="userFormGroup" name="userForm" class="filter-body-left d-flex flex-column stylescrollbar">
       <div class="form-group">
         <label>Name</label>
         <input [(ngModel)]="UserFilter.FirstName" type="text" class="form-control">
@@ -136,18 +136,15 @@
       </div>
       <div class="form-group">
         <label>Role</label>
-        <select [(ngModel)]="UserFilter.RoleIdentifier" class="form-control">
-          <option> Select</option>
-          <option *ngFor="let role of roleList; let i = index" [value]="roleList[i].Identifier">
-            {{roleList[i].Name}}
-          </option>
+        <select formControlName="UserRole" (change)="onRoleSelected($event)" class="form-control">
+          <option *ngFor="let role of roleList" [value]="role.Identifier">{{role.Name}}</option>
         </select>
       </div>
       <div class="form-group">
         <label>Lock Status</label>
         <div>
           <label class="switch d-block">
-            <input type="checkbox" [(ngModel)]="UserFilter.LockStatus">
+            <input type="checkbox" (change)="lockEventCheck($event.target)" [(ngModel)]="UserFilter.LockStatus">
             <span class="slider round"></span>
           </label>
         </div>
@@ -157,12 +154,12 @@
         <label>Activation Status</label>
         <div>
           <label class="switch d-block">
-            <input type="checkbox" [(ngModel)]="UserFilter.ActivationStatus">
+            <input type="checkbox" (change)="activationEventCheck($event.target)" [(ngModel)]="UserFilter.ActivationStatus">
             <span class="slider round"></span>
           </label>
         </div>
       </div>
-    </div>
+    </form>
     <!--[ngClass]="filterClass"-->
     <div class="filter-footer">
       <ul class="nav">
