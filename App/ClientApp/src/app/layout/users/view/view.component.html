@@ -10,12 +10,18 @@
           <div class="profile-avtar-box">
             <!--letter image-->
             <!--<div class="ltr-img">
-              <span>T</span>
-              <span>S</span>
-            </div>-->
+    <span>T</span>
+    <span>S</span>
+  </div>-->
             <!--jpg png...-->
-            <div class="image-preview mb-3">
-              <img src="assets/images/user.jpg" class="profile-avtar" />
+            <div *ngIf="userRecord.Image!='' && userRecord.Image!=null" class="image-preview">
+              <img [src]="userRecord.Image" class="profile-avtar">
+            </div>
+            <div *ngIf="userRecord.Image=='' && userRecord.Image==null">
+              <div class="ltr-img">
+                <span>{{userRecord.FirstName.charAt(0) | titlecase}}</span>
+                <span>{{userRecord.LastName.charAt(0) | titlecase}}</span>
+              </div>
             </div>
           </div>
           <div style="clear:both"></div>
@@ -55,7 +61,7 @@
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
       <button class="btn-footer-fill mr-2" id="btnSave" (click)="editUser()">Update</button>
-      <button class="btn-footer-fill-delete bg-danger mr-2" (click)="deleteUser()" id="btnDelete">Delete</button>
+      <!--<button class="btn-footer-fill-delete bg-danger mr-2" (click)="deleteUser()" id="btnDelete">Delete</button>-->
       <button class="btn-footer-outline" id="btnCancel" (click)="backClicked()">Cancel</button>
     </div>
   </div>

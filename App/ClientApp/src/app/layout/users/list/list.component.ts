@@ -243,6 +243,7 @@ export class ListComponent implements OnInit {
       searchParameter.SearchMode = Constants.Contains;
     }
     this.userLists = await this.service.getUser(searchParameter);
+    this.spinner.stop();
     this.userLists.forEach(el => {
       //if (el.ProfileImage) {
         if (el.Image != '' && el.Image != null) {
@@ -359,7 +360,9 @@ export class ListComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //searchParameter.GetPrivileges = true;
+    this.spinner.start();
     var copy = await this.loginService.getRoles(searchParameter);
+    this.spinner.stop();
     copy.forEach(role => {
       this.roleList.push(role);
     })

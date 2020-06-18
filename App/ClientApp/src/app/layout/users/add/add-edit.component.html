@@ -15,21 +15,33 @@
                 <span>T</span>
                 <span>S</span>
               </div>-->
-              <!--<div *ngIf="image; else imageIcon" class="image-preview">
+              <div *ngIf="image!='' && image!=null; else imageIcon" class="image-preview">
                 <img [src]="image" class="profile-avtar">
-              </div>-->
-              <div class="image-preview mb-3">
-                <img src="assets/images/user.jpg" class="profile-avtar selected-avatar" />
               </div>
-
+              <div *ngIf="(image=='' || image==null) && userEditModeOn">
+                <div class="ltr-img">
+                  <span>{{usersList[0].FirstName.charAt(0) | titlecase}}</span>
+                  <span>{{usersList[0].LastName.charAt(0) | titlecase}}</span>
+                </div>
+              </div>
               <ng-template #imageIcon>
-                <div class="image-preview">
+                <div class="image-preview" *ngIf="!userEditModeOn">
                   <img src="assets/images/user.png" class="profile-avtar" />
                 </div>
               </ng-template>
               <div>
                 <label for="upload-photo" class="m-0 font-weight-normal"> Upload Avatar</label>
                 <input type="file" (change)="onFileChanged($event)" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
+                <div class="validation-msg" style="color:red">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="userFormErrorObject.showProfilePictureSizeError">
+                      File size should not be greater the 2MB
+                    </li>
+                    <li class="text-danger" *ngIf="userFormErrorObject.showProfilePictureTypeError">
+                      Invalid file type
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div style="clear:both"></div>
@@ -39,7 +51,7 @@
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputFirstName">First Name</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" id="inputFirstName" formControlName="firstName">
-                <div class="validation-msg" style="color:red" *ngIf="firstName.touched && firstName.errors">
+                <div  class="validation-msg" style="color:red" *ngIf="firstName.touched && firstName.errors">
                   <ul style="list-style-type:none">
                     <li class="text-danger" *ngIf="firstName.errors?.pattern">
                       Invalid first name
@@ -50,14 +62,17 @@
                     <li class="text-danger" *ngIf="firstName.errors?.required">
                       First name required
                     </li>
+                    <li class="text-danger" *ngIf="firstName.errors?.maxlength">
+                      First name length should not be greater than 50
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputLastName">Last Name</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" id="inputLastName" formControlName="lastName">
-                <div class="validation-msg" style="color:red">
-                  <ul *ngIf="userFormErrorObject.showUserLastNameError" style="list-style-type:none">
+                <div class="validation-msg" style="color:red" *ngIf="lastName.touched && lastName.errors">
+                  <ul style="list-style-type:none">
                     <li class="text-danger" *ngIf="lastName.errors?.pattern">
                       Invalid last name
                     </li>
@@ -67,6 +82,9 @@
                     <li class="text-danger" *ngIf="lastName.errors?.minlength">
                       Last name length should not be less than 2
                     </li>
+                    <li class="text-danger" *ngIf="lastName.errors?.maxlength">
+                      Last name length should not be greater than 50
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -75,8 +93,8 @@
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label for="inputEmail">Email Id</label><span class="text-danger ml-2">*</span>
                 <input type="email" class="form-control" id="inputEmail" formControlName="email">
-                <div class="validation-msg" style="color:red">
-                  <ul *ngIf="userFormErrorObject.showUserEmailError" style="list-style-type:none">
+                <div class="validation-msg" style="color:red" *ngIf="email.touched && email.errors">
+                  <ul style="list-style-type:none">
                     <li class="text-danger" *ngIf="email.errors?.pattern">
                       Invalid email address
                     </li>
@@ -104,13 +122,12 @@
                   <div class="col-7 col-md-7 col-sm-6 col-xs-7 pl-1">
                     <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
                     <input type="text" class="form-control" formControlName="mobileNumber">
-                    <div class="validation-msg" style="color:red">
-                      <ul *ngIf="userFormErrorObject.showUserMobileNumberError"
-                          style="list-style-type:none">
-                        <li class="text-danger" *ngIf="mobileNumber.errors?.minlength">
+                    <div class="validation-msg" style="color:red" *ngIf="mobileNumber.touched && mobileNumber.errors">
+                      <ul style="list-style-type:none">
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.minlength && !mobileNumber.errors?.pattern">
                           Mobile number should not be less than 10 digits
                         </li>
-                        <li class="text-danger" *ngIf="mobileNumber.errors?.maxlength">
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.maxlength && !mobileNumber.errors?.pattern">
                           Mobile number should not be greater than 10 digits
                         </li>
                         <li class="text-danger" *ngIf="mobileNumber.errors?.pattern">
@@ -148,7 +165,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>

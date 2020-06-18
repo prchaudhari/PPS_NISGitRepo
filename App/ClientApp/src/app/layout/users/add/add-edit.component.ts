@@ -27,7 +27,7 @@ import { LoginService } from '../../../login/login.service';
 export class UserAddEditComponent implements OnInit {
   userFormGroup: FormGroup;
   public emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z-0-9' ]*";
+  public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z']*";
   public onlyNumbers = '[0-9]*';
   public errorMsg: boolean;
   public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
@@ -106,6 +106,8 @@ export class UserAddEditComponent implements OnInit {
   // Object created to initlialize the error boolean value.
   public userFormErrorObject: any = {
     showProfilePictureSizeError: false,
+    showProfilePictureTypeError: false,
+
     showUserFirstNameError: false,
     showUserLastNameError: false,
     showUserCodeError: false,
@@ -196,17 +198,20 @@ export class UserAddEditComponent implements OnInit {
   }
 
 
-  //Initialization call--
+  //Initialization call--onlyNumbers
   ngOnInit() {
     // User form validations.
     this.userFormGroup = this.formBuilder.group({
       firstName: [null, Validators.compose([Validators.required, Validators.minLength(2),
+        Validators.maxLength(50),
       Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
       lastName: [null, Validators.compose([Validators.required, Validators.minLength(2),
+        Validators.maxLength(50),
+
       Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
-      email: [null, Validators.compose([Validators.required,
+      email: ['', Validators.compose([Validators.required,
       Validators.pattern(this.emailRegex)])],
-      mobileNumber: [null, Validators.compose([Validators.required,
+      mobileNumber: ['', Validators.compose([Validators.required,
       Validators.maxLength(10),
       Validators.minLength(10),
       Validators.pattern(this.onlyNumbers)])],
@@ -229,7 +234,9 @@ export class UserAddEditComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //searchParameter.GetPrivileges = true;
+    this.spinner.start();
     var copy = await this.loginService.getRoles(searchParameter);
+    this.spinner.stop();
     copy.forEach(role => {
       this.roleList.push(role);
     })
@@ -242,8 +249,25 @@ export class UserAddEditComponent implements OnInit {
 
   onFileChanged(event) {
     let file = event.target.files[0];
+    if (file.size > 4194304) {
+      this.userFormErrorObject.showProfilePictureSizeError = true;
+      return false;
+    }
+    this.userFormErrorObject.showProfilePictureSizeError = false;
+
+    var pattern = /image-*/;
+
+    if (!file.type.match(pattern)) {
+      
+      this.userFormErrorObject.showProfilePictureTypeError = true;
+
+      return false; 
+    }
+    this.userFormErrorObject.showProfilePictureTypeError = false;
+
     let reader = new FileReader();
     reader.readAsDataURL(file);
+
     reader.onload = (e) => {
       if (reader.DONE == 2) {
         this.image = reader.result.toString();
@@ -358,6 +382,13 @@ export class UserAddEditComponent implements OnInit {
     if (this.imageSize > 4194304) {
       return true;
     }
+    if (this.userFormErrorObject.showProfilePictureSizeError) {
+      return true;
+    }
+    if (this.userFormErrorObject.showProfilePictureTypeError) {
+      return true;
+    }
+    
     if (this.userFormGroup.controls.firstName.invalid) {
       return true;
     }
@@ -461,10 +492,11 @@ export class UserAddEditComponent implements OnInit {
         if (this.userEditModeOn) {
           message = Constants.recordUpdatedMessage;
         }
-        //this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+        this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
         this.navigateToListPage();
       }
-    }, (error: HttpResponse<any>) => {
+    }, (error: any) => {
+        this._messageDialogService.openDialogBox('Error', error.error.ExceptionMessage, Constants.msgBoxError);
       this.spinner.stop();
     });
   }
@@ -489,9 +521,9 @@ export class UserAddEditComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
-    this.spinner.stop();
+    this.spinner.start();
     this.usersList = await userService.getUser(searchParameter);
-
+    this.spinner.stop();
     this.usersList.forEach(userObject => {
       this.resourceId = userObject.ResourceIdentifier
       this.previewUrl = [];
