@@ -1,5 +1,6 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
@@ -72,6 +73,7 @@ export class ProfileComponent implements OnInit {
 
     constructor(private _location: Location,
         private formbulder: FormBuilder,
+        private route: Router,
         private injector: Injector,
         private localstorageservice: LocalStorageService,
         private _messageDialogService: MessageDialogService,
@@ -566,7 +568,7 @@ export class ProfileComponent implements OnInit {
     }
 
     backClicked() {
-        this._location.back()
+        this.route.navigate(['dashboard']);
     }
 
 }

@@ -50,6 +50,11 @@ export class ListComponent implements OnInit {
     public previousPageLabel: string;
     public isFilterDone = false;
 
+    public RoleFilter: any = {
+        Name: null,
+        DeactivateRole: null,
+      };
+
     public sortedRoleList : Role[] = [];
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -71,6 +76,11 @@ export class ListComponent implements OnInit {
     //Getters for Role Forms
     get filterRoleName() {
         return this.roleFilterForm.get('filterRoleName');
+    }
+
+    //Getters for Role Forms
+    get filterDeactivateRole() {
+        return this.roleFilterForm.get('DeactivateRole');
     }
 
     constructor(
@@ -136,6 +146,7 @@ export class ListComponent implements OnInit {
         this.roleFilterForm = this.fb.group(
             {
                 filterRoleName: [null],
+                DeactivateRole: [null]
             }
         );
         //this.backParamCheck();
@@ -212,7 +223,8 @@ export class ListComponent implements OnInit {
             this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
                 if (data == true) {
                     this.roleFilterForm.patchValue({
-                        filterRoleName: null
+                        filterRoleName: null,
+                        DeactivateRole: null
                     })
                     this.getRoleRecords(null);
                 }
@@ -237,7 +249,8 @@ export class ListComponent implements OnInit {
         this.isFilterDone = true;
         if (searchType == 'reset') {
             this.roleFilterForm.patchValue({
-                filterRoleName: null
+                filterRoleName: null,
+                DeactivateRole: null
             })
             this.getRoleRecords(null);
             this.isFilter = !this.isFilter;
@@ -252,6 +265,7 @@ export class ListComponent implements OnInit {
             searchParameter.SortParameter.SortOrder = Constants.Ascending;
             searchParameter.SearchMode = Constants.Contains;
             searchParameter.Name = this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName : "";
+            searchParameter.IsActive = this.roleFilterForm.value.DeactivateRole != null ? !this.roleFilterForm.value.DeactivateRole: true;
             this.getRoleRecords(searchParameter);
             this.isFilter = !this.isFilter;
         }
@@ -391,6 +405,15 @@ export class ListComponent implements OnInit {
             this.getRoleRecords(searchParameter);
         }
     }
+
+    activationEventCheck(event) {
+        if (event.checked) {
+            this.roleFilterForm.value.DeactivateRole = true;
+        }
+        else {
+            this.roleFilterForm.value.DeactivateRole = false;
+        }
+      }
  
 }
 

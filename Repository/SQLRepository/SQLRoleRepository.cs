@@ -540,8 +540,16 @@ namespace nIS
                 }
             }
 
-            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            if (searchParameter.IsActive == null || searchParameter.IsActive == true)
+            {
+                queryString.Append(string.Format("IsDeleted.Equals(false) and "));
+            }
+            else if (searchParameter.IsActive != null && searchParameter.IsActive == false)
+            {
+                queryString.Append(string.Format("IsDeleted.Equals(true) and "));
+            }
 
+            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
 

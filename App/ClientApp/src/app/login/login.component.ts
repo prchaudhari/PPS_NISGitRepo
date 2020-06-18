@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
     if (userClaimsDetail) {
       console.log('Im in');
       //this.navigateToLandingPage();
-      this.route.navigate(['roles']);
+      this.route.navigate(['dashboard']);
     }
   }
 
@@ -201,9 +201,9 @@ export class LoginComponent implements OnInit {
       if (error["error"]) {
         if (error["error"].error_description) {
           let errorMessage = error["error"].error_description;
-          this.loginErrorMsg = errorMessage;
-          this.errorMsg = true;
-          //this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+          //this.loginErrorMsg = errorMessage;
+          //this.errorMsg = true;
+          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       }
     });

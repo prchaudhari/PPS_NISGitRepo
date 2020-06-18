@@ -89,6 +89,15 @@
             <label>Name</label>
             <input type="text" class="form-control" id="filterRoleName" formControlName="filterRoleName">
           </div>
+          <div class="form-group">
+            <label>Deactivate Roles</label>
+            <div>
+              <label class="switch d-block">
+                <input type="checkbox" (change)="activationEventCheck($event.target)" id="DeactivateRole" formControlName="DeactivateRole">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
         </div>
         <!--[ngClass]="filterClass"-->
         <div class="filter-footer">
