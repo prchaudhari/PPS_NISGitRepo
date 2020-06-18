@@ -15,13 +15,12 @@
                 <span>T</span>
                 <span>S</span>
               </div>-->
-
-              <div *ngIf="image; else imageIcon" class="image-preview">
+              <!--<div *ngIf="image; else imageIcon" class="image-preview">
                 <img [src]="image" class="profile-avtar">
+              </div>-->
+              <div class="image-preview mb-3">
+                <img src="assets/images/user.png" class="profile-avtar selected-avatar" />
               </div>
-              <!--<div class="image-preview mb-3">
-    <img src="assets/images/user.jpg" class="profile-avtar selected-avatar" />
-  </div>-->
 
               <ng-template #imageIcon>
                 <div class="image-preview">
