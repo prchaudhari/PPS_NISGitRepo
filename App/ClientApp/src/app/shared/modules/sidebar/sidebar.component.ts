@@ -20,6 +20,8 @@ export class SidebarComponent implements OnInit {
     public collapse_toogleClass = 'fa-bars'
     public collapse_body_class = 'hide'
 
+    public loggedInUserName = '';
+
     toggleNav() {
         if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
             this.sidebar_class = "show-sidebar"
@@ -105,7 +107,9 @@ export class SidebarComponent implements OnInit {
     }
 
     ngOnInit() {
-        $(document).ready(function () {
+
+        this.loggedInUserName = localStorage.getItem('currentUserName');
+        $(document).ready(function () {           
             this.screenWidth = window.innerWidth;
             if (this.screenWidth <= 768) {
                 $('.side-bar-li').click(function () {

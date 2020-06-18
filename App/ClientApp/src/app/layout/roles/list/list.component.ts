@@ -41,7 +41,7 @@ export class ListComponent implements OnInit {
     public Locale;
     public userClaimsRolePrivilegeOperations: any[] = [];
     public array: any;
-    public displayedColumns: string[] = ['name', 'description','actions'];
+    public displayedColumns: string[] = ['name', 'description', 'active', 'actions'];
     public dataSource: any;
 
     public pageSize = 5;
