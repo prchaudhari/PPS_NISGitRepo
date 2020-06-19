@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import * as $ from 'jquery';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants'
 import { Constants } from 'src/app/shared/constants/constants';
+import * as $ from 'jquery';
+
 @Component({
   selector: 'app-confirm-user',
   templateUrl: './confirm-user.component.html',
 })
+
 export class ConfirmUserComponent implements OnInit {
   status: string;
   newPassword: string = '';
   confirmPassword: string = '';
   encryptedText: any;
-  baseURL: string = environment.baseURL;
+  baseURL: string = ConfigConstants.BaseURL;
   public passwordRegex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
 
   constructor(private _http: HttpClient, private _router: Router, private _activatedRouter: ActivatedRoute,
@@ -35,7 +36,6 @@ export class ConfirmUserComponent implements OnInit {
     })
     
   };
-
 
   onSubmit(): boolean {
     if(this.newPassword == '' || this.confirmPassword == '') {
@@ -64,6 +64,7 @@ export class ConfirmUserComponent implements OnInit {
     } else {
       this.status = '';
     }
+
     this.encryptedText = this._activatedRouter.snapshot.queryParams.token;
     let params = new HttpParams();
     params = params.append('newPassword', this.newPassword);
@@ -72,6 +73,7 @@ export class ConfirmUserComponent implements OnInit {
     console.log(this.encryptedText);
     let operationUrl = this.baseURL + 'User/Confirm';
     $('.overlay').show();
+    
     this._http.get(operationUrl, { params: params })
       .subscribe(data => {
         this._messageDialogService.openDialogBox('Success', "Password generated successfully", Constants.msgBoxSuccess);
@@ -83,11 +85,9 @@ export class ConfirmUserComponent implements OnInit {
         () => {
         }
       );
-
   }
 
   onCancel(): void {
     this._router.navigate(['login']);
   }
 }
-

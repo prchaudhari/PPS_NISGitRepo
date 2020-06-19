@@ -1,6 +1,8 @@
+//import { environment } from '../../../environments/environment.prod'
+import { environment } from '../../../environments/environment'
+
 export const ConfigConstants = {
-  BaseURL: "http://localhost/API/",
-  //BaseURL: "https://nis-api.azurewebsites.net/",
+  BaseURL: environment.baseURL,
   ResourceUrl: "https://localhost:44347/LocaleResource/Get",
   TenantCode: "00000000-0000-0000-0000-000000000000",
   ClientCustomerName: "Texfab India",
