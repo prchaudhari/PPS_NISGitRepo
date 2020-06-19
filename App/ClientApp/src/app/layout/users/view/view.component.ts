@@ -115,8 +115,9 @@ export class ViewComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
-    this.spinner.start();
+    //this.spinner.start();
     this.userViewArray = await userService.getUser(searchParameter);
+    //this.spinner.stop();
     if (this.userViewArray.length > 0) {
       this.userRecord = this.userViewArray[0];
       this.profileImageList = this.userViewArray[0].ProfileImage;
