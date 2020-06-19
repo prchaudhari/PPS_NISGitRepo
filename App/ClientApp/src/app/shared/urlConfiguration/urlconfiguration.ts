@@ -19,6 +19,7 @@ export class URLConfiguration {
   public static get userDeleteUrl(): string { return "User/Delete" };
   public static get getCountryCodeUrl(): string { return "Country/Get" };
   public static get userUnlockUrl(): string { return "User/Unlock" };
+  public static get userlockUrl(): string { return "User/Lock" };
   public static get userCheckDeleteDependencyUrl(): string { return "User/IsDeleteDependency" };
   public static get getDesignationUrl(): string { return "Designation/Get" };
   public static get getLanguageUrl(): string { return "Locale/Get" };

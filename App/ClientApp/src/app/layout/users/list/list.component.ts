@@ -129,7 +129,7 @@ export class ListComponent implements OnInit {
   };
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
@@ -215,7 +215,7 @@ export class ListComponent implements OnInit {
     // this.getUserdetail();
     this.userFormGroup = this.formBuilder.group({
       UserRole: [0, Validators.compose([])]
-      
+
     })
     this.getRoles();
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
@@ -226,12 +226,12 @@ export class ListComponent implements OnInit {
 
   //method binded after html rendering
   ngAfterViewInit(): void {
-    
+
   }
- 
+
   //Get api for fetching User details--
   async getUserdetail(searchParameter) {
-    this.spinner.start();
+    //this.spinner.start();
     if (searchParameter == null) {
       let searchParameter: any = {};
       searchParameter.PagingParameter = {};
@@ -243,20 +243,20 @@ export class ListComponent implements OnInit {
       searchParameter.SearchMode = Constants.Contains;
     }
     this.userLists = await this.service.getUser(searchParameter);
-    this.spinner.stop();
+    //this.spinner.stop();
     this.userLists.forEach(el => {
       //if (el.ProfileImage) {
-        if (el.Image != '' && el.Image != null) {
-          el.Image = el.Image;
-        }
-        else {
-          el.Image = "assets/images/user.png";
-        }
+      if (el.Image != '' && el.Image != null) {
+        el.Image = el.Image;
+      }
+      ////else {
+      ////  el.Image = "assets/images/user.png";
+      ////}
       //}
       //else {
       //  el.Image = "assets/images/user.png";
       //}
-     
+
     })
 
     // if (this.userLists.length > 0) {
@@ -360,9 +360,9 @@ export class ListComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //searchParameter.GetPrivileges = true;
-    this.spinner.start();
+    //this.spinner.start();
     var copy = await this.loginService.getRoles(searchParameter);
-    this.spinner.stop();
+    //this.spinner.stop();
     copy.forEach(role => {
       this.roleList.push(role);
     })
@@ -396,7 +396,7 @@ export class ListComponent implements OnInit {
 
   //Function to edit perticular user--
   editUser(user) {
-    
+
     let queryParams = {
       Routeparams: {
         passingparams: {
@@ -440,24 +440,41 @@ export class ListComponent implements OnInit {
 
   //function written to unlock user--
   unLockUser(user: User) {
-    let message = "Do you want to unlock user??"
-    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
-      if (isConfirmed) {
-        this.isLoaderActive = true;
-        let isDeleted = await this.service.unlockUser(user.Identifier);
-        if (isDeleted) {
-          let messageString = Constants.recordUnlockedMessage;
-          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-          this.fetchUserRecord();
+    if (user.IsLocked) {
+      let message = "Do you want to unlock user??"
+      this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+        if (isConfirmed) {
+          this.isLoaderActive = true;
+          let isDeleted = await this.service.unlockUser(user.Identifier);
+          if (isDeleted) {
+            let messageString = Constants.recordUnlockedMessage;
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.fetchUserRecord();
+          }
         }
-      }
-    });
+      });
+    }
+    else {
+      let message = "Do you want to lock user??"
+      this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+        if (isConfirmed) {
+          this.isLoaderActive = true;
+          let isDeleted = await this.service.userlockUrl(user.Identifier);
+          if (isDeleted) {
+            let messageString = Constants.recordlockedMessage;
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.fetchUserRecord();
+          }
+        }
+      });
+    }
+
   }
 
   activeDeactiveUser(user: User) {
     let message;
     if (user.IsActive) {
-       message = "Do you really want to deactivate user?"
+      message = "Do you really want to deactivate user?"
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
           this.isLoaderActive = true;
@@ -485,7 +502,7 @@ export class ListComponent implements OnInit {
         }
       });
     }
-   
+
   }
 
   //this method helps to navigate to add
@@ -518,7 +535,7 @@ export class ListComponent implements OnInit {
         LockStatus: null,
         ActivationStatus: null,
       };
-     
+
       this.isFilter = !this.isFilter;
       this.fetchUserRecord();
       this.userLists = [];

@@ -116,6 +116,27 @@ export class UserService {
       });
     return <boolean>this.isRecordDeleted;
   }
+  public async userlockUrl(postData): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.userUnlockUrl + "?" + "userIdentifier=" + postData;
+    this.uiLoader.start();
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            this.isRecordDeleted = true;
+          }
+          else {
+            this.isRecordDeleted = false;
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+        this.isRecordDeleted = false;
+      });
+    return <boolean>this.isRecordDeleted;
+  }
 
   public async activate(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
