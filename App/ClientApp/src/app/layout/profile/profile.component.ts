@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
     public isTheme5Active: boolean = false;
     public isTheme0Active: boolean = true;
 
+    image: string;
     fileData: File = null;
     previewUrl: any = null;
     fileUploadProgress: string = null;
@@ -78,10 +79,8 @@ export class ProfileComponent implements OnInit {
         private localstorageservice: LocalStorageService,
         private _messageDialogService: MessageDialogService,
         private uiLoader: NgxUiLoaderService) {
-        //this.getResources();
         let userData = JSON.parse(localStorage.getItem('userClaims'));
         this.UserIdentifier = userData.UserIdentifier;
-        this.getProfileRecord();
     }
 
     // Object created to initlialize the error boolean value.
@@ -114,9 +113,6 @@ export class ProfileComponent implements OnInit {
     get mobileNumber() {
         return this.profileFormGroup.get('mobileNumber');
     }
-    // get preferredLanguage() {
-    //     return this.profileFormGroup.get('preferredLanguage');
-    // }
 
     //function to validate all fields
     validateAllFormFields(formGroup: FormGroup) {
@@ -134,23 +130,20 @@ export class ProfileComponent implements OnInit {
         // Profile form validations.
         this.profileFormGroup = this.formbulder.group({
             firstName: [null, Validators.compose([Validators.required,
-            Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
+                Validators.minLength(2),Validators.maxLength(50),
+                Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
             lastName: [null, Validators.compose([Validators.required,
-            Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
+                Validators.minLength(2),Validators.maxLength(50),
+                Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
             code: [null, Validators.compose([Validators.required])],
-            email: [null, Validators.compose([Validators.required,
-            Validators.pattern(this.emailRegex)])],
+            email: [null, Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])],
             preferredLanguage: [''],
-            profilePictire: [''],
+            Image: [''],
             CountryCode: [''],
-            mobileNumber: [null, Validators.compose([Validators.required,
-            Validators.maxLength(10),
-            Validators.minLength(10),
-            Validators.pattern(this.onlyNumbers)])]
-
+            mobileNumber: [null, Validators.compose([Validators.required, Validators.maxLength(10),
+                Validators.minLength(10), Validators.pattern(this.onlyNumbers)])]
         })
-        //this.getCountryDetails();
-        //this.getPreferredLanguageData();
+        this.getProfileRecord();
     }
 
     ngAfterViewInit(): void {
@@ -232,15 +225,10 @@ export class ProfileComponent implements OnInit {
     //         this.getProfileRecord();
     //     }
     // }
-
-    //Function to get Smtp Record and patch the value on the smtp page--
     
     async getProfileRecord() {
         let service = this.injector.get(UserService);
         let searchParameter: any = {};
-        //searchParameter.GetRoles = true;
-        //searchParameter.GetResources = true;
-        //searchParameter.GetOrganisationUnits = true;
         searchParameter.Identifier = this.UserIdentifier;
         searchParameter.PagingParameter = {};
         searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
@@ -251,21 +239,10 @@ export class ProfileComponent implements OnInit {
         searchParameter.SearchMode = Constants.Exact;
         this.uiLoader.start();
         this.usersList = await service.getUser(searchParameter);
-        //console.log(this.usersList);
         if (this.usersList.length > 0) {
             this.userRecord = this.usersList[0]
             this.userIdentifier = this.userRecord.Identifier;
-            this.resourceId = this.userRecord.ResourceIdentifier;
-            //this.receiveNotification = this.userRecord.ReceiveAlertNotifications;
-            this.previewUrl = [];
-            if (this.userRecord.ProfileImage) {
-                if (this.userRecord.ProfileImage.URL) {
-                    this.profileImage = this.userRecord.ProfileImage.URL;
-                    this.previewUrl.push(this.profileImage);
-                    this.isImageLoded = true
-                    this.showDefaultLogo = false
-                }
-            }
+            this.userRecord.roleName = this.usersList[0].Roles[0].Name;
             this.profileEditModeOn = true;
             let mobileNo, countryDiallingCode;
             let mobileNoArr = this.userRecord.ContactNumber.split('-');
@@ -279,20 +256,11 @@ export class ProfileComponent implements OnInit {
             this.profileFormGroup.patchValue({
                 firstName: this.userRecord.FirstName,
                 lastName: this.userRecord.LastName,
-                //code: this.userRecord.Code,
                 email: this.userRecord.EmailAddress,
                 mobileNumber: mobileNo,
-                CountryCode: mobileNoArr[0]
+                CountryCode: mobileNoArr[0],
             });
-            // var selectedCountryIdentifier;
-            // this.countrycodeLists.forEach(country => {
-            //     if (country.DialingCode == countryDiallingCode) {
-            //         selectedCountryIdentifier = country.Identifier;
-            //     }
-            // })
-            // if (selectedCountryIdentifier)
-                //this.jqxcountryCodeDropDownList.selectItem(selectedCountryIdentifier);
-            //this.jqxPreferredLanguageDropdownlist.selectItem(this.userRecord.PreferredLanguage.Identifier);
+            this.image = this.userRecord.Image;
             localStorage.setItem("currentUserTheme", this.userRecord.Theme);
             if (this.userRecord.Theme == 1) {
                 this.theme1();
@@ -312,17 +280,33 @@ export class ProfileComponent implements OnInit {
             else if (this.userRecord.Theme == 0) {
                 this.theme0();
             }
-            //if (this.smtpList.UserCountry) {
-            //    setTimeout(() => {
-            //        for (var index = 0; index < this.countrycodeLists.length; index++) {
-            //            if (this.countrycodeLists[index].CountryIdentifier == this.smtpList.UserCountry.CountryIdentifier) {
-            //                this.jqxcountryCodeDropDownList.selectIndex(index);
-            //            }
-            //        }
-            //    }, 500)
-            //}
         }
     }
+
+    onFileChanged(event) {
+        let file = event.target.files[0];
+        if (file.size > 4194304) {
+          this.profileFormErrorObject.showProfilePictureSizeError = true;
+          return false;
+        }
+        this.profileFormErrorObject.showProfilePictureSizeError = false;
+        var pattern = /image-*/;
+        if (!file.type.match(pattern)) {
+          this.profileFormErrorObject.showProfilePictureTypeError = true;
+          return false; 
+        }
+        this.profileFormErrorObject.showProfilePictureTypeError = false;
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          if (reader.DONE == 2) {
+            this.image = reader.result.toString();
+          }
+        };
+        reader.onerror = function (error) {
+          //console.log('Error: ', error);
+        };
+      }
 
     //custom validation check
     profileFormValidaton(): boolean {
@@ -346,17 +330,8 @@ export class ProfileComponent implements OnInit {
             this.profileFormErrorObject.showUserLastNameError = true;
             return false;
         }
-        if (this.profileFormGroup.controls.code.invalid) {
-            this.profileFormErrorObject.showUserCodeError = true;
-            return false;
-        }
-        if (this.profileFormGroup.controls.email.invalid) {
-            this.profileFormErrorObject.showUserEmailError = true;
-            return false;
-        }
-        // let countryObject = this.jqxcountryCodeDropDownList.getSelectedItem();
-        // if (!countryObject) {
-        //     this.profileFormErrorObject.showCountryCodeError = true;
+        // if (this.profileFormGroup.controls.email.invalid) {
+        //     this.profileFormErrorObject.showUserEmailError = true;
         //     return false;
         // }
         if (this.profileFormGroup.controls.mobileNumber.invalid) {
@@ -368,36 +343,14 @@ export class ProfileComponent implements OnInit {
 
     //save functionality.
     onSubmit() {
-        //if (this.profileFormValidaton()) {
-            var selectedCountryCode = "";
-            // let countryObject = this.jqxcountryCodeDropDownList.getSelectedItem();
-            // if (countryObject) {
-            //     this.countrycodeLists.forEach(country => {
-            //         if (country.Identifier == countryObject.value) {
-            //             selectedCountryCode = country.DialingCode;
-            //         }
-            //     })
-            // }
-            // let selectedLang: any = {}
-            // let preferredLanguageObject = this.jqxPreferredLanguageDropdownlist.getSelectedItem();
-            // if (preferredLanguageObject) {
-            //     this.languageList.forEach(lang => {
-            //         if (lang.Identifier == preferredLanguageObject.value) {
-            //             selectedLang = lang;
-            //         }
-            //     })
-            // }
+        if (this.profileFormValidaton()) {
             this.userRecord.FirstName = this.profileFormGroup.value.firstName;
             this.userRecord.LastName = this.profileFormGroup.value.lastName;
             this.userRecord.EmailAddress = this.profileFormGroup.value.email;
-            //this.userRecord.MobileNumber = selectedCountryCode + '-' + this.profileFormGroup.value.mobileNumber;
             this.userRecord.ContactNumber = this.profileFormGroup.value.CountryCode + "-" + this.profileFormGroup.value.mobileNumber,
-            //this.userRecord.Code = this.profileFormGroup.value.code;
-            //this.userRecord.PreferredLanguage = selectedLang;
-            //this.userRecord.ReceiveAlertNotifications = this.receiveNotification;
-            //this.userRecord.Theme = this.isTheme1Active == true ? 1 : this.isTheme2Active == true ? 2 : this.isTheme3Active == true ? 3 : this.isTheme4Active == true ? 4 : this.isTheme5Active == true ? 5 : this.isTheme0Active == true ? 6 : 3;
+            this.userRecord.Image = this.image,
             this.saveRecord(this.userRecord);
-        //}
+        }
     }
 
     //Api called here to save record
@@ -405,24 +358,8 @@ export class ProfileComponent implements OnInit {
     async saveRecord(profileObject) {
         var formData = new FormData()
         var UserArr: any = [];
-        var userObj: any = {};
-        userObj.UserData = profileObject;
-        userObj.Resources = [];
         UserArr.push(profileObject);
-        // for (var j = 0; j < this.fileArray.length; j++) {
-        //     var resourceObj: any = {};
-        //     resourceObj.Identifier = j;
-        //     resourceObj.File = this.fileArray[j];
-        //     UserArr[0].Resources.push(resourceObj);
-        // }
-        // for (var i = 0; i < UserArr.length; i++) {
-        //     formData.append('Users[' + i + '][UserData]', JSON.stringify(UserArr[i].UserData));
-        //     for (var j = 0; j < UserArr[i].Resources.length; j++) {
-        //         formData.append('Users[' + i + '][Resources][' + j + '][Identifier]', UserArr[i].Resources[j].Identifier);
-        //         formData.append('Users[' + i + '][Resources][' + j + '][File]', UserArr[i].Resources[j].File);
-        //     }
-        // }
-        //debugger
+        
         let userService = this.injector.get(UserService);
         this.uiLoader.start();
         userService.saveUser(UserArr, this.profileEditModeOn).subscribe(data => {
@@ -433,7 +370,6 @@ export class ProfileComponent implements OnInit {
                 message = Constants.recordUpdatedMessage;
               }
               this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-              //this.navigateToListPage();
               localStorage.removeItem('currentUserName');
               let newUserName = profileObject.FirstName + ' ' + profileObject.LastName;
               localStorage.setItem("currentUserName", newUserName);
@@ -443,18 +379,6 @@ export class ProfileComponent implements OnInit {
           }, (error: HttpResponse<any>) => {
             this.uiLoader.stop();
           });
-        // userService.saveUser(formData, this.profileEditModeOn).subscribe(data => {
-        //     this.uiLoader.stop();
-        //     if (data == true) {
-        //         let message = Constants.recordUpdatedMessage;
-        //         this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-        //         this.getProfileRecord();
-        //     }
-        // }, (error: HttpResponse<any>) => {
-        //     this.uiLoader.stop();
-        //     let errorMessage = error["error"].Error["Message"];
-        //     this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
-        // });
     }
 
     //Function to upload image--

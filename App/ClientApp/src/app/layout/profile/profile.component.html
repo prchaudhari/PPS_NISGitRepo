@@ -1,6 +1,6 @@
 <div class="main-container">
   <div class="page-title">
-    <span class="xs-title">Update Profile  </span>
+    <span class="xs-title">Update Profile</span>
   </div>
 
   <form [formGroup]="profileFormGroup" name="profileForm" autocomplete="on" novalidate id="frmprofile">
@@ -10,73 +10,97 @@
         <div class="row">
           <div class="col-md-4 col-sm-5 col-12 form-group">
             <div class="profile-avtar-box">
-              <div class="image-preview mb-3">
-                <img src="assets/images/user.jpg" class="profile-avtar selected-avatar" />
+              <div *ngIf="image!='' && image!=null; else imageIcon" class="image-preview">
+                <img [src]="image" class="profile-avtar">
               </div>
+              <div *ngIf="(image=='' || image==null) && profileEditModeOn">
+                <div class="ltr-img">
+                  <span>{{userRecord.FirstName.charAt(0) | titlecase}}</span>
+                  <span>{{userRecord.LastName.charAt(0) | titlecase}}</span>
+                </div>
+              </div>
+              <ng-template #imageIcon>
+                <div class="image-preview" *ngIf="!profileEditModeOn">
+                  <img src="assets/images/user.png" class="profile-avtar" />
+                </div>
+              </ng-template>
               <div>
-                <label for="upload-photo" class="m-0 font-weight-normal"> Change Avatar</label>
-                <input type="file" name="photo" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg"
-                                     (change)="fileUpload($event)" formControlName="profilePictire" />
-                              <div class="validation-msg" style="color:red">
-                                  <ul *ngIf="profileFormErrorObject.showProfilePictureSizeError"
-                                      style="list-style-type:none">
-                                      <li class="text-danger">
-                                          Logo Size error
-                                      </li>
-                                  </ul>
-                              </div>
+                <label for="upload-photo" class="m-0 font-weight-normal"> Upload Avatar</label>
+                <input type="file" (change)="onFileChanged($event)" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
+                <div class="validation-msg" style="color:red">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="profileFormErrorObject.showProfilePictureSizeError">
+                      File size should not be greater the 2MB
+                    </li>
+                    <li class="text-danger" *ngIf="profileFormErrorObject.showProfilePictureTypeError">
+                      Invalid file type
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
+            </div>
             <div style="clear:both"></div>
-          </div>
           <div class="col-md-8 col-sm-7 col-xs-12">
   
             <div class="row">
               <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
-                <label for="inputFirstName">First Name</label>
-                <input type="text" class="form-control" id="inputFirstName"
-                                     formControlName="firstName">
-                              <div class="validation-msg" style="color:red">
-                                  <ul *ngIf="profileFormErrorObject.showUserFirstNameError" style="list-style-type:none">
-                                      <li class="text-danger" *ngIf="firstName.errors?.pattern">
-                                          Invalid first name
-                                      </li>
-                                      <li class="text-danger" *ngIf="firstName.errors?.required">
-                                          First name required
-                                      </li>
-                                  </ul>
-                              </div>
+                <label for="inputFirstName">First Name</label><span class="text-danger ml-2">*</span>
+                <input type="text" class="form-control" id="inputFirstName" formControlName="firstName">
+                <div class="validation-msg" style="color:red">
+                    <ul *ngIf="profileFormErrorObject.showUserFirstNameError" style="list-style-type:none">
+                        <li class="text-danger" *ngIf="firstName.errors?.pattern">
+                            Invalid first name
+                        </li>
+                        <li class="text-danger" *ngIf="firstName.errors?.required">
+                            First name required
+                        </li>
+                        <li class="text-danger" *ngIf="firstName.errors?.minlength">
+                          First name length should not be less than 2
+                        </li>
+                        <li class="text-danger" *ngIf="firstName.errors?.maxlength">
+                          First name length should not be greater than 50
+                        </li>
+                    </ul>
+                </div>
               </div>
               <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
-                <label for="inputLastName">Last Name</label>
+                <label for="inputLastName">Last Name</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" id="inputLastName" formControlName="lastName">
-                              <div class="validation-msg" style="color:red">
-                                  <ul *ngIf="profileFormErrorObject.showUserLastNameError" style="list-style-type:none">
-                                      <li class="text-danger" *ngIf="lastName.errors?.pattern">
-                                          Invalid last name
-                                      </li>
-                                      <li class="text-danger" *ngIf="lastName.errors?.required">
-                                          Last name required
-                                      </li>
-
-                                  </ul>
-                              </div>
+                <div class="validation-msg" style="color:red">
+                    <ul *ngIf="profileFormErrorObject.showUserLastNameError" style="list-style-type:none">
+                        <li class="text-danger" *ngIf="lastName.errors?.pattern">
+                            Invalid last name
+                        </li>
+                        <li class="text-danger" *ngIf="lastName.errors?.required">
+                            Last name required
+                        </li>
+                        <li class="text-danger" *ngIf="lastName.errors?.minlength">
+                          Last name should not be less than 2 characters
+                        </li>
+                        <li class="text-danger" *ngIf="lastName.errors?.maxlength">
+                          Last name should not be greater than 50 characters
+                        </li>
+                    </ul>
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
                 <label for="inputEmail">Email Id</label>
-                <input type="email" class="form-control" id="inputEmail" formControlName="email">
-                              <div class="validation-msg" style="color:red">
-                                  <ul *ngIf="profileFormErrorObject.showUserEmailError" style="list-style-type:none">
-                                      <li class="text-danger" *ngIf="email.errors?.pattern">
-                                          Invalid email id
-                                      </li>
-                                      <li class="text-danger" *ngIf="email.errors?.required">
-                                          Email id required
-                                      </li>
-                                  </ul>
-                              </div>
+                <!-- <span class="text-danger ml-2">*</span> -->
+                <div>{{userRecord.EmailAddress}}</div>
+                <!-- <input type="email" class="form-control" id="inputEmail" formControlName="email" disabled>
+                <div class="validation-msg" style="color:red">
+                    <ul *ngIf="profileFormErrorObject.showUserEmailError" style="list-style-type:none">
+                        <li class="text-danger" *ngIf="email.errors?.pattern">
+                            Invalid email id
+                        </li>
+                        <li class="text-danger" *ngIf="email.errors?.required">
+                            Email id required
+                        </li>
+                    </ul>
+                </div> -->
               </div>
               <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
                 <div class="row">
@@ -85,27 +109,24 @@
                     <select formControlName="CountryCode" class="form-control">
                       <option *ngFor="let role of countrycodeLists" [value]="role.DialingCode">{{role.CountryNameCode}}</option>
                     </select>
-                    <!-- <div class="validation-msg" style="color:red">
-                      <ul *ngIf="userFormErrorObject.showCountryCodeError" style="list-style-type:none">
-                        <li class="text-danger">
-                          Please select country code
-                        </li>
-                      </ul>
-                    </div> -->
                   </div>
                   <div class="col-7 col-md-7 col-sm-7 col-xs-7 pl-1">
-                    <label for="inputMobileNumber">Mobile No.</label>
-                    <input type="text" class="form-control" formControlName="mobileNumber"
-                                             name="mobileNumber">
-                                      <div class="validation-msg" style="color:red">
-                                          <ul *ngIf="profileFormErrorObject.showUserMobileNumberError"
-                                              style="list-style-type:none">
-                                              
-                                              <li class="text-danger" *ngIf="mobileNumber.errors?.pattern">
-                                                  Invalid mobile number
-                                              </li>
-                                          </ul>
-                                      </div>
+                    <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
+                    <input type="text" class="form-control" formControlName="mobileNumber" name="mobileNumber">
+                    <div class="validation-msg" style="color:red">
+                        <ul *ngIf="profileFormErrorObject.showUserMobileNumberError"
+                            style="list-style-type:none">
+                            <li class="text-danger" *ngIf="mobileNumber.errors?.pattern">
+                                Invalid mobile number
+                            </li>
+                            <li class="text-danger" *ngIf="mobileNumber.errors?.minlength">
+                              Mobile number should not be less than 10 digits
+                            </li>
+                            <li class="text-danger" *ngIf="mobileNumber.errors?.maxlength">
+                              Mobile number should not be greater than 10 digits
+                            </li>
+                        </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -113,10 +134,10 @@
             <div class="row">
               <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
                 <label for="inputRole" class="m-0">Role</label>
-                <div>Super Admin</div>
+                <div>{{userRecord.roleName}}</div>
               </div>
               <div class="col-lg-5 col-sm-6 form-group">
-                <label>  Theme</label>
+                <label>Theme</label>
                 <!--thems-->
                 <div class="themes">
                   <ul class="list-inline mb-0">
@@ -137,12 +158,9 @@
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
         <button class="btn-footer-fill mr-2" (click)="onSubmit()">Save</button>
-        <button class="btn-footer-outline" (click)="backClicked()">Cancel</button>
-  
+        <button class="btn-footer-outline" (click)="backClicked()">Cancel</button> 
       </div>
     </div>
 
   </form>
-
-  
 </div>
