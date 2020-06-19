@@ -21,11 +21,11 @@
           <div class="col-sm-12 mt-4">
             <div class="login-control">
               <span class="fa fa-user"></span>
-              <input type="text" class="txtLogin" placeholder="User name" autocomplete="off" formControlName="userName">
+              <input type="text" class="txtLogin" placeholder="User name" autocomplete="off" formControlName="userName" maxlength="50">
               <div class="validation-msg" style="color:red">
                 <ul *ngIf="loginFormErrorObject.showUserNameError" style="list-style-type:none">
-                    <li class="text-danger" *ngIf="userName.errors?.pattern">Invalid email id</li>
-                    <li class="text-danger" *ngIf="userName.errors?.required">Email id field required</li>
+                    <li class="text-danger" *ngIf="userName.errors?.pattern">Invalid username</li>
+                    <li class="text-danger" *ngIf="userName.errors?.required">Username is required</li>
 
                 </ul>
             </div>
@@ -39,7 +39,7 @@
               <input type="password" class="txtLogin" placeholder="Password" autocomplete="off" formControlName="password">
               <div class="validation-msg" style="color:red">
                 <ul *ngIf="loginFormErrorObject.showPasswordError" style="list-style-type:none">
-                    <li class="text-danger" *ngIf="password.errors?.required">Password field required</li>
+                    <li class="text-danger" *ngIf="password.errors?.required">Password is required</li>
 
                 </ul>
             </div>
