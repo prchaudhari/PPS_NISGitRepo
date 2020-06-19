@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   public resetForm: FormGroup;
   public emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
+  public emailPatternRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   public UserIdentifier;
   public errorMsg: boolean;
   public Locale;
@@ -90,7 +91,7 @@ export class LoginComponent implements OnInit {
     });
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
-      console.log('Im in');
+      //console.log('Im in');
       //this.navigateToLandingPage();
       this.route.navigate(['dashboard']);
     }
@@ -131,14 +132,17 @@ export class LoginComponent implements OnInit {
   };
   onForgotPasswordSubmit(): boolean {
     if (this.userEmail == undefined || this.userEmail == null) {
-      this.status = "Please enter Email ID";
+      this._messageDialogService.openDialogBox('Error', "Please enter Email ID.", Constants.msgBoxError);
       return this.result = false;
     }
-    if (this.userEmail != undefined && this.userEmail != null) {
-      if (this.userEmail.length == 0) {
-        this.status = "Please enter Email ID";
-        return this.result = false;
-      }
+    if (this.userEmail != undefined && this.userEmail != null && this.userEmail.length == 0) {
+      this.status = "Please enter Email ID";
+      this._messageDialogService.openDialogBox('Error', "Please enter Email ID.", Constants.msgBoxError);
+      return this.result = false;
+    }
+    else if(!this.emailPatternRegex.test(this.userEmail)) {
+      this._messageDialogService.openDialogBox('Error', "Invalid email address.", Constants.msgBoxError);
+      return this.result = false;
     }
 
     let params = new HttpParams();
@@ -150,9 +154,10 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         this.spinner.stop();
         this._messageDialogService.openDialogBox('Success', "Reset password link sent successfully.Please check your email.", Constants.msgBoxSuccess);
+        this.isLoginForm();
       },
         error => {
-          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this._messageDialogService.openDialogBox('Error', error.error.ExceptionMessage, Constants.msgBoxError);
           this.spinner.stop();
         },
         () => {
