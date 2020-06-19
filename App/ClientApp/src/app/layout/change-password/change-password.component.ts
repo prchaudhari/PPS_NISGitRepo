@@ -98,7 +98,7 @@ export class ChangePasswordComponent implements OnInit {
     const { value: oldPassword } = formGroup.get('oldPassword');
     const { value: newPassword } = formGroup.get('newPassword');
     return oldPassword != '' && newPassword === oldPassword ?
-      { oldPwdErr: "Current Password and New Password must not be same." } : null;
+      { oldPwdErr: "Old password cannot be used again" } : null;
   }
 
   Submit() {
