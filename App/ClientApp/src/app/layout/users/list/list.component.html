@@ -139,11 +139,11 @@
     <form [formGroup]="userFormGroup" name="userForm" class="filter-body-left d-flex flex-column stylescrollbar">
       <div class="form-group">
         <label>Name</label>
-        <input [(ngModel)]="UserFilter.FirstName" type="text" class="form-control">
+        <input [(ngModel)]="UserFilter.FirstName" type="text" formControlName="FirstName"class="form-control">
       </div>
       <div class="form-group">
         <label>Email Id</label>
-        <input [(ngModel)]="UserFilter.EmailAddress" type="text" class="form-control">
+        <input [(ngModel)]="UserFilter.EmailAddress" type="text" formControlName="EmailAddress" class="form-control">
       </div>
       <div class="form-group">
         <label>Role</label>
@@ -155,7 +155,7 @@
         <label>Lock Status</label>
         <div>
           <label class="switch d-block">
-            <input type="checkbox" (change)="lockEventCheck($event.target)" [(ngModel)]="UserFilter.LockStatus">
+            <input type="checkbox" (change)="lockEventCheck($event.target)" formControlName="LockStatus"  [(ngModel)]="UserFilter.LockStatus">
             <span class="slider round"></span>
           </label>
         </div>
@@ -165,7 +165,7 @@
         <label>Activation Status</label>
         <div>
           <label class="switch d-block">
-            <input type="checkbox" (change)="activationEventCheck($event.target)" [(ngModel)]="UserFilter.ActivationStatus">
+            <input type="checkbox" (change)="activationEventCheck($event.target)" formControlName="ActivationStatus"  [(ngModel)]="UserFilter.ActivationStatus">
             <span class="slider round"></span>
           </label>
         </div>

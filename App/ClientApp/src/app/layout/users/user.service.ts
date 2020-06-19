@@ -97,7 +97,7 @@ export class UserService {
   //method to call api of unlock User.
   public async unlockUser(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.userUnlockUrl + "?" + "identifier=" + postData;
+    let requestUrl = URLConfiguration.userUnlockUrl + "?" + "userIdentifier=" + postData;
     this.uiLoader.start();
     await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -118,7 +118,7 @@ export class UserService {
   }
   public async userlockUrl(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.userUnlockUrl + "?" + "userIdentifier=" + postData;
+    let requestUrl = URLConfiguration.userlockUrl + "?" + "userIdentifier=" + postData;
     this.uiLoader.start();
     await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {

@@ -295,7 +295,16 @@ namespace nIS
 
                                 userSearchParameter.Identifier += stringBuilderObject.ToString();
                             }
+                            else
+                            {
+                                IList<UserRecord> record = nISEntities.UserRecords.Where(item => item.IsDeleted == false).ToList();
+                                if (record?.Count > 0)
+                                {
+                                    userSearchParameter.UserIdentifierToSkip = string.Join(",", record.Select(x => x.Id).Distinct().ToList());
+                                }
+                            }
                         }
+                        
                     }
                     string whereClause = this.WhereClauseGenerator(userSearchParameter, tenantCode);
                     userRecords = new List<UserRecord>();
@@ -1083,7 +1092,7 @@ namespace nIS
                 if (validationEngine.IsValidText(searchParameter.UserIdentifierToSkip))
                 {
                     //queryString.Append("(" + string.Join("and ", searchParameter.UserIdentifierToSkip.ToString().Split(',').Select(item => string.Format(" !Id.Equals({0}) ", Convert.ToInt64(item)))) + ") and ");
-                    queryString.Append("(" + string.Join("or ", searchParameter.UserIdentifierToSkip.ToString().Split(',').Select(item => string.Format("!Id.Equals({0}) ", item))) + ") and ");
+                    queryString.Append("(" + string.Join("and ", searchParameter.UserIdentifierToSkip.ToString().Split(',').Select(item => string.Format("!Id.Equals({0}) ", item))) + ") and ");
                 }
 
                 if (validationEngine.IsValidText(searchParameter.FirstName))

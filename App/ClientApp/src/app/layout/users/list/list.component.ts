@@ -125,7 +125,7 @@ export class ListComponent implements OnInit {
     DesignationIdentifier: null,
     PreferedLanguageIdentifier: null,
     LockStatus: null,
-    ActivationStatus: null,
+    ActivationStatus: true,
   };
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -214,8 +214,11 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     // this.getUserdetail();
     this.userFormGroup = this.formBuilder.group({
-      UserRole: [0, Validators.compose([])]
-
+      UserRole: [0, Validators.compose([])],
+      FirstName: ['', Validators.compose([])],
+      EmailAddress: ['', Validators.compose([])],
+      ActivationStatus: [true, Validators.compose([])],
+      LockStatus: [0, Validators.compose([])],
     })
     this.getRoles();
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
@@ -535,7 +538,9 @@ export class ListComponent implements OnInit {
         LockStatus: null,
         ActivationStatus: null,
       };
-
+      this.userFormGroup.controls['UserRole'].setValue(0);
+      this.userFormGroup.controls['LockStatus'].setValue(null);
+      this.userFormGroup.controls['ActivationStatus'].setValue(null);
       this.isFilter = !this.isFilter;
       this.fetchUserRecord();
       this.userLists = [];
@@ -550,10 +555,10 @@ export class ListComponent implements OnInit {
       searchParameter.SortParameter.SortColumn = Constants.UserName;
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
-      if (this.UserFilter.FirstName != null) {
+      if (this.userFormGroup.value.FirstName != null) {
         searchParameter.FirstName = this.UserFilter.FirstName;
       }
-      if (this.UserFilter.EmailAddress != null) {
+      if (this.userFormGroup.value.EmailAddress != null) {
         searchParameter.EmailAddress = this.UserFilter.EmailAddress;
       }
       if (this.UserFilter.RoleIdentifier != null) {
