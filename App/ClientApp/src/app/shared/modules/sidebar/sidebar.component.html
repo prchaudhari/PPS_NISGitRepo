@@ -10,13 +10,13 @@
   <ul class='nav nav-toolbar float-right' [ngClass]="isTopbarShow? 'show':'hide'">
     <li class="nav-item dropdown float-right">
       <a class="nav-link top-nav-link" id="dropdownMenuButton" data-toggle="dropdown">
-        <span class="user-name-nav">Admin</span>
+        <span class="user-name-nav">{{loggedInUserName}}</span>
         <i class="fa fa-angle-down ml-2"></i>
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" (click)="navigateToProfile()">Profile</a>
         <a class="dropdown-item" (click)="navigateToChangePassword()">Change Password</a>
-        <a class="dropdown-item" href="#">Logout</a>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
       </div>
     </li>
   </ul>

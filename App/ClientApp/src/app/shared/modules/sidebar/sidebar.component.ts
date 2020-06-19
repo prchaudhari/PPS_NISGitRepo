@@ -43,34 +43,34 @@ export class SidebarComponent implements OnInit {
         this.route.navigate(['/user']);
     }
     navigateToWidgets() {
-        this.route.navigate(['/layout/widgets']);
+        this.route.navigate(['/widgets']);
     }
     navigateToDashoard() {
-        this.route.navigate(['/layout/dashboard']);
+        this.route.navigate(['/dashboard']);
     }
     navigateToTemplates() {
-        this.route.navigate(['/layout/pages']);
+        this.route.navigate(['/pages']);
     }
     navigateToChangePassword() {
-        this.route.navigate(['/layout/changepassword']);
+        this.route.navigate(['/changepassword']);
     }
     navigateToProfile() {
-        this.route.navigate(['/layout/profile']);
+        this.route.navigate(['/profile']);
     }
     navigateToScheduleManagement() {
-        this.route.navigate(['/layout/schedulemanagement']);
+        this.route.navigate(['/schedulemanagement']);
     }
     navigateToStatementDef() {
-        this.route.navigate(['/layout/statementdefination']);
+        this.route.navigate(['/statementdefination']);
     }
     navigateToAssetLibraries() {
-        this.route.navigate(['/layout/assetlibrary']);
+        this.route.navigate(['/assetlibrary']);
     }
     navigateToLogs() {
-        this.route.navigate(['/layout/logs']);
+        this.route.navigate(['/logs']);
     }
     navigateToAnalytics() {
-        this.route.navigate(['/layout/analytics']);
+        this.route.navigate(['/analytics']);
     }
 
     async logout() {
@@ -95,7 +95,8 @@ export class SidebarComponent implements OnInit {
 
         localStorage.removeItem('currentUserName');
         localStorage.removeItem('currentUserTheme');
-        //localStorage.removeItem('user');
+        localStorage.removeItem('user');
+        localStorage.removeItem('UserEmail');
         localStorage.removeItem('userClaims');
         localStorage.removeItem('token');
         this.route.navigate(['login']);

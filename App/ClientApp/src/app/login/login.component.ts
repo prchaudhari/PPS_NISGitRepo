@@ -197,7 +197,7 @@ export class LoginComponent implements OnInit {
         //this.handleTheme(userData.UserTheme);
         //this.navigateToLandingPage();
         this.loginErrorMsg = '';
-        this.route.navigate(['layout/dashboard']);
+        this.route.navigate(['dashboard']);
       }
     }, (error: HttpResponse<any>) => {
       this.spinner.stop();

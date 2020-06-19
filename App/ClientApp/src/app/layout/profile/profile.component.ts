@@ -374,7 +374,6 @@ export class ProfileComponent implements OnInit {
               let newUserName = profileObject.FirstName + ' ' + profileObject.LastName;
               localStorage.setItem("currentUserName", newUserName);
               this.getProfileRecord();
-              window.location.reload();
             }
           }, (error: HttpResponse<any>) => {
             this.uiLoader.stop();

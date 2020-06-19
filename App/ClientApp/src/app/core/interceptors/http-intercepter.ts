@@ -29,12 +29,7 @@ export class HttpIntercepter implements HttpInterceptor {
     const excludedURLs = [
       'API/login', '/asset/upload'
     ];
-    var currentUser = this.localstorageservice.GetCurrentUser();
-    let tenantCode
-    if (currentUser != null) {
-      tenantCode = currentUser.TenantCode;
-
-    }
+    
     var currentUser = this.localstorageservice.GetCurrentUser();
     // Add Authorization Header If Already LoggedIn User
     if (currentUser) {
