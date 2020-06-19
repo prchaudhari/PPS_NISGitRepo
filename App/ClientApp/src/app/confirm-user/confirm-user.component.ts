@@ -73,10 +73,14 @@ export class ConfirmUserComponent implements OnInit {
     console.log(this.encryptedText);
     let operationUrl = this.baseURL + 'User/Confirm';
     $('.overlay').show();
-    
+
     this._http.get(operationUrl, { params: params })
       .subscribe(data => {
         this._messageDialogService.openDialogBox('Success', "Password generated successfully", Constants.msgBoxSuccess);
+        localStorage.removeItem('currentUserName');
+        localStorage.removeItem('currentUserTheme');
+        localStorage.removeItem('userClaims');
+        localStorage.removeItem('token');
         this._router.navigate(['login']);
       },
         error => {

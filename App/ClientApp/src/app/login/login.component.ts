@@ -91,8 +91,6 @@ export class LoginComponent implements OnInit {
     });
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
-      //console.log('Im in');
-      //this.navigateToLandingPage();
       this.route.navigate(['dashboard']);
     }
   }
@@ -157,7 +155,7 @@ export class LoginComponent implements OnInit {
         this.isLoginForm();
       },
         error => {
-          this._messageDialogService.openDialogBox('Error', error.error.ExceptionMessage, Constants.msgBoxError);
+          this._messageDialogService.openDialogBox('Error', 'Email Id not registered with us..!!', Constants.msgBoxError);
           this.spinner.stop();
         },
         () => {
@@ -206,8 +204,9 @@ export class LoginComponent implements OnInit {
       if (error["error"]) {
         if (error["error"].error_description) {
           let errorMessage = error["error"].error_description;
-          //this.loginErrorMsg = errorMessage;
-          //this.errorMsg = true;
+          if(errorMessage == 'User not found') {
+            errorMessage = 'Email Id not registered with us..!!';
+          }
           this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       }

@@ -434,7 +434,11 @@ export class ProfileComponent implements OnInit {
               }
               this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
               //this.navigateToListPage();
+              localStorage.removeItem('currentUserName');
+              let newUserName = profileObject.FirstName + ' ' + profileObject.LastName;
+              localStorage.setItem("currentUserName", newUserName);
               this.getProfileRecord();
+              window.location.reload();
             }
           }, (error: HttpResponse<any>) => {
             this.uiLoader.stop();
