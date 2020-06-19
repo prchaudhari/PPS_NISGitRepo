@@ -48,7 +48,7 @@ namespace nIS
         {
             get
             {
-                return ExceptionConstant.ROLE_EXCEPTION + "~" + ExceptionConstant.DUPLICATE_ROLE_FOUND_EXCEPTION;
+                return  ExceptionConstant.DUPLICATE_ROLE_FOUND_EXCEPTION;
             }
         }
 

@@ -90,7 +90,8 @@ public async saveRole(postData, roleEditModeOn): Promise<boolean> {
                     this.isRecordSaved = false;
                 }
             }
-        }, (error: HttpResponse<any>) => {
+        }, (error) => {
+            this._messageDialogService.openDialogBox('Error', error.error.ExceptionMessage, Constants.msgBoxError);
             this.isRecordSaved = false;
             this.uiLoader.stop();
         });

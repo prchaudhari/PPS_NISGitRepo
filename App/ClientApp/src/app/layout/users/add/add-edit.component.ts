@@ -43,6 +43,8 @@ export class UserAddEditComponent implements OnInit {
     { "CountryNameCode": "ZAF +27", "DialingCode": "+27" }
   ];
   image: string;
+  FirstChar: string;
+  SecondChar:string
   public countrycodesource = [];
   public selectedAll: any;
   public allRoles;
@@ -234,9 +236,9 @@ export class UserAddEditComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //searchParameter.GetPrivileges = true;
-    this.spinner.start();
+    //this.spinner.start();
     var copy = await this.loginService.getRoles(searchParameter);
-    this.spinner.stop();
+    //this.spinner.stop();
     copy.forEach(role => {
       this.roleList.push(role);
     })
@@ -305,7 +307,7 @@ export class UserAddEditComponent implements OnInit {
 
   //function call to search role from the rolelist--
   searchFilter(searchType) {
-    this.spinner.start();
+    //this.spinner.start();
     if (searchType == 'reset') {
       this.userRoleFilterForm.patchValue({
         filterRoleName: null
@@ -484,9 +486,9 @@ export class UserAddEditComponent implements OnInit {
     var UserArr = [];
     UserArr.push(userObject);
 
-    this.spinner.start();
+   this.spinner.start();
     this.service.saveUser(UserArr, this.userEditModeOn).subscribe(data => {
-      this.spinner.stop();
+     this.spinner.stop();
       if (data == true) {
         let message = Constants.recordAddedMessage;
         if (this.userEditModeOn) {
@@ -521,9 +523,9 @@ export class UserAddEditComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
-    this.spinner.start();
+    //this.spinner.start();
     this.usersList = await userService.getUser(searchParameter);
-    this.spinner.stop();
+    //this.spinner.stop();
     this.usersList.forEach(userObject => {
       this.resourceId = userObject.ResourceIdentifier
       this.previewUrl = [];
@@ -535,6 +537,9 @@ export class UserAddEditComponent implements OnInit {
           this.showDefaultLogo = false
         }
       }
+      this.FirstChar = userObject.FirstName.charAt(0);
+      this.SecondChar = userObject.LastName.charAt(0);
+
       this.userRoleLists = userObject.Roles;
       let mobileNo, countryDiallingCode;
       let mobileNoArr = userObject.ContactNumber.split('-');

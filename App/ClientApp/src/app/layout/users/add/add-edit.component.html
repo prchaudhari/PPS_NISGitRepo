@@ -20,8 +20,8 @@
               </div>
               <div *ngIf="(image=='' || image==null) && userEditModeOn">
                 <div class="ltr-img">
-                  <span>{{usersList[0].FirstName.charAt(0) | titlecase}}</span>
-                  <span>{{usersList[0].LastName.charAt(0) | titlecase}}</span>
+                  <span>{{FirstChar | titlecase}}</span>
+                  <span>{{SecondChar | titlecase}}</span>
                 </div>
               </div>
               <ng-template #imageIcon>

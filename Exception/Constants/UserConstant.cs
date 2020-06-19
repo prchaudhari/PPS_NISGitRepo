@@ -57,7 +57,7 @@ namespace nIS
         /// The duplicate user found exception key
         /// </summary>
         //public const string DUPLICATE_USER_FOUND_EXCEPTION = "DuplicateUserFoundException";
-        public const string DUPLICATE_USER_FOUND_EXCEPTION = "Duplicate user found";
+        public const string DUPLICATE_USER_FOUND_EXCEPTION = "User already exists";
 
         /// <summary>
         /// The invalid user password exception

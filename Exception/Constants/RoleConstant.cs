@@ -21,7 +21,7 @@ namespace nIS
         /// Duplicate Role found exception
         /// </summary>
         //public const string DUPLICATE_ROLE_FOUND_EXCEPTION = "DuplicateRoleFoundException";
-        public const string DUPLICATE_ROLE_FOUND_EXCEPTION = "Duplicate role found";
+        public const string DUPLICATE_ROLE_FOUND_EXCEPTION = "Role already exists";
 
         /// <summary>
         /// Role not found exception
