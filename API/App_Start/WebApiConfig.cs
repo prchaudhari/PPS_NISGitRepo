@@ -13,6 +13,7 @@ namespace nIS
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+            config.Filters.Add(new HandleExceptionFilter());
             // Web API configuration and services
             config.DependencyResolver = new IoCContainer(Container.GetUnityContainer());
             config.Routes.MapHttpRoute(

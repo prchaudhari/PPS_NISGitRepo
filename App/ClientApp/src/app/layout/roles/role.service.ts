@@ -91,7 +91,7 @@ public async saveRole(postData, roleEditModeOn): Promise<boolean> {
                 }
             }
         }, (error) => {
-            this._messageDialogService.openDialogBox('Error', error.error.ExceptionMessage, Constants.msgBoxError);
+            this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
             this.isRecordSaved = false;
             this.uiLoader.stop();
         });

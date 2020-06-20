@@ -86,7 +86,7 @@ export class ConfirmUserComponent implements OnInit {
         this._router.navigate(['login']);
       },
         error => {
-          this._messageDialogService.openDialogBox('Error', error.error.ExceptionMessage, Constants.msgBoxError);
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         },
         () => {
         }

@@ -24,7 +24,6 @@ namespace nIS
     /// <summary>
     /// This class represent api controller for user
     /// </summary>
-    [EnableCors("*", "*", "*", "*")]
     [RoutePrefix("User")]
     public class UserController : ApiController
     {

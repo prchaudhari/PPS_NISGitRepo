@@ -498,7 +498,7 @@ export class UserAddEditComponent implements OnInit {
         this.navigateToListPage();
       }
     }, (error: any) => {
-        this._messageDialogService.openDialogBox('Error', error.error.ExceptionMessage, Constants.msgBoxError);
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
       this.spinner.stop();
     });
   }

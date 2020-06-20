@@ -121,9 +121,11 @@ export class ChangePasswordComponent implements OnInit {
         this.router.navigate(['login']);
       },
         error => {
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
           this.spinner.stop();
         },
         () => {
+         
           this.spinner.stop();
         }
       );
