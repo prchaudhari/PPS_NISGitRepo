@@ -8,11 +8,32 @@ const routes: Routes = [
     {
         path: '',
         children: [
-            { path: '', component: ListAssetLibraryComponent },
-            { path: 'List', component: ListAssetLibraryComponent },
-            { path: 'Add', component: AddAssetLibraryComponent },
-            { path: 'View', component: ViewAssetLibraryComponent }
-        ]
+            //{ path: '', component: ListAssetLibraryComponent },
+            //{ path: 'List', component: ListAssetLibraryComponent },
+            //{ path: 'Add', component: AddAssetLibraryComponent },
+            //{ path: 'View', component: ViewAssetLibraryComponent }
+          {
+            path: '',
+            data: { 'Operation': 'View' },
+            component: ListAssetLibraryComponent,
+          },
+          {
+            path: 'View',
+            data: { 'Operation': 'View' },
+            component: ViewAssetLibraryComponent,
+          },
+          {
+            path: 'Edit',
+            data: { 'Operation': 'Edit' },
+            component: AddAssetLibraryComponent,
+          },
+          {
+            path: 'Add',
+            data: { 'Operation': 'Create' },
+            component: AddAssetLibraryComponent,
+          }
+    ]
+
     }
 ];
 

@@ -29,7 +29,10 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\confirm-user\confirm-user.component.ts" />
+    <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.service.ts" />
+    <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.ts" />
     <None Remove="ClientApp\src\app\layout\users\user.ts" />
+    <None Remove="ClientApp\src\app\shared\models\CommonModel.ts" />
     <None Remove="ClientApp\src\app\shared\modules\pagination\pagination.module.ts" />
   </ItemGroup>
 

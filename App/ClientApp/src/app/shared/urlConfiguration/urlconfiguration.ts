@@ -43,4 +43,12 @@ export class URLConfiguration {
   //Logout user--
   public static get logoutUrl(): string { return "Login/Logout" };
 
+  public static get assetLibraryGetUrl(): string { return "AssetLibrary/List" };
+  public static get assetLibraryAddUrl(): string { return "AssetLibrary/Add" };
+  public static get assetLibraryUpdateUrl(): string { return "AssetLibrary/Update" };
+  public static get assetLibraryDeleteUrl(): string { return "AssetLibrary/Delete" };
+  public static get assetLibraryCheckIsDependencyUrl(): string { return "Role/IsDeleteDependency" };
+
+
+
 }
