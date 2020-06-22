@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Output, HostListener, Injector } from '@a
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { LoginService } from '../../../login/login.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +12,6 @@ import { LoginService } from '../../../login/login.service';
 export class SidebarComponent implements OnInit {
     public collapseToogleClass: boolean = false;
     isTopbarShow: boolean = false
-
 
     public sidebar_class = 'hide-sidebar'
     public collapse_class = 'collapse-container'
@@ -93,18 +93,14 @@ export class SidebarComponent implements OnInit {
         //     this.route.navigate(['login']);
         // }
 
-        localStorage.removeItem('currentUserName');
-        localStorage.removeItem('currentUserTheme');
-        localStorage.removeItem('user');
-        localStorage.removeItem('UserEmail');
-        localStorage.removeItem('userClaims');
-        localStorage.removeItem('token');
+        this.localstorageservice.removeLocalStorageData();
         this.route.navigate(['login']);
     }
 
     constructor(private route: Router, 
         private injector: Injector,
-        private loginService: LoginService) {
+        private loginService: LoginService,
+        private localstorageservice: LocalStorageService,) {
     }
 
     ngOnInit() {

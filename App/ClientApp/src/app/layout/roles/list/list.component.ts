@@ -222,10 +222,7 @@ export class ListComponent implements OnInit {
             let message = "NO record found";//this.roleListResources['lblNoRecord'] == undefined ? this.ResourceLoadingFailedMsg : this.roleListResources['lblNoRecord']
             this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
                 if (data == true) {
-                    this.roleFilterForm.patchValue({
-                        filterRoleName: null,
-                        DeactivateRole: null
-                    })
+                    this.resetRoleFilterForm();
                     this.getRoleRecords(null);
                 }
             });
@@ -248,10 +245,7 @@ export class ListComponent implements OnInit {
     searchFilter(searchType) {
         this.isFilterDone = true;
         if (searchType == 'reset') {
-            this.roleFilterForm.patchValue({
-                filterRoleName: null,
-                DeactivateRole: null
-            })
+            this.resetRoleFilterForm();
             this.getRoleRecords(null);
             this.isFilter = !this.isFilter;
         }
@@ -280,7 +274,8 @@ export class ListComponent implements OnInit {
                 },
                 filteredparams: {
                     //passing data using json stringify.
-                    "RoleName": this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName : ""
+                    "RoleName": this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName : "",
+                    "IsActive": this.roleFilterForm.value.DeactivateRole != null ? !this.roleFilterForm.value.DeactivateRole : null
                 }
             }
         }
@@ -350,6 +345,7 @@ export class ListComponent implements OnInit {
                 if (resultFlag) {
                     let messageString = Constants.recordDeactivatedMessage;
                     this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+                    this.resetRoleFilterForm();
                     this.getRoleRecords(null);
                 }
             }
@@ -364,6 +360,7 @@ export class ListComponent implements OnInit {
             if (resultFlag) {
                 let messageString = Constants.recordActivatedMessage;
                 this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+                this.resetRoleFilterForm();
                 this.getRoleRecords(null);
             }
     }
@@ -413,6 +410,13 @@ export class ListComponent implements OnInit {
         else {
             this.roleFilterForm.value.DeactivateRole = false;
         }
+      }
+
+      resetRoleFilterForm(){
+        this.roleFilterForm.patchValue({
+            filterRoleName: null,
+            DeactivateRole: null
+        });
       }
  
 }

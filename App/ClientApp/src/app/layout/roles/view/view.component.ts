@@ -41,6 +41,8 @@ export class ViewComponent implements OnInit {
     public role: Role;
     public userClaimsRolePrivilegeOperations;
     public isRolePrivilegeIsAssigned: boolean = true;
+    public roleRecord: any = {};
+    public roleStatus: any;
 
     constructor(
         private injector: Injector,
@@ -59,6 +61,7 @@ export class ViewComponent implements OnInit {
                     this.params = JSON.parse(localStorage.getItem('roleparams'));
                     this.RoleIdentifier = this.params.Routeparams.passingparams.RoleIdentifier
                     this.RoleName = this.params.Routeparams.filteredparams.RoleName
+                    this.roleStatus = this.params.Routeparams.filteredparams.IsActive
                 } else {
                     localStorage.removeItem("roleparams");
                 }
@@ -124,14 +127,19 @@ export class ViewComponent implements OnInit {
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
         searchParameter.SearchMode = Constants.Exact;
         searchParameter.IsRequiredRolePrivileges = true
-        if (this.RoleIdentifier != null)
+        if (this.RoleIdentifier != null){
             searchParameter.Identifier = this.RoleIdentifier;
+        }
+         if(this.roleStatus != null) {
+             searchParameter.IsActive = this.roleStatus;
+         }   
 
         this.roleView = await roleService.getRoles(searchParameter);
         let rolePrivileges = [];
         for (let i = 0; i < this.roleView.length; i++) {
             this.Identifier = this.roleView[i].Identifier;
             this.Name = this.roleView[i].Name;
+            this.roleRecord = this.roleView[i];
             this.RoleName = this.roleView[i].Name;
             this.RoleDesc = this.roleView[i].Description;
             rolePrivileges = this.roleView[i].RolePrivileges;

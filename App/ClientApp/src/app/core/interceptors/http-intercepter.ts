@@ -46,7 +46,43 @@ export class HttpIntercepter implements HttpInterceptor {
       setHeaders: headers
     });
 
-    return next.handle(req);
+    //return next.handle(req);
+
+    return next.handle(req)
+            .pipe(
+                tap(
+                    (successResponse: HttpResponse<any>) => {
+                        if (successResponse instanceof HttpResponse && successResponse['body'] && successResponse['body']['status'] === 400) {
+                            if ('Unauthorized access.' == successResponse['body']['message']) {
+                                //this.toastr.error(successResponse['body']['message']);
+                                const router = this.injector.get(Router);
+                                //router.navigate(['/login']);
+                            }
+                        }
+                        //unautorised access
+                        if (successResponse instanceof HttpResponse && successResponse['body'] && successResponse['body']['status'] === 401) {
+                            const router = this.injector.get(Router);
+                            //router.navigate(['/login']);
+                        }
+                        if (successResponse instanceof HttpResponse && successResponse['body'] && successResponse['body']['status'] === 500) {
+                            //this.toastr.error(successResponse['body']['message']);
+                            const router = this.injector.get(Router);
+                            //router.navigate(['/login']);
+                        }
+                    },
+                    (errorResponse: HttpErrorResponse) => {
+                        this.uiLoader.stop();
+                        if (errorResponse instanceof HttpErrorResponse && errorResponse.status === 401) {
+                            //Unauthorized
+                            let errorMessage = "Sorry, your session has expired. Please login again..!!";
+                            this.messageDialogService.openDialogBox('Session Timeout', errorMessage, Constants.msgBoxError);
+                            this.localstorageservice.removeLocalStorageData();
+                            const router = this.injector.get(Router);
+                            router.navigate(['/login']);
+                        }
+                    }
+                )
+            );
   }
 
   handleError(error: Error | HttpErrorResponse) {
