@@ -56,7 +56,9 @@
     <Compile Include="Role\RoleNotFoundException.cs" />
     <Compile Include="TenantNotFoundException.cs" />
     <Compile Include="User\AlreadyUsedPasswordException.cs" />
+    <Compile Include="User\DuplicateUserEmailAddressFoundException.cs" />
     <Compile Include="User\DuplicateUserFoundException.cs" />
+    <Compile Include="User\DuplicateUserMobileNumberFoundException.cs" />
     <Compile Include="User\InvalidPasswordFormatException.cs" />
     <Compile Include="User\InvalidUserException.cs" />
     <Compile Include="User\InvalidUserPasswordException.cs" />

@@ -77,20 +77,26 @@ export class ListComponent implements OnInit {
 
   public lockStatusArray: any[] = [
     {
-      'Identifier': 1,
-      'Name': 'Unlocked'
+      'Identifier': 0,
+      'Name': 'Both'
     },
     {
-      'Identifier': 2,
+      'Identifier': 1,
       'Name': 'Locked'
     },
     {
-      'Identifier': 3,
-      'Name': 'Both'
+      'Identifier': 2,
+      'Name': 'Unlocked'
     }
+    
   ];
 
   public activeStatusArray: any[] = [
+    
+    {
+      'Identifier': 0,
+      'Name': 'Both'
+    },
     {
       'Identifier': 1,
       'Name': 'Active'
@@ -98,10 +104,6 @@ export class ListComponent implements OnInit {
     {
       'Identifier': 2,
       'Name': 'Inactive'
-    },
-    {
-      'Identifier': 3,
-      'Name': 'Both'
     }
   ];
 
@@ -217,8 +219,8 @@ export class ListComponent implements OnInit {
       UserRole: [0, Validators.compose([])],
       FirstName: ['', Validators.compose([])],
       EmailAddress: ['', Validators.compose([])],
-      ActivationStatus: [true, Validators.compose([])],
-      LockStatus: [0, Validators.compose([])],
+      UserActiveStatus: [1, Validators.compose([])],
+      UserLockStatus: [0, Validators.compose([])],
     })
     this.getRoles();
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
@@ -227,14 +229,9 @@ export class ListComponent implements OnInit {
     this.fetchUserRecord();
   }
 
-  //method binded after html rendering
-  ngAfterViewInit(): void {
-
-  }
 
   //Get api for fetching User details--
   async getUserdetail(searchParameter) {
-    //this.spinner.start();
     if (searchParameter == null) {
       let searchParameter: any = {};
       searchParameter.PagingParameter = {};
@@ -246,43 +243,16 @@ export class ListComponent implements OnInit {
       searchParameter.SearchMode = Constants.Contains;
     }
     this.userLists = await this.service.getUser(searchParameter);
-    //this.spinner.stop();
     this.userLists.forEach(el => {
-      //if (el.ProfileImage) {
       if (el.Image != '' && el.Image != null) {
         el.Image = el.Image;
       }
-      ////else {
-      ////  el.Image = "assets/images/user.png";
-      ////}
-      //}
-      //else {
-      //  el.Image = "assets/images/user.png";
-      //}
-
+    
     })
 
-    // if (this.userLists.length > 0) {
-    //     this.isRecordFound = true;
-    // }
     if (this.userLists.length == 0 && this.isFilterDone == true) {
       let message = "User not found"
-      //this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
-      //  if (data == true) {
-      //    this.UserFilter.FirstName = null;
-      //    this.UserFilter.LastName = null;
-      //    this.UserFilter.Code = null;
-      //    this.UserFilter.EmailAddress = null;
-      //    this.UserFilter.OrganisationUnitIdentifier = null;
-      //    this.UserFilter.MobileNumber = null;
-      //    this.UserFilter.DesignationIdentifier = null;
-      //    this.UserFilter.RoleIdentifier = null;
-      //    this.UserFilter.PreferedLanguageIdentifier = null;
-      //    this.UserFilter.LockStatus = null;
-      //    this.UserFilter.ActivationStatus = null;
-      //    this.fetchUserRecord();
-      //  }
-      //});
+     
     }
     this.dataSource = new MatTableDataSource<Element>(this.userLists);
     this.dataSource.paginator = this.paginator;
@@ -424,19 +394,13 @@ export class ListComponent implements OnInit {
     let message = "Are you sure you want to delete this record?";
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        //let isDependencyPresent = await this.service.checkDependency(user.Identifier);
-        //if (isDependencyPresent) {
-        //    let msg = this.userListResources['msgDependencyPresent'] == undefined ? this.ResourceLoadingFailedMsg : this.userListResources['msgDependencyPresent'];
-        //    this._messageDialogService.openDialogBox('Error', msg, Constants.msgBoxError);
-        //}
-        //else {
+      
         let isDeleted = await this.service.deleteUser(user.Identifier);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
           this.fetchUserRecord();
         }
-        //}
       }
     });
   }
@@ -522,6 +486,36 @@ export class ListComponent implements OnInit {
 
     }
   }
+  public onLockStatusSelected(event) {
+    const value = event.target.value;
+    if (value == "0") {
+      this.UserFilter.LockStatus = null;
+    }
+    else if (value == "1") {
+      this.UserFilter.LockStatus = true;
+    }
+    else if (value == "2") {
+      this.UserFilter.LockStatus = false;
+
+
+    }
+  }
+  public onActiveStatusSelected(event) {
+    const value = event.target.value;
+    if (value == "0") {
+      this.UserFilter.ActivationStatus = null;
+    }
+    else if(value=="1") {
+      this.UserFilter.ActivationStatus = true;
+
+
+    }
+    else if (value == "2") {
+      this.UserFilter.ActivationStatus = false;
+
+
+    }
+  }
   //User filter function--
   filterSetUp(searchType) {
     this.isFilterDone = true;
@@ -539,8 +533,8 @@ export class ListComponent implements OnInit {
         ActivationStatus: null,
       };
       this.userFormGroup.controls['UserRole'].setValue(0);
-      this.userFormGroup.controls['LockStatus'].setValue(null);
-      this.userFormGroup.controls['ActivationStatus'].setValue(null);
+      this.userFormGroup.controls['UserLockStatus'].setValue(0);
+      this.userFormGroup.controls['UserActiveStatus'].setValue(0);
       this.isFilter = !this.isFilter;
       this.fetchUserRecord();
       this.userLists = [];

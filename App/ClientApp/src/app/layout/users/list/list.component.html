@@ -153,22 +153,28 @@
       </div>
       <div class="form-group">
         <label>Lock Status</label>
-        <div>
+        <select formControlName="UserLockStatus" (change)="onLockStatusSelected($event)" class="form-control">
+          <option *ngFor="let item of lockStatusArray" [value]="item.Identifier">{{item.Name}}</option>
+        </select>
+        <!--<div>
           <label class="switch d-block">
-            <input type="checkbox" (change)="lockEventCheck($event.target)" formControlName="LockStatus"  [(ngModel)]="UserFilter.LockStatus">
+            <input type="checkbox" (change)="lockEventCheck($event.target)" formControlName="LockStatus" [(ngModel)]="UserFilter.LockStatus">
             <span class="slider round"></span>
           </label>
-        </div>
+        </div>-->
       </div>
 
       <div class="form-group">
         <label>Activation Status</label>
-        <div>
-          <label class="switch d-block">
-            <input type="checkbox" (change)="activationEventCheck($event.target)" formControlName="ActivationStatus"  [(ngModel)]="UserFilter.ActivationStatus">
-            <span class="slider round"></span>
-          </label>
-        </div>
+        <select formControlName="UserActiveStatus" (change)="onActiveStatusSelected($event)" class="form-control">
+          <option *ngFor="let item of activeStatusArray" [value]="item.Identifier">{{item.Name}}</option>
+        </select>
+        <!--<div>
+    <label class="switch d-block">
+      <input type="checkbox" (change)="activationEventCheck($event.target)" formControlName="ActivationStatus"  [(ngModel)]="UserFilter.ActivationStatus">
+      <span class="slider round"></span>
+    </label>
+  </div>-->
       </div>
     </form>
     <!--[ngClass]="filterClass"-->

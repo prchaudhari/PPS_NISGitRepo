@@ -57,8 +57,18 @@ namespace nIS
         /// The duplicate user found exception key
         /// </summary>
         //public const string DUPLICATE_USER_FOUND_EXCEPTION = "DuplicateUserFoundException";
-        public const string DUPLICATE_USER_FOUND_EXCEPTION = "User already exists";
+        public const string DUPLICATE_USER_FOUND_EXCEPTION = "This Email Id and Mobile No already used in user";
 
+        /// <summary>
+        /// The duplicate user found exception key
+        /// </summary>
+        //public const string DUPLICATE_USER_FOUND_EXCEPTION = "DuplicateUserFoundException";
+        public const string DUPLICATE_USER_EMAIL_FOUND_EXCEPTION = "This Email Id is already used in user";
+        /// <summary>
+        /// The duplicate user found exception key
+        /// </summary>
+        //public const string DUPLICATE_USER_FOUND_EXCEPTION = "DuplicateUserFoundException";
+        public const string DUPLICATE_USER_MOBILE_NO_FOUND_EXCEPTION = "This Mobile No is already used in user";
         /// <summary>
         /// The invalid user password exception
         /// </summary>

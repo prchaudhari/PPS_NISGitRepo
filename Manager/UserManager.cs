@@ -758,12 +758,33 @@ namespace nIS
             {
                 if (users?.Count > 0)
                 {
-                    duplicateUserCount = users.GroupBy(p => p.EmailAddress).Where(g => g.Count() > 1).Count();
-                    duplicateUserCount = users.GroupBy(p => p.ContactNumber).Where(g => g.Count() > 1).Count();
+                    duplicateUserCount = users.GroupBy(c => new
+                    {
+                        c.EmailAddress,
+                        c.ContactNumber,
+                    }).Where(g => g.Count() > 1).Count();
                     if (duplicateUserCount > 0)
                     {
                         throw new DuplicateUserFoundException(tenantCode);
                     }
+                    else
+                    {
+                        duplicateUserCount = users.GroupBy(c =>c.EmailAddress).Where(g => g.Count() > 1).Count();
+                        if (duplicateUserCount > 0)
+                        {
+                            throw new DuplicateUserEmailAddressFoundException(tenantCode);
+                        }
+                        else
+                        {
+                            duplicateUserCount = users.GroupBy(p => p.ContactNumber).Where(g => g.Count() > 1).Count();
+                            if (duplicateUserCount > 0)
+                            {
+                                throw new DuplicateUserMobileNumberFoundException(tenantCode);
+                            }
+                        }
+                    }
+
+                    
                 }
             }
             catch (Exception exception)
