@@ -80,7 +80,7 @@ export class ListAssetLibraryComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
     }
-    //this.assetLibraryList = await assetLibraryService.getAssetLibrary(searchParameter);
+    this.assetLibraryList = await assetLibraryService.getAssetLibrary(searchParameter);
 
     this.dataSource = new MatTableDataSource<AssetLibrary>(this.assetLibraryList);
     //this.dataSource.paginator = this.paginator;
@@ -159,13 +159,13 @@ export class ListAssetLibraryComponent implements OnInit {
     }
     localStorage.setItem("assetLibraryparams", JSON.stringify(queryParams))
     const router = this.injector.get(Router);
-    router.navigate(['roles', 'View']);
+    router.navigate(['assetlibrary', 'View']);
   }
 
   //this method helps to navigate to add
   navigateToAssetLibraryAdd() {
     const router = this.injector.get(Router);
-    router.navigate(['roles', 'Add']);
+    router.navigate(['assetlibrary', 'Add']);
   }
   //this method helps to navigate edit
   navigateToAssetLibraryEdit(assetLibrary) {
@@ -182,7 +182,7 @@ export class ListAssetLibraryComponent implements OnInit {
     }
     localStorage.setItem("assetLibraryparams", JSON.stringify(queryParams))
     const router = this.injector.get(Router);
-    router.navigate(['roles', 'Edit']);
+    router.navigate(['assetlibrary', 'Edit']);
   }
 
   //function written to delete role

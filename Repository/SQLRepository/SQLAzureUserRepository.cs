@@ -173,7 +173,7 @@ namespace nIS
                         userRecord.EmailAddress = user.EmailAddress;
                         userRecord.Image = user.Image;
                         userRecord.IsActive = user.IsActive;
-                        userRecord.IsLocked = false;
+                        //userRecord.IsLocked = false;
                         userRecord.NoofAttempts = 0;
                         userRecord.TenantCode = tenantCode;
                     });

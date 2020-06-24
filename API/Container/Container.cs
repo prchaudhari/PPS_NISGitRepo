@@ -34,6 +34,7 @@ namespace nIS
             unityContainer.RegisterType<ICryptoManager, CryptoManager>();
             unityContainer.RegisterType<IUserRepository, SQLUserRepository>();
             unityContainer.RegisterType<IRoleRepository, SQLRoleRepository>();
+            unityContainer.RegisterType<IAssetLibraryRepository, SQLAssetLibraryRepository>();
 
 
 

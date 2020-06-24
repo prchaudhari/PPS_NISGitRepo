@@ -6,8 +6,8 @@ import { UserAddEditComponent } from './add/add-edit.component';
 import { AuthGuard, UnAuthorisedUrlGuard } from 'src/app/core/guard';
 
 const routes: Routes = [
-    {
-        path: '',
+  {
+    path: '',
     children: [
       {
         path: '',
@@ -43,7 +43,7 @@ const routes: Routes = [
       //},
     ],
     data: { 'EntityName': 'User' }
-    }
+  }
 ];
 
 @NgModule({

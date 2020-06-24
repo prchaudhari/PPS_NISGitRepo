@@ -41,7 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asset Library\AssetLibraryNotFoundException.cs" />
+    <Compile Include="Asset Library\AssetLibraryReferenceException.cs" />
+    <Compile Include="Asset Library\DuplicateAssetLibraryException.cs" />
+    <Compile Include="Asset Library\InvalidAssetLibraryException.cs" />
+    <Compile Include="Asset Library\InvalidAssetLibrarySearchParameter.cs" />
+    <Compile Include="Asset\AssetNotFoundException.cs" />
+    <Compile Include="Asset\AssetPathNotFoundException.cs" />
+    <Compile Include="Asset\AssetReferenceException.cs" />
+    <Compile Include="Asset\DuplicateAssetException.cs" />
+    <Compile Include="Asset\InvalidAssetException.cs" />
+    <Compile Include="Asset\InvalidAssetPathException.cs" />
+    <Compile Include="Asset\InvalidAssetSearchParameter.cs" />
     <Compile Include="ConnectionStringNotFoundException.cs" />
+    <Compile Include="Constants\AssetLibrary.cs" />
     <Compile Include="Constants\ExceptionConstant.cs" />
     <Compile Include="Constants\RoleConstant.cs" />
     <Compile Include="Constants\UserConstant.cs" />

@@ -42,6 +42,8 @@
     <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.module.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.service.spec.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\core\core.module.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\core\services\window-ref.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\roles\role.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.spec.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.ts" />

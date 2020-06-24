@@ -66,6 +66,11 @@ namespace nIS
         /// </summary>
         public const string TENANT_BASE_URL = "TenantManagerAPIURL";
 
+        /// <summary>
+        /// The tenant base URL
+        /// </summary>
+        public const string SORT_COLUMN = "Id";
+
         #endregion
 
         #region Operations

@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asset.cs" />
+    <Compile Include="AssetLibrary.cs" />
+    <Compile Include="AssetPathSetting.cs" />
+    <Compile Include="Common\AssetLibraryConstant.cs" />
     <Compile Include="Common\BaseEntity.cs" />
     <Compile Include="Common\BaseSearchEntity.cs" />
     <Compile Include="Common\CountryConstant.cs" />
@@ -61,6 +65,8 @@
     <Compile Include="Role.cs" />
     <Compile Include="RolePrivilege.cs" />
     <Compile Include="RolePrivilegeOperation.cs" />
+    <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
+    <Compile Include="Search Parameter\AssetSearchParameter.cs" />
     <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
     <Compile Include="User.cs" />

@@ -244,6 +244,7 @@
     <Compile Include="Container\Container.cs" />
     <Compile Include="Container\IocContainer.cs" />
     <Compile Include="Container\UnityResolverService.cs" />
+    <Compile Include="Controllers\AssetLibraryController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\HandleExceptionFilter.cs" />

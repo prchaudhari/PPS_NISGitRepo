@@ -27,7 +27,7 @@ import { LoginService } from '../../../login/login.service';
 export class UserAddEditComponent implements OnInit {
   userFormGroup: FormGroup;
   public emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z']*";
+  public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]*[ ]*$";
   public onlyNumbers = '[0-9]*';
   public errorMsg: boolean;
   public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
@@ -472,7 +472,7 @@ export class UserAddEditComponent implements OnInit {
         userObject.IsLocked = false;
       }
       else {
-        userObject.IsActive = true;
+        userObject.IsActive = false;
         userObject.IsLocked = true;
       }
       //console.log(userObject)
