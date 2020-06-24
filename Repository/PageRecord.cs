@@ -28,5 +28,6 @@ namespace nIS
         public string TenantCode { get; set; }
         public Nullable<System.DateTime> LastUpdatedDate { get; set; }
         public long UpdateBy { get; set; }
+        public IList<PageWidgetMapRecord> PageWidgetMapRecords { get; set; }
     }
 }

@@ -38,6 +38,7 @@ namespace nIS
 
 
 
+            unityContainer.RegisterType<IPageRepository, SQLPageRepository>();
 
             return unityContainer;
         }

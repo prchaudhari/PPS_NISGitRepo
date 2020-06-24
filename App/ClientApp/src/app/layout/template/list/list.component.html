@@ -26,31 +26,31 @@
         <!-- Position Column -->
         <ng-container matColumnDef="name">
           <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-          <td mat-cell *matCellDef="let element">{{element.name}}</td>
+          <td mat-cell *matCellDef="let element">{{element.DisplayName}}</td>
         </ng-container>
         <ng-container matColumnDef="pagetype">
           <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Page Type </th>
-          <td mat-cell *matCellDef="let element">{{element.pagetype}}</td>
+          <td mat-cell *matCellDef="let element">{{element.PageTypeName}}</td>
         </ng-container>
 
         <ng-container matColumnDef="version">
-          <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header> Version </th>
-          <td mat-cell *matCellDef="let element">{{element.version}} </td>
+          <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef> Version </th>
+          <td mat-cell *matCellDef="let element">{{element.Version}} </td>
         </ng-container>
         <ng-container matColumnDef="owner">
           <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Owner </th>
-          <td mat-cell *matCellDef="let element">{{element.owner}} </td>
+          <td mat-cell *matCellDef="let element">{{element.PageOwnerName}} </td>
         </ng-container>
         <ng-container matColumnDef="date">
-          <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Published Date </th>
-          <td mat-cell *matCellDef="let element">{{element.date}} </td>
+          <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef> Published Date </th>
+          <td mat-cell *matCellDef="let element">{{element.PublishedOn | date : "dd/MM/yyyy" }} </td>
         </ng-container>
         <ng-container matColumnDef="status">
           <th class="width10 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
           <td mat-cell *matCellDef="let element">
-            <span class="badge badge-primary p-1" *ngIf="element.status=='New'">{{element.status}}</span>
-            <span class="badge badge-success p-1" *ngIf="element.status=='Published'">{{element.status}}</span>
-            <span class="badge badge-warning p-1 text-white" *ngIf="element.status=='In Process'">{{element.status}}</span>
+            <span class="badge badge-primary p-1" *ngIf="element.Status=='New'">{{element.Status}}</span>
+            <span class="badge badge-success p-1" *ngIf="element.Status=='Published'">{{element.Status}}</span>
+            <span class="badge badge-warning p-1 text-white" *ngIf="element.Status=='In Process'">{{element.Status}}</span>
           </td>
         </ng-container>
         <ng-container matColumnDef="actions">
@@ -72,6 +72,7 @@
         </div>
     </div>
   </div>
+  
   <!--desktop view end-->
   <div class="modal fade cust-modal bd-example-modal-lg" id="resourcePreview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -85,79 +86,80 @@
       </div>
     </div>
   </div>
-  <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
-    <div class="filter-head">
-      <label class="m-0">Apply Filter</label>
-    </div>
-    <div class="filter-body-left d-flex flex-column stylescrollbar">
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" class="form-control">
+
+  <form [formGroup]="TemplateFilterForm">
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
       </div>
-      <div class="form-group">
-        <label>Page Type</label>
-        <select class="form-control">
-          <option selected>Select</option>
-          <option>Optio 01</option>
-          <option>Optio 02</option>
-          <option>Optio 03</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Owner</label>
-        <input type="text" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Status</label>
-        <select class="form-control">
-          <option selected> Select</option>
-          <option>New</option>
-          <option>In Process</option>
-          <option>Published</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Start Date</label>
-        <div class="position-relative">
-          <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate">
-          <span [owlDateTimeTrigger]="dt" class="datetime-icon">
-            <i class="fa fa-calendar"></i>
-          </span>
-          <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" id="filterDisplayName" formControlName="filterDisplayName">
+        </div>
+        <div class="form-group">
+          <label>Page Type</label>
+          <select formControlName="filterPageType" (change)="onPageTypeSelected($event)" class="form-control">
+            <option *ngFor="let pageType of pageTypeList" [value]="pageType.Id">{{pageType.Name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Owner</label>
+          <input type="text" class="form-control" id="filterOwner" formControlName="filterOwner">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-control" formControlName="filterStatus" id="filterStatus">
+            <option value="0" selected> Select</option>
+            <option value="New">New</option>
+            <option value="In Process">In Process</option>
+            <option value="Published">Published</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Start Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filterPublishedOnFromDate">
+            <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filterPublishedOnToDate">
+            <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>End Date</label>
-        <div class="position-relative">
-          <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filtershiftenddate">
-          <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
-            <i class="fa fa-calendar"></i>
-          </span>
-          <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
-        </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" title="Search">
+            <a class="nav-link p-0" (click)="searchTemplateRecordFilter('search')">
+              <span class="fa fa-check"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Reset">
+            <a class="nav-link p-0" (click)="searchTemplateRecordFilter('reset')">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Close" (click)="closeFilter()">
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-    <!--[ngClass]="filterClass"-->
-    <div class="filter-footer">
-      <ul class="nav">
-        <li class="nav-item width33" title="Search">
-          <a class="nav-link p-0">
-            <span class="fa fa-check"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Reset">
-          <a class="nav-link p-0">
-            <span class="fa fa-refresh"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Close" (click)="closeFilter()">
-          <a class="nav-link p-0">
-            <span class="fa fa-close"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+  </form>
+  
 </div>
 
 <div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>

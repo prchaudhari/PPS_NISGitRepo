@@ -112,19 +112,43 @@ namespace nIS
         #region Product Type
 
         /// <summary>
-        /// Widget section
+        /// Product type section
         /// </summary>
         public const string PRODUCTTYPE_SECTION = "ProductType";
 
         /// <summary>
-        /// Invalid widget id
+        /// Invalid product type id
         /// </summary>
         public const string INVALID_PRODUCTTYPE_ID = "InvalidProductTypeId";
 
         /// <summary>
-        /// Invalid widget name
+        /// Invalid product name
         /// </summary>
         public const string INVALID_PRODUCTTYPE_NAME = "InvalidProductTypeName";
+
+        #endregion
+
+        #region Page
+
+        /// <summary>
+        /// Page section
+        /// </summary>
+        public const string PAGE_SECTION = "Page";
+
+        /// <summary>
+        /// Invalid page id
+        /// </summary>
+        public const string INVALID_PAGE_ID = "InvalidPageId";
+
+        /// <summary>
+        /// Invalid page display name
+        /// </summary>
+        public const string INVALID_PAGE_DISPLAY_NAME = "InvalidageDisplayName";
+
+        /// <summary>
+        /// Invalid page(product) type id
+        /// </summary>
+        public const string INVALID_PAGE_TYPE_ID = "InvalidPageTypeId";
 
         #endregion
 

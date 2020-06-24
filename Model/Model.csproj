@@ -60,6 +60,7 @@
     <Compile Include="Enum\SortOrder.cs" />
     <Compile Include="Common\SortParameter.cs" />
     <Compile Include="Page.cs" />
+    <Compile Include="PageWidget.cs" />
     <Compile Include="ProductType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="RolePrivilegeOperation.cs" />
     <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
+    <Compile Include="Search Parameter\PageSearchParameter.cs" />
     <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
     <Compile Include="User.cs" />

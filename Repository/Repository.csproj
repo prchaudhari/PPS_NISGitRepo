@@ -83,6 +83,7 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="IRepository\IAssetLibraryRepository.cs" />
+    <Compile Include="IRepository\IPageRepository.cs" />
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
     <Compile Include="NISDataContext.Context.cs">
@@ -121,6 +122,7 @@
     </Compile>
     <Compile Include="SQLRepository\SQLAssetLibraryRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureUserRepository.cs" />
+    <Compile Include="SQLRepository\SQLPageRepository.cs" />
     <Compile Include="SQLRepository\SQLRoleRepository.cs" />
     <Compile Include="StatementPageMapRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>

@@ -49,6 +49,10 @@ export class URLConfiguration {
   public static get assetLibraryDeleteUrl(): string { return "AssetLibrary/Delete" };
   public static get assetLibraryCheckIsDependencyUrl(): string { return "Role/IsDeleteDependency" };
 
-
+  //Page Url Method
+  public static get pageGetUrl(): string { return "Page/List" };
+  public static get pageAddUrl(): string { return "Page/Add" };
+  public static get pageUpdateUrl(): string { return "Page/Update" };
+  public static get pageDeleteUrl(): string { return "Page/Delete" };
 
 }
