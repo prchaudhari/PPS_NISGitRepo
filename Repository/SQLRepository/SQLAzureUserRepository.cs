@@ -82,8 +82,10 @@ namespace nIS
                 //this.connectionString = "metadata=res://*/nVidYoDataContext.csdl|res://*/nVidYoDataContext.ssdl|res://*/nVidYoDataContext.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=192.168.100.7;Initial Catalog=nvidyo;User ID=sa;Password=Admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
 
                 this.SetAndValidateConnectionString(tenantCode);
-                this.IsDuplicateUserEmailAndMobileNumber(users, ModelConstant.ADD_OPERATION, tenantCode);
-
+                if (this.IsDuplicateUserEmailAndMobileNumber(users, ModelConstant.ADD_OPERATION, tenantCode))
+                {
+                    throw new DuplicateUserFoundException(tenantCode);
+                }
 
                 IList<UserRecord> userRecords = new List<UserRecord>();
 
@@ -149,7 +151,10 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
 
-                this.IsDuplicateUserEmailAndMobileNumber(users, ModelConstant.UPDATE_OPERATION, tenantCode);
+                if (this.IsDuplicateUserEmailAndMobileNumber(users, ModelConstant.UPDATE_OPERATION, tenantCode))
+                {
+                    throw new DuplicateUserFoundException(tenantCode);
+                }
 
 
                 using (NISEntities nVidYoEntitiesDataContext = new NISEntities(this.connectionString))
@@ -1024,89 +1029,25 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 StringBuilder query = new StringBuilder();
+                if (operation.Equals(ModelConstant.ADD_OPERATION))
+                {
+                    query.Append("(" + string.Join(" or ", users.Select(item => string.Format("EmailAddress.Equals(\"{0}\")",
+                  item.EmailAddress))) + "");
+                }
+                else
+                {
+                    query.Append("(" + string.Join(" or ", users.Select(item => string.Format("EmailAddress.Equals(\"{0}\") and !Id.Equals({1})",
+                      item.EmailAddress, item.Identifier))) + "");
+                }
+                query.Append(string.Format(" and TenantCode.Equals(\"{0}\")", tenantCode));
+                query.Append(" and IsDeleted.Equals(false))");
+
                 using (NISEntities nVidYoEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    IList<UserRecord> userRecords = new List<UserRecord>();
-
-                    if (operation.Equals(ModelConstant.ADD_OPERATION))
+                    IList<UserRecord> userRecords = nVidYoEntitiesDataContext.UserRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    if (userRecords.Count > 0)
                     {
-                        query.Append("(" + string.Join(" or ", users.Select(item => string.Format("EmailAddress.Equals(\"{0}\") && ContactNumber.Equals(\"{1}\")  ", item.EmailAddress, item.ContactNumber))) + "");
-                        query.Append(string.Format(" and TenantCode.Equals(\"{0}\")", tenantCode));
-                        query.Append(" and IsDeleted.Equals(false))");
-                        userRecords = nVidYoEntitiesDataContext.UserRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-
-                        if (userRecords.Count > 0)
-                        {
-                            throw new DuplicateUserFoundException(tenantCode);
-                        }
-                        else
-                        {
-                            query = new StringBuilder();
-                            query.Append("(" + string.Join(" or ", users.Select(item => string.Format("EmailAddress.Equals(\"{0}\")", item.EmailAddress))) + "");
-                            query.Append(string.Format(" and TenantCode.Equals(\"{0}\")", tenantCode));
-                            query.Append(" and IsDeleted.Equals(false))");
-                            userRecords = nVidYoEntitiesDataContext.UserRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-
-                            if (userRecords.Count > 0)
-                            {
-                                throw new DuplicateUserEmailAddressFoundException(tenantCode);
-                            }
-                            else
-                            {
-                                query = new StringBuilder();
-                                query.Append("(" + string.Join(" or ", users.Select(item => string.Format("ContactNumber.Equals(\"{0}\")", item.ContactNumber))) + "");
-                                query.Append(string.Format(" and TenantCode.Equals(\"{0}\")", tenantCode));
-                                query.Append(" and IsDeleted.Equals(false))");
-                                userRecords = nVidYoEntitiesDataContext.UserRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-
-                                if (userRecords.Count > 0)
-                                {
-                                    throw new DuplicateUserMobileNumberFoundException(tenantCode);
-
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        query.Append("(" + string.Join(" or ", users.Select(item => string.Format("EmailAddress.Equals(\"{0}\") && ContactNumber.Equals(\"{1}\") and !Id.Equals({2}) ", item.EmailAddress, item.ContactNumber, item.Identifier))) + "");
-                        query.Append(string.Format(" and TenantCode.Equals(\"{0}\")", tenantCode));
-                        query.Append(" and IsDeleted.Equals(false))");
-                        userRecords = nVidYoEntitiesDataContext.UserRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-
-                        if (userRecords.Count > 0)
-                        {
-                            throw new DuplicateUserFoundException(tenantCode);
-
-                        }
-                        else
-                        {
-                            query = new StringBuilder();
-                            query.Append("(" + string.Join(" or ", users.Select(item => string.Format("EmailAddress.Equals(\"{0}\") and !Id.Equals({1})", item.EmailAddress, item.Identifier))) + "");
-                            query.Append(string.Format(" and TenantCode.Equals(\"{0}\")", tenantCode));
-                            query.Append(" and IsDeleted.Equals(false))");
-                            userRecords = nVidYoEntitiesDataContext.UserRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-
-                            if (userRecords.Count > 0)
-                            {
-                                throw new DuplicateUserEmailAddressFoundException(tenantCode);
-
-                            }
-                            else
-                            {
-                                query = new StringBuilder();
-                                query.Append("(" + string.Join(" or ", users.Select(item => string.Format("ContactNumber.Equals(\"{0}\") and !Id.Equals({1})", item.ContactNumber, item.Identifier))) + "");
-                                query.Append(string.Format(" and TenantCode.Equals(\"{0}\")", tenantCode));
-                                query.Append(" and IsDeleted.Equals(false))");
-                                userRecords = nVidYoEntitiesDataContext.UserRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-
-                                if (userRecords.Count > 0)
-                                {
-                                    throw new DuplicateUserMobileNumberFoundException(tenantCode);
-
-                                }
-                            }
-                        }
+                        result = true;
                     }
                 }
             }
@@ -1121,7 +1062,6 @@ namespace nIS
 
             return result;
         }
-
         #endregion
 
         #region WhereClause Generator

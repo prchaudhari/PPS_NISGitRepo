@@ -373,7 +373,7 @@ export class UserAddEditComponent implements OnInit {
       this.userFormErrorObject.roleShowError = true;
       return false;
     }
-    if (this.User.CountryCode = '') {
+    if (this.User.CountryCode == '') {
       this.userFormErrorObject.showCountryCodeError = true;
       return false;
     }
@@ -397,6 +397,7 @@ export class UserAddEditComponent implements OnInit {
     }
     if (this.userFormGroup.controls.lastName.invalid) {
       return true;
+
     }
     if (this.userFormGroup.controls.email.invalid) {
       return true;
@@ -409,7 +410,7 @@ export class UserAddEditComponent implements OnInit {
     if (this.User.RoleIdentifier == 0) {
       return true;
     }
-    if (this.User.CountryCode = '') {
+    if (this.User.CountryCode == "") {
       return true;
     }
     return false;

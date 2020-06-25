@@ -56,15 +56,14 @@ export class ProfileComponent implements OnInit {
   public isCountryDataRetrieved = false;
   // source language
   public sourcelanguage = [];
-
-  public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]*[ ]{0,1}[a-zA-Z]*[ ]*$";
+  public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]+[ ]{0,1}[a-zA-Z]*[ ]*$";
   public onlyNumbers = '[0-9]*';
   public resourceId;
   public profileImage;
   public fileArray = [];
   public languageLists = [];
   public userRecord: any = {};
-
+  public User = { RoleIdentifier: 0, Image: '', CountryCode: '' }
   public countrycodeLists = [
     { "CountryNameCode": "Please select", "DialingCode": "" },
     { "CountryNameCode": "India +91", "DialingCode": "+91" },
@@ -283,7 +282,22 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
+  public onCountrySelected(event) {
 
+    const value = event.target.value;
+    if (value == "") {
+      this.profileFormErrorObject.showCountryCodeError = true;
+      this.User.CountryCode = ''
+    }
+    else {
+      this.profileFormErrorObject.showCountryCodeError = false;
+
+      this.User.CountryCode = value
+
+    }
+
+    console.log(value);
+  }
   onFileChanged(event) {
     let file = event.target.files[0];
     if (file.size > 200000) {
@@ -341,7 +355,36 @@ export class ProfileComponent implements OnInit {
     }
     return true;
   }
+  saveButtonValidation(): boolean {
 
+    if (this.imageSize > 200000) {
+      return true;
+    }
+    if (this.profileFormErrorObject.showProfilePictureSizeError) {
+      return true;
+    }
+    if (this.profileFormErrorObject.showProfilePictureTypeError) {
+      return true;
+    }
+
+    if (this.profileFormGroup.controls.firstName.invalid) {
+      return true;
+    }
+    if (this.profileFormGroup.controls.lastName.invalid) {
+      return true;
+    }
+    if (this.profileFormGroup.controls.email.invalid) {
+      return true;
+    }
+
+    if (this.profileFormGroup.controls.mobileNumber.invalid) {
+      return true;
+    }
+    if (this.profileFormGroup.value.CountryCode == '') {
+      return true;
+    }
+    return false;
+  }
   //save functionality.
   onSubmit() {
     if (this.profileFormValidaton()) {
@@ -353,7 +396,7 @@ export class ProfileComponent implements OnInit {
         this.saveRecord(this.userRecord);
     }
   }
-
+ 
   //Api called here to save record
 
   async saveRecord(profileObject) {

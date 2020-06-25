@@ -89,11 +89,11 @@ export class ListComponent implements OnInit {
       'Identifier': 2,
       'Name': 'Unlocked'
     }
-    
+
   ];
 
   public activeStatusArray: any[] = [
-    
+
     {
       'Identifier': 0,
       'Name': 'Both'
@@ -244,16 +244,24 @@ export class ListComponent implements OnInit {
       searchParameter.SearchMode = Constants.Contains;
     }
     this.userLists = await this.service.getUser(searchParameter);
+    if (this.userLists.length == 0 && this.isFilterDone == true) {
+      let message = "No record found";//this.roleListResources['lblNoRecord'] == undefined ? this.ResourceLoadingFailedMsg : this.roleListResources['lblNoRecord']
+      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+        if (data == true) {
+          this.getAllUSer();
+        }
+      });
+    }
     this.userLists.forEach(el => {
       if (el.Image != '' && el.Image != null) {
         el.Image = el.Image;
       }
-    
+
     })
 
     if (this.userLists.length == 0 && this.isFilterDone == true) {
       let message = "User not found"
-     
+
     }
     this.dataSource = new MatTableDataSource<Element>(this.userLists);
     this.dataSource.paginator = this.paginator;
@@ -397,7 +405,7 @@ export class ListComponent implements OnInit {
     let message = "Are you sure you want to delete this record?";
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-      
+
         let isDeleted = await this.service.deleteUser(user.Identifier);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
@@ -508,7 +516,7 @@ export class ListComponent implements OnInit {
     if (value == "0") {
       this.UserFilter.ActivationStatus = null;
     }
-    else if(value=="1") {
+    else if (value == "1") {
       this.UserFilter.ActivationStatus = true;
 
 
@@ -519,6 +527,36 @@ export class ListComponent implements OnInit {
 
     }
   }
+
+  //User filter function--
+  getAllUSer() {
+    this.isFilterDone = true;
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = Constants.UserName;
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    this.UserFilter = {
+      FirstName: null,
+      LastName: null,
+      Code: null,
+      EmailAddress: null,
+      MobileNumber: null,
+      OrganisationUnitIdentifier: null,
+      RoleIdentifier: null,
+      LockStatus: null,
+      ActivationStatus: null,
+    };
+
+    this.getUserdetail(searchParameter);
+    this.userFormGroup.controls['UserRole'].setValue(0);
+    this.userFormGroup.controls['UserLockStatus'].setValue(0);
+    this.userFormGroup.controls['UserActiveStatus'].setValue(0);
+  }
+
   //User filter function--
   filterSetUp(searchType) {
     this.isFilterDone = true;

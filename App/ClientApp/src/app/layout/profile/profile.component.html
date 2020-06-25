@@ -3,7 +3,7 @@
     <span class="xs-title">Update Profile</span>
   </div>
 
-  <form [formGroup]="profileFormGroup" name="profileForm" autocomplete="on" novalidate id="frmprofile">
+  <form [formGroup]="profileFormGroup" name="profileForm" autocomplete="on" novalidate>
 
     <div class="card border-0 mb-2 card-shadow">
       <div class="card-body" id="collapseDetails">
@@ -48,7 +48,7 @@
                 <label for="inputFirstName">First Name</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" id="inputFirstName" formControlName="firstName">
                 <div class="validation-msg" style="color:red">
-                    <ul *ngIf="profileFormErrorObject.showUserFirstNameError" style="list-style-type:none">
+                    <ul  style="list-style-type:none">
                         <li class="text-danger" *ngIf="firstName.errors?.pattern">
                             Invalid first name
                         </li>
@@ -68,7 +68,7 @@
                 <label for="inputLastName">Last Name</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" id="inputLastName" formControlName="lastName">
                 <div class="validation-msg" style="color:red">
-                    <ul *ngIf="profileFormErrorObject.showUserLastNameError" style="list-style-type:none">
+                    <ul style="list-style-type:none">
                         <li class="text-danger" *ngIf="lastName.errors?.pattern">
                             Invalid last name
                         </li>
@@ -106,16 +106,22 @@
                 <div class="row">
                   <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
                     <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
-                    <select formControlName="CountryCode" class="form-control">
-                      <option *ngFor="let role of countrycodeLists" [value]="role.DialingCode">{{role.CountryNameCode}}</option>
+                    <select formControlName="CountryCode" (change)='onCountrySelected($event)' class="form-control">
+                      <option *ngFor="let role of countrycodeLists"  [value]="role.DialingCode">{{role.CountryNameCode}}</option>
                     </select>
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="profileFormErrorObject.showCountryCodeError" style="list-style-type:none">
+                        <li class="text-danger">
+                          Please select country code
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                   <div class="col-7 col-md-7 col-sm-7 col-xs-7 pl-1">
                     <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
                     <input type="text" class="form-control" formControlName="mobileNumber" name="mobileNumber">
                     <div class="validation-msg" style="color:red">
-                        <ul *ngIf="profileFormErrorObject.showUserMobileNumberError"
-                            style="list-style-type:none">
+                        <ul style="list-style-type:none">
                             <li class="text-danger" *ngIf="mobileNumber.errors?.pattern">
                                 Invalid mobile number
                             </li>
@@ -157,7 +163,7 @@
     </div>
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
-        <button class="btn-footer-fill mr-2" (click)="onSubmit()">Save</button>
+        <button class="btn-footer-fill mr-2"[disabled]="saveButtonValidation()" (click)="onSubmit()">Save</button>
         <button class="btn-footer-outline" (click)="backClicked()">Cancel</button> 
       </div>
     </div>

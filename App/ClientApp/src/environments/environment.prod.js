@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = void 0;
 exports.environment = {
     production: true,
-    baseURL: 'http://localhost/API/',
+    //baseURL: 'https://nis-api.azurewebsites.net/',
+    baseURL: 'http://nisqa-api.azurewebsites.net/'
 };
 //# sourceMappingURL=environment.prod.js.map
