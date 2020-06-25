@@ -21,13 +21,13 @@
       <div class="row form-group">
         <div class="col-md-6 col-lg-4">
           <label id="lblRoleName" for="inputRoleName">Name</label>
-          <div>Asset 01</div>
+          <div>{{assetLibrary.Name}}</div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-8 col-lg-6">
           <label id="lblDescription">Description</label>
-          <div>-</div>
+          <div>{{assetLibrary.Description}}</div>
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@
             Name
           </th>
           <td mat-cell *matCellDef="let element">
-            {{element.name}}
+            {{element.Name}}
 
           </td>
         </ng-container>
@@ -73,7 +73,7 @@
             Last Updated By
           </th>
           <td mat-cell *matCellDef="let element">
-            {{element.updatedby}}
+            {{element.UpdatedBy}}
           </td>
         </ng-container>
         <ng-container matColumnDef="date">
@@ -81,7 +81,7 @@
             Last Updated Date
           </th>
           <td mat-cell *matCellDef="let element">
-            {{element.date}}
+            {{element.UpdatedDate}}
           </td>
         </ng-container>
 
@@ -89,7 +89,7 @@
           <th class="width5" mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
           <td mat-cell *matCellDef="let element">
             <div class="action-btns btn-tbl-action">
-              <button type="button" title="Download" id="btnUpdate"><span class="fa fa-download"></span></button>
+              <button type="button" title="Download" (click)="DownloadAsset(element.Identifier)" id="btnUpdate"><span class="fa fa-download"></span></button>
             </div>
           </td>
         </ng-container>
@@ -101,8 +101,8 @@
   </div>
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
-      <button class="btn-footer-fill mr-2" id="btnSave">Update</button>
-      <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete">Delete</button>
+      <button class="btn-footer-fill mr-2" id="btnSave" (click)="navigateToAssetLibraryEdit()" >Update</button>
+      <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete" (click)="deleteAssetLibrary()" >Delete</button>
       <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
     </div>
   </div>

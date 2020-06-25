@@ -27,6 +27,7 @@ export class ListComponent implements OnInit {
 
   userFormGroup: FormGroup;
   public isFilter: boolean = false;
+
   public userList;
   public userLists = [];
   public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
@@ -183,7 +184,7 @@ export class ListComponent implements OnInit {
       this.UserFilter.DesignationIdentifier = this.params.Routeparams.filteredparams.DesignationIdentifier;
       this.UserFilter.RoleIdentifier = this.params.Routeparams.filteredparams.RoleIdentifier;
       this.UserFilter.LockStatus = this.params.Routeparams.filteredparams.LockStatus;
-      this.UserFilter.ActivationStatus = this.params.Routeparams.filteredparams.ActivationStatus;
+      this.UserFilter.ActivationStatus = this.params.Routeparams.filteredparams.ActivationStatus;;
     }
 
     this.sortedUserList = this.userLists.slice();
@@ -382,6 +383,8 @@ export class ListComponent implements OnInit {
           "EmailAddress": this.UserFilter.EmailAddress != null ? this.UserFilter.EmailAddress : null,
           "MobileNumber": this.UserFilter.MobileNumber != null ? this.UserFilter.MobileNumber : null,
           "RoleIdentifier": this.UserFilter.RoleIdentifier != null ? this.UserFilter.RoleIdentifier : null,
+          "LockStatus": this.UserFilter.LockStatus != null ? this.UserFilter.LockStatus : null,
+          "ActivationStatus": this.UserFilter.ActivationStatus != null ? this.UserFilter.ActivationStatus : null,
         }
       }
     }

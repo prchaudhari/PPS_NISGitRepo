@@ -135,6 +135,7 @@ export class ViewComponent implements OnInit {
     // this._location.back();
     this.router.navigate(['user']);
   }
+
   editUser() {
     let queryParams = {
       Routeparams: {

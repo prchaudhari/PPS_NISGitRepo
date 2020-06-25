@@ -186,7 +186,55 @@ namespace nIS
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                   
+                    StringBuilder query = new StringBuilder();
+                    query.Append("(" + string.Join("or ", string.Join(",", assetLibraries.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+                    query.Append("and IsDeleted.Equals(false)");
+
+                    IList<AssetLibraryRecord> assetLibraryRecords = nISEntitiesDataContext.AssetLibraryRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    if (assetLibraryRecords == null || assetLibraryRecords.Count <= 0 || assetLibraryRecords.Count() != string.Join(",", assetLibraryRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
+                    {
+                        throw new AssetLibraryNotFoundException(tenantCode);
+                    }
+
+                    #region Delete assets of Asset Library
+
+                    //Get all assets of asset library
+                    StringBuilder assetLibraryIdentifiers = new StringBuilder();
+                    assetLibraryIdentifiers.Append("(" + string.Join(" or ", assetLibraryRecords.Select(item => string.Format("AssetLibraryId.Equals({0})", item.Id))) + ")");
+                    assetLibraryIdentifiers.Append("and IsDeleted.Equals(false)");
+
+                    IList<AssetRecord> assetRecords = null;
+                    assetRecords = nISEntitiesDataContext.AssetRecords.Where(assetLibraryIdentifiers.ToString()).ToList();
+
+                    if (assetRecords?.Count > 0)
+                    {
+                        throw new AssetReferenceException(tenantCode);
+                    }
+
+                    assetLibraryIdentifiers.Clear();
+                    assetLibraryIdentifiers.Append("(" + string.Join(" or ", assetLibraryRecords.Select(item => string.Format("AssetLibraryId.Equals({0})", item.Id))) + ")");
+
+                    //IList<SceneAssetLibraryMapRecord> sceneAssetLibraryMapRecord = null;
+                    //sceneAssetLibraryMapRecord = nISEntitiesDataContext.SceneAssetLibraryMapRecords.Where(assetLibraryIdentifiers.ToString()).ToList();
+
+                    //if (sceneAssetLibraryMapRecord?.Count > 0)
+                    //{
+                    //    throw new SceneLibraryReferenceException(tenantCode);
+                    //}
+
+                    #endregion
+
+                    assetLibraryRecords.ToList().ForEach(item =>
+                    {
+                        item.IsDeleted = true;
+                    });
+
+                    assetRecords.ToList().ForEach(item =>
+                    {
+                        item.IsDeleted = true;
+                    });
+
+                    nISEntitiesDataContext.SaveChanges();
                 }
                 result = true;
                 return result;
@@ -415,9 +463,32 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
 
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                using (NISEntities nVidYoEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    
+                    StringBuilder query = new StringBuilder();
+                    query.Append("(" + string.Join("or ", string.Join(",", assets.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+                    query.Append("and IsDeleted.Equals(false)");
+                    IList<AssetRecord> assetRecords = nVidYoEntitiesDataContext.AssetRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    if (assetRecords == null || assetRecords.Count <= 0 || assetRecords.Count() != string.Join(",", assetRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
+                    {
+                        throw new AssetNotFoundException(tenantCode);
+                    }
+
+                    //Delete files from path
+                    assetRecords.ToList().ForEach(item =>
+                    {
+                        if ((System.IO.File.Exists(item.FilePath)))
+                        {
+                            System.IO.File.Delete(item.FilePath);
+                        }
+                    });
+
+                    assetRecords.ToList().ForEach(item =>
+                    {
+                        item.IsDeleted = true;
+                    });
+
+                    nVidYoEntitiesDataContext.SaveChanges();
                 }
                 result = true;
                 return result;

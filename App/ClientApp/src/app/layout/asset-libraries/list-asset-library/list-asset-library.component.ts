@@ -193,18 +193,12 @@ export class ListAssetLibraryComponent implements OnInit {
         let roleData = [{
           "Identifier": role.Identifier,
         }];
-        let isDependencyPresent = await this.assetLibraryService.checkDependency(roleData);
-        if (isDependencyPresent) {
-          let msg = 'Dependency present ..!!';
-          this._messageDialogService.openDialogBox('Error', msg, Constants.msgBoxError);
-        }
-        else {
-          let isDeleted = await this.assetLibraryService.deleteAssetLibrary(roleData);
-          if (isDeleted) {
-            let messageString = Constants.recordDeletedMessage;
-            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-            this.getAssetLibraryRecords(null);
-          }
+
+        let isDeleted = await this.assetLibraryService.deleteAssetLibrary(roleData);
+        if (isDeleted) {
+          let messageString = Constants.recordDeletedMessage;
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          this.getAssetLibraryRecords(null);
         }
       }
     });

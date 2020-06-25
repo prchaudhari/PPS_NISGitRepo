@@ -373,15 +373,15 @@ namespace nIS
                         var postedFile = httpRequest.Files[count];
 
                         string imagePath = string.Empty;
-                        var assetPathSetting = assetLibraryManager.GetAssetPath(tenantCode);
-                        if (assetPathSetting == null || string.IsNullOrWhiteSpace(assetPathSetting.AssetPath))
-                        {
-                            throw new AssetPathNotFoundException(tenantCode);
-                        }
-                        imagePath = assetPathSetting.AssetPath;
+                        imagePath = HttpContext.Current.Server.MapPath("~");
 
-                        //imagePath = Directory.GetCurrentDirectory();
-                        //var directory = Directory.GetDirectories("assets").FirstOrDefault(); ;
+                        //var assetPathSetting = assetLibraryManager.GetAssetPath(tenantCode);
+                        //if (assetPathSetting == null || string.IsNullOrWhiteSpace(assetPathSetting.AssetPath))
+                        //{
+                        //    throw new AssetPathNotFoundException(tenantCode);
+                        //}
+                        //imagePath = assetPathSetting.AssetPath;
+
                         var customerPath = imagePath + ModelConstant.ASSETPATHSLASH + tenantCode + ModelConstant.ASSETPATHSLASH;
 
                         if (!Directory.Exists(customerPath))

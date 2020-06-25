@@ -27,7 +27,7 @@ import { LoginService } from '../../../login/login.service';
 export class UserAddEditComponent implements OnInit {
   userFormGroup: FormGroup;
   public emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]*[ ]*$";
+  public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]*[ ]{0,1}[a-zA-Z]*[ ]*$";
   public onlyNumbers = '[0-9]*';
   public errorMsg: boolean;
   public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
@@ -251,10 +251,11 @@ export class UserAddEditComponent implements OnInit {
 
   onFileChanged(event) {
     let file = event.target.files[0];
-    if (file.size > 4194304) {
+    if (file.size > 200000) {
       this.userFormErrorObject.showProfilePictureSizeError = true;
       return false;
     }
+   
     this.userFormErrorObject.showProfilePictureSizeError = false;
 
     var pattern = /image-*/;
@@ -346,7 +347,7 @@ export class UserAddEditComponent implements OnInit {
     this.userFormErrorObject.showCountryCodeError = false;
     this.userFormErrorObject.showUserMobileNumberError = false;
     this.userFormErrorObject.roleShowError = false;
-    if (this.imageSize > 4194304) {
+    if (this.imageSize > 200000) {
       this.userFormErrorObject.showProfilePictureSizeError = true;
       return false;
     }
@@ -381,7 +382,7 @@ export class UserAddEditComponent implements OnInit {
 
   saveButtonValidation(): boolean {
 
-    if (this.imageSize > 4194304) {
+    if (this.imageSize > 200000) {
       return true;
     }
     if (this.userFormErrorObject.showProfilePictureSizeError) {
@@ -459,8 +460,8 @@ export class UserAddEditComponent implements OnInit {
         }
       })
       let userObject: any = {
-        "FirstName": this.userFormGroup.value.firstName,
-        "LastName": this.userFormGroup.value.lastName,
+        "FirstName": this.userFormGroup.value.firstName.trim(),
+        "LastName": this.userFormGroup.value.lastName.trim(),
         "EmailAddress": this.userFormGroup.value.email,
         "ContactNumber": this.userFormGroup.value.CountryCode + "-" + this.userFormGroup.value.mobileNumber,
         "Roles": selectedroleArray,

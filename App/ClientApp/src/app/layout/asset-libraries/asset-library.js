@@ -12,6 +12,7 @@ var AssetLibrary = /** @class */ (function () {
 exports.AssetLibrary = AssetLibrary;
 var Asset = /** @class */ (function () {
     function Asset() {
+        this.IsChecked = false;
     }
     return Asset;
 }());

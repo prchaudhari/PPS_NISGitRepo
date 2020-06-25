@@ -55,6 +55,8 @@ export class AddAssetLibraryComponent implements OnInit {
   public isCollapsedDetails: boolean = false;
   public isCollapsedAssets: boolean = true;
   public params;
+  public isCheckAll: boolean = false
+  public disableMultipleDelete = true;
   isAssetLibraryDetailSaveButtonDisable: boolean = false;
   isMultipleFileUploadEnable: boolean = true;
   fileToUpload: FileList = null;
@@ -155,7 +157,7 @@ export class AddAssetLibraryComponent implements OnInit {
   }
 
   navigateToListPage() {
-    this._location.back();
+    this._router.navigate(['assetlibrary']);
   }
   private UpdateAsset(assetId: number): void {
     if (localStorage.getItem('RoleName') === 'Super Admin') {
@@ -196,6 +198,7 @@ export class AddAssetLibraryComponent implements OnInit {
           assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
           this.LoadAsset(assetSearchParameter);
           $('.overlay').show();
+          this.CloseUploadAssetContainer();
           this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
         },
         error => {
@@ -258,6 +261,7 @@ export class AddAssetLibraryComponent implements OnInit {
             this.LoadAsset(assetSearchParameter);
             this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
             $('.overlay').show();
+            
           },
           error => {
             $('.overlay').show();
@@ -274,7 +278,7 @@ export class AddAssetLibraryComponent implements OnInit {
     assets = new Array<Asset>();
     let selectedIndexes = [];
     //selectedIndexes = this.dataSource;
-    //this.assets.forEach((item, index) => {
+    //this.assets.forEach((item, index) => {HandleFileUpload
     //  selectedIndexes.forEach((element) => {
     //    if (index == element) {
     //      let asset: Asset;
@@ -284,6 +288,16 @@ export class AddAssetLibraryComponent implements OnInit {
     //    }
     //  });
     //});
+    this.assetLibrary.Assets.forEach((item, index) => {
+      if (item.IsChecked) {
+        let asset: Asset;
+        asset = new Asset();
+        asset.Identifier = item.Identifier;
+        assets.push(asset);
+      }
+      
+    })
+
 
     $('.overlay').show();
     if (!assets.length) {
@@ -294,8 +308,8 @@ export class AddAssetLibraryComponent implements OnInit {
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         $('.overlay').hide();
         if (isConfirmed) {
-
-
+          this._spinnerService.start();
+          this.isCheckAll = false;
           this._http.post(this.baseURL + 'assetlibrary/asset/delete', assets).subscribe(
             data => {
               this._spinnerService.stop();
@@ -327,6 +341,13 @@ export class AddAssetLibraryComponent implements OnInit {
       data => {
         assets = <Asset[]>data;
         this.assets = assets;
+        this.assetLibrary.Assets = this.assets;
+        for (let i = 0; i < this.assetLibrary.Assets.length; i++) {
+
+          this.assetLibrary.Assets[i].IsChecked = false;
+        }
+        this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
+        this.dataSource.sort = this.sort;
         this._spinnerService.stop();
       },
       error => {
@@ -336,6 +357,77 @@ export class AddAssetLibraryComponent implements OnInit {
       });
   }
 
+  IsCheckAll(event): void {
+    const value = event.checked;
+    if (value) {
+      this.isCheckAll = true;
+      for (let i = 0; i < this.assetLibrary.Assets.length; i++) {
+
+        this.assetLibrary.Assets[i].IsChecked = true;
+      }
+      this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
+      this.disableMultipleDelete = false;
+
+    }
+    else {
+
+      this.isCheckAll = false;
+      for (let i = 0; i < this.assetLibrary.Assets.length; i++) {
+
+        this.assetLibrary.Assets[i].IsChecked = false;
+      }
+      this.disableMultipleDelete = true;
+      this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
+    }
+  }
+
+  IsCheckItem(event,element): void {
+    if (event.checked) {
+      this.disableMultipleDelete = false;
+      let itemIndex = 0;
+      this.assetLibrary.Assets.forEach((item, index) => {
+        if (item.Identifier == element.Identifier) {
+          itemIndex = index;
+        }
+      })
+      this.assetLibrary.Assets[itemIndex].IsChecked = true;
+
+      let isdisable = false;
+      this.assetLibrary.Assets.forEach((item, index) => {
+        if (!item.IsChecked) {
+          isdisable = true;
+        }
+      })
+      if (!isdisable) {
+        this.isCheckAll = true;
+      }
+    }
+    else {
+      this.isCheckAll = false;
+      this.assetLibrary.Assets.forEach
+      let itemIndex = 0;
+      this.assetLibrary.Assets.forEach((item, index) => {
+        if (item.Identifier == element.Identifier) {
+          itemIndex = index;
+        }
+      });
+      this.assetLibrary.Assets[itemIndex].IsChecked = false;
+
+      let isdisable = true;
+      this.assetLibrary.Assets.forEach((item, index) => {
+        if (item.IsChecked) {
+          isdisable = false;
+        }
+      })
+      if (!isdisable) {
+        this.disableMultipleDelete = false;
+      }
+      else {
+        this.disableMultipleDelete = true;
+
+      }
+    }
+  }
   CloseUploadAssetContainer(): void {
     this.uploadAssetContainer = false;
   }
@@ -351,6 +443,26 @@ export class AddAssetLibraryComponent implements OnInit {
     this.uploadAssetContainer = true;
   }
 
+  disableUploadAsset(): boolean{
+    if (this.updateOperationMode == false) {
+      if (this.assetLibrary.Identifier <= 0 || this.assetLibrary.Identifier == null || this.assetLibrary.Identifier == undefined) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
+
+  disableDeleteAsset(): boolean {
+    if (this.disableMultipleDelete)
+      return true;
+    else
+      return false;
+  }
   setFileUploadMethod(value: string) {
     if (value === 'files') {
       // to clear file selections
@@ -439,6 +551,11 @@ export class AddAssetLibraryComponent implements OnInit {
       this.assetLibrary = assetLibrary[0];
       this.assetLibraryFormGroup.controls['assetLibraryName'].setValue(assetLibrary[0].Name);
       this.assetLibraryFormGroup.controls['assetLibraryDescription'].setValue(assetLibrary[0].Description);
+   
+      for (let i = 0; i < this.assetLibrary.Assets.length; i++) {
+
+        this.assetLibrary.Assets[i].IsChecked = false;
+      }
       this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
       this.dataSource.sort = this.sort;
     }

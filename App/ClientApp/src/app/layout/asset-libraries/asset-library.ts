@@ -14,6 +14,7 @@ export class Asset {
   Name: string;
   FilePath: string;
   FileContent: string;
+  IsChecked: boolean = false;
 }
 
 export class AssetLibrarySearchParameter {

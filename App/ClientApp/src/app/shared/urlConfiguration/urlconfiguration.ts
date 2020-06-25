@@ -47,7 +47,7 @@ export class URLConfiguration {
   public static get assetLibraryAddUrl(): string { return "AssetLibrary/Add" };
   public static get assetLibraryUpdateUrl(): string { return "AssetLibrary/Update" };
   public static get assetLibraryDeleteUrl(): string { return "AssetLibrary/Delete" };
-  public static get assetLibraryCheckIsDependencyUrl(): string { return "Role/IsDeleteDependency" };
+  public static get assetLibraryCheckIsDependencyUrl(): string { return "AssetLibrary/IsDeleteDependency" };
 
   //Page Url Method
   public static get pageGetUrl(): string { return "Page/List" };

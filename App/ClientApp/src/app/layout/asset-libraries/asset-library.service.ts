@@ -88,13 +88,10 @@ export class AssetLibraryService {
   //method to call api of delete asset library.
   public async deleteAssetLibrary(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let identifier = null;
-    if (postData.length > 0) {
-      identifier = postData[0].Identifier;
-    }
-    let requestUrl = URLConfiguration.assetLibraryDeleteUrl + '?Identifier=' + identifier;
+    
+    let requestUrl = URLConfiguration.assetLibraryDeleteUrl;
     this.uiLoader.start();
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -105,8 +102,9 @@ export class AssetLibraryService {
             this.isRecordDeleted = false
           }
         }
-      }, (error: HttpResponse<any>) => {
-        this.uiLoader.stop();
+      }, (error) => {
+          this.uiLoader.stop();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.isRecordDeleted = false
       });
     return <boolean>this.isRecordDeleted;
