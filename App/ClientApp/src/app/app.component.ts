@@ -28,14 +28,14 @@ export class AppComponent {
   public isMessageBoxDisplyed = false;
 
   ngOnInit(): void {
-    this.bnIdle.startWatching(60).subscribe((isTimedOut: boolean) => {
+    this.bnIdle.startWatching(600).subscribe((isTimedOut: boolean) => {
       if (isTimedOut) {
         console.log('session expired');
         console.log(this.router.url);
         if (this.router.url != "/login") {
           if (this.dynamicGlobalVariable.IsSessionExpireMessageDisplyed == false) {
             this.dynamicGlobalVariable.IsSessionExpireMessageDisplyed = true;
-            this.messageDialogService.openDialogBox('Error', "Your session expired, Please login", Constants.msgBoxError);
+            this.messageDialogService.openDialogBox('Error', "Session expired please login again", Constants.msgBoxError);
             this.localstorageservice.removeLocalStorageData();
             this.router.navigate(['login']);
           }
