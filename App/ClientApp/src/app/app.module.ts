@@ -20,6 +20,9 @@ import { HttpIntercepter } from './core/interceptors/http-intercepter';
 import { AuthGuard, UnAuthorisedUrlGuard } from './core/guard';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
+import { BnNgIdleService } from 'bn-ng-idle';
+import { DynamicGlobalVariable } from './shared/constants/constants';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +50,7 @@ import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
       multi: true
     },
     AuthGuard, UnAuthorisedUrlGuard
+    , BnNgIdleService, DynamicGlobalVariable
   ],
   bootstrap: [AppComponent],
   //Common component for alert message.

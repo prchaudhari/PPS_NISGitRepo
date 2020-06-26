@@ -42,6 +42,12 @@ namespace nIS
         public const string USER_LOCKED_EXCEPTION = "Your account has been locked out. Please contact admin";
 
         /// <summary>
+        /// The user locked status found exception key
+        /// </summary>
+        //public const string USER_LOCKED_EXCEPTION = "UserLockedException";
+        public const string DEACTIVATED_USER_LOGIN= "Your account is deactivated, please contact admin";
+
+        /// <summary>
         /// The user reference in team exception
         /// </summary>
         //public const string USER_LOCKED_EXCEPTION = "UserLockedException";

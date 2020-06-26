@@ -14,7 +14,8 @@ import { LogsComponent } from './logs/logs.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { LogsDetailsComponent } from './logs-details/logs-details.component';
 import { SourcedataComponent } from './sourcedata/sourcedata.component';
-
+import { BnNgIdleService } from 'bn-ng-idle';
+import { DynamicGlobalVariable } from '../shared/constants/constants';
 @NgModule({
     declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent],
   imports: [
@@ -28,6 +29,9 @@ import { SourcedataComponent } from './sourcedata/sourcedata.component';
       OwlDateTimeModule,
       OwlNativeDateTimeModule
 
-  ]
+  ],
+    providers: [
+    BnNgIdleService, DynamicGlobalVariable,
+  ],
 })
 export class LayoutModule { }

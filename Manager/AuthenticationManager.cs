@@ -82,17 +82,20 @@ namespace nIS
                     },
                     IsRolePrivilegesRequired = true,
                     EmailAddress = username,
-                    IsActive = true
                 };
                 UserManager userManager = new UserManager(this.unityContainer);
                 IList<User> users = userManager.GetUsers(userSearchParameter, tenantCode);
 
-                if (users == null || users.Count <= 0 || !users.FirstOrDefault().IsActive)
+                if (users == null || users.Count <= 0)
                 {
                     throw new UserNotFoundException(tenantCode);
                 }
-                user = users.FirstOrDefault();
 
+                user = users.FirstOrDefault();
+                if (!user.IsActive)
+                {
+                    throw new DeactivatedUserLoginException(tenantCode);
+                }
                 if (user.IsLocked != true)
                 {
                     if (!userManager.IsAuthenticatedUser(user.EmailAddress, password, user.TenantCode))

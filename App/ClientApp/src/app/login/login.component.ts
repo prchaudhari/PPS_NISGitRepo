@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { LoginService } from './login.service';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { HttpClient, HttpResponse, HttpHeaders, HttpEvent ,HttpParams} from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpHeaders, HttpEvent, HttpParams } from '@angular/common/http';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
-import { Constants } from 'src/app/shared/constants/constants';
+import { Constants, DynamicGlobalVariable } from 'src/app/shared/constants/constants';
 import { ResourceService } from 'src/app/shared/services/resource.service';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
 
@@ -17,6 +17,7 @@ import { AuthenticationService } from 'src/app/authentication/authentication.ser
   templateUrl: './login.component.html'
 
 })
+
 export class LoginComponent implements OnInit {
   [x: string]: any;
 
@@ -68,9 +69,10 @@ export class LoginComponent implements OnInit {
     private spinner: NgxUiLoaderService,
     private injector: Injector,
     private _messageDialogService: MessageDialogService,
+    private dynamicGlobalVariable: DynamicGlobalVariable
+
   ) {
     //this.getResources();
-
   }
   isForgotPassswordForm() {
     this.isForgotPassword = true;
@@ -93,6 +95,7 @@ export class LoginComponent implements OnInit {
     if (userClaimsDetail) {
       this.route.navigate(['dashboard']);
     }
+    this.dynamicGlobalVariable.IsSessionExpireMessageDisplyed = false;
   }
 
   //custom validation check
@@ -138,7 +141,7 @@ export class LoginComponent implements OnInit {
       this._messageDialogService.openDialogBox('Error', "Please enter Email ID.", Constants.msgBoxError);
       return this.result = false;
     }
-    else if(!this.emailPatternRegex.test(this.userEmail)) {
+    else if (!this.emailPatternRegex.test(this.userEmail)) {
       this._messageDialogService.openDialogBox('Error', "Invalid email address.", Constants.msgBoxError);
       return this.result = false;
     }
@@ -162,7 +165,7 @@ export class LoginComponent implements OnInit {
           this.spinner.stop();
         }
       );
-  } 
+  }
   //Login functinality--
   checkLogin(loginObj) {
     this.spinner.start();
@@ -187,7 +190,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', access_token);
         this.localstorageservice.SetCurrentUser(data);
         let userName = userData.UserName;
-        
+
         localStorage.setItem("UserEmail", userData.UserPrimaryEmailAddress);
         localStorage.setItem("currentUserName", userName);
         localStorage.setItem("currentUserTheme", userData.UserTheme);
@@ -204,7 +207,7 @@ export class LoginComponent implements OnInit {
       if (error["error"]) {
         if (error["error"].error_description) {
           let errorMessage = error["error"].error_description;
-          if(errorMessage == 'User not found') {
+          if (errorMessage == 'User not found') {
             errorMessage = 'Email Id not registered with us..!!';
           }
           this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
