@@ -19,5 +19,7 @@ namespace nIS
         public string FilePath { get; set; }
         public long AssetLibraryId { get; set; }
         public bool IsDeleted { get; set; }
+        public Nullable<System.DateTime> LastUpdatedDate { get; set; }
+        public Nullable<long> LastUpdatedBy { get; set; }
     }
 }

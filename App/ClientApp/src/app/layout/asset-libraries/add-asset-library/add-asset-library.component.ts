@@ -66,7 +66,11 @@ export class AddAssetLibraryComponent implements OnInit {
   public assetLibraryFormErrorObject: any = {
     showAssetLibraryNameError: false
   };
+  public assetFileTypeError = false;
+  public assetFileSizeError = false;
+  public fileType = '';
   public assetLibraryFormGroup: FormGroup;
+  fileSize: string = '';
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   //@ViewChild('multipleFileAssetUpload') multipleFileAssetUpload: ElementRef;
@@ -183,10 +187,11 @@ export class AddAssetLibraryComponent implements OnInit {
 
     if (this.fileToUpload && this.fileToUpload.length > 0) {
       this._spinnerService.start();
-
+      var userid=localStorage.getItem('UserId')
       Array.prototype.forEach.call(this.fileToUpload, (file: File) => requestFormData.append('File', file));
       requestFormData.append('IsFolderUpload', this.isMultipleFileUploadEnable ? 'false' : 'true');
       requestFormData.append('AssetLibraryIdentifier', this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null);
+      requestFormData.append('LastUpdatedBy', userid);
 
       this._http.post(this.baseURL + 'assetlibrary/asset/upload', requestFormData).subscribe(
         data => {
@@ -474,11 +479,60 @@ export class AddAssetLibraryComponent implements OnInit {
       this.isMultipleFileUploadEnable = false;
     }
   }
-
+  //name: "03 add.png"
+  //size: 39434
+  //type: "image/png"
   HandleFileUpload(files: FileList): void {
-    this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
+    var file = files[0];
+    var imagePattern = /image-*/;
+    var vedioPattern = /video-*/;
+    if (file.type.match(imagePattern)) {
+      if (file.size > 1000000) {
+        this.fileSize = '1 MB';
+        this.fileType = 'Image';
+        this.assetFileSizeError = true;
+        this.fileNameList = [];
+        //return false;
+      }
+      else {
+        this.assetFileSizeError = false;
 
-    this.fileToUpload = files;
+      }
+    }
+    else if (file.type.match(vedioPattern)) {
+      if (file.size > 2000000) {
+        this.fileSize = '2 MB';
+        this.fileType = 'Video';
+        this.assetFileSizeError = true;
+        this.fileNameList = [];
+
+       // return false;
+
+      }
+      else {
+        this.assetFileSizeError = false;
+
+      }
+      
+     
+    }
+    else {
+      this.assetFileTypeError = true;
+      this.assetFileSizeError = false;
+      this.fileNameList = [];
+
+      // return false;
+
+    }
+    if (this.assetFileTypeError == false && this.assetFileSizeError == false) {
+      this.assetFileTypeError = false;
+      this.assetFileSizeError = false;
+
+      this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
+      this.fileToUpload = files;
+    }
+   
+    //return true;
   }
 
   removeFileFromUpload(fileName: string): void {
@@ -537,7 +591,7 @@ export class AddAssetLibraryComponent implements OnInit {
     searchParameter.SortParameter = {};
     searchParameter.SortParameter.SortColumn = Constants.Name;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
-    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.SearchMode = Constants.Exact;
     
     if (byName) {
       searchParameter.Name = name;

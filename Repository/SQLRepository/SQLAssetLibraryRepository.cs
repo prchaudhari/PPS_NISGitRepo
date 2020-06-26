@@ -283,12 +283,17 @@ namespace nIS
                     {
                         StringBuilder assetLibraryIdentifiers = new StringBuilder();
                         assetLibraryIdentifiers.Append("(" + string.Join(" or ", assetLibraryRecords.Select(item => string.Format("AssetLibraryId.Equals({0})", item.Id))) + ")");
-
+                        IList<UserRecord> users = new List<UserRecord>();
                         IList<AssetRecord> assetRecords = null;
                         if (assetLibrarySearchParameter.IsAssetDataRequired)
                         {
                             assetLibraryIdentifiers.Append(string.Format(" and IsDeleted.Equals(false)"));
                             assetRecords = nISEntitiesDataContext.AssetRecords.Where(assetLibraryIdentifiers.ToString()).ToList();
+                            StringBuilder userIdentifier = new StringBuilder();
+                            userIdentifier.Append("(" + string.Join(" or ", assetRecords.Select(item => string.Format("Id.Equals({0})", item.LastUpdatedBy))) + ")");
+                            userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
+
+                             users = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
                         }
                         assetLibraries = assetLibraryRecords.Select(AssetLibraryRecord => new AssetLibrary()
                         {
@@ -302,9 +307,19 @@ namespace nIS
                                 AssetLibraryIdentifier = i.AssetLibraryId,
                                 FilePath = i.FilePath,
                                 Name = i.Name,
+                                LastUpdatedBy = new User { Identifier = (long)i.LastUpdatedBy },
+                                LastUpdatedDate = i.LastUpdatedDate
                             })
                             .ToList()
                         }).ToList();
+                        assetLibraries?.ToList().ForEach(library => {
+                            library.Assets?.ToList().ForEach(asset => {
+                                UserRecord record = users.Where(item => item.Id == asset.LastUpdatedBy.Identifier)?.ToList().FirstOrDefault();
+                                asset.LastUpdatedBy.FirstName = record.FirstName;
+                                asset.LastUpdatedBy.LastName = record.LastName;
+                                asset.LastUpdatedBy.LastName = record.LastName;
+                            });
+                        });
 
                     }
                 }
@@ -346,7 +361,7 @@ namespace nIS
             return assetLibraryCount;
         }
 
-    
+
 
         #endregion
 
@@ -379,6 +394,8 @@ namespace nIS
                         FilePath = asset.FilePath,
                         AssetLibraryId = asset.AssetLibraryIdentifier,
                         IsDeleted = false,
+                        LastUpdatedDate=asset.LastUpdatedDate,
+                        LastUpdatedBy=asset.LastUpdatedBy.Identifier
                     });
                 });
 
@@ -535,6 +552,13 @@ namespace nIS
 
                     if (assetRecords != null && assetRecords.Count > 0)
                     {
+                        StringBuilder userIdentifier = new StringBuilder();
+                        userIdentifier.Append("(" + string.Join(" or ", assetRecords.Select(item => string.Format("Id.Equals({0})", item.LastUpdatedBy))) + ")");
+                        userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        IList<UserRecord> users = new List<UserRecord>();
+
+                        users = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
+
                         assets = assetRecords.Select(assetRecord => new Asset()
                         {
                             Identifier = assetRecord.Id,
@@ -542,8 +566,16 @@ namespace nIS
                             FilePath = assetRecord.FilePath,
                             FileContent = Path.GetExtension(assetRecord.FilePath) == ".ssml" ? File.ReadAllText(assetRecord.FilePath) : "",
                             AssetLibraryIdentifier = assetRecord.AssetLibraryId,
-                            IsDeleted = assetRecord.IsDeleted
+                            IsDeleted = assetRecord.IsDeleted,
+                            LastUpdatedBy = new User { Identifier = (long)assetRecord.LastUpdatedBy },
+                            LastUpdatedDate = assetRecord.LastUpdatedDate
                         }).ToList();
+                        assets?.ToList().ForEach(asset => {
+                            UserRecord record = users.Where(item => item.Id == asset.LastUpdatedBy.Identifier)?.ToList().FirstOrDefault();
+                            asset.LastUpdatedBy.FirstName = record.FirstName;
+                            asset.LastUpdatedBy.LastName = record.LastName;
+                            asset.LastUpdatedBy.LastName = record.LastName;
+                        });
                     }
                 }
             }

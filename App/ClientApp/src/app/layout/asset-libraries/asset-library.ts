@@ -1,5 +1,7 @@
 
 import { PagingParameter, SortParameter, SearchMode } from "../../shared/models/commonmodel";
+import { DateTimeAdapter } from "ng-pick-datetime";
+import { User } from "../users/user";
 
 export class AssetLibrary {
   Identifier: number;
@@ -15,6 +17,8 @@ export class Asset {
   FilePath: string;
   FileContent: string;
   IsChecked: boolean = false;
+  LastUpdatedDate;
+  LastUpdatedBy: User;
 }
 
 export class AssetLibrarySearchParameter {

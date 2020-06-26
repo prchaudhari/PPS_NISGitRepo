@@ -73,7 +73,7 @@
             Last Updated By
           </th>
           <td mat-cell *matCellDef="let element">
-            {{element.UpdatedBy}}
+            {{element.LastUpdatedBy.FirstName}} {{element.LastUpdatedBy.LastName}}
           </td>
         </ng-container>
         <ng-container matColumnDef="date">
@@ -81,7 +81,7 @@
             Last Updated Date
           </th>
           <td mat-cell *matCellDef="let element">
-            {{element.UpdatedDate}}
+            {{element.LastUpdatedDate |date }}
           </td>
         </ng-container>
 

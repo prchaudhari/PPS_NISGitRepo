@@ -127,8 +127,21 @@ namespace nIS
             IList<AssetLibrary> assetlibraries = new List<AssetLibrary>();
             try
             {
+
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 assetlibraries = this.assetLibraryManager.GetAssetLibraries(assetLibrarySearchParameter, tenantCode);
+                if (assetlibraries?.Count > 0 && assetLibrarySearchParameter.IsAssetDataRequired)
+                {
+                    string path = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH + ModelConstant.ASSETS;
+                    assetlibraries.ToList().ForEach(library =>
+                    {
+                        if (library.Assets?.Count() > 0)
+                            library.Assets.ToList().ForEach(asset =>
+                            {
+                                asset.FilePath = path + ModelConstant.ASSETPATHSLASH + library.Identifier + ModelConstant.ASSETPATHSLASH + asset.Name;
+                            });
+                    });
+                }
                 HttpContext.Current.Response.AppendHeader("recordCount", this.assetLibraryManager.GetAssetLibraryCount(assetLibrarySearchParameter, tenantCode).ToString());
             }
             catch (Exception exception)
@@ -257,6 +270,14 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 assets = this.assetLibraryManager.GetAssets(assetSearchParameter, tenantCode);
+                string path = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH + ModelConstant.ASSETS;
+
+
+                assets?.ToList().ForEach(asset =>
+                {
+                    asset.FilePath = path + ModelConstant.ASSETPATHSLASH + asset.AssetLibraryIdentifier + ModelConstant.ASSETPATHSLASH + asset.Name;
+                });
+
                 HttpContext.Current.Response.AppendHeader("recordCount", this.assetLibraryManager.GetAssetCount(assetSearchParameter, tenantCode).ToString());
             }
             catch (Exception exception)
@@ -357,10 +378,16 @@ namespace nIS
                 {
                     throw new InvalidAssetLibraryException(tenantCode);
                 }
+                if (httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault() == string.Empty
+                   || httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault() == "0"
+                   )
+                {
+                    throw new UserNotFoundException(tenantCode);
+                }
 
                 assetLibraryIdentifier = long.Parse(httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault());
                 isFolderUpload = bool.Parse(httpRequest.Form.GetValues("IsFolderUpload").FirstOrDefault());
-
+                long lastUpdatedBy= long.Parse(httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault());
 
                 if (httpRequest.Files.Count > 0)
                 {
@@ -382,7 +409,7 @@ namespace nIS
                         //}
                         //imagePath = assetPathSetting.AssetPath;
 
-                        var customerPath = imagePath + ModelConstant.ASSETPATHSLASH + tenantCode + ModelConstant.ASSETPATHSLASH;
+                        var customerPath = imagePath + ModelConstant.ASSETPATHSLASH;
 
                         if (!Directory.Exists(customerPath))
                         {
@@ -421,9 +448,11 @@ namespace nIS
                             assets.Add(new Asset()
                             {
                                 Name = fileName,
-                                FilePath = filePath,
-                                AssetLibraryIdentifier = assetLibraryIdentifier
-                            });
+                                FilePath = fileName,
+                                AssetLibraryIdentifier = assetLibraryIdentifier,
+                                LastUpdatedBy = new User { Identifier = lastUpdatedBy },
+                                LastUpdatedDate = DateTime.UtcNow
+                            }); ;
                             this.assetLibraryManager.AddAssets(assets, tenantCode);
                         }
 
@@ -633,6 +662,11 @@ namespace nIS
                     Identifier = assetIdentifier,
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
+
+                string relativePath = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH + ModelConstant.ASSETS;
+
+                asset.FilePath = path + ModelConstant.ASSETPATHSLASH + asset.AssetLibraryIdentifier + ModelConstant.ASSETPATHSLASH + asset.Name;
+
 
                 if (asset == null)
                 {

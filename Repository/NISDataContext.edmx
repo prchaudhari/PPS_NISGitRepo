@@ -14,6 +14,8 @@
           <Property Name="FilePath" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="AssetLibraryId" Type="bigint" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" />
+          <Property Name="LastUpdatedBy" Type="bigint" />
         </EntityType>
         <EntityType Name="AssetLibrary">
           <Key>
@@ -383,6 +385,8 @@
           <Property Name="FilePath" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="AssetLibraryId" Type="Int64" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedBy" Type="Int64" />
         </EntityType>
         <EntityType Name="AssetLibraryRecord">
           <Key>
@@ -648,6 +652,8 @@
           <EntitySetMapping Name="AssetRecords">
             <EntityTypeMapping TypeName="NISModel.AssetRecord">
               <MappingFragment StoreEntitySet="Asset">
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="AssetLibraryId" ColumnName="AssetLibraryId" />
                 <ScalarProperty Name="FilePath" ColumnName="FilePath" />

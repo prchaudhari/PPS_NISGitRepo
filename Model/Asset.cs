@@ -50,6 +50,15 @@ namespace nIS
         private bool isDeleted;
 
         /// <summary>
+        /// The isdeleted
+        /// </summary>
+        private User lastUpdatedBy;
+        /// <summary>
+        /// The isdeleted
+        /// </summary>
+        private DateTime? lastUpdatedDate=DateTime.UtcNow;
+
+        /// <summary>
         /// The utility object
         /// </summary>
         private IUtility utility = new Utility();
@@ -128,6 +137,39 @@ namespace nIS
             set
             {
                 this.filePath = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets FilePath.
+        /// </summary>
+        [Description("FilePath")]
+        public User LastUpdatedBy
+        {
+            get
+            {
+                return this.lastUpdatedBy;
+            }
+
+            set
+            {
+                this.lastUpdatedBy = value;
+            }
+        }
+        /// <summary>
+        /// Gets or sets FilePath.
+        /// </summary>
+        [Description("FilePath")]
+        public DateTime? LastUpdatedDate
+        {
+            get
+            {
+                return this.lastUpdatedDate;
+            }
+
+            set
+            {
+                this.lastUpdatedDate = value;
             }
         }
 

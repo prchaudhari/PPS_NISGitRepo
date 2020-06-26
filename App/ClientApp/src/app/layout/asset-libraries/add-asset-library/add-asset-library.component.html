@@ -100,7 +100,7 @@
               Last Updated By
             </th>
             <td mat-cell *matCellDef="let element">
-              {{element.UpdatedBy}}
+              {{element.LastUpdatedBy.FirstName}} {{element.LastUpdatedBy.LastName}}
             </td>
           </ng-container>
           <ng-container matColumnDef="date">
@@ -117,7 +117,7 @@
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
                 <button type="button" title="Download" (click)="DownloadAsset(element.Identifier)" id="btnUpdate"><span class="fa fa-download"></span></button>
-                <button type="button" title="Delete"  (click)="DeleteAsset(element.Identifier)" id="btnDelete"><span class="fa fa-trash-o"></span></button>
+                <button type="button" title="Delete" (click)="DeleteAsset(element.Identifier)" id="btnDelete"><span class="fa fa-trash-o"></span></button>
               </div>
             </td>
           </ng-container>
@@ -143,35 +143,45 @@
       <div class="row">
         <div class="col-sm-6 form-group">
           <label> Upload Files </label>
-          <div>
+          <!--<div>
             <label class="switch d-block">
               <input (click)="setFileUploadMethod('files')" [checked]="isMultipleFileUploadEnable" type="radio" name="upload" checked>
               <span class="slider round"></span>
             </label>
-          </div>
-        </div>
-        <div class="col-sm-6 form-group">
-          <label> Upload Folder </label>
-          <div>
-            <label class="switch d-block">
-              <input (click)="setFileUploadMethod('folder')" [checked]="!isMultipleFileUploadEnable" type="radio" name="upload">
-              <span class="slider round"></span>
-            </label>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="row">
         <div class="form-group col-sm-12 parent-rtl">
           <div class="input-group">
             <div class="custom-file z-index-0">
-              <input *ngIf="!isMultipleFileUploadEnable" #multipleFileAssetUpload class="custom-file-input"
-                     type="file" webkitDirectory (change)="HandleFileUpload($event.target.files)">
+              <!--<input *ngIf="!isMultipleFileUploadEnable" #multipleFileAssetUpload class="custom-file-input"
+              type="file" webkitDirectory (change)="HandleFileUpload($event.target.files)">-->
 
               <input *ngIf="isMultipleFileUploadEnable" #multipleFileAssetUpload class="custom-file-input"
-                     type="file" multiple (change)="HandleFileUpload($event.target.files)">
+                     accept="image/x-png,image/jpeg,image/jpg,video/mp4" type="file" (change)="HandleFileUpload($event.target.files)">
               <label class="custom-file-label"></label>
+
+
+            </div>
+
+          </div>
+        </div>
+        <div class="form-group col-sm-12 parent-rtl">
+          <div class="input-group">
+
+            <div class="validation-msg" style="color:red">
+              <ul>
+                <li class="text-danger" *ngIf="assetFileSizeError">
+                  {{fileType}} file size should not be greater the {{fileSize}}
+                </li>
+                <li class="text-danger" *ngIf="assetFileTypeError">
+                  Invalid file type
+                </li>
+              </ul>
             </div>
           </div>
+
         </div>
       </div>
       <div class="row">
@@ -191,7 +201,7 @@
     <div class="filter-footer">
       <ul class="nav nav-toolbar">
         <li class="nav-item width50">
-          <button (click)="UploadAsset()"  [disabled]="fileNameList.length<=0" title="Save" id="btnCloseForm"
+          <button (click)="UploadAsset()" [disabled]="fileNameList.length<=0 || assetFileSizeError || assetFileTypeError" title="Save" id="btnCloseForm"
                   class="btn-footer-fill btn-block rounded-0 height100">
             <span class="fa fa-check"></span>
           </button>

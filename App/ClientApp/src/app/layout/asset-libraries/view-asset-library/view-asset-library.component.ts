@@ -130,7 +130,7 @@ export class ViewAssetLibraryComponent implements OnInit {
     searchParameter.SortParameter = {};
     searchParameter.SortParameter.SortColumn = Constants.Name;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
-    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.SearchMode = Constants.Exact;
 
 
     searchParameter.Identifier = this.assetLibrary.Identifier;

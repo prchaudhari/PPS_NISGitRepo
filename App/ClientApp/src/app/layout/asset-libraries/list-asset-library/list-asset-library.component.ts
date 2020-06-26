@@ -38,6 +38,8 @@ export class ListAssetLibraryComponent implements OnInit {
   public userClaimsRolePrivilegeOperations: any[] = [];
   public displayedColumns: string[] = ['name', 'description', 'actions'];
   public array: any;
+  public isFilterDone = false;
+
   dataSource = new MatTableDataSource<any>();
   public sortedAssetLibraryList: AssetLibrary[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -51,7 +53,33 @@ export class ListAssetLibraryComponent implements OnInit {
     private localstorageservice: LocalStorageService,
     private assetLibraryService: AssetLibraryService) {
   }
-
+  resetRoleFilterForm() {
+    this.filterAssetLibraryName.patchValue({
+      filterRoleName: null,
+      
+    });
+  }
+  searchFilter(searchType) {
+    this.isFilterDone = true;
+    if (searchType == 'reset') {
+      this.resetRoleFilterForm();
+      this.getAssetLibraryRecords(null);
+      this.isFilter = !this.isFilter;
+    }
+    else {
+      let searchParameter: any = {};
+      searchParameter.PagingParameter = {};
+      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.SortParameter = {};
+      searchParameter.SortParameter.SortColumn = Constants.Name;
+      searchParameter.SortParameter.SortOrder = Constants.Ascending;
+      searchParameter.SearchMode = Constants.Contains;
+      searchParameter.Name = this.assetLibraryFilterForm.value.filterAssetLibraryName != null ? this.assetLibraryFilterForm.value.filterAssetLibraryName : "";
+      this.getAssetLibraryRecords(searchParameter);
+      this.isFilter = !this.isFilter;
+    }
+  }
   ngOnInit() {
     this.getAssetLibraryRecords(null)
     this.assetLibraryFilterForm = this.fb.group(
@@ -81,7 +109,15 @@ export class ListAssetLibraryComponent implements OnInit {
       searchParameter.SearchMode = Constants.Contains;
     }
     this.assetLibraryList = await assetLibraryService.getAssetLibrary(searchParameter);
-
+    if (this.assetLibraryList.length == 0 && this.isFilterDone == true) {
+      let message = "NO record found";//this.roleListResources['lblNoRecord'] == undefined ? this.ResourceLoadingFailedMsg : this.roleListResources['lblNoRecord']
+      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+        if (data == true) {
+          this.resetRoleFilterForm();
+          this.getAssetLibraryRecords(null);
+        }
+      });
+    }
     this.dataSource = new MatTableDataSource<AssetLibrary>(this.assetLibraryList);
     //this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

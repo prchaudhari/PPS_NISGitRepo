@@ -190,7 +190,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', access_token);
         this.localstorageservice.SetCurrentUser(data);
         let userName = userData.UserName;
-
+        
+        localStorage.setItem("UserId", userData.UserIdentifier);
         localStorage.setItem("UserEmail", userData.UserPrimaryEmailAddress);
         localStorage.setItem("currentUserName", userName);
         localStorage.setItem("currentUserTheme", userData.UserTheme);

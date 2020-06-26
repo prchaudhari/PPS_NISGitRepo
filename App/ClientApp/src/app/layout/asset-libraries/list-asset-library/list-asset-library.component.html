@@ -62,26 +62,26 @@
   </div>
   <!--desktop view end-->
 
-  <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+  <div class="filter-popup" [formGroup]="assetLibraryFilterForm" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
     <div class="filter-head">
       <label class="m-0">Apply Filter</label>
     </div>
     <div class="filter-body-left d-flex flex-column stylescrollbar">
       <div class="form-group">
         <label>Name</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control"  formControlName="filterAssetLibraryName">
       </div>
     </div>
     <!--[ngClass]="filterClass"-->
     <div class="filter-footer">
       <ul class="nav">
         <li class="nav-item width33" title="Search">
-          <a class="nav-link p-0">
+          <a class="nav-link p-0" (click)="searchFilter('search')">
             <span class="fa fa-check"></span>
           </a>
         </li>
         <li class="nav-item width33" title="Reset">
-          <a class="nav-link p-0">
+          <a class="nav-link p-0" (click)="searchFilter('reset')">
             <span class="fa fa-refresh"></span>
           </a>
         </li>
