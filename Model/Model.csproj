@@ -56,6 +56,7 @@
     <Compile Include="Country.cs" />
     <Compile Include="Enum\Activity.cs" />
     <Compile Include="Enum\ClaimType.cs" />
+    <Compile Include="Enum\PageStatus.cs" />
     <Compile Include="Enum\SearchMode.cs" />
     <Compile Include="Enum\SortOrder.cs" />
     <Compile Include="Common\SortParameter.cs" />

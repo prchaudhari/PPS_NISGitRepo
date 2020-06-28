@@ -39,7 +39,7 @@ export class Constants {
   public static get EntityName(): string { return "EntityName" };
   public static get smtpTestedMessage(): string { return "Tested Successfully" };
   public static get StartDate(): string { return "StartDate" };
- 
+  public static get PagePublishedSuccessfullyMessage(): string { return "Page Published successfully." };
 
 }
 

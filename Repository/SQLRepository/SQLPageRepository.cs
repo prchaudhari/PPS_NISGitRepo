@@ -10,6 +10,7 @@ namespace nIS
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Dynamic;
+    using System.Security.Claims;
     using System.Text;
     using Unity;
     #endregion
@@ -67,7 +68,38 @@ namespace nIS
         /// <returns></returns>
         public bool PublishPage(long pageIdentifier, string tenantCode)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            try
+            {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<PageRecord> pageRecords = nISEntitiesDataContext.PageRecords.Where(itm => itm.Id == pageIdentifier).ToList();
+                    if (pageRecords == null || pageRecords.Count <= 0)
+                    {
+                        throw new PageNotFoundException(tenantCode);
+                    }
+
+                    pageRecords.ToList().ForEach(item =>
+                    {
+                        item.PublishedBy = userId;
+                        item.PublishedOn = DateTime.Now;
+                        item.Status = PageStatus.Published.ToString();
+                    });
+
+                    nISEntitiesDataContext.SaveChanges();
+                }
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
         }
 
         /// <summary>
@@ -83,6 +115,10 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
                 this.SetAndValidateConnectionString(tenantCode);
                 if (this.IsDuplicatePage(pages, "AddOperation", tenantCode))
                 {
@@ -96,15 +132,13 @@ namespace nIS
                     {
                         DisplayName = page.DisplayName,
                         PageTypeId = page.PageTypeId,
-                        PublishedBy = page.PublishedBy,
                         IsActive = true,
                         IsDeleted = false,
-                        Status = "New",
+                        Status = PageStatus.New.ToString(),
                         CreatedDate = DateTime.Now,
                         LastUpdatedDate = DateTime.Now,
-                        UpdateBy = page.UpdatedBy,
                         Version = "V.1.0.0",
-                        Owner = page.PageOwner,
+                        Owner = userId,
                         TenantCode = tenantCode
                     });
                 });
@@ -159,30 +193,45 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
                 this.SetAndValidateConnectionString(tenantCode);
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    var statementRecords = (from s in nISEntitiesDataContext.StatementRecords
+                                   join sp in nISEntitiesDataContext.StatementPageMapRecords on s.Id equals sp.StatementId
+                                   where s.IsDeleted == false && sp.ReferencePageId == pageIdentifier
+                                   select new { s.Id }).ToList();
+                    if (statementRecords.Count > 0)
+                    {
+                        throw new PageReferenceException(tenantCode);
+                    }
+
                     IList<PageRecord> pageRecords = nISEntitiesDataContext.PageRecords.Where(itm => itm.Id == pageIdentifier).ToList();
                     if (pageRecords == null || pageRecords.Count <= 0)
                     {
-                        throw new RoleNotFoundException(tenantCode);
+                        throw new PageNotFoundException(tenantCode);
                     }
 
                     pageRecords.ToList().ForEach(item =>
                     {
                         item.IsDeleted = true;
+                        item.UpdateBy = userId;
+                        item.LastUpdatedDate = DateTime.Now;
                     });
 
                     nISEntitiesDataContext.SaveChanges();
                 }
                 result = true;
-                return result;
             }
             catch (Exception exception)
             {
                 throw exception;
             }
+            return result;
         }
 
         /// <summary>
@@ -202,7 +251,7 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(pageSearchParameter, tenantCode);
                 IList<PageRecord> pageRecords = new List<PageRecord>();
-                IList<UserRecord> userRecords = new List<UserRecord>();
+                //IList<UserRecord> userRecords = new List<UserRecord>();
                 IList<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString)) 
                 {
@@ -275,10 +324,10 @@ namespace nIS
                             Version = pageRecord.Version,
                             PageTypeId = pageRecord.PageTypeId,
                             PageTypeName = pageTypeRecords.FirstOrDefault(itm => itm.Id == pageRecord.PageTypeId)?.Name,
-                            PublishedBy = pageRecord.PublishedBy,
+                            PublishedBy = pageRecord.PublishedBy ?? 0,
                            // PagePublishedByUserName = userRecords.Where(usr => usr.Id == pageRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName,
                             PublishedOn = pageRecord.PublishedOn ?? DateTime.MinValue,
-                            UpdatedBy = pageRecord.UpdateBy,
+                            UpdatedBy = pageRecord.UpdateBy ?? 0,
                            // PageUpdatedByUserName = userRecords.Where(usr => usr.Id == pageRecord.UpdateBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName,
                         });
                     });
@@ -331,6 +380,10 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
                 this.SetAndValidateConnectionString(tenantCode);
                 if (this.IsDuplicatePage(pages, "UpdateOperation", tenantCode))
                 {
@@ -352,8 +405,8 @@ namespace nIS
                     pages.ToList().ForEach(item =>
                     {
                         PageRecord pageRecord = pageRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
-                        pageRecord.DisplayName = item.DisplayName;
-                        //pageRecord.PageTypeId = item.PageTypeId;
+                        pageRecord.LastUpdatedDate = DateTime.Now;
+                        pageRecord.UpdateBy = userId;
                         pageRecord.TenantCode = tenantCode;
                     });
 

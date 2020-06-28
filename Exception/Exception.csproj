@@ -65,7 +65,9 @@
     <Compile Include="NullArgumentException.cs" />
     <Compile Include="Page\DuplicatePageFoundException.cs" />
     <Compile Include="Page\DuplicatePageWidgetFoundException.cs" />
+    <Compile Include="Page\InvalidPageException.cs" />
     <Compile Include="Page\PageNotFoundException.cs" />
+    <Compile Include="Page\PageReferenceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryStoreNotAccessibleException.cs" />
     <Compile Include="Role\DuplicateRoleFoundException.cs" />

@@ -46,5 +46,10 @@ namespace nIS
         /// Duplicate Page widget found exception
         /// </summary>
         public const string DUPLICATE_PAGE_WIDGET_FOUND_EXCEPTION = "Page widget already exists";
+
+        /// <summary>
+        /// Duplicate Page page reference exit exception
+        /// </summary>
+        public const string PAGE_REFERENCE_EXIST_EXCEPTION = "This page is already used in statement definition";
     }
 }

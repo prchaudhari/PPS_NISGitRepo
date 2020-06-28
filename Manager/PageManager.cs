@@ -70,8 +70,8 @@ namespace nIS
             bool result = false;
             try
             {
-                //this.IsValidRoles(roles, tenantCode);
-                //this.IsDuplicateRole(roles, tenantCode);
+                this.IsValidPages(pages, tenantCode);
+                this.IsDuplicatePage(pages, tenantCode);
                 result = this.pageRepository.AddPages(pages, tenantCode);
                 return result;
             }
@@ -94,9 +94,9 @@ namespace nIS
             bool result = false;
             try
             {
-               // this.IsValidRoles(roles, tenantCode);
-                //this.IsDuplicateRole(roles, tenantCode);
-                //result = this.pageRepository.UpdatePages(pages, tenantCode);
+                this.IsValidPages(pages, tenantCode);
+                this.IsDuplicatePage(pages, tenantCode);
+                result = this.pageRepository.UpdatePages(pages, tenantCode);
                 return result;
             }
             catch (Exception ex)
@@ -185,6 +185,91 @@ namespace nIS
                 throw exception;
             }
             return roleCount;
+        }
+
+        /// <summary>
+        /// This method will call publish page method of repository
+        /// </summary>
+        /// <param name="pageIdentifier">Page iddentifier</param>
+        /// <param name="tenantCode">Tenant code of page.</param>
+        /// <returns>
+        /// Returns true if pages deleted successfully, false otherwise.
+        /// </returns>
+        public bool PublishPage(long pageIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                result = this.pageRepository.PublishPage(pageIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// This method is responsible for validate pages.
+        /// </summary>
+        /// <param name="pages"></param>
+        /// <param name="tenantCode"></param>
+        private void IsValidPages(IList<Page> pages, string tenantCode)
+        {
+            try
+            {
+                if (pages?.Count <= 0)
+                {
+                    throw new NullArgumentException(tenantCode);
+                }
+
+                InvalidPageException invalidpageException = new InvalidPageException(tenantCode);
+                pages.ToList().ForEach(item =>
+                {
+                    try
+                    {
+                        item.IsValid();
+                    }
+                    catch (Exception ex)
+                    {
+                        invalidpageException.Data.Add(item.DisplayName, ex.Data);
+                    }
+                });
+
+                if (invalidpageException.Data.Count > 0)
+                {
+                    throw invalidpageException;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to check duplicate page in the list
+        /// </summary>
+        /// <param name="pages"></param>
+        /// <param name="tenantCode"></param>
+        private void IsDuplicatePage(IList<Page> pages, string tenantCode)
+        {
+            try
+            {
+                int isDuplicatePage = pages.GroupBy(p => p.DisplayName).Where(g => g.Count() > 1).Count();
+                if (isDuplicatePage > 0)
+                {
+                    throw new DuplicateRoleFoundException(tenantCode);
+                }
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
         }
 
         #endregion

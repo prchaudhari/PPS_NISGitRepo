@@ -102,7 +102,36 @@ export class TemplateService {
                         this.isRecordDeleted = false
                     }
                 }
-            }, (error: HttpResponse<any>) => {
+            }, (error) => {
+                this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+                this.uiLoader.stop();
+                this.isRecordDeleted = false
+            });
+        return <boolean>this.isRecordDeleted;
+    }
+
+    //method to call api of delete page.
+    public async publishPage(postData): Promise<boolean> {
+        let httpClientService = this.injector.get(HttpClientService);
+        let identifier = null;
+        if (postData.length > 0) {
+            identifier = postData[0].Identifier;
+        }
+        let requestUrl = URLConfiguration.pagePublishUrl + '?pageIdentifier=' + identifier;
+        this.uiLoader.start();
+        await httpClientService.CallHttp("POST", requestUrl).toPromise()
+            .then((httpEvent: HttpEvent<any>) => {
+                if (httpEvent.type == HttpEventType.Response) {
+                    this.uiLoader.stop();
+                    if (httpEvent["status"] === 200) {
+                        this.isRecordDeleted = true
+                    }
+                    else {
+                        this.isRecordDeleted = false
+                    }
+                }
+            }, (error) => {
+                this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
                 this.uiLoader.stop();
                 this.isRecordDeleted = false
             });

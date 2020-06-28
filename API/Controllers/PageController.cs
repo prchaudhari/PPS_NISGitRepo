@@ -134,6 +134,50 @@ namespace nIS
             return pages;
         }
 
+        /// <summary>
+        /// This method helps to publish page.
+        /// </summary>
+        /// <param name="pageIdentifier"></param>
+        /// <returns>boolean value</returns>
+        [HttpPost]
+        public bool Publish(long pageIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.pageManager.PublishPage(pageIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// This method helps to preview page.
+        /// </summary>
+        /// <param name="pageIdentifier"></param>
+        /// <returns>boolean value</returns>
+        [HttpPost]
+        public bool Preview(long pageIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                //result = this.pageManager.DeletePages(pageIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

@@ -189,62 +189,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               type: "video",
               value: "Video",
               title: "Video",
-            },
-            // {
-            //   type: "reminderAndRecommendation",
-            //   value: "ReminderAndRecommendation",
-            //   title: "Reminder & Recommendation",
-            // },
-            // {
-            //   type: "investmentPortfolioRisk",
-            //   value: "InvestmentPortfolioRisk",
-            //   title: "Investment Portfolio Risk",
-            // },
-            // {
-            //     type: "analytics",
-            //     value: "Analytics",
-            //     title: "Analytics",
-            // },
-            // {
-            //     type: "availableBalance",
-            //     value: "AvailableBalance",
-            //     title: "Available Balance",
-            // },
-            // {
-            //     type: "transactionList",
-            //     value: "TransactionList",
-            //     title: "Transaction List",
-            // },
-            // {
-            //     type: "savingTrend",
-            //     value: "SavingTrend",
-            //     title: "Saving Trend",
-            // },
-            // {
-            //     type: "transactionMix",
-            //     value: "TransactionMix",
-            //     title: "Transaction Mix",
-            // },
-            // {
-            //     type: "spendingTrend",
-            //     value: "SpendingTrend",
-            //     title: "Spending Trend",
-            // },
-            // {
-            //     type: "newsAlerts",
-            //     value: "NewsAlerts",
-            //     title: "News Alerts",
-            // },
-            // {
-            //     type: "transactionDetails",
-            //     value: "TransactionDetails",
-            //     title: "Transaction Details",
-            // },
-            // {
-            //     type: "top4IncomeSources",
-            //     value: "Top4IncomeSources",
-            //     title: "Top 4 Income Sources",
-            // }
+            }
         ]
     }
 
@@ -265,18 +210,10 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     OnSaveBtnClicked() {
-        //console.log(this.widgetsGridsterItemArray);
         let pageObject: any = {};
         pageObject.DisplayName = this.PageName;
         pageObject.PageTypeId = this.PageTypeId;
-        var currentUser = this.localstorageservice.GetCurrentUser();
-        if(currentUser != null)
-        {
-            pageObject.PublishedBy = Number(currentUser.UserIdentifier);
-            pageObject.UpdatedBy = Number(currentUser.UserIdentifier);
-            pageObject.PageOwner = Number(currentUser.UserIdentifier);
-        }
-        
+        pageObject.Identifier = this.PageIdentifier;
         let pageWidgets: any[] = [];
         for(var i=0; i < this.widgetsGridsterItemArray.length; i++) {
             let widgetsGridsterItem = this.widgetsGridsterItemArray[i];
@@ -290,7 +227,6 @@ export class AddDashboardDesignerComponent implements OnInit {
             pageWidgets.push(pageWidget);
         }
         pageObject.PageWidgets = pageWidgets;
-        console.log(pageObject);
         this.saveTemplate(pageObject);
     }
 
@@ -375,105 +311,6 @@ export class AddDashboardDesignerComponent implements OnInit {
                 widgetId : 5
              })
         }
-        // else if(widgetType == "reminderAndRecommendation"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 10,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: SingleColumnList,
-        //      })
-        // }
-        // else if(widgetType == "investmentPortfolioRisk"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 10,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: MultipleColumnList,
-        //      })
-        // }
-        // else if(widgetType == "analytics"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 5,
-        //         rows: 6,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
-        // else if(widgetType == "availableBalance"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 8,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
-        // else if(widgetType == "transactionList"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 20,
-        //         rows: 6,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
-        // else if(widgetType == "savingTrend"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 7,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
-        // else if(widgetType == "transactionMix"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 6,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
-        // else if(widgetType == "spendingTrend"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 7,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
-        // else if(widgetType == "newsAlerts"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 20,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
-        // else if(widgetType == "transactionDetails"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 20,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
-        // else if(widgetType == "top4IncomeSources"){
-        //     return this.widgetsGridsterItemArray.push({
-        //         cols: 5,
-        //         rows: 5,
-        //         y: 0,
-        //         x: 0,
-        //         //component: ProcessControlGraphComponent,
-        //      })
-        // }
     }
 
     async getPageRecord() {
@@ -491,7 +328,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         searchParameter.SearchMode = Constants.Exact;
         this.templateList = await templateService.getTemplates(searchParameter);
         if (this.templateList.length == 0) {
-            let message = "NO record found";
+            let message = "No record found";
             this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
                 if (data == true) {
                     this.getPageRecord();
@@ -499,6 +336,9 @@ export class AddDashboardDesignerComponent implements OnInit {
             });
         }else {
             let template = this.templateList[0];
+            this.PageName = template.DisplayName;
+            this.PageTypeId = template.PageTypeId;
+            this.PageIdentifier = template.Identifier;
             let pageWidgets: TemplateWidget[] = template.PageWidgets;
             if(pageWidgets.length != 0) {
                 for(let i=0; i < pageWidgets.length; i++) {

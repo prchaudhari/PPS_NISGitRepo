@@ -153,7 +153,7 @@ export class ListComponent implements OnInit {
             searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
             searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
             searchParameter.SortParameter = {};
-            searchParameter.SortParameter.SortColumn = 'DisplayName';
+            searchParameter.SortParameter.SortColumn = 'Status';
             searchParameter.SortParameter.SortOrder = Constants.Ascending;
             searchParameter.SearchMode = Constants.Contains;
         }
@@ -270,6 +270,24 @@ export class ListComponent implements OnInit {
                 let resultFlag = await this.templateService.deletePage(pageData);
                 if (resultFlag) {
                     let messageString = Constants.recordDeletedMessage;
+                    this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+                    this.resetPageFilterForm();
+                    this.getTemplates(null);
+                }
+            }
+        });
+    }
+
+    async PublishPage(template: Template) {
+        let message = "Are you sure, you want to publish this record?";
+        this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+            if (isConfirmed) {
+                let pageData = [{
+                    "Identifier": template.Identifier,
+                }];
+                let resultFlag = await this.templateService.publishPage(pageData);
+                if (resultFlag) {
+                    let messageString = Constants.PagePublishedSuccessfullyMessage;
                     this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
                     this.resetPageFilterForm();
                     this.getTemplates(null);

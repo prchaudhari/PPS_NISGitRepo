@@ -17,7 +17,7 @@ namespace nIS
         public long Id { get; set; }
         public string DisplayName { get; set; }
         public long PageTypeId { get; set; }
-        public long PublishedBy { get; set; }
+        public Nullable<long> PublishedBy { get; set; }
         public long Owner { get; set; }
         public string Version { get; set; }
         public string Status { get; set; }
@@ -27,7 +27,7 @@ namespace nIS
         public bool IsDeleted { get; set; }
         public string TenantCode { get; set; }
         public Nullable<System.DateTime> LastUpdatedDate { get; set; }
-        public long UpdateBy { get; set; }
+        public Nullable<long> UpdateBy { get; set; }
         public IList<PageWidgetMapRecord> PageWidgetMapRecords { get; set; }
     }
 }

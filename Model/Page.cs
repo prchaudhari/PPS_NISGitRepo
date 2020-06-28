@@ -355,11 +355,6 @@ namespace nIS
 
             IUtility utility = new Utility();
             ValidationEngine validationEngine = new ValidationEngine();
-
-            if (!validationEngine.IsValidLong(this.Identifier, false))
-            {
-                exception.Data.Add(utility.GetDescription("Identifier", typeof(Page)), ModelConstant.PAGE_SECTION + "~" + ModelConstant.INVALID_PAGE_ID);
-            }
             if (!validationEngine.IsValidText(this.DisplayName, false))
             {
                 exception.Data.Add(utility.GetDescription("DisplayName", typeof(Page)), ModelConstant.PAGE_SECTION + "~" + ModelConstant.INVALID_PAGE_DISPLAY_NAME);
