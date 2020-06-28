@@ -1,8 +1,8 @@
 <div class='top-bar fixed'>
-  <span class="dashboard-title d-none d-sm-block" style="left:15px;">Display Name | Home</span>
+  <span class="dashboard-title d-none d-sm-block" style="left:15px;">Display Name | {{PageName}}</span>
   <div class="page-title d-flex justify-content-md-between justify-content-end d-sm-none">
     <div class="xs-title">
-      Display Name, Home
+      Display Name, {{PageName}}
     </div>
   </div>
   <div class="float-right pr-2 d-md-block d-none">
@@ -17,107 +17,9 @@
   <div class="dashboard-inner-container ml-0 width100">
     <div class="widget-container">
       <gridster [options]="options">
-
-        <gridster-item [item]="{cols: 15, rows: 7, y: 0, x: 0}">
-          <div class="widget">
-            <div class="widget-header">
-              <span class="widget-header-title"> Customer Information </span>
-            </div>
-            <div class="widget-area">
-              <div class="row">
-                <div class="col-sm-4">
-                  <h4 class="mb-4">Laura J Donald</h4>
-                  <h6>4000 Executive Parkway, Saint Globin Rd #250,<br /> Canary Wharf, E94583</h6>
-                </div>
-                <div class="col-sm-8">
-                  <video class="doc-video" controls>
-                    <source src="assets/images/SampleVideo.mp4" type="video/mp4">
-                  </video>
-                </div>
-              </div>
-            </div>
-          </div>
-        </gridster-item>
-        <gridster-item [item]="{cols: 5, rows: 7, y: 0, x: 0}">
-          <div class="widget">
-            <div class="widget-header">
-              <span class="widget-header-title"> Account Information </span>
-            </div>
-            <div class="widget-area">
-              <div class="list-row-small" *ngFor="let list of accountInfoLists">
-                <div class="list-middle-row">
-                  <div class="list-text">
-                    {{list.title}}
-                  </div>
-                  <label class="list-value mb-0">
-                    {{list.value}}
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </gridster-item>
-        <gridster-item [item]="{cols: 15, rows: 6, y: 0, x: 0}">
-          <div class="widget">
-            <div class="widget-header">
-              <span class="widget-header-title"> Summary at Glance </span>
-            </div>
-            <div class="widget-area-grid padding-0">
-              <div class="d-flex justify-content-center mb-4">
-                <div class="pagination-mat position-relative d-md-block d-none">
-                  <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
-                                 [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
-                  </mat-paginator>
-                </div>
-              </div>
-              <table mat-table [dataSource]="dataSourceSummary" matSort class="table-cust">
-                <!-- Position Column -->
-                <ng-container matColumnDef="account">
-                  <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Account </th>
-                  <td mat-cell *matCellDef="let element"> {{element.account}} </td>
-                </ng-container>
-
-                <!-- Name Column -->
-                <ng-container matColumnDef="currency">
-                  <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Currency </th>
-                  <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="amount">
-                  <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
-                  <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumnsSummary"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumnsSummary;"></tr>
-              </table>
-            </div>
-          </div>
-        </gridster-item>
-        <gridster-item [item]="{cols: 5, rows: 6, y: 0, x: 0}">
-          <div class="widget">
-            <div class="widget-header">
-              <span class="widget-header-title">Analytics </span>
-            </div>
-            <div class="widget-area position-relative width100">
-              <div class="widget-indicator-inner text-center">
-                <img src="assets/images/Analytics.png" class="img-fluid" />
-              </div>
-            </div>
-          </div>
-        </gridster-item>
-        <gridster-item [item]="{cols: 10, rows: 5, y: 0, x: 0}">
-          <div class="widget">
-            <div class="widget-header">
-              <span class="widget-header-title">Reminders & Recommendations </span>
-            </div>
-            <div class="widget-area position-relative width100">
-              <div class="widget-indicator-inner text-center">
-                <img src="assets/images/ReminderWidget.PNG" class="img-fluid" />
-              </div>
-            </div>
-          </div>
-        </gridster-item>
+        <gridster-item  [item]="item" *ngFor="let item of widgetsGridsterItemArray">
+          <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
+      </gridster-item>
       </gridster>
     </div>
   </div>

@@ -41,5 +41,10 @@ namespace nIS
         /// The invalid page sort parameter
         /// </summary>
         public const string INVALID_PAGE_SORT_PARAMETER = "Invalid page sort parameter";
+
+        /// <summary>
+        /// Duplicate Page widget found exception
+        /// </summary>
+        public const string DUPLICATE_PAGE_WIDGET_FOUND_EXCEPTION = "Page widget already exists";
     }
 }

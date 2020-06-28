@@ -1,39 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, Injector, } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
 import { Location } from '@angular/common';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { Constants } from 'src/app/shared/constants/constants';
 import * as $ from 'jquery';
-
-export interface ListElement {
-    date: string;
-    type: string;
-    narration: string;
-    fcy: string;
-    currentRate: string;
-    lyc: string;
-}
-
-const List_Data: ListElement[] = [
-    { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-    { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-    { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-    { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-];
-export interface ListSummary {
-  
-    account: string;
-    currency: string;
-    amount: string;
-}
-
-const List_Data_Summary: ListSummary[] = [
-    { account: 'Saving Account', currency: 'GBP', amount: '873899' },
-    { account: 'Current Account', currency: 'GBP', amount: '873899' },
-    { account: 'Recurring Deposit', currency: 'GBP', amount: '873899' },
-    { account: 'Wealth', currency: 'GBP', amount: '873899' },
-];
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
+import { DialogService } from '@tomblue/ng2-bootstrap-modal';
+import { TemplateService } from '../../layout/template/template.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { Template } from '../../layout/template/template';
+import { TemplateWidget } from '../../layout/template/templateWidget';
+import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from '../widgetComponent/widgetComponent';
 
 @Component({
   selector: 'app-add-dashboard-designer',
@@ -48,48 +27,59 @@ export class AddDashboardDesignerComponent implements OnInit {
     public isPersonalizeImage: boolean = false;
     public isPersonalize: boolean = false;
 
-    isVideoConfigForm() {
-        this.isVideoConfig = true;
-    }
-    isImageConfigForm() {
-        this.isImageConfig = true;
-    }
     options: GridsterConfig;
     dashboard: Array<GridsterItem>;
     item: any[];
-    public pageSize = 5;
-    public currentPage = 0;
-    public totalSize = 0;
-    displayedColumns: string[] = ['date', 'type', 'narration', 'fcy', 'currentRate', 'lyc', 'action',];
-    displayedColumnsSummary: string[] = ['account', 'currency', 'amount'];
-    dataSource = new MatTableDataSource<any>();
-    dataSourceSummary = new MatTableDataSource<any>();
+    public widgetsArray:any = [];
+    public widgetId;
+    public widgetsGridsterItemArray:any[] = [];
+    public params: any = {};
+    public PageIdentifier;
+    public PageName;
+    public PageTypeId;
+    public PageTypeName;
+    public pageEditModeOn: boolean = false;
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    public templateList: Template[] = [];
 
-
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSourceSummary.paginator = this.paginator;
-
+    constructor(private _location: Location,
+      private injector: Injector,
+      private _dialogService: DialogService,
+      private uiLoader: NgxUiLoaderService,
+      private _messageDialogService: MessageDialogService,
+      private localstorageservice: LocalStorageService,
+      private router: Router) { 
+        router.events.subscribe(e => {
+            if (e instanceof NavigationEnd) {
+                if (e.url.includes('/dashboardDesigner')) {
+                    //set passing parameters to localstorage.
+                    if (localStorage.getItem('pageDesignRouteparams')) {
+                        this.params = JSON.parse(localStorage.getItem('pageDesignRouteparams'));
+                        this.PageName = this.params.Routeparams.passingparams.PageName
+                        this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
+                        this.PageTypeName = this.params.Routeparams.passingparams.PageTypeName
+                        this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
+                    }
+                    else if (localStorage.getItem('pageDesignEditRouteparams')) {
+                        this.params = JSON.parse(localStorage.getItem('pageDesignEditRouteparams'));
+                        this.PageName = this.params.Routeparams.passingparams.PageName
+                        this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
+                        this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
+                    }
+                } else {
+                    localStorage.removeItem("pageDesignRouteparams");
+                }
+            }
+        });
+    }
+    
+    isImageConfigForm() {
+        this.isImageConfig = true;
     }
 
-    ListData: ListElement[] = [
-        { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-        { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-        { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-        { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-    ];
-    //account info
-    accountInfoLists: any[] = [
-        { title: 'Statement Date', value: '1-APR-20'},
-        { title: 'Statement Period', value: 'Annual Statement'},
-        { title: 'Customer ID', value: 'ID2-8989-5656'},
-        { title: 'RM Name', value: 'David Miller'},
-        { title: 'RM Contact Number', value: '+4487867833'},
-    ]
-    constructor(private _location: Location) { }
+    isVideoConfigForm() {
+        this.isVideoConfig = true;
+    }
 
     ngOnInit() {
 
@@ -99,17 +89,9 @@ export class AddDashboardDesignerComponent implements OnInit {
             });
         });
 
-        this.dataSource = new MatTableDataSource(List_Data);
-        this.dataSourceSummary = new MatTableDataSource(List_Data_Summary);
-        this.dataSource.sort = this.sort;
-        this.dataSourceSummary.sort = this.sort;
-
-        //to hide tooltip
-        //const paginatorIntl = this.paginator._intl;
-        //paginatorIntl.nextPageLabel = '';
-        //paginatorIntl.previousPageLabel = '';
-        //paginatorIntl.firstPageLabel = '';
-        //paginatorIntl.lastPageLabel = '';
+        if(this.pageEditModeOn) {
+            this.getPageRecord();
+        }
 
         //gridster
         this.options = {
@@ -180,6 +162,90 @@ export class AddDashboardDesignerComponent implements OnInit {
             { cols: 1, rows: 2, y: 2, x: 4, dragEnabled: false, resizeEnabled: false, label: 'Drag&Resize Disabled' },
             { cols: 1, rows: 2, y: 2, x: 6 }
         ];
+
+        //Array for showing widgets in the sidebar--
+        this.widgetsArray = [
+            {
+              type:  "customerInformation",
+              value: "CustomerInformation",
+              title: "Customer Information",
+            },
+            {
+              type: "accountInformation",
+              value: "AccountInformation" ,
+              title: "Account Information",
+            },
+            {
+              type: "summaryAtGlance",
+              value: "SummaryAtGlance",
+              title: "Summary at Glance",
+            },
+            {
+              type: "image",
+              value: "Image",
+              title: "Image",
+            },
+            {
+              type: "video",
+              value: "Video",
+              title: "Video",
+            },
+            // {
+            //   type: "reminderAndRecommendation",
+            //   value: "ReminderAndRecommendation",
+            //   title: "Reminder & Recommendation",
+            // },
+            // {
+            //   type: "investmentPortfolioRisk",
+            //   value: "InvestmentPortfolioRisk",
+            //   title: "Investment Portfolio Risk",
+            // },
+            // {
+            //     type: "analytics",
+            //     value: "Analytics",
+            //     title: "Analytics",
+            // },
+            // {
+            //     type: "availableBalance",
+            //     value: "AvailableBalance",
+            //     title: "Available Balance",
+            // },
+            // {
+            //     type: "transactionList",
+            //     value: "TransactionList",
+            //     title: "Transaction List",
+            // },
+            // {
+            //     type: "savingTrend",
+            //     value: "SavingTrend",
+            //     title: "Saving Trend",
+            // },
+            // {
+            //     type: "transactionMix",
+            //     value: "TransactionMix",
+            //     title: "Transaction Mix",
+            // },
+            // {
+            //     type: "spendingTrend",
+            //     value: "SpendingTrend",
+            //     title: "Spending Trend",
+            // },
+            // {
+            //     type: "newsAlerts",
+            //     value: "NewsAlerts",
+            //     title: "News Alerts",
+            // },
+            // {
+            //     type: "transactionDetails",
+            //     value: "TransactionDetails",
+            //     title: "Transaction Details",
+            // },
+            // {
+            //     type: "top4IncomeSources",
+            //     value: "Top4IncomeSources",
+            //     title: "Top 4 Income Sources",
+            // }
+        ]
     }
 
     changedOptions() {
@@ -189,85 +255,279 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     removeItem($event, item) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        this.dashboard.splice(this.dashboard.indexOf(item), 1);
+        const index: number = this.widgetsGridsterItemArray.indexOf(item);
+        this.widgetsGridsterItemArray.splice(index, 1);
     }
 
-    addItem() {
-        this.dashboard.push({ x: 0, y: 0, cols: 1, rows: 1 });
-    }
     //Back Functionality.
     backClicked() {
         this._location.back();
-
     }
 
-    isCustomerInformationWidgets: any[] = [];
-    isAccountInformationWidgets: any[] = [];
-    isSummaryatGlanceWidgets: any[] = [];
-    isReminderWidgets: any[] = [];
-    isInvestmentWidgets: any[] = [];
-    isImageWidgets: any[] = [];
-    isVideoWidgets: any[] = [];
-    isAnalyticsWidgets: any[] = [];
-    isAvailableBalanceWidgets: any[] = [];
-    isTop4IncomeWidgets: any[] = [];
-    isTransactionListWidgets: any[] = [];
-    isSavingTrendWidgets: any[] = [];
-    isTransactionMixWidgets: any[] = [];
-    isSpendingTrendWidgets: any[] = [];
-    isTransactionDetailsWidgets: any[] = [];
-    isNewsAlertsWidgets: any[] = [];
-
-    isCustomerInformation() {
-        this.isCustomerInformationWidgets.push(this.isCustomerInformationWidgets)
-    }
-    isAccountInformation() {
-        this.isAccountInformationWidgets.push(this.isAccountInformationWidgets)
-    }
-    isSummaryatGlance() {
-        this.isSummaryatGlanceWidgets.push(this.isSummaryatGlanceWidgets)
-
-    }
-    isReminder() {
-        this.isReminderWidgets.push(this.isReminderWidgets)
-    }
-    isInvestment() {
-        this.isInvestmentWidgets.push(this.isInvestmentWidgets)
-    }
-    isImage() {
-        this.isImageWidgets.push(this.isImageWidgets)
-    }
-    isVideo() {
-        this.isVideoWidgets.push(this.isVideoWidgets)
-    }
-    isAnalytics() {
-        this.isAnalyticsWidgets.push(this.isAnalyticsWidgets)
-    }
-    isAvailableBalance() {
-        this.isAvailableBalanceWidgets.push(this.isAvailableBalanceWidgets)
-    }
-    isTransactionList() {
-        this.isTransactionListWidgets.push(this.isTransactionListWidgets)
-    }
-    isSavingTrend() {
-        this.isSavingTrendWidgets.push(this.isSavingTrendWidgets)
-    }
-    isTransactionMix() {
-        this.isTransactionMixWidgets.push(this.isTransactionMixWidgets)
-    }
-    isSpendingTrend() {
-        this.isSpendingTrendWidgets.push(this.isSpendingTrendWidgets)
-    }
-    isNewsAlerts() {
-        this.isNewsAlertsWidgets.push(this.isNewsAlertsWidgets)
-    }
-    isTransactionDetails() {
-        this.isTransactionDetailsWidgets.push(this.isTransactionDetailsWidgets)
-    }
-    isTop4Income() {
-        this.isTop4IncomeWidgets.push(this.isTop4IncomeWidgets)
+    OnSaveBtnClicked() {
+        //console.log(this.widgetsGridsterItemArray);
+        let pageObject: any = {};
+        pageObject.DisplayName = this.PageName;
+        pageObject.PageTypeId = this.PageTypeId;
+        var currentUser = this.localstorageservice.GetCurrentUser();
+        if(currentUser != null)
+        {
+            pageObject.PublishedBy = Number(currentUser.UserIdentifier);
+            pageObject.UpdatedBy = Number(currentUser.UserIdentifier);
+            pageObject.PageOwner = Number(currentUser.UserIdentifier);
+        }
+        
+        let pageWidgets: any[] = [];
+        for(var i=0; i < this.widgetsGridsterItemArray.length; i++) {
+            let widgetsGridsterItem = this.widgetsGridsterItemArray[i];
+            let pageWidget: any = {};
+            pageWidget.WidgetId = widgetsGridsterItem.widgetId;
+            pageWidget.Height = widgetsGridsterItem.rows;
+            pageWidget.Width = widgetsGridsterItem.cols;
+            pageWidget.Xposition = widgetsGridsterItem.x;
+            pageWidget.Yposition = widgetsGridsterItem.y;
+            pageWidget.WidgetSetting = JSON.stringify({});
+            pageWidgets.push(pageWidget);
+        }
+        pageObject.PageWidgets = pageWidgets;
+        console.log(pageObject);
+        this.saveTemplate(pageObject);
     }
 
+    //method written to save role
+    async saveTemplate(pageObject) {
+        this.uiLoader.start();
+        let pageArray = [];
+        pageArray.push(pageObject);
+        let templateService = this.injector.get(TemplateService);
+        let isRecordSaved = await templateService.saveTemplate(pageArray, this.pageEditModeOn);
+        this.uiLoader.stop();
+        if (isRecordSaved) {
+            let message = Constants.recordAddedMessage;
+            if (this.pageEditModeOn) {
+                message = Constants.recordUpdatedMessage;
+            }
+            this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+            this.navigateToListPage()
+        }
+    }
+
+    //navigate to page list
+    navigateToListPage() {
+        const router = this.injector.get(Router);
+        router.navigate(['pages']);
+    }
+
+    selectWidget(widgetType){
+        this.widgetId = widgetType;
+        if(widgetType == "customerInformation"){
+            return this.widgetsGridsterItemArray.push({
+                cols: 15,
+                rows: 7,
+                y: 0,
+                x: 0,
+                component: CustomerInformationComponent,
+                value : 'customerInformation',
+                widgetId : 1,
+             })
+        }
+        else if(widgetType == "accountInformation"){
+            return this.widgetsGridsterItemArray.push({
+                cols: 5,
+                rows: 7,
+                y: 0,
+                x: 0,
+                component: AccountInformationComponent,
+                value : 'accountInformation',
+                widgetId : 2
+             })
+        }
+        else if(widgetType == "image"){
+            return this.widgetsGridsterItemArray.push({
+                cols: 10,
+                rows: 5,
+                y: 0,
+                x: 0,
+                component: ImageComponent,
+                value : 'image',
+                widgetId : 3
+             })
+        }
+        else if(widgetType == "video"){
+            return this.widgetsGridsterItemArray.push({
+                cols: 10,
+                rows: 5,
+                y: 0,
+                x: 0,
+                component: VideoComponent,
+                value : 'video',
+                widgetId : 4
+             })
+        }
+        else if(widgetType == "summaryAtGlance"){
+            return this.widgetsGridsterItemArray.push({
+                cols: 15,
+                rows: 6,
+                y: 0,
+                x: 0,
+                component: SummaryAtGlanceComponent,
+                value : 'summaryAtGlance',
+                widgetId : 5
+             })
+        }
+        // else if(widgetType == "reminderAndRecommendation"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 10,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: SingleColumnList,
+        //      })
+        // }
+        // else if(widgetType == "investmentPortfolioRisk"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 10,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: MultipleColumnList,
+        //      })
+        // }
+        // else if(widgetType == "analytics"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 5,
+        //         rows: 6,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+        // else if(widgetType == "availableBalance"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 8,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+        // else if(widgetType == "transactionList"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 20,
+        //         rows: 6,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+        // else if(widgetType == "savingTrend"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 7,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+        // else if(widgetType == "transactionMix"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 6,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+        // else if(widgetType == "spendingTrend"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 7,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+        // else if(widgetType == "newsAlerts"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 20,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+        // else if(widgetType == "transactionDetails"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 20,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+        // else if(widgetType == "top4IncomeSources"){
+        //     return this.widgetsGridsterItemArray.push({
+        //         cols: 5,
+        //         rows: 5,
+        //         y: 0,
+        //         x: 0,
+        //         //component: ProcessControlGraphComponent,
+        //      })
+        // }
+    }
+
+    async getPageRecord() {
+        let templateService = this.injector.get(TemplateService);
+        let searchParameter: any = {};
+        searchParameter.IsActive = true;
+        searchParameter.Identifier = this.PageIdentifier;
+        searchParameter.IsPageWidgetsRequired = true;
+        searchParameter.PagingParameter = {};
+        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.SortParameter = {};
+        searchParameter.SortParameter.SortColumn = 'DisplayName';
+        searchParameter.SortParameter.SortOrder = Constants.Ascending;
+        searchParameter.SearchMode = Constants.Exact;
+        this.templateList = await templateService.getTemplates(searchParameter);
+        if (this.templateList.length == 0) {
+            let message = "NO record found";
+            this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+                if (data == true) {
+                    this.getPageRecord();
+                }
+            });
+        }else {
+            let template = this.templateList[0];
+            let pageWidgets: TemplateWidget[] = template.PageWidgets;
+            if(pageWidgets.length != 0) {
+                for(let i=0; i < pageWidgets.length; i++) {
+                    let gridsterItem: any = {};
+                    gridsterItem.x = pageWidgets[i].Xposition;
+                    gridsterItem.y = pageWidgets[i].Yposition;
+                    gridsterItem.cols = pageWidgets[i].Width;
+                    gridsterItem.rows = pageWidgets[i].Height;
+                    gridsterItem.widgetId = pageWidgets[i].WidgetId;
+                    gridsterItem.WidgetSetting = pageWidgets[i].WidgetSetting;
+                    if(pageWidgets[i].WidgetId == 1) {
+                        gridsterItem.component = CustomerInformationComponent;
+                        gridsterItem.value = 'customerInformation';
+                    }else if(pageWidgets[i].WidgetId == 2) {
+                        gridsterItem.component = AccountInformationComponent;
+                        gridsterItem.value = 'accountInformation';
+                    }else if(pageWidgets[i].WidgetId == 3) {
+                        gridsterItem.component = ImageComponent;
+                        gridsterItem.value = 'image';
+                    }else if(pageWidgets[i].WidgetId == 4) {
+                        gridsterItem.component = VideoComponent;
+                        gridsterItem.value = 'video';
+                    }else if(pageWidgets[i].WidgetId == 5) {
+                        gridsterItem.component = SummaryAtGlanceComponent;
+                        gridsterItem.value = 'summaryAtGlance';
+                    }
+                    this.widgetsGridsterItemArray.push(gridsterItem);
+                }
+            }
+        }
+    }
 }

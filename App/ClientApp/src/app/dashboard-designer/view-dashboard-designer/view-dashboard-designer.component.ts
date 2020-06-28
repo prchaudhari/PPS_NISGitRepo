@@ -1,22 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, Injector, } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
 import { Location } from '@angular/common';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-export interface ListSummary {
-
-    account: string;
-    currency: string;
-    amount: string;
-}
-
-const List_Data_Summary: ListSummary[] = [
-    { account: 'Saving Account', currency: 'GBP', amount: '873899' },
-    { account: 'Current Account', currency: 'GBP', amount: '873899' },
-    { account: 'Recurring Deposit', currency: 'GBP', amount: '873899' },
-    { account: 'Wealth', currency: 'GBP', amount: '873899' },
-];
+import { Constants } from 'src/app/shared/constants/constants';
+import * as $ from 'jquery';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
+import { DialogService } from '@tomblue/ng2-bootstrap-modal';
+import { TemplateService } from '../../layout/template/template.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { Template } from '../../layout/template/template';
+import { TemplateWidget } from '../../layout/template/templateWidget';
+import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from '../widgetComponent/widgetComponent';
 
 @Component({
   selector: 'app-view-dashboard-designer',
@@ -25,42 +21,43 @@ const List_Data_Summary: ListSummary[] = [
 })
 export class ViewDashboardDesignerComponent implements OnInit {
 
-    options: GridsterConfig;
-    dashboard: Array<GridsterItem>;
-    item: any[];
-    public pageSize = 5;
-    public currentPage = 0;
-    public totalSize = 0;
-    displayedColumnsSummary: string[] = ['account', 'currency', 'amount'];
-    dataSourceSummary = new MatTableDataSource<any>();
+    public widgetsGridsterItemArray:any[] = [];
+    public params: any = {};
+    public PageIdentifier;
+    public PageName;    
+    public options: GridsterConfig;
+    public dashboard: Array<GridsterItem>;
+    public templateList: Template[] = [];
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-
-    ngAfterViewInit() {
-        this.dataSourceSummary.paginator = this.paginator;
-
-    }
     //Back Functionality.
     backClicked() {
         this._location.back();
-
     }
-    //account info
-    accountInfoLists: any[] = [
-        { title: 'Statement Date', value: '1-APR-20' },
-        { title: 'Statement Period', value: 'Annual Statement' },
-        { title: 'Customer ID', value: 'ID2-8989-5656' },
-        { title: 'RM Name', value: 'David Miller' },
-        { title: 'RM Contact Number', value: '+4487867833' },
-    ]
-    constructor(private _location: Location) { }
+
+    constructor(private _location: Location,
+        private injector: Injector,
+        private _dialogService: DialogService,
+        private uiLoader: NgxUiLoaderService,
+        private _messageDialogService: MessageDialogService,
+        private localstorageservice: LocalStorageService,
+        private router: Router) { 
+          router.events.subscribe(e => {
+              if (e instanceof NavigationEnd) {
+                  if (e.url.includes('/dashboardDesignerView')) {
+                      //set passing parameters to localstorage.
+                      if (localStorage.getItem('pageDesignViewRouteparams')) {
+                          this.params = JSON.parse(localStorage.getItem('pageDesignViewRouteparams'));
+                          this.PageName = this.params.Routeparams.passingparams.PageName
+                          this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
+                      }
+                  } else {
+                      localStorage.removeItem("dashboardDesignerView");
+                  }
+              }
+          });
+      }
 
     ngOnInit() {
-
-        this.dataSourceSummary = new MatTableDataSource(List_Data_Summary);
-        this.dataSourceSummary.sort = this.sort;
 
         //gridster
         this.options = {
@@ -131,6 +128,63 @@ export class ViewDashboardDesignerComponent implements OnInit {
             { cols: 1, rows: 2, y: 2, x: 4, dragEnabled: false, resizeEnabled: false, label: 'Drag&Resize Disabled' },
             { cols: 1, rows: 2, y: 2, x: 6 }
         ];
-  }
+
+        this.getPageRecord();
+    }
+
+    async getPageRecord() {
+        let templateService = this.injector.get(TemplateService);
+        let searchParameter: any = {};
+        searchParameter.IsActive = true;
+        searchParameter.Identifier = this.PageIdentifier;
+        searchParameter.IsPageWidgetsRequired = true;
+        searchParameter.PagingParameter = {};
+        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.SortParameter = {};
+        searchParameter.SortParameter.SortColumn = 'DisplayName';
+        searchParameter.SortParameter.SortOrder = Constants.Ascending;
+        searchParameter.SearchMode = Constants.Exact;
+        this.templateList = await templateService.getTemplates(searchParameter);
+        if (this.templateList.length == 0) {
+            let message = "NO record found";
+            this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+                if (data == true) {
+                    this.getPageRecord();
+                }
+            });
+        }else {
+            let template = this.templateList[0];
+            let pageWidgets: TemplateWidget[] = template.PageWidgets;
+            if(pageWidgets.length != 0) {
+                for(let i=0; i < pageWidgets.length; i++) {
+                    let gridsterItem: any = {};
+                    gridsterItem.x = pageWidgets[i].Xposition;
+                    gridsterItem.y = pageWidgets[i].Yposition;
+                    gridsterItem.cols = pageWidgets[i].Width;
+                    gridsterItem.rows = pageWidgets[i].Height;
+                    gridsterItem.widgetId = pageWidgets[i].WidgetId;
+                    gridsterItem.WidgetSetting = pageWidgets[i].WidgetSetting;
+                    if(pageWidgets[i].WidgetId == 1) {
+                        gridsterItem.component = CustomerInformationComponent;
+                        gridsterItem.value = 'customerInformation';
+                    }else if(pageWidgets[i].WidgetId == 2) {
+                        gridsterItem.component = AccountInformationComponent;
+                        gridsterItem.value = 'accountInformation';
+                    }else if(pageWidgets[i].WidgetId == 3) {
+                        gridsterItem.component = ImageComponent;
+                        gridsterItem.value = 'image';
+                    }else if(pageWidgets[i].WidgetId == 4) {
+                        gridsterItem.component = VideoComponent;
+                        gridsterItem.value = 'video';
+                    }else if(pageWidgets[i].WidgetId == 5) {
+                        gridsterItem.component = SummaryAtGlanceComponent;
+                        gridsterItem.value = 'summaryAtGlance';
+                    }
+                    this.widgetsGridsterItemArray.push(gridsterItem);
+                }
+            }
+        }
+    }
 
 }

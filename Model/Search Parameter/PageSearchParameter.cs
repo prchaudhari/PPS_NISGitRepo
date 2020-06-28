@@ -20,6 +20,13 @@ namespace nIS
     /// </summary>
     public class PageSearchParameter : BaseSearchEntity
     {
+        #region Private members
+        /// <summary>
+        /// The validation engine object
+        /// </summary>
+        IValidationEngine validationEngine = null;
+        #endregion
+
         #region Public Members
 
         /// <summary>
@@ -42,7 +49,25 @@ namespace nIS
         /// </summary>
         public long PageTypeId { get; set; }
 
+        /// <summary>
+        /// The is page widgets list required
+        /// </summary>
         public bool IsPageWidgetsRequired { get; set; }
+
+        /// <summary>
+        /// The page status
+        /// </summary>
+        public string Status { get; set; }
+
+        /// <summary>
+        /// The start date
+        /// </summary>
+        public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// The end date
+        /// </summary>
+        public DateTime EndDate { get; set; }
 
         #endregion
 

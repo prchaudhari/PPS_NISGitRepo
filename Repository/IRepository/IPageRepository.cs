@@ -34,12 +34,12 @@ namespace nIS
         /// <summary>
         /// This method deletes the specified list of pages from page repository.
         /// </summary>
-        /// <param name="pages">The list of pages</param>
+        /// <param name="pageIdentifier">The page identifier</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns true if pages are deleted successfully, else false.
         /// </returns>
-        bool DeletePages(IList<Page> pages, string tenantCode);
+        bool DeletePages(long pageIdentifier, string tenantCode);
 
         /// <summary>
         /// This method gets the specified list of pages from page repository.
@@ -60,19 +60,19 @@ namespace nIS
         int GetPageCount(PageSearchParameter pageSearchParameter, string tenantCode);
 
         /// <summary>
-        /// This method reference to activate page
+        /// This method reference to publish page
         /// </summary>
         /// <param name="pageIdentifier"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
-        bool ActivatePage(long pageIdentifier, string tenantCode);
+        bool PublishPage(long pageIdentifier, string tenantCode);
 
         /// <summary>
-        /// This method reference to deactivate page
+        /// This method reference to preview page
         /// </summary>
         /// <param name="pageIdentifier"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
-        bool DeActivatePage(long pageIdentifier, string tenantCode);
+        bool PreviewPage(long pageIdentifier, string tenantCode);
     }
 }

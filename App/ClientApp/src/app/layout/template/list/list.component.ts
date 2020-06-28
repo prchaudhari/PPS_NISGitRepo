@@ -12,6 +12,7 @@ import {MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TemplateService } from '../template.service';
 import { Template } from '../template';
+import { Page } from 'src/app/shared/modules/pagination/pagination-controls.directive';
 
 export interface ListElement {
     name: string;
@@ -54,6 +55,8 @@ export class ListComponent implements OnInit {
     public sortedTemplateList : Template[] = [];
     public pageTypeList: any[] = [];
     public TemplateFilterForm: FormGroup;
+    public filterPageTypeId: number = 0;
+    public filterPageStatus: string = '';
 
     displayedColumns: string[] = ['name','pagetype', 'version', 'owner', 'date', 'status', 'actions'];
     dataSource = new MatTableDataSource<any>();
@@ -172,7 +175,7 @@ export class ListComponent implements OnInit {
     }
 
     async getPageTypes(searchParameter) {
-        this.pageTypeList = [{ "Name": "Select Role", "Id": 0 }, {"Id": 1, "Name": "Home"}, {"Id": 2, "Name": "Saving Account"}, {"Id": 3, "Name": "Current Account"} ];
+        this.pageTypeList = [ {"Id": 1, "Name": "Home"}, {"Id": 2, "Name": "Saving Account"}, {"Id": 3, "Name": "Current Account"} ];
     }
 
     //This method has been used for fetching search records
@@ -192,14 +195,33 @@ export class ListComponent implements OnInit {
             searchParameter.SortParameter.SortColumn = 'DisplayName';
             searchParameter.SortParameter.SortOrder = Constants.Ascending;
             searchParameter.SearchMode = Constants.Contains;
-            searchParameter.DisplayName = this.TemplateFilterForm.value.filterDisplayName != null ? this.TemplateFilterForm.value.filterDisplayName : "";
-            //searchParameter.IsActive = this.roleFilterForm.value.DeactivateRole != null ? !this.roleFilterForm.value.DeactivateRole: true;
+
+            if(this.TemplateFilterForm.value.filterDisplayName != null && this.TemplateFilterForm.value.filterDisplayName != '') {
+                searchParameter.DisplayName = this.TemplateFilterForm.value.filterDisplayName;         
+            }
+            
+            if(this.filterPageTypeId != 0) {
+                searchParameter.PageTypeId = this.filterPageTypeId;
+            }
+
+            if(this.TemplateFilterForm.value.filterStatus != null && this.TemplateFilterForm.value.filterStatus != '') {
+                searchParameter.Status = this.TemplateFilterForm.value.filterStatus;
+            }
+
+            debugger
+            if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
+                searchParameter.StartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
+            }
+            if(this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
+                searchParameter.EndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
+            }
+
             this.getTemplates(searchParameter);
             this.isFilter = !this.isFilter;
         }
     }
 
-    resetPageFilterForm(){
+    resetPageFilterForm() {
         this.TemplateFilterForm.patchValue({
             filterDisplayName: null,
             filterOwner: null,
@@ -208,7 +230,7 @@ export class ListComponent implements OnInit {
             filterPublishedOnFromDate: null,
             filterPublishedOnToDate: null
         });
-      }
+    }
 
     closeFilter() {
         this.isFilter = !this.isFilter;
@@ -217,16 +239,59 @@ export class ListComponent implements OnInit {
     public onPageTypeSelected(event) {
         const value = event.target.value;
         if (value == "0") {
-          //this.UserFilter.RoleIdentifier = null;
+          this.filterPageTypeId = 0;
         }
         else {
-          //this.UserFilter.RoleIdentifier = Number(value);
+          this.filterPageTypeId = Number(value);
         }
-      }
+    }
 
-    navigationTodashboardDesigner() {
+    navigationTodashboardDesigner(template: Template) {
+        let queryParams = {
+            Routeparams: {
+                passingparams: {
+                "PageName": template.DisplayName,
+                "PageIdentifier": template.Identifier,
+                }
+            }
+        }
+        localStorage.setItem("pageDesignViewRouteparams", JSON.stringify(queryParams))
         this.route.navigate(['../dashboardDesignerView']);
     }
+
+    async DeletePage(template: Template) {
+        let message = "Are you sure, you want to delete this record?";
+        this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+            if (isConfirmed) {
+                let pageData = [{
+                    "Identifier": template.Identifier,
+                }];
+                
+                let resultFlag = await this.templateService.deletePage(pageData);
+                if (resultFlag) {
+                    let messageString = Constants.recordDeletedMessage;
+                    this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+                    this.resetPageFilterForm();
+                    this.getTemplates(null);
+                }
+            }
+        });
+    }
+
+    navigationToDashboardDesignerEdit(template: Template) {
+        let queryParams = {
+            Routeparams: {
+                passingparams: {
+                "PageName": template.DisplayName,
+                "PageIdentifier": template.Identifier,
+                "pageEditModeOn": true
+                }
+            }
+        }
+        localStorage.setItem("pageDesignEditRouteparams", JSON.stringify(queryParams))
+        this.route.navigate(['../dashboardDesigner']);
+    }
+    
 }
 
 function compareStr(a: string, b: string, isAsc: boolean) {

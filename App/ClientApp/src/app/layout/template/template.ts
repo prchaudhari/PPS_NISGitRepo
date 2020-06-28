@@ -1,3 +1,5 @@
+import { TemplateWidget } from './templateWidget';
+
 export interface Template {
     "Identifier":number;
     "DisplayName":string;
@@ -12,4 +14,5 @@ export interface Template {
     "PageOwnerName":string;
     "PagePublishedByUserName":string;
     "PageTypeName":string;
+    "PageWidgets": TemplateWidget[];
 }

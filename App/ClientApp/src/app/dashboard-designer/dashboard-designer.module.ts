@@ -10,18 +10,30 @@ import { LayoutModule } from '../layout/layout.module';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { DynamicModule } from 'ng-dynamic-component';
+import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from './widgetComponent/widgetComponent';
 
 @NgModule({
-  declarations: [AddDashboardDesignerComponent, ViewDashboardDesignerComponent],
+  declarations: [AddDashboardDesignerComponent, ViewDashboardDesignerComponent,
+  CustomerInformationComponent, AccountInformationComponent, ImageComponent,
+  VideoComponent, SummaryAtGlanceComponent, ],
   imports: [
     CommonModule,
       DashboardDesignerRoutingModule,
       RouterModule,
-      SharedModule, GridsterModule,
+      SharedModule, 
+      GridsterModule,
       LayoutModule,
       MatSortModule,
       MatTableModule,
-      MatPaginatorModule
-  ]
+      MatPaginatorModule,
+      DynamicModule,
+  ],
+  entryComponents: [
+    CustomerInformationComponent, 
+    AccountInformationComponent,
+    ImageComponent,
+    VideoComponent,
+    SummaryAtGlanceComponent],
 })
 export class DashboardDesignerModule { }

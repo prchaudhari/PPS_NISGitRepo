@@ -92,16 +92,16 @@ namespace nIS
         /// <summary>
         /// This method helps to delete pages.
         /// </summary>
-        /// <param name="roles"></param>
+        /// <param name="pageIdentifier"></param>
         /// <returns>boolean value</returns>
         [HttpPost]
-        public bool Delete(IList<Page> pages)
+        public bool Delete(long pageIdentifier)
         {
             bool result = false;
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                result = this.pageManager.DeletePages(pages, tenantCode);
+                result = this.pageManager.DeletePages(pageIdentifier, tenantCode);
             }
             catch (Exception exception)
             {

@@ -26,9 +26,9 @@ namespace nIS
         IPageRepository pageRepository = null;
 
         /// <summary>
-        /// The user repository.
+        /// The validation engine object
         /// </summary>
-        IUserRepository userRepository = null;
+        IValidationEngine validationEngine = null;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace nIS
             {
                 this.unityContainer = unityContainer;
                 this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
-                this.userRepository = this.unityContainer.Resolve<IUserRepository>();
+                this.validationEngine = new ValidationEngine();
             }
             catch (Exception ex)
             {
@@ -108,17 +108,17 @@ namespace nIS
         /// <summary>
         /// This method will call delete pages method of repository
         /// </summary>
-        /// <param name="pages">Pages are to be delete.</param>
+        /// <param name="pageIdentifier">Page iddentifier</param>
         /// <param name="tenantCode">Tenant code of page.</param>
         /// <returns>
         /// Returns true if pages deleted successfully, false otherwise.
         /// </returns>
-        public bool DeletePages(IList<Page> pages, string tenantCode)
+        public bool DeletePages(long pageIdentifier, string tenantCode)
         {
             bool result = false;
             try
             {
-                //result = this.pageRepository.DeletePages(pages, tenantCode);
+                result = this.pageRepository.DeletePages(pageIdentifier, tenantCode);
             }
             catch (Exception exception)
             {
@@ -153,6 +153,10 @@ namespace nIS
                 {
                     throw invalidSearchParameterException;
                 }
+
+                pageSearchParameter.StartDate = this.validationEngine.IsValidDate(pageSearchParameter.StartDate) ? DateTime.SpecifyKind(pageSearchParameter.StartDate, DateTimeKind.Utc) : pageSearchParameter.StartDate;
+                pageSearchParameter.EndDate = this.validationEngine.IsValidDate(pageSearchParameter.EndDate) ? DateTime.SpecifyKind(pageSearchParameter.EndDate, DateTimeKind.Utc) : pageSearchParameter.EndDate;
+
                 return this.pageRepository.GetPages(pageSearchParameter, tenantCode);
             }
             catch (Exception exception)
