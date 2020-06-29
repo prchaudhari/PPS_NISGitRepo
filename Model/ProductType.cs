@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace nIS
 {
-    public class ProductType
+    public class PageType
     {
 
         #region Private Member
@@ -20,7 +20,7 @@ namespace nIS
         /// <summary>
         /// The widget name
         /// </summary>
-        private string productType = string.Empty;
+        private string pageType = string.Empty;
 
         /// <summary>
         ///Flag for deleted or not
@@ -47,7 +47,7 @@ namespace nIS
         #region Public Member
 
         /// <summary>
-        /// gets or sets the product identifier.
+        /// gets or sets the page identifier.
         /// </summary>
         [Description("Identifier")]
         public long Identifier
@@ -64,22 +64,22 @@ namespace nIS
         }
 
         /// <summary>
-        /// Gets or sets the product type name.
+        /// Gets or sets the page type name.
         /// </summary>
         /// <value>
-        /// The product type name .
+        /// The page type name .
         /// </value>
-        [Description("ProductTypeName")]
-        public string ProductTypeName
+        [Description("PageTypeName")]
+        public string PageTypeName
         {
             get
             {
-                return this.productType;
+                return this.pageType;
             }
 
             set
             {
-                this.productType = value;
+                this.pageType = value;
             }
         }
         /// <summary>
@@ -133,11 +133,11 @@ namespace nIS
 
             if (!validationEngine.IsValidLong(this.Identifier, false))
             {
-                exception.Data.Add(utility.GetDescription("Identifier", typeof(ProductType)), ModelConstant.PRODUCTTYPE_SECTION + "~" + ModelConstant.INVALID_PRODUCTTYPE_ID);
+                exception.Data.Add(utility.GetDescription("Identifier", typeof(PageType)), ModelConstant.PRODUCTTYPE_SECTION + "~" + ModelConstant.INVALID_PRODUCTTYPE_ID);
             }
-            if (!validationEngine.IsValidText(this.ProductTypeName, false))
+            if (!validationEngine.IsValidText(this.PageTypeName, false))
             {
-                exception.Data.Add(utility.GetDescription("ProductTypeName", typeof(ProductType)), ModelConstant.PRODUCTTYPE_SECTION + "~" + ModelConstant.INVALID_PRODUCTTYPE_NAME);
+                exception.Data.Add(utility.GetDescription("PageTypeName", typeof(PageType)), ModelConstant.PRODUCTTYPE_SECTION + "~" + ModelConstant.INVALID_PRODUCTTYPE_NAME);
             }
             if (exception.Data.Count > 0)
             {

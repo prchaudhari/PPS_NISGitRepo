@@ -17,7 +17,7 @@ namespace nIS
     /// <summary>
     /// This class represents the widget entity
     /// </summary>
-    public class Widget : BaseEntity
+    public class Widget
     {
         /// <summary>
         /// The Widget Icon
@@ -32,24 +32,34 @@ namespace nIS
         private long identifier;
 
         /// <summary>
-        /// The widget settings
-        /// </summary>
-        private object widgetSetting = new object();
-
-        /// <summary>
         /// The widget name
         /// </summary>
         private string widgetName = string.Empty;
 
         /// <summary>
-        /// The Product Types
+        /// The widget name
         /// </summary>
-        private IList <ProductType> productTypes= new List<ProductType>();
+        private string displayName = string.Empty;
+
+        /// <summary>
+        /// The widget name
+        /// </summary>
+        private string pageTypeIds = string.Empty;
+
+        /// <summary>
+        /// The widget description
+        /// </summary>
+        private string widgetDescription = string.Empty;
+
+        /// <summary>
+        /// The Page Types
+        /// </summary>
+        private IList<PageType> productTypes = new List<PageType>();
 
         /// <summary>
         /// The Last Updated Date
         /// </summary>
-        private DateTime lastUpdatedDate = DateTime.UtcNow;
+        private DateTime? lastUpdatedDate = DateTime.UtcNow;
 
         /// <summary>
         /// The UpdatedBy
@@ -60,6 +70,11 @@ namespace nIS
         ///Flag for isConfigurable or not
         /// </summary>
         private bool isConfigurable = true;
+
+        /// <summary>
+        ///Flag for Instantiable or not
+        /// </summary>
+        private bool instantiable = true;
 
         /// <summary>
         /// The validation engine object
@@ -81,6 +96,7 @@ namespace nIS
         /// </summary>
         string tenantCode = string.Empty;
 
+
         #endregion
 
         #region Public member        
@@ -99,26 +115,6 @@ namespace nIS
             set
             {
                 this.identifier = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the widget settings.
-        /// </summary>
-        /// <value>
-        /// The widget settings.
-        /// </value>
-        [Description("WidgetSetting")]
-        public object WidgetSetting
-        {
-            get
-            {
-                return this.widgetSetting;
-            }
-
-            set
-            {
-                this.widgetSetting = value;
             }
         }
 
@@ -143,13 +139,73 @@ namespace nIS
         }
 
         /// <summary>
+        /// Gets or sets the widget name.
+        /// </summary>
+        /// <value>
+        /// The widget name .
+        /// </value>
+        [Description("DisplayName")]
+        public string DisplayName
+        {
+            get
+            {
+                return this.displayName;
+            }
+
+            set
+            {
+                this.displayName = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Page Type Ids.
+        /// </summary>
+        /// <value>
+        /// The widget name .
+        /// </value>
+        [Description("PageTypeIds")]
+        public string PageTypeIds
+        {
+            get
+            {
+                return this.pageTypeIds;
+            }
+
+            set
+            {
+                this.pageTypeIds = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the widget description.
+        /// </summary>
+        /// <value>
+        /// The widget name .
+        /// </value>
+        [Description("WidgetDescription")]
+        public string WidgetDescription
+        {
+            get
+            {
+                return this.widgetDescription;
+            }
+
+            set
+            {
+                this.widgetDescription = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the product type.
         /// </summary>
         /// <value>
         /// The product type.
         /// </value>
-        [Description("ProductTypes")]
-        public IList<ProductType> ProductTypes
+        [Description("PageTypes")]
+        public IList<PageType> PageTypes
         {
             get
             {
@@ -214,10 +270,27 @@ namespace nIS
         }
 
         /// <summary>
+        /// gets or sets the Instantiable.
+        /// </summary>
+        [Description("Instantiable")]
+        public bool Instantiable
+        {
+            get
+            {
+                return this.instantiable;
+            }
+
+            set
+            {
+                this.instantiable = value;
+            }
+        }
+
+        /// <summary>
         /// gets or sets the LastUpdatedDate.
         /// </summary>
         [Description("LastUpdatedDate")]
-        public DateTime LastUpdatedDate
+        public DateTime? LastUpdatedDate
         {
             get
             {
@@ -260,7 +333,7 @@ namespace nIS
 
             IUtility utility = new Utility();
             ValidationEngine validationEngine = new ValidationEngine();
-          
+
             if (!validationEngine.IsValidLong(this.Identifier, false))
             {
                 exception.Data.Add(utility.GetDescription("Identifier", typeof(Widget)), ModelConstant.WIDGET_SECTION + "~" + ModelConstant.INVALID_WIDGET_ID);

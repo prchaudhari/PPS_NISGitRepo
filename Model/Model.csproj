@@ -70,6 +70,7 @@
     <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
     <Compile Include="Search Parameter\PageSearchParameter.cs" />
+    <Compile Include="Search Parameter\WidgetSearchParameter.cs" />
     <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
     <Compile Include="User.cs" />

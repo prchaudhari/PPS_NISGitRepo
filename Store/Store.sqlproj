@@ -82,6 +82,8 @@
     <Build Include="State.sql" />
     <Build Include="Country.sql" />
     <Build Include="Configuration Manager\ConfigurationManager.sql" />
+    <None Include="Seed Data Scripts\PageType.sql" />
+    <None Include="Seed Data Scripts\Widget.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />
@@ -98,5 +100,8 @@
     <None Include="Seed Data Scripts\Tenant.sql" />
     <None Include="Seed Data Scripts\Configuration.sql" />
     <Build Include="Configuration Manager\ConfigurationManagerSchema.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Store.refactorlog" />
   </ItemGroup>
 </Project>
