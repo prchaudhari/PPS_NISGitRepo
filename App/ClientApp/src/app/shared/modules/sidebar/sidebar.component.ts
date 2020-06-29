@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit {
 
   public loggedInUserName = '';
   public AppVersion: string;
+  public URL = '';
 
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
@@ -148,6 +149,8 @@ export class SidebarComponent implements OnInit {
 
 
     })
+    this.URL = this.route.url;
+
   }
 
 }
