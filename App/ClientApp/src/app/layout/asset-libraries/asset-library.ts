@@ -40,6 +40,7 @@ export class AssetSearchParameter {
   PagingParameter: PagingParameter = new PagingParameter();
   SortParameter: SortParameter = new SortParameter();
   SearchMode: SearchMode = SearchMode.Equals;
+  IsDeleted: boolean;
 }
 
 export class SSMLGenerator {

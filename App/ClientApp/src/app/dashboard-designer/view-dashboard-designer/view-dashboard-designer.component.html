@@ -18,9 +18,133 @@
     <div class="widget-container">
       <gridster [options]="options">
         <gridster-item  [item]="item" *ngFor="let item of widgetsGridsterItemArray">
+          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='image'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='video'"></button>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
       </gridster-item>
       </gridster>
     </div>
   </div>
+
+  <!--image config-->
+<form [formGroup]="ImageConfigForm" name="imgConfigform">
+  <div class="form-popup side-popup width340" [ngClass]="isImageConfig? 'show' : 'hide'">
+    <div class="filter-head">
+      <label class="m-0">Image Configuration</label>
+    </div>
+    <div class="filter-body stylescrollbar">
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label> Personalize </label>
+          <div>
+            <label class="switch d-block">
+              <input type="checkbox" [checked]="isPersonalizeImage">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label> Asset Library </label>
+          <select formControlName="imgAssetLibrary" class="form-control" [disableControl]="true">
+            <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label> Assets </label>
+          <select class="form-control" formControlName="imgAsset" [disableControl]="true">
+            <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <label> URL </label>
+          <input type="text" class="form-control" [disableControl]="true" formControlName="imageUrl"/>
+        </div>
+      </div>
+    </div>
+    <div class="filter-footer">
+      <ul class="nav nav-toolbar">
+        <li class="nav-item width50">
+          <button (click)="isImageConfig=!isImageConfig" title="Close" id="btnCloseForm"
+                  class="btn-footer-fill btn-block rounded-0 height100">
+            <span class="fa fa-close"></span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>
+
+<!--video config-->
+<form [formGroup]="VideoConfigForm" name="vdoConfigform">
+  <div class="form-popup side-popup width340" [ngClass]="isVideoConfig? 'show' : 'hide'">
+    <div class="filter-head">
+      <label class="m-0">Video Configuration</label>
+    </div>
+    <div class="filter-body stylescrollbar">
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label> Personalize </label>
+          <div>
+            <label class="switch d-block">
+              <input type="checkbox" [checked]="isPersonalize">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-6 form-group">
+          <label> Embedded </label>
+          <div>
+            <label class="switch d-block">
+              <input type="checkbox" [disabled]="true">
+              <span class="slider round" [ngClass]="!isPersonalize ? 'disabled-cursor bg-secondary':''"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="row" *ngIf="isEmbedded">
+          <div class="col-sm-12 form-group">
+            <label> URL </label>
+            <input type="text" class="form-control" [disableControl]="true" formControlName="vdoUrl"/>
+          </div>
+        </div>
+        <div class="row" *ngIf="!isEmbedded">
+          <div class="col-sm-12 form-group">
+            <label> Asset Library </label>
+            <select class="form-control" formControlName="vdoAssetLibrary" [disableControl]="true">
+              <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="!isEmbedded">
+          <div class="col-sm-12 form-group">
+            <label> Assets </label>
+            <select class="form-control" [disableControl]="true" formControlName="vdoAsset">
+              <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="filter-footer">
+      <ul class="nav nav-toolbar">
+        <li class="nav-item width50">
+          <button (click)="isVideoConfig=!isVideoConfig" title="Close" id="btnCloseForm" 
+                  class="btn-footer-fill btn-block rounded-0 height100">
+            <span class="fa fa-close"></span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>
+
 </div>
+

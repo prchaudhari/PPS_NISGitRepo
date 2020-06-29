@@ -10,10 +10,16 @@
           <div class="col-md-4 col-lg-4">
             <label id="lblPageName" for="inputPageName" >Name</label> <span class="text-danger"> *</span>
             <input type="text" class="form-control" id="inputPageName" formControlName="pageName"/>
-            <div class="validation-msg" style="color:red" *ngIf="pageName.touched && pageName.errors">
-              <ul *ngIf="pageFormErrorObject.showPageNameError" style="list-style-type:none">
-                  <li class="text-danger" *ngIf="pageName.errors?.pattern">Invalid page name</li>
-                  <li class="text-danger" *ngIf="pageName.errors?.required">Page name required</li>
+            <div class="validation-msg" style="color:red" *ngIf="pf.pageName.touched && pf.pageName.errors">
+              <ul style="list-style-type:none">
+                  <li class="text-danger" *ngIf="pf.pageName.errors?.pattern">Invalid page name</li>
+                  <li class="text-danger" *ngIf="pf.pageName.errors?.required">Page name required</li>
+                  <li class="text-danger" *ngIf="pf.pageName.errors?.minlength">
+                    Page name length should not be less than 2
+                  </li>
+                  <li class="text-danger" *ngIf="pf.pageName.errors?.maxlength">
+                    Page name length should not be greater than 50
+                  </li>
               </ul>
           </div>
           </div>
@@ -25,7 +31,7 @@
               <option *ngFor="let pt of pageTypelist" [value]="pt.Identifier">{{pt.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
-              <ul *ngIf="pageFormErrorObject.showPageTypeError" style="list-style-type:none">
+              <ul style="list-style-type:none" *ngIf="pageFormErrorObject.showPageTypeError">
                 <li class="text-danger">Please select page type</li>
               </ul>
             </div>
@@ -33,13 +39,14 @@
         </div>
       </div>
     </div>
-  </form>
 
-  <div class="card border-0 mt-4 mb-3 bg-transparent">
-    <div class="card-body p-0">
-      <button class="btn-footer-fill mr-2" id="btnSave">Save</button>
-      <button class="btn-footer-fill mr-2" id="btnSave" (click)="navigationTodashboardDesigner()">Next</button>
-      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+    <div class="card border-0 mt-4 mb-3 bg-transparent">
+      <div class="card-body p-0">
+        <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="saveBtnValidation()" (click)="OnSaveBtnClicked()">Save</button>
+        <button class="btn-footer-fill mr-2" id="btnNext" [disabled]="saveBtnValidation()" (click)="navigationTodashboardDesigner()">Next</button>
+        <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+      </div>
     </div>
-  </div>
+
+  </form>
 </div>

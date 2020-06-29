@@ -13,6 +13,11 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
 import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from '../widgetComponent/widgetComponent';
+import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
+import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-add-dashboard-designer',
@@ -39,15 +44,35 @@ export class AddDashboardDesignerComponent implements OnInit {
     public PageTypeId;
     public PageTypeName;
     public pageEditModeOn: boolean = false;
+    public baseURL: string = environment.baseURL;
+    public validUrlRegexPattern = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
     public templateList: Template[] = [];
+    public assetLibraryList: any[] = [];
+    public assets: any[] = [];
+    public ImageConfigForm: FormGroup;
+    public imgAssetLibraryId: number;
+    public imgAssetId: number;
+    public imageSourceUrl:  string;
+
+    public VideoConfigForm: FormGroup;
+    public vdoAssetLibraryId: number;
+    public vdoAssetId: number;
+    public vdoSourceUrl:  string;
+    public imageWidgetId: number = 0;
+    public videoWidgetId: number = 0;
+    public widgetItemCount: number = 0;
+    public selectedWidgetItemCount: number = 0;
 
     constructor(private _location: Location,
       private injector: Injector,
+      private fb: FormBuilder,
       private _dialogService: DialogService,
       private uiLoader: NgxUiLoaderService,
       private _messageDialogService: MessageDialogService,
       private localstorageservice: LocalStorageService,
+      private assetLibraryService: AssetLibraryService,
+      private _http: HttpClient,
       private router: Router) { 
         router.events.subscribe(e => {
             if (e instanceof NavigationEnd) {
@@ -73,12 +98,119 @@ export class AddDashboardDesignerComponent implements OnInit {
         });
     }
     
-    isImageConfigForm() {
-        this.isImageConfig = true;
+    //Getters for Image config Forms
+    get imgAssetLibrary() {
+        return this.ImageConfigForm.get('imgAssetLibrary');
+    }
+    get imgAsset() {
+        return this.ImageConfigForm.get('imgAsset');
+    }
+    get imageUrl() {
+        return this.ImageConfigForm.get('imageUrl');
     }
 
-    isVideoConfigForm() {
+    //Getters for Image config Forms
+    get vdoAssetLibrary() {
+        return this.VideoConfigForm.get('vdoAssetLibrary');
+    }
+    get vdoAsset() {
+        return this.VideoConfigForm.get('vdoAsset');
+    }
+    get vdoUrl() {
+        return this.VideoConfigForm.get('vdoUrl');
+    }
+
+    get imgForm(){
+        return this.ImageConfigForm.controls;
+    }
+
+    get vdoForm(){
+        return this.VideoConfigForm.controls;
+    }
+
+    isImageConfigForm(widgetId, widgetItemCount) {
+        this.isImageConfig = true;
+        this.imageWidgetId = widgetId;
+        this.selectedWidgetItemCount = widgetItemCount;
+        var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+        if(records.length != 0) {
+            var widgetSetting = records[0].WidgetSetting;
+            if(widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+                var widgetConfigObj = JSON.parse(widgetSetting);
+                this.ImageConfigForm.patchValue({
+                    imgAssetLibrary: widgetConfigObj.AssetLibraryId,
+                    imgAsset: widgetConfigObj.AssetId,
+                    imageUrl: widgetConfigObj.ImageSourceUrl,
+                });
+                if(widgetConfigObj.ImageSourceUrl != null && widgetConfigObj.ImageSourceUrl != '') {
+                    this.isPersonalizeImage = true;
+                }else {
+                    this.isPersonalizeImage = false;
+                }
+                if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
+                    let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
+                    assetSearchParameter.AssetLibraryIdentifier = String(widgetConfigObj.AssetLibraryId);
+                    assetSearchParameter.IsDeleted = false;  
+                    assetSearchParameter.Extension = "jpg, png, jpeg";
+                    assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+                    assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+                    assetSearchParameter.SortParameter.SortColumn = Constants.Name;
+                    assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
+                    assetSearchParameter.SearchMode = Constants.Contains;
+                    this.LoadAsset(assetSearchParameter);
+                }
+            }
+        }
+    }
+
+    testJSON(text){
+        if (typeof text!=="string"){
+            return false;
+        }
+        try{
+            JSON.parse(text);
+            return true;
+        }
+        catch (error){
+            return false;
+        }
+    }
+
+    isVideoConfigForm(widgetId, widgetItemCount) {
         this.isVideoConfig = true;
+        this.videoWidgetId = widgetId;
+        this.selectedWidgetItemCount = widgetItemCount;
+        var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+        if(records.length != 0) {
+            var widgetSetting = records[0].WidgetSetting;
+            if(widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+                var widgetConfigObj = JSON.parse(widgetSetting);
+                this.VideoConfigForm.patchValue({
+                    vdoAssetLibrary: widgetConfigObj.AssetLibraryId,
+                    vdoAsset: widgetConfigObj.AssetId,
+                    vdoUrl: widgetConfigObj.VideoSourceUrl,
+                });
+                if(widgetConfigObj.VideoSourceUrl != null && widgetConfigObj.VideoSourceUrl != '') {
+                    this.isPersonalize = true;
+                    this.isEmbedded = true;
+                }else {
+                    this.isPersonalize = false;
+                    this.isEmbedded = false;
+                }
+                if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
+                    let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
+                    assetSearchParameter.AssetLibraryIdentifier = String(widgetConfigObj.AssetLibraryId);
+                    assetSearchParameter.IsDeleted = false;  
+                    assetSearchParameter.Extension = "mp4";
+                    assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+                    assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+                    assetSearchParameter.SortParameter.SortColumn = Constants.Name;
+                    assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
+                    assetSearchParameter.SearchMode = Constants.Contains;
+                    this.LoadAsset(assetSearchParameter);
+                }
+            }
+        }
     }
 
     ngOnInit() {
@@ -89,8 +221,21 @@ export class AddDashboardDesignerComponent implements OnInit {
             });
         });
 
+        this.ImageConfigForm = this.fb.group({
+            imgAssetLibrary: [null],
+            imgAsset: [null],
+            imageUrl: [null, [Validators.pattern(this.validUrlRegexPattern)]]
+        });
+
+        this.VideoConfigForm = this.fb.group({
+            vdoAssetLibrary: [null],
+            vdoAsset: [null],
+            vdoUrl: [null, [Validators.pattern(this.validUrlRegexPattern)]]
+        });
+
+        this.getAssetLibraries();
         if(this.pageEditModeOn) {
-            this.getPageRecord();
+            this.getTemplate();
         }
 
         //gridster
@@ -223,7 +368,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             pageWidget.Width = widgetsGridsterItem.cols;
             pageWidget.Xposition = widgetsGridsterItem.x;
             pageWidget.Yposition = widgetsGridsterItem.y;
-            pageWidget.WidgetSetting = JSON.stringify({});
+            pageWidget.WidgetSetting = widgetsGridsterItem.WidgetSetting != null ? widgetsGridsterItem.WidgetSetting : "";
             pageWidgets.push(pageWidget);
         }
         pageObject.PageWidgets = pageWidgets;
@@ -255,6 +400,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     selectWidget(widgetType){
+        this.widgetItemCount = this.widgetItemCount + 1;
         this.widgetId = widgetType;
         if(widgetType == "customerInformation"){
             return this.widgetsGridsterItemArray.push({
@@ -265,6 +411,8 @@ export class AddDashboardDesignerComponent implements OnInit {
                 component: CustomerInformationComponent,
                 value : 'customerInformation',
                 widgetId : 1,
+                widgetItemCount: this.widgetItemCount,
+                WidgetSetting: ''
              })
         }
         else if(widgetType == "accountInformation"){
@@ -275,7 +423,9 @@ export class AddDashboardDesignerComponent implements OnInit {
                 x: 0,
                 component: AccountInformationComponent,
                 value : 'accountInformation',
-                widgetId : 2
+                widgetId : 2,
+                widgetItemCount: this.widgetItemCount,
+                WidgetSetting: ''
              })
         }
         else if(widgetType == "image"){
@@ -286,7 +436,9 @@ export class AddDashboardDesignerComponent implements OnInit {
                 x: 0,
                 component: ImageComponent,
                 value : 'image',
-                widgetId : 3
+                widgetId : 3,
+                widgetItemCount: this.widgetItemCount,
+                WidgetSetting: ''
              })
         }
         else if(widgetType == "video"){
@@ -297,7 +449,9 @@ export class AddDashboardDesignerComponent implements OnInit {
                 x: 0,
                 component: VideoComponent,
                 value : 'video',
-                widgetId : 4
+                widgetId : 4,
+                widgetItemCount: this.widgetItemCount,
+                WidgetSetting: ''
              })
         }
         else if(widgetType == "summaryAtGlance"){
@@ -308,13 +462,14 @@ export class AddDashboardDesignerComponent implements OnInit {
                 x: 0,
                 component: SummaryAtGlanceComponent,
                 value : 'summaryAtGlance',
-                widgetId : 5
+                widgetId : 5,
+                widgetItemCount: this.widgetItemCount,
+                WidgetSetting: ''
              })
         }
     }
 
-    async getPageRecord() {
-        let templateService = this.injector.get(TemplateService);
+    getTemplate() {
         let searchParameter: any = {};
         searchParameter.IsActive = true;
         searchParameter.Identifier = this.PageIdentifier;
@@ -326,12 +481,17 @@ export class AddDashboardDesignerComponent implements OnInit {
         searchParameter.SortParameter.SortColumn = 'DisplayName';
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
         searchParameter.SearchMode = Constants.Exact;
+        this.getPageRecords(searchParameter);
+    }
+
+    async getPageRecords(searchParameter) {
+        let templateService = this.injector.get(TemplateService);
         this.templateList = await templateService.getTemplates(searchParameter);
         if (this.templateList.length == 0) {
             let message = "No record found";
             this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
                 if (data == true) {
-                    this.getPageRecord();
+                    this.getTemplate();
                 }
             });
         }else {
@@ -341,7 +501,8 @@ export class AddDashboardDesignerComponent implements OnInit {
             this.PageIdentifier = template.Identifier;
             let pageWidgets: TemplateWidget[] = template.PageWidgets;
             if(pageWidgets.length != 0) {
-                for(let i=0; i < pageWidgets.length; i++) {
+                for(let i=0; i < pageWidgets.length; i++) {    
+                    this.widgetItemCount = this.widgetItemCount + 1;
                     let gridsterItem: any = {};
                     gridsterItem.x = pageWidgets[i].Xposition;
                     gridsterItem.y = pageWidgets[i].Yposition;
@@ -349,6 +510,8 @@ export class AddDashboardDesignerComponent implements OnInit {
                     gridsterItem.rows = pageWidgets[i].Height;
                     gridsterItem.widgetId = pageWidgets[i].WidgetId;
                     gridsterItem.WidgetSetting = pageWidgets[i].WidgetSetting;
+                    gridsterItem.widgetItemCount = this.widgetItemCount;
+
                     if(pageWidgets[i].WidgetId == 1) {
                         gridsterItem.component = CustomerInformationComponent;
                         gridsterItem.value = 'customerInformation';
@@ -369,5 +532,133 @@ export class AddDashboardDesignerComponent implements OnInit {
                 }
             }
         }
+    }
+
+    getAssetLibraries () {
+        let searchParameter: any = {};
+        searchParameter.IsActive = true;
+        searchParameter.PagingParameter = {};
+        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.SortParameter = {};
+        searchParameter.SortParameter.SortColumn = Constants.Name;
+        searchParameter.SortParameter.SortOrder = Constants.Ascending;
+        searchParameter.SearchMode = Constants.Contains;
+        this.getAssetLibraryRecords(searchParameter);
+    }
+
+    async getAssetLibraryRecords(searchParameter) {
+        let assetLibraryService = this.injector.get(AssetLibraryService);
+        this.assetLibraryList = await assetLibraryService.getAssetLibrary(searchParameter);
+        if (this.assetLibraryList.length == 0) {
+            let message = "NO record found";
+            this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+                if (data == true) {
+                }
+            });
+        }
+    }
+
+    onAssetLibrarySelected(event, type) {
+        const value = event.target.value;
+        if (value == "0") {
+            this.imgAssetLibraryId = 0;
+        }
+        else {
+            let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
+            assetSearchParameter.AssetLibraryIdentifier = String(value);
+            assetSearchParameter.IsDeleted = false;           
+            if(type == 'image'){
+                this.imgAssetLibraryId = Number(value);
+                assetSearchParameter.Extension = "jpg, png, jpeg";
+            }else {
+                this.vdoAssetLibraryId = Number(value);
+                assetSearchParameter.Extension = "mp4";
+            }
+            assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+            assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+            assetSearchParameter.SortParameter.SortColumn = Constants.Name;
+            assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
+            assetSearchParameter.SearchMode = Constants.Contains;
+            this.LoadAsset(assetSearchParameter);
+        }
+    }
+
+    onAssetSelected(event, type) {
+        const value = event.target.value;
+        if (value == "0") {
+            this.imgAssetId = 0;
+        }
+        else {
+            if(type == 'image'){
+                this.imgAssetId = Number(value);
+            }else {
+                this.vdoAssetId = Number(value);
+            }
+        }
+    }
+
+    LoadAsset(assetSearchParameter: AssetSearchParameter): void {
+        let assets: any[];
+        this.uiLoader.start();
+        this._http.post(this.baseURL + 'assetlibrary/asset/list', assetSearchParameter).subscribe(
+            data => {
+                this.uiLoader.stop();
+                assets = <any[]>data;
+                this.assets = assets;
+            },
+            error => {
+                this.uiLoader.stop();
+                this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+            }
+        );
+    }
+
+    OnImageConfigBtnClicked(actionFor) {
+        if(actionFor == 'submit') {
+            let imageConfig: any = {};
+            imageConfig.AssetLibraryId = this.isPersonalizeImage == true ? 0 : this.imgAssetLibraryId;
+            imageConfig.AssetId = this.isPersonalizeImage == true ? 0 : this.imgAssetId;
+            imageConfig.ImageSourceUrl = this.ImageConfigForm.value.imageUrl != null && this.isPersonalizeImage == true ? this.ImageConfigForm.value.imageUrl : "";
+            imageConfig.WidgetId = this.imageWidgetId;
+            this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(imageConfig);
+            console.log(this.widgetsGridsterItemArray);
+        }
+        this.resetImageConfigForm();
+        this.isImageConfig = !this.isImageConfig;
+        this.imageWidgetId = 0;
+        this.selectedWidgetItemCount = 0;
+    }
+
+    OnVideoConfigBtnClicked(actionFor) {
+        if(actionFor == 'submit') { 
+            let videoConfig: any = {};
+            videoConfig.AssetLibraryId = this.isPersonalize == true ? 0 : this.vdoAssetLibraryId;
+            videoConfig.AssetId =  this.isPersonalize == true ? 0 : this.vdoAssetId;
+            videoConfig.VideoSourceUrl = this.VideoConfigForm.value.vdoUrl != null && this.isPersonalize == true ? this.VideoConfigForm.value.vdoUrl : "";
+            videoConfig.WidgetId = this.videoWidgetId;
+            this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId  && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(videoConfig);
+            console.log(this.widgetsGridsterItemArray);
+        }
+        this.resetVideoConfigForm();
+        this.isVideoConfig = !this.isVideoConfig;
+        this.videoWidgetId = 0;
+        this.selectedWidgetItemCount = 0;
+    }
+
+    resetImageConfigForm() {
+        this.ImageConfigForm.patchValue({
+            imgAssetLibrary: null,
+            imgAsset: null,
+            imageUrl: null,
+        });
+    }
+
+    resetVideoConfigForm() {
+        this.VideoConfigForm.patchValue({
+            vdoAssetLibrary: null,
+            vdoAsset: null,
+            vdoUrl: null,
+        });
     }
 }

@@ -1,12 +1,13 @@
 import { Component, OnInit, Injector, ChangeDetectorRef } from '@angular/core';
 import { Location } from '@angular/common';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Constants } from 'src/app/shared/constants/constants';
-import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAccessor, FormArray, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { TemplateService } from '../template.service';
 
 @Component({
   selector: 'app-add',
@@ -20,10 +21,7 @@ export class AddComponent implements OnInit {
   public pageTypelist: any[] = [];
   public onlyAlphabetsWithSpace = '[a-zA-Z ]*';
   public onlyAlphabetsWithSpaceQuoteHyphen = Constants.onlyAlphabetsWithSpaceQuoteHyphen;
-  public pageFormErrorObject: any = {
-    showPageTypeError: false,
-    showPageNameError: false
-  };
+  
   public pageEditModeOn: boolean = false;
   public params: any = {};
   public PageIdentifier = 0;
@@ -31,12 +29,21 @@ export class AddComponent implements OnInit {
   public PageTypeId =0;
   public PageTypeName;
 
-  //getters of usersForm group
+  public pageFormErrorObject: any = {
+    showPageNameError: false,
+    showPageTypeError: false
+  };
+
+  //getters of page Form group
   get pageName() {
     return this.pageFormGroup.get('pageName');
   }
   get pageType() {
     return this.pageFormGroup.get('pageType');
+  }
+
+  get pf() {
+    return this.pageFormGroup.controls;
   }
 
   //function to validate all fields
@@ -49,7 +56,7 @@ export class AddComponent implements OnInit {
             this.validateAllFormFields(control);
         }
     });
-}
+  }
 
   constructor(private _location: Location,
       private formbuilder: FormBuilder,
@@ -81,22 +88,52 @@ export class AddComponent implements OnInit {
         });
       }
 
-      //custom validation check
-      pageFormValidaton(): boolean {
-        this.pageFormErrorObject.showPageNameError = false;
-        this.pageFormErrorObject.showPageTypeError = false;
-
-        if (this.pageFormGroup.controls.pageName.invalid) {
-            this.pageFormErrorObject.showPageNameError = true;
-            return false;
-        }
-        if (this.PageTypeId == 0) {
-          this.pageFormErrorObject.showPageTypeError = true;
-          return false;
-      }
-
-      return true;
+    //initialization call
+    ngOnInit() {
+      //Validations for Page Form.
+      this.pageFormGroup = this.formbuilder.group({
+          pageName: [null, Validators.compose([Validators.required, Validators.minLength(2),
+            Validators.maxLength(50), Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
+          pageType: [0, Validators.compose([Validators.required])],
+      });
+      this.getPageTypes();
     }
+
+    saveBtnValidation(): boolean {
+      if (this.pageFormGroup.controls.pageName.invalid) {
+          return true;
+      }
+      if (this.PageTypeId == 0) {
+        return true;
+      }
+      return false; 
+    }
+
+    OnSaveBtnClicked() {
+      let pageObject: any = {};
+        pageObject.DisplayName = this.pageFormGroup.value.pageName;
+        pageObject.PageTypeId = this.PageTypeId;
+        pageObject.PageWidgets = [];
+        this.saveTemplate(pageObject);
+    }
+
+  //method written to save role
+  async saveTemplate(pageObject) {
+      this.uiLoader.start();
+      let pageArray = [];
+      pageArray.push(pageObject);
+      let templateService = this.injector.get(TemplateService);
+      let isRecordSaved = await templateService.saveTemplate(pageArray, this.pageEditModeOn);
+      this.uiLoader.stop();
+      if (isRecordSaved) {
+          let message = Constants.recordAddedMessage;
+          if (this.pageEditModeOn) {
+              message = Constants.recordUpdatedMessage;
+          }
+          this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+          this.navigateToListPage()
+      }
+  }
 
     public onPageTypeSelected(event) {
       const value = event.target.value;
@@ -114,42 +151,28 @@ export class AddComponent implements OnInit {
     }
 
     navigateToListPage() {
-        this._location.back();
+      const router = this.injector.get(Router);
+      router.navigate(['pages']);
     }
 
     navigationTodashboardDesigner() {
-      if(this.pageFormValidaton())
-      {
-        let queryParams = {
-          Routeparams: {
-            passingparams: {
-              "PageName": this.pageFormGroup.value.pageName,
-              "PageTypeId": this.PageTypeId,
-              "PageTypeName": this.PageTypeName,
-              "pageEditModeOn": this.pageEditModeOn
-            }
+      let queryParams = {
+        Routeparams: {
+          passingparams: {
+            "PageName": this.pageFormGroup.value.pageName,
+            "PageTypeId": this.PageTypeId,
+            "PageTypeName": this.PageTypeName,
+            "pageEditModeOn": this.pageEditModeOn
           }
         }
-        localStorage.setItem("pageDesignRouteparams", JSON.stringify(queryParams))
-        this.router.navigate(['../dashboardDesigner']);
       }
+      localStorage.setItem("pageDesignRouteparams", JSON.stringify(queryParams))
+      this.router.navigate(['../dashboardDesigner']);
     }
 
     getPageTypes(){
-      this.pageTypelist = [ {"Identifier": 0, "Name": "Select"},{"Identifier": 1, "Name": "Home"}, 
+      this.pageTypelist = [ {"Identifier": 0, "Name": "Select Page Type"}, {"Identifier": 1, "Name": "Home"}, 
       {"Identifier": 2, "Name": "Saving Account"}, {"Identifier": 3, "Name": "Current Account"} ];
-    }
-
-    //initialization call
-    ngOnInit() {
-      //Validations for Page Form.
-      this.pageFormGroup = this.formbuilder.group({
-          pageName: [null, Validators.compose([Validators.required, Validators.minLength(2),Validators.maxLength(50),
-            Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])
-          ],
-          pageType: [0, Validators.compose([Validators.required])],
-      });
-      this.getPageTypes();
     }
 
 }

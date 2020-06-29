@@ -251,7 +251,7 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(pageSearchParameter, tenantCode);
                 IList<PageRecord> pageRecords = new List<PageRecord>();
-                //IList<UserRecord> userRecords = new List<UserRecord>();
+                IList<UserRecord> userRecords = new List<UserRecord>();
                 IList<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString)) 
                 {
@@ -282,7 +282,10 @@ namespace nIS
 
                     if (pageRecords != null && pageRecords.ToList().Count > 0)
                     {
-                        //userRecords = nISEntitiesDataContext.UserRecords.Where(item => item.IsActive == true && item.IsDeleted == false).ToList();
+                        StringBuilder userIdentifier = new StringBuilder();
+                        userIdentifier.Append("(" + string.Join(" or ", pageRecords.Select(item => string.Format("Id.Equals({0})", item.Owner))) + ")");
+                        userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        userRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
                         pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(itm => itm.IsActive == true && itm.IsDeleted == false).ToList();                      
                     }
                 }
@@ -304,7 +307,8 @@ namespace nIS
                                     WidgetId = pageWidgetRecord.ReferenceWidgetId,
                                     Width = pageWidgetRecord.Width,
                                     Xposition = pageWidgetRecord.Xposition,
-                                    Yposition = pageWidgetRecord.Yposition
+                                    Yposition = pageWidgetRecord.Yposition,
+                                    WidgetSetting = pageWidgetRecord.WidgetSetting
                                 });
                             });
                         }
@@ -318,7 +322,7 @@ namespace nIS
                             IsDeleted = pageRecord.IsDeleted,
                             LastUpdatedDate = pageRecord.LastUpdatedDate ?? (DateTime)pageRecord.LastUpdatedDate,
                             PageOwner = pageRecord.Owner,
-                           // PageOwnerName = userRecords.Where(usr => usr.Id == pageRecord.Owner).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName,
+                            PageOwnerName = userRecords.Where(usr => usr.Id == pageRecord.Owner).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName,
                             PageWidgets = pageWidgets,
                             Status = pageRecord.Status,
                             Version = pageRecord.Version,

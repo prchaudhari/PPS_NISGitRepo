@@ -10,67 +10,57 @@
         </div>
       </div>
       <!--login form-->
-      <div id="login-frm" [formGroup]="loginForm" *ngIf="isLoginFlag">
-        <div class="row mb-4">
-          <div class="col-sm-12 text-center">
-            <h4 style="font-weight:normal"> Welcome </h4>
-            <p  class="m-0" style="font-weight:normal"> Please login to dashboard admin </p>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-sm-12 mt-4">
-            <div class="login-control">
-              <span class="fa fa-user"></span>
-              <input type="text" class="txtLogin" placeholder="User name" autocomplete="off" formControlName="userName" maxlength="50">
-              <div class="validation-msg" style="color:red">
-                <ul *ngIf="loginFormErrorObject.showUserNameError" style="list-style-type:none">
-                    <li class="text-danger" *ngIf="userName.errors?.pattern">Invalid username</li>
-                    <li class="text-danger" *ngIf="userName.errors?.required">Username is required</li>
 
-                </ul>
-            </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-sm-12">
-            <div class="login-control">
-              <span class="fa fa-lock"></span>
-              <input type="password" class="txtLogin" placeholder="Password" autocomplete="off" formControlName="password">
-              <div class="validation-msg" style="color:red">
-                <ul *ngIf="loginFormErrorObject.showPasswordError" style="list-style-type:none">
-                    <li class="text-danger" *ngIf="password.errors?.required">Password is required</li>
-
-                </ul>
-            </div>
+      <form [formGroup]="loginForm" name="loginForm" autocomplete="on" (submit)="OnSubmit()" novalidate>
+        <div id="login-frm" *ngIf="isLoginFlag">
+          <div class="row mb-4">
+            <div class="col-sm-12 text-center">
+              <h4 style="font-weight:normal"> Welcome </h4>
+              <p  class="m-0" style="font-weight:normal"> Please login to dashboard admin </p>
             </div>
           </div>
-        </div>
-        <!-- <div class="row mb-3">
-          <div class="col-sm-12">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
-              <label class="custom-control-label" for="defaultUnchecked">Remember me</label>
+          <div class="row mb-3">
+            <div class="col-sm-12 mt-4">
+              <div class="login-control">
+                <span class="fa fa-user"></span>
+                <input type="text" class="txtLogin" placeholder="User name" autocomplete="off" formControlName="userName" maxlength="50">
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="loginFormErrorObject.showUserNameError" style="list-style-type:none">
+                      <li class="text-danger" *ngIf="userName.errors?.pattern">Invalid username</li>
+                      <li class="text-danger" *ngIf="userName.errors?.required">Username is required</li>
+  
+                  </ul>
+              </div>
+              </div>
             </div>
           </div>
-        </div> -->
-        <div class="row mb-2">
-          <div class="col-sm-12 mt-4">
-            <button type="button" class="btn btn-default btn-block" (click)="OnSubmit()">Login</button>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <div class="login-control">
+                <span class="fa fa-lock"></span>
+                <input type="password" class="txtLogin" placeholder="Password" autocomplete="off" formControlName="password">
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="loginFormErrorObject.showPasswordError" style="list-style-type:none">
+                      <li class="text-danger" *ngIf="password.errors?.required">Password is required</li>
+  
+                  </ul>
+              </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-sm-12 text-center">
-            <a class="text-info" (click)="isForgotPassswordForm()"> Forgot Password ?</a>
+          <div class="row mb-2">
+            <div class="col-sm-12 mt-4">
+              <button type="submit" class="btn btn-default btn-block">Login</button>
+            </div>
           </div>
-        </div>
-
-        <!-- <div class="row mb-3" *ngIf='errorMsg'>
-          <div class="col-sm-12 text-center">
-            <p class="text-danger">{{loginErrorMsg}}</p>
-          </div>>
-        </div> -->
-      </div>
+          <div class="row mb-3">
+            <div class="col-sm-12 text-center">
+              <a class="text-info" (click)="isForgotPassswordForm()"> Forgot Password ?</a>
+            </div>
+          </div>
+        </div>  
+      </form>
+      
 
       <!--forgot password-->
       <div id="forgot-frm" *ngIf="isForgotPassword">

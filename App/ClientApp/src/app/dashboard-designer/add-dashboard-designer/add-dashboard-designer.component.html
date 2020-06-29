@@ -53,8 +53,8 @@
       <gridster [options]="options">        
         <gridster-item  [item]="item" *ngFor="let item of widgetsGridsterItemArray">
           <button class='fa fa-trash-o widget-action' (click)="removeItem($event,item)"></button>
-          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm()" *ngIf="item.value=='image'"></button>
-          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm()" *ngIf="item.value=='video'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='image'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='video'"></button>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
       </gridster-item>
       </gridster>
@@ -62,148 +62,154 @@
   </div>
 
   <!--image config-->
-  <div class="form-popup side-popup width340" [ngClass]="isImageConfig? 'show' : 'hide'">
-    <div class="filter-head">
-      <label class="m-0">Image Configuration</label>
-    </div>
-    <div class="filter-body stylescrollbar">
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label> Personalize </label>
-          <div>
-            <label class="switch d-block">
-              <input type="checkbox" checked (change)="isPersonalizeImage=!isPersonalizeImage">
-              <span class="slider round"></span>
-            </label>
-          </div>
-        </div>
+  <form [formGroup]="ImageConfigForm" name="imgConfigform">
+    <div class="form-popup side-popup width340" [ngClass]="isImageConfig? 'show' : 'hide'">
+      <div class="filter-head">
+        <label class="m-0">Image Configuration</label>
       </div>
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label> Asset Library </label>
-          <select class="form-control" [disabled]="!isPersonalizeImage">
-            <option>Select</option>
-            <option>Option 01</option>
-            <option>Option 02</option>
-            <option>Option 03</option>
-            <option>Option 04</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label> Assets </label>
-          <select class="form-control"  [disabled]="!isPersonalizeImage">
-            <option>Select</option>
-            <option>Option 01</option>
-            <option>Option 02</option>
-            <option>Option 03</option>
-            <option>Option 04</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <label> URL </label>
-          <input type="text" class="form-control"  [disabled]="!isPersonalizeImage" />
-        </div>
-      </div>
-    </div>
-    <div class="filter-footer">
-      <ul class="nav nav-toolbar">
-        <li class="nav-item width50">
-          <button (click)="isImageConfig = !isImageConfig" title="Save" id="btnCloseForm"
-                  class="btn-footer-fill btn-block rounded-0 height100">
-            <span class="fa fa-check"></span>
-          </button>
-        </li>
-        <li class="nav-item width50">
-          <button (click)="isImageConfig = !isImageConfig" title="Close" id="btnCloseForm"
-                  class="btn-footer-fill btn-block rounded-0 height100">
-            <span class="fa fa-close"></span>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <!--video config-->
-  <div class="form-popup side-popup width340" [ngClass]="isVideoConfig? 'show' : 'hide'">
-    <div class="filter-head">
-      <label class="m-0">Video Configuration</label>
-    </div>
-    <div class="filter-body stylescrollbar">
-      <div class="row">
-        <div class="col-sm-6 form-group">
-          <label> Personalize </label>
-          <div>
-            <label class="switch d-block">
-              <input type="checkbox" checked (change)="isPersonalize=!isPersonalize">
-              <span class="slider round"></span>
-            </label>
-          </div>
-        </div>
-        <div class="col-sm-6 form-group">
-          <label> Embedded </label>
-          <div>
-            <label class="switch d-block">
-              <input type="checkbox" [disabled]="!isPersonalize" (change)="isEmbedded=!isEmbedded">
-              <span class="slider round" [ngClass]="!isPersonalize ? 'disabled-cursor bg-secondary':''"></span>
-            </label>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="row" *ngIf="isEmbedded">
+      <div class="filter-body stylescrollbar">
+        <div class="row">
           <div class="col-sm-12 form-group">
-            <label> URL </label>
-            <input type="text" class="form-control" [disabled]="!isPersonalize" />
+            <label> Personalize </label>
+            <div>
+              <label class="switch d-block">
+                <input type="checkbox" [checked]="isPersonalizeImage" (change)="isPersonalizeImage=!isPersonalizeImage">
+                <span class="slider round"></span>
+              </label>
+            </div>
           </div>
         </div>
-        <div class="row" *ngIf="!isEmbedded">
+        <div class="row">
           <div class="col-sm-12 form-group">
             <label> Asset Library </label>
-            <select class="form-control" [disabled]="!isPersonalize">
-              <option>Select</option>
-              <option>Option 01</option>
-              <option>Option 02</option>
-              <option>Option 03</option>
-              <option>Option 04</option>
+            <select formControlName="imgAssetLibrary" (change)="onAssetLibrarySelected($event, 'image')" class="form-control" 
+            [disableControl]="isPersonalizeImage">
+              <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
             </select>
           </div>
         </div>
-        <div class="row" *ngIf="!isEmbedded">
+        <div class="row">
           <div class="col-sm-12 form-group">
             <label> Assets </label>
-            <select class="form-control" [disabled]="!isPersonalize">
-              <option>Select</option>
-              <option>Option 01</option>
-              <option>Option 02</option>
-              <option>Option 03</option>
-              <option>Option 04</option>
+            <select class="form-control" formControlName="imgAsset" [disableControl]="isPersonalizeImage" (change)="onAssetSelected($event, 'image')">
+              <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
             </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <label> URL </label>
+            <input type="text" class="form-control" [disableControl]="!isPersonalizeImage" formControlName="imageUrl"/>
+            <div class="validation-msg" style="color:red" *ngIf="imgForm.imageUrl.touched && imgForm.imageUrl.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="imgForm.imageUrl.errors?.pattern">
+                  Invalid URL address
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      
+      <div class="filter-footer">
+        <ul class="nav nav-toolbar">
+          <li class="nav-item width50">
+            <button (click)="OnImageConfigBtnClicked('submit')" title="Save" id="btnCloseForm"
+                    class="btn-footer-fill btn-block rounded-0 height100" [disabled]="ImageConfigForm.invalid">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width50">
+            <button (click)="OnImageConfigBtnClicked('cancel')" title="Close" id="btnCloseForm"
+                    class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-close"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="filter-footer">
-      <ul class="nav nav-toolbar">
-        <li class="nav-item width50">
-          <button (click)="isVideoConfig = !isVideoConfig" title="Save" id="btnCloseForm"
-                  class="btn-footer-fill btn-block rounded-0 height100">
-            <span class="fa fa-check"></span>
-          </button>
-        </li>
-        <li class="nav-item width50">
-          <button (click)="isVideoConfig = !isVideoConfig" title="Close" id="btnCloseForm"
-                  class="btn-footer-fill btn-block rounded-0 height100">
-            <span class="fa fa-close"></span>
-          </button>
-        </li>
-      </ul>
+  </form>
+
+  <!--video config-->
+  <form [formGroup]="VideoConfigForm" name="vdoConfigform">
+    <div class="form-popup side-popup width340" [ngClass]="isVideoConfig? 'show' : 'hide'">
+      <div class="filter-head">
+        <label class="m-0">Video Configuration</label>
+      </div>
+      <div class="filter-body stylescrollbar">
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label> Personalize </label>
+            <div>
+              <label class="switch d-block">
+                <input type="checkbox" [checked]="isPersonalize" (change)="isPersonalize=!isPersonalize">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
+            <label> Embedded </label>
+            <div>
+              <label class="switch d-block">
+                <input type="checkbox" [disabled]="!isPersonalize" (change)="isEmbedded=!isEmbedded">
+                <span class="slider round" [ngClass]="!isPersonalize ? 'disabled-cursor bg-secondary':''"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="row" *ngIf="isEmbedded">
+            <div class="col-sm-12 form-group">
+              <label> URL </label>
+              <input type="text" class="form-control" [disableControl]="!isPersonalize" formControlName="vdoUrl"/>
+              <div class="validation-msg" style="color:red" *ngIf="vdoForm.vdoUrl.touched && vdoForm.vdoUrl.errors">
+                <ul style="list-style-type:none">
+                  <li class="text-danger" *ngIf="vdoForm.vdoUrl.errors?.pattern">
+                    Invalid URL address
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="!isEmbedded">
+            <div class="col-sm-12 form-group">
+              <label> Asset Library </label>
+              <select class="form-control" formControlName="vdoAssetLibrary" [disableControl]="isPersonalize" (change)="onAssetLibrarySelected($event, 'video')">
+                <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row" *ngIf="!isEmbedded">
+            <div class="col-sm-12 form-group">
+              <label> Assets </label>
+              <select class="form-control" [disableControl]="isPersonalize" formControlName="vdoAsset" (change)="onAssetSelected($event, 'video')">
+                <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="filter-footer">
+        <ul class="nav nav-toolbar">
+          <li class="nav-item width50">
+            <button (click)="OnVideoConfigBtnClicked('submit')" title="Save" id="btnCloseForm"
+                    class="btn-footer-fill btn-block rounded-0 height100" [disabled]="VideoConfigForm.invalid">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width50">
+            <button (click)="OnVideoConfigBtnClicked('cancel')" title="Close" id="btnCloseForm" 
+                    class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-close"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </form>
+  
+
 </div>
+
 <div class="overlay a" id="divOverlayFilter" [ngClass]="!isImageConfig? 'hide':'show'"></div>
 <div class="overlay a" id="divOverlayFilter" [ngClass]="!isVideoConfig? 'hide':'show'"></div>
