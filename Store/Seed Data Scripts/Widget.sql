@@ -2,7 +2,7 @@
 DECLARE @SuperTenantIdentifier AS NVARCHAR(MAX) = (select id from TenantManager.Tenant where EmailAddress='nvsuperadmin@nIS.com');
 DECLARE @DateTime as DateTime =(SELECT GETDATE());
 
-INSERT INTO [NIS].[Widget]([WidgetName],[DisplayName],[Description],[PageTypeId],[IsConfigurable],
+INSERT INTO [NIS].[Widget]([DisplayName],[WidgetName],[Description],[PageTypeId],[IsConfigurable],
 [TenantCode],[IsDeleted],[IsActive],[LastUpdatedDate],[UpdateBy],[Instantiable])
 VALUES
 ('Customer Information','CustomerInformation','','',0,@SuperTenantCode,0,1,@DateTime,@SuperTenantIdentifier,0),

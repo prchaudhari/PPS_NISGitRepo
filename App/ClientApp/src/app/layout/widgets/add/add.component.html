@@ -1,189 +1,28 @@
 <div class="main-container">
   <div class="page-title d-flex justify-content-between">
     <span class="xs-title">Available Widgets</span>
-      <select class="form-control width20 mt-2 xs-w-100">
-        <option selected>Select Page Type</option>
-        <option>Home</option>
-        <option>Saving Account</option>
-        <option>Current Account</option>
-      </select>
+    <select class="form-control width20 mt-2 xs-w-100">
+      <option selected>Select Page Type</option>
+      <option>Home</option>
+      <option>Saving Account</option>
+      <option>Current Account</option>
+    </select>
   </div>
   <div class="card border-0 mb-2 card-shadow">
     <div class="card-body position-relative">
       <div class="row">
         <div class="col-sm-7">
-
-          <!--<label for="">Widget Type </label>-->
-          <!--Customer Information-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetCustomerInformation" (click)="setWidgetType('CustomerInformation')" [checked]="true">
-                <span class="fa fa-address-book-o"></span>
-              </label>
+         
+          <div *ngFor="let widget of widgetList">
+            <div class="widget-card">
+              <div class="hide-radio widget-icons">
+                <label>
+                  <input type="radio" name="widgetType" id="inputWidgetImage" (click)="setWidgetType(widget)">
+                  <span class="{{widget.WidgetIcon}}"></span>
+                </label>
+              </div>
+              <label class="text-center width100 pt-2 m-0 widget-name">{{widget.DisplayName}}</label>
             </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Customer Information</label>
-          </div>
-          <!--Account Information-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetAccountInformation" (click)="setWidgetType('AccountInformation')">
-                <span class="fa fa-address-card-o"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Account Information</label>
-          </div>
-          <!--Summary at Glance-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetSummary" (click)="setWidgetType('Summary')">
-                <span class="icon-widget-single-column2"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Summary at Glance</label>
-          </div>
-
-          <!--Investment Portfolio Risk-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetInvestmentPortfolioRisk" (click)="setWidgetType('InvestmentPortfolioRisk')">
-                <span class="icon-rp-loss1"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Investment Portfolio Risk</label>
-          </div>
-
-
-          <!--Image-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetImage" (click)="setWidgetType('Image')">
-                <span class="fa fa-image"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Image</label>
-          </div>
-          <!--Video-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetVideo" (click)="setWidgetType('Video')">
-                <span class="icon-videoWidget"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Video</label>
-          </div>
-          <!--Analytics-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetAnalytics" (click)="setWidgetType('Analytics')">
-                <span class="icon-AnalyticsWidget"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Analytics</label>
-          </div>
-          <!--Available Balance-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetAvailableBalance" (click)="setWidgetType('AvailableBalance')">
-                <span class="icon-AvailableBalanceWidget"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Available Balance</label>
-          </div>
-
-
-          <!--Transaction List-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetTransactionList" (click)="setWidgetType('TransactionList')">
-                <span class="icon-widget-multi-column2"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Transaction List</label>
-          </div>
-
-
-          <!--Saving Trend-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetSavingTrend" (click)="setWidgetType('SavingTrend')">
-                <span class="icon-widget-line-chart2"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Saving Trend</label>
-          </div>
-          <!--Transaction Mix-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetTransactionMix" (click)="setWidgetType('TransactionMix')">
-                <span class="icon-TransactionMixWidget"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Transaction Mix</label>
-          </div>
-          <!--Spending Trend-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetSpendingTrend" (click)="setWidgetType('SpendingTrend')">
-                <span class="icon-rp-production1"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Spending Trend</label>
-          </div>
-          <!--News Alerts-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetNewsAlerts" (click)="setWidgetType('NewsAlerts')">
-                <span class="fa fa-newspaper-o"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">News Alerts</label>
-          </div>
-          <!-- TransactionDetails-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetTransactionDetails" (click)="setWidgetType('TransactionDetails')">
-                <span class="fa fa-credit-card"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Transaction Details</label>
-          </div>
-
-
-          <!--Top 4 income sources-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetTop4Income" (click)="setWidgetType('Top4Income')">
-                <span class="icon-rp-quality1"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">Top 4 income sources</label>
-          </div>
-          <!--Reminder and Recommendation-->
-          <div class="widget-card">
-            <div class="hide-radio widget-icons">
-              <label>
-                <input type="radio" name="widgetType" id="inputWidgetReminderandRecommendation" (click)="setWidgetType('ReminderandRecommendation')">
-                <span class="fa fa-bell-o"></span>
-              </label>
-            </div>
-            <label class="text-center width100 pt-2 m-0 widget-name">
-              Reminders & Recommendations
-            </label>
           </div>
 
         </div>
@@ -191,8 +30,8 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="mb-3">
-                <h6 class="mb-1" *ngIf="isSelected('CustomerInformation')">Customer Information </h6>
-                <h6 class="mb-1" *ngIf="isSelected('AccountInformation')">Account Information </h6>
+                <h6 class="mb-1">{{selectedLink.DisplayName}}</h6>
+                <!--<h6 class="mb-1" *ngIf="isSelected('AccountInformation')">Account Information </h6>
                 <h6 class="mb-1" *ngIf="isSelected('Summary')">Summary at Glance </h6>
                 <h6 class="mb-1" *ngIf="isSelected('Image')">Image </h6>
                 <h6 class="mb-1" *ngIf="isSelected('Video')">Video</h6>
@@ -206,15 +45,17 @@
                 <h6 class="mb-1" *ngIf="isSelected('InvestmentPortfolioRisk')">Investment Portfolio Risk </h6>
                 <h6 class="mb-1" *ngIf="isSelected('TransactionDetails')">Transaction Details </h6>
                 <h6 class="mb-1" *ngIf="isSelected('ReminderandRecommendation')">Reminder & Recommendation </h6>
-                <h6 class="mb-1" *ngIf="isSelected('TransactionMix')">Transaction Mix </h6>
+                <h6 class="mb-1" *ngIf="isSelected('TransactionMix')">Transaction Mix </h6>-->
 
-                <div>  <label class="mb-0">Decrtiption : </label><span class="ml-1">Widget Description goes here...</span></div>
-                <div><label class="mb-0">Page Type :</label> <h6 class="badge badge-secondary p-1 ml-1 mb-0">Home</h6></div>
+                <div><label class="mb-0">Decrtiption : </label><span class="ml-1">{{selectedLink.WidgetDescription}}</span></div>
+                <!--<div><label class="mb-0">Page Type :</label> <h6 class="badge badge-secondary p-1 ml-1 mb-0">Home</h6></div>-->
               </div>
               <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
                 <div class="card-body d-flex justify-content-center align-items-center">
 
-                  <img src="assets/images/CustomerInfoWidget.PNG" class="img-fluid" id="imgWidgetCustomerInformation"
+                  <img src="{{selectedLink.ImageSource}}" class="img-fluid" id="imgWidget"/>
+
+                  <!--<img src="assets/images/CustomerInfoWidget.PNG" class="img-fluid" id="imgWidgetCustomerInformation"
                        *ngIf="isSelected('CustomerInformation')" />
 
                   <img src="assets/images/AccountInfoWidget.PNG" class="img-fluid" id="imgWidgetAccountInformation"
@@ -260,7 +101,7 @@
                        *ngIf="isSelected('InvestmentPortfolioRisk')" />
 
                   <img src="assets/images/TranscationDetailsWidget.PNG" class="img-fluid" id="imgWidgetTransactionDetails"
-                       *ngIf="isSelected('TransactionDetails')" />
+                       *ngIf="isSelected('TransactionDetails')" />-->
 
                 </div>
               </div>
@@ -269,12 +110,12 @@
 
         </div>
       </div>
-    
+
       <!------------------------------------------------------------------------------------------------>
       <!------------------------------------------------------------------------------------------------>
 
 
-     
+
     </div>
   </div>
   <!--<div class="card border-0 mt-4 mb-3 bg-transparent">

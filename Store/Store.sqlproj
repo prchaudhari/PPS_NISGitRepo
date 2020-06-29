@@ -101,7 +101,4 @@
     <None Include="Seed Data Scripts\Configuration.sql" />
     <Build Include="Configuration Manager\ConfigurationManagerSchema.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="Store.refactorlog" />
-  </ItemGroup>
 </Project>

@@ -32,6 +32,8 @@
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.service.ts" />
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.ts" />
     <None Remove="ClientApp\src\app\layout\users\user.ts" />
+    <None Remove="ClientApp\src\app\layout\widgets\widget.service.ts" />
+    <None Remove="ClientApp\src\app\layout\widgets\Widget.ts" />
     <None Remove="ClientApp\src\app\shared\models\CommonModel.ts" />
     <None Remove="ClientApp\src\app\shared\modules\pagination\pagination.module.ts" />
   </ItemGroup>
@@ -73,6 +75,12 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\mesage-dialog.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\resource.service.spec.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\resource.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Update="ClientApp\src\app\layout\widgets\widget.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

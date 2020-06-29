@@ -173,18 +173,19 @@ namespace nIS
                             Identifier = widgetRecord.Id,
                             WidgetName = widgetRecord.WidgetName,
                             WidgetDescription = widgetRecord.Description,
+                            DisplayName=widgetRecord.DisplayName,
                             IsActive = widgetRecord.IsActive,
                             IsConfigurable = widgetRecord.IsConfigurable,
                             Instantiable = widgetRecord.Instantiable,
                             LastUpdatedDate = widgetRecord.LastUpdatedDate,
-                            PageTypeIds = widgetRecord.ProductTypeId,
+                            PageTypeIds = widgetRecord.PageTypeId,
                             UpdatedBy = new User { Identifier = (long)widgetRecord.UpdateBy }
                         }).ToList();
 
                         if (widgetSearchParameter.IsLastUpdatedByDeatilReauired != null && widgetSearchParameter.IsLastUpdatedByDeatilReauired == true)
                         {
                             StringBuilder userIdentifier = new StringBuilder();
-                            userIdentifier.Append("(" + string.Join(" or ", widgetRecords.Select(item => string.Format("UpdateBy.Equals({0})", item.Id))) + ")");
+                            userIdentifier.Append("(" + string.Join(" or ", widgetRecords.Select(item => string.Format("Id.Equals({0})", item.UpdateBy))) + ")");
                             List<UserRecord> userRecords = new List<UserRecord>();
                             userRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
                             widgets.ToList().ForEach(widget =>
@@ -202,18 +203,21 @@ namespace nIS
                         {
                             widgets.ToList().ForEach(widget =>
                             {
-                                StringBuilder pageIdentifier = new StringBuilder();
-                                pageIdentifier.Append("(" + string.Join(" or ", widget.PageTypeIds.Split(',').Select(item => string.Format("UpdateBy.Equals({0})", item))) + ")");
-                                List<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
-                                pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(pageIdentifier.ToString()).ToList();
-
-                                widget.PageTypes = pageTypeRecords?.Select(item => new PageType
+                                if (!string.IsNullOrEmpty(widget.PageTypeIds))
                                 {
-                                    PageTypeName = item.Name,
-                                    Identifier = item.Id,
-                                    IsActive = item.IsActive,
-                                    IsDeleted = item.IsDeleted
-                                }).ToList();
+                                    StringBuilder pageIdentifier = new StringBuilder();
+                                    pageIdentifier.Append("(" + string.Join(" or ", widget.PageTypeIds.Split(',').Select(item => string.Format("Id.Equals({0})", item))) + ")");
+                                    List<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
+                                    pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(pageIdentifier.ToString()).ToList();
+
+                                    widget.PageTypes = pageTypeRecords?.Select(item => new PageType
+                                    {
+                                        PageTypeName = item.Name,
+                                        Identifier = item.Id,
+                                        IsActive = item.IsActive,
+                                        IsDeleted = item.IsDeleted
+                                    }).ToList();
+                                }
                             });
                         }
                     }

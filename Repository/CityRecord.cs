@@ -12,19 +12,12 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class WidgetRecord
+    public partial class CityRecord
     {
         public long Id { get; set; }
-        public string PageTypeId { get; set; }
-        public string Description { get; set; }
-        public string WidgetName { get; set; }
-        public string DisplayName { get; set; }
-        public bool IsConfigurable { get; set; }
-        public string TenantCode { get; set; }
-        public bool IsDeleted { get; set; }
+        public string Name { get; set; }
+        public long StateId { get; set; }
         public bool IsActive { get; set; }
-        public Nullable<System.DateTime> LastUpdatedDate { get; set; }
-        public long UpdateBy { get; set; }
-        public bool Instantiable { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

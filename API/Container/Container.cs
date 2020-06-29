@@ -35,10 +35,8 @@ namespace nIS
             unityContainer.RegisterType<IUserRepository, SQLUserRepository>();
             unityContainer.RegisterType<IRoleRepository, SQLRoleRepository>();
             unityContainer.RegisterType<IAssetLibraryRepository, SQLAssetLibraryRepository>();
-
-
-
             unityContainer.RegisterType<IPageRepository, SQLPageRepository>();
+            unityContainer.RegisterType<IWidgetRepository, SQLWidgetRepository>();
 
             return unityContainer;
         }
