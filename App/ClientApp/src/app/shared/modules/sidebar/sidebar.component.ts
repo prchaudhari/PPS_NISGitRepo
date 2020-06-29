@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { LoginService } from '../../../login/login.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+//import { environment } from '../../../../environments/environment.prod'
+import { environment } from '../../../../environments/environment'
 
 @Component({
   selector: 'app-sidebar',
@@ -21,6 +23,7 @@ export class SidebarComponent implements OnInit {
   public collapse_body_class = 'hide'
 
   public loggedInUserName = '';
+  public AppVersion: string;
 
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
@@ -101,6 +104,7 @@ export class SidebarComponent implements OnInit {
     private injector: Injector,
     private loginService: LoginService,
     private localstorageservice: LocalStorageService,) {
+      this.AppVersion = environment.appVersion;
   }
 
   ngOnInit() {
