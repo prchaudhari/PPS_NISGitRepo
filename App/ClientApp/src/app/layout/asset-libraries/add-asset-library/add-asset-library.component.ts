@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import { WindowRef } from '../../../core/services/window-ref.service';
-import { environment } from '../../../../environments/environment';
+import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../asset-library';
 import { SortParameter, SearchMode } from '../../../shared/models/commonmodel';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -49,7 +49,7 @@ export class AddAssetLibraryComponent implements OnInit {
   public assets: Asset[];
   public tab: number;
   public mode: string = "Add";
-  public baseURL: string = environment.baseURL;
+  public baseURL: string = ConfigConstants.BaseURL;
   public uploadAssetContainer: boolean;
   public isUploadAssets: boolean = false;
   public isCollapsedDetails: boolean = false;

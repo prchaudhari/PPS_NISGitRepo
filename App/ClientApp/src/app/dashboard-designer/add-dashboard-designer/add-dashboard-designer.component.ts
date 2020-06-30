@@ -17,6 +17,7 @@ import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.
 import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
@@ -45,7 +46,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     public PageTypeId;
     public PageTypeName;
     public pageEditModeOn: boolean = false;
-    public baseURL: string = environment.baseURL;
+    public baseURL: string = ConfigConstants.BaseURL;
     public validUrlRegexPattern = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
     public templateList: Template[] = [];
