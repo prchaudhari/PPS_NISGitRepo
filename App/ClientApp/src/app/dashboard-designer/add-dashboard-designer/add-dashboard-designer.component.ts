@@ -31,6 +31,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     public isEmbedded: boolean = false;
     public isPersonalizeImage: boolean = false;
     public isPersonalize: boolean = false;
+    public isMasterSaveBtnDisabled: boolean = false;
 
     options: GridsterConfig;
     dashboard: Array<GridsterItem>;
@@ -48,8 +49,8 @@ export class AddDashboardDesignerComponent implements OnInit {
     public validUrlRegexPattern = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
     public templateList: Template[] = [];
-    public assetLibraryList: any[] = [];
-    public assets: any[] = [];
+    public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
+    public assets: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset' }];
     public ImageConfigForm: FormGroup;
     public imgAssetLibraryId: number;
     public imgAssetId: number;
@@ -97,6 +98,16 @@ export class AddDashboardDesignerComponent implements OnInit {
             }
         });
     }
+
+    public imageFormErrorObject: any = {
+        showAssetLibraryError: false,
+        showAssetError: false
+    };
+
+    public videoFormErrorObject: any = {
+        showAssetLibraryError: false,
+        showAssetError: false
+    }
     
     //Getters for Image config Forms
     get imgAssetLibrary() {
@@ -128,7 +139,34 @@ export class AddDashboardDesignerComponent implements OnInit {
         return this.VideoConfigForm.controls;
     }
 
+    saveImgFormValidation(): boolean {
+        if (this.ImageConfigForm.controls.imageUrl.invalid) {
+            return true;
+        }
+        if (this.imgAssetLibraryId == 0) {
+            return true;
+        }
+        if (this.imgAssetId == 0) {
+            return true;
+        }
+        return false; 
+    }
+
+    saveVideoFormValidation(): boolean {
+        if (this.VideoConfigForm.controls.vdoUrl.invalid) {
+            return true;
+        }
+        if (this.vdoAssetLibraryId == 0) {
+            return true;
+        }
+        if (this.vdoAssetId == 0) {
+            return true;
+        }
+        return false; 
+    }
+
     isImageConfigForm(widgetId, widgetItemCount) {
+        this.isMasterSaveBtnDisabled = true;
         this.isImageConfig = true;
         this.imageWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
@@ -140,25 +178,20 @@ export class AddDashboardDesignerComponent implements OnInit {
                 this.ImageConfigForm.patchValue({
                     imgAssetLibrary: widgetConfigObj.AssetLibraryId,
                     imgAsset: widgetConfigObj.AssetId,
-                    imageUrl: widgetConfigObj.ImageSourceUrl,
+                    imageUrl: widgetConfigObj.SourceUrl,
                 });
-                if(widgetConfigObj.ImageSourceUrl != null && widgetConfigObj.ImageSourceUrl != '') {
-                    this.isPersonalizeImage = true;
-                }else {
-                    this.isPersonalizeImage = false;
+                if(widgetConfigObj.isPersonalize != null) {
+                    this.isPersonalizeImage = widgetConfigObj.isPersonalize;
                 }
                 if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
-                    let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
-                    assetSearchParameter.AssetLibraryIdentifier = String(widgetConfigObj.AssetLibraryId);
-                    assetSearchParameter.IsDeleted = false;  
-                    assetSearchParameter.Extension = "jpg, png, jpeg";
-                    assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-                    assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-                    assetSearchParameter.SortParameter.SortColumn = Constants.Name;
-                    assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
-                    assetSearchParameter.SearchMode = Constants.Contains;
-                    this.LoadAsset(assetSearchParameter);
+                    this.LoadAsset('image', widgetConfigObj.AssetLibraryId);
                 }
+            }else {
+                this.ImageConfigForm.patchValue({
+                    imgAssetLibrary: 0,
+                    imgAsset: 0,
+                    imageUrl: ''
+                });           
             }
         }
     }
@@ -177,6 +210,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     isVideoConfigForm(widgetId, widgetItemCount) {
+        this.isMasterSaveBtnDisabled = true;
         this.isVideoConfig = true;
         this.videoWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
@@ -188,27 +222,21 @@ export class AddDashboardDesignerComponent implements OnInit {
                 this.VideoConfigForm.patchValue({
                     vdoAssetLibrary: widgetConfigObj.AssetLibraryId,
                     vdoAsset: widgetConfigObj.AssetId,
-                    vdoUrl: widgetConfigObj.VideoSourceUrl,
+                    vdoUrl: widgetConfigObj.SourceUrl,
                 });
-                if(widgetConfigObj.VideoSourceUrl != null && widgetConfigObj.VideoSourceUrl != '') {
-                    this.isPersonalize = true;
-                    this.isEmbedded = true;
-                }else {
-                    this.isPersonalize = false;
-                    this.isEmbedded = false;
+                if(widgetConfigObj.isPersonalize != null) {
+                    this.isPersonalize = widgetConfigObj.isPersonalize;
+                    //this.isEmbedded = true;
                 }
                 if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
-                    let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
-                    assetSearchParameter.AssetLibraryIdentifier = String(widgetConfigObj.AssetLibraryId);
-                    assetSearchParameter.IsDeleted = false;  
-                    assetSearchParameter.Extension = "mp4";
-                    assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-                    assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-                    assetSearchParameter.SortParameter.SortColumn = Constants.Name;
-                    assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
-                    assetSearchParameter.SearchMode = Constants.Contains;
-                    this.LoadAsset(assetSearchParameter);
+                    this.LoadAsset('video', widgetConfigObj.AssetLibraryId);
                 }
+            }else {
+                this.VideoConfigForm.patchValue({
+                    vdoAssetLibrary: 0,
+                    vdoAsset: 0,
+                    vdoUrl: ''
+                });
             }
         }
     }
@@ -222,15 +250,15 @@ export class AddDashboardDesignerComponent implements OnInit {
         });
 
         this.ImageConfigForm = this.fb.group({
-            imgAssetLibrary: [null],
-            imgAsset: [null],
-            imageUrl: [null, [Validators.pattern(this.validUrlRegexPattern)]]
+            imgAssetLibrary: [null, [Validators.required]],
+            imgAsset: [null, [Validators.required]],
+            imageUrl: [null, [Validators.required, Validators.pattern(this.validUrlRegexPattern)]]
         });
 
         this.VideoConfigForm = this.fb.group({
-            vdoAssetLibrary: [null],
-            vdoAsset: [null],
-            vdoUrl: [null, [Validators.pattern(this.validUrlRegexPattern)]]
+            vdoAssetLibrary: [null, [Validators.required]],
+            vdoAsset: [null, [Validators.required]],
+            vdoUrl: [null, [Validators.required, Validators.pattern(this.validUrlRegexPattern)]]
         });
 
         this.getAssetLibraries();
@@ -548,64 +576,100 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     async getAssetLibraryRecords(searchParameter) {
-        let assetLibraryService = this.injector.get(AssetLibraryService);
-        this.assetLibraryList = await assetLibraryService.getAssetLibrary(searchParameter);
-        if (this.assetLibraryList.length == 0) {
+        let assetLibraryService = this.injector.get(AssetLibraryService);       
+        let records = await assetLibraryService.getAssetLibrary(searchParameter);
+        if (records.length == 0) {
             let message = "NO record found";
             this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
                 if (data == true) {
                 }
             });
+        }else{
+            this.assetLibraryList.push(...records);
         }
     }
 
     onAssetLibrarySelected(event, type) {
         const value = event.target.value;
+        this.imgAssetId = 0;
+        this.vdoAssetId = 0;
         if (value == "0") {
-            this.imgAssetLibraryId = 0;
+            if(type == 'image') {
+                this.imgAssetLibraryId = 0;
+                this.imageFormErrorObject.showAssetLibraryError = true;
+            }else {
+                this.vdoAssetLibraryId = 0;
+                this.videoFormErrorObject.showAssetLibraryError = true;
+            }
         }
         else {
-            let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
-            assetSearchParameter.AssetLibraryIdentifier = String(value);
-            assetSearchParameter.IsDeleted = false;           
             if(type == 'image'){
                 this.imgAssetLibraryId = Number(value);
-                assetSearchParameter.Extension = "jpg, png, jpeg";
+                this.imageFormErrorObject.showAssetLibraryError = false;   
             }else {
                 this.vdoAssetLibraryId = Number(value);
-                assetSearchParameter.Extension = "mp4";
+                this.videoFormErrorObject.showAssetLibraryError = false;
             }
-            assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-            assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-            assetSearchParameter.SortParameter.SortColumn = Constants.Name;
-            assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
-            assetSearchParameter.SearchMode = Constants.Contains;
-            this.LoadAsset(assetSearchParameter);
+            this.LoadAsset(type, value);
         }
     }
 
     onAssetSelected(event, type) {
         const value = event.target.value;
         if (value == "0") {
-            this.imgAssetId = 0;
+            if(type == 'image'){
+                this.imgAssetId = 0;
+                this.imageFormErrorObject.showAssetError = true;
+            }else {
+                this.vdoAssetId = 0;
+                this.videoFormErrorObject.showAssetError = true;
+            }
         }
         else {
             if(type == 'image'){
                 this.imgAssetId = Number(value);
+                this.imageFormErrorObject.showAssetError = false;
             }else {
                 this.vdoAssetId = Number(value);
+                this.videoFormErrorObject.showAssetError = false;
             }
         }
     }
 
-    LoadAsset(assetSearchParameter: AssetSearchParameter): void {
+    LoadAsset(type, value): void {
+        this.assets = [];
+        this.assets.push({ 'Identifier': '0', 'Name': 'Select Asset' });
+
+        let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
+        assetSearchParameter.AssetLibraryIdentifier = String(value);
+        assetSearchParameter.IsDeleted = false;           
+        if(type == 'image'){
+            assetSearchParameter.Extension = "jpg, png, jpeg";
+            if(this.ImageConfigForm.controls.imgAsset == null || this.ImageConfigForm.controls.imgAsset.value == 0){
+                this.ImageConfigForm.patchValue({
+                    imgAsset: 0,
+                });
+            }
+        }else {
+            assetSearchParameter.Extension = "mp4";
+            if(this.VideoConfigForm.controls.vdoAsset == null || this.VideoConfigForm.controls.vdoAsset.value == 0){
+                this.VideoConfigForm.patchValue({
+                    vdoAsset: 0,
+                });
+            }
+        }
+        assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+        assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        assetSearchParameter.SortParameter.SortColumn = Constants.Name;
+        assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
+        assetSearchParameter.SearchMode = Constants.Contains;
         let assets: any[];
         this.uiLoader.start();
         this._http.post(this.baseURL + 'assetlibrary/asset/list', assetSearchParameter).subscribe(
             data => {
                 this.uiLoader.stop();
-                assets = <any[]>data;
-                this.assets = assets;
+                assets = <any[]>data;    
+                this.assets.push(...assets);
             },
             error => {
                 this.uiLoader.stop();
@@ -619,7 +683,8 @@ export class AddDashboardDesignerComponent implements OnInit {
             let imageConfig: any = {};
             imageConfig.AssetLibraryId = this.isPersonalizeImage == true ? 0 : this.imgAssetLibraryId;
             imageConfig.AssetId = this.isPersonalizeImage == true ? 0 : this.imgAssetId;
-            imageConfig.ImageSourceUrl = this.ImageConfigForm.value.imageUrl != null && this.isPersonalizeImage == true ? this.ImageConfigForm.value.imageUrl : "";
+            imageConfig.SourceUrl = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imageUrl;
+            imageConfig.isPersonalize = this.isPersonalizeImage;
             imageConfig.WidgetId = this.imageWidgetId;
             this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(imageConfig);
             console.log(this.widgetsGridsterItemArray);
@@ -628,6 +693,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.isImageConfig = !this.isImageConfig;
         this.imageWidgetId = 0;
         this.selectedWidgetItemCount = 0;
+        this.isMasterSaveBtnDisabled = false;
     }
 
     OnVideoConfigBtnClicked(actionFor) {
@@ -635,8 +701,9 @@ export class AddDashboardDesignerComponent implements OnInit {
             let videoConfig: any = {};
             videoConfig.AssetLibraryId = this.isPersonalize == true ? 0 : this.vdoAssetLibraryId;
             videoConfig.AssetId =  this.isPersonalize == true ? 0 : this.vdoAssetId;
-            videoConfig.VideoSourceUrl = this.VideoConfigForm.value.vdoUrl != null && this.isPersonalize == true ? this.VideoConfigForm.value.vdoUrl : "";
+            videoConfig.SourceUrl = this.isPersonalize == true ? "" : this.VideoConfigForm.value.vdoUrl;
             videoConfig.WidgetId = this.videoWidgetId;
+            videoConfig.isPersonalize = this.isPersonalize;
             this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId  && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(videoConfig);
             console.log(this.widgetsGridsterItemArray);
         }
@@ -644,6 +711,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.isVideoConfig = !this.isVideoConfig;
         this.videoWidgetId = 0;
         this.selectedWidgetItemCount = 0;
+        this.isMasterSaveBtnDisabled = false;
     }
 
     resetImageConfigForm() {

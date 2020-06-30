@@ -69,6 +69,11 @@ namespace nIS
         /// </summary>
         public DateTime EndDate { get; set; }
 
+        /// <summary>
+        /// The page page owner
+        /// </summary>
+        public string PageOwner { get; set; }
+
         #endregion
 
         #region Public methods

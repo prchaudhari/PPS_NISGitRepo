@@ -250,11 +250,26 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(pageSearchParameter, tenantCode);
+                
                 IList<PageRecord> pageRecords = new List<PageRecord>();
                 IList<UserRecord> userRecords = new List<UserRecord>();
                 IList<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString)) 
                 {
+                    if (pageSearchParameter.PageOwner != null && pageSearchParameter.PageOwner != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("FirstName.Contains(\"{0}\") or LastName.Contains(\"{1}\") ", pageSearchParameter.PageOwner, pageSearchParameter.PageOwner));
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.UserRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0) 
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("Owner.Equals({0}) ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                    }
+
                     if (pageSearchParameter.PagingParameter.PageIndex > 0 && pageSearchParameter.PagingParameter.PageSize > 0)
                     {
                         pageRecords = nISEntitiesDataContext.PageRecords
@@ -360,6 +375,19 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    if (pageSearchParameter.PageOwner != null && pageSearchParameter.PageOwner != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("FirstName.Contains(\"{0}\") or LastName.Contains(\"{1}\") ", pageSearchParameter.PageOwner, pageSearchParameter.PageOwner));
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.UserRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("Owner.Equals({0}) ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                    }
                     pageCount = nISEntitiesDataContext.PageRecords.Where(whereClause.ToString()).Count();
                 }
             }
@@ -472,7 +500,6 @@ namespace nIS
             }
             if (searchParameter.SearchMode == SearchMode.Contains)
             {
-
                 if (validationEngine.IsValidText(searchParameter.DisplayName))
                 {
                     queryString.Append(string.Format("DisplayName.Contains(\"{0}\") and ", searchParameter.DisplayName));

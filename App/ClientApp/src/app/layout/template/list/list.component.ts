@@ -1,18 +1,15 @@
-import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { Constants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { ResourceService } from 'src/app/shared/services/resource.service';
 import { MatPaginator } from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { TemplateService } from '../template.service';
 import { Template } from '../template';
-import { Page } from 'src/app/shared/modules/pagination/pagination-controls.directive';
 
 export interface ListElement {
     name: string;
@@ -102,21 +99,14 @@ export class ListComponent implements OnInit {
     ngOnInit() {
         this.getTemplates(null);
         this.getPageTypes(null);
-
-        this.TemplateFilterForm = this.fb.group(
-            {
-                filterDisplayName: [null],
-                filterOwner: [null],
-                filterStatus: [null],
-                filterPageType: [null],
-                filterPublishedOnFromDate: [null],
-                filterPublishedOnToDate: [null],
-            }
-        );
-    }
-    
-    ngAfterViewInit() {
-        //this.dataSource.paginator = this.paginator;
+        this.TemplateFilterForm = this.fb.group({
+            filterDisplayName: [null],
+            filterOwner: [null],
+            filterStatus: [null],
+            filterPageType: [null],
+            filterPublishedOnFromDate: [null],
+            filterPublishedOnToDate: [null],
+        });
     }
 
     sortData(sort: MatSort) {
@@ -199,16 +189,19 @@ export class ListComponent implements OnInit {
             if(this.TemplateFilterForm.value.filterDisplayName != null && this.TemplateFilterForm.value.filterDisplayName != '') {
                 searchParameter.DisplayName = this.TemplateFilterForm.value.filterDisplayName;         
             }
+
+            if(this.TemplateFilterForm.value.filterOwner != null && this.TemplateFilterForm.value.filterOwner != '') {
+                searchParameter.PageOwner = this.TemplateFilterForm.value.filterOwner;         
+            }
             
             if(this.filterPageTypeId != 0) {
                 searchParameter.PageTypeId = this.filterPageTypeId;
             }
 
-            if(this.TemplateFilterForm.value.filterStatus != null && this.TemplateFilterForm.value.filterStatus != '') {
+            if(this.TemplateFilterForm.value.filterStatus != null && this.TemplateFilterForm.value.filterStatus != 0) {
                 searchParameter.Status = this.TemplateFilterForm.value.filterStatus;
             }
 
-            debugger
             if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
                 searchParameter.StartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
             }

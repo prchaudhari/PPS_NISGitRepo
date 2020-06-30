@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="float-right pr-2 d-md-block d-none">
-    <button class="btn-footer-fill mt-2 mr-2" id="btnBack" title="Save" (click)="OnSaveBtnClicked()"> Save</button>
+    <button class="btn-footer-fill mt-2 mr-2" id="btnBack" title="Save" [disabled]="isMasterSaveBtnDisabled" (click)="OnSaveBtnClicked()"> Save</button>
     <button class="btn-footer-outline mt-2" id="btnBacktoForm" title="Cancel" (click)="backClicked()"> Cancel </button>
   </div>
   <div class="float-right pr-2 d-md-none">
@@ -81,29 +81,42 @@
         </div>
         <div class="row">
           <div class="col-sm-12 form-group">
-            <label> Asset Library </label>
+            <label> Asset Library </label> <span class="text-danger"> *</span>
             <select formControlName="imgAssetLibrary" (change)="onAssetLibrarySelected($event, 'image')" class="form-control" 
             [disableControl]="isPersonalizeImage">
               <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
             </select>
+            <div class="validation-msg" style="color:red">
+              <ul style="list-style-type:none" *ngIf="imageFormErrorObject.showAssetLibraryError">
+                <li class="text-danger">Please select asset library</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-12 form-group">
-            <label> Assets </label>
+            <label> Assets </label> <span class="text-danger"> *</span>
             <select class="form-control" formControlName="imgAsset" [disableControl]="isPersonalizeImage" (change)="onAssetSelected($event, 'image')">
               <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
             </select>
+            <div class="validation-msg" style="color:red">
+              <ul style="list-style-type:none" *ngIf="imageFormErrorObject.showAssetError">
+                <li class="text-danger">Please select asset</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-12">
-            <label> URL </label>
-            <input type="text" class="form-control" [disableControl]="!isPersonalizeImage" formControlName="imageUrl"/>
+            <label> Target Link </label> <span class="text-danger"> *</span>
+            <input type="text" class="form-control" [disableControl]="isPersonalizeImage" formControlName="imageUrl"/>
             <div class="validation-msg" style="color:red" *ngIf="imgForm.imageUrl.touched && imgForm.imageUrl.errors">
               <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="imgForm.imageUrl.errors?.required">
+                  Target link required
+                </li>
                 <li class="text-danger" *ngIf="imgForm.imageUrl.errors?.pattern">
-                  Invalid URL address
+                  Invalid target link
                 </li>
               </ul>
             </div>
@@ -113,14 +126,12 @@
       <div class="filter-footer">
         <ul class="nav nav-toolbar">
           <li class="nav-item width50">
-            <button (click)="OnImageConfigBtnClicked('submit')" title="Save" id="btnCloseForm"
-                    class="btn-footer-fill btn-block rounded-0 height100" [disabled]="ImageConfigForm.invalid">
+            <button title="Save" id="btnCloseForm" [disabled]="saveImgFormValidation()" (click)="OnImageConfigBtnClicked('submit')" class="btn-footer-fill btn-block rounded-0 height100" >
               <span class="fa fa-check"></span>
             </button>
           </li>
-          <li class="nav-item width50">
-            <button (click)="OnImageConfigBtnClicked('cancel')" title="Close" id="btnCloseForm"
-                    class="btn-footer-fill btn-block rounded-0 height100">
+          <li class="nav-item width50" (click)="OnImageConfigBtnClicked('cancel')">
+            <button title="Close" id="btnCloseForm" class="btn-footer-fill btn-block rounded-0 height100">
               <span class="fa fa-close"></span>
             </button>
           </li>
@@ -157,14 +168,17 @@
           </div>
         </div>
         <div>
-          <div class="row" *ngIf="isEmbedded">
+          <div class="row" *ngIf="isEmbedded || !isPersonalize">
             <div class="col-sm-12 form-group">
-              <label> URL </label>
-              <input type="text" class="form-control" [disableControl]="!isPersonalize" formControlName="vdoUrl"/>
+              <label> Target Link </label> <span class="text-danger"> *</span>
+              <input type="text" class="form-control" [disableControl]="isPersonalize" formControlName="vdoUrl"/>
               <div class="validation-msg" style="color:red" *ngIf="vdoForm.vdoUrl.touched && vdoForm.vdoUrl.errors">
                 <ul style="list-style-type:none">
+                  <li class="text-danger" *ngIf="vdoForm.vdoUrl.errors?.required">
+                    Target link required
+                  </li>
                   <li class="text-danger" *ngIf="vdoForm.vdoUrl.errors?.pattern">
-                    Invalid URL address
+                    Invalid target link
                   </li>
                 </ul>
               </div>
@@ -176,6 +190,11 @@
               <select class="form-control" formControlName="vdoAssetLibrary" [disableControl]="isPersonalize" (change)="onAssetLibrarySelected($event, 'video')">
                 <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
               </select>
+              <div class="validation-msg" style="color:red">
+                <ul style="list-style-type:none" *ngIf="videoFormErrorObject.showAssetLibraryError">
+                  <li class="text-danger">Please select asset library</li>
+                </ul>
+              </div>             
             </div>
           </div>
           <div class="row" *ngIf="!isEmbedded">
@@ -184,6 +203,11 @@
               <select class="form-control" [disableControl]="isPersonalize" formControlName="vdoAsset" (change)="onAssetSelected($event, 'video')">
                 <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
               </select>
+              <div class="validation-msg" style="color:red">
+                <ul style="list-style-type:none" *ngIf="videoFormErrorObject.showAssetError">
+                  <li class="text-danger">Please select asset</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -192,14 +216,13 @@
       <div class="filter-footer">
         <ul class="nav nav-toolbar">
           <li class="nav-item width50">
-            <button (click)="OnVideoConfigBtnClicked('submit')" title="Save" id="btnCloseForm"
-                    class="btn-footer-fill btn-block rounded-0 height100" [disabled]="VideoConfigForm.invalid">
+            <button title="Save" id="btnCloseForm" class="btn-footer-fill btn-block rounded-0 height100" [disabled]="saveVideoFormValidation()"
+            (click)="OnVideoConfigBtnClicked('submit')">
               <span class="fa fa-check"></span>
             </button>
           </li>
-          <li class="nav-item width50">
-            <button (click)="OnVideoConfigBtnClicked('cancel')" title="Close" id="btnCloseForm" 
-                    class="btn-footer-fill btn-block rounded-0 height100">
+          <li class="nav-item width50" (click)="OnVideoConfigBtnClicked('cancel')">
+            <button title="Close" id="btnCloseForm" class="btn-footer-fill btn-block rounded-0 height100">
               <span class="fa fa-close"></span>
             </button>
           </li>
@@ -208,7 +231,6 @@
     </div>
   </form>
   
-
 </div>
 
 <div class="overlay a" id="divOverlayFilter" [ngClass]="!isImageConfig? 'hide':'show'"></div>

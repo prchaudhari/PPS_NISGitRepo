@@ -17,12 +17,12 @@
       <div class="d-flex justify-content-center mb-4">
         <div class="pagination-mat position-relative">
           <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
-                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
           </mat-paginator>
         </div>
       </div>
       <div class="widget-area-grid padding-0">
-      <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+      <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
         <!-- Position Column -->
         <ng-container matColumnDef="name">
           <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
@@ -144,13 +144,13 @@
       <!--[ngClass]="filterClass"-->
       <div class="filter-footer">
         <ul class="nav">
-          <li class="nav-item width33" title="Search">
-            <a class="nav-link p-0" (click)="searchTemplateRecordFilter('search')">
+          <li class="nav-item width33" title="Search" (click)="searchTemplateRecordFilter('search')">
+            <a class="nav-link p-0">
               <span class="fa fa-check"></span>
             </a>
           </li>
-          <li class="nav-item width33" title="Reset">
-            <a class="nav-link p-0" (click)="searchTemplateRecordFilter('reset')">
+          <li class="nav-item width33" title="Reset" (click)="searchTemplateRecordFilter('reset')">
+            <a class="nav-link p-0">
               <span class="fa fa-refresh"></span>
             </a>
           </li>
