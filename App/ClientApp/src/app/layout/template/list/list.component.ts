@@ -54,8 +54,9 @@ export class ListComponent implements OnInit {
     public TemplateFilterForm: FormGroup;
     public filterPageTypeId: number = 0;
     public filterPageStatus: string = '';
+    public filterDateError: boolean = false;
 
-    displayedColumns: string[] = ['name','pagetype', 'version', 'owner', 'date', 'status', 'actions'];
+    displayedColumns: string[] = ['name','pagetype', 'version', 'owner', 'publishedBy', 'date', 'status', 'actions'];
     dataSource = new MatTableDataSource<any>();
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -123,6 +124,7 @@ export class ListComponent implements OnInit {
                 case 'status': return compareStr(a.Status, b.Status, isAsc);
                 case 'pagetype': return compareStr(a.PageTypeName, b.PageTypeName, isAsc);
                 case 'owner': return compareStr(a.PageOwnerName, b.PageOwnerName, isAsc);
+                case 'publishedBy': return compareStr(a.PagePublishedByUserName, b.PagePublishedByUserName, isAsc);
                 //case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
                 default: return 0;
             }
@@ -168,8 +170,22 @@ export class ListComponent implements OnInit {
         this.pageTypeList = [ {"Id": 1, "Name": "Home"}, {"Id": 2, "Name": "Saving Account"}, {"Id": 3, "Name": "Current Account"} ];
     }
 
+    validateFilterDate(): boolean {
+        if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '' && 
+            this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
+                let startDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
+                let toDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
+                if(startDate.getTime() > toDate.getTime()) {
+                    this.filterDateError = true;
+                    return false;
+                }
+        }
+        return true;
+    }
+
     //This method has been used for fetching search records
     searchTemplateRecordFilter(searchType) {
+        this.filterDateError = false;
         this.isFilterDone = true;
         if (searchType == 'reset') {
             this.resetPageFilterForm();
@@ -177,40 +193,42 @@ export class ListComponent implements OnInit {
             this.isFilter = !this.isFilter;
         }
         else {
-            let searchParameter: any = {};
-            searchParameter.PagingParameter = {};
-            searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-            searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-            searchParameter.SortParameter = {};
-            searchParameter.SortParameter.SortColumn = 'DisplayName';
-            searchParameter.SortParameter.SortOrder = Constants.Ascending;
-            searchParameter.SearchMode = Constants.Contains;
-
-            if(this.TemplateFilterForm.value.filterDisplayName != null && this.TemplateFilterForm.value.filterDisplayName != '') {
-                searchParameter.DisplayName = this.TemplateFilterForm.value.filterDisplayName;         
+            if(this.validateFilterDate()) {
+                let searchParameter: any = {};
+                searchParameter.PagingParameter = {};
+                searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+                searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+                searchParameter.SortParameter = {};
+                searchParameter.SortParameter.SortColumn = 'DisplayName';
+                searchParameter.SortParameter.SortOrder = Constants.Ascending;
+                searchParameter.SearchMode = Constants.Contains;
+    
+                if(this.TemplateFilterForm.value.filterDisplayName != null && this.TemplateFilterForm.value.filterDisplayName != '') {
+                    searchParameter.DisplayName = this.TemplateFilterForm.value.filterDisplayName.trim();         
+                }
+    
+                if(this.TemplateFilterForm.value.filterOwner != null && this.TemplateFilterForm.value.filterOwner != '') {
+                    searchParameter.PageOwner = this.TemplateFilterForm.value.filterOwner.trim();         
+                }
+                
+                if(this.filterPageTypeId != 0) {
+                    searchParameter.PageTypeId = this.filterPageTypeId;
+                }
+    
+                if(this.TemplateFilterForm.value.filterStatus != null && this.TemplateFilterForm.value.filterStatus != 0) {
+                    searchParameter.Status = this.TemplateFilterForm.value.filterStatus;
+                }
+    
+                if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
+                    searchParameter.StartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
+                }
+                if(this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
+                    searchParameter.EndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
+                }
+    
+                this.getTemplates(searchParameter);
+                this.isFilter = !this.isFilter;
             }
-
-            if(this.TemplateFilterForm.value.filterOwner != null && this.TemplateFilterForm.value.filterOwner != '') {
-                searchParameter.PageOwner = this.TemplateFilterForm.value.filterOwner;         
-            }
-            
-            if(this.filterPageTypeId != 0) {
-                searchParameter.PageTypeId = this.filterPageTypeId;
-            }
-
-            if(this.TemplateFilterForm.value.filterStatus != null && this.TemplateFilterForm.value.filterStatus != 0) {
-                searchParameter.Status = this.TemplateFilterForm.value.filterStatus;
-            }
-
-            if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
-                searchParameter.StartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
-            }
-            if(this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
-                searchParameter.EndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
-            }
-
-            this.getTemplates(searchParameter);
-            this.isFilter = !this.isFilter;
         }
     }
 
@@ -281,6 +299,24 @@ export class ListComponent implements OnInit {
                 let resultFlag = await this.templateService.publishPage(pageData);
                 if (resultFlag) {
                     let messageString = Constants.PagePublishedSuccessfullyMessage;
+                    this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+                    this.resetPageFilterForm();
+                    this.getTemplates(null);
+                }
+            }
+        });
+    }
+
+    async ClonePage(template: Template) {
+        let message = "Are you sure, you want to clone this record?";
+        this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+            if (isConfirmed) {
+                let pageData = [{
+                    "Identifier": template.Identifier,
+                }];
+                let resultFlag = await this.templateService.clonePage(pageData);
+                if (resultFlag) {
+                    let messageString = Constants.PageCloneSuccessfullyMessage;
                     this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
                     this.resetPageFilterForm();
                     this.getTemplates(null);

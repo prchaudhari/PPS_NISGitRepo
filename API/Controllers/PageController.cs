@@ -178,6 +178,28 @@ namespace nIS
             return result;
         }
 
+        /// <summary>
+        /// This method helps to clone page.
+        /// </summary>
+        /// <param name="pageIdentifier"></param>
+        /// <returns>boolean value</returns>
+        [HttpPost]
+        public bool Clone(long pageIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.pageManager.ClonePage(pageIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

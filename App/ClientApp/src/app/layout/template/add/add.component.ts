@@ -76,13 +76,19 @@ export class AddComponent implements OnInit {
           if (e instanceof NavigationEnd) {
               if (e.url.includes('/pages')) {
                   //set passing parameters to localstorage.
-                  this.params = JSON.parse(localStorage.getItem('pageparams'));
                   if (localStorage.getItem('pageparams')) {
+                      this.params = JSON.parse(localStorage.getItem('pageparams'));
                       this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
                       this.PageName = this.params.Routeparams.filteredparams.PageName
                   }
-              } else {
-                  localStorage.removeItem("pageparams");
+                  if (localStorage.getItem('pageAddRouteparams')) {
+                    this.params = JSON.parse(localStorage.getItem('pageAddRouteparams'));
+                    this.PageName = this.params.Routeparams.passingparams.PageName
+                    this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
+                }
+              } 
+              else {
+                localStorage.removeItem("pageparams");
               }
           }
         });
@@ -97,6 +103,13 @@ export class AddComponent implements OnInit {
           pageType: [0, Validators.compose([Validators.required])],
       });
       this.getPageTypes();
+
+      if(this.PageName != null && this.PageTypeId != null) {
+        this.pageFormGroup.patchValue({
+          pageName: this.PageName,
+          pageType: this.PageTypeId
+        });
+      }
     }
 
     saveBtnValidation(): boolean {

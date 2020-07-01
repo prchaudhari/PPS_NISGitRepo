@@ -74,5 +74,13 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         bool PreviewPage(long pageIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method reference to clone page
+        /// </summary>
+        /// <param name="pageIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        bool ClonePage(long pageIdentifier, string tenantCode);
     }
 }

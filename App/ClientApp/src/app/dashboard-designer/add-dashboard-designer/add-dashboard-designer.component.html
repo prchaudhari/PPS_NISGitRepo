@@ -9,10 +9,12 @@
     </div>
   </div>
   <div class="float-right pr-2 d-md-block d-none">
-    <button class="btn-footer-fill mt-2 mr-2" id="btnBack" title="Save" [disabled]="isMasterSaveBtnDisabled" (click)="OnSaveBtnClicked()"> Save</button>
-    <button class="btn-footer-outline mt-2" id="btnBacktoForm" title="Cancel" (click)="backClicked()"> Cancel </button>
+    <button class="btn-footer-fill mt-2 mr-2" id="btnPrev" title="Previous" [disabled]="isMasterSaveBtnDisabled" (click)="prevBtnClicked()"> Prev</button>
+    <button class="btn-footer-fill mt-2 mr-2" id="btnSave" title="Save" [disabled]="isMasterSaveBtnDisabled" (click)="OnSaveBtnClicked()"> Save</button>
+    <button class="btn-footer-outline mt-2" id="btnCancel" title="Cancel" (click)="backClicked()"> Cancel </button>
   </div>
   <div class="float-right pr-2 d-md-none">
+    <!-- <span class="fa fa- xs-position1 d-md-none" (click)="OnSaveBtnClicked()"></span> -->
     <span class="fa fa-check xs-position1 d-md-none" (click)="OnSaveBtnClicked()"></span>
     <span class="fa fa-close xs-position2 d-md-none" (click)="backClicked()" id="spnMachineBack"></span>
   </div>
@@ -79,11 +81,10 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12 form-group">
             <label> Asset Library </label> <span class="text-danger"> *</span>
-            <select formControlName="imgAssetLibrary" (change)="onAssetLibrarySelected($event, 'image')" class="form-control" 
-            [disableControl]="isPersonalizeImage">
+            <select formControlName="imgAssetLibrary" (change)="onAssetLibrarySelected($event, 'image')" class="form-control" >
               <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
@@ -93,10 +94,10 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12 form-group">
             <label> Assets </label> <span class="text-danger"> *</span>
-            <select class="form-control" formControlName="imgAsset" [disableControl]="isPersonalizeImage" (change)="onAssetSelected($event, 'image')">
+            <select class="form-control" formControlName="imgAsset" (change)="onAssetSelected($event, 'image')">
               <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
@@ -106,10 +107,10 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12">
             <label> Target Link </label> <span class="text-danger"> *</span>
-            <input type="text" class="form-control" [disableControl]="isPersonalizeImage" formControlName="imageUrl"/>
+            <input type="text" class="form-control" formControlName="imageUrl"/>
             <div class="validation-msg" style="color:red" *ngIf="imgForm.imageUrl.touched && imgForm.imageUrl.errors">
               <ul style="list-style-type:none">
                 <li class="text-danger" *ngIf="imgForm.imageUrl.errors?.required">
@@ -161,33 +162,33 @@
             <label> Embedded </label>
             <div>
               <label class="switch d-block">
-                <input type="checkbox" [disabled]="!isPersonalize" (change)="isEmbedded=!isEmbedded">
+                <input type="checkbox" (change)="isEmbedded=!isEmbedded">
                 <span class="slider round" [ngClass]="!isPersonalize ? 'disabled-cursor bg-secondary':''"></span>
               </label>
             </div>
           </div>
         </div>
         <div>
-          <div class="row" *ngIf="isEmbedded || !isPersonalize">
+          <div class="row" *ngIf="(isEmbedded && isPersonalize) || isEmbedded">
             <div class="col-sm-12 form-group">
-              <label> Target Link </label> <span class="text-danger"> *</span>
-              <input type="text" class="form-control" [disableControl]="isPersonalize" formControlName="vdoUrl"/>
+              <label> URL </label> <span class="text-danger"> *</span>
+              <input type="text" class="form-control" formControlName="vdoUrl"/>
               <div class="validation-msg" style="color:red" *ngIf="vdoForm.vdoUrl.touched && vdoForm.vdoUrl.errors">
                 <ul style="list-style-type:none">
                   <li class="text-danger" *ngIf="vdoForm.vdoUrl.errors?.required">
-                    Target link required
+                    URL is required
                   </li>
                   <li class="text-danger" *ngIf="vdoForm.vdoUrl.errors?.pattern">
-                    Invalid target link
+                    Invalid URL
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="!isEmbedded">
+          <div class="row" *ngIf="!isEmbedded && !isPersonalize">
             <div class="col-sm-12 form-group">
-              <label> Asset Library </label>
-              <select class="form-control" formControlName="vdoAssetLibrary" [disableControl]="isPersonalize" (change)="onAssetLibrarySelected($event, 'video')">
+              <label> Asset Library </label> <span class="text-danger"> *</span>
+              <select class="form-control" formControlName="vdoAssetLibrary" (change)="onAssetLibrarySelected($event, 'video')">
                 <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
               </select>
               <div class="validation-msg" style="color:red">
@@ -197,10 +198,10 @@
               </div>             
             </div>
           </div>
-          <div class="row" *ngIf="!isEmbedded">
+          <div class="row" *ngIf="!isEmbedded && !isPersonalize">
             <div class="col-sm-12 form-group">
-              <label> Assets </label>
-              <select class="form-control" [disableControl]="isPersonalize" formControlName="vdoAsset" (change)="onAssetSelected($event, 'video')">
+              <label> Assets </label> <span class="text-danger"> *</span>
+              <select class="form-control" formControlName="vdoAsset" (change)="onAssetSelected($event, 'video')">
                 <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
               </select>
               <div class="validation-msg" style="color:red">

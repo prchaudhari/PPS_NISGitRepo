@@ -154,8 +154,8 @@ namespace nIS
                     throw invalidSearchParameterException;
                 }
 
-                pageSearchParameter.StartDate = this.validationEngine.IsValidDate(pageSearchParameter.StartDate) ? DateTime.SpecifyKind(pageSearchParameter.StartDate, DateTimeKind.Utc) : pageSearchParameter.StartDate;
-                pageSearchParameter.EndDate = this.validationEngine.IsValidDate(pageSearchParameter.EndDate) ? DateTime.SpecifyKind(pageSearchParameter.EndDate, DateTimeKind.Utc) : pageSearchParameter.EndDate;
+                pageSearchParameter.StartDate = this.validationEngine.IsValidDate(pageSearchParameter.StartDate) ? pageSearchParameter.StartDate.ToLocalTime() : pageSearchParameter.StartDate;
+                pageSearchParameter.EndDate = this.validationEngine.IsValidDate(pageSearchParameter.EndDate) ? pageSearchParameter.EndDate.ToLocalTime() : pageSearchParameter.EndDate;
 
                 return this.pageRepository.GetPages(pageSearchParameter, tenantCode);
             }
@@ -190,10 +190,10 @@ namespace nIS
         /// <summary>
         /// This method will call publish page method of repository
         /// </summary>
-        /// <param name="pageIdentifier">Page iddentifier</param>
+        /// <param name="pageIdentifier">Page identifier</param>
         /// <param name="tenantCode">Tenant code of page.</param>
         /// <returns>
-        /// Returns true if pages deleted successfully, false otherwise.
+        /// Returns true if pages publish successfully, false otherwise.
         /// </returns>
         public bool PublishPage(long pageIdentifier, string tenantCode)
         {
@@ -201,6 +201,28 @@ namespace nIS
             try
             {
                 result = this.pageRepository.PublishPage(pageIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// This method will call clone page method of repository
+        /// </summary>
+        /// <param name="pageIdentifier">Page identifier</param>
+        /// <param name="tenantCode">Tenant code of page.</param>
+        /// <returns>
+        /// Returns true if pages clone successfully, false otherwise.
+        /// </returns>
+        public bool ClonePage(long pageIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                result = this.pageRepository.ClonePage(pageIdentifier, tenantCode);
             }
             catch (Exception exception)
             {
@@ -263,7 +285,7 @@ namespace nIS
                 int isDuplicatePage = pages.GroupBy(p => p.DisplayName).Where(g => g.Count() > 1).Count();
                 if (isDuplicatePage > 0)
                 {
-                    throw new DuplicateRoleFoundException(tenantCode);
+                    throw new DuplicatePageFoundException(tenantCode);
                 }
             }
             catch (Exception exception)

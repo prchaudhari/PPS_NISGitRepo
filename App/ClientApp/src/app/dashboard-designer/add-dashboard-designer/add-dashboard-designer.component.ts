@@ -16,7 +16,6 @@ import { CustomerInformationComponent, AccountInformationComponent, ImageCompone
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
@@ -53,18 +52,23 @@ export class AddDashboardDesignerComponent implements OnInit {
     public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
     public assets: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset' }];
     public ImageConfigForm: FormGroup;
-    public imgAssetLibraryId: number;
-    public imgAssetId: number;
+    public imgAssetLibraryId: number = 0;
+    public imgAssetLibraryName: string = "";
+    public imgAssetId: number = 0;
+    public imgAssetName: string = "";
     public imageSourceUrl:  string;
 
     public VideoConfigForm: FormGroup;
-    public vdoAssetLibraryId: number;
-    public vdoAssetId: number;
+    public vdoAssetLibraryId: number = 0;
+    public vdoAssetLibraryName: string = "";
+    public vdoAssetId: number = 0;
+    public vdoAssetName: string = "";
     public vdoSourceUrl:  string;
     public imageWidgetId: number = 0;
     public videoWidgetId: number = 0;
     public widgetItemCount: number = 0;
     public selectedWidgetItemCount: number = 0;
+    public pageVersion: string;
 
     constructor(private _location: Location,
       private injector: Injector,
@@ -141,26 +145,26 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     saveImgFormValidation(): boolean {
-        if (this.ImageConfigForm.controls.imageUrl.invalid) {
+        if (this.ImageConfigForm.controls.imageUrl.invalid && !this.isPersonalizeImage) {
             return true;
         }
-        if (this.imgAssetLibraryId == 0) {
+        if (this.imgAssetLibraryId == 0 && !this.isPersonalizeImage) {
             return true;
         }
-        if (this.imgAssetId == 0) {
+        if (this.imgAssetId == 0 && !this.isPersonalizeImage) {
             return true;
         }
         return false; 
     }
 
     saveVideoFormValidation(): boolean {
-        if (this.VideoConfigForm.controls.vdoUrl.invalid) {
+        if (this.VideoConfigForm.controls.vdoUrl.invalid && ((this.isPersonalize && this.isEmbedded) || this.isEmbedded)) {
             return true;
         }
-        if (this.vdoAssetLibraryId == 0) {
+        if (this.vdoAssetLibraryId == 0 && (!this.isPersonalize && !this.isEmbedded)) {
             return true;
         }
-        if (this.vdoAssetId == 0) {
+        if (this.vdoAssetId == 0 && (!this.isPersonalize && !this.isEmbedded)) {
             return true;
         }
         return false; 
@@ -181,6 +185,11 @@ export class AddDashboardDesignerComponent implements OnInit {
                     imgAsset: widgetConfigObj.AssetId,
                     imageUrl: widgetConfigObj.SourceUrl,
                 });
+                this.imgAssetId = widgetConfigObj.AssetId;
+                this.imgAssetName = widgetConfigObj.AssetName;
+                this.imgAssetLibraryId = widgetConfigObj.AssetLibraryId;
+                this.imgAssetLibraryName = widgetConfigObj.AssetLibrayName;
+
                 if(widgetConfigObj.isPersonalize != null) {
                     this.isPersonalizeImage = widgetConfigObj.isPersonalize;
                 }
@@ -225,9 +234,16 @@ export class AddDashboardDesignerComponent implements OnInit {
                     vdoAsset: widgetConfigObj.AssetId,
                     vdoUrl: widgetConfigObj.SourceUrl,
                 });
+                this.vdoAssetId = widgetConfigObj.AssetId;
+                this.vdoAssetName = widgetConfigObj.AssetName;
+                this.vdoAssetLibraryId = widgetConfigObj.AssetLibraryId;
+                this.vdoAssetLibraryName = widgetConfigObj.AssetLibrayName;
+
                 if(widgetConfigObj.isPersonalize != null) {
                     this.isPersonalize = widgetConfigObj.isPersonalize;
-                    //this.isEmbedded = true;
+                }
+                if(widgetConfigObj.isEmbedded != null) {
+                    this.isEmbedded = widgetConfigObj.isEmbedded;
                 }
                 if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
                     this.LoadAsset('video', widgetConfigObj.AssetLibraryId);
@@ -380,7 +396,21 @@ export class AddDashboardDesignerComponent implements OnInit {
 
     //Back Functionality.
     backClicked() {
-        this._location.back();
+        this.navigateToListPage();
+    }
+
+    prevBtnClicked() {
+        let queryParams = {
+            Routeparams: {
+              passingparams: {
+                "PageName": this.PageName,
+                "PageTypeId": this.PageTypeId,
+              }
+            }
+          }
+          localStorage.setItem("pageAddRouteparams", JSON.stringify(queryParams))
+        const router = this.injector.get(Router);
+        router.navigate(['pages', 'Add']);
     }
 
     OnSaveBtnClicked() {
@@ -388,6 +418,9 @@ export class AddDashboardDesignerComponent implements OnInit {
         pageObject.DisplayName = this.PageName;
         pageObject.PageTypeId = this.PageTypeId;
         pageObject.Identifier = this.PageIdentifier;
+        if(this.pageEditModeOn) {
+            pageObject.Version = this.pageVersion;
+        }
         let pageWidgets: any[] = [];
         for(var i=0; i < this.widgetsGridsterItemArray.length; i++) {
             let widgetsGridsterItem = this.widgetsGridsterItemArray[i];
@@ -404,7 +437,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.saveTemplate(pageObject);
     }
 
-    //method written to save role
+    //method written to save tempalte
     async saveTemplate(pageObject) {
         this.uiLoader.start();
         let pageArray = [];
@@ -528,6 +561,8 @@ export class AddDashboardDesignerComponent implements OnInit {
             this.PageName = template.DisplayName;
             this.PageTypeId = template.PageTypeId;
             this.PageIdentifier = template.Identifier;
+            this.pageVersion = template.Version;
+
             let pageWidgets: TemplateWidget[] = template.PageWidgets;
             if(pageWidgets.length != 0) {
                 for(let i=0; i < pageWidgets.length; i++) {    
@@ -597,18 +632,22 @@ export class AddDashboardDesignerComponent implements OnInit {
         if (value == "0") {
             if(type == 'image') {
                 this.imgAssetLibraryId = 0;
+                this.imgAssetLibraryName = '';
                 this.imageFormErrorObject.showAssetLibraryError = true;
             }else {
                 this.vdoAssetLibraryId = 0;
+                this.vdoAssetLibraryName = '';
                 this.videoFormErrorObject.showAssetLibraryError = true;
             }
         }
-        else {
+        else {           
             if(type == 'image'){
                 this.imgAssetLibraryId = Number(value);
+                this.imgAssetLibraryName = this.assetLibraryList.filter(x => x.Identifier == Number( event.target.value))[0].Name;
                 this.imageFormErrorObject.showAssetLibraryError = false;   
             }else {
                 this.vdoAssetLibraryId = Number(value);
+                this.vdoAssetLibraryName = this.assetLibraryList.filter(x => x.Identifier == Number( event.target.value))[0].Name;
                 this.videoFormErrorObject.showAssetLibraryError = false;
             }
             this.LoadAsset(type, value);
@@ -620,18 +659,22 @@ export class AddDashboardDesignerComponent implements OnInit {
         if (value == "0") {
             if(type == 'image'){
                 this.imgAssetId = 0;
+                this.imgAssetName = '';
                 this.imageFormErrorObject.showAssetError = true;
             }else {
                 this.vdoAssetId = 0;
+                this.vdoAssetName = '';
                 this.videoFormErrorObject.showAssetError = true;
             }
         }
         else {
             if(type == 'image'){
                 this.imgAssetId = Number(value);
+                this.imgAssetName = this.assets.filter(x => x.Identifier == Number( event.target.value))[0].Name;
                 this.imageFormErrorObject.showAssetError = false;
             }else {
                 this.vdoAssetId = Number(value);
+                this.vdoAssetName = this.assets.filter(x => x.Identifier == Number( event.target.value))[0].Name;
                 this.videoFormErrorObject.showAssetError = false;
             }
         }
@@ -683,12 +726,15 @@ export class AddDashboardDesignerComponent implements OnInit {
         if(actionFor == 'submit') {
             let imageConfig: any = {};
             imageConfig.AssetLibraryId = this.isPersonalizeImage == true ? 0 : this.imgAssetLibraryId;
+            imageConfig.AssetLibrayName = this.isPersonalizeImage == true ? 0 : this.imgAssetLibraryName;
             imageConfig.AssetId = this.isPersonalizeImage == true ? 0 : this.imgAssetId;
+            imageConfig.AssetName = this.isPersonalizeImage == true ? 0 : this.imgAssetName;
             imageConfig.SourceUrl = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imageUrl;
             imageConfig.isPersonalize = this.isPersonalizeImage;
             imageConfig.WidgetId = this.imageWidgetId;
+            
             this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(imageConfig);
-            console.log(this.widgetsGridsterItemArray);
+            //console.log(this.widgetsGridsterItemArray);
         }
         this.resetImageConfigForm();
         this.isImageConfig = !this.isImageConfig;
@@ -701,12 +747,15 @@ export class AddDashboardDesignerComponent implements OnInit {
         if(actionFor == 'submit') { 
             let videoConfig: any = {};
             videoConfig.AssetLibraryId = this.isPersonalize == true ? 0 : this.vdoAssetLibraryId;
+            videoConfig.AssetLibrayName = this.isPersonalize == true ? 0 : this.vdoAssetLibraryName;
             videoConfig.AssetId =  this.isPersonalize == true ? 0 : this.vdoAssetId;
-            videoConfig.SourceUrl = this.isPersonalize == true ? "" : this.VideoConfigForm.value.vdoUrl;
+            videoConfig.AssetName = this.isPersonalize == true ? 0 : this.vdoAssetName;
+            videoConfig.SourceUrl = (this.isPersonalize == true && this.isEmbedded == true) || (this.isEmbedded == true) ? this.VideoConfigForm.value.vdoUrl : "";
             videoConfig.WidgetId = this.videoWidgetId;
             videoConfig.isPersonalize = this.isPersonalize;
+            videoConfig.isEmbedded = this.isEmbedded;
             this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId  && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(videoConfig);
-            console.log(this.widgetsGridsterItemArray);
+            //console.log(this.widgetsGridsterItemArray);
         }
         this.resetVideoConfigForm();
         this.isVideoConfig = !this.isVideoConfig;

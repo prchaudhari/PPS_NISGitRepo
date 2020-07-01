@@ -14,10 +14,8 @@ import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
-import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
 import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from '../widgetComponent/widgetComponent';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-view-dashboard-designer',
@@ -42,14 +40,10 @@ export class ViewDashboardDesignerComponent implements OnInit {
     public baseURL: string = environment.baseURL;
 
     public templateList: Template[] = [];
-    public assetLibraryList: any[] = [];
-    public assets: any[] = [];
-    public ImageConfigForm: FormGroup;
     public imgAssetLibraryId: number;
     public imgAssetId: number;
     public imageSourceUrl:  string;
 
-    public VideoConfigForm: FormGroup;
     public vdoAssetLibraryId: number;
     public vdoAssetId: number;
     public vdoSourceUrl:  string;
@@ -57,6 +51,12 @@ export class ViewDashboardDesignerComponent implements OnInit {
     public videoWidgetId: number = 0;
     public widgetItemCount: number = 0;
     public selectedWidgetItemCount: number = 0;
+
+    public imgAssetLibraryName: string = "";
+    public imgAssetName: string = "";
+    public vdoAssetName: string = "";
+    public vdoAssetLibraryName: string = "";
+    public pageVersion: string = "";
 
     //Back Functionality.
     backClicked() {
@@ -66,11 +66,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
     constructor(private _location: Location,
         private fb: FormBuilder,
         private injector: Injector,
-        private _dialogService: DialogService,
-        private uiLoader: NgxUiLoaderService,
         private _messageDialogService: MessageDialogService,
-        private localstorageservice: LocalStorageService,
-        private _http: HttpClient,
         private router: Router) { 
           router.events.subscribe(e => {
               if (e instanceof NavigationEnd) {
@@ -97,27 +93,13 @@ export class ViewDashboardDesignerComponent implements OnInit {
             var widgetSetting = records[0].WidgetSetting;
             if(widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
                 var widgetConfigObj = JSON.parse(widgetSetting);
-                this.ImageConfigForm.patchValue({
-                    imgAssetLibrary: widgetConfigObj.AssetLibraryId,
-                    imgAsset: widgetConfigObj.AssetId,
-                    imageUrl: widgetConfigObj.ImageSourceUrl,
-                });
-                if(widgetConfigObj.ImageSourceUrl != null && widgetConfigObj.ImageSourceUrl != '') {
-                    this.isPersonalizeImage = true;
-                }else {
-                    this.isPersonalizeImage = false;
-                }
-                if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
-                    let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
-                    assetSearchParameter.AssetLibraryIdentifier = String(widgetConfigObj.AssetLibraryId);
-                    assetSearchParameter.IsDeleted = false;  
-                    assetSearchParameter.Extension = "jpg, png, jpeg";
-                    assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-                    assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-                    assetSearchParameter.SortParameter.SortColumn = Constants.Name;
-                    assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
-                    assetSearchParameter.SearchMode = Constants.Contains;
-                    this.LoadAsset(assetSearchParameter);
+                this.imgAssetId = widgetConfigObj.AssetId;
+                this.imgAssetName = widgetConfigObj.AssetName;
+                this.imgAssetLibraryId = widgetConfigObj.AssetLibraryId;
+                this.imgAssetLibraryName = widgetConfigObj.AssetLibrayName;
+                this.imageSourceUrl = widgetConfigObj.SourceUrl;
+                if(widgetConfigObj.isPersonalize != null) {
+                    this.isPersonalizeImage = widgetConfigObj.isPersonalize;
                 }
             }
         }
@@ -145,47 +127,22 @@ export class ViewDashboardDesignerComponent implements OnInit {
             var widgetSetting = records[0].WidgetSetting;
             if(widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
                 var widgetConfigObj = JSON.parse(widgetSetting);
-                this.VideoConfigForm.patchValue({
-                    vdoAssetLibrary: widgetConfigObj.AssetLibraryId,
-                    vdoAsset: widgetConfigObj.AssetId,
-                    vdoUrl: widgetConfigObj.VideoSourceUrl,
-                });
-                if(widgetConfigObj.VideoSourceUrl != null && widgetConfigObj.VideoSourceUrl != '') {
-                    this.isPersonalize = true;
-                    this.isEmbedded = true;
-                }else {
-                    this.isPersonalize = false;
-                    this.isEmbedded = false;
+                this.vdoAssetId = widgetConfigObj.AssetId;
+                this.vdoAssetName = widgetConfigObj.AssetName;
+                this.vdoAssetLibraryId = widgetConfigObj.AssetLibraryId;
+                this.vdoAssetLibraryName = widgetConfigObj.AssetLibrayName;
+                this.vdoSourceUrl = widgetConfigObj.SourceUrl;
+                if(widgetConfigObj.isPersonalize != null) {
+                    this.isPersonalize = widgetConfigObj.isPersonalize;
                 }
-                if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
-                    let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
-                    assetSearchParameter.AssetLibraryIdentifier = String(widgetConfigObj.AssetLibraryId);
-                    assetSearchParameter.IsDeleted = false;  
-                    assetSearchParameter.Extension = "mp4";
-                    assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-                    assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-                    assetSearchParameter.SortParameter.SortColumn = Constants.Name;
-                    assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
-                    assetSearchParameter.SearchMode = Constants.Contains;
-                    this.LoadAsset(assetSearchParameter);
+                if(widgetConfigObj.isEmbedded != null) {
+                    this.isEmbedded = widgetConfigObj.isEmbedded;
                 }
             }
         }
     }
 
     ngOnInit() {
-
-        this.ImageConfigForm = this.fb.group({
-            imgAssetLibrary: [null],
-            imgAsset: [null],
-            imageUrl: [null]
-        });
-
-        this.VideoConfigForm = this.fb.group({
-            vdoAssetLibrary: [null],
-            vdoAsset: [null],
-            vdoUrl: [null]
-        });
 
         //gridster
         this.options = {
@@ -258,7 +215,6 @@ export class ViewDashboardDesignerComponent implements OnInit {
         ];
 
         this.getPageRecord();
-        this.getAssetLibraries();
     }
 
     async getPageRecord() {
@@ -284,6 +240,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
             });
         }else {
             let template = this.templateList[0];
+            this.PageName = template.DisplayName;
+            this.PageIdentifier = template.Identifier;
+            this.pageVersion = template.Version;
             let pageWidgets: TemplateWidget[] = template.PageWidgets;
             if(pageWidgets.length != 0) {
                 for(let i=0; i < pageWidgets.length; i++) {
@@ -317,45 +276,5 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
         }
     }
-
-    getAssetLibraries () {
-        let searchParameter: any = {};
-        searchParameter.IsActive = true;
-        searchParameter.PagingParameter = {};
-        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-        searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = Constants.Name;
-        searchParameter.SortParameter.SortOrder = Constants.Ascending;
-        searchParameter.SearchMode = Constants.Contains;
-        this.getAssetLibraryRecords(searchParameter);
-    }
-
-    async getAssetLibraryRecords(searchParameter) {
-        let assetLibraryService = this.injector.get(AssetLibraryService);
-        this.assetLibraryList = await assetLibraryService.getAssetLibrary(searchParameter);
-        if (this.assetLibraryList.length == 0) {
-            let message = "NO record found";
-            this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
-                if (data == true) {
-                }
-            });
-        }
-    }
     
-    LoadAsset(assetSearchParameter: AssetSearchParameter): void {
-        let assets: any[];
-        this.uiLoader.start();
-        this._http.post(this.baseURL + 'assetlibrary/asset/list', assetSearchParameter).subscribe(
-            data => {
-                this.uiLoader.stop();
-                assets = <any[]>data;
-                this.assets = assets;
-            },
-            error => {
-                this.uiLoader.stop();
-                this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
-            }
-        );
-    }
 }
