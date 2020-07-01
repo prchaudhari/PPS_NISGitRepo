@@ -665,7 +665,7 @@ namespace nIS
 
                 string relativePath = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH + ModelConstant.ASSETS;
 
-                asset.FilePath = path + ModelConstant.ASSETPATHSLASH + asset.AssetLibraryIdentifier + ModelConstant.ASSETPATHSLASH + asset.Name;
+                asset.FilePath = relativePath + ModelConstant.ASSETPATHSLASH + asset.AssetLibraryIdentifier + ModelConstant.ASSETPATHSLASH + asset.Name;
 
 
                 if (asset == null)

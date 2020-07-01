@@ -40,6 +40,9 @@ export class ViewAssetLibraryComponent implements OnInit {
   public assetLibrary: AssetLibrary;
   public asset: Asset;
   public assets: Asset[];
+  public array: any;
+  public sortedAssetLibraryList: Asset[] = [];
+
   public params;
   public baseURL: string = environment.baseURL;
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
@@ -137,8 +140,12 @@ export class ViewAssetLibraryComponent implements OnInit {
     searchParameter.IsAssetDataRequired = true;
     let assetLibrary = await assetLibraryService.getAssetLibrary(searchParameter);
     this.assetLibrary = assetLibrary[0];
-    this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
+    this.dataSource = new MatTableDataSource<Asset>(this.assetLibrary.Assets);
+    //this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.array = this.assetLibrary.Assets;
+    this.totalSize = this.array.length;
+    this.iterator();
   }
 
   DownloadAsset(assetId: number): void {
@@ -202,5 +209,50 @@ export class ViewAssetLibraryComponent implements OnInit {
       }
     });
   }
+  public handlePage(e: any) {
+    this.currentPage = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.iterator();
+  }
 
+  private iterator() {
+    const end = (this.currentPage + 1) * this.pageSize;
+    const start = this.currentPage * this.pageSize;
+    const part = this.array.slice(start, end);
+    this.dataSource = part;
+    this.dataSource.sort = this.sort;
+  }
+
+  sortData(sort: MatSort) {
+    const data = this.assetLibrary.Assets.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedAssetLibraryList = data;
+      return;
+    }
+
+    this.sortedAssetLibraryList = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name': return compareStr(a.Name, b.Name, isAsc);
+        case 'updatedby': return compareStr(a.LastUpdatedBy.FirstName == null ? '' : a.LastUpdatedBy.FirstName, b.LastUpdatedBy.FirstName == null ? '' : b.LastUpdatedBy.FirstName, isAsc);
+        case 'date': return compareStr(a.LastUpdatedDate == null ? '' : a.LastUpdatedDate, b.LastUpdatedDate == null ? '' : b.LastUpdatedDate, isAsc);
+        default: return 0;
+
+      }
+    });
+    this.dataSource = new MatTableDataSource<Asset>(this.sortedAssetLibraryList);
+    this.dataSource.sort = this.sort;
+    this.array = this.sortedAssetLibraryList;
+    this.totalSize = this.array.length;
+    this.iterator();
+  }
+
+}
+
+function compareStr(a: string, b: string, isAsc: boolean) {
+  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareNumber(a: number, b: number, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

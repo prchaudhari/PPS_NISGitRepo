@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
-import { Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { WindowRef } from '../../../core/services/window-ref.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../asset-library';
@@ -71,6 +71,8 @@ export class AddAssetLibraryComponent implements OnInit {
   public fileType = '';
   public assetLibraryFormGroup: FormGroup;
   fileSize: string = '';
+  public array: any;
+  public sortedAssetList: Asset[] = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   //@ViewChild('multipleFileAssetUpload') multipleFileAssetUpload: ElementRef;
@@ -143,7 +145,7 @@ export class AddAssetLibraryComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.assetLibraryFormGroup = this.formbuilder.group({
       assetLibraryName: [null, Validators.compose([Validators.required, Validators.minLength(2),
-        Validators.maxLength(100)])],
+      Validators.maxLength(100)])],
       assetLibraryDescription: [null, Validators.compose([Validators.maxLength(500)])]
 
     });
@@ -163,6 +165,7 @@ export class AddAssetLibraryComponent implements OnInit {
   navigateToListPage() {
     this._router.navigate(['assetlibrary']);
   }
+
   private UpdateAsset(assetId: number): void {
     if (localStorage.getItem('RoleName') === 'Super Admin') {
       $('.overlay').show();
@@ -187,7 +190,7 @@ export class AddAssetLibraryComponent implements OnInit {
 
     if (this.fileToUpload && this.fileToUpload.length > 0) {
       this._spinnerService.start();
-      var userid=localStorage.getItem('UserId')
+      var userid = localStorage.getItem('UserId')
       Array.prototype.forEach.call(this.fileToUpload, (file: File) => requestFormData.append('File', file));
       requestFormData.append('IsFolderUpload', this.isMultipleFileUploadEnable ? 'false' : 'true');
       requestFormData.append('AssetLibraryIdentifier', this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null);
@@ -266,7 +269,7 @@ export class AddAssetLibraryComponent implements OnInit {
             this.LoadAsset(assetSearchParameter);
             this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
             $('.overlay').show();
-            
+
           },
           error => {
             $('.overlay').show();
@@ -282,63 +285,77 @@ export class AddAssetLibraryComponent implements OnInit {
     let assets: Asset[];
     assets = new Array<Asset>();
     let selectedIndexes = [];
-    //selectedIndexes = this.dataSource;
-    //this.assets.forEach((item, index) => {HandleFileUpload
-    //  selectedIndexes.forEach((element) => {
-    //    if (index == element) {
-    //      let asset: Asset;
-    //      asset = new Asset();
-    //      asset.Identifier = item.Identifier;
-    //      assets.push(asset);
-    //    }
-    //  });
-    //});
-    this.assetLibrary.Assets.forEach((item, index) => {
-      if (item.IsChecked) {
-        let asset: Asset;
-        asset = new Asset();
-        asset.Identifier = item.Identifier;
-        assets.push(asset);
-      }
-      
-    })
+    if (this.assetLibrary.Assets == null || this.assetLibrary.Assets == undefined || this.assetLibrary.Assets.length == 0) {
+      this._messageDialogService.openDialogBox('Message', "Please select assets which you want to delete.", Constants.msgBoxError);
 
-
-    $('.overlay').show();
-    if (!assets.length) {
-      this._messageDialogService.openDialogBox('Message', "Please select assets which you want to delete..", Constants.msgBoxSuccess);
-    } else {
-
-      let message = 'Are you sure, you want to delete this record?';
-      this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
-        $('.overlay').hide();
-        if (isConfirmed) {
-          this._spinnerService.start();
-          this.isCheckAll = false;
-          this._http.post(this.baseURL + 'assetlibrary/asset/delete', assets).subscribe(
-            data => {
-              this._spinnerService.stop();
-              let message: string;
-              message = "Asset deleted successfully.";
-              let assetSearchParameter: AssetSearchParameter;
-              assetSearchParameter = new AssetSearchParameter();
-              assetSearchParameter.SortParameter.SortColumn = "Id";
-              assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
-              this.LoadAsset(assetSearchParameter);
-              this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
-              $('.overlay').show();
-            },
-            error => {
-              $('.overlay').show();
-              this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
-            });
+    }
+    else {
+      this.assetLibrary.Assets.forEach((item, index) => {
+        if (item.IsChecked) {
+          let asset: Asset;
+          asset = new Asset();
+          asset.Identifier = item.Identifier;
+          assets.push(asset);
         }
-      });
 
-      this._spinnerService.stop();
+      })
+
+
+      $('.overlay').show();
+      if (!assets.length) {
+        this._messageDialogService.openDialogBox('Message', "Please select assets which you want to delete.", Constants.msgBoxError);
+      } else {
+
+        let message = 'Are you sure, you want to delete this record?';
+        this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+          $('.overlay').hide();
+          if (isConfirmed) {
+            this._spinnerService.start();
+            this.isCheckAll = false;
+            this._http.post(this.baseURL + 'assetlibrary/asset/delete', assets).subscribe(
+              data => {
+                this._spinnerService.stop();
+                let message: string;
+                message = "Asset deleted successfully.";
+                let assetSearchParameter: AssetSearchParameter;
+                assetSearchParameter = new AssetSearchParameter();
+                assetSearchParameter.SortParameter.SortColumn = "Id";
+                assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
+                this.LoadAsset(assetSearchParameter);
+                this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
+                $('.overlay').show();
+              },
+              error => {
+                $('.overlay').show();
+                this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+              });
+          }
+        });
+
+        this._spinnerService.stop();
+      }
+    }
+   
+
+  }
+  getAssetDetails(): void {
+    this.isCollapsedAssets = !this.isCollapsedAssets;
+    if (!this.isCollapsedAssets) {
+      if (this.assetLibrary.Identifier != null && this.assetLibrary.Identifier > 0) {
+        if (this.assetLibrary.Assets == null) {
+          let assetSearchParameter: AssetSearchParameter;
+          assetSearchParameter = new AssetSearchParameter();
+          assetSearchParameter.SortParameter.SortColumn = "Id";
+          assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
+          this.LoadAsset(assetSearchParameter);
+        }
+
+      }
+
     }
 
   }
+
   LoadAsset(assetSearchParameter: AssetSearchParameter): void {
     let assets: Asset[];
     this._spinnerService.start();
@@ -353,6 +370,10 @@ export class AddAssetLibraryComponent implements OnInit {
         }
         this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
         this.dataSource.sort = this.sort;
+        this.dataSource.sort = this.sort;
+        this.array = this.assetLibrary.Assets;
+        this.totalSize = this.array.length;
+        this.iterator();
         this._spinnerService.stop();
       },
       error => {
@@ -386,7 +407,7 @@ export class AddAssetLibraryComponent implements OnInit {
     }
   }
 
-  IsCheckItem(event,element): void {
+  IsCheckItem(event, element): void {
     if (event.checked) {
       this.disableMultipleDelete = false;
       let itemIndex = 0;
@@ -433,8 +454,11 @@ export class AddAssetLibraryComponent implements OnInit {
       }
     }
   }
+
   CloseUploadAssetContainer(): void {
     this.uploadAssetContainer = false;
+    this.assetFileTypeError = false;
+    this.assetFileSizeError = false;
   }
 
   SetTab(tabNumber: number): void {
@@ -443,12 +467,27 @@ export class AddAssetLibraryComponent implements OnInit {
 
   ShowUploadAssetContainer(): void {
     // this.multipleFileAssetUpload ? this.multipleFileAssetUpload.nativeElement.value = '' : null;
-    this.fileToUpload = null;
-    this.fileNameList.length = 0;
-    this.uploadAssetContainer = true;
+    if (this.updateOperationMode == false) {
+      if (this.assetLibrary.Identifier <= 0 || this.assetLibrary.Identifier == null || this.assetLibrary.Identifier == undefined) {
+      //  return true;
+        this._messageDialogService.openDialogBox('Message', "Asset Library should be added first.", Constants.msgBoxSuccess);
+
+      }
+      else {
+        this.fileToUpload = null;
+        this.fileNameList.length = 0;
+        this.uploadAssetContainer = true;
+      }
+    }
+    else {
+      this.fileToUpload = null;
+      this.fileNameList.length = 0;
+      this.uploadAssetContainer = true;
+    }
+
   }
 
-  disableUploadAsset(): boolean{
+  disableUploadAsset(): boolean {
     if (this.updateOperationMode == false) {
       if (this.assetLibrary.Identifier <= 0 || this.assetLibrary.Identifier == null || this.assetLibrary.Identifier == undefined) {
         return true;
@@ -468,6 +507,7 @@ export class AddAssetLibraryComponent implements OnInit {
     else
       return false;
   }
+
   setFileUploadMethod(value: string) {
     if (value === 'files') {
       // to clear file selections
@@ -479,9 +519,7 @@ export class AddAssetLibraryComponent implements OnInit {
       this.isMultipleFileUploadEnable = false;
     }
   }
-  //name: "03 add.png"
-  //size: 39434
-  //type: "image/png"
+
   HandleFileUpload(files: FileList): void {
     var file = files[0];
     var imagePattern = /image-*/;
@@ -491,6 +529,7 @@ export class AddAssetLibraryComponent implements OnInit {
         this.fileSize = '1 MB';
         this.fileType = 'Image';
         this.assetFileSizeError = true;
+        this.assetFileTypeError = false;
         this.fileNameList = [];
         //return false;
       }
@@ -504,17 +543,19 @@ export class AddAssetLibraryComponent implements OnInit {
         this.fileSize = '2 MB';
         this.fileType = 'Video';
         this.assetFileSizeError = true;
+        this.assetFileTypeError = false;
+
         this.fileNameList = [];
 
-       // return false;
+        // return false;
 
       }
       else {
         this.assetFileSizeError = false;
 
       }
-      
-     
+
+
     }
     else {
       this.assetFileTypeError = true;
@@ -531,7 +572,7 @@ export class AddAssetLibraryComponent implements OnInit {
       this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
       this.fileToUpload = files;
     }
-   
+
     //return true;
   }
 
@@ -557,7 +598,7 @@ export class AddAssetLibraryComponent implements OnInit {
       action = "assetlibrary/add";
       message = "Asset library added successfully.";
     }
-    this.assetLibrary.Name = this.assetLibraryFormGroup.value.assetLibraryName;
+    this.assetLibrary.Name = this.assetLibraryFormGroup.value.assetLibraryName.trim();
     this.assetLibrary.Description = this.assetLibraryFormGroup.value.assetLibraryDescription;
 
     assetLibraries.push(this.assetLibrary);
@@ -570,10 +611,10 @@ export class AddAssetLibraryComponent implements OnInit {
         result = <boolean>data;
         if (result) {
           this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-          if (this.updateOperationMode==false) {
+          if (this.updateOperationMode == false) {
             this.getAssetLibraryRecords(this.assetLibrary.Name, true);
           }
-          
+
         }
       },
       error => {
@@ -592,7 +633,7 @@ export class AddAssetLibraryComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = Constants.Name;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Exact;
-    
+
     if (byName) {
       searchParameter.Name = name;
       let assetLibrary = await assetLibraryService.getAssetLibrary(searchParameter);
@@ -600,31 +641,39 @@ export class AddAssetLibraryComponent implements OnInit {
     }
     else {
       searchParameter.Identifier = this.assetLibrary.Identifier;
-      searchParameter.IsAssetDataRequired = true;
+      //searchParameter.IsAssetDataRequired = true;
       let assetLibrary = await assetLibraryService.getAssetLibrary(searchParameter);
       this.assetLibrary = assetLibrary[0];
       this.assetLibraryFormGroup.controls['assetLibraryName'].setValue(assetLibrary[0].Name);
       this.assetLibraryFormGroup.controls['assetLibraryDescription'].setValue(assetLibrary[0].Description);
-   
-      for (let i = 0; i < this.assetLibrary.Assets.length; i++) {
+      if (this.assetLibrary.Assets != null) {
+        for (let i = 0; i < this.assetLibrary.Assets.length; i++) {
 
-        this.assetLibrary.Assets[i].IsChecked = false;
+          this.assetLibrary.Assets[i].IsChecked = false;
+        }
+        this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
+        this.dataSource.sort = this.sort;
+        this.dataSource.sort = this.sort;
+        this.array = this.assetLibrary.Assets;
+        this.totalSize = this.array.length;
+        this.iterator();
       }
-      this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
-      this.dataSource.sort = this.sort;
+      
     }
   }
-
 
   Previous(): void {
     this.SetTab(1);
   }
+
   get assetLibraryName() {
     return this.assetLibraryFormGroup.get('assetLibraryName');
   }
+
   get assetLibraryDescription() {
     return this.assetLibraryFormGroup.get('assetLibraryDescription');
   }
+
   assetLibraryFormValidaton(): boolean {
     this.assetLibraryFormErrorObject.showAssetLibraryNameError = false;
     if (this.assetLibraryFormGroup.controls.assetLibraryName.invalid) {
@@ -634,6 +683,47 @@ export class AddAssetLibraryComponent implements OnInit {
     return true;
   }
 
+  sortData(sort: MatSort) {
+    const data = this.assetLibrary.Assets.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedAssetList = data;
+      return;
+    }
 
+    this.sortedAssetList = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name': return compareStr(a.Name, b.Name, isAsc);
+        case 'updatedby': return compareStr(a.LastUpdatedBy.FirstName == null ? '' : a.LastUpdatedBy.FirstName, b.LastUpdatedBy.FirstName == null ? '' : b.LastUpdatedBy.FirstName, isAsc);
+        case 'date': return compareStr(a.LastUpdatedDate == null ? '' : a.LastUpdatedDate, b.LastUpdatedDate == null ? '' : b.LastUpdatedDate, isAsc);
 
+        default: return 0;
+      }
+    });
+    this.dataSource = new MatTableDataSource<Asset>(this.sortedAssetList);
+    this.dataSource.sort = this.sort;
+    this.array = this.sortedAssetList;
+    this.totalSize = this.array.length;
+    this.iterator();
+  }
+  public handlePage(e: any) {
+    this.currentPage = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.iterator();
+  }
+
+  private iterator() {
+    const end = (this.currentPage + 1) * this.pageSize;
+    const start = this.currentPage * this.pageSize;
+    const part = this.array.slice(start, end);
+    this.dataSource = part;
+    this.dataSource.sort = this.sort;
+  }
+}
+function compareStr(a: string, b: string, isAsc: boolean) {
+  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareNumber(a: number, b: number, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

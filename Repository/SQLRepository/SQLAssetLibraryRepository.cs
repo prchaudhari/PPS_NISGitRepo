@@ -289,11 +289,15 @@ namespace nIS
                         {
                             assetLibraryIdentifiers.Append(string.Format(" and IsDeleted.Equals(false)"));
                             assetRecords = nISEntitiesDataContext.AssetRecords.Where(assetLibraryIdentifiers.ToString()).ToList();
-                            StringBuilder userIdentifier = new StringBuilder();
-                            userIdentifier.Append("(" + string.Join(" or ", assetRecords.Select(item => string.Format("Id.Equals({0})", item.LastUpdatedBy))) + ")");
-                            userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
+                            if(assetRecords?.Count>0)
+                            {
+                                StringBuilder userIdentifier = new StringBuilder();
+                                userIdentifier.Append("(" + string.Join(" or ", assetRecords.Select(item => string.Format("Id.Equals({0})", item.LastUpdatedBy))) + ")");
+                                userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
 
-                             users = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
+                                users = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
+                            }
+                          
                         }
                         assetLibraries = assetLibraryRecords.Select(AssetLibraryRecord => new AssetLibrary()
                         {
@@ -308,7 +312,8 @@ namespace nIS
                                 FilePath = i.FilePath,
                                 Name = i.Name,
                                 LastUpdatedBy = new User { Identifier = (long)i.LastUpdatedBy },
-                                LastUpdatedDate = i.LastUpdatedDate
+                                LastUpdatedDate = DateTime.SpecifyKind((DateTime)i.LastUpdatedDate, DateTimeKind.Utc)
+
                             })
                             .ToList()
                         }).ToList();
@@ -568,10 +573,10 @@ namespace nIS
                             AssetLibraryIdentifier = assetRecord.AssetLibraryId,
                             IsDeleted = assetRecord.IsDeleted,
                             LastUpdatedBy = new User { Identifier = (long)assetRecord.LastUpdatedBy },
-                            LastUpdatedDate = assetRecord.LastUpdatedDate
+                            LastUpdatedDate = DateTime.SpecifyKind((DateTime)assetRecord.LastUpdatedDate, DateTimeKind.Utc)
                         }).ToList();
                         assets?.ToList().ForEach(asset => {
-                            UserRecord record = users.Where(item => item.Id == asset.LastUpdatedBy.Identifier)?.ToList().FirstOrDefault();
+                            UserRecord record = users?.Where(item => item.Id == asset.LastUpdatedBy.Identifier)?.ToList().FirstOrDefault();
                             asset.LastUpdatedBy.FirstName = record.FirstName;
                             asset.LastUpdatedBy.LastName = record.LastName;
                             asset.LastUpdatedBy.LastName = record.LastName;

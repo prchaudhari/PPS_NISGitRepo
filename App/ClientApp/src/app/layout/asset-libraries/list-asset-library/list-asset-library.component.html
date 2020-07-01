@@ -17,12 +17,12 @@
       <div class="d-flex justify-content-center mb-4">
         <div class="pagination-mat position-relative">
           <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
-                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
           </mat-paginator>
         </div>
       </div>
       <div class="widget-area-grid padding-0">
-        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
           <!-- Position Column -->
           <ng-container matColumnDef="name">
             <th class="width40 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>

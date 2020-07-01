@@ -1,6 +1,7 @@
 <div class="main-container">
   <div class="page-title">
-    <span class="xs-title">{{mode}} Asset Library</span>
+    <span class="xs-title" *ngIf="updateOperationMode == false"> Add Asset Library  </span>
+    <span class="xs-title" *ngIf="updateOperationMode == true"> Update Asset Library  </span>
   </div>
   <form [formGroup]="assetLibraryFormGroup" name="roleForm" autocomplete="on" novalidate>
     <div class="card border-0 mb-2 card-shadow">
@@ -43,7 +44,7 @@
           </div>
         </div>
         <button class="btn-footer-fill mr-2" [disabled]="assetLibraryFormGroup.invalid" (click)="SaveAssetLibrary()" id="btnSave">Save</button>
-        <!--<button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>-->
+        <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
 
       </div>
     </div>
@@ -55,7 +56,7 @@
         <div>
           <button type="button" id="btnCollapsedPermissions"
                   class="toggle-btn border-0 p-0 bg-transparent"
-                  (click)="isCollapsedAssets = !isCollapsedAssets"
+                  (click)="getAssetDetails()"
                   [attr.aria-expanded]="!isCollapsedAssets" aria-controls="collapsedAssets">
             <span class="fa" [ngClass]="!isCollapsedAssets? 'fa-angle-down' : 'fa-angle-right'"></span>
           </button>
@@ -65,21 +66,21 @@
 
         <div class="d-flex justify-content-between mb-4">
           <div>
-            <button type="button" class="btn-add-outline btn-tbl-action btn-cust" [disabled]="disableUploadAsset()" (click)="ShowUploadAssetContainer()">
+            <button type="button" class="btn-add-outline btn-tbl-action btn-cust" title="Upload Assets" (click)="ShowUploadAssetContainer()">
               <span class="fa fa-plus btn-icon-cust btn-icon-outline"></span> Upload Asset
             </button>
-            <button type="button" class="btn-add-outline btn-tbl-action btn-cust ml-2" [disabled]="disableDeleteAsset()" (click)="DeleteAll()">
+            <button type="button" class="btn-add-outline btn-tbl-action btn-cust ml-2" title="Delete Assets" (click)="DeleteAll()">
               <span class="fa fa-trash-o btn-icon-cust btn-icon-outline"></span> Delete Asset
             </button>
           </div>
           <div class="pagination-mat position-relative">
             <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
-                           [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
+                           [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
             </mat-paginator>
           </div>
         </div>
 
-        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
           <!-- Position Column -->
           <ng-container matColumnDef="name">
             <th class="width30" mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -108,12 +109,12 @@
               Last Updated Date
             </th>
             <td mat-cell *matCellDef="let element">
-              {{element.LastUpdatedDate}}
+              {{element.LastUpdatedDate | date:"dd/MM/yyyy h:mm a"}}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
-            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+            <th class="width10" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
                 <button type="button" title="Download" (click)="DownloadAsset(element.Identifier)" id="btnUpdate"><span class="fa fa-download"></span></button>
@@ -130,7 +131,7 @@
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
         <!--<button class="btn-footer-fill mr-2" [disabled]="!assetLibrary.Name" (click)="SaveAssetLibrary()" id="btnSave">Save</button>-->
-        <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+        <!--<button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>-->
       </div>
     </div>
   </form>
@@ -158,11 +159,9 @@
               <!--<input *ngIf="!isMultipleFileUploadEnable" #multipleFileAssetUpload class="custom-file-input"
               type="file" webkitDirectory (change)="HandleFileUpload($event.target.files)">-->
 
-              <input *ngIf="isMultipleFileUploadEnable" #multipleFileAssetUpload class="custom-file-input"
+              <input *ngIf="isMultipleFileUploadEnable" class="custom-file-input"
                      accept="image/x-png,image/jpeg,image/jpg,video/mp4" type="file" (change)="HandleFileUpload($event.target.files)">
               <label class="custom-file-label"></label>
-
-
             </div>
 
           </div>
@@ -170,7 +169,7 @@
         <div class="form-group col-sm-12 parent-rtl">
           <div class="input-group">
 
-            <div class="validation-msg" style="color:red">
+            <div class="validation-msg" style="color: red;margin-left: 15px;">
               <ul>
                 <li class="text-danger" *ngIf="assetFileSizeError">
                   {{fileType}} file size should not be greater the {{fileSize}}
