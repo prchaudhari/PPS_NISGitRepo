@@ -47,6 +47,12 @@ namespace nIS
         private string pageTypeIds = string.Empty;
 
         /// <summary>
+        /// The widget name
+        /// </summary>
+        private string pageTypeNames = string.Empty;
+
+        
+        /// <summary>
         /// The widget description
         /// </summary>
         private string widgetDescription = string.Empty;
@@ -166,6 +172,26 @@ namespace nIS
         /// </value>
         [Description("PageTypeIds")]
         public string PageTypeIds
+        {
+            get
+            {
+                return this.pageTypeIds;
+            }
+
+            set
+            {
+                this.pageTypeIds = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Page Type Names.
+        /// </summary>
+        /// <value>
+        /// The widget Page Type Names.
+        /// </value>
+        [Description("PageTypeNames")]
+        public string PageTypeNames
         {
             get
             {

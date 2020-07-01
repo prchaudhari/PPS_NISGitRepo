@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -17,6 +17,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAcce
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AssetLibraryService } from '../asset-library.service';
+import { MatInput } from '@angular/material';
 export interface ListElement {
   name: string;
   updatedby: string;
@@ -75,7 +76,7 @@ export class AddAssetLibraryComponent implements OnInit {
   public sortedAssetList: Asset[] = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  //@ViewChild('multipleFileAssetUpload') multipleFileAssetUpload: ElementRef;
+  //@ViewChild(MatInput, { static: true}) multipleFileAssetUpload: ElementRef;
 
   constructor(
     private _location: Location,
@@ -466,7 +467,7 @@ export class AddAssetLibraryComponent implements OnInit {
   }
 
   ShowUploadAssetContainer(): void {
-    // this.multipleFileAssetUpload ? this.multipleFileAssetUpload.nativeElement.value = '' : null;
+    //this.multipleFileAssetUpload ? this.multipleFileAssetUpload.nativeElement.value = '' : null;
     if (this.updateOperationMode == false) {
       if (this.assetLibrary.Identifier <= 0 || this.assetLibrary.Identifier == null || this.assetLibrary.Identifier == undefined) {
       //  return true;
@@ -520,7 +521,8 @@ export class AddAssetLibraryComponent implements OnInit {
     }
   }
 
-  HandleFileUpload(files: FileList): void {
+  HandleFileUpload(e): void {
+    var files = e.target.files;
     var file = files[0];
     var imagePattern = /image-*/;
     var vedioPattern = /video-*/;

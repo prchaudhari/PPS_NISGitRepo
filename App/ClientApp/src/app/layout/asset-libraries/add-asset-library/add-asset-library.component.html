@@ -160,7 +160,7 @@
               type="file" webkitDirectory (change)="HandleFileUpload($event.target.files)">-->
 
               <input *ngIf="isMultipleFileUploadEnable" class="custom-file-input"
-                     accept="image/x-png,image/jpeg,image/jpg,video/mp4" type="file" (change)="HandleFileUpload($event.target.files)">
+                     accept="image/x-png,image/jpeg,image/jpg,video/mp4" type="file" (change)="HandleFileUpload($event)">
               <label class="custom-file-label"></label>
             </div>
 

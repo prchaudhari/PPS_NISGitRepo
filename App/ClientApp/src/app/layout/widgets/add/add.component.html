@@ -1,12 +1,16 @@
 <div class="main-container">
   <div class="page-title d-flex justify-content-between">
     <span class="xs-title">Available Widgets</span>
-    <select class="form-control width20 mt-2 xs-w-100">
+
+    <select formControlName="pageType" (change)='onPageTypeSelected($event)'class="form-control width20 mt-2 xs-w-100">
+      <option *ngFor="let type of pageTypeList" [value]="type.Identifier">{{type.Name}}</option>
+    </select>
+    <!--<select class="form-control width20 mt-2 xs-w-100">
       <option selected>Select Page Type</option>
       <option>Home</option>
       <option>Saving Account</option>
       <option>Current Account</option>
-    </select>
+    </select>-->
   </div>
   <div class="card border-0 mb-2 card-shadow">
     <div class="card-body position-relative">
@@ -48,7 +52,7 @@
                 <h6 class="mb-1" *ngIf="isSelected('TransactionMix')">Transaction Mix </h6>-->
 
                 <div><label class="mb-0">Decrtiption : </label><span class="ml-1">{{selectedLink.WidgetDescription}}</span></div>
-                <!--<div><label class="mb-0">Page Type :</label> <h6 class="badge badge-secondary p-1 ml-1 mb-0">Home</h6></div>-->
+                <div><label class="mb-0">Page Types :</label> <h6 class="badge badge-secondary p-1 ml-1 mb-0">{{selectedLink.PageTypeNames}}</h6></div>
               </div>
               <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
                 <div class="card-body d-flex justify-content-center align-items-center">

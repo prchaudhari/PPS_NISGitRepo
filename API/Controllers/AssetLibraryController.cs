@@ -247,6 +247,7 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 result = this.assetLibraryManager.DeleteAssets(assets, tenantCode);
+
             }
             catch (Exception exception)
             {
@@ -387,7 +388,7 @@ namespace nIS
 
                 assetLibraryIdentifier = long.Parse(httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault());
                 isFolderUpload = bool.Parse(httpRequest.Form.GetValues("IsFolderUpload").FirstOrDefault());
-                long lastUpdatedBy= long.Parse(httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault());
+                long lastUpdatedBy = long.Parse(httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault());
 
                 if (httpRequest.Files.Count > 0)
                 {
@@ -442,19 +443,19 @@ namespace nIS
                         //    //Disscussion pending
                         //    throw new DuplicateAssetException(tenantCode);
                         //}
-                        bool isAllowAssetLibraryReplace = true;
-                        if (isAllowAssetLibraryReplace && !File.Exists(filePath))
+                        //bool isAllowAssetLibraryReplace = true;
+                        //if (isAllowAssetLibraryReplace)
+                        //{
+                        assets.Add(new Asset()
                         {
-                            assets.Add(new Asset()
-                            {
-                                Name = fileName,
-                                FilePath = fileName,
-                                AssetLibraryIdentifier = assetLibraryIdentifier,
-                                LastUpdatedBy = new User { Identifier = lastUpdatedBy },
-                                LastUpdatedDate = DateTime.UtcNow
-                            }); ;
-                            this.assetLibraryManager.AddAssets(assets, tenantCode);
-                        }
+                            Name = fileName,
+                            FilePath = fileName,
+                            AssetLibraryIdentifier = assetLibraryIdentifier,
+                            LastUpdatedBy = new User { Identifier = lastUpdatedBy },
+                            LastUpdatedDate = DateTime.UtcNow
+                        }); ;
+                        this.assetLibraryManager.AddAssets(assets, tenantCode);
+                        //}
 
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
