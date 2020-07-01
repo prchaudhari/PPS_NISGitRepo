@@ -217,8 +217,11 @@ namespace nIS
                                         IsActive = item.IsActive,
                                         IsDeleted = item.IsDeleted
                                     }).ToList();
+                                    widget.PageTypeNames = string.Join(",", widget.PageTypes.Select(item => item.PageTypeName).ToList());
                                 }
+
                             });
+
                         }
                     }
                 }
@@ -293,7 +296,10 @@ namespace nIS
                     queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
                 }
             }
-
+            if (validationEngine.IsValidText(searchParameter.PageTypeId))
+            {
+                queryString.Append(string.Format("PageTypeId.Contains(\"{0}\") and ", searchParameter.PageTypeId));
+            }
             if (searchParameter.IsActive == null || searchParameter.IsActive == true)
             {
                 queryString.Append(string.Format("IsDeleted.Equals(false) and "));

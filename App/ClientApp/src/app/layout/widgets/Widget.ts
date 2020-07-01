@@ -12,4 +12,5 @@ export class Widget {
   "IsConfigurable": boolean;
   "Instantiable": boolean;
   "WidgetIcon": string;
+  "PageTypeNames": string;
 }

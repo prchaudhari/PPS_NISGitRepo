@@ -942,6 +942,11 @@
     background: transparent;
   }
 
+  button:disabled {
+    opacity: 0.7;
+    cursor:not-allowed
+  }
+
   .ngx-pagination li a:focus {
     outline: none;
   }
