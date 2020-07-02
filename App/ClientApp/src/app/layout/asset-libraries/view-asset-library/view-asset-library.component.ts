@@ -53,6 +53,7 @@ export class ViewAssetLibraryComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.dataSource = new MatTableDataSource(List_Data);
     this.dataSource.sort = this.sort;
 

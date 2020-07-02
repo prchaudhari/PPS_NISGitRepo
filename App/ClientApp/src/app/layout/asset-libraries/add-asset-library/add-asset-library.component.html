@@ -126,6 +126,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+        <div style="text-align:center" *ngIf="dataSource.length === 0">No data to display</div>
       </div>
     </div>
     <div class="card border-0 mt-4 mb-3 bg-transparent">

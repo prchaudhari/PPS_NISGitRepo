@@ -1,0 +1,94 @@
+<div class="main-container">
+  <div class="page-title">
+    <span class="xs-title">Asset Settings</span>
+  </div>
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-header bg-white d-flex justify-content-between">
+      <div>
+        <label class="m-0">Image</label>
+      </div>
+      <div>
+        <button type="button" id="btnCollapsedDetails"
+                class="toggle-btn border-0 p-0 bg-transparent"
+                (click)="isCollapsedImage = !isCollapsedImage"
+                [attr.aria-expanded]="!isCollapsedImage"
+                aria-controls="collapseDetails">
+          <span class="fa" [ngClass]="!isCollapsedImage? 'fa-angle-down' : 'fa-angle-right'"></span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body" id="collapseDetails" [ngbCollapse]="isCollapsedImage">
+      <form [formGroup]="imageForm">
+        <div class="row form-group">
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblImageHeight" for="inputImageHeight">Height<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="inputImageHeight" />
+          </div>
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblImageWidth" for="inputImageWidth">Width<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="inputImageWidth" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblImageSize" for="inputImageSize">Size(MB)<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="inputImageSize" />
+          </div>
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblImageFile" for="inputImageFile">File Extensions<span class="text-danger">*</span></label>
+            <ng-multiselect-dropdown 
+                                     [data]="imagedropdownList"
+                                   
+                                     [settings]="imagedropdownSettings"
+                                     (onSelect)="onItemSelect($event)"
+                                     (onSelectAll)="onSelectAll($event)">
+            </ng-multiselect-dropdown>
+          
+          </div>
+        </div>
+      </form>
+     
+    </div>
+  </div>
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-header  bg-white d-flex justify-content-between">
+      <div>
+        <label class="m-0">Video</label>
+      </div>
+      <div>
+        <button type="button" id="btnCollapsedPermissions"
+                class="toggle-btn border-0 p-0 bg-transparent"
+                (click)="isCollapsedVideo = !isCollapsedVideo"
+                [attr.aria-expanded]="!isCollapsedVideo" aria-controls="collapsedAssets">
+          <span class="fa" [ngClass]="!isCollapsedVideo? 'fa-angle-down' : 'fa-angle-right'"></span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body rtl-checkbox parent-rtl" id="collapsedAssets" [ngbCollapse]="isCollapsedVideo">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-4">
+          <label id="lblImageSize" for="inputImageSize">Size(MB)<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="inputImageSize" />
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-4">
+          <label id="lblImageFile" for="inputImageFile">File Extensions<span class="text-danger">*</span></label>
+          <ng-multiselect-dropdown [data]="videodropdownList"
+                                   
+                                   [settings]="videodropdownSettings"
+                                   (onSelect)="onItemSelect($event)"
+                                   (onSelectAll)="onSelectAll($event)">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-fill mr-2" id="btnSave">Save</button>
+      <!--<button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>-->
+    </div>
+  </div>
+
+</div>
+<div class="overlay a" id="divOverlayFilter" [ngClass]="!isUploadAssets? 'hide':'show'"></div>

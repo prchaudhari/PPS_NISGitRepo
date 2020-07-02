@@ -38,6 +38,19 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="AssetSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImageHeight" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ImageWidth" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ImageSize" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ImageFileExtension" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="VideoSize" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="VideoFileExtension" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="City">
           <Key>
             <PropertyRef Name="Id" />
@@ -302,6 +315,7 @@
           <EntitySet Name="Asset" EntityType="Self.Asset" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AssetLibrary" EntityType="Self.AssetLibrary" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AssetPathSetting" EntityType="Self.AssetPathSetting" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="AssetSetting" EntityType="Self.AssetSetting" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="NIS" store:Type="Tables" />
@@ -347,6 +361,7 @@
           <EntitySet Name="CountryRecords" EntityType="NISModel.CountryRecord" />
           <EntitySet Name="StateRecords" EntityType="NISModel.StateRecord" />
           <EntitySet Name="WidgetRecords" EntityType="NISModel.WidgetRecord" />
+          <EntitySet Name="AssetSettingRecords" EntityType="NISModel.AssetSettingRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -640,6 +655,19 @@
           <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateBy" Type="Int64" Nullable="false" />
           <Property Name="Instantiable" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AssetSettingRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImageHeight" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="ImageWidth" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="ImageSize" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="ImageFileExtension" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VideoSize" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="VideoFileExtension" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -957,6 +985,20 @@
                 <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssetSettingRecords">
+            <EntityTypeMapping TypeName="NISModel.AssetSettingRecord">
+              <MappingFragment StoreEntitySet="AssetSetting">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="VideoFileExtension" ColumnName="VideoFileExtension" />
+                <ScalarProperty Name="VideoSize" ColumnName="VideoSize" />
+                <ScalarProperty Name="ImageFileExtension" ColumnName="ImageFileExtension" />
+                <ScalarProperty Name="ImageSize" ColumnName="ImageSize" />
+                <ScalarProperty Name="ImageWidth" ColumnName="ImageWidth" />
+                <ScalarProperty Name="ImageHeight" ColumnName="ImageHeight" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

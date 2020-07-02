@@ -89,6 +89,8 @@
     <Build Include="NewsAlert.sql" />
     <Build Include="Image.sql" />
     <Build Include="Video.sql" />
+    <Build Include="AssetSetting.sql" />
+    <None Include="Seed Data Scripts\AssetSetting.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

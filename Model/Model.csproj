@@ -47,6 +47,7 @@
     <Compile Include="Asset.cs" />
     <Compile Include="AssetLibrary.cs" />
     <Compile Include="AssetPathSetting.cs" />
+    <Compile Include="AssetSetting.cs" />
     <Compile Include="Common\AssetLibraryConstant.cs" />
     <Compile Include="Common\BaseEntity.cs" />
     <Compile Include="Common\BaseSearchEntity.cs" />

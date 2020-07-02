@@ -22,7 +22,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { DynamicGlobalVariable } from './shared/constants/constants';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +41,8 @@ import { DynamicGlobalVariable } from './shared/constants/constants';
     BootstrapModalModule.forRoot({ container: document.body }),
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
-    AuthenticationModule
+    AuthenticationModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     {

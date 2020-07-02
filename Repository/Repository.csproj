@@ -82,12 +82,16 @@
     <Compile Include="AssetRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="AssetSettingRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="CityRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="CountryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\IAssetSettingRepository.cs" />
     <Compile Include="IRepository\IAssetLibraryRepository.cs" />
     <Compile Include="IRepository\IPageRepository.cs" />
     <Compile Include="IRepository\IWidgetRepository.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="ScheduleRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLRepository\SQLAssetSettingRepository.cs" />
     <Compile Include="SQLRepository\SQLAssetLibraryRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureUserRepository.cs" />
     <Compile Include="SQLRepository\SQLPageRepository.cs" />
