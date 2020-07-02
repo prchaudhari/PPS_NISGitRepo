@@ -1,0 +1,7 @@
+﻿CREATE TABLE [NIS].[NewsAlert]
+(
+	[Id] INT NOT NULL PRIMARY KEY, 
+    [Date] DATETIME NOT NULL, 
+    [Title] NVARCHAR(100) NOT NULL, 
+    [Details] NVARCHAR(500) NULL
+)

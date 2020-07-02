@@ -84,6 +84,11 @@
     <Build Include="Configuration Manager\ConfigurationManager.sql" />
     <None Include="Seed Data Scripts\PageType.sql" />
     <None Include="Seed Data Scripts\Widget.sql" />
+    <Build Include="CustomerInfo.sql" />
+    <Build Include="TransactionDetail.sql" />
+    <Build Include="NewsAlert.sql" />
+    <Build Include="Image.sql" />
+    <Build Include="Video.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

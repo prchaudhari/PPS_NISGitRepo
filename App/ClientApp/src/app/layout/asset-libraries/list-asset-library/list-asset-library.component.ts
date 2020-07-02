@@ -54,10 +54,9 @@ export class ListAssetLibraryComponent implements OnInit {
     private assetLibraryService: AssetLibraryService) {
   }
   resetRoleFilterForm() {
-    this.filterAssetLibraryName.patchValue({
-      filterRoleName: null,
-      
-    });
+
+    this.assetLibraryFilterForm.controls['filterAssetLibraryName'].setValue('');
+    
   }
   searchFilter(searchType) {
     this.isFilterDone = true;
