@@ -151,7 +151,7 @@ namespace nIS
 
                 pages.ToList().ForEach(page =>
                 {
-                    page.Identifier = pageRecords.Where(p => p.DisplayName == page.DisplayName && p.PageTypeId == page.PageTypeId && page.Version == "1").Single().Id;
+                    page.Identifier = pageRecords.Where(p => p.DisplayName == page.DisplayName && p.PageTypeId == page.PageTypeId && p.Version == "1").Single().Id;
 
                     //Add page widgets in to page widget map
                     if (page.PageWidgets?.Count > 0)
@@ -304,11 +304,14 @@ namespace nIS
                         userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
                         pageOwnerUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
 
-                        userIdentifier = new StringBuilder();
-                        userIdentifier.Append("(" + string.Join(" or ", pageRecords.Where(itm => itm.PublishedBy != null).ToList().Select(item => string.Format("Id.Equals({0})", item.PublishedBy))) +")");
-                        userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        pagePublishedUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
-
+                        var publisheByUserIds = pageRecords.Where(itm => itm.PublishedBy != null).ToList();
+                        if (publisheByUserIds.Count > 0)
+                        {
+                            userIdentifier = new StringBuilder();
+                            userIdentifier.Append("(" + string.Join(" or ", publisheByUserIds.Select(item => string.Format("Id.Equals({0})", item.PublishedBy))) + ")");
+                            userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
+                            pagePublishedUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
+                        }
                         pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(itm => itm.IsActive == true && itm.IsDeleted == false).ToList();                      
                     }
                 }
@@ -497,57 +500,57 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    IList<PageRecord> pageRecords = nISEntitiesDataContext.PageRecords.Where(itm => itm.Id == pageIdentifier).ToList();
-                    if (pageRecords == null || pageRecords.Count <= 0)
+                    var pageRecord = nISEntitiesDataContext.PageRecords.Where(itm => itm.Id == pageIdentifier).FirstOrDefault();
+                    if (pageRecord == null)
+                    {
+                        throw new PageNotFoundException(tenantCode);
+                    }
+
+                    var lastPageRecord = nISEntitiesDataContext.PageRecords.Where(item => item.DisplayName == pageRecord.DisplayName && item.PageTypeId == pageRecord.PageTypeId && item.IsDeleted == false).OrderByDescending(itm => itm.Id).FirstOrDefault();
+                    if (lastPageRecord == null)
                     {
                         throw new PageNotFoundException(tenantCode);
                     }
 
                     IList<PageRecord> pageRecordsForClone = new List<PageRecord>();
-                    pageRecords.ToList().ForEach(item =>
+                    pageRecordsForClone.Add(new PageRecord()
                     {
-                        pageRecordsForClone.Add(new PageRecord()
-                        {
-                            DisplayName = item.DisplayName,
-                            PageTypeId = item.PageTypeId,
-                            IsActive = true,
-                            IsDeleted = false,
-                            Status = PageStatus.New.ToString(),
-                            CreatedDate = DateTime.Now,
-                            LastUpdatedDate = DateTime.Now,
-                            Version = Int64.Parse(item.Version)+ 1 + "",
-                            Owner = userId,
-                            TenantCode = tenantCode
-                        });
+                        DisplayName = lastPageRecord.DisplayName,
+                        PageTypeId = lastPageRecord.PageTypeId,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Status = PageStatus.New.ToString(),
+                        CreatedDate = DateTime.Now,
+                        LastUpdatedDate = DateTime.Now,
+                        Version = Int64.Parse(lastPageRecord.Version) + 1 + "",
+                        Owner = userId,
+                        TenantCode = tenantCode
                     });
 
                     nISEntitiesDataContext.PageRecords.AddRange(pageRecordsForClone);
                     nISEntitiesDataContext.SaveChanges();
 
-                    pageRecords.ToList().ForEach(page =>
+                    long newPageIdentifier = pageRecordsForClone.Where(p => p.DisplayName == lastPageRecord.DisplayName && p.PageTypeId == lastPageRecord.PageTypeId && p.Version == Int64.Parse(lastPageRecord.Version) + 1 + "").Single().Id;
+
+                    IList<PageWidgetMapRecord> pageWidgetRecords = nISEntitiesDataContext.PageWidgetMapRecords.Where(item => item.PageId == lastPageRecord.Id).ToList();
+                    IList<PageWidgetMapRecord> pageWidgetRecordsForClone = new List<PageWidgetMapRecord>();
+                    pageWidgetRecords.ToList().ForEach(item =>
                     {
-                        long newPageIdentifier = pageRecordsForClone.Where(p => p.DisplayName == page.DisplayName && p.PageTypeId == page.PageTypeId && p.Version == Int64.Parse(page.Version) + 1 + "").Single().Id;
-
-                        IList<PageWidgetMapRecord> pageWidgetRecords = nISEntitiesDataContext.PageWidgetMapRecords.Where(item => item.PageId == page.Id).ToList();
-                        IList<PageWidgetMapRecord> pageWidgetRecordsForClone = new List<PageWidgetMapRecord>();
-                        pageWidgetRecords.ToList().ForEach(item =>
+                        pageWidgetRecordsForClone.Add(new PageWidgetMapRecord()
                         {
-                            pageWidgetRecordsForClone.Add(new PageWidgetMapRecord()
-                            {
-                                Height = item.Height,
-                                PageId = newPageIdentifier,
-                                ReferenceWidgetId = item.ReferenceWidgetId,
-                                TenantCode = tenantCode,
-                                WidgetSetting = item.WidgetSetting,
-                                Width = item.Width,
-                                Xposition = item.Xposition,
-                                Yposition = item.Yposition
-                            });
+                            Height = item.Height,
+                            PageId = newPageIdentifier,
+                            ReferenceWidgetId = item.ReferenceWidgetId,
+                            TenantCode = tenantCode,
+                            WidgetSetting = item.WidgetSetting,
+                            Width = item.Width,
+                            Xposition = item.Xposition,
+                            Yposition = item.Yposition
                         });
-
-                        nISEntitiesDataContext.PageWidgetMapRecords.AddRange(pageWidgetRecordsForClone);
-                        nISEntitiesDataContext.SaveChanges();
                     });
+
+                    nISEntitiesDataContext.PageWidgetMapRecords.AddRange(pageWidgetRecordsForClone);
+                    nISEntitiesDataContext.SaveChanges();
                 }
 
                 result = true;

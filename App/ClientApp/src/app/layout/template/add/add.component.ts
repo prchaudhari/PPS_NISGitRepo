@@ -86,9 +86,10 @@ export class AddComponent implements OnInit {
                     this.PageName = this.params.Routeparams.passingparams.PageName
                     this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
                 }
-              } 
+              }
               else {
                 localStorage.removeItem("pageparams");
+                localStorage.removeItem("pageAddRouteparams");
               }
           }
         });

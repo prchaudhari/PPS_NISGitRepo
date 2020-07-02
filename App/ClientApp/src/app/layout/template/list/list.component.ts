@@ -125,6 +125,7 @@ export class ListComponent implements OnInit {
                 case 'pagetype': return compareStr(a.PageTypeName, b.PageTypeName, isAsc);
                 case 'owner': return compareStr(a.PageOwnerName, b.PageOwnerName, isAsc);
                 case 'publishedBy': return compareStr(a.PagePublishedByUserName, b.PagePublishedByUserName, isAsc);
+                case 'version' : return compare(Number(a.Version), Number(b.Version), isAsc); 
                 //case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
                 default: return 0;
             }
@@ -145,8 +146,8 @@ export class ListComponent implements OnInit {
             searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
             searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
             searchParameter.SortParameter = {};
-            searchParameter.SortParameter.SortColumn = 'Status';
-            searchParameter.SortParameter.SortOrder = Constants.Ascending;
+            searchParameter.SortParameter.SortColumn = 'CreatedDate';
+            searchParameter.SortParameter.SortOrder = Constants.Descending;
             searchParameter.SearchMode = Constants.Contains;
         }
         this.templateList = await templateService.getTemplates(searchParameter);
@@ -226,6 +227,7 @@ export class ListComponent implements OnInit {
                     searchParameter.EndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
                 }
     
+                this.currentPage = this.currentPage - 1;
                 this.getTemplates(searchParameter);
                 this.isFilter = !this.isFilter;
             }
@@ -341,7 +343,11 @@ export class ListComponent implements OnInit {
     
 }
 
-function compareStr(a: string, b: string, isAsc: boolean) {
+function compare(a: number, b: number, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  function compareStr(a: string, b: string, isAsc: boolean) {
     return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
   }
   

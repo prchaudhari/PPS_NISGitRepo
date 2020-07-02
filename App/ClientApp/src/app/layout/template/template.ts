@@ -15,4 +15,5 @@ export interface Template {
     "PagePublishedByUserName":string;
     "PageTypeName":string;
     "PageWidgets": TemplateWidget[];
+    "CreatedDate":Date;
 }

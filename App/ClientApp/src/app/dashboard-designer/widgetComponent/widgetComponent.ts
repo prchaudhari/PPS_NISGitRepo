@@ -84,7 +84,7 @@ export class AccountInformationComponent  {
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center">
-        <img src="assets/images/ImageWidget.PNG" class="img-fluid" />
+        <img src="assets/images/icon-image.png" class="img-fluid" />
       </div>
     </div>
   </div>`
@@ -110,7 +110,7 @@ export class ImageComponent  {
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center">
-        <img src="assets/images/VideoWidget.PNG" class="img-fluid" />
+        <img src="assets/images/video-icon.png" class="img-fluid width30" />
       </div>
     </div>
   </div>`
