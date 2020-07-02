@@ -76,7 +76,9 @@ export class SidebarComponent implements OnInit {
   navigateToAnalytics() {
     this.route.navigate(['/analytics']);
   }
-
+  navigateToSettings() {
+    this.route.navigate(['/settings']);
+  }
   async logout() {
     // let loginService = this.injector.get(LoginService);
     // var userData = JSON.parse(localStorage.getItem('userClaims'));
