@@ -82,6 +82,9 @@
     <Compile Include="AssetRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="AssetSettingRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="CityRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

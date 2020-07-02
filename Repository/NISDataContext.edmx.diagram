@@ -26,6 +26,7 @@
         <EntityTypeShape EntityType="NISModel.CountryRecord" Width="1.75" PointX="7" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StateRecord" Width="1.75" PointX="4.875" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.WidgetRecord" Width="1.75" PointX="4.875" PointY="2.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.AssetSettingRecord" Width="1.75" PointX="2.75" PointY="3.875" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
