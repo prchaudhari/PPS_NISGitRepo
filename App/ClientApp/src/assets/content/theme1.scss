@@ -23,6 +23,43 @@
   $gridline-color: #e1e1e1;
   $bg-theme-danger: #ce0a0a;
 
+  .ftr-vrsn {
+    background: #0c111f;
+    border-top: solid thin #0c111f;
+  }
+
+  .multiselect-dropdown .dropdown-btn .selected-item {
+    border: 1px solid $color-theme !important;
+    background: $color-theme !important;
+  }
+
+  .multiselect-item-checkbox input[type=checkbox]:checked + div:before {
+    background: $color-theme !important;
+    color: $color-theme !important;
+    border: 2px solid $color-theme !important;
+  }
+
+  .multiselect-item-checkbox input[type=checkbox] + div:before {
+    color: $color-theme !important;
+    border: 2px solid $color-theme !important;
+  }
+
+  .multiselect-dropdown .dropdown-btn .dropdown-down {
+    border-top: 6px solid #adadad !important;
+    border-left: 6px solid transparent !important;
+    border-right: 6px solid transparent !important;
+  }
+
+  .multiselect-dropdown .dropdown-btn .dropdown-up {
+    border-bottom: 6px solid #adadad !important;
+    border-left: 6px solid transparent !important;
+    border-right: 6px solid transparent !important;
+  }
+
+  .multiselect-dropdown .dropdown-btn:focus {
+    outline: none !important;
+  }
+
   .login-right {
     color: rgba(0,0,0,.7);
   }

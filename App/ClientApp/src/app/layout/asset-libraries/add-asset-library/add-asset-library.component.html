@@ -3,6 +3,25 @@
     <span class="xs-title" *ngIf="updateOperationMode == false"> Add Asset Library  </span>
     <span class="xs-title" *ngIf="updateOperationMode == true"> Update Asset Library  </span>
   </div>
+  <!--delete this button-->
+  <button type="button" data-toggle="modal" data-target="#resourcePreview"><span class="fa fa-eye" id="btnViewImage"></span></button>
+  <div class="modal fade cust-modal bd-example-modal-lg" id="resourcePreview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body p-1">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <!--Image-->
+          <img class="card-img-top height100" src="assets/images/loginbg.jpg" />
+          <!--video-->
+          <!--<video class="width100 height100" style="object-fit:fill" autoplay controls>
+    <source src="assets/docs/SampleVideo.mp4" type="video/mp4">
+  </video>-->
+        </div>
+      </div>
+    </div>
+  </div>
   <form [formGroup]="assetLibraryFormGroup" name="roleForm" autocomplete="on" novalidate>
     <div class="card border-0 mb-2 card-shadow">
       <div class="card-header bg-white d-flex justify-content-between">
@@ -105,7 +124,7 @@
             </td>
           </ng-container>
           <ng-container matColumnDef="date">
-            <th class="width30" mat-header-cell *matHeaderCellDef mat-sort-header>
+            <th class="width28" mat-header-cell *matHeaderCellDef mat-sort-header>
               Last Updated Date
             </th>
             <td mat-cell *matCellDef="let element">
@@ -114,9 +133,10 @@
           </ng-container>
 
           <ng-container matColumnDef="actions">
-            <th class="width10" mat-header-cell *matHeaderCellDef> Actions </th>
+            <th class="width12" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
+                <button type="button" title="Preview" id="btnView" data-toggle="modal" data-target="#resourcePreview"><span class="fa fa-file-text-o"></span></button>
                 <button type="button" title="Download" (click)="DownloadAsset(element.Identifier)" id="btnUpdate"><span class="fa fa-download"></span></button>
                 <button type="button" title="Delete" (click)="DeleteAsset(element.Identifier)" id="btnDelete"><span class="fa fa-trash-o"></span></button>
               </div>
