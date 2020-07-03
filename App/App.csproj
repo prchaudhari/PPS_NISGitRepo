@@ -31,6 +31,7 @@
     <None Remove="ClientApp\src\app\confirm-user\confirm-user.component.ts" />
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.service.ts" />
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.ts" />
+    <None Remove="ClientApp\src\app\layout\asset-settings\asset-setting.ts" />
     <None Remove="ClientApp\src\app\layout\users\user.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\widget.service.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\Widget.ts" />

@@ -82,17 +82,77 @@ namespace nIS
             }
             return assetLibraries;
         }
+        /// <summary>
+        /// This method will call add asset library method of repository.
+        /// </summary>
+        /// <param name="assetLibraries">Asset library are to be add.</param>
+        /// <param name="tenantCode">Tenant code of asset library.</param>
+        /// <returns>
+        /// Returns true if entities added successfully, false otherwise.
+        /// </returns>
+        public bool Save(AssetSetting setting, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.IsValidAssetSetting(setting, tenantCode);
+
+                result = assetSettingRepository.Save(setting, tenantCode);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #endregion
 
-  
+
         #endregion
 
         #region Private Methods
 
-        
 
-       
+        #region Asset Libraries
+
+
+        /// <summary>
+        /// This method is responsible for validate asset s.
+        /// </summary>
+        /// <param name="assets"></param>
+        /// <param name="tenantCode"></param>
+        private void IsValidAssetSetting(AssetSetting item, string tenantCode)
+        {
+            try
+            {
+
+                InvalidAssetException invalidAssetException = new InvalidAssetException(tenantCode);
+
+                try
+                {
+                    item.IsValid();
+                }
+                catch (Exception ex)
+                {
+                    invalidAssetException.Data.Add(item.Identifier, ex.Data);
+                }
+
+
+                if (invalidAssetException.Data.Count > 0)
+                {
+                    throw invalidAssetException;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        #endregion
+
 
         #endregion
     }

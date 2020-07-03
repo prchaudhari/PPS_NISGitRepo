@@ -2,90 +2,141 @@
   <div class="page-title">
     <span class="xs-title">Asset Settings</span>
   </div>
-  <div class="card border-0 mb-2 card-shadow">
-    <div class="card-header bg-white d-flex justify-content-between">
-      <div>
-        <label class="m-0">Image</label>
+  <form [formGroup]="imageForm" name="assetForm" autocomplete="on" novalidate>
+    <div class="card border-0 mb-2 card-shadow">
+      <div class="card-header bg-white d-flex justify-content-between">
+        <div>
+          <label class="m-0">Image</label>
+        </div>
+        <div>
+          <button type="button" id="btnCollapsedDetails"
+                  class="toggle-btn border-0 p-0 bg-transparent"
+                  (click)="isCollapsedImage = !isCollapsedImage"
+                  [attr.aria-expanded]="!isCollapsedImage"
+                  aria-controls="collapseDetails">
+            <span class="fa" [ngClass]="!isCollapsedImage? 'fa-angle-down' : 'fa-angle-right'"></span>
+          </button>
+        </div>
       </div>
-      <div>
-        <button type="button" id="btnCollapsedDetails"
-                class="toggle-btn border-0 p-0 bg-transparent"
-                (click)="isCollapsedImage = !isCollapsedImage"
-                [attr.aria-expanded]="!isCollapsedImage"
-                aria-controls="collapseDetails">
-          <span class="fa" [ngClass]="!isCollapsedImage? 'fa-angle-down' : 'fa-angle-right'"></span>
-        </button>
-      </div>
-    </div>
-    <div class="card-body" id="collapseDetails" [ngbCollapse]="isCollapsedImage">
-      <form [formGroup]="imageForm">
+      <div class="card-body" id="collapseDetails" [ngbCollapse]="isCollapsedImage">
+
         <div class="row form-group">
           <div class="col-md-6 col-sm-6 col-lg-4">
-            <label id="lblImageHeight" for="inputImageHeight">Height<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="inputImageHeight" />
+            <label id="lblImageHeight" for="inputImageHeight">Height(CM)<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="inputImageHeight" formControlName="assetImageHeight" />
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="assetImageHeight.touched && assetImageHeight.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="assetImageHeight.errors?.pattern">Inavid image height</li>
+                <li class="text-danger" *ngIf="assetImageHeight.errors?.required">Image height required</li>
+                <!--<li class="text-danger" *ngIf="assetImageHeight.errors?.minlength">Asset library name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="assetImageHeight.errors?.maxlength">Asset library name length should not be greater than 100</li>-->
+              </ul>
+            </div>
           </div>
           <div class="col-md-6 col-sm-6 col-lg-4">
-            <label id="lblImageWidth" for="inputImageWidth">Width<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="inputImageWidth" />
+            <label id="lblImageWidth" for="inputImageWidth">Width(CM)<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="inputImageWidth" formControlName="assetImageWidth" />
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="assetImageWidth.touched && assetImageWidth.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="assetImageWidth.errors?.pattern">Inavid image width</li>
+                <li class="text-danger" *ngIf="assetImageWidth.errors?.required">Image width required</li>
+                <!--<li class="text-danger" *ngIf="assetLibraryName.errors?.minlength">Asset library name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="assetLibraryName.errors?.maxlength">Asset library name length should not be greater than 100</li>-->
+              </ul>
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 col-sm-6 col-lg-4">
             <label id="lblImageSize" for="inputImageSize">Size(MB)<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="inputImageSize" />
+            <input type="text" class="form-control" id="inputImageSize" formControlName="assetImageSize" />
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="assetImageSize.touched && assetImageSize.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="assetImageSize.errors?.pattern">Invalid image size</li>
+                <li class="text-danger" *ngIf="assetImageSize.errors?.required">Image size required</li>
+                <!--<li class="text-danger" *ngIf="assetImageSize.errors?.minlength">Asset library name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="assetImageSize.errors?.maxlength">Asset library name length should not be greater than 100</li>-->
+              </ul>
+            </div>
           </div>
           <div class="col-md-6 col-sm-6 col-lg-4">
             <label id="lblImageFile" for="inputImageFile">File Extensions<span class="text-danger">*</span></label>
-            <ng-multiselect-dropdown 
-                                     [data]="imagedropdownList"
-                                   
+            <ng-multiselect-dropdown [data]="imagedropdownList"
                                      [settings]="imagedropdownSettings"
-                                     (onSelect)="onItemSelect($event)"
-                                     (onSelectAll)="onSelectAll($event)">
+                                     (onSelect)="onItemSelectImage($event)"
+                                     (onSelectAll)="onSelectAllImage($event)"
+                                     [(ngModel)]="imageselectedItems"
+                                     formControlName="assetImageFile"
+                                     (onDeSelect)="onItemDeSelectImage($event)"
+                                     (onDeSelectAll)="onItemDeSelectAllImage($event)">
             </ng-multiselect-dropdown>
-          
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="isImageFileDropdownError" style="list-style-type:none">
+                <li class="text-danger">
+                  Please select image file extension
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </form>
-     
-    </div>
-  </div>
-  <div class="card border-0 mb-2 card-shadow">
-    <div class="card-header  bg-white d-flex justify-content-between">
-      <div>
-        <label class="m-0">Video</label>
-      </div>
-      <div>
-        <button type="button" id="btnCollapsedPermissions"
-                class="toggle-btn border-0 p-0 bg-transparent"
-                (click)="isCollapsedVideo = !isCollapsedVideo"
-                [attr.aria-expanded]="!isCollapsedVideo" aria-controls="collapsedAssets">
-          <span class="fa" [ngClass]="!isCollapsedVideo? 'fa-angle-down' : 'fa-angle-right'"></span>
-        </button>
-      </div>
-    </div>
-    <div class="card-body rtl-checkbox parent-rtl" id="collapsedAssets" [ngbCollapse]="isCollapsedVideo">
-      <div class="row">
-        <div class="col-md-6 col-sm-6 col-lg-4">
-          <label id="lblImageSize" for="inputImageSize">Size(MB)<span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="inputImageSize" />
-        </div>
-        <div class="col-md-6 col-sm-6 col-lg-4">
-          <label id="lblImageFile" for="inputImageFile">File Extensions<span class="text-danger">*</span></label>
-          <ng-multiselect-dropdown [data]="videodropdownList"
-                                   
-                                   [settings]="videodropdownSettings"
-                                   (onSelect)="onItemSelect($event)"
-                                   (onSelectAll)="onSelectAll($event)">
-          </ng-multiselect-dropdown>
-        </div>
-      </div>
 
+      </div>
     </div>
-  </div>
+    <div class="card border-0 mb-2 card-shadow">
+      <div class="card-header  bg-white d-flex justify-content-between">
+        <div>
+          <label class="m-0">Video</label>
+        </div>
+        <div>
+          <button type="button" id="btnCollapsedPermissions"
+                  class="toggle-btn border-0 p-0 bg-transparent"
+                  (click)="isCollapsedVideo = !isCollapsedVideo"
+                  [attr.aria-expanded]="!isCollapsedVideo" aria-controls="collapsedAssets">
+            <span class="fa" [ngClass]="!isCollapsedVideo? 'fa-angle-down' : 'fa-angle-right'"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body rtl-checkbox parent-rtl" id="collapsedAssets" [ngbCollapse]="isCollapsedVideo">
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblImageSize" for="inputVideoSize">Size(MB)<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="inputVideoSize" formControlName="assetVideoSize"/>
+             <div class="validation-msg" style="color:red">
+              <ul *ngIf="assetVideoSize.touched && assetVideoSize.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="assetVideoSize.errors?.pattern">Invalid video size</li>
+                <li class="text-danger" *ngIf="assetVideoSize.errors?.required">Video size required</li>
+                <!--<li class="text-danger" *ngIf="assetVideoSize.errors?.minlength">Asset library name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="assetVideoSize.errors?.maxlength">Asset library name length should not be greater than 100</li>-->
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblVideoFile" for="inputVideoFile">File Extensions<span class="text-danger">*</span></label>
+            <ng-multiselect-dropdown [data]="videodropdownList"
+                                     [settings]="videodropdownSettings"
+                                     (onSelect)="onItemSelectVideo($event)"
+                                     (onSelectAll)="onSelectAllVideo($event)"
+                                     [(ngModel)]="videoselectedItems"
+                                     formControlName="assetVideoFile"
+                                     (onDeSelect)="onItemDeSelectVideo($event)"
+                                     (onDeSelectAll)="onItemDeSelectAllVideo($event)">
+            </ng-multiselect-dropdown>
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="isVideoFileDropdownError" style="list-style-type:none">
+                <li class="text-danger">
+                  Please select video file extension
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
-      <button class="btn-footer-fill mr-2" id="btnSave">Save</button>
+      <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="DisableSaveButton()" (click)="SaveAssetSettings()">Save</button>
       <!--<button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>-->
     </div>
   </div>

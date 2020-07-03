@@ -110,6 +110,42 @@ namespace nIS
             return assetSettings;
         }
 
+        /// <summary>
+        /// This is responsible for get asset library
+        /// </summary>
+        /// <param name="assetSettingSearchParameter"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        public bool Save(AssetSetting setting, string tenantCode)
+        {
+            AssetSettingRecord record = new AssetSettingRecord();
+            bool result;
+            try
+            {
+                
+                this.SetAndValidateConnectionString(tenantCode);
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    record = nISEntitiesDataContext.AssetSettingRecords.Where(item => item.Id == setting.Identifier && item.TenantCode == tenantCode).FirstOrDefault();
+                    record.ImageFileExtension = setting.ImageFileExtension;
+                    record.VideoFileExtension = setting.VideoFileExtension;
+                    record.ImageHeight = setting.ImageHeight;
+                    record.ImageSize = setting.ImageSize;
+                    record.ImageWidth = setting.ImageWidth;
+
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
         #endregion
 
 

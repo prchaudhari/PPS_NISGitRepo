@@ -103,19 +103,19 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("VideoFileExtension", typeof(AssetLibrary)), ModelConstant.ASSETSETTING_MODEL_SECTION + "~" + ModelConstant.INVALID_ASSETSETTINGS_VIDEOFILEEXTENSION);
                 }
-                if (this.ImageHeight>0)
+                if (this.ImageHeight<=0)
                 {
                     exception.Data.Add(this.utility.GetDescription("ImageHeight", typeof(AssetLibrary)), ModelConstant.ASSETSETTING_MODEL_SECTION + "~" + ModelConstant.INVALID_ASSETSETTINGS_IMAGEHEIGHT);
                 }
-                if (this.ImageWidth > 0)
+                if (this.ImageWidth <= 0)
                 {
                     exception.Data.Add(this.utility.GetDescription("ImageWidth", typeof(AssetLibrary)), ModelConstant.ASSETSETTING_MODEL_SECTION + "~" + ModelConstant.INVALID_ASSETSETTINGS_IMAGEWIDTH);
                 }
-                if (this.ImageSize > 0)
+                if (this.ImageSize <= 0)
                 {
                     exception.Data.Add(this.utility.GetDescription("ImageSize", typeof(AssetLibrary)), ModelConstant.ASSETSETTING_MODEL_SECTION + "~" + ModelConstant.INVALID_ASSETSETTINGS_IMAGESIZE);
                 }
-                if (this.VideoSize > 0)
+                if (this.VideoSize <= 0)
                 {
                     exception.Data.Add(this.utility.GetDescription("VideoSize", typeof(AssetLibrary)), ModelConstant.ASSETSETTING_MODEL_SECTION + "~" + ModelConstant.INVALID_ASSETSETTINGS_VIDEOSIZE);
                 }

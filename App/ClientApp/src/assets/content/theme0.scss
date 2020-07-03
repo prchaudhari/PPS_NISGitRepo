@@ -22,6 +22,20 @@
   $btn-table-color: #949494;
   $gridline-color: #e1e1e1;
   $bg-theme-danger: #ce0a0a;
+  /*
+  .multiselect-dropdown[_ngcontent-ibj-c5] .dropdown-btn[_ngcontent-ibj-c5] .selected-item[_ngcontent-ibj-c5] {
+    border: 1px solid #e2801c !important;
+    background: #e2801c !important;
+  }*/
+  .multiselect-dropdown[_ngcontent-vmy-c5] .dropdown-btn[_ngcontent-vmy-c5] .selected-item[_ngcontent-vmy-c5] {
+    border: 1px solid $color-theme !important;
+    margin-right: 4px;
+    background: $color-theme !important;
+    padding: 0 5px;
+    color: #fff;
+    border-radius: 2px;
+    float: left;
+  }
 
   .widget-header-title {
     color: red;
@@ -83,6 +97,7 @@
   gridster-preview {
     background: transparent;
   }
+
 
   .custom-control-input:checked ~ .custom-control-label::before {
     border-color: $btn-bg;

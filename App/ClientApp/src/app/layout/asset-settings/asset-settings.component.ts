@@ -1,11 +1,19 @@
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+
+import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import * as $ from 'jquery';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { ConfigConstants } from 'src/app/shared/constants/configConstants';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Location } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+
+import { Constants } from 'src/app/shared/constants/constants';
+import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
+import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAccessor, FormArray, ValidatorFn } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { AssetSetting } from './asset-setting'
+import { HttpClientService } from 'src/app/core/services/httpClient.service';
+
 @Component({
   selector: 'app-asset-settings',
   templateUrl: './asset-settings.component.html',
@@ -15,9 +23,22 @@ export class AssetSettingsComponent implements OnInit {
   public isUploadAssets: boolean = false;
   public isCollapsedImage: boolean = true;
   public isCollapsedVideo: boolean = true;
-
+  public baseURL: string = ConfigConstants.BaseURL;
+  public onlyNumbers = '[0-9]+[.]{0,1}[0-9]{0,2}$';
   imageForm: FormGroup;
-  constructor(private _location: Location, private fb: FormBuilder) { }
+  public isImageFileDropdownError = false;
+  public isVideoFileDropdownError = false;
+
+  constructor(private _location: Location,
+    //private _window: WindowRef,
+    private _router: Router,
+    private _activatedRouter: ActivatedRoute,
+    private _http: HttpClient,
+    private _spinnerService: NgxUiLoaderService,
+    private formbuilder: FormBuilder,
+    private _messageDialogService: MessageDialogService,
+    private injector: Injector,
+    private fb: FormBuilder) { }
   imagedropdownList = [];
   imageselectedItems = [];
   imagedropdownSettings: IDropdownSettings = {};
@@ -25,15 +46,25 @@ export class AssetSettingsComponent implements OnInit {
   videodropdownList = [];
   videoselectedItems = [];
   videodropdownSettings: IDropdownSettings = {};
+  public setting: AssetSetting = {
+    Identifier:0,
+    ImageHeight:0,
+    ImageFileExtension:"",
+    VideoFileExtension:"",
+    ImageWidth:0,
+    ImageSize:0,
+    VideoSize:0
+  };
+
   ngOnInit() {
     this.imagedropdownList = [
-     
+
       { id: 1, item_text: 'png' },
       { id: 2, item_text: 'jpeg' }
-     
+
     ];
-  
-    this.imagedropdownSettings   = {
+
+    this.imagedropdownSettings = {
       singleSelection: false,
       idField: 'id',
       textField: 'item_text',
@@ -57,16 +88,180 @@ export class AssetSettingsComponent implements OnInit {
     };
 
     this.imageForm = this.fb.group({
-      
+      assetImageHeight: [null, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)])],
+      assetImageWidth: [null, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)])],
+      assetImageSize: [null, Validators.compose([Validators.required, Validators.minLength(2),
+      Validators.maxLength(100)])],
+      assetVideoSize: [null, Validators.compose([Validators.required, Validators.minLength(2),
+        Validators.maxLength(100)])],
+      assetImageFile: [null],
+      assetVideoFile: [null]
+
     })
+    this.LoadAsset();
   }
-  onItemSelect(item: any) {
-    console.log(item);
+  get assetImageHeight() {
+    return this.imageForm.get('assetImageHeight');
   }
-  onSelectAll(items: any) {
-    console.log(items);
+  get assetImageWidth() {
+    return this.imageForm.get('assetImageWidth');
+  }
+  get assetImageSize() {
+    return this.imageForm.get('assetImageSize');
+  }
+  get assetVideoSize() {
+    return this.imageForm.get('assetVideoSize');
+  }
+  get assetVideoFile() {
+    return this.imageForm.get('assetVideoFile');
+  }
+  get assetImageFile() {
+    return this.imageForm.get('assetImageFile');
+  }
+  LoadAsset(): void {
+
+    this._spinnerService.start();
+    var AssetSearchParameter;
+    this._http.post(this.baseURL + 'AssetSetting/list', AssetSearchParameter).subscribe(
+      data => {
+        this.setting = <AssetSetting>data[0];
+        this._spinnerService.stop();
+        this.imageForm.controls['assetVideoSize'].setValue(this.setting.VideoSize);
+        this.imageForm.controls['assetImageSize'].setValue(this.setting.ImageSize);
+        this.imageForm.controls['assetImageWidth'].setValue(this.setting.ImageWidth);
+        this.imageForm.controls['assetImageHeight'].setValue(this.setting.ImageHeight);
+        var imageFile = this.setting.ImageFileExtension.split(",");
+        for (var i = 0; i < imageFile.length; i++) {
+          var item = this.imagedropdownList.filter(x => x.item_text == imageFile[i]);
+          if (item != null && item.length > 0) {
+            this.imageselectedItems.push(item[0]);
+          }
+        }
+        this.imageForm.controls['assetImageFile'].setValue(this.imageselectedItems);
+
+        var videoFile = this.setting.VideoFileExtension.split(",");
+        for (var i = 0; i < videoFile.length; i++) {
+          var item = this.videodropdownList.filter(x => x.item_text == videoFile[i]);
+          if (item != null && item.length > 0) {
+            this.videoselectedItems.push(item[0]);
+          }
+        }
+        this.imageForm.controls['assetVideoFile'].setValue(this.videoselectedItems);
+
+      },
+      error => {
+        $('.overlay').show();
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this._spinnerService.stop();
+      });
+  }
+  DisableSaveButton(): boolean {
+    if (this.imageForm.invalid) {
+      return true;
+    }
+    else if (this.videoselectedItems.length == 0) {
+      return true;
+
+    }
+    else if (this.imageselectedItems.length == 0) {
+
+      return true;
+    }
+    return false;
+  }
+  SaveAssetSettings(): void {
+    this._spinnerService.start();
+
+   
+    this.setting.VideoSize = this.imageForm.value.assetVideoSize;
+    this.setting.ImageSize = this.imageForm.value.assetImageSize;
+    this.setting.ImageWidth = this.imageForm.value.assetImageWidth;
+    this.setting.ImageHeight = this.imageForm.value.assetImageHeight;
+    this.setting.ImageFileExtension = Array.prototype.map.call(this.imageselectedItems, (file: any) => file.item_text).join();
+    this.setting.VideoFileExtension = Array.prototype.map.call(this.videoselectedItems, (file: any) => file.item_text).join();
+    this.save(this.setting);
+
+  }
+  public async save(postData): Promise<void> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl ='AssetSetting/Save';
+    this._spinnerService.start();
+    var data = [];
+    data.push(postData);
+    await httpClientService.CallHttp("POST", requestUrl, data).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this._spinnerService.stop();
+
+          if (httpEvent["status"] === 200) {
+            this._messageDialogService.openDialogBox('Message', "Asset configuration saved successfully", Constants.msgBoxSuccess);
+          }
+         
+        }
+      }, (error) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+       
+          this._spinnerService.stop();
+
+      });
+    
   }
 
+  onItemSelectImage(item: any) {
+    this.imageselectedItems.push(item);
+    this.isImageFileDropdownError = false;
+    console.log(item);
+  }
+
+  onSelectAllImage(items: any) {
+    this.imageselectedItems = [];
+    for (var i = 0; i <= items.length; i++) {
+      this.imageselectedItems.push(items[0]);
+    }
+    this.isImageFileDropdownError = false;
+  }
+  onItemDeSelectImage(item: any) {
+    this.imageselectedItems.push(item);
+    this.imageselectedItems = this.imageselectedItems.filter(x => x.item_text != item.item_text);
+    if (this.imageselectedItems.length == 0) {
+      this.isImageFileDropdownError = true;
+
+    }
+  
+  }
+  onItemDeSelectAllImage(item: any) {
+    this.imageselectedItems = [];
+    this.isImageFileDropdownError = true;
+  }
+
+  onItemSelectVideo(item: any) {
+    this.videoselectedItems.push(item);
+    this.isVideoFileDropdownError = false;
+
+  }
+
+  onSelectAllVideo(items: any) {
+    this.videoselectedItems = [];
+    for (var i = 0; i <= items.length; i++) {
+      this.videoselectedItems.push(items[0]);
+    }
+    this.isVideoFileDropdownError = false;
+
+  }
+
+  onItemDeSelectVideo(item: any) {
+    this.videoselectedItems = this.videoselectedItems.filter(x => x.item_text != item.item_text);
+    if (this.videoselectedItems.length == 0) {
+      this.isVideoFileDropdownError = true;
+
+    }
+  }
+  onItemDeSelectAllVideo(item: any) {
+    this.videoselectedItems = [];
+    this.isVideoFileDropdownError = true;
+  }
   navigateToListPage() {
     this._location.back();
   }

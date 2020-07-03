@@ -77,6 +77,7 @@ export class AddAssetLibraryComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   //@ViewChild(MatInput, { static: true}) multipleFileAssetUpload: ElementRef;
+  public isNoRecord = false;
 
   constructor(
     private _location: Location,
@@ -369,6 +370,13 @@ export class AddAssetLibraryComponent implements OnInit {
 
           this.assetLibrary.Assets[i].IsChecked = false;
         }
+        if (this.assetLibrary.Assets == null || this.assetLibrary.Assets == undefined || this.assetLibrary.Assets.length == 0) {
+          this.isNoRecord = true;
+        }
+        else {
+          this.isNoRecord = false;
+
+        }
         this.dataSource = new MatTableDataSource(this.assetLibrary.Assets);
         this.dataSource.sort = this.sort;
         this.dataSource.sort = this.sort;
@@ -648,6 +656,13 @@ export class AddAssetLibraryComponent implements OnInit {
       this.assetLibrary = assetLibrary[0];
       this.assetLibraryFormGroup.controls['assetLibraryName'].setValue(assetLibrary[0].Name);
       this.assetLibraryFormGroup.controls['assetLibraryDescription'].setValue(assetLibrary[0].Description);
+      if (this.assetLibrary.Assets == null || this.assetLibrary.Assets == undefined || this.assetLibrary.Assets.length == 0) {
+        this.isNoRecord = true;
+      }
+      else {
+        this.isNoRecord = false;
+
+      }
       if (this.assetLibrary.Assets != null) {
         for (let i = 0; i < this.assetLibrary.Assets.length; i++) {
 

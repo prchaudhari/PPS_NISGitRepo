@@ -72,6 +72,7 @@ export class ViewAssetLibraryComponent implements OnInit {
 
   public isCollapsedDetails: boolean = false;
   public isCollapsedAssets: boolean = true;
+  public isNoRecord = false;
   navigateToListPage() {
     this._location.back();
   }
@@ -141,6 +142,13 @@ export class ViewAssetLibraryComponent implements OnInit {
     searchParameter.IsAssetDataRequired = true;
     let assetLibrary = await assetLibraryService.getAssetLibrary(searchParameter);
     this.assetLibrary = assetLibrary[0];
+    if (this.assetLibrary.Assets == null || this.assetLibrary.Assets == undefined || this.assetLibrary.Assets.length == 0) {
+      this.isNoRecord = true;
+    }
+    else {
+      this.isNoRecord = false;
+
+    }
     this.dataSource = new MatTableDataSource<Asset>(this.assetLibrary.Assets);
     //this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

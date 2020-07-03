@@ -73,6 +73,29 @@ namespace nIS
             return assetlibraries;
         }
 
+        /// <summary>
+        /// This method helps to get asset libraries list based on the search parameters.
+        /// </summary>
+        /// <param name="assetSettingSearchParameter"></param>
+        /// <returns>List of asset libraries</returns>
+        [HttpPost]
+        public bool Save(IList<AssetSetting> setting)
+        {
+            bool result;  
+            try
+            {
+
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.assetSettingManager.Save(setting[0],tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
         #endregion
 
 
