@@ -174,7 +174,18 @@
             <div class="validation-msg" style="color: red;margin-left: 15px;">
               <ul>
                 <li class="text-danger" *ngIf="assetFileSizeError">
-                  {{fileType}} file size should not be greater the {{fileSize}}
+                  {{fileType}} file size should not be greater than {{fileSize}} MB
+                </li>
+                <li class="text-danger" *ngIf="assetFileWidthHeightError">
+                  {{fileType}} width should not be greater than {{setting.ImageWidth}}CM and height should not be greater than {{setting.ImageHeight}}CM
+                </li>
+                <li class="text-danger" *ngIf="assetFileWidthError">
+                  {{fileType}} width should not be greater than {{setting.ImageWidth}}CM
+
+                </li>
+                <li class="text-danger" *ngIf="assetFileHeightError">
+                  {{fileType}} height should not be greater than {{setting.ImageHeight}}CM
+
                 </li>
                 <li class="text-danger" *ngIf="assetFileTypeError">
                   Invalid file type

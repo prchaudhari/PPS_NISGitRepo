@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
@@ -18,6 +19,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AssetLibraryService } from '../asset-library.service';
 import { MatInput } from '@angular/material';
+import { AssetSetting } from '../../asset-settings/asset-setting'
+
 export interface ListElement {
   name: string;
   updatedby: string;
@@ -69,15 +72,36 @@ export class AddAssetLibraryComponent implements OnInit {
   };
   public assetFileTypeError = false;
   public assetFileSizeError = false;
+  public assetFileWidthError = false;
+  public assetFileHeightError = false;
+  public assetFileWidthHeightError = false;
   public fileType = '';
   public assetLibraryFormGroup: FormGroup;
-  fileSize: string = '';
+  fileSize;
   public array: any;
   public sortedAssetList: Asset[] = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   //@ViewChild(MatInput, { static: true}) multipleFileAssetUpload: ElementRef;
-  public isNoRecord = false;
+  public isNoRecord = true;
+  public setting: AssetSetting = {
+    Identifier: 0,
+    ImageHeight: 0,
+    ImageFileExtension: "",
+    VideoFileExtension: "",
+    ImageWidth: 0,
+    ImageSize: 0,
+    VideoSize: 0
+  };
+  public actualSetting: AssetSetting = {
+    Identifier: 0,
+    ImageHeight: 0,
+    ImageFileExtension: "",
+    VideoFileExtension: "",
+    ImageWidth: 0,
+    ImageSize: 0,
+    VideoSize: 0
+  };
 
   constructor(
     private _location: Location,
@@ -157,7 +181,7 @@ export class AddAssetLibraryComponent implements OnInit {
     paginatorIntl.previousPageLabel = '';
     paginatorIntl.firstPageLabel = '';
     paginatorIntl.lastPageLabel = '';
-
+    this.LoadAssetSettings();
   }
 
   ngAfterViewInit() {
@@ -337,7 +361,7 @@ export class AddAssetLibraryComponent implements OnInit {
         this._spinnerService.stop();
       }
     }
-   
+
 
   }
   getAssetDetails(): void {
@@ -468,6 +492,9 @@ export class AddAssetLibraryComponent implements OnInit {
     this.uploadAssetContainer = false;
     this.assetFileTypeError = false;
     this.assetFileSizeError = false;
+    this.assetFileWidthHeightError = false;
+    this.assetFileWidthError = false;
+    this.assetFileHeightError = false;
   }
 
   SetTab(tabNumber: number): void {
@@ -478,7 +505,7 @@ export class AddAssetLibraryComponent implements OnInit {
     //this.multipleFileAssetUpload ? this.multipleFileAssetUpload.nativeElement.value = '' : null;
     if (this.updateOperationMode == false) {
       if (this.assetLibrary.Identifier <= 0 || this.assetLibrary.Identifier == null || this.assetLibrary.Identifier == undefined) {
-      //  return true;
+        //  return true;
         this._messageDialogService.openDialogBox('Message', "Asset Library should be added first.", Constants.msgBoxSuccess);
 
       }
@@ -530,27 +557,72 @@ export class AddAssetLibraryComponent implements OnInit {
   }
 
   HandleFileUpload(e): void {
+
     var files = e.target.files;
     var file = files[0];
     var imagePattern = /image-*/;
     var vedioPattern = /video-*/;
     if (file.type.match(imagePattern)) {
-      if (file.size > 1000000) {
-        this.fileSize = '1 MB';
-        this.fileType = 'Image';
+      if (file.size > this.actualSetting.ImageSize) {
+        this.fileSize = this.setting.ImageSize
         this.assetFileSizeError = true;
         this.assetFileTypeError = false;
         this.fileNameList = [];
-        //return false;
       }
       else {
         this.assetFileSizeError = false;
 
       }
+      let img = new Image()
+      img.src = window.URL.createObjectURL(e.target.files[0])
+      img.onload = () => {
+        console.log(img.width + "image " + img.height);
+        console.log(this.actualSetting.ImageWidth + "image " + this.actualSetting.ImageHeight);
+        var height = img.height;
+        var width = img.width;
+
+        if (height > this.actualSetting.ImageHeight && width > this.actualSetting.ImageWidth) {
+          this.assetFileWidthHeightError = true;
+          this.assetFileWidthError = false;
+          this.assetFileHeightError = false;
+        }
+        else if (height > this.actualSetting.ImageHeight) {
+          this.assetFileWidthHeightError = false;
+          this.assetFileWidthError = false;
+          this.assetFileHeightError = true;
+        }
+        else if (width > this.actualSetting.ImageWidth) {
+          this.assetFileWidthHeightError = false;
+          this.assetFileWidthError = true;
+          this.assetFileHeightError = false;
+        }
+        else {
+          this.assetFileWidthHeightError = false;
+          this.assetFileWidthError = false;
+          this.assetFileHeightError = false;
+        }
+        if (this.assetFileTypeError == false && this.assetFileSizeError == false &&
+          this.assetFileWidthHeightError == false && this.assetFileHeightError == false && this.assetFileWidthError == false
+        ) {
+          this.assetFileTypeError = false;
+          this.assetFileSizeError = false;
+          this.assetFileWidthHeightError = false;
+          this.assetFileWidthError = false;
+          this.assetFileHeightError = false;
+          this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
+          this.fileToUpload = files;
+        }
+        else {
+          this.fileNameList = [];
+        }
+      }
+      this.fileType = 'Image';
+
     }
     else if (file.type.match(vedioPattern)) {
-      if (file.size > 2000000) {
-        this.fileSize = '2 MB';
+
+      if (file.size > this.actualSetting.VideoSize) {
+        this.fileSize = this.setting.VideoSize;
         this.fileType = 'Video';
         this.assetFileSizeError = true;
         this.assetFileTypeError = false;
@@ -564,7 +636,20 @@ export class AddAssetLibraryComponent implements OnInit {
         this.assetFileSizeError = false;
 
       }
-
+      if (this.assetFileTypeError == false && this.assetFileSizeError == false &&
+        this.assetFileWidthHeightError == false && this.assetFileHeightError == false && this.assetFileWidthError == false
+      ) {
+        this.assetFileTypeError = false;
+        this.assetFileSizeError = false;
+        this.assetFileWidthHeightError = false;
+        this.assetFileWidthError = false;
+        this.assetFileHeightError = false;
+        this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
+        this.fileToUpload = files;
+      }
+      else {
+        this.fileNameList = [];
+      }
 
     }
     else {
@@ -575,13 +660,8 @@ export class AddAssetLibraryComponent implements OnInit {
       // return false;
 
     }
-    if (this.assetFileTypeError == false && this.assetFileSizeError == false) {
-      this.assetFileTypeError = false;
-      this.assetFileSizeError = false;
 
-      this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
-      this.fileToUpload = files;
-    }
+   
 
     //return true;
   }
@@ -675,7 +755,7 @@ export class AddAssetLibraryComponent implements OnInit {
         this.totalSize = this.array.length;
         this.iterator();
       }
-      
+
     }
   }
 
@@ -735,6 +815,30 @@ export class AddAssetLibraryComponent implements OnInit {
     const part = this.array.slice(start, end);
     this.dataSource = part;
     this.dataSource.sort = this.sort;
+  }
+
+  LoadAssetSettings(): void {
+   
+    var AssetSearchParameter;
+    this._http.post(this.baseURL + 'AssetSetting/list', AssetSearchParameter).subscribe(
+      data => {
+        this.setting = data[0];
+        
+        //this.setting.ImageHeight = 0;
+        //this.setting.ImageFileExtension = "";
+        //this.setting.VideoFileExtension = "";
+        //this.setting.ImageWidth = 0;
+        this.actualSetting.ImageSize = this.setting.ImageSize * 1024 * 1024;
+        this.actualSetting.VideoSize = this.setting.VideoSize * 1024 * 1024;
+        this.actualSetting.ImageWidth = this.setting.ImageWidth * 37.7952755906;
+        this.actualSetting.ImageHeight = this.setting.ImageHeight * 37.7952755906;
+
+      },
+      error => {
+        $('.overlay').show();
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this._spinnerService.stop();
+      });
   }
 }
 function compareStr(a: string, b: string, isAsc: boolean) {

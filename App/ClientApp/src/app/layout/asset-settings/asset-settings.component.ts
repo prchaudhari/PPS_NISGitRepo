@@ -24,7 +24,7 @@ export class AssetSettingsComponent implements OnInit {
   public isCollapsedImage: boolean = true;
   public isCollapsedVideo: boolean = true;
   public baseURL: string = ConfigConstants.BaseURL;
-  public onlyNumbers = '[0-9]+[.]{0,1}[0-9]{0,2}$';
+  public onlyNumbers = '[0-9]*(?:\.[0-9]{1,2})?$';
   imageForm: FormGroup;
   public isImageFileDropdownError = false;
   public isVideoFileDropdownError = false;
