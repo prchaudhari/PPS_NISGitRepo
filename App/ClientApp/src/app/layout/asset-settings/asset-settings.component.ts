@@ -47,13 +47,13 @@ export class AssetSettingsComponent implements OnInit {
   videoselectedItems = [];
   videodropdownSettings: IDropdownSettings = {};
   public setting: AssetSetting = {
-    Identifier:0,
-    ImageHeight:0,
-    ImageFileExtension:"",
-    VideoFileExtension:"",
-    ImageWidth:0,
-    ImageSize:0,
-    VideoSize:0
+    Identifier: 0,
+    ImageHeight: 0,
+    ImageFileExtension: "",
+    VideoFileExtension: "",
+    ImageWidth: 0,
+    ImageSize: 0,
+    VideoSize: 0
   };
 
   ngOnInit() {
@@ -95,7 +95,7 @@ export class AssetSettingsComponent implements OnInit {
       assetImageSize: [null, Validators.compose([Validators.required, Validators.minLength(2),
       Validators.maxLength(100)])],
       assetVideoSize: [null, Validators.compose([Validators.required, Validators.minLength(2),
-        Validators.maxLength(100)])],
+      Validators.maxLength(100)])],
       assetImageFile: [null],
       assetVideoFile: [null]
 
@@ -105,21 +105,27 @@ export class AssetSettingsComponent implements OnInit {
   get assetImageHeight() {
     return this.imageForm.get('assetImageHeight');
   }
+
   get assetImageWidth() {
     return this.imageForm.get('assetImageWidth');
   }
+
   get assetImageSize() {
     return this.imageForm.get('assetImageSize');
   }
+
   get assetVideoSize() {
     return this.imageForm.get('assetVideoSize');
   }
+
   get assetVideoFile() {
     return this.imageForm.get('assetVideoFile');
   }
+
   get assetImageFile() {
     return this.imageForm.get('assetImageFile');
   }
+
   LoadAsset(): void {
 
     this._spinnerService.start();
@@ -157,6 +163,7 @@ export class AssetSettingsComponent implements OnInit {
         this._spinnerService.stop();
       });
   }
+
   DisableSaveButton(): boolean {
     if (this.imageForm.invalid) {
       return true;
@@ -171,10 +178,11 @@ export class AssetSettingsComponent implements OnInit {
     }
     return false;
   }
+
   SaveAssetSettings(): void {
     this._spinnerService.start();
 
-   
+
     this.setting.VideoSize = this.imageForm.value.assetVideoSize;
     this.setting.ImageSize = this.imageForm.value.assetImageSize;
     this.setting.ImageWidth = this.imageForm.value.assetImageWidth;
@@ -184,9 +192,10 @@ export class AssetSettingsComponent implements OnInit {
     this.save(this.setting);
 
   }
+
   public async save(postData): Promise<void> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl ='AssetSetting/Save';
+    let requestUrl = 'AssetSetting/Save';
     this._spinnerService.start();
     var data = [];
     data.push(postData);
@@ -198,15 +207,15 @@ export class AssetSettingsComponent implements OnInit {
           if (httpEvent["status"] === 200) {
             this._messageDialogService.openDialogBox('Message', "Asset configuration saved successfully", Constants.msgBoxSuccess);
           }
-         
+
         }
       }, (error) => {
         this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
-       
-          this._spinnerService.stop();
+
+        this._spinnerService.stop();
 
       });
-    
+
   }
 
   onItemSelectImage(item: any) {
@@ -222,6 +231,7 @@ export class AssetSettingsComponent implements OnInit {
     }
     this.isImageFileDropdownError = false;
   }
+
   onItemDeSelectImage(item: any) {
     this.imageselectedItems.push(item);
     this.imageselectedItems = this.imageselectedItems.filter(x => x.item_text != item.item_text);
@@ -229,8 +239,9 @@ export class AssetSettingsComponent implements OnInit {
       this.isImageFileDropdownError = true;
 
     }
-  
+
   }
+
   onItemDeSelectAllImage(item: any) {
     this.imageselectedItems = [];
     this.isImageFileDropdownError = true;
@@ -258,10 +269,12 @@ export class AssetSettingsComponent implements OnInit {
 
     }
   }
+
   onItemDeSelectAllVideo(item: any) {
     this.videoselectedItems = [];
     this.isVideoFileDropdownError = true;
   }
+
   navigateToListPage() {
     this._location.back();
   }

@@ -133,7 +133,7 @@ namespace nIS
                     record.ImageHeight = setting.ImageHeight;
                     record.ImageSize = setting.ImageSize;
                     record.ImageWidth = setting.ImageWidth;
-
+                    record.VideoSize = setting.VideoSize;
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
