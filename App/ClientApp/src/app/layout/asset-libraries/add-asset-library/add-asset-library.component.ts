@@ -67,6 +67,7 @@ export class AddAssetLibraryComponent implements OnInit {
   fileNameList: string[] = [];
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
+  public image;
   public assetLibraryFormErrorObject: any = {
     showAssetLibraryNameError: false
   };
@@ -78,6 +79,7 @@ export class AddAssetLibraryComponent implements OnInit {
   public fileType = '';
   public assetLibraryFormGroup: FormGroup;
   fileSize;
+  public isShowPreview = false;
   public array: any;
   public sortedAssetList: Asset[] = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -262,6 +264,23 @@ export class AddAssetLibraryComponent implements OnInit {
             document.body.appendChild(link);
             link.click();
           }
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this._spinnerService.stop();
+        });
+  }
+  PreviewAsset(assetId: number): void {
+    this._spinnerService.start();
+    this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + assetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this._spinnerService.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          
+          
         },
         error => {
           $('.overlay').show();
