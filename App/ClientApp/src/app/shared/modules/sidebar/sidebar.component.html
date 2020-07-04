@@ -7,17 +7,28 @@
   <div class="d-md-none float-right xs-top">
     <button class="fa fa-ellipsis-v hamburger" (click)="isTopbarShow=!isTopbarShow"></button>
   </div>
+
   <ul class='nav nav-toolbar float-right' [ngClass]="isTopbarShow? 'show':'hide'">
     <li class="nav-item dropdown float-right">
       <a class="nav-link top-nav-link" id="dropdownMenuButton" data-toggle="dropdown">
         <span class="user-name-nav">{{loggedInUserName}}</span>
         <i class="fa fa-angle-down ml-2"></i>
       </a>
+
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" (click)="navigateToProfile()">Profile</a>
         <a class="dropdown-item" (click)="navigateToChangePassword()">Change Password</a>
         <a class="dropdown-item" (click)="logout()">Logout</a>
       </div>
+    </li>
+
+  </ul>
+  <ul class='nav nav-toolbar float-right'>
+    <li>
+      <a class="nav-link top-nav-link" id="settingsSideBar" (click)="ChangeSideBar()">
+        <span></span>
+        <i class="fa fa-cog"></i>
+      </a>
     </li>
   </ul>
   <!--mobile end-->
@@ -39,43 +50,42 @@
 <div class="side-bar-container" [ngClass]="sidebar_class">
   <div class="side-bar-nav stylescrollbar">
     <ul class='side-bar-ul'>
-      <li [ngClass]="(URL=='/dashboard')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToDashoard()">
+      <li [ngClass]="(URL=='/dashboard')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToDashoard()">
         <a> <span class='nav-icon icon-machine-dashboard2' title="Dashboard"> </span><span class='nav-title'>Dashboard</span></a>
       </li>
-      <li [ngClass]="(URL=='/user')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToUser()">
+      <li [ngClass]="(URL=='/user')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToUser()">
         <a> <span class='nav-icon icon-users-line2' title="Users"> </span><span class='nav-title'>Users</span>  </a>
       </li>
-      <li [ngClass]="(URL=='/roles')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToRoles()">
+      <li [ngClass]="(URL=='/roles')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToRoles()">
         <a> <span class='nav-icon icon-roles-line2' title="Roles"> </span> <span class='nav-title'>Roles</span> </a>
       </li>
-      <li [ngClass]="(URL=='/assetlibrary')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToAssetLibraries()">
+      <li [ngClass]="(URL=='/assetlibrary')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToAssetLibraries()">
         <a> <span class='nav-icon fa fa-folder-o' title="Asset Libraries"> </span> <span class='nav-title'>Asset Libraries</span> </a>
       </li>
-      <li [ngClass]="(URL=='/widgets')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToWidgets()">
+      <li [ngClass]="(URL=='/widgets')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToWidgets()">
         <a> <span class='nav-icon icon-line-dashboard2' title="Widgets"></span><span class='nav-title'>Widgets</span>  </a>
       </li>
-      <li [ngClass]="(URL=='/pages')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToTemplates()">
+      <li [ngClass]="(URL=='/pages')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToTemplates()">
         <a> <span class='nav-icon icon-templates2' title="Pages"></span><span class='nav-title'>Pages</span>  </a>
       </li>
-      <li [ngClass]="(URL=='/statementdefination')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToStatementDef()">
+      <li [ngClass]="(URL=='/statementdefination')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToStatementDef()">
         <a> <span class='nav-icon icon-statemenrDefinitions' title="Statement Definitions"> </span> <span class='nav-title'>Statement Definitions</span> </a>
       </li>
-      <li [ngClass]="(URL=='/schedulemanagement')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToScheduleManagement()">
+      <li [ngClass]="(URL=='/schedulemanagement')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToScheduleManagement()">
         <a> <span class='nav-icon icon-production-plan-line2' title="Schedule Management"> </span> <span class='nav-title'>Schedule Management</span> </a>
       </li>
-
-      <li [ngClass]="(URL=='/logs')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToLogs()">
+      <li [ngClass]="(URL=='/logs')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToLogs()">
         <a> <span class='nav-icon icon-reportGenerations2' title="Logs"> </span> <span class='nav-title'>Logs</span> </a>
       </li>
-      <li [ngClass]="(URL=='/analytics')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToAnalytics()">
+      <li [ngClass]="(URL=='/analytics')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToAnalytics()">
         <a> <span class='nav-icon icon-rp-yield1' title="Analytics"> </span> <span class='nav-title'>Analytics</span> </a>
       </li>
-      <li [ngClass]="(URL=='/settings')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToSettings()">
-        <a> <span class='nav-icon icon-rp-yield1' title="Settings"> </span> <span class='nav-title'>Asset Setting</span> </a>
+      <li [ngClass]="(URL=='/settings')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu"(click)="navigateToSettings()">
+        <!--<a> <span class='nav-icon icon-rp-yield1' title="Settings"> </span> <span class='nav-title'>Configure Assets</span> </a>-->
+        <a> <span class='nav-icon icon-operations2' title="Settings"> </span> <span class='nav-title'>Configure Assets</span> </a>
       </li>
-
-
     </ul>
+    
   </div>
 </div>
 <div class="content-wapper" [ngClass]="collapse_class">

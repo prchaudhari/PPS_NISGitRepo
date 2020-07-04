@@ -15,7 +15,7 @@ import { Widget } from './widget';
 export class WidgetService {
 
   public accessToken;
-  public widgetList : Widget[] = [];
+  public widgetList: Widget[] = [];
   public isRecordFound: boolean = false;
   public isRecordSaved: boolean = false;
   public isDependencyPresent: boolean = false;

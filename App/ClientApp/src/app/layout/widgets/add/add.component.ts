@@ -34,7 +34,9 @@ export class AddComponent implements OnInit {
     private router: Router,
     private localstorageservice: LocalStorageService,
     private spinner: NgxUiLoaderService,
-    private widgetService: WidgetService) { }
+    private widgetService: WidgetService) {
+    
+  }
 
   ngOnInit() {
     this.getWidgetRecords(null);
@@ -84,7 +86,7 @@ export class AddComponent implements OnInit {
       this.selectedLink = this.widgetList[0];
 
     }
-    //this.spinner.stop();
+   // this.spinner.stop();
   }
 
   public onPageTypeSelected(event) {

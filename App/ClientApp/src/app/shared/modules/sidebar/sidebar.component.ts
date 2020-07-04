@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
   public loggedInUserName = '';
   public AppVersion: string;
   public URL = '';
-
+  public IsMainMenu = true;
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
       this.sidebar_class = "show-sidebar"
@@ -43,13 +43,29 @@ export class SidebarComponent implements OnInit {
   navigateToRoles() {
     this.route.navigate(['/roles']);
   }
+  ChangeSideBar() {
+    this.IsMainMenu = !this.IsMainMenu
+    if (this.IsMainMenu) {
+      this.URL = '/dashboard';
+      //$('.submenu-li').removeClass('active-li-submenu');
+      this.route.navigate(['/dashboard']);
+    }
+    else {
+      this.URL = '/settings';
+      //$('.submenu-li').removeClass('active-li-submenu');
+      this.route.navigate(['/settings']);
+    }
+  }
   navigateToUser() {
+    this.URL = '/user';
     this.route.navigate(['/user']);
   }
   navigateToWidgets() {
+    this.URL = '/widgets'
     this.route.navigate(['/widgets']);
   }
   navigateToDashoard() {
+    this.URL = '/dashboard';
     this.route.navigate(['/dashboard']);
   }
   navigateToTemplates() {
@@ -133,7 +149,9 @@ export class SidebarComponent implements OnInit {
 
     })
     this.URL = this.route.url;
-
+    if (this.URL == '/settings') {
+      this.IsMainMenu = false;
+    }
   }
 
 }
