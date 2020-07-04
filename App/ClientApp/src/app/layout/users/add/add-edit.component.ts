@@ -28,6 +28,7 @@ export class UserAddEditComponent implements OnInit {
   userFormGroup: FormGroup;
   public emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]+[ ]{0,1}[a-zA-Z]*[ ]*$";
+  public onlyCharacterswithInbetweenSpaceUpto50Characters = Constants.onlyCharacterswithInbetweenSpaceUpto50Characters;
   public onlyNumbers = '[0-9]*';
   public errorMsg: boolean;
   public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
@@ -206,11 +207,10 @@ export class UserAddEditComponent implements OnInit {
     this.userFormGroup = this.formBuilder.group({
       firstName: [null, Validators.compose([Validators.required, Validators.minLength(2),
         Validators.maxLength(50),
-      Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
+      Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       lastName: [null, Validators.compose([Validators.required, Validators.minLength(2),
         Validators.maxLength(50),
-
-      Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
+      Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       email: ['', Validators.compose([Validators.required,
       Validators.pattern(this.emailRegex)])],
       mobileNumber: ['', Validators.compose([Validators.required,

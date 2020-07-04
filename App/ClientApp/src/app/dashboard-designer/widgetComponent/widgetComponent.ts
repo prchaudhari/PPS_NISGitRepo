@@ -110,7 +110,7 @@ export class ImageComponent  {
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center">
-        <img src="assets/images/video-icon.png" class="img-fluid width30" />
+        <img src="assets/images/video-icon.png" class="img-fluid width30" style="margin-top:25px;"/>
       </div>
     </div>
   </div>`

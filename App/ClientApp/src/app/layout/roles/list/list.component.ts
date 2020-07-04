@@ -258,7 +258,7 @@ export class ListComponent implements OnInit {
             searchParameter.SortParameter.SortColumn = Constants.Name;
             searchParameter.SortParameter.SortOrder = Constants.Ascending;
             searchParameter.SearchMode = Constants.Contains;
-            searchParameter.Name = this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName : "";
+            searchParameter.Name = this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName.trim() : "";
             searchParameter.IsActive = this.roleFilterForm.value.DeactivateRole != null ? !this.roleFilterForm.value.DeactivateRole: true;
             this.getRoleRecords(searchParameter);
             this.isFilter = !this.isFilter;

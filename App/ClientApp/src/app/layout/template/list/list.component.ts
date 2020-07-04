@@ -227,7 +227,7 @@ export class ListComponent implements OnInit {
                     searchParameter.EndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
                 }
     
-                this.currentPage = this.currentPage - 1;
+                this.currentPage = 0;
                 this.getTemplates(searchParameter);
                 this.isFilter = !this.isFilter;
             }

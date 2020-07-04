@@ -50,11 +50,6 @@ export class LocalStorageService {
     }
 
     removeLocalStorageData() {
-        localStorage.removeItem('user');
-        localStorage.removeItem('userClaims');
-        localStorage.removeItem('token');
-        localStorage.removeItem('UserEmail');
-        localStorage.removeItem('currentUserName');
-        localStorage.removeItem('currentUserTheme');
+        localStorage.clear();
     }
 }

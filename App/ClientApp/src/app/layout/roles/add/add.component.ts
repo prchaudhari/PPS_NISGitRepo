@@ -50,7 +50,7 @@ export class AddComponent implements OnInit {
     public roleEditModeOn: boolean = false;
     //regex
     public onlyAlphabetsWithSpace = '[a-zA-Z ]*';
-    public onlyAlphabetsWithSpaceQuoteHyphen = Constants.onlyAlphabetsWithSpaceQuoteHyphen;
+    public onlyAlphabetswithInbetweenSpaceUpto50Characters = Constants.onlyAlphabetswithInbetweenSpaceUpto50Characters;
     public rolePrivilegesList = [];
     public entityList = [];
     public roleAddEditResources = {}
@@ -75,6 +75,10 @@ export class AddComponent implements OnInit {
     get roleName() {
         return this.roleFormGroup.get('roleName');
     }
+
+    get roleDescription() {
+      return this.roleFormGroup.get('roleDescription');
+  }
 
     //function to validate all fields
     validateAllFormFields(formGroup: FormGroup) {
@@ -131,46 +135,34 @@ export class AddComponent implements OnInit {
         });
     }
 
-      //custom validation check
-    roleFormValidaton(): boolean {
-        this.roleFormErrorObject.showRoleNameError = false;
-        if (this.roleFormGroup.controls.roleName.invalid) {
-            this.roleFormErrorObject.showRoleNameError = true;
-            return false;
-        }
-        return true;
-    }
-
     //function to format data
     onSubmit(): void {
-        if (this.roleFormValidaton()) {
-            let privileges = [];
-            for (var i = 0; i < this.entityList.length; i++) {
-                let roleEntityObj: any = {};
-                roleEntityObj.EntityName = this.entityList[i].EntityName;
-                let rolePrivileges = [];
-                for (var j = 0; j < this.entityList[i].Operation.length; j++) {
-                    if (this.entityList[i].Operation[j].IsEnabled) {
-                        let obj: any = {};
-                        obj.IsEnabled = true;
-                        obj.Operation = this.entityList[i].Operation[j].operation;
-                        rolePrivileges.push(obj);
-                    }
-                }
-                roleEntityObj.RolePrivilegeOperations = rolePrivileges;
-                privileges.push(roleEntityObj);
-            }
-            let roleObject: any = {
-                Name: this.roleFormGroup.value.roleName,
-                Description: this.roleFormGroup.value.roleDescription,
-                RolePrivileges: privileges,
-                //Status: true,
-            }
-            if (this.roleEditModeOn && localStorage.getItem('roleparams')) {
-                roleObject.Identifier = this.params.Routeparams.passingparams.RoleIdentifier
-            }
-            this.saveRecord(roleObject);
-        }
+      let privileges = [];
+      for (var i = 0; i < this.entityList.length; i++) {
+          let roleEntityObj: any = {};
+          roleEntityObj.EntityName = this.entityList[i].EntityName;
+          let rolePrivileges = [];
+          for (var j = 0; j < this.entityList[i].Operation.length; j++) {
+              if (this.entityList[i].Operation[j].IsEnabled) {
+                  let obj: any = {};
+                  obj.IsEnabled = true;
+                  obj.Operation = this.entityList[i].Operation[j].operation;
+                  rolePrivileges.push(obj);
+              }
+          }
+          roleEntityObj.RolePrivilegeOperations = rolePrivileges;
+          privileges.push(roleEntityObj);
+      }
+      let roleObject: any = {
+          Name: this.roleFormGroup.value.roleName,
+          Description: this.roleFormGroup.value.roleDescription,
+          RolePrivileges: privileges,
+          //Status: true,
+      }
+      if (this.roleEditModeOn && localStorage.getItem('roleparams')) {
+          roleObject.Identifier = this.params.Routeparams.passingparams.RoleIdentifier
+      }
+      this.saveRecord(roleObject);
     }
 
     //method written to save role
@@ -247,7 +239,7 @@ export class AddComponent implements OnInit {
       //     );
           this.entityList = [
             {
-              "EntityName" : "Dashboard",
+              "EntityName" : "User",
               "Operation" : [
                 {
                   "operation": "Create",
@@ -268,7 +260,28 @@ export class AddComponent implements OnInit {
               ]
             },
             {
-              "EntityName" : "User",
+              "EntityName" : "Role",
+              "Operation" : [
+                {
+                  "operation": "Create",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "Edit",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "Delete",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "View",
+                  "IsEnabled":false
+                }
+              ]
+            },
+            {
+              "EntityName" : "Asset Library",
               "Operation" : [
                 {
                   "operation": "Create",
@@ -350,6 +363,27 @@ export class AddComponent implements OnInit {
                   "IsEnabled":false
                 }
               ]
+            },
+            {
+              "EntityName" : "Schedule Management",
+              "Operation" : [
+                {
+                  "operation": "Create",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "Edit",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "Delete",
+                  "IsEnabled":false
+                },
+                {
+                  "operation": "View",
+                  "IsEnabled":false
+                }
+              ]
             }
           ];
           if (this.roleEditModeOn == true && localStorage.getItem('roleparams')) {
@@ -409,9 +443,10 @@ export class AddComponent implements OnInit {
       //Validations for Role Form.
       this.roleFormGroup = this.formbuilder.group({
           roleName: [null, Validators.compose([Validators.required,
-              Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])
+            Validators.minLength(Constants.inputMinLenth), Validators.maxLength(Constants.inputMaxLenth),
+            Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])
           ],
-          roleDescription: [null],
+          roleDescription: [null, Validators.compose([Validators.maxLength(Constants.txtAreaMaxLenth)])]
       });
       this.permissonFilterForm = this.formbuilder.group(
         { filterPermission: [null], }
@@ -458,6 +493,16 @@ export class AddComponent implements OnInit {
                 }
             }
         })
+    }
+
+    saveBtnValidation(): boolean {
+      if (this.roleFormGroup.controls.roleName.invalid) {
+          return true;
+      }
+      if (this.roleFormGroup.controls.roleDescription.invalid) {
+        return true;
+      }
+      return false; 
     }
 
 }

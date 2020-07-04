@@ -20,7 +20,7 @@ export class AddComponent implements OnInit {
   public pageFormGroup: FormGroup;
   public pageTypelist: any[] = [];
   public onlyAlphabetsWithSpace = '[a-zA-Z ]*';
-  public onlyAlphabetsWithSpaceQuoteHyphen = Constants.onlyAlphabetsWithSpaceQuoteHyphen;
+  public onlyAlphabetswithInbetweenSpaceUpto50Characters = Constants.onlyAlphabetswithInbetweenSpaceUpto50Characters;
   
   public pageEditModeOn: boolean = false;
   public params: any = {};
@@ -99,8 +99,8 @@ export class AddComponent implements OnInit {
     ngOnInit() {
       //Validations for Page Form.
       this.pageFormGroup = this.formbuilder.group({
-          pageName: [null, Validators.compose([Validators.required, Validators.minLength(2),
-            Validators.maxLength(50), Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
+          pageName: [null, Validators.compose([Validators.required, Validators.minLength(Constants.inputMinLenth),
+            Validators.maxLength(Constants.inputMaxLenth), Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
           pageType: [0, Validators.compose([Validators.required])],
       });
       this.getPageTypes();

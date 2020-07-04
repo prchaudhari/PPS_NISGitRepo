@@ -16,13 +16,15 @@ export class Constants {
   public static get msgBoxError(): string { return "error" };
   public static get msgBoxWarning(): string { return "warning" };
   public static get actionButtonOk(): string { return "ok" };
-  public static get inputMinLenth(): number { return 3 };
+  public static get inputMinLenth(): number { return 2 };
   public static get ouShortCodeMaxLenth(): number { return 3 };
   public static get inputMaxLenth(): number { return 50 };
   public static get txtAreaMaxLenth(): number { return 255 };
   public static get characterPattern(): string { return "^[a-zA-Z]+$" };
   public static get numericAlphaSpecialPattern(): string { return "^[A-Za-z0-9_@./#&+-]+$" };
   public static get onlyAlphabetsWithSpaceQuoteHyphen(): string { return "[a-zA-Z-0-9' ]*" };
+  public static get onlyAlphabetswithInbetweenSpaceUpto50Characters(): string { return '^[a-zA-Z0-9 ]{0,50}[a-zA-Z0-9]$' };
+  public static get onlyCharacterswithInbetweenSpaceUpto50Characters(): string { return '^[a-zA-Z ]{0,50}[a-zA-Z]$' };
   public static get onlyAlphabetsWithDot(): string { return "[0-9.]*" };
 
   public static get DefaultPageSize(): number { return 0 };
@@ -45,6 +47,5 @@ export class Constants {
 
 @Injectable()
 export class DynamicGlobalVariable {
- 
   public IsSessionExpireMessageDisplyed: boolean = false;
 }

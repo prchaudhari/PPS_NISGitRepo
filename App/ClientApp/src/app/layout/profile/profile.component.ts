@@ -57,6 +57,7 @@ export class ProfileComponent implements OnInit {
   // source language
   public sourcelanguage = [];
   public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]+[ ]{0,1}[a-zA-Z]*[ ]*$";
+  public onlyCharacterswithInbetweenSpaceUpto50Characters = Constants.onlyCharacterswithInbetweenSpaceUpto50Characters;
   public onlyNumbers = '[0-9]*';
   public resourceId;
   public profileImage;
@@ -131,10 +132,10 @@ export class ProfileComponent implements OnInit {
     this.profileFormGroup = this.formbulder.group({
       firstName: [null, Validators.compose([Validators.required,
       Validators.minLength(2), Validators.maxLength(50),
-      Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
+      Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       lastName: [null, Validators.compose([Validators.required,
       Validators.minLength(2), Validators.maxLength(50),
-      Validators.pattern(this.onlyAlphabetsWithSpaceQuoteHyphen)])],
+      Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       code: [null, Validators.compose([Validators.required])],
       email: [null, Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])],
       preferredLanguage: [''],
@@ -144,57 +145,6 @@ export class ProfileComponent implements OnInit {
       Validators.minLength(10), Validators.pattern(this.onlyNumbers)])]
     })
     this.getProfileRecord();
-  }
-
-  ngAfterViewInit(): void {
-    //this.jqxcountryCodeDropDownList.createComponent(this.jqxCountryCodeDrownSettings);
-    //this.jqxPreferredLanguageDropdownlist.createComponent(this.jqxPrefferedLanguageDrownSettings);
-  }
-
-  // Profile formgroup, validation access function.
-  // get profileFormControls(){return this.profileFormGroup['controls']; }
-
-  //Function to call preferred language from the localstorage--
-  getResources() {
-    var ResourcesArr = this.localstorageservice.GetResource();
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.Locale = userClaimsDetail.PreferedLanguageCode;
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.Locale = 'enUS';
-      this.userClaimsRolePrivilegeOperations = [];
-    }
-    if (ResourcesArr != null) {
-      if (ResourcesArr.length > 0) {
-        // var profileSectionName = ResourcesArr[0].ResourceSections.filter(x => x.SectionName === ConfigConstants.ProfileSetUpUISection);
-        // if (profileSectionName.length > 0) {
-        //     profileSectionName.forEach(resourceSection => {
-        //         let resourceItemArr = []
-        //         resourceItemArr = resourceSection.ResourceItems;
-        //         resourceItemArr.forEach(resource => {
-        //             this.profileResources[resource.Key] = resource.Value;
-        //         })
-        //     })
-        // }
-
-        // else {
-        //     //fallbackcall for resource api if resource fetching failed from localstorage--
-        //     this.getResourcesIfLocalStorageFailed();
-        // }
-      }
-    }
-    else {
-      //call for resource service from api--
-      this.getResourcesIfLocalStorageFailed();
-    }
-  }
-
-  async getResourcesIfLocalStorageFailed() {
-    //var sectionStr = ConfigConstants.ProfileSetUpUISection;
-    let resourceService = this.injector.get(ResourceService);
-    //this.profileResources = await resourceService.getResources(sectionStr, this.Locale, false);
   }
 
   //Function call to get country code--
@@ -418,6 +368,8 @@ export class ProfileComponent implements OnInit {
         let newUserName = profileObject.FirstName + ' ' + profileObject.LastName;
         localStorage.setItem("currentUserName", newUserName);
         this.getProfileRecord();
+        //const router = this.injector.get(Router);
+        //router.navigate(['dashboard']);
       }
     }, (error: HttpResponse<any>) => {
       this.uiLoader.stop();

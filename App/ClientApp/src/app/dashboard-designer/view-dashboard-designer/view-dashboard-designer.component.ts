@@ -57,6 +57,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
     public vdoAssetName: string = "";
     public vdoAssetLibraryName: string = "";
     public pageVersion: string = "";
+    public isNoConfigurationSaved: boolean = false;
 
     //Back Functionality.
     backClicked() {
@@ -88,6 +89,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
         this.isImageConfig = true;
         this.imageWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
+        this.isNoConfigurationSaved = false;
         var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
         if(records.length != 0) {
             var widgetSetting = records[0].WidgetSetting;
@@ -101,6 +103,8 @@ export class ViewDashboardDesignerComponent implements OnInit {
                 if(widgetConfigObj.isPersonalize != null) {
                     this.isPersonalizeImage = widgetConfigObj.isPersonalize;
                 }
+            }else {
+                this.isNoConfigurationSaved = true;
             }
         }
     }
@@ -122,6 +126,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
         this.isVideoConfig = true;
         this.videoWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
+        this.isNoConfigurationSaved = false;
         var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
         if(records.length != 0) {
             var widgetSetting = records[0].WidgetSetting;
@@ -138,6 +143,8 @@ export class ViewDashboardDesignerComponent implements OnInit {
                 if(widgetConfigObj.isEmbedded != null) {
                     this.isEmbedded = widgetConfigObj.isEmbedded;
                 }
+            }else {
+                this.isNoConfigurationSaved = true;
             }
         }
     }

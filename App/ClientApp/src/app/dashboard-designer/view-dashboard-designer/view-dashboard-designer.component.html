@@ -14,6 +14,9 @@
 </div>
 
 <div class="dashboard-container">
+
+  <div class="overlay" [ngClass]="isWidgetSidebar? 'show' : 'hide'"></div>
+  
   <div class="dashboard-inner-container ml-0 width100">
     <div class="widget-container">
       <gridster [options]="options">
@@ -32,32 +35,37 @@
       <label class="m-0">Image Configuration</label>
     </div>
     <div class="filter-body stylescrollbar">
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label> Personalize </label>
-          <div>
-            <span *ngIf="isPersonalizeImage">Yes</span>
-          <span *ngIf="!isPersonalizeImage">No</span>
+      <div *ngIf="!isNoConfigurationSaved">
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> Personalize </label>
+            <div>
+              <span *ngIf="isPersonalizeImage">Yes</span>
+            <span *ngIf="!isPersonalizeImage">No</span>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!isPersonalizeImage">
+          <div class="col-sm-12 form-group">
+            <label> Asset Library </label>
+            <div>{{imgAssetLibraryName}}</div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!isPersonalizeImage">
+          <div class="col-sm-12 form-group">
+            <label> Assets </label>
+            <div>{{imgAssetName}}</div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!isPersonalizeImage">
+          <div class="col-sm-12">
+            <label> URL </label>
+            <div>{{imageSourceUrl}}</div>
           </div>
         </div>
       </div>
-      <div class="row" *ngIf="!isPersonalizeImage">
-        <div class="col-sm-12 form-group">
-          <label> Asset Library </label>
-          <div>{{imgAssetLibraryName}}</div>
-        </div>
-      </div>
-      <div class="row" *ngIf="!isPersonalizeImage">
-        <div class="col-sm-12 form-group">
-          <label> Assets </label>
-          <div>{{imgAssetName}}</div>
-        </div>
-      </div>
-      <div class="row" *ngIf="!isPersonalizeImage">
-        <div class="col-sm-12">
-          <label> URL </label>
-          <div>{{imageSourceUrl}}</div>
-        </div>
+      <div *ngIf="isNoConfigurationSaved" class="text-danger"> 
+        No Configuration saved.
       </div>
     </div>
     <div class="filter-footer">
@@ -77,23 +85,23 @@
     <label class="m-0">Video Configuration</label>
   </div>
   <div class="filter-body stylescrollbar">
-    <div class="row">
-      <div class="col-sm-6 form-group">
-        <label> Personalize </label>
-        <div>
-          <span *ngIf="isPersonalize">Yes</span>
-          <span *ngIf="!isPersonalize">No</span>
+    <div *ngIf="!isNoConfigurationSaved">
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label> Personalize </label>
+          <div>
+            <span *ngIf="isPersonalize">Yes</span>
+            <span *ngIf="!isPersonalize">No</span>
+          </div>
+        </div>
+        <div class="col-sm-6 form-group">
+          <label> Embedded </label>
+          <div>
+            <span *ngIf="isEmbedded">Yes</span>
+            <span *ngIf="!isEmbedded">No</span>
+          </div>
         </div>
       </div>
-      <div class="col-sm-6 form-group">
-        <label> Embedded </label>
-        <div>
-          <span *ngIf="isEmbedded">Yes</span>
-          <span *ngIf="!isEmbedded">No</span>
-        </div>
-      </div>
-    </div>
-    <div>
       <div class="row" *ngIf="(isEmbedded && isPersonalize) || isEmbedded">
         <div class="col-sm-12 form-group">
           <label> URL </label>
@@ -112,8 +120,10 @@
           <div>{{vdoAssetName}}</div>
         </div>
       </div>
+    </div>    
+    <div *ngIf="isNoConfigurationSaved" class="text-danger">
+      No Configuration saved.
     </div>
-    
   </div>
   <div class="filter-footer">
     <ul class="nav nav-toolbar">
@@ -128,3 +138,5 @@
 
 </div>
 
+<div class="overlay a" id="divOverlayFilter" [ngClass]="!isImageConfig? 'hide':'show'"></div>
+<div class="overlay a" id="divOverlayFilter" [ngClass]="!isVideoConfig? 'hide':'show'"></div>

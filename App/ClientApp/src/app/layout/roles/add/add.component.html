@@ -27,10 +27,12 @@
             <input type="text" class="form-control" id="inputRoleName" name="roleName"
                             formControlName="roleName" />
             <!-- Error Masseges  -->
-            <div class="validation-msg" style="color:red">
-                <ul *ngIf="roleFormErrorObject.showRoleNameError" style="list-style-type:none">
+            <div class="validation-msg" style="color:red" *ngIf="roleName.touched && roleName.errors">
+                <ul style="list-style-type:none">
                     <li class="text-danger" *ngIf="roleName.errors?.pattern">Invalid Role Name</li>
                     <li class="text-danger" *ngIf="roleName.errors?.required">Role name required</li>
+                    <li class="text-danger" *ngIf="roleName.errors?.minlength">Role name length should not be less than 2</li>
+                    <li class="text-danger" *ngIf="roleName.errors?.maxlength">Role name length should not be greater than 50</li>
                 </ul>
             </div>
           </div>
@@ -40,6 +42,11 @@
             <label id="lblDescription">Description</label>
             <textarea class="form-control" name="roleDescription" rows="3" id="txtDescription"
                             formControlName="roleDescription"></textarea>
+                            <div class="validation-msg" style="color:red" *ngIf="roleDescription.touched && roleDescription.errors">
+                              <ul style="list-style-type:none">
+                                  <li class="text-danger" *ngIf="roleDescription.errors?.maxlength">Role description length should not be greater than 255</li>
+                              </ul>
+                          </div>
           </div>
         </div>
       </div>
@@ -105,7 +112,7 @@
     </div>
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
-        <button class="btn-footer-fill mr-2" id="btnSave" (click)="onSubmit()">Save</button>
+        <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="saveBtnValidation()" (click)="onSubmit()">Save</button>
         <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
       </div>
     </div>

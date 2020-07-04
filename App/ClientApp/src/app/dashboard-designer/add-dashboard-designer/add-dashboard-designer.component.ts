@@ -175,6 +175,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.isImageConfig = true;
         this.imageWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
+        this.isPersonalizeImage = false;
+
         var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
         if(records.length != 0) {
             var widgetSetting = records[0].WidgetSetting;
@@ -224,6 +226,9 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.isVideoConfig = true;
         this.videoWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
+        this.isPersonalize = false;
+        this.isEmbedded = false;
+        
         var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
         if(records.length != 0) {
             var widgetSetting = records[0].WidgetSetting;
