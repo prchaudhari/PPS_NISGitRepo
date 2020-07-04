@@ -92,10 +92,10 @@ export class AssetSettingsComponent implements OnInit {
       Validators.pattern(this.onlyNumbers)])],
       assetImageWidth: [null, Validators.compose([Validators.required,
       Validators.pattern(this.onlyNumbers)])],
-      assetImageSize: [null, Validators.compose([Validators.required, Validators.minLength(2),
-      Validators.maxLength(100)])],
-      assetVideoSize: [null, Validators.compose([Validators.required, Validators.minLength(2),
-      Validators.maxLength(100)])],
+      assetImageSize: [null, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)])],
+      assetVideoSize: [null, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)])],
       assetImageFile: [null],
       assetVideoFile: [null]
 
