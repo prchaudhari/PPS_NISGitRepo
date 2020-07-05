@@ -601,6 +601,7 @@ export class ListComponent implements OnInit {
       }
       searchParameter.LockStatus = this.UserFilter.LockStatus;
       searchParameter.ActivationStatus = this.UserFilter.ActivationStatus;
+      this.currentPage = 0;
       this.getUserdetail(searchParameter);
       this.isFilter = !this.isFilter;
     }
