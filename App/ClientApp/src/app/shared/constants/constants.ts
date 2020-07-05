@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 
 export class Constants {
-  public static get genericServiceErrorMessage(): string { return "FaktoryWize Service not accessible" };
+  public static get genericServiceErrorMessage(): string { return "niS Service not accessible" };
   public static get recordAddedMessage(): string { return "Record added successfully." };
   public static get recordDeletedMessage(): string { return "Record deleted successfully." };
   public static get recordDeactivatedMessage(): string { return "Record deactivated successfully." };
@@ -43,6 +43,13 @@ export class Constants {
   public static get StartDate(): string { return "StartDate" };
   public static get PagePublishedSuccessfullyMessage(): string { return "Page Published successfully." };
   public static get PageCloneSuccessfullyMessage(): string { return "Page Clone successfully." };
+}
+
+export class ErrorMessageConstants {
+  public static get getStartDateLessThanCurrentDateMessage(): string { return "Start Date should be less than current date." };
+  public static get getEndDateLessThanCurrentDateMessage(): string { return "End Date should be less than current date." };
+  public static get getStartDateLessThanEndDateMessage(): string { return "Start date should be less than end date." };
+  public static get getNoRecordFoundMessage(): string { return "No record found." };
 }
 
 @Injectable()

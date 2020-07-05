@@ -28,6 +28,7 @@ export class AddComponent implements OnInit {
   public PageName;
   public PageTypeId =0;
   public PageTypeName;
+  public PageWidgetArrayString: string = "";
 
   public pageFormErrorObject: any = {
     showPageNameError: false,
@@ -85,6 +86,7 @@ export class AddComponent implements OnInit {
                     this.params = JSON.parse(localStorage.getItem('pageAddRouteparams'));
                     this.PageName = this.params.Routeparams.passingparams.PageName
                     this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
+                    this.PageWidgetArrayString = this.params.Routeparams.passingparams.PageWidgetArray
                 }
               }
               else {
@@ -176,7 +178,8 @@ export class AddComponent implements OnInit {
             "PageName": this.pageFormGroup.value.pageName,
             "PageTypeId": this.PageTypeId,
             "PageTypeName": this.PageTypeName,
-            "pageEditModeOn": this.pageEditModeOn
+            "pageEditModeOn": this.pageEditModeOn,
+            "PageWidgetArrayString": this.PageWidgetArrayString
           }
         }
       }

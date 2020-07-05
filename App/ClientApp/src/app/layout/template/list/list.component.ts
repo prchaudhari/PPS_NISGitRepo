@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/shared/constants/constants';
+import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,32 +12,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TemplateService } from '../template.service';
 import { Template } from '../template';
 
-export interface ListElement {
-    name: string;
-    version: string;
-    owner: string;
-    date: string;
-    status: string;
-    pagetype: string;
-}
-
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-
-    constructor(private injector: Injector,
-        private fb: FormBuilder,
-        private uiLoader: NgxUiLoaderService,
-        private _messageDialogService: MessageDialogService,
-        private route: Router,
-        private localstorageservice: LocalStorageService,
-        private templateService: TemplateService) 
-        {
-            this.sortedTemplateList = this.templateList.slice();
-        }
 
     //public variables
     public isFilter: boolean = false;
@@ -54,13 +35,26 @@ export class ListComponent implements OnInit {
     public TemplateFilterForm: FormGroup;
     public filterPageTypeId: number = 0;
     public filterPageStatus: string = '';
-    public filterDateError: boolean = false;
+    public filterFromDateError: boolean = false;
+    public filterFromDateErrorMessage: string = "";
+    public filterToDateError: boolean = false;
+    public filterToDateErrorMessage: string = "";
 
     displayedColumns: string[] = ['name','pagetype', 'version', 'owner', 'publishedBy', 'date', 'status', 'actions'];
     dataSource = new MatTableDataSource<any>();
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
+    constructor(private injector: Injector,
+        private fb: FormBuilder,
+        private uiLoader: NgxUiLoaderService,
+        private _messageDialogService: MessageDialogService,
+        private route: Router,
+        private localstorageservice: LocalStorageService,
+        private templateService: TemplateService) {
+            this.sortedTemplateList = this.templateList.slice();
+        }
 
     public handlePage(e: any) {
         this.currentPage = e.pageIndex;
@@ -152,7 +146,7 @@ export class ListComponent implements OnInit {
         }
         this.templateList = await templateService.getTemplates(searchParameter);
         if (this.templateList.length == 0 && this.isFilterDone == true){
-            let message = "NO record found";
+            let message = ErrorMessageConstants.getNoRecordFoundMessage;
             this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
                 if (data == true) {
                     //this.resetRoleFilterForm();
@@ -177,16 +171,47 @@ export class ListComponent implements OnInit {
                 let startDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
                 let toDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
                 if(startDate.getTime() > toDate.getTime()) {
-                    this.filterDateError = true;
+                    this.filterFromDateError = true;
                     return false;
                 }
         }
         return true;
     }
 
+    onPublishedFilterDateChange(event) {
+        this.filterFromDateError = false;
+        this.filterToDateError = false;
+        this.filterFromDateErrorMessage = "";
+        this.filterToDateErrorMessage = "";
+        let currentDte = new Date();
+        if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
+            let startDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
+            if(startDate.getTime() > currentDte.getTime()) {
+                this.filterFromDateError = true;
+                this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanCurrentDateMessage;
+            }
+        }
+        if(this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
+            let toDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
+            if(toDate.getTime() > currentDte.getTime()) {
+                this.filterToDateError = true;
+                this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
+            }
+        }
+        if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '' && 
+            this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
+                let startDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
+                let toDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
+                if(startDate.getTime() > toDate.getTime()) {
+                    this.filterFromDateError = true;
+                    this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
+                }
+        }
+    }
+
     //This method has been used for fetching search records
     searchTemplateRecordFilter(searchType) {
-        this.filterDateError = false;
+        this.filterFromDateError = false;
         this.isFilterDone = true;
         if (searchType == 'reset') {
             this.resetPageFilterForm();
@@ -203,30 +228,24 @@ export class ListComponent implements OnInit {
                 searchParameter.SortParameter.SortColumn = 'DisplayName';
                 searchParameter.SortParameter.SortOrder = Constants.Ascending;
                 searchParameter.SearchMode = Constants.Contains;
-    
                 if(this.TemplateFilterForm.value.filterDisplayName != null && this.TemplateFilterForm.value.filterDisplayName != '') {
                     searchParameter.DisplayName = this.TemplateFilterForm.value.filterDisplayName.trim();         
-                }
-    
+                } 
                 if(this.TemplateFilterForm.value.filterOwner != null && this.TemplateFilterForm.value.filterOwner != '') {
                     searchParameter.PageOwner = this.TemplateFilterForm.value.filterOwner.trim();         
                 }
-                
                 if(this.filterPageTypeId != 0) {
                     searchParameter.PageTypeId = this.filterPageTypeId;
                 }
-    
                 if(this.TemplateFilterForm.value.filterStatus != null && this.TemplateFilterForm.value.filterStatus != 0) {
                     searchParameter.Status = this.TemplateFilterForm.value.filterStatus;
                 }
-    
                 if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
                     searchParameter.StartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
                 }
                 if(this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
                     searchParameter.EndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
                 }
-    
                 this.currentPage = 0;
                 this.getTemplates(searchParameter);
                 this.isFilter = !this.isFilter;
@@ -243,6 +262,11 @@ export class ListComponent implements OnInit {
             filterPublishedOnFromDate: null,
             filterPublishedOnToDate: null
         });
+
+        this.filterFromDateError = false;
+        this.filterToDateError = false;
+        this.filterFromDateErrorMessage = "";
+        this.filterToDateErrorMessage = "";
     }
 
     closeFilter() {

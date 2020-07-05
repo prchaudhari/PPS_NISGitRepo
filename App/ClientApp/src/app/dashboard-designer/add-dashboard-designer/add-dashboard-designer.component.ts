@@ -90,6 +90,19 @@ export class AddDashboardDesignerComponent implements OnInit {
                         this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
                         this.PageTypeName = this.params.Routeparams.passingparams.PageTypeName
                         this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
+
+                        if(this.params.Routeparams.passingparams.PageWidgetArrayString != null && this.params.Routeparams.passingparams.PageWidgetArrayString != "" 
+                        && this.testJSON(this.params.Routeparams.passingparams.PageWidgetArrayString)) {
+
+                            this.widgetsGridsterItemArray = JSON.parse(this.params.Routeparams.passingparams.PageWidgetArrayString)
+                            for(let x=0; x < this.widgetsGridsterItemArray.length; x++) {
+                                let obj = this.bindComponent(this.widgetsGridsterItemArray[x].widgetId);
+                                if(obj != null) {
+                                    this.widgetsGridsterItemArray[x].component = obj.component;
+                                    this.widgetsGridsterItemArray[x].value = obj.value;
+                                }
+                            }
+                        }
                     }
                     else if (localStorage.getItem('pageDesignEditRouteparams')) {
                         this.params = JSON.parse(localStorage.getItem('pageDesignEditRouteparams'));
@@ -410,6 +423,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               passingparams: {
                 "PageName": this.PageName,
                 "PageTypeId": this.PageTypeId,
+                "PageWidgetArray": JSON.stringify(this.widgetsGridsterItemArray)
               }
             }
           }
@@ -580,28 +594,36 @@ export class AddDashboardDesignerComponent implements OnInit {
                     gridsterItem.widgetId = pageWidgets[i].WidgetId;
                     gridsterItem.WidgetSetting = pageWidgets[i].WidgetSetting;
                     gridsterItem.widgetItemCount = this.widgetItemCount;
-
-                    if(pageWidgets[i].WidgetId == 1) {
-                        gridsterItem.component = CustomerInformationComponent;
-                        gridsterItem.value = 'customerInformation';
-                    }else if(pageWidgets[i].WidgetId == 2) {
-                        gridsterItem.component = AccountInformationComponent;
-                        gridsterItem.value = 'accountInformation';
-                    }else if(pageWidgets[i].WidgetId == 3) {
-                        gridsterItem.component = ImageComponent;
-                        gridsterItem.value = 'image';
-                    }else if(pageWidgets[i].WidgetId == 4) {
-                        gridsterItem.component = VideoComponent;
-                        gridsterItem.value = 'video';
-                    }else if(pageWidgets[i].WidgetId == 5) {
-                        gridsterItem.component = SummaryAtGlanceComponent;
-                        gridsterItem.value = 'summaryAtGlance';
-                    }
+                    let obj = this.bindComponent(pageWidgets[i].WidgetId);
+                    gridsterItem.component = obj.component;
+                    gridsterItem.value = obj.value;
                     this.widgetsGridsterItemArray.push(gridsterItem);
                 }
             }
         }
     }
+
+    bindComponent(widgetId): any {
+        let gridObj: any = {};
+        if(widgetId == 1) {
+            gridObj.component = CustomerInformationComponent;
+            gridObj.value = "customerInformation";
+        }else if(widgetId == 2) {
+            gridObj.component = AccountInformationComponent;
+            gridObj.value = "accountInformation";
+        }else if(widgetId == 3) {
+            gridObj.component = ImageComponent;
+            gridObj.value = "image";
+        }else if(widgetId == 4) {
+            gridObj.component = VideoComponent;
+            gridObj.value = "video";
+        }else if(widgetId == 5) {
+            gridObj.component = SummaryAtGlanceComponent;
+            gridObj.value = "summaryAtGlance";
+        }
+        return gridObj;
+    }
+
 
     getAssetLibraries () {
         let searchParameter: any = {};
