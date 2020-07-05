@@ -57,6 +57,7 @@
     <Compile Include="Constants\AssetLibrary.cs" />
     <Compile Include="Constants\ExceptionConstant.cs" />
     <Compile Include="Constants\PageConstant.cs" />
+    <Compile Include="Constants\ScheduleConstant.cs" />
     <Compile Include="Constants\RoleConstant.cs" />
     <Compile Include="Constants\UserConstant.cs" />
     <Compile Include="InvalidEncryptedDataException.cs" />
@@ -70,6 +71,9 @@
     <Compile Include="Page\PageReferenceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryStoreNotAccessibleException.cs" />
+    <Compile Include="Schedule\DuplicateScheduleFoundException.cs" />
+    <Compile Include="Schedule\InvalidScheduleException.cs" />
+    <Compile Include="Schedule\ScheduleNotFoundException.cs" />
     <Compile Include="Role\DuplicateRoleFoundException.cs" />
     <Compile Include="Role\InvalidRoleException.cs" />
     <Compile Include="Role\RoleNotFoundException.cs" />

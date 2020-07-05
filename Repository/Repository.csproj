@@ -94,6 +94,7 @@
     <Compile Include="IRepository\IAssetSettingRepository.cs" />
     <Compile Include="IRepository\IAssetLibraryRepository.cs" />
     <Compile Include="IRepository\IPageRepository.cs" />
+    <Compile Include="IRepository\IScheduleRepository.cs" />
     <Compile Include="IRepository\IWidgetRepository.cs" />
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="SQLRepository\SQLAzureUserRepository.cs" />
     <Compile Include="SQLRepository\SQLPageRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureWidgetRepository.cs" />
+    <Compile Include="SQLRepository\SQLScheduleRepository.cs" />
     <Compile Include="SQLRepository\SQLRoleRepository.cs" />
     <Compile Include="StatementPageMapRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>

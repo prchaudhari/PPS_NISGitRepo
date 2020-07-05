@@ -198,6 +198,50 @@ namespace nIS
 
         #endregion
 
+        #region Schdeule
+
+        /// <summary>
+        /// The schedule model section
+        /// </summary>
+        public const string SCHEDULE_MODEL_SECTION = "ScheduleModel";
+
+        /// <summary>
+        /// The invalid schedule name
+        /// </summary>
+        public const string INVALID_SCHEDULE_NAME = "InvalidScheduleName";
+
+        /// <summary>
+        /// The invalid schedule name
+        /// </summary>
+        public const string INVALID_SCHEDULE_STARTDATE = "InvalidScheduleStartDate";
+
+        /// <summary>
+        /// The invalid schedule name
+        /// </summary>
+        public const string INVALID_SCHEDULE_ENDDATE = "InvalidScheduleEndDate";
+
+        /// <summary>
+        /// The invalid schedule name
+        /// </summary>
+        public const string INVALID_SCHEDULE_DAYOFMONTH = "InvalidScheduleDayOfMonth";
+
+        /// <summary>
+        /// The invalid schedule name
+        /// </summary>
+        public const string INVALID_SCHEDULE_HOUROFDAY = "InvalidScheduleHourOfDay";
+
+        /// <summary>
+        /// The invalid schedule name
+        /// </summary>
+        public const string INVALID_SCHEDULE_MINOFDAY = "InvalidScheduleMinuteOfDay";
+
+        /// <summary>
+        /// The invalid schedule name
+        /// </summary>
+        public const string INVALID_SCHEDULE_STATUS = "InvalidScheduleStatus";
+
+        #endregion
+
         #region Role Privilege
 
         /// <summary>

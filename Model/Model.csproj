@@ -68,9 +68,11 @@
     <Compile Include="Role.cs" />
     <Compile Include="RolePrivilege.cs" />
     <Compile Include="RolePrivilegeOperation.cs" />
+    <Compile Include="Schedule.cs" />
     <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
     <Compile Include="Search Parameter\PageSearchParameter.cs" />
+    <Compile Include="Search Parameter\SchdeuleSearchParameter.cs" />
     <Compile Include="Search Parameter\WidgetSearchParameter.cs" />
     <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />

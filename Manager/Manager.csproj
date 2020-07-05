@@ -57,6 +57,7 @@
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="PageManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScheduleManager.cs" />
     <Compile Include="WidgetManager.cs" />
     <Compile Include="RoleManager.cs" />
     <Compile Include="UserManager.cs" />
