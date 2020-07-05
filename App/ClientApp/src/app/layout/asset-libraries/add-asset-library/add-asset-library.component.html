@@ -16,8 +16,8 @@
           <img class="card-img-top height100" src="assets/images/loginbg.jpg" />
           <!--video-->
           <!--<video class="width100 height100" style="object-fit:fill" autoplay controls>
-    <source src="assets/docs/SampleVideo.mp4" type="video/mp4">
-  </video>-->
+            <source src="assets/docs/SampleVideo.mp4" type="video/mp4">
+          </video>-->
         </div>
       </div>
     </div>
@@ -182,7 +182,7 @@
               type="file" webkitDirectory (change)="HandleFileUpload($event.target.files)">-->
 
               <input *ngIf="isMultipleFileUploadEnable" class="custom-file-input"
-                     accept="image/x-png,image/jpeg,image/jpg,video/mp4" type="file" (change)="HandleFileUpload($event)">
+                     accept="{{actualSetting.VideoFileExtension}}" type="file" (change)="HandleFileUpload($event)">
               <label class="custom-file-label"></label>
             </div>
 

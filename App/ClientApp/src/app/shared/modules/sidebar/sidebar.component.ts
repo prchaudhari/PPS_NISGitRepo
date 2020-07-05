@@ -41,6 +41,7 @@ export class SidebarComponent implements OnInit {
   }
 
   navigateToRoles() {
+    this.URL = '/roles';
     this.route.navigate(['/roles']);
   }
   ChangeSideBar() {
@@ -69,27 +70,41 @@ export class SidebarComponent implements OnInit {
     this.route.navigate(['/dashboard']);
   }
   navigateToTemplates() {
+    this.URL = '/pages';
     this.route.navigate(['/pages']);
   }
   navigateToChangePassword() {
+    this.URL = '/changepassword';
     this.route.navigate(['/changepassword']);
   }
   navigateToProfile() {
+    this.URL = '/profile';
+
     this.route.navigate(['/profile']);
   }
   navigateToScheduleManagement() {
+    this.URL = '/schedulemanagement';
+
     this.route.navigate(['/schedulemanagement']);
   }
   navigateToStatementDef() {
+    this.URL = '/statementdefination';
+
     this.route.navigate(['/statementdefination']);
   }
   navigateToAssetLibraries() {
+    this.URL = '/assetlibrary';
+
     this.route.navigate(['/assetlibrary']);
   }
   navigateToLogs() {
+    this.URL = '/logs';
+
     this.route.navigate(['/logs']);
   }
   navigateToAnalytics() {
+    this.URL = '/analytics';
+
     this.route.navigate(['/analytics']);
   }
   navigateToSettings() {
@@ -104,7 +119,7 @@ export class SidebarComponent implements OnInit {
     private injector: Injector,
     private loginService: LoginService,
     private localstorageservice: LocalStorageService,) {
-      this.AppVersion = environment.appVersion;
+    this.AppVersion = environment.appVersion;
   }
 
   ngOnInit() {

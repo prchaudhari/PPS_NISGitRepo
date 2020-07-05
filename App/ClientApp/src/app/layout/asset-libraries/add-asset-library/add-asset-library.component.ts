@@ -51,6 +51,7 @@ export class AddAssetLibraryComponent implements OnInit {
   public assetLibrary: AssetLibrary;
   public asset: Asset;
   public assets: Asset[];
+  public FileExtension = [];
   public tab: number;
   public mode: string = "Add";
   public baseURL: string = ConfigConstants.BaseURL;
@@ -279,8 +280,8 @@ export class AddAssetLibraryComponent implements OnInit {
           this._spinnerService.stop();
           let contentType = data.headers.get('Content-Type');
           let fileName = data.headers.get('x-filename');
-          
-          
+
+
         },
         error => {
           $('.overlay').show();
@@ -579,46 +580,84 @@ export class AddAssetLibraryComponent implements OnInit {
 
     var files = e.target.files;
     var file = files[0];
-    var imagePattern = /image-*/;
-    var vedioPattern = /video-*/;
-    if (file.type.match(imagePattern)) {
-      if (file.size > this.actualSetting.ImageSize) {
-        this.fileSize = this.setting.ImageSize
-        this.assetFileSizeError = true;
-        this.assetFileTypeError = false;
-        this.fileNameList = [];
+ 
+    var isValidFileType = false;
+    for (var i = 0; i < this.FileExtension.length; i++) {
+      if (this.FileExtension[i] == file.type) {
+        isValidFileType = true;
       }
-      else {
-        this.assetFileSizeError = false;
-
-      }
-      let img = new Image()
-      img.src = window.URL.createObjectURL(e.target.files[0])
-      img.onload = () => {
-        console.log(img.width + "image " + img.height);
-        console.log(this.actualSetting.ImageWidth + "image " + this.actualSetting.ImageHeight);
-        var height = img.height;
-        var width = img.width;
-
-        if (height > this.actualSetting.ImageHeight && width > this.actualSetting.ImageWidth) {
-          this.assetFileWidthHeightError = true;
-          this.assetFileWidthError = false;
-          this.assetFileHeightError = false;
-        }
-        else if (height > this.actualSetting.ImageHeight) {
-          this.assetFileWidthHeightError = false;
-          this.assetFileWidthError = false;
-          this.assetFileHeightError = true;
-        }
-        else if (width > this.actualSetting.ImageWidth) {
-          this.assetFileWidthHeightError = false;
-          this.assetFileWidthError = true;
-          this.assetFileHeightError = false;
+    }
+    if (isValidFileType) {
+      var imagePattern = /image-*/;
+      var vedioPattern = /video-*/;
+      if (file.type.match(imagePattern)) {
+        if (file.size > this.actualSetting.ImageSize) {
+          this.fileSize = this.setting.ImageSize
+          this.assetFileSizeError = true;
+          this.assetFileTypeError = false;
+          this.fileNameList = [];
         }
         else {
-          this.assetFileWidthHeightError = false;
-          this.assetFileWidthError = false;
-          this.assetFileHeightError = false;
+          this.assetFileSizeError = false;
+
+        }
+        let img = new Image()
+        img.src = window.URL.createObjectURL(e.target.files[0])
+        img.onload = () => {
+          console.log(img.width + "image " + img.height);
+          console.log(this.actualSetting.ImageWidth + "image " + this.actualSetting.ImageHeight);
+          var height = img.height;
+          var width = img.width;
+
+          if (height > this.actualSetting.ImageHeight && width > this.actualSetting.ImageWidth) {
+            this.assetFileWidthHeightError = true;
+            this.assetFileWidthError = false;
+            this.assetFileHeightError = false;
+          }
+          else if (height > this.actualSetting.ImageHeight) {
+            this.assetFileWidthHeightError = false;
+            this.assetFileWidthError = false;
+            this.assetFileHeightError = true;
+          }
+          else if (width > this.actualSetting.ImageWidth) {
+            this.assetFileWidthHeightError = false;
+            this.assetFileWidthError = true;
+            this.assetFileHeightError = false;
+          }
+          else {
+            this.assetFileWidthHeightError = false;
+            this.assetFileWidthError = false;
+            this.assetFileHeightError = false;
+          }
+          if (this.assetFileTypeError == false && this.assetFileSizeError == false &&
+            this.assetFileWidthHeightError == false && this.assetFileHeightError == false && this.assetFileWidthError == false
+          ) {
+            this.assetFileTypeError = false;
+            this.assetFileSizeError = false;
+            this.assetFileWidthHeightError = false;
+            this.assetFileWidthError = false;
+            this.assetFileHeightError = false;
+            this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
+            this.fileToUpload = files;
+          }
+          else {
+            this.fileNameList = [];
+          }
+        }
+        this.fileType = 'Image';
+
+      }
+      else if (file.type.match(vedioPattern)) {
+
+        if (file.size > this.actualSetting.VideoSize) {
+          this.fileSize = this.setting.VideoSize;
+          this.fileType = 'Video';
+          this.assetFileSizeError = true;
+          this.assetFileTypeError = false;
+          this.fileNameList = [];
+        }
+        else {
+          this.assetFileSizeError = false;
         }
         if (this.assetFileTypeError == false && this.assetFileSizeError == false &&
           this.assetFileWidthHeightError == false && this.assetFileHeightError == false && this.assetFileWidthError == false
@@ -635,54 +674,14 @@ export class AddAssetLibraryComponent implements OnInit {
           this.fileNameList = [];
         }
       }
-      this.fileType = 'Image';
-
     }
-    else if (file.type.match(vedioPattern)) {
-
-      if (file.size > this.actualSetting.VideoSize) {
-        this.fileSize = this.setting.VideoSize;
-        this.fileType = 'Video';
-        this.assetFileSizeError = true;
-        this.assetFileTypeError = false;
-
-        this.fileNameList = [];
-
-        // return false;
-
-      }
-      else {
-        this.assetFileSizeError = false;
-
-      }
-      if (this.assetFileTypeError == false && this.assetFileSizeError == false &&
-        this.assetFileWidthHeightError == false && this.assetFileHeightError == false && this.assetFileWidthError == false
-      ) {
-        this.assetFileTypeError = false;
-        this.assetFileSizeError = false;
-        this.assetFileWidthHeightError = false;
-        this.assetFileWidthError = false;
-        this.assetFileHeightError = false;
-        this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
-        this.fileToUpload = files;
-      }
-      else {
-        this.fileNameList = [];
-      }
-
-    }
+   
     else {
       this.assetFileTypeError = true;
       this.assetFileSizeError = false;
       this.fileNameList = [];
 
-      // return false;
-
     }
-
-   
-
-    //return true;
   }
 
   removeFileFromUpload(fileName: string): void {
@@ -837,12 +836,12 @@ export class AddAssetLibraryComponent implements OnInit {
   }
 
   LoadAssetSettings(): void {
-   
+
     var AssetSearchParameter;
     this._http.post(this.baseURL + 'AssetSetting/list', AssetSearchParameter).subscribe(
       data => {
         this.setting = data[0];
-        
+
         //this.setting.ImageHeight = 0;
         //this.setting.ImageFileExtension = "";
         //this.setting.VideoFileExtension = "";
@@ -851,6 +850,26 @@ export class AddAssetLibraryComponent implements OnInit {
         this.actualSetting.VideoSize = this.setting.VideoSize * 1024 * 1024;
         this.actualSetting.ImageWidth = this.setting.ImageWidth * 37.7952755906;
         this.actualSetting.ImageHeight = this.setting.ImageHeight * 37.7952755906;
+         this.FileExtension = this.setting.ImageFileExtension.split(",");
+        var videoFileExtension = this.setting.VideoFileExtension.split(",");
+        for (var i = 0; i < videoFileExtension.length; i++) {
+          this.FileExtension.push(videoFileExtension[i]);
+        }
+        //image/jpeg,image/jpg,video/mp4
+        for (var i = 0; i < this.FileExtension.length; i++) {
+          if (this.FileExtension[i] == "png") {
+            this.FileExtension[i] = "image/png";
+
+          }
+          else if (this.FileExtension[i] == "jpeg") {
+            this.FileExtension[i] = "image/jpeg";
+
+          }
+          else if (this.FileExtension[i] == "mp4") {
+            this.FileExtension[i] = "video/mp4";
+          }
+        }
+        this.actualSetting.VideoFileExtension = this.FileExtension.join(",");
 
       },
       error => {

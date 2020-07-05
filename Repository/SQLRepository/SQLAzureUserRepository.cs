@@ -1101,13 +1101,13 @@ namespace nIS
                     if (searchParameter.SearchMode == SearchMode.Equals)
                     {
                         // queryString.Append(string.Format("FirstName.Equals(\"{0}\") or LastName.Equals(\"{0}\") and ", searchParameter.FirstName, searchParameter.LastName));
-                        queryString.Append("(" + string.Join("or ", searchParameter.FirstName.ToString().Split(',').Select(item => string.Format("FirstName.Equals(\"{0}\") or LastName.Equals(\"{0}\") ", item))) + ") and ");
+                        queryString.Append("(" + string.Join("or ", searchParameter.FirstName.ToString().Split(',').Select(item => string.Format("FirstName.Equals(\"{0}\")", item))) + ") and ");
 
                     }
                     else
                     {
                         //queryString.Append(string.Format("FirstName.Contains(\"{0}\") or LastName.Equals(\"{0}\") and ", searchParameter.FirstName, searchParameter.LastName));
-                        queryString.Append("(" + string.Join("or ", searchParameter.FirstName.ToString().Split(',').Select(item => string.Format("FirstName.Contains(\"{0}\") or LastName.Contains(\"{0}\") ", item))) + ") and ");
+                        queryString.Append("(" + string.Join("or ", searchParameter.FirstName.ToString().Split(',').Select(item => string.Format("FirstName.Contains(\"{0}\")", item))) + ") and ");
 
                     }
                 }
