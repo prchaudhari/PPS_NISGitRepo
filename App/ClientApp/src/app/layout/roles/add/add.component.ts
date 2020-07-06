@@ -304,18 +304,7 @@ export class AddComponent implements OnInit {
             {
               "EntityName" : "Widgets",
               "Operation" : [
-                {
-                  "operation": "Create",
-                  "IsEnabled":false
-                },
-                {
-                  "operation": "Edit",
-                  "IsEnabled":false
-                },
-                {
-                  "operation": "Delete",
-                  "IsEnabled":false
-                },
+                
                 {
                   "operation": "View",
                   "IsEnabled":false

@@ -26,6 +26,8 @@ export class SidebarComponent implements OnInit {
   public AppVersion: string;
   public URL = '';
   public IsMainMenu = true;
+
+  public element: HTMLElement;
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
       this.sidebar_class = "show-sidebar"
@@ -45,14 +47,19 @@ export class SidebarComponent implements OnInit {
     this.route.navigate(['/roles']);
   }
   ChangeSideBar() {
+    this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
+    console.log(this.element);
     this.IsMainMenu = !this.IsMainMenu
     if (this.IsMainMenu) {
       this.URL = '/dashboard';
+      this.element.className ='fa fa-cog'
       //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/dashboard']);
     }
     else {
       this.URL = '/settings';
+      this.element.className = 'fa fa-home'
+
       //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/settings']);
     }
@@ -108,6 +115,7 @@ export class SidebarComponent implements OnInit {
     this.route.navigate(['/analytics']);
   }
   navigateToSettings() {
+
     this.route.navigate(['/settings']);
   }
   async logout() {
@@ -165,7 +173,13 @@ export class SidebarComponent implements OnInit {
     })
     this.URL = this.route.url;
     if (this.URL == '/settings') {
+      this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
+      this.element.className = 'fa fa-home'
       this.IsMainMenu = false;
+    }
+    else {
+      this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
+      this.element.className = 'fa fa-cog'
     }
   }
 

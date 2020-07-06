@@ -67,4 +67,13 @@ export class URLConfiguration {
   public static get scheduleAddUrl(): string { return "Schedule/Add" };
   public static get scheduleUpdateUrl(): string { return "Schedule/Update" };
   public static get scheduleDeleteUrl(): string { return "Schedule/Delete" };
+
+  //Statement Url Method
+  public static get statementGetUrl(): string { return "Statement/List" };
+  public static get statementAddUrl(): string { return "Statement/Add" };
+  public static get statementUpdateUrl(): string { return "Statement/Update" };
+  public static get statementDeleteUrl(): string { return "Statement/Delete" };
+  public static get statementPublishUrl(): string { return "Statement/Publish" };
+  public static get statementPreviewUrl(): string { return "Statement/Preview" };
+  public static get statementCloneUrl(): string { return "Statement/Clone" };
 }

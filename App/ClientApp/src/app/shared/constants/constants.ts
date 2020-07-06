@@ -43,6 +43,7 @@ export class Constants {
   public static get StartDate(): string { return "StartDate" };
   public static get PagePublishedSuccessfullyMessage(): string { return "Page Published successfully." };
   public static get PageCloneSuccessfullyMessage(): string { return "Page Clone successfully." };
+  public static get StatementPublishedSuccessfullyMessage(): string { return "Statement Published successfully." };
 }
 
 export class ErrorMessageConstants {

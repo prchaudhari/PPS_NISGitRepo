@@ -23,7 +23,7 @@
         <div class="row form-group">
           <div class="col-md-6 col-sm-6 col-lg-4">
             <label id="lblImageHeight" for="inputImageHeight">Height(CM)<span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="inputImageHeight" formControlName="assetImageHeight" />
+            <input type="text" class="form-control" id="inputImageHeight" (change)="textBoxValueChanged($event)" formControlName="assetImageHeight" />
             <div class="validation-msg" style="color:red">
               <ul *ngIf="assetImageHeight.touched && assetImageHeight.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="assetImageHeight.errors?.pattern">Inavid image height</li>
