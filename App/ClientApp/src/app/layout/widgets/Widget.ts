@@ -13,4 +13,5 @@ export class Widget {
   "Instantiable": boolean;
   "WidgetIcon": string;
   "PageTypeNames": string;
+  "Checked": boolean = false;
 }

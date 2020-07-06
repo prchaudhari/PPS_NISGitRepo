@@ -27,7 +27,6 @@ namespace nIS
             unityContainer.RegisterType<Websym.Core.TenantManager.ITenantRepository, Websym.Core.TenantManager.SQLAzureTenantRepository>();
             unityContainer.RegisterType<Websym.Core.EntityManager.IEntityRepository, Websym.Core.EntityManager.SQLAzureEntityRepository>();
             unityContainer.RegisterType<Websym.Core.EventManager.IEventRepository, Websym.Core.EventManager.SQLAzureEventRepository>();
-
           
             unityContainer.RegisterType<IUtility, Utility>();
             unityContainer.RegisterType<IValidationEngine, ValidationEngine>();
@@ -39,7 +38,7 @@ namespace nIS
             unityContainer.RegisterType<IWidgetRepository, SQLWidgetRepository>();
             unityContainer.RegisterType<IAssetSettingRepository, SQLAssetSettingRepository>();
             unityContainer.RegisterType<IScheduleRepository, SQLScheduleRepository>();
-
+            unityContainer.RegisterType<IStatementRepository, SQLStatementRepository>();
 
             return unityContainer;
         }

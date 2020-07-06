@@ -217,7 +217,7 @@ namespace nIS
                                         IsActive = item.IsActive,
                                         IsDeleted = item.IsDeleted
                                     }).ToList();
-                                    widget.PageTypeNames = string.Join(",", widget.PageTypes.Select(item => item.PageTypeName).ToList());
+                                    widget.PageTypeNames = string.Join(",  ", widget.PageTypes.Select(item => item.PageTypeName).ToList());
                                 }
 
                             });

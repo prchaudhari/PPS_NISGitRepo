@@ -33,6 +33,7 @@
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.ts" />
     <None Remove="ClientApp\src\app\layout\asset-settings\asset-setting.ts" />
     <None Remove="ClientApp\src\app\layout\schedule-management\schedule.ts" />
+    <None Remove="ClientApp\src\app\layout\statement-defination\statement.ts" />
     <None Remove="ClientApp\src\app\layout\users\user.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\widget.service.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\Widget.ts" />
@@ -81,6 +82,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Update="ClientApp\src\app\layout\statement-defination\statement.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\layout\widgets\widget.service.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

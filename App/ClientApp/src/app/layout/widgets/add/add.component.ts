@@ -83,6 +83,7 @@ export class AddComponent implements OnInit {
         this.widgetList[i].WidgetIcon = "icon-videoWidget";
 
       }
+      this.widgetList[0].Checked = true;
       this.selectedLink = this.widgetList[0];
 
     }

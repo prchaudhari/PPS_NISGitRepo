@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="IRepository\IAssetSettingRepository.cs" />
     <Compile Include="IRepository\IAssetLibraryRepository.cs" />
+    <Compile Include="IRepository\IStatementRepository.cs" />
     <Compile Include="IRepository\IPageRepository.cs" />
     <Compile Include="IRepository\IScheduleRepository.cs" />
     <Compile Include="IRepository\IWidgetRepository.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="SQLRepository\SQLAssetSettingRepository.cs" />
     <Compile Include="SQLRepository\SQLAssetLibraryRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureUserRepository.cs" />
+    <Compile Include="SQLRepository\SQLStatementRepository.cs" />
     <Compile Include="SQLRepository\SQLPageRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureWidgetRepository.cs" />
     <Compile Include="SQLRepository\SQLScheduleRepository.cs" />

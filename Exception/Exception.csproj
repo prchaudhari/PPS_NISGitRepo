@@ -56,6 +56,7 @@
     <Compile Include="ConnectionStringNotFoundException.cs" />
     <Compile Include="Constants\AssetLibrary.cs" />
     <Compile Include="Constants\ExceptionConstant.cs" />
+    <Compile Include="Constants\StatementConstant.cs" />
     <Compile Include="Constants\PageConstant.cs" />
     <Compile Include="Constants\ScheduleConstant.cs" />
     <Compile Include="Constants\RoleConstant.cs" />
@@ -64,6 +65,11 @@
     <Compile Include="InvalidSearchParameterException.cs" />
     <Compile Include="InvalidTenantException.cs" />
     <Compile Include="NullArgumentException.cs" />
+    <Compile Include="Statement\DuplicateStatementPageFoundException.cs" />
+    <Compile Include="Statement\DuplicateStatementFoundException.cs" />
+    <Compile Include="Statement\InvalidStatementException.cs" />
+    <Compile Include="Statement\StatementNotFoundException.cs" />
+    <Compile Include="Statement\StatementReferenceException.cs" />
     <Compile Include="Page\DuplicatePageFoundException.cs" />
     <Compile Include="Page\DuplicatePageWidgetFoundException.cs" />
     <Compile Include="Page\InvalidPageException.cs" />

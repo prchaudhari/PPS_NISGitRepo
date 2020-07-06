@@ -245,6 +245,7 @@
     <Compile Include="Container\IocContainer.cs" />
     <Compile Include="Container\UnityResolverService.cs" />
     <Compile Include="Controllers\AssetSettingController.cs" />
+    <Compile Include="Controllers\StatementController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\AssetLibraryController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />

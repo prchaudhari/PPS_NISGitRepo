@@ -55,6 +55,7 @@
     <Compile Include="AssetSettingManager.cs" />
     <Compile Include="AssetLibraryManager.cs" />
     <Compile Include="AuthenticationManager.cs" />
+    <Compile Include="StatementManager.cs" />
     <Compile Include="PageManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScheduleManager.cs" />
