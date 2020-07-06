@@ -62,4 +62,9 @@ export class URLConfiguration {
 
   public static get widgetGetUrl(): string { return "Widget/List" };
 
+  //Schedule Url Method
+  public static get scheduleGetUrl(): string { return "Schedule/List" };
+  public static get scheduleAddUrl(): string { return "Schedule/Add" };
+  public static get scheduleUpdateUrl(): string { return "Schedule/Update" };
+  public static get scheduleDeleteUrl(): string { return "Schedule/Delete" };
 }

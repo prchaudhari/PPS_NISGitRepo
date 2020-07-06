@@ -32,6 +32,7 @@
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.service.ts" />
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.ts" />
     <None Remove="ClientApp\src\app\layout\asset-settings\asset-setting.ts" />
+    <None Remove="ClientApp\src\app\layout\schedule-management\schedule.ts" />
     <None Remove="ClientApp\src\app\layout\users\user.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\widget.service.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\Widget.ts" />
@@ -48,6 +49,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\core\core.module.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\core\services\window-ref.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\roles\role.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\schedule-management\schedule.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.spec.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\login\login.service.ts" />
