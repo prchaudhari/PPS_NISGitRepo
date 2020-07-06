@@ -23,12 +23,12 @@
           <div class="row form-group">
             <div class="col-md-12 col-lg-12">
               <label id="lblRoleName" for="inputRoleName">Name</label>
-              <div>SD 01</div>
+              <div>{{statement.Name}}</div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12 col-lg-12 form-group">
-              <label id="lblDescription">Description</label>
+              <label id="lblDescription">{{statement.Description}}</label>
               <div>-</div>
             </div>
           </div>
@@ -36,9 +36,9 @@
         <div class="col-xl-3 col-lg-4 col-md-4 ml-auto">
           <div class="card border-0 mb-2 card-shadow">
             <div class="card-body">
-              <h6>John Doe</h6>
-              <div><label class="mb-0">Date : </label><span class="ml-1">03/02/2020</span></div>
-              <div><label>Status : </label><span class="badge badge-warning p-1 ml-1 text-white">In Process</span></div>
+              <h6>{{statement.StatementUpdatedByUserName}}</h6>
+              <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate}}</span></div>
+              <div><label>Status : </label><span class="badge badge-warning p-1 ml-1 text-white">{{statement.Status}}</span></div>
             </div>
 
           </div>
@@ -65,10 +65,10 @@
       <div class="row">
         <div class="col-sm-12 form-group">
           <div class="example-list">
-            <div class="example-box p-2" style="cursor:initial" *ngFor="let item of seq">
+            <!--<div class="example-box p-2" style="cursor:initial" *ngFor="let item of statement.">
               <span>{{item}}</span>
               <span class="pull-right">02/03/2020</span>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>

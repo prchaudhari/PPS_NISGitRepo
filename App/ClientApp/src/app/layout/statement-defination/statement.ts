@@ -13,5 +13,8 @@ export class Statement {
   "IsDeleted": boolean;
   "TenantCode": string;
   "LastUpdatedDate": null;
-  "UpdateBy": User
+  "UpdateBy": User;
+  "StatementOwnerName": string;
+  "StatementPublishedByUserName": string;
+  "StatementUpdatedByUserName": string;
 }

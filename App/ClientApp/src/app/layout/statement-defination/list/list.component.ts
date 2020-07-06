@@ -51,6 +51,14 @@ export class ListComponent implements OnInit {
   public userClaimsRolePrivilegeOperations: any[] = [];
   closeFilter() {
     this.isFilter = !this.isFilter;
+    this.StatementFilterForm = this.fb.group({
+      filterDisplayName: [null],
+      filterOwner: [null],
+      filterStatus: [0],
+      filterPageType: [null],
+      filterPublishedOnFromDate: [null],
+      filterPublishedOnToDate: [null],
+    });
   }
   displayedColumns: string[] = ['name', 'version', 'owner', 'date', 'status', 'actions'];
   dataSource = new MatTableDataSource<any>();
@@ -64,7 +72,7 @@ export class ListComponent implements OnInit {
     this.StatementFilterForm = this.fb.group({
       filterDisplayName: [null],
       filterOwner: [null],
-      filterStatus: [null],
+      filterStatus: [0],
       filterPageType: [null],
       filterPublishedOnFromDate: [null],
       filterPublishedOnToDate: [null],
@@ -137,7 +145,7 @@ export class ListComponent implements OnInit {
         case 'name': return compareStr(a.Name, b.Name, isAsc);
         case 'status': return compareStr(a.Status, b.Status, isAsc);
         //case 'pagetype': return compareStr(a.PageTypeName, b.PageTypeName, isAsc);
-        //case 'owner': return compareStr(a.PageOwnerName, b.PageOwnerName, isAsc);
+        //case 'owner': return compareStr(a.StatementOwnerName, b.StatementOwnerName, isAsc);
         //case 'publishedBy': return compareStr(a.PagePublishedByUserName, b.PagePublishedByUserName, isAsc);
         case 'version': return compare(Number(a.Version), Number(b.Version), isAsc);
         //case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
@@ -247,7 +255,7 @@ export class ListComponent implements OnInit {
           searchParameter.DisplayName = this.StatementFilterForm.value.filterDisplayName.trim();
         }
         if (this.StatementFilterForm.value.filterOwner != null && this.StatementFilterForm.value.filterOwner != '') {
-          searchParameter.PageOwner = this.StatementFilterForm.value.filterOwner.trim();
+          searchParameter.StatementOwner = this.StatementFilterForm.value.filterOwner.trim();
         }
         if (this.filterPageTypeId != 0) {
           searchParameter.PageTypeId = this.filterPageTypeId;
