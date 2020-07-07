@@ -23,27 +23,16 @@
 <div class="dashboard-container">
   <div class="widget-sidebar stylescrollbar" [ngClass]="isWidgetSidebar? 'show-sidebar show-sidebar-widget':'hide-sidebar'">
     <ul class="side-bar-ul">
-      <li class="side-bar-li" title={{widgetType.title}} *ngFor="let widgetType of widgetsArray">
-          <a (click)="selectWidget(widgetType.type)">
+      <li class="side-bar-li" title={{widget.DisplayName}} *ngFor="let widget of widgetsArray">
+          <a (click)="selectWidget(widget.Identifier)">
               <span class="nav-icon fa" [ngClass]="{
-                  'fa-address-book-o': widgetType.type == 'customerInformation',
-                  'fa-address-card-o' : widgetType.type == 'accountInformation',
-                  'fa-image fa-lg' : widgetType.type == 'image',
-                  'icon-videoWidget' : widgetType.type == 'video',
-                  'icon-widget-single-column2 fa-lg' : widgetType.type == 'summaryAtGlance',
-                  'fa-bell-o fa-lg' : widgetType.type == 'reminderAndRecommendation',
-                  'icon-rp-loss1 fa-lg' : widgetType.type == 'investmentPortfolioRisk',
-                  'icon-AnalyticsWidget' : widgetType.type == 'analytics',
-                  'icon-AvailableBalanceWidget' : widgetType.type == 'availableBalance',
-                  'icon-widget-multi-column2' : widgetType.type == 'transactionList',
-                  'icon-widget-line-chart2' : widgetType.type == 'savingTrend',
-                  'icon-TransactionMixWidget' : widgetType.type == 'transactionMix',
-                  'icon-rp-production1' : widgetType.type == 'spendingTrend',
-                  'fa-newspaper-o' : widgetType.type == 'newsAlerts',
-                  'fa-credit-card' : widgetType.type == 'transactionDetails',
-                  'icon-rp-quality1' : widgetType.type == 'top4IncomeSources'
+                  'fa-address-book-o': widget.WidgetName == 'CustomerInformation',
+                  'fa-address-card-o' : widget.WidgetName == 'AccountInformation',
+                  'fa-image fa-lg' : widget.WidgetName == 'Image',
+                  'icon-videoWidget' : widget.WidgetName == 'Video',
+                  'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'Summary'
               }">
-          </span><span class="nav-title"> {{widgetType.title}} </span>
+          </span><span class="nav-title"> {{widget.DisplayName}} </span>
           </a>
       </li>
   </ul>
@@ -55,8 +44,8 @@
       <gridster [options]="options">        
         <gridster-item  [item]="item" *ngFor="let item of widgetsGridsterItemArray">
           <button class='fa fa-trash-o widget-action' (click)="removeItem($event,item)"></button>
-          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='image'"></button>
-          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='video'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
       </gridster-item>
       </gridster>

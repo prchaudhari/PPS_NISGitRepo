@@ -1,11 +1,9 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, Injector, } from '@angular/core';
+import { Component, OnInit, Injector, } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
 import { Location } from '@angular/common';
 import { Constants } from 'src/app/shared/constants/constants';
-import * as $ from 'jquery';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { TemplateService } from '../../layout/template/template.service';
@@ -14,16 +12,20 @@ import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
 import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
-import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
+import { HttpClient } from '@angular/common/http';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { WidgetService } from '../../layout/widgets/widget.service';
+import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfiguration';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-add-dashboard-designer',
   templateUrl: './add-dashboard-designer.component.html',
   styleUrls: ['./add-dashboard-designer.component.scss']
 })
+
 export class AddDashboardDesignerComponent implements OnInit {
     public isImageConfig: boolean = false;
     public isVideoConfig: boolean = false;
@@ -296,7 +298,9 @@ export class AddDashboardDesignerComponent implements OnInit {
             vdoUrl: [null, [Validators.required, Validators.pattern(this.validUrlRegexPattern)]]
         });
 
+        this.getWidgetsByPageType();
         this.getAssetLibraries();
+
         if(this.pageEditModeOn) {
             this.getTemplate();
         }
@@ -355,50 +359,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             disableWarnings: false,
             scrollToNewItems: true
         };
-
-        //for value
-        this.dashboard = [
-            { cols: 2, rows: 2, y: 0, x: 0 },
-            { cols: 2, rows: 2, y: 0, x: 2, hasContent: true },
-            { cols: 1, rows: 2, y: 0, x: 4 },
-            { cols: 1, rows: 2, y: 2, x: 5 },
-            { cols: 1, rows: 2, y: 1, x: 0 },
-            { cols: 1, rows: 2, y: 1, x: 0 },
-            { cols: 2, rows: 2, y: 3, x: 5, minItemRows: 2, minItemCols: 2, label: 'Min rows & cols = 2' },
-            { cols: 2, rows: 2, y: 2, x: 0, maxItemRows: 2, maxItemCols: 2, label: 'Max rows & cols = 2' },
-            { cols: 2, rows: 2, y: 2, x: 2, dragEnabled: true, resizeEnabled: true, label: 'Drag&Resize Enabled' },
-            { cols: 1, rows: 2, y: 2, x: 4, dragEnabled: false, resizeEnabled: false, label: 'Drag&Resize Disabled' },
-            { cols: 1, rows: 2, y: 2, x: 6 }
-        ];
-
-        //Array for showing widgets in the sidebar--
-        this.widgetsArray = [
-            {
-              type:  "customerInformation",
-              value: "CustomerInformation",
-              title: "Customer Information",
-            },
-            {
-              type: "accountInformation",
-              value: "AccountInformation" ,
-              title: "Account Information",
-            },
-            {
-              type: "summaryAtGlance",
-              value: "SummaryAtGlance",
-              title: "Summary at Glance",
-            },
-            {
-              type: "image",
-              value: "Image",
-              title: "Image",
-            },
-            {
-              type: "video",
-              value: "Video",
-              title: "Video",
-            }
-        ]
+        
     }
 
     changedOptions() {
@@ -410,6 +371,28 @@ export class AddDashboardDesignerComponent implements OnInit {
     removeItem($event, item) {
         const index: number = this.widgetsGridsterItemArray.indexOf(item);
         this.widgetsGridsterItemArray.splice(index, 1);
+    }
+
+    async getWidgetsByPageType() {
+        let widgetService = this.injector.get(WidgetService);
+        let searchParameter: any = {};
+        searchParameter.PagingParameter = {};
+        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.SortParameter = {};
+        searchParameter.SortParameter.SortColumn = "WidgetName";
+        searchParameter.SortParameter.SortOrder = Constants.Ascending;
+        searchParameter.SearchMode = Constants.Contains;
+        searchParameter.PageTypeId = this.PageTypeId;
+        searchParameter.IsPageTypeDetailsRequired = false;
+        this._http.post(this.baseURL + URLConfiguration.widgetGetUrl, searchParameter).subscribe(
+            data => {
+                this.widgetsArray = <any[]>data;  
+            },
+            error => {
+                this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+            }
+        );
     }
 
     //Back Functionality.
@@ -480,74 +463,78 @@ export class AddDashboardDesignerComponent implements OnInit {
         router.navigate(['pages']);
     }
 
-    selectWidget(widgetType){
-        this.widgetItemCount = this.widgetItemCount + 1;
-        this.widgetId = widgetType;
-        if(widgetType == "customerInformation"){
-            return this.widgetsGridsterItemArray.push({
-                cols: 15,
-                rows: 7,
-                y: 0,
-                x: 0,
-                component: CustomerInformationComponent,
-                value : 'customerInformation',
-                widgetId : 1,
-                widgetItemCount: this.widgetItemCount,
-                WidgetSetting: ''
-             })
+    selectWidget(widgetId) {
+        let widgets = this.widgetsArray.filter(x => x.Identifier == widgetId);
+        if(widgets.length != 0) {
+            let widget = widgets[0];
+            this.widgetItemCount++;
+            if(widget.WidgetName == "CustomerInformation"){
+                return this.widgetsGridsterItemArray.push({
+                    cols: 15,
+                    rows: 7,
+                    y: 0,
+                    x: 0,
+                    component: CustomerInformationComponent,
+                    value : widget.WidgetName,
+                    widgetId : widget.Identifier,
+                    widgetItemCount: this.widgetItemCount,
+                    WidgetSetting: ''
+                })
+            }
+            else if(widget.WidgetName == "AccountInformation"){
+                return this.widgetsGridsterItemArray.push({
+                    cols: 5,
+                    rows: 7,
+                    y: 0,
+                    x: 0,
+                    component: AccountInformationComponent,
+                    value : widget.WidgetName,
+                    widgetId : widget.Identifier,
+                    widgetItemCount: this.widgetItemCount,
+                    WidgetSetting: ''
+                })
+            }
+            else if(widget.WidgetName == "Image"){
+                return this.widgetsGridsterItemArray.push({
+                    cols: 10,
+                    rows: 5,
+                    y: 0,
+                    x: 0,
+                    component: ImageComponent,
+                    value : widget.WidgetName,
+                    widgetId : widget.Identifier,
+                    widgetItemCount: this.widgetItemCount,
+                    WidgetSetting: ''
+                })
+            }
+            else if(widget.WidgetName == "Video"){
+                return this.widgetsGridsterItemArray.push({
+                    cols: 10,
+                    rows: 5,
+                    y: 0,
+                    x: 0,
+                    component: VideoComponent,
+                    value : widget.WidgetName,
+                    widgetId : widget.Identifier,
+                    widgetItemCount: this.widgetItemCount,
+                    WidgetSetting: ''
+                })
+            }
+            else if(widget.WidgetName == "Summary"){
+                return this.widgetsGridsterItemArray.push({
+                    cols: 15,
+                    rows: 6,
+                    y: 0,
+                    x: 0,
+                    component: SummaryAtGlanceComponent,
+                    value : widget.WidgetName,
+                    widgetId : widget.Identifier,
+                    widgetItemCount: this.widgetItemCount,
+                    WidgetSetting: ''
+                })
+            }
         }
-        else if(widgetType == "accountInformation"){
-            return this.widgetsGridsterItemArray.push({
-                cols: 5,
-                rows: 7,
-                y: 0,
-                x: 0,
-                component: AccountInformationComponent,
-                value : 'accountInformation',
-                widgetId : 2,
-                widgetItemCount: this.widgetItemCount,
-                WidgetSetting: ''
-             })
-        }
-        else if(widgetType == "image"){
-            return this.widgetsGridsterItemArray.push({
-                cols: 10,
-                rows: 5,
-                y: 0,
-                x: 0,
-                component: ImageComponent,
-                value : 'image',
-                widgetId : 3,
-                widgetItemCount: this.widgetItemCount,
-                WidgetSetting: ''
-             })
-        }
-        else if(widgetType == "video"){
-            return this.widgetsGridsterItemArray.push({
-                cols: 10,
-                rows: 5,
-                y: 0,
-                x: 0,
-                component: VideoComponent,
-                value : 'video',
-                widgetId : 4,
-                widgetItemCount: this.widgetItemCount,
-                WidgetSetting: ''
-             })
-        }
-        else if(widgetType == "summaryAtGlance"){
-            return this.widgetsGridsterItemArray.push({
-                cols: 15,
-                rows: 6,
-                y: 0,
-                x: 0,
-                component: SummaryAtGlanceComponent,
-                value : 'summaryAtGlance',
-                widgetId : 5,
-                widgetItemCount: this.widgetItemCount,
-                WidgetSetting: ''
-             })
-        }
+        
     }
 
     getTemplate() {
@@ -585,7 +572,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             let pageWidgets: TemplateWidget[] = template.PageWidgets;
             if(pageWidgets.length != 0) {
                 for(let i=0; i < pageWidgets.length; i++) {    
-                    this.widgetItemCount = this.widgetItemCount + 1;
+                    this.widgetItemCount++;
                     let gridsterItem: any = {};
                     gridsterItem.x = pageWidgets[i].Xposition;
                     gridsterItem.y = pageWidgets[i].Yposition;
@@ -607,19 +594,19 @@ export class AddDashboardDesignerComponent implements OnInit {
         let gridObj: any = {};
         if(widgetId == 1) {
             gridObj.component = CustomerInformationComponent;
-            gridObj.value = "customerInformation";
+            gridObj.value = "CustomerInformation";
         }else if(widgetId == 2) {
             gridObj.component = AccountInformationComponent;
-            gridObj.value = "accountInformation";
-        }else if(widgetId == 3) {
-            gridObj.component = ImageComponent;
-            gridObj.value = "image";
+            gridObj.value = "AccountInformation";
         }else if(widgetId == 4) {
-            gridObj.component = VideoComponent;
-            gridObj.value = "video";
+            gridObj.component = ImageComponent;
+            gridObj.value = "Image";
         }else if(widgetId == 5) {
+            gridObj.component = VideoComponent;
+            gridObj.value = "Video";
+        }else if(widgetId == 3) {
             gridObj.component = SummaryAtGlanceComponent;
-            gridObj.value = "summaryAtGlance";
+            gridObj.value = "Summary";
         }
         return gridObj;
     }
@@ -635,7 +622,24 @@ export class AddDashboardDesignerComponent implements OnInit {
         searchParameter.SortParameter.SortColumn = Constants.Name;
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
         searchParameter.SearchMode = Constants.Contains;
-        this.getAssetLibraryRecords(searchParameter);
+        if(!this.pageEditModeOn) {
+            this.uiLoader.start();
+        }
+        this._http.post(this.baseURL + URLConfiguration.assetLibraryGetUrl, searchParameter).subscribe(
+            data => {
+                if(!this.pageEditModeOn) {
+                    this.uiLoader.stop();
+                }
+                let records = <any[]>data;  
+                this.assetLibraryList.push(...records); 
+            },
+            error => {
+                if(!this.pageEditModeOn) {
+                    this.uiLoader.stop();
+                }
+                this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+            }
+        );
     }
 
     async getAssetLibraryRecords(searchParameter) {
@@ -736,7 +740,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         assetSearchParameter.SearchMode = Constants.Contains;
         let assets: any[];
         this.uiLoader.start();
-        this._http.post(this.baseURL + 'assetlibrary/asset/list', assetSearchParameter).subscribe(
+        this._http.post(this.baseURL + URLConfiguration.assetGetUrl, assetSearchParameter).subscribe(
             data => {
                 this.uiLoader.stop();
                 assets = <any[]>data;    
@@ -759,9 +763,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             imageConfig.SourceUrl = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imageUrl;
             imageConfig.isPersonalize = this.isPersonalizeImage;
             imageConfig.WidgetId = this.imageWidgetId;
-            
             this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(imageConfig);
-            //console.log(this.widgetsGridsterItemArray);
         }
         this.resetImageConfigForm();
         this.isImageConfig = !this.isImageConfig;
@@ -782,7 +784,6 @@ export class AddDashboardDesignerComponent implements OnInit {
             videoConfig.isPersonalize = this.isPersonalize;
             videoConfig.isEmbedded = this.isEmbedded;
             this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId  && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(videoConfig);
-            //console.log(this.widgetsGridsterItemArray);
         }
         this.resetVideoConfigForm();
         this.isVideoConfig = !this.isVideoConfig;

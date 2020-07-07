@@ -29,6 +29,9 @@ export class AddComponent implements OnInit {
   public PageTypeId =0;
   public PageTypeName;
   public PageWidgetArrayString: string = "";
+  public PageTypeIdBeforeChange: number = 0;
+  public PageWidgetArrayStringBeforePageTypeChange: string = "";
+  public isPageTypeChangeActionByClickingPreviousButton: boolean = false;
 
   public pageFormErrorObject: any = {
     showPageNameError: false,
@@ -86,7 +89,10 @@ export class AddComponent implements OnInit {
                     this.params = JSON.parse(localStorage.getItem('pageAddRouteparams'));
                     this.PageName = this.params.Routeparams.passingparams.PageName
                     this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
+                    this.PageTypeIdBeforeChange = this.params.Routeparams.passingparams.PageTypeId
                     this.PageWidgetArrayString = this.params.Routeparams.passingparams.PageWidgetArray
+                    this.PageWidgetArrayStringBeforePageTypeChange = this.params.Routeparams.passingparams.PageWidgetArray
+                    this.isPageTypeChangeActionByClickingPreviousButton = true;
                 }
               }
               else {
@@ -159,10 +165,30 @@ export class AddComponent implements OnInit {
         this.PageTypeName = '';
       }
       else {
-        this.pageFormErrorObject.showPageTypeError = false;
-        this.PageTypeId = Number(value);
-        let pageTypeObj = this.pageTypelist.find(s => s.Identifier == value);
-        this.PageTypeName = pageTypeObj.Name;
+        if(this.isPageTypeChangeActionByClickingPreviousButton == true && Number(value) != this.PageTypeIdBeforeChange) {
+          let message = "This page type change action will discard all page widget configuration. \nAre you sure, you want to change page type?";
+          this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+              if (isConfirmed) {
+                this.pageFormErrorObject.showPageTypeError = false;
+                this.PageTypeId = Number(value);
+                let pageTypeObj = this.pageTypelist.find(s => s.Identifier == value);
+                this.PageTypeName = pageTypeObj.Name;
+                this.PageWidgetArrayString = "";
+              }else {
+                this.PageTypeId = this.PageTypeIdBeforeChange;
+                this.PageWidgetArrayString = this.PageWidgetArrayStringBeforePageTypeChange;
+                this.pageFormGroup.patchValue({
+                  pageType: this.PageTypeId
+                });
+              }
+          });
+        }else {
+          this.PageWidgetArrayString = this.PageWidgetArrayStringBeforePageTypeChange;
+          this.pageFormErrorObject.showPageTypeError = false;
+          this.PageTypeId = Number(value);
+          let pageTypeObj = this.pageTypelist.find(s => s.Identifier == value);
+          this.PageTypeName = pageTypeObj.Name;
+        }
       }
     }
 

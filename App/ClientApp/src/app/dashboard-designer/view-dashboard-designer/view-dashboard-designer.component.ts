@@ -206,21 +206,6 @@ export class ViewDashboardDesignerComponent implements OnInit {
             scrollToNewItems: true
         };
 
-        //for value
-        this.dashboard = [
-            { cols: 2, rows: 2, y: 0, x: 0 },
-            { cols: 2, rows: 2, y: 0, x: 2, hasContent: true },
-            { cols: 1, rows: 2, y: 0, x: 4 },
-            { cols: 1, rows: 2, y: 2, x: 5 },
-            { cols: 1, rows: 2, y: 1, x: 0 },
-            { cols: 1, rows: 2, y: 1, x: 0 },
-            { cols: 2, rows: 2, y: 3, x: 5, minItemRows: 2, minItemCols: 2, label: 'Min rows & cols = 2' },
-            { cols: 2, rows: 2, y: 2, x: 0, maxItemRows: 2, maxItemCols: 2, label: 'Max rows & cols = 2' },
-            { cols: 2, rows: 2, y: 2, x: 2, dragEnabled: true, resizeEnabled: true, label: 'Drag&Resize Enabled' },
-            { cols: 1, rows: 2, y: 2, x: 4, dragEnabled: false, resizeEnabled: false, label: 'Drag&Resize Disabled' },
-            { cols: 1, rows: 2, y: 2, x: 6 }
-        ];
-
         this.getPageRecord();
     }
 
@@ -262,26 +247,34 @@ export class ViewDashboardDesignerComponent implements OnInit {
                     gridsterItem.widgetId = pageWidgets[i].WidgetId;
                     gridsterItem.WidgetSetting = pageWidgets[i].WidgetSetting;
                     gridsterItem.widgetItemCount = this.widgetItemCount;                    
-                    if(pageWidgets[i].WidgetId == 1) {
-                        gridsterItem.component = CustomerInformationComponent;
-                        gridsterItem.value = 'customerInformation';
-                    }else if(pageWidgets[i].WidgetId == 2) {
-                        gridsterItem.component = AccountInformationComponent;
-                        gridsterItem.value = 'accountInformation';
-                    }else if(pageWidgets[i].WidgetId == 3) {
-                        gridsterItem.component = ImageComponent;
-                        gridsterItem.value = 'image';
-                    }else if(pageWidgets[i].WidgetId == 4) {
-                        gridsterItem.component = VideoComponent;
-                        gridsterItem.value = 'video';
-                    }else if(pageWidgets[i].WidgetId == 5) {
-                        gridsterItem.component = SummaryAtGlanceComponent;
-                        gridsterItem.value = 'summaryAtGlance';
-                    }
+                    let obj = this.bindComponent(pageWidgets[i].WidgetId);
+                    gridsterItem.component = obj.component;
+                    gridsterItem.value = obj.value;
                     this.widgetsGridsterItemArray.push(gridsterItem);
                 }
             }
         }
+    }
+
+    bindComponent(widgetId): any {
+        let gridObj: any = {};
+        if(widgetId == 1) {
+            gridObj.component = CustomerInformationComponent;
+            gridObj.value = "CustomerInformation";
+        }else if(widgetId == 2) {
+            gridObj.component = AccountInformationComponent;
+            gridObj.value = "AccountInformation";
+        }else if(widgetId == 4) {
+            gridObj.component = ImageComponent;
+            gridObj.value = "Image";
+        }else if(widgetId == 5) {
+            gridObj.component = VideoComponent;
+            gridObj.value = "Video";
+        }else if(widgetId == 3) {
+            gridObj.component = SummaryAtGlanceComponent;
+            gridObj.value = "Summary";
+        }
+        return gridObj;
     }
     
 }
