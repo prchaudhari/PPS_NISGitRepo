@@ -1,6 +1,5 @@
 <div class="main-container">
   <div class="page-title">
-    <span class="xs-title">Add Statement Definition</span>
     <span class="xs-title" *ngIf="updateOperationMode == false"> Add Statement Definition  </span>
     <span class="xs-title" *ngIf="updateOperationMode == true"> Update Statement Definition  </span>
   </div>
@@ -116,7 +115,7 @@
                      class="example-list"
                      (cdkDropListDropped)="drop($event)">
                   <div class="example-box p-2" *ngFor="let item of selectedPages" cdkDrag>
-                    <span>{{item.DisplayName}}</span>
+                    <span>{{item.DisplayName}}-{{item.Version}}</span>
                     <span class="pull-right">{{item.PublishedOn  | date:"dd/MM/yyyy h:mm a"}}</span>
                   </div>
                 </div>

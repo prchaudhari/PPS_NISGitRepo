@@ -60,7 +60,7 @@ export class ListComponent implements OnInit {
       filterPublishedOnToDate: [null],
     });
   }
-  displayedColumns: string[] = ['name', 'owner', 'version',  'date', 'status', 'actions'];
+  displayedColumns: string[] = ['name', 'owner', 'publishedBy', 'date', 'status', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -145,12 +145,12 @@ export class ListComponent implements OnInit {
         case 'name': return compareStr(a.Name, b.Name, isAsc);
         case 'status': return compareStr(a.Status, b.Status, isAsc);
         //case 'pagetype': return compareStr(a.PageTypeName, b.PageTypeName, isAsc);
-        //case 'owner': return compareStr(a.StatementOwnerName, b.StatementOwnerName, isAsc);
-        //case 'publishedBy': return compareStr(a.PagePublishedByUserName, b.PagePublishedByUserName, isAsc);
+        case 'owner': return compareStr(a.StatementOwnerName, b.StatementOwnerName, isAsc);
+        case 'publishedBy': return compareStr(a.StatementPublishedByUserName, b.StatementPublishedByUserName, isAsc);
         case 'version': return compare(Number(a.Version), Number(b.Version), isAsc);
-        //case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
+        case 'date': return compare(Date.parse(a.PublishedOn), Date.parse(b.PublishedOn), isAsc);
         default: return 0;
-      }
+      };
     });
     this.dataSource = new MatTableDataSource<Statement>(this.sortedStatementList);
     this.dataSource.sort = this.sort;
@@ -173,11 +173,21 @@ export class ListComponent implements OnInit {
       searchParameter.SearchMode = Constants.Contains;
     }
     this.statementList = await statementService.getStatements(searchParameter);
+    //for (var i = 0; i < this.statementList.length; i++) {
+    //  var date = new Date("0001-01-01T00:00:00");
+    //  if (this.statementList[i].PublishedOn == date) {
+    //    this.statementList[i].PublishedOnTick = 0;
+    //  }
+    //  else {
+    //    this.statementList[i].PublishedOnTick = this.statementList[i].PublishedOn.getTime();
+
+    //  }
+    //}
     if (this.statementList.length == 0 && this.isFilterDone == true) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
-          //this.resetRoleFilterForm();
+          this.resetStatementFilterForm();
           this.getStatements(null);
         }
       });
@@ -346,7 +356,7 @@ export class ListComponent implements OnInit {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
           this.getStatements(null);
-          
+
         }
       }
     });
@@ -380,5 +390,6 @@ function compareStr(a: string, b: string, isAsc: boolean) {
 }
 
 function compareDate(a: Date, b: Date, isAsc: boolean) {
+
   return (a.getTime() < b.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
 }

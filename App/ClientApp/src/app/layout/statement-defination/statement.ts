@@ -9,6 +9,7 @@ export class Statement {
   "Status": string="New";
   "CreatedDate": Date;
   "PublishedOn": Date;
+  "PublishedOnTick": number;
   "IsActive": boolean;
   "IsDeleted": boolean;
   "TenantCode": string;

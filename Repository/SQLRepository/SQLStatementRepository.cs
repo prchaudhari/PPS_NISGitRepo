@@ -269,6 +269,10 @@ namespace nIS
                             queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("Owner.Equals({0}) ", item))) + ") ");
                             whereClause = whereClause + queryString.ToString();
                         }
+                        else
+                        {
+                            return statements;
+                        }
                     }
 
                     if (statementSearchParameter.PagingParameter.PageIndex > 0 && statementSearchParameter.PagingParameter.PageSize > 0)
@@ -287,14 +291,6 @@ namespace nIS
                         .OrderBy(statementSearchParameter.SortParameter.SortColumn + " " + statementSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
                     }
-
-                    //if (statementSearchParameter.IsStatementPagesRequired)
-                    //{
-                    //    statementRecords.ToList().ForEach(statementRecord =>
-                    //    {
-                    //        statementRecord.StatementPageMapRecords = nISEntitiesDataContext.StatementPageMapRecords.Where(itm => itm.StatementId == statementRecord.Id && itm.TenantCode == tenantCode).ToList();
-                    //    });
-                    //}
 
                     if (statementRecords != null && statementRecords.ToList().Count > 0)
                     {
@@ -365,7 +361,7 @@ namespace nIS
                             StatementPublishedByUserName = statementRecord.PublishedBy > 0 ? statementPublishedUserRecords.Where(usr => usr.Id == statementRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
                             PublishedOn = statementRecord.PublishedOn ?? DateTime.MinValue,
                             UpdateBy = statementRecord.UpdateBy,
-
+                            Description= statementRecord.Description
                         });
                     });
                 }
@@ -458,6 +454,9 @@ namespace nIS
                         statementRecord.LastUpdatedDate = DateTime.Now;
                         statementRecord.UpdateBy = userId;
                         statementRecord.TenantCode = tenantCode;
+                        statementRecord.Name = item.Name;
+                        statementRecord.Description = item.Description;
+
                     });
 
                     nISEntitiesDataContext.SaveChanges();
