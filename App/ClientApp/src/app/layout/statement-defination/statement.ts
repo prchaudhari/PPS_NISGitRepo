@@ -3,18 +3,27 @@ export class Statement {
   "Identifier": number;
   "Name": string;
   "Description": string;
-  "PublishedBy": User;
-  "Owner": User;
+  "PublishedBy": number;
+  "Owner": number;
   "Version": string;
-  "Status": string;
+  "Status": string="New";
   "CreatedDate": Date;
   "PublishedOn": Date;
   "IsActive": boolean;
   "IsDeleted": boolean;
   "TenantCode": string;
   "LastUpdatedDate": null;
-  "UpdateBy": User;
+  "UpdateBy": number;
   "StatementOwnerName": string;
   "StatementPublishedByUserName": string;
   "StatementUpdatedByUserName": string;
+  "StatementPages":  [];
+}
+export class StatementPage {
+  "Identifier": number;
+  "ReferencePageId": number;
+  "StatementId": number;
+  "SequenceNumber": number;
+  "TenantCode": string;
+  "PageName": string;
 }

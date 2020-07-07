@@ -20,17 +20,19 @@ export class ViewComponent implements OnInit {
 
   public isCollapsedDetails: boolean = false;
   public isCollapsedPermissions: boolean = true;
-  public statement;
+  public statement: any = {};
   public params;
 
 
   constructor(
     private _router: Router,
-    private injector: Injector
+    private injector: Injector,
+    private _messageDialogService: MessageDialogService,
+    private statementService: StatementService,
   ) {
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
-        if (e.url.includes('/assetlibrary/Add')) {
+        if (e.url.includes('/statementdefination/Add')) {
           localStorage.removeItem("statementparams");
         }
       }
@@ -39,7 +41,7 @@ export class ViewComponent implements OnInit {
 
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
-        if (e.url.includes('/assetlibrary')) {
+        if (e.url.includes('/statementdefination')) {
           //set passing parameters to localstorage.
           this.params = JSON.parse(localStorage.getItem('statementparams'));
           if (localStorage.getItem('statementparams')) {
@@ -68,15 +70,46 @@ export class ViewComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = Constants.Name;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Exact;
-
-
     searchParameter.Identifier = this.statement.Identifier;
-    searchParameter.IsAssetDataRequired = true;
-    this.statement = await statementService.getStatements(searchParameter);
-
+    searchParameter.IsStatementPagesRequired = true;
+    var statements = await statementService.getStatements(searchParameter);
+    this.statement = statements[0];
   }
   ngOnInit() {
   }
+  navigateToStatementEdit() {
+    let queryParams = {
+      Routeparams: {
+        passingparams: {
+          "StatementIdentifier": this.statement.Identifier,
+        },
+        filteredparams: {
+          //passing data using json stringify.
+          "StatementName": this.statement.Name != null ? this.statement.Name : ""
+        }
+      }
+    }
+    localStorage.setItem("statementparams", JSON.stringify(queryParams))
+    const router = this.injector.get(Router);
+    router.navigate(['statementdefination', 'Edit']);
+  }
 
+  deleteStatement() {
+    let message = 'Are you sure, you want to delete this record?';
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+        let roleData = [{
+          "Identifier": this.statement.Identifier,
+        }];
+
+        let isDeleted = await this.statementService.deleteStatement(roleData);
+        if (isDeleted) {
+          let messageString = Constants.recordDeletedMessage;
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          this._router.navigate(['statementdefination']);
+        }
+      }
+    });
+  }
 }
 

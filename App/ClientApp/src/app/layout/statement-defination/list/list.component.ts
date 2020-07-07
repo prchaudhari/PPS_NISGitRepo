@@ -60,7 +60,7 @@ export class ListComponent implements OnInit {
       filterPublishedOnToDate: [null],
     });
   }
-  displayedColumns: string[] = ['name', 'version', 'owner', 'date', 'status', 'actions'];
+  displayedColumns: string[] = ['name', 'owner', 'version',  'date', 'status', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -248,11 +248,11 @@ export class ListComponent implements OnInit {
         searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
         searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
         searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'DisplayName';
+        searchParameter.SortParameter.SortColumn = 'Name';
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
         searchParameter.SearchMode = Constants.Contains;
         if (this.StatementFilterForm.value.filterDisplayName != null && this.StatementFilterForm.value.filterDisplayName != '') {
-          searchParameter.DisplayName = this.StatementFilterForm.value.filterDisplayName.trim();
+          searchParameter.Name = this.StatementFilterForm.value.filterDisplayName.trim();
         }
         if (this.StatementFilterForm.value.filterOwner != null && this.StatementFilterForm.value.filterOwner != '') {
           searchParameter.StatementOwner = this.StatementFilterForm.value.filterOwner.trim();
@@ -346,6 +346,7 @@ export class ListComponent implements OnInit {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
           this.getStatements(null);
+          
         }
       }
     });

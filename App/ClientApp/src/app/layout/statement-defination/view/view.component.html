@@ -37,14 +37,14 @@
           <div class="card border-0 mb-2 card-shadow">
             <div class="card-body">
               <h6>{{statement.StatementUpdatedByUserName}}</h6>
-              <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate}}</span></div>
+              <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:"dd/MM/yyyy h:mm a"}}</span></div>
               <div><label>Status : </label><span class="badge badge-warning p-1 ml-1 text-white">{{statement.Status}}</span></div>
             </div>
 
           </div>
         </div>
       </div>
-   
+
     </div>
   </div>
   <div class="card border-0 mb-2 card-shadow">
@@ -65,10 +65,10 @@
       <div class="row">
         <div class="col-sm-12 form-group">
           <div class="example-list">
-            <!--<div class="example-box p-2" style="cursor:initial" *ngFor="let item of statement.">
-              <span>{{item}}</span>
-              <span class="pull-right">02/03/2020</span>
-            </div>-->
+            <div class="example-box p-2" style="cursor:initial" *ngFor="let item of statement.StatementPages">
+              <span>{{item.PageName}} - {{item.PageVersion}}</span>
+              <span class="pull-right">{{item.PagePublishDate | date:"dd/MM/yyyy h:mm a"}}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -78,8 +78,8 @@
   </div>
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
-      <button class="btn-footer-fill mr-2" id="btnSave">Update</button>
-      <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete">Delete</button>
+      <button class="btn-footer-fill mr-2" id="btnSave" *ngIf="statement.Status!='Published'" (click)="navigateToStatementEdit()">Update</button>
+      <button class="btn-footer-fill-delete bg-danger mr-2" (click)="deleteStatement()" id="btnDelete">Delete</button>
       <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
     </div>
   </div>

@@ -16,5 +16,9 @@ namespace nIS
         public string TenantCode { get; set; }
 
         public string PageName { get; set; }
+
+        public string PageVersion { get; set; }
+
+        public DateTime? PagePublishDate { get; set; }
     }
 }

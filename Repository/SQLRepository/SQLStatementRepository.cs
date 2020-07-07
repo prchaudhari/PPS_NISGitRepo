@@ -131,7 +131,7 @@ namespace nIS
                     statementRecords.Add(new StatementRecord()
                     {
                         Name = statement.Name,
-                        //StatementTypeId = statement.StatementTypeId,
+                        Description = statement.Description,
                         IsActive = true,
                         IsDeleted = false,
                         Status = StatementStatus.New.ToString(),
@@ -254,7 +254,7 @@ namespace nIS
                 IList<StatementRecord> statementRecords = new List<StatementRecord>();
                 IList<UserRecord> statementOwnerUserRecords = new List<UserRecord>();
                 IList<UserRecord> statementPublishedUserRecords = new List<UserRecord>();
-
+                IList<StatementPage> statementPages = new List<StatementPage>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     if (statementSearchParameter.StatementOwner != null && statementSearchParameter.StatementOwner != string.Empty)
@@ -311,7 +311,37 @@ namespace nIS
                             userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
                             statementPublishedUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
                         }
-                        //statementTypeRecords = nISEntitiesDataContext.StatementTypeRecords.Where(itm => itm.IsActive == true && itm.IsDeleted == false).ToList();
+                        if (statementSearchParameter.IsStatementPagesRequired == true)
+                        {
+
+                            IList<StatementPageMapRecord> statementPageRecordMaps = new List<StatementPageMapRecord>();
+                            StringBuilder mapRecordIdentifier = new StringBuilder();
+                            mapRecordIdentifier.Append("(" + string.Join(" or ", statementRecords.Select(item => string.Format("StatementId.Equals({0})", item.Id))) + ")");
+                            statementPageRecordMaps = nISEntitiesDataContext.StatementPageMapRecords.Where(mapRecordIdentifier.ToString()).OrderBy(item => item.SequenceNumber).ToList();
+                            if (statementPageRecordMaps?.Count > 0)
+                            {
+                                IList<PageRecord> pages = new List<PageRecord>();
+
+                                StringBuilder pageIdentifier = new StringBuilder();
+                                pageIdentifier.Append("(" + string.Join(" or ", statementPageRecordMaps.Select(item => string.Format("Id.Equals({0})", item.ReferencePageId))) + ")");
+                                pages = nISEntitiesDataContext.PageRecords.Where(pageIdentifier.ToString()).ToList();
+
+                                statementPageRecordMaps?.ToList().ForEach(statementWidgetRecord =>
+                                {
+                                    statementPages.Add(new StatementPage
+                                    {
+                                        Identifier = statementWidgetRecord.Id,
+                                        StatementId = statementWidgetRecord.StatementId,
+                                        ReferencePageId = statementWidgetRecord.ReferencePageId,
+                                        TenantCode = statementWidgetRecord.TenantCode,
+                                        SequenceNumber = statementWidgetRecord.SequenceNumber,
+                                        PageName = pages.Where(item => item.Id == statementWidgetRecord.ReferencePageId).FirstOrDefault().DisplayName,
+                                        PagePublishDate = pages.Where(item => item.Id == statementWidgetRecord.ReferencePageId).FirstOrDefault().PublishedOn,
+                                        PageVersion = pages.Where(item => item.Id == statementWidgetRecord.ReferencePageId).FirstOrDefault().Version,
+                                    });
+                                });
+                            }
+                        }
                     }
                 }
 
@@ -319,25 +349,6 @@ namespace nIS
                 {
                     statementRecords?.ToList().ForEach(statementRecord =>
                     {
-                        IList<StatementPage> statementPages = new List<StatementPage>();
-                        //if (statementRecord.StatementPageMapRecords?.ToList().Count > 0)
-                        //{
-                        //    statementRecord.StatementPageMapRecords?.ToList().ForEach(statementWidgetRecord =>
-                        //    {
-                        //        statementPages.Add(new StatementPage
-                        //        {
-                        //            Identifier = statementWidgetRecord.Id,
-                        //            StatementId = statementWidgetRecord.StatementId,
-                        //            Height = statementWidgetRecord.Height,
-                        //            WidgetId = statementWidgetRecord.ReferenceWidgetId,
-                        //            Width = statementWidgetRecord.Width,
-                        //            Xposition = statementWidgetRecord.Xposition,
-                        //            Yposition = statementWidgetRecord.Yposition,
-                        //            WidgetSetting = statementWidgetRecord.WidgetSetting
-                        //        });
-                        //    });
-                        //}
-
                         statements.Add(new Statement
                         {
                             Identifier = statementRecord.Id,
@@ -347,13 +358,14 @@ namespace nIS
                             LastUpdatedDate = statementRecord.LastUpdatedDate ?? (DateTime)statementRecord.LastUpdatedDate,
                             Owner = statementRecord.Owner,
                             StatementOwnerName = statementOwnerUserRecords.Where(usr => usr.Id == statementRecord.Owner).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName,
-                            StatementPages = statementPages,
+                            StatementPages = statementPages?.Where(item => item.StatementId == statementRecord.Id)?.ToList(),
                             Status = statementRecord.Status,
                             Version = statementRecord.Version,
                             PublishedBy = statementRecord.PublishedBy,
-                            StatementPublishedByUserName = statementRecord.PublishedBy != null ? statementPublishedUserRecords.Where(usr => usr.Id == statementRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
+                            StatementPublishedByUserName = statementRecord.PublishedBy > 0 ? statementPublishedUserRecords.Where(usr => usr.Id == statementRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
                             PublishedOn = statementRecord.PublishedOn ?? DateTime.MinValue,
-                            UpdateBy = statementRecord.UpdateBy ,
+                            UpdateBy = statementRecord.UpdateBy,
+
                         });
                     });
                 }
@@ -502,7 +514,7 @@ namespace nIS
                         throw new StatementNotFoundException(tenantCode);
                     }
 
-                    var lastStatementRecord = nISEntitiesDataContext.StatementRecords.Where(item => item.Name == statementRecord.Name  && item.IsDeleted == false).OrderByDescending(itm => itm.Id).FirstOrDefault();
+                    var lastStatementRecord = nISEntitiesDataContext.StatementRecords.Where(item => item.Name == statementRecord.Name && item.IsDeleted == false).OrderByDescending(itm => itm.Id).FirstOrDefault();
                     if (lastStatementRecord == null)
                     {
                         throw new StatementNotFoundException(tenantCode);
@@ -525,7 +537,7 @@ namespace nIS
                     nISEntitiesDataContext.StatementRecords.AddRange(statementRecordsForClone);
                     nISEntitiesDataContext.SaveChanges();
 
-                    long newStatementIdentifier = statementRecordsForClone.Where(p => p.Name == lastStatementRecord.Name &&  p.Version == Int64.Parse(lastStatementRecord.Version) + 1 + "").Single().Id;
+                    long newStatementIdentifier = statementRecordsForClone.Where(p => p.Name == lastStatementRecord.Name && p.Version == Int64.Parse(lastStatementRecord.Version) + 1 + "").Single().Id;
 
                     IList<StatementPageMapRecord> statementWidgetRecords = nISEntitiesDataContext.StatementPageMapRecords.Where(item => item.StatementId == lastStatementRecord.Id).ToList();
                     IList<StatementPageMapRecord> statementWidgetRecordsForClone = new List<StatementPageMapRecord>();
@@ -735,24 +747,20 @@ namespace nIS
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                if (this.IsDuplicateStatementPage(statementPages, statementIdentifier, "AddOperation", tenantCode))
-                {
-                    throw new DuplicateStatementPageFoundException(tenantCode);
-                }
+                //if (this.IsDuplicateStatementPage(statementPages, statementIdentifier, "AddOperation", tenantCode))
+                //{
+                //    throw new DuplicateStatementPageFoundException(tenantCode);
+                //}
 
                 IList<StatementPageMapRecord> statementWidgetRecords = new List<StatementPageMapRecord>();
                 statementPages.ToList().ForEach(statementWidget =>
                 {
                     statementWidgetRecords.Add(new StatementPageMapRecord()
                     {
-                        //Height = statementWidget.Height,
-                        //StatementId = statementIdentifier,
-                        //ReferenceWidgetId = statementWidget.WidgetId,
-                        //TenantCode = tenantCode,
-                        //WidgetSetting = statementWidget.WidgetSetting,
-                        //Width = statementWidget.Width,
-                        //Xposition = statementWidget.Xposition,
-                        //Yposition = statementWidget.Yposition
+                        ReferencePageId = statementWidget.ReferencePageId,
+                        StatementId = statementIdentifier,
+                        SequenceNumber = statementWidget.SequenceNumber,
+                        TenantCode = tenantCode
                     });
                 });
 

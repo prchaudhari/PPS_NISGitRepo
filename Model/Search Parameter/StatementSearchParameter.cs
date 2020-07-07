@@ -69,6 +69,11 @@ namespace nIS
         /// </summary>
         public string StatementOwner { get; set; }
 
+        /// <summary>
+        /// The page page owner
+        /// </summary>
+        public bool? IsStatementPagesRequired { get; set; }
+
         #endregion
 
         #region Public methods

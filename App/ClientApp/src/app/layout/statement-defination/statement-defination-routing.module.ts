@@ -6,19 +6,31 @@ import { AddComponent } from './add/add.component';
 import { AuthGuard, UnAuthorisedUrlGuard } from 'src/app/core/guard';
 
 const routes: Routes = [
-    {
-        path: '',
-        children: [
-            { path: '', component: ListComponent,
-            canActivate: [AuthGuard]  },
-            { path: 'Add', component: AddComponent,
-            canActivate: [AuthGuard]  },
-            { path: 'View', component: ViewComponent,
-            canActivate: [AuthGuard]  },
-            { path: 'List', component: ListComponent,
-            canActivate: [AuthGuard]  }
-        ]
-    }
+  {
+    path: '',
+    children: [
+      {
+        path: '', component: ListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'Add', component: AddComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'View', component: ViewComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'List', component: ListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'Edit', component: AddComponent,
+        canActivate: [AuthGuard]
+      }
+    ]
+  }
 ];
 
 
