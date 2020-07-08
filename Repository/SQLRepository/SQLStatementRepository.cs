@@ -349,7 +349,7 @@ namespace nIS
                         {
                             Identifier = statementRecord.Id,
                             Name = statementRecord.Name,
-                            CreatedDate = statementRecord.CreatedDate ?? (DateTime)statementRecord.CreatedDate,
+                            CreatedDate = statementRecord.CreatedDate == null ? DateTime.MinValue : DateTime.SpecifyKind((DateTime)statementRecord.CreatedDate, DateTimeKind.Utc),
                             IsActive = statementRecord.IsActive,
                             LastUpdatedDate = statementRecord.LastUpdatedDate ?? (DateTime)statementRecord.LastUpdatedDate,
                             Owner = statementRecord.Owner,
@@ -359,7 +359,7 @@ namespace nIS
                             Version = statementRecord.Version,
                             PublishedBy = statementRecord.PublishedBy,
                             StatementPublishedByUserName = statementRecord.PublishedBy > 0 ? statementPublishedUserRecords.Where(usr => usr.Id == statementRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
-                            PublishedOn = statementRecord.PublishedOn ?? DateTime.MinValue,
+                            PublishedOn = statementRecord.PublishedOn == null ? DateTime.MinValue :  DateTime.SpecifyKind((DateTime)statementRecord.PublishedOn, DateTimeKind.Utc),
                             UpdateBy = statementRecord.UpdateBy,
                             Description= statementRecord.Description
                         });

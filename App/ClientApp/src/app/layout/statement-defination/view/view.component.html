@@ -38,7 +38,11 @@
             <div class="card-body">
               <h6>{{statement.StatementUpdatedByUserName}}</h6>
               <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:"dd/MM/yyyy h:mm a"}}</span></div>
-              <div><label>Status : </label><span class="badge badge-warning p-1 ml-1 text-white">{{statement.Status}}</span></div>
+              <div>
+                <label>Status : </label>
+                <span class="badge badge-primary p-1" *ngIf="statement.Status=='New'">{{statement.Status}}</span>
+                <span class="badge badge-success p-1" *ngIf="statement.Status=='Published'">{{statement.Status}}</span>
+              </div>
             </div>
 
           </div>
@@ -67,7 +71,7 @@
           <div class="example-list">
             <div class="example-box p-2" style="cursor:initial" *ngFor="let item of statement.StatementPages">
               <span>{{item.PageName}} - V{{item.PageVersion}}.0</span>
-              <span class="pull-right">{{item.PagePublishDate | date:"dd/MM/yyyy h:mm a"}}</span>
+              <span class="pull-right">{{item.PagePublishDate | date:"dd/MM/yyyy"}}</span>
             </div>
           </div>
         </div>

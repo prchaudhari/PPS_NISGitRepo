@@ -96,7 +96,7 @@
                      (cdkDropListDropped)="drop($event)">
                   <div class="example-box p-2" *ngFor="let item of pages" cdkDrag>
                     <span>{{item.DisplayName}} - V{{item.Version}}.0</span>
-                    <span class="pull-right">{{item.PublishedOn  | date:"dd/MM/yyyy h:mm a"}}</span>
+                    <span class="pull-right">{{item.PublishedOn  | date:"dd/MM/yyyy"}}</span>
                   </div>
                 </div>
               </div>
@@ -116,7 +116,7 @@
                      (cdkDropListDropped)="drop($event)">
                   <div class="example-box p-2" *ngFor="let item of selectedPages" cdkDrag>
                     <span>{{item.DisplayName}} - V{{item.Version}}.0</span>
-                    <span class="pull-right">{{item.PublishedOn  | date:"dd/MM/yyyy h:mm a"}}</span>
+                    <span class="pull-right">{{item.PublishedOn  | date:"dd/MM/yyyy"}}</span>
                   </div>
                 </div>
               </div>

@@ -42,10 +42,7 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  navigateToRoles() {
-    this.URL = '/roles';
-    this.route.navigate(['/roles']);
-  }
+
   ChangeSideBar() {
     this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
     console.log(this.element);
@@ -63,6 +60,10 @@ export class SidebarComponent implements OnInit {
       //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/settings']);
     }
+  }
+  navigateToRoles() {
+    this.URL = '/roles';
+    this.route.navigate(['/roles']);
   }
   navigateToUser() {
     this.URL = '/user';
@@ -180,6 +181,27 @@ export class SidebarComponent implements OnInit {
     else {
       this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
       this.element.className = 'fa fa-cog'
+    }
+    if (this.URL.includes('/user')) {
+      this.URL ='/user'
+    }
+    else if (this.URL.includes('/widgets')) {
+      this.URL = '/widgets'
+    }
+    else if (this.URL.includes('/schedulemanagement')) {
+      this.URL = '/schedulemanagement'
+    }
+    else if (this.URL.includes('/assetlibrary')) {
+      this.URL = '/assetlibrary'
+    }
+    else if (this.URL.includes('/statementdefination')) {
+      this.URL = '/statementdefination'
+    }
+    else if (this.URL.includes('/analytics')) {
+      this.URL = '/analytics'
+    }
+    else if (this.URL.includes('/logs')) {
+      this.URL = '/logs'
     }
   }
 

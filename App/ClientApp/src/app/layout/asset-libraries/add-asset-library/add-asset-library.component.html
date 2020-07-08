@@ -181,8 +181,8 @@
               <!--<input *ngIf="!isMultipleFileUploadEnable" #multipleFileAssetUpload class="custom-file-input"
               type="file" webkitDirectory (change)="HandleFileUpload($event.target.files)">-->
 
-              <input *ngIf="isMultipleFileUploadEnable" class="custom-file-input"
-                     accept="{{actualSetting.VideoFileExtension}}" type="file" (change)="HandleFileUpload($event)">
+              <input *ngIf="isMultipleFileUploadEnable" #multipleFileAssetUpload  class="custom-file-input"
+                     accept="{{actualSetting.VideoFileExtension}}" type="file" (click)="multipleFileAssetUpload.value = null" (change)="HandleFileUpload($event)">
               <label class="custom-file-label"></label>
             </div>
 

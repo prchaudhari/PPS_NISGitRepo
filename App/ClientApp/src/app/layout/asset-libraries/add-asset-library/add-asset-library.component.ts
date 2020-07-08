@@ -85,7 +85,7 @@ export class AddAssetLibraryComponent implements OnInit {
   public sortedAssetList: Asset[] = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  //@ViewChild(MatInput, { static: true}) multipleFileAssetUpload: ElementRef;
+  @ViewChild(MatInput, { static: true}) multipleFileAssetUpload: ElementRef;
   public isNoRecord = true;
   public setting: AssetSetting = {
     Identifier: 0,
@@ -522,7 +522,7 @@ export class AddAssetLibraryComponent implements OnInit {
   }
 
   ShowUploadAssetContainer(): void {
-    //this.multipleFileAssetUpload ? this.multipleFileAssetUpload.nativeElement.value = '' : null;
+   this.multipleFileAssetUpload ? this.multipleFileAssetUpload.nativeElement.value = '' : null;
     if (this.updateOperationMode == false) {
       if (this.assetLibrary.Identifier <= 0 || this.assetLibrary.Identifier == null || this.assetLibrary.Identifier == undefined) {
         //  return true;

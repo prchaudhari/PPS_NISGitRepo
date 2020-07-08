@@ -43,7 +43,7 @@
           <ng-container matColumnDef="date">
             <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Published Date </th>
             <td mat-cell *matCellDef="let element">
-              <span *ngIf="element.Status=='Published'">{{element.PublishedOn | date:"dd/MM/yyyy h:mm a"}}</span>
+              <span *ngIf="element.Status=='Published'">{{element.PublishedOn | date:"dd/MM/yyyy"}}</span>
               <span *ngIf="element.Status=='New'">-</span>
 
             </td>
@@ -69,7 +69,7 @@
                   <span class="fa fa-pencil-square-o"></span>
                 </button>
                 <button type="button" id="btnDeleteRole" title="Delete" (click)="deleteStatement(element)"
-                        *ngIf="element.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definitions',Operation: 'Delete' }))">
+                        *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definitions',Operation: 'Delete' }))">
                   <span class="fa fa-trash-o"></span>
                 </button>
                 <button type="button" title="Publish" *ngIf="element.Status!='Published'" (click)="PublishStatement(element)" id="btnDelete"><span class="fa fa-share"></span></button>
