@@ -57,6 +57,8 @@ export class AddComponent implements OnInit {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/statementdefination/Add')) {
           this.updateOperationMode = false;
+          this.statement.CreatedDate = new Date();
+          this.statement.StatementOwnerName = localStorage.getItem('currentUserName');
           localStorage.removeItem("statementparams");
         }
       }

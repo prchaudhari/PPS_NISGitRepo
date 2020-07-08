@@ -59,6 +59,10 @@ export class ListComponent implements OnInit {
       filterPublishedOnFromDate: [null],
       filterPublishedOnToDate: [null],
     });
+    this.filterFromDateError = false;
+    this.filterToDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateErrorMessage = "";
   }
   displayedColumns: string[] = ['name', 'owner', 'publishedBy', 'date', 'status', 'actions'];
   dataSource = new MatTableDataSource<any>();

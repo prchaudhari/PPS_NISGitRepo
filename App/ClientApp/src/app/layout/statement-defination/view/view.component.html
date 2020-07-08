@@ -28,8 +28,8 @@
           </div>
           <div class="row">
             <div class="col-md-12 col-lg-12 form-group">
-              <label id="lblDescription">{{statement.Description}}</label>
-              <div>-</div>
+              <label id="lblDescription">Description</label>
+              <div>{{statement.Description}}</div>
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@
         <div class="col-sm-12 form-group">
           <div class="example-list">
             <div class="example-box p-2" style="cursor:initial" *ngFor="let item of statement.StatementPages">
-              <span>{{item.PageName}} - {{item.PageVersion}}</span>
+              <span>{{item.PageName}} - V{{item.PageVersion}}.0</span>
               <span class="pull-right">{{item.PagePublishDate | date:"dd/MM/yyyy h:mm a"}}</span>
             </div>
           </div>
