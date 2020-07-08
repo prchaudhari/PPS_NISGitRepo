@@ -148,7 +148,7 @@ export class ListComponent implements OnInit {
         case 'owner': return compareStr(a.StatementOwnerName, b.StatementOwnerName, isAsc);
         case 'publishedBy': return compareStr(a.StatementPublishedByUserName, b.StatementPublishedByUserName, isAsc);
         case 'version': return compare(Number(a.Version), Number(b.Version), isAsc);
-        case 'date': return compare(Date.parse(a.PublishedOn), Date.parse(b.PublishedOn), isAsc);
+       // case 'date': return compare(Date.parse(a.PublishedOn), Date.parse(b.PublishedOn), isAsc);
         default: return 0;
       };
     });
