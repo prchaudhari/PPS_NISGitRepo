@@ -713,6 +713,63 @@ namespace nIS
             }
         }
 
+        [HttpGet]
+        [Route("Asset/Preview")]
+        public HttpResponseMessage Preview(string assetIdentifier)
+        {
+            string tenantCode = Helper.CheckTenantCode(Request.Headers);
+            string path = string.Empty;
+            Asset asset = this.assetLibraryManager.GetAssets(new AssetSearchParameter()
+            {
+                Identifier = assetIdentifier,
+                SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
+            }, tenantCode).FirstOrDefault();
+
+            string relativePath = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH + ModelConstant.ASSETS;
+
+            asset.FilePath = relativePath + ModelConstant.ASSETPATHSLASH + asset.AssetLibraryIdentifier + ModelConstant.ASSETPATHSLASH + asset.Name;
+
+
+            if (asset == null)
+            {
+                throw new AssetNotFoundException(tenantCode);
+            }
+
+            path = asset.FilePath.ToString();
+
+            if (!File.Exists(path))
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        byte[] bytes = new byte[file.Length];
+                        file.Read(bytes, 0, (int)file.Length);
+                        ms.Write(bytes, 0, (int)file.Length);
+
+                        HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+                        httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
+                        httpResponseMessage.Content.Headers.Add("x-filename", asset.Name);
+                        httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                        httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                        httpResponseMessage.Content.Headers.ContentDisposition.FileName = asset.Name;
+                        httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                        return httpResponseMessage;
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                throw new HttpResponseException(HttpStatusCode.InternalServerError);
+            }
+
+        }
+
         #endregion
 
         #endregion

@@ -260,9 +260,11 @@ namespace nIS
                     if (statementSearchParameter.StatementOwner != null && statementSearchParameter.StatementOwner != string.Empty)
                     {
                         StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("FirstName.Contains(\"{0}\") or LastName.Contains(\"{1}\") ", statementSearchParameter.StatementOwner, statementSearchParameter.StatementOwner));
+                        queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", statementSearchParameter.StatementOwner));
+
                         queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        var userRecordIds = nISEntitiesDataContext.UserRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        string query = queryString.ToString();
+                        var userRecordIds = nISEntitiesDataContext.UserRecords.Where(query).ToList().Select(itm => itm.Id).ToList();
                         if (userRecordIds.Count > 0)
                         {
                             queryString = new StringBuilder();
@@ -349,7 +351,7 @@ namespace nIS
                         {
                             Identifier = statementRecord.Id,
                             Name = statementRecord.Name,
-                            CreatedDate = statementRecord.CreatedDate == null ? DateTime.MinValue : DateTime.SpecifyKind((DateTime)statementRecord.CreatedDate, DateTimeKind.Utc),
+                            CreatedDate = statementRecord.CreatedDate == null ? DateTime.MinValue :statementRecord.CreatedDate,
                             IsActive = statementRecord.IsActive,
                             LastUpdatedDate = statementRecord.LastUpdatedDate ?? (DateTime)statementRecord.LastUpdatedDate,
                             Owner = statementRecord.Owner,
@@ -359,9 +361,9 @@ namespace nIS
                             Version = statementRecord.Version,
                             PublishedBy = statementRecord.PublishedBy,
                             StatementPublishedByUserName = statementRecord.PublishedBy > 0 ? statementPublishedUserRecords.Where(usr => usr.Id == statementRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
-                            PublishedOn = statementRecord.PublishedOn == null ? DateTime.MinValue :  DateTime.SpecifyKind((DateTime)statementRecord.PublishedOn, DateTimeKind.Utc),
+                            PublishedOn = statementRecord.PublishedOn == null ? DateTime.MinValue : statementRecord.PublishedOn,
                             UpdateBy = statementRecord.UpdateBy,
-                            Description= statementRecord.Description
+                            Description = statementRecord.Description
                         });
                     });
                 }
@@ -615,17 +617,23 @@ namespace nIS
             }
             if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
             {
-                queryString.Append("PublishedOn >= DateTime(" + searchParameter.StartDate.Year + "," + searchParameter.StartDate.Month + "," + searchParameter.StartDate.Day + ") and ");
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                queryString.Append("PublishedOn >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
             }
 
             if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
             {
-                queryString.Append("PublishedOn <= DateTime(" + searchParameter.EndDate.Year + "," + searchParameter.EndDate.Month + "," + searchParameter.EndDate.Day + ") and ");
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+                queryString.Append("PublishedOn <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
 
             if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
             {
-                queryString.Append("PublishedOn >= DateTime(" + searchParameter.StartDate.Year + "," + searchParameter.StartDate.Month + "," + searchParameter.StartDate.Day + ") and PublishedOn <= DateTime(" + searchParameter.EndDate.Year + ", " + searchParameter.EndDate.Month + ", " + searchParameter.EndDate.Day + ") and ");
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+
+                queryString.Append("PublishedOn >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                               "and PublishedOn <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
 
             queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false)", tenantCode));

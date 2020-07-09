@@ -26,7 +26,7 @@ export class SidebarComponent implements OnInit {
   public AppVersion: string;
   public URL = '';
   public IsMainMenu = true;
-
+  iconTitle = "Asset Configuration Settings";
   public element: HTMLElement;
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
@@ -52,11 +52,12 @@ export class SidebarComponent implements OnInit {
       this.element.className ='fa fa-cog'
       //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/dashboard']);
+      this.iconTitle = "Asset Configuration Settings";
     }
     else {
       this.URL = '/settings';
       this.element.className = 'fa fa-home'
-
+      this.iconTitle = "Home";
       //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/settings']);
     }
@@ -176,11 +177,13 @@ export class SidebarComponent implements OnInit {
     if (this.URL == '/settings') {
       this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
       this.element.className = 'fa fa-home'
+      this.iconTitle = "Home";
       this.IsMainMenu = false;
     }
     else {
       this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
       this.element.className = 'fa fa-cog'
+      this.iconTitle = "Asset Configuration Settings";
     }
     if (this.URL.includes('/user')) {
       this.URL ='/user'

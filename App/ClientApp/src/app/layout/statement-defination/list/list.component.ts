@@ -152,7 +152,7 @@ export class ListComponent implements OnInit {
         case 'owner': return compareStr(a.StatementOwnerName, b.StatementOwnerName, isAsc);
         case 'publishedBy': return compareStr(a.StatementPublishedByUserName, b.StatementPublishedByUserName, isAsc);
         case 'version': return compare(Number(a.Version), Number(b.Version), isAsc);
-       // case 'date': return compare(Date.parse(a.PublishedOn), Date.parse(b.PublishedOn), isAsc);
+        // case 'date': return compare(Date.parse(a.PublishedOn), Date.parse(b.PublishedOn), isAsc);
         default: return 0;
       };
     });
@@ -230,7 +230,7 @@ export class ListComponent implements OnInit {
     }
     if (this.StatementFilterForm.value.filterPublishedOnToDate != null && this.StatementFilterForm.value.filterPublishedOnToDate != '') {
       let toDate = this.StatementFilterForm.value.filterPublishedOnToDate;
-      if (toDate.getTime() > currentDte.getTime()) {
+      if (toDate.getDate() > currentDte.getDate()) {
         this.filterToDateError = true;
         this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
       }
@@ -278,10 +278,13 @@ export class ListComponent implements OnInit {
           searchParameter.Status = this.StatementFilterForm.value.filterStatus;
         }
         if (this.StatementFilterForm.value.filterPublishedOnFromDate != null && this.StatementFilterForm.value.filterPublishedOnFromDate != '') {
-          searchParameter.StartDate = this.StatementFilterForm.value.filterPublishedOnFromDate;
+          //  searchParameter.StartDate = this.StatementFilterForm.value.filterPublishedOnFromDate;
+          searchParameter.StartDate = new Date(this.StatementFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
         }
         if (this.StatementFilterForm.value.filterPublishedOnToDate != null && this.StatementFilterForm.value.filterPublishedOnToDate != '') {
-          searchParameter.EndDate = this.StatementFilterForm.value.filterPublishedOnToDate;
+          //searchParameter.EndDate = this.StatementFilterForm.value.filterPublishedOnToDate;
+          searchParameter.EndDate = new Date(this.StatementFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
+
         }
         this.currentPage = 0;
         this.getStatements(searchParameter);

@@ -261,7 +261,8 @@ namespace nIS
                     if (pageSearchParameter.PageOwner != null && pageSearchParameter.PageOwner != string.Empty)
                     {
                         StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("FirstName.Contains(\"{0}\") or LastName.Contains(\"{1}\") ", pageSearchParameter.PageOwner, pageSearchParameter.PageOwner));
+                        queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", pageSearchParameter.PageOwner));
+
                         queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
                         var userRecordIds = nISEntitiesDataContext.UserRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
                         if (userRecordIds.Count > 0) 

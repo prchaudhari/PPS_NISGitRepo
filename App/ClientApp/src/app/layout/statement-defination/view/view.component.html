@@ -36,8 +36,8 @@
         <div class="col-xl-3 col-lg-4 col-md-4 ml-auto">
           <div class="card border-0 mb-2 card-shadow">
             <div class="card-body">
-              <h6>{{statement.StatementUpdatedByUserName}}</h6>
-              <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:"dd/MM/yyyy h:mm a"}}</span></div>
+              <h6>{{statement.StatementOwnerName}}</h6>
+              <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:"dd/MM/yyyy"}}</span></div>
               <div>
                 <label>Status : </label>
                 <span class="badge badge-primary p-1" *ngIf="statement.Status=='New'">{{statement.Status}}</span>
