@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators';
 import { AssetLibraryService } from '../asset-library.service';
 import { MatInput } from '@angular/material';
 import { AssetSetting } from '../../asset-settings/asset-setting'
-
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 export interface ListElement {
   name: string;
   updatedby: string;
@@ -40,7 +40,8 @@ const List_Data: ListElement[] = [
 @Component({
   selector: 'app-add-asset-library',
   templateUrl: './add-asset-library.component.html',
-  styleUrls: ['./add-asset-library.component.scss']
+  styleUrls: ['./add-asset-library.component.scss'],
+
 })
 export class AddAssetLibraryComponent implements OnInit {
 
@@ -69,6 +70,7 @@ export class AddAssetLibraryComponent implements OnInit {
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
   public image;
+  public isImage = true;
   public assetLibraryFormErrorObject: any = {
     showAssetLibraryNameError: false
   };
@@ -85,7 +87,7 @@ export class AddAssetLibraryComponent implements OnInit {
   public sortedAssetList: Asset[] = [];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatInput, { static: true}) multipleFileAssetUpload: ElementRef;
+  @ViewChild(MatInput, { static: true }) multipleFileAssetUpload: ElementRef;
   public isNoRecord = true;
   public setting: AssetSetting = {
     Identifier: 0,
@@ -117,6 +119,7 @@ export class AddAssetLibraryComponent implements OnInit {
     private _messageDialogService: MessageDialogService,
     private assetLibraryService: AssetLibraryService,
     private injector: Injector,
+    private sanitizer: DomSanitizer
   ) {
     this.assetLibrary = new AssetLibrary;
     this.asset = new Asset;
@@ -272,22 +275,21 @@ export class AddAssetLibraryComponent implements OnInit {
           this._spinnerService.stop();
         });
   }
-  PreviewAsset(assetId: number): void {
-    this._spinnerService.start();
-    this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + assetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
-      .subscribe(
-        data => {
-          this._spinnerService.stop();
-          let contentType = data.headers.get('Content-Type');
-          let fileName = data.headers.get('x-filename');
+  closePreview() {
+    this.image = '';
+  }
+  PreviewAsset(asset: Asset): void {
+    var assetId = asset.Identifier;
+    var fileType = asset.Name.split('.').pop();
+    if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
+      this.isImage = true;
+    }
+    else {
+      this.isImage = false;
+    }
+    var url = this.baseURL + "assets/" + this.assetLibrary.Identifier + "/" + asset.Name;
+    this.image = url;
 
-
-        },
-        error => {
-          $('.overlay').show();
-          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
-          this._spinnerService.stop();
-        });
   }
 
   DeleteAsset(assetId: number): void {
@@ -522,7 +524,7 @@ export class AddAssetLibraryComponent implements OnInit {
   }
 
   ShowUploadAssetContainer(): void {
-   this.multipleFileAssetUpload ? this.multipleFileAssetUpload.nativeElement.value = '' : null;
+    this.multipleFileAssetUpload ? this.multipleFileAssetUpload.nativeElement.value = '' : null;
     if (this.updateOperationMode == false) {
       if (this.assetLibrary.Identifier <= 0 || this.assetLibrary.Identifier == null || this.assetLibrary.Identifier == undefined) {
         //  return true;
@@ -580,7 +582,7 @@ export class AddAssetLibraryComponent implements OnInit {
 
     var files = e.target.files;
     var file = files[0];
- 
+
     var isValidFileType = false;
     for (var i = 0; i < this.FileExtension.length; i++) {
       if (this.FileExtension[i] == file.type) {
@@ -675,8 +677,9 @@ export class AddAssetLibraryComponent implements OnInit {
         }
       }
     }
-   
+
     else {
+      this.multipleFileAssetUpload.nativeElement.value = null;
       this.assetFileTypeError = true;
       this.assetFileSizeError = false;
       this.fileNameList = [];
@@ -850,7 +853,7 @@ export class AddAssetLibraryComponent implements OnInit {
         this.actualSetting.VideoSize = this.setting.VideoSize * 1024 * 1024;
         this.actualSetting.ImageWidth = this.setting.ImageWidth * 37.7952755906;
         this.actualSetting.ImageHeight = this.setting.ImageHeight * 37.7952755906;
-         this.FileExtension = this.setting.ImageFileExtension.split(",");
+        this.FileExtension = this.setting.ImageFileExtension.split(",");
         var videoFileExtension = this.setting.VideoFileExtension.split(",");
         for (var i = 0; i < videoFileExtension.length; i++) {
           this.FileExtension.push(videoFileExtension[i]);

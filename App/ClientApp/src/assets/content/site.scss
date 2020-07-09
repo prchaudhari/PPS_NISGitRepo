@@ -819,10 +819,10 @@
   }
 
   .example-list {
-    height: auto;
+    height: 300px;
     min-height: 120px;
     border-radius: 4px;
-    overflow: hidden;
+    //overflow: hidden;
     display: block;
     padding: 10px 10px 0 10px;
   }

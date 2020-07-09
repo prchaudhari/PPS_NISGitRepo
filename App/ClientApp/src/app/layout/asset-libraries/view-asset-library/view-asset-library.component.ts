@@ -17,6 +17,8 @@ import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAcce
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AssetLibraryService } from '../asset-library.service';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+
 export interface ListElement {
   name: string;
   updatedby: string;
@@ -42,7 +44,8 @@ export class ViewAssetLibraryComponent implements OnInit {
   public assets: Asset[];
   public array: any;
   public sortedAssetLibraryList: Asset[] = [];
-
+  public image;
+  public isImage = true;
   public params;
   public baseURL: string = environment.baseURL;
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
@@ -88,6 +91,7 @@ export class ViewAssetLibraryComponent implements OnInit {
     private assetLibraryService: AssetLibraryService,
     private injector: Injector,
     private router: Router,
+    private sanitizer: DomSanitizer
   ) {
     this.assetLibrary = new AssetLibrary;
     this.asset = new Asset;
@@ -182,6 +186,23 @@ export class ViewAssetLibraryComponent implements OnInit {
           this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
           this._spinnerService.stop();
         });
+  }
+  closePreview() {
+    this.image = '';
+  }
+  PreviewAsset(asset: Asset): void {
+    var assetId = asset.Identifier;
+    var fileType = asset.Name.split('.').pop();
+    if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
+      this.isImage = true;
+    }
+    else {
+      this.isImage = false;
+
+    }
+    var url = this.baseURL + "assets/" + this.assetLibrary.Identifier + "/" + asset.Name;
+    this.image = url;
+
   }
 
   navigateToAssetLibraryEdit() {

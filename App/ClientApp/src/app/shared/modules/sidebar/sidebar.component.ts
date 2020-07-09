@@ -49,7 +49,8 @@ export class SidebarComponent implements OnInit {
     this.IsMainMenu = !this.IsMainMenu
     if (this.IsMainMenu) {
       this.URL = '/dashboard';
-      this.element.className ='fa fa-cog'
+      this.element.className = 'fa fa-cog';
+      this.element.title = "Asset Configuration Settings";
       //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/dashboard']);
       this.iconTitle = "Asset Configuration Settings";
@@ -57,6 +58,7 @@ export class SidebarComponent implements OnInit {
     else {
       this.URL = '/settings';
       this.element.className = 'fa fa-home'
+      this.element.title = "Home";
       this.iconTitle = "Home";
       //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/settings']);
@@ -178,12 +180,14 @@ export class SidebarComponent implements OnInit {
       this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
       this.element.className = 'fa fa-home'
       this.iconTitle = "Home";
+      this.element.title = "Home"
       this.IsMainMenu = false;
     }
     else {
       this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
       this.element.className = 'fa fa-cog'
-      this.iconTitle = "Asset Configuration Settings";
+      this.iconTitle = "Asset Configuration Settings"
+      this.element.title = "Asset Configuration Settings";
     }
     if (this.URL.includes('/user')) {
       this.URL ='/user'
