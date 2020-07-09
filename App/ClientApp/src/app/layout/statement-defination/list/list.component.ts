@@ -385,6 +385,16 @@ export class ListComponent implements OnInit {
       }
     });
   }
+
+  async PreviewStatement(statement: Statement) {
+    let pageData = [{
+        "Identifier": statement.Identifier,
+    }];
+    let resultHtmlString = await this.statementService.previewStatement(pageData);
+    if (resultHtmlString != '') {
+        this._messageDialogService.openPreviewDialogBox(resultHtmlString);
+    }
+}
 }
 
 

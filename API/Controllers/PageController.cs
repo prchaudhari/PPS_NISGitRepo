@@ -162,20 +162,17 @@ namespace nIS
         /// <param name="pageIdentifier"></param>
         /// <returns>boolean value</returns>
         [HttpPost]
-        public bool Preview(long pageIdentifier)
+        public string Preview(long pageIdentifier)
         {
-            bool result = false;
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                //result = this.pageManager.DeletePages(pageIdentifier, tenantCode);
+                return this.pageManager.PreviewPage(pageIdentifier, tenantCode);
             }
             catch (Exception exception)
             {
                 throw exception;
             }
-
-            return result;
         }
 
         /// <summary>

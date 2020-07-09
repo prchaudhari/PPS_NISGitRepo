@@ -72,7 +72,7 @@
               <button type="button" title="Delete" id="btnDelete" (click)="DeletePage(element)"><span class="fa fa-trash-o"></span></button>
               <button type="button" title="Publish" id="btnPublish" *ngIf="element.Status!='Published'" (click)="PublishPage(element)"><span class="fa fa-share"></span></button>
               <button type="button" title="Clone" id="btnClone" *ngIf="element.Status!='New'" (click)="ClonePage(element)"><span class="fa fa-clone"></span></button>
-              <button type="button" title="Preview" id="btnPreview" data-toggle="modal" data-target="#resourcePreview"><span class="fa fa-eye"></span></button>
+              <button type="button" title="Preview" id="btnPreview" data-toggle="modal" (click)="PreviewPage(element)"><span class="fa fa-eye"></span></button>
             </div>
           </td>
         </ng-container>

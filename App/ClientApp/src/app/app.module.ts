@@ -23,12 +23,14 @@ import { ConfirmUserComponent } from './confirm-user/confirm-user.component';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { DynamicGlobalVariable } from './shared/constants/constants';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { PagePreviewComponent } from './shared/pagepreview/pagepreview.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MsgBoxComponent,
-    ConfirmUserComponent
+    ConfirmUserComponent,
+    PagePreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
   bootstrap: [AppComponent],
   //Common component for alert message.
   entryComponents: [
-    MsgBoxComponent
+    MsgBoxComponent,
+    PagePreviewComponent
   ]
 })
 export class AppModule { }

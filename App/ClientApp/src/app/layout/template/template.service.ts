@@ -124,18 +124,18 @@ export class TemplateService {
                 if (httpEvent.type == HttpEventType.Response) {
                     this.uiLoader.stop();
                     if (httpEvent["status"] === 200) {
-                        this.isRecordDeleted = true
+                        this.resultFlag = true
                     }
                     else {
-                        this.isRecordDeleted = false
+                        this.resultFlag = false
                     }
                 }
             }, (error) => {
                 this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
                 this.uiLoader.stop();
-                this.isRecordDeleted = false
+                this.resultFlag = false
             });
-        return <boolean>this.isRecordDeleted;
+        return <boolean>this.resultFlag;
     }
 
     //method to call api of clone page.
@@ -152,17 +152,48 @@ export class TemplateService {
                 if (httpEvent.type == HttpEventType.Response) {
                     this.uiLoader.stop();
                     if (httpEvent["status"] === 200) {
-                        this.isRecordDeleted = true
+                        this.resultFlag = true
                     }
                     else {
-                        this.isRecordDeleted = false
+                        this.resultFlag = false
                     }
                 }
             }, (error) => {
                 this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
                 this.uiLoader.stop();
-                this.isRecordDeleted = false
+                this.resultFlag = false
             });
-        return <boolean>this.isRecordDeleted;
+        return <boolean>this.resultFlag;
+    }
+
+    //method to call api of preview page.
+    public async previewPage(postData): Promise<string> {
+        let httpClientService = this.injector.get(HttpClientService);
+        let identifier = null;
+        if (postData.length > 0) {
+            identifier = postData[0].Identifier;
+        }
+        
+        let requestUrl = URLConfiguration.pagePreviewUrl + '?pageIdentifier=' + identifier;
+        this.uiLoader.start();
+        let resultString:string="";
+
+        await httpClientService.CallHttp("POST", requestUrl).toPromise()
+            .then((httpEvent: HttpEvent<any>) => {
+                if (httpEvent.type == HttpEventType.Response) {
+                    this.uiLoader.stop();
+                    if (httpEvent["status"] === 200) {
+                        resultString = httpEvent['body'];
+                    }
+                    else {
+                        resultString = '';
+                    }
+                }
+            }, (error) => {
+                this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+                this.uiLoader.stop();
+                resultString='';
+            });
+        return <string>resultString;
     }
 }

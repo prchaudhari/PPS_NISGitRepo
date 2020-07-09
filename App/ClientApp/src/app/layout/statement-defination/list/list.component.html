@@ -73,7 +73,7 @@
                   <span class="fa fa-trash-o"></span>
                 </button>
                 <button type="button" title="Publish" *ngIf="element.Status!='Published'" (click)="PublishStatement(element)" id="btnDelete"><span class="fa fa-share"></span></button>
-                <button type="button" title="Preview" id="btnDelete" data-toggle="modal" data-target="#resourcePreview"><span class="fa fa-eye"></span></button>
+                <button type="button" title="Preview" id="btnPreview" data-toggle="modal" (click)="PreviewStatement(element)"><span class="fa fa-eye"></span></button>
               </div>
             </td>
           </ng-container>

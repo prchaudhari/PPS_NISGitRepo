@@ -351,6 +351,16 @@ export class ListComponent implements OnInit {
         });
     }
 
+    async PreviewPage(template: Template) {
+        let pageData = [{
+            "Identifier": template.Identifier,
+        }];
+        let resultHtmlString = await this.templateService.previewPage(pageData);
+        if (resultHtmlString != '') {
+            this._messageDialogService.openPreviewDialogBox(resultHtmlString);
+        }
+    }
+
     navigationToDashboardDesignerEdit(template: Template) {
         let queryParams = {
             Routeparams: {

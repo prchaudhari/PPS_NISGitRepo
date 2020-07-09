@@ -166,4 +166,35 @@ export class StatementService {
       });
     return <boolean>this.isRecordDeleted;
   }
+
+  //method to call api of preview page.
+  public async previewStatement(postData): Promise<string> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let identifier = null;
+    if (postData.length > 0) {
+        identifier = postData[0].Identifier;
+    }
+    
+    let requestUrl = URLConfiguration.statementPreviewUrl + '?StatementIdentifier=' + identifier;
+    this.uiLoader.start();
+    let resultString:string="";
+
+    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+        .then((httpEvent: HttpEvent<any>) => {
+            if (httpEvent.type == HttpEventType.Response) {
+                this.uiLoader.stop();
+                if (httpEvent["status"] === 200) {
+                    resultString = httpEvent['body'];
+                }
+                else {
+                    resultString = '';
+                }
+            }
+        }, (error) => {
+            this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+            this.uiLoader.stop();
+            resultString='';
+        });
+    return <string>resultString;
+}
 }

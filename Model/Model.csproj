@@ -52,6 +52,7 @@
     <Compile Include="Common\BaseEntity.cs" />
     <Compile Include="Common\BaseSearchEntity.cs" />
     <Compile Include="Common\CountryConstant.cs" />
+    <Compile Include="Common\HtmlConstants.cs" />
     <Compile Include="Common\ModelConstant.cs" />
     <Compile Include="Common\PagingParameter.cs" />
     <Compile Include="Country.cs" />

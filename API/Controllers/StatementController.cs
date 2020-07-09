@@ -162,20 +162,17 @@ namespace nIS
         /// <param name="StatementIdentifier"></param>
         /// <returns>boolean value</returns>
         [HttpPost]
-        public bool Preview(long StatementIdentifier)
+        public string Preview(long StatementIdentifier)
         {
-            bool result = false;
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                //result = this.StatementManager.DeleteStatements(StatementIdentifier, tenantCode);
+                return this.StatementManager.PreviewStatement(StatementIdentifier, tenantCode);
             }
             catch (Exception exception)
             {
                 throw exception;
             }
-
-            return result;
         }
 
         /// <summary>
