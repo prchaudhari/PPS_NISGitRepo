@@ -74,7 +74,7 @@ export class ListAssetLibraryComponent implements OnInit {
       searchParameter.SortParameter.SortColumn = Constants.Name;
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
-      searchParameter.Name = this.assetLibraryFilterForm.value.filterAssetLibraryName != null ? this.assetLibraryFilterForm.value.filterAssetLibraryName : "";
+      searchParameter.Name = this.assetLibraryFilterForm.value.filterAssetLibraryName != null ? this.assetLibraryFilterForm.value.filterAssetLibraryName.trim() : "";
       this.currentPage = 0;
       this.getAssetLibraryRecords(searchParameter);
       this.isFilter = !this.isFilter;

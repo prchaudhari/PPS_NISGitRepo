@@ -276,6 +276,9 @@ export class AddAssetLibraryComponent implements OnInit {
         });
   }
   closePreview() {
+    let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+
+    vid.pause();
     this.image = '';
   }
   PreviewAsset(asset: Asset): void {
@@ -289,6 +292,9 @@ export class AddAssetLibraryComponent implements OnInit {
     }
     var url = this.baseURL + "assets/" + this.assetLibrary.Identifier + "/" + asset.Name;
     this.image = url;
+    let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+    vid.currentTime = 0;
+    vid.play();
 
   }
 
@@ -578,7 +584,7 @@ export class AddAssetLibraryComponent implements OnInit {
     }
   }
 
-  HandleFileUpload(e): void {
+  HandleFileUpload(e, multipleFileAssetUpload): void {
 
     var files = e.target.files;
     var file = files[0];
@@ -598,6 +604,7 @@ export class AddAssetLibraryComponent implements OnInit {
           this.assetFileSizeError = true;
           this.assetFileTypeError = false;
           this.fileNameList = [];
+          multipleFileAssetUpload.value = "";
         }
         else {
           this.assetFileSizeError = false;
@@ -615,16 +622,19 @@ export class AddAssetLibraryComponent implements OnInit {
             this.assetFileWidthHeightError = true;
             this.assetFileWidthError = false;
             this.assetFileHeightError = false;
+            multipleFileAssetUpload.value = "";
           }
           else if (height > this.actualSetting.ImageHeight) {
             this.assetFileWidthHeightError = false;
             this.assetFileWidthError = false;
             this.assetFileHeightError = true;
+            multipleFileAssetUpload.value = "";
           }
           else if (width > this.actualSetting.ImageWidth) {
             this.assetFileWidthHeightError = false;
             this.assetFileWidthError = true;
             this.assetFileHeightError = false;
+            multipleFileAssetUpload.value = "";
           }
           else {
             this.assetFileWidthHeightError = false;
@@ -657,6 +667,7 @@ export class AddAssetLibraryComponent implements OnInit {
           this.assetFileSizeError = true;
           this.assetFileTypeError = false;
           this.fileNameList = [];
+          multipleFileAssetUpload.value = "";
         }
         else {
           this.assetFileSizeError = false;
@@ -679,7 +690,7 @@ export class AddAssetLibraryComponent implements OnInit {
     }
 
     else {
-      this.multipleFileAssetUpload.nativeElement.value = null;
+      multipleFileAssetUpload.value = "";
       this.assetFileTypeError = true;
       this.assetFileSizeError = false;
       this.fileNameList = [];
