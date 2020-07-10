@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -54,7 +54,6 @@ export class ViewAssetLibraryComponent implements OnInit {
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
 
   ngOnInit() {
 
@@ -215,9 +214,13 @@ export class ViewAssetLibraryComponent implements OnInit {
       document.getElementById('videoPreview').appendChild(sourceTag);
       
       let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+    
+      vid.load();
       vid.currentTime = 0;
       vid.play();
-     
+      //this.videoSource.nativeElement.setAttribute('src', url);
+      //this.video.nativeElement.load();
+      
     }
   }
 

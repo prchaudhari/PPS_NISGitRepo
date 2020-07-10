@@ -13,7 +13,7 @@
           <img class="card-img-top height100" [src]="image" *ngIf="isImage" />
           <!--video-->
           <video id="videoPreview" class="width100 height100" #video style="object-fit:fill" autoplay controls *ngIf="!isImage">
-            <source src="{{image}}" type="video/mp4">
+            <source #videoSource src="{{image}}" type="video/mp4">
           </video>
         </div>
       </div>

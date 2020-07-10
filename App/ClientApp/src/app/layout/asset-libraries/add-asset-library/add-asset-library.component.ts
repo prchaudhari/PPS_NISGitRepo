@@ -294,9 +294,22 @@ export class AddAssetLibraryComponent implements OnInit {
     }
     var url = this.baseURL + "assets/" + this.assetLibrary.Identifier + "/" + asset.Name;
     this.image = url;
-    let vid = <HTMLVideoElement>document.getElementById("videoPreview");
-    vid.currentTime = 0;
-    vid.play();
+    if (!this.isImage) {
+      document.getElementById('videoPreview').removeChild(document.getElementById('videoPreview').childNodes[0])
+      var sourceTag = document.createElement('source');
+      sourceTag.setAttribute('src', url);
+      sourceTag.setAttribute('type', 'video/mp4');
+      document.getElementById('videoPreview').appendChild(sourceTag);
+
+      let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+
+      vid.load();
+      vid.currentTime = 0;
+      vid.play();
+      //this.videoSource.nativeElement.setAttribute('src', url);
+      //this.video.nativeElement.load();
+
+    }
   }
 
   DeleteAsset(assetId: number): void {
