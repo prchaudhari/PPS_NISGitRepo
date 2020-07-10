@@ -173,7 +173,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     saveVideoFormValidation(): boolean {
-        if (this.VideoConfigForm.controls.vdoUrl.invalid && ((this.isPersonalize && this.isEmbedded) || this.isEmbedded)) {
+        if (this.VideoConfigForm.controls.vdoUrl.invalid && (!this.isPersonalize && this.isEmbedded)) {
             return true;
         }
         if (this.vdoAssetLibraryId == 0 && (!this.isPersonalize && !this.isEmbedded)) {
@@ -611,7 +611,6 @@ export class AddDashboardDesignerComponent implements OnInit {
         return gridObj;
     }
 
-
     getAssetLibraries () {
         let searchParameter: any = {};
         searchParameter.IsActive = true;
@@ -779,7 +778,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             videoConfig.AssetLibrayName = this.isPersonalize == true ? 0 : this.vdoAssetLibraryName;
             videoConfig.AssetId =  this.isPersonalize == true ? 0 : this.vdoAssetId;
             videoConfig.AssetName = this.isPersonalize == true ? 0 : this.vdoAssetName;
-            videoConfig.SourceUrl = (this.isPersonalize == true && this.isEmbedded == true) || (this.isEmbedded == true) ? this.VideoConfigForm.value.vdoUrl : "";
+            videoConfig.SourceUrl = (this.isPersonalize == false && this.isEmbedded == true) ? this.VideoConfigForm.value.vdoUrl : "";
             videoConfig.WidgetId = this.videoWidgetId;
             videoConfig.isPersonalize = this.isPersonalize;
             videoConfig.isEmbedded = this.isEmbedded;

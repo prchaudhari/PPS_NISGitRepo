@@ -157,14 +157,14 @@
             <label> Embedded </label>
             <div>
               <label class="switch d-block">
-                <input type="checkbox" (change)="isEmbedded=!isEmbedded" [checked]="isEmbedded"> 
-                <span class="slider round"></span>
+                <input type="checkbox" (change)="isEmbedded=!isEmbedded" [checked]="isEmbedded" [disabled]="isPersonalize"> 
+                <span class="slider round" [ngClass]="isPersonalize ? 'disabled-cursor bg-secondary':''"></span>
               </label>
             </div>
           </div>
         </div>
         <div>
-          <div class="row" *ngIf="(isEmbedded && isPersonalize) || isEmbedded">
+          <div class="row" *ngIf="(isEmbedded && !isPersonalize)">
             <div class="col-sm-12 form-group">
               <label> URL </label> <span class="text-danger"> *</span>
               <input type="text" class="form-control" formControlName="vdoUrl"/>
