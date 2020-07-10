@@ -263,8 +263,8 @@ export class ListComponent implements OnInit {
       let message = "User not found"
 
     }
-    this.dataSource = new MatTableDataSource<Element>(this.userLists);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource<User>(this.userLists);
+    this.dataSource.sort = this.sort;
     this.array = this.userLists;
     this.totalSize = this.array.length;
     this.iterator();
@@ -591,10 +591,10 @@ export class ListComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
       if (this.userFormGroup.value.FirstName != null) {
-        searchParameter.FirstName = this.UserFilter.FirstName;
+        searchParameter.FirstName = this.UserFilter.FirstName.trim();
       }
       if (this.userFormGroup.value.EmailAddress != null) {
-        searchParameter.EmailAddress = this.UserFilter.EmailAddress;
+        searchParameter.EmailAddress = this.UserFilter.EmailAddress.trim();
       }
       if (this.UserFilter.RoleIdentifier != null) {
         searchParameter.RoleIdentifier = this.UserFilter.RoleIdentifier;

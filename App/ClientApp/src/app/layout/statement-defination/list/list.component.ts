@@ -142,6 +142,7 @@ export class ListComponent implements OnInit {
       this.sortedStatementList = data;
       return;
     }
+
     //['name', 'version', 'owner', 'date', 'status', 'actions'];
     this.sortedStatementList = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
@@ -152,10 +153,11 @@ export class ListComponent implements OnInit {
         case 'owner': return compareStr(a.StatementOwnerName, b.StatementOwnerName, isAsc);
         case 'publishedBy': return compareStr(a.StatementPublishedByUserName, b.StatementPublishedByUserName, isAsc);
         case 'version': return compare(Number(a.Version), Number(b.Version), isAsc);
-        // case 'date': return compare(Date.parse(a.PublishedOn), Date.parse(b.PublishedOn), isAsc);
+        case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
         default: return 0;
       };
     });
+
     this.dataSource = new MatTableDataSource<Statement>(this.sortedStatementList);
     this.dataSource.sort = this.sort;
     this.array = this.sortedStatementList;
@@ -388,13 +390,13 @@ export class ListComponent implements OnInit {
 
   async PreviewStatement(statement: Statement) {
     let pageData = [{
-        "Identifier": statement.Identifier,
+      "Identifier": statement.Identifier,
     }];
     let resultHtmlString = await this.statementService.previewStatement(pageData);
     if (resultHtmlString != '') {
-        this._messageDialogService.openPreviewDialogBox(resultHtmlString);
+      this._messageDialogService.openPreviewDialogBox(resultHtmlString);
     }
-}
+  }
 }
 
 
@@ -407,6 +409,7 @@ function compareStr(a: string, b: string, isAsc: boolean) {
 }
 
 function compareDate(a: Date, b: Date, isAsc: boolean) {
-
-  return (a.getTime() < b.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
+  var a1 = new Date(a);
+  var b1 = new Date(b);
+  return (a1.getTime() < b1.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
 }

@@ -47,7 +47,7 @@ export class ViewAssetLibraryComponent implements OnInit {
   public image;
   public isImage = true;
   public params;
-  public baseURL: string = environment.baseURL;
+  public baseURL = "http://nisqa-api.azurewebsites.net/";
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
@@ -188,7 +188,12 @@ export class ViewAssetLibraryComponent implements OnInit {
         });
   }
   closePreview() {
+
+    let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+
+    vid.pause();
     this.image = '';
+
   }
   PreviewAsset(asset: Asset): void {
     var assetId = asset.Identifier;
@@ -202,7 +207,9 @@ export class ViewAssetLibraryComponent implements OnInit {
     }
     var url = this.baseURL + "assets/" + this.assetLibrary.Identifier + "/" + asset.Name;
     this.image = url;
-
+    let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+    vid.currentTime = 0;
+    vid.play();
   }
 
   navigateToAssetLibraryEdit() {

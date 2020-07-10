@@ -5,17 +5,17 @@
   </div>
   <!--delete this button-->
   <!--<button type="button" data-toggle="modal" data-target="#resourcePreview"><span class="fa fa-eye" id="btnViewImage"></span></button>-->
-  <div class="modal fade cust-modal bd-example-modal-lg" id="resourcePreview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade cust-modal bd-example-modal-lg" id="resourcePreview" tabindex="-1" role="dialog"data-backdrop="static" data-keyboard="false"  aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-body p-1">
-          <button type="button" (click) ="closePreview()" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" (click)="closePreview()" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
           <!--Image-->
           <img class="card-img-top height100" [src]="image" *ngIf="isImage"/>
           <!--video-->
-          <video class="width100 height100" style="object-fit:fill" autoplay controls *ngIf="!isImage">
+          <video id="videoPreview"class="width100 height100" style="object-fit:fill" autoplay controls *ngIf="!isImage">
             <source [src]="image" type="video/mp4">
           </video>
         </div>
@@ -175,19 +175,18 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group col-sm-12 parent-rtl">
-          <div class="input-group">
-            <div class="custom-file z-index-0">
-              <!--<input *ngIf="!isMultipleFileUploadEnable" #multipleFileAssetUpload class="custom-file-input"
-              type="file" webkitDirectory (change)="HandleFileUpload($event.target.files)">-->
-
-              <input *ngIf="isMultipleFileUploadEnable" #multipleFileAssetUpload  class="custom-file-input"
-                     accept="{{actualSetting.VideoFileExtension}}" type="file" (click)="multipleFileAssetUpload.value = null" (change)="HandleFileUpload($event)">
-              <label class="custom-file-label"></label>
+        <form>
+          <div class="form-group col-sm-12 parent-rtl">
+            <div class="input-group">
+              <div class="custom-file z-index-0">
+                <input *ngIf="isMultipleFileUploadEnable" #multipleFileAssetUpload class="custom-file-input"
+                       accept="{{actualSetting.VideoFileExtension}}" type="file" (click)="multipleFileAssetUpload.value = null" (change)="HandleFileUpload($event,multipleFileAssetUpload)">
+                <label class="custom-file-label"></label>
+              </div>
             </div>
-
           </div>
-        </div>
+        </form>
+
         <div class="form-group col-sm-12 parent-rtl">
           <div class="input-group">
 
