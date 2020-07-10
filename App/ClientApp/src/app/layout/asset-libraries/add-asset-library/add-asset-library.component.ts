@@ -88,6 +88,8 @@ export class AddAssetLibraryComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatInput, { static: true }) multipleFileAssetUpload: ElementRef;
+  @ViewChild(MatInput, { static: true }) video: ElementRef;
+
   public isNoRecord = true;
   public setting: AssetSetting = {
     Identifier: 0,
@@ -288,14 +290,13 @@ export class AddAssetLibraryComponent implements OnInit {
       this.isImage = true;
     }
     else {
-      this.isImage = false;
+      this.isImage = false; ElementRef
     }
     var url = this.baseURL + "assets/" + this.assetLibrary.Identifier + "/" + asset.Name;
     this.image = url;
     let vid = <HTMLVideoElement>document.getElementById("videoPreview");
     vid.currentTime = 0;
     vid.play();
-
   }
 
   DeleteAsset(assetId: number): void {

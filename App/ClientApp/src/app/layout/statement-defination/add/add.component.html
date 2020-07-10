@@ -70,10 +70,10 @@
           <label class="m-0">Page Sequence</label>
         </div>
         <div>
-          <button type="button" id="btnCollapsedPermissions"
+          <button type="button" id="btnCollapsedPermissions" (click)="bindPages()"
                   class="toggle-btn border-0 p-0 bg-transparent"
                   [attr.aria-expanded]="!isCollapsedPermissions" aria-controls="collapsedPermissions">
-            <span class="fa" [ngClass]="!isCollapsedPermissions? 'fa-angle-down' : 'fa-angle-right'" (click)="bindPages()"></span>
+            <span class="fa" [ngClass]="!isCollapsedPermissions? 'fa-angle-down' : 'fa-angle-right'"></span>
           </button>
         </div>
       </div>

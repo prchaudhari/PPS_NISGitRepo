@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AssetLibraryService } from '../asset-library.service';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+import { MatInput } from '@angular/material/input';
 
 export interface ListElement {
   name: string;
@@ -47,7 +48,7 @@ export class ViewAssetLibraryComponent implements OnInit {
   public image;
   public isImage = true;
   public params;
-  public baseURL = "http://nisqa-api.azurewebsites.net/";
+  public baseURL = environment.baseURL;
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
@@ -190,7 +191,6 @@ export class ViewAssetLibraryComponent implements OnInit {
   closePreview() {
 
     let vid = <HTMLVideoElement>document.getElementById("videoPreview");
-
     vid.pause();
     this.image = '';
 
@@ -207,9 +207,18 @@ export class ViewAssetLibraryComponent implements OnInit {
     }
     var url = this.baseURL + "assets/" + this.assetLibrary.Identifier + "/" + asset.Name;
     this.image = url;
-    let vid = <HTMLVideoElement>document.getElementById("videoPreview");
-    vid.currentTime = 0;
-    vid.play();
+    if (!this.isImage) {
+      document.getElementById('videoPreview').removeChild(document.getElementById('videoPreview').childNodes[0])
+      var sourceTag = document.createElement('source');
+      sourceTag.setAttribute('src', url);
+      sourceTag.setAttribute('type', 'video/mp4');
+      document.getElementById('videoPreview').appendChild(sourceTag);
+      
+      let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+      vid.currentTime = 0;
+      vid.play();
+     
+    }
   }
 
   navigateToAssetLibraryEdit() {

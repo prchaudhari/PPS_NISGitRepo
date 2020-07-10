@@ -24,8 +24,8 @@ export class AssetSettingsComponent implements OnInit {
   public isCollapsedImage: boolean = true;
   public isCollapsedVideo: boolean = true;
   public baseURL: string = ConfigConstants.BaseURL;
-  // public onlyNumbers = '([1-9][0-9]*)$';
-  public onlyNumbers = '[1-9]\d*(\.?[0-9]{1,2})$';
+  //public onlyNumbers = '^[1-9]$';
+  public onlyNumbers = "^(?=.*[1-9])[+]?([0-9]+(?:[\\.]\\d{1,2})?|\\.[0-9])$";
   imageForm: FormGroup;
   public isImageFileDropdownError = false;
   public isVideoFileDropdownError = false;
@@ -87,19 +87,19 @@ export class AssetSettingsComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: false
     };
-
+    console.log(this.onlyNumbers);
     this.imageForm = this.fb.group({
       assetImageHeight: [null, Validators.compose([Validators.required,
-        //Validators.pattern(this.onlyNumbers)
+        Validators.pattern(this.onlyNumbers)
       ])],
       assetImageWidth: [null, Validators.compose([Validators.required,
-        //Validators.pattern(this.onlyNumbers)
+        Validators.pattern(this.onlyNumbers)
       ])],
       assetImageSize: [null, Validators.compose([Validators.required,
-        //Validators.pattern(this.onlyNumbers)
+        Validators.pattern(this.onlyNumbers)
       ])],
       assetVideoSize: [null, Validators.compose([Validators.required,
-        // Validators.pattern(this.onlyNumbers)
+       Validators.pattern(this.onlyNumbers)
       ])],
       assetImageFile: [null],
       assetVideoFile: [null]

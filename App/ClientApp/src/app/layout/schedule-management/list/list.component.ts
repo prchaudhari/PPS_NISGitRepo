@@ -275,13 +275,13 @@ export class ListComponent implements OnInit {
     }
     localStorage.setItem("scheduleparams", JSON.stringify(queryParams))
     const router = this.injector.get(Router);
-    router.navigate(['assetlibrary', 'View']);
+    router.navigate(['schedulemanagement', 'View']);
   }
 
   //this method helps to navigate to add
   navigateToScheduleAdd() {
     const router = this.injector.get(Router);
-    router.navigate(['assetlibrary', 'Add']);
+    router.navigate(['schedulemanagement', 'Add']);
   }
   //this method helps to navigate edit
   navigateToScheduleEdit(schedule) {
@@ -298,7 +298,7 @@ export class ListComponent implements OnInit {
     }
     localStorage.setItem("scheduleparams", JSON.stringify(queryParams))
     const router = this.injector.get(Router);
-    router.navigate(['assetlibrary', 'Edit']);
+    router.navigate(['schedulemanagement', 'Edit']);
   }
 
   //function written to delete role
