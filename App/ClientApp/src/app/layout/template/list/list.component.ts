@@ -129,7 +129,7 @@ export class ListComponent implements OnInit {
                 case 'owner': return compareStr(a.PageOwnerName, b.PageOwnerName, isAsc);
                 case 'publishedBy': return compareStr(a.PagePublishedByUserName, b.PagePublishedByUserName, isAsc);
                 case 'version' : return compare(Number(a.Version), Number(b.Version), isAsc); 
-                //case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
+                case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
                 default: return 0;
             }
         });
@@ -395,5 +395,5 @@ function compare(a: number, b: number, isAsc: boolean) {
   }
   
   function compareDate(a: Date, b: Date, isAsc: boolean) {
-    return (a.getTime() < b.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
+    return (Date.parse(""+a) < Date.parse(""+b) ? -1 : 1) * (isAsc ? 1 : -1);
   }
