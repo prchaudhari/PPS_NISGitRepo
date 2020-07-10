@@ -238,7 +238,7 @@ namespace nIS
         public string PreviewStatement(long statementIdentifier, string tenantCode)
         {
             StringBuilder htmlString = new StringBuilder();
-
+            string finalHtml = "";
             StatementSearchParameter statementSearchParameter = new StatementSearchParameter
             {
                 Identifier = statementIdentifier,
@@ -263,6 +263,11 @@ namespace nIS
                 var statementPages = statements[0].StatementPages;
                 if (statementPages.Count != 0)
                 {
+                    //htmlString.Append(HtmlConstants.SCRIPT_TAG);
+                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/absa-logo.png");
+                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
+                    StringBuilder navItemList = new StringBuilder();
+                    htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
                     for (int x = 0; x < statementPages.Count; x++)
                     {
                         PageSearchParameter pageSearchParameter = new PageSearchParameter
@@ -286,14 +291,29 @@ namespace nIS
                         IList<Page> pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
                         if (pages.Count != 0)
                         {
-                            htmlString.Append(HtmlConstants.NAVBAR_HTML);
-                            htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
                             for (int y = 0; y < pages.Count; y++)
                             {
                                 string divId = pages[y].PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID ? HtmlConstants.HOME_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME : string.Empty;
 
-                                htmlString.Append(HtmlConstants.WIDGET_HTML_HEADER.Replace("{{DivId}}", divId));
+                                if (divId == HtmlConstants.HOME_PAGE_DIV_NAME)
+                                {
+                                    navItemList.Append(" <li class='nav-item'><a class='nav-link "+ (x == 0 ? "active" : "")+" "+HtmlConstants.HOME_PAGE_DIV_NAME+"' href='javascript:void(0);'>At a Glance</a> </li> ");
+                                }
+                                else if (divId == HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME)
+                                {
+                                    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Saving Account</a> </li> ");
+                                }
+                                else if (divId == HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME)
+                                {
+                                    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Current Account</a> </li> ");
+                                }
+
+                                string ExtraClassName = x > 0 ? "d-none " + divId : divId;
+                                string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);
+                                widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", divId);
+                                htmlString.Append(widgetHtmlHeader);
                                 int tempRowWidth = 0;
+                                int max = 0;
                                 if (pages[y].PageWidgets.Count > 0)
                                 {
                                     var completelst = pages[y].PageWidgets;
@@ -301,64 +321,68 @@ namespace nIS
                                     while (completelst.Count != 0)
                                     {
                                         var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
-                                        var max = lst.Max(it => it.Height);
-                                        var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
-                                        var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
-                                        currentYPosition = max;
+                                        if (lst.Count > 0)
+                                        {
+                                            max = max + lst.Max(it => it.Height);
+                                            var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
+                                            var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
+                                            currentYPosition = max;
 
-                                        for (int i = 0; i < mergedlst.Count; i++)
-                                        {
-                                            if (tempRowWidth == 0)
+                                            for (int i = 0; i < mergedlst.Count; i++)
                                             {
-                                                htmlString.Append("<div class='row'>");
-                                            }
-                                            int divLength = (mergedlst[i].Width * 12) / 20;
-                                            tempRowWidth = tempRowWidth + divLength;
-                                            if (tempRowWidth > 12)
-                                            {
-                                                tempRowWidth = divLength;
+                                                if (tempRowWidth == 0)
+                                                {
+                                                    htmlString.Append("<div class='row'>");
+                                                }
+                                                int divLength = (mergedlst[i].Width * 12) / 20;
+                                                tempRowWidth = tempRowWidth + divLength;
+                                                if (tempRowWidth > 12)
+                                                {
+                                                    tempRowWidth = divLength;
+                                                    htmlString.Append("</div>");
+                                                    htmlString.Append("<div class='row'>");
+                                                }
+                                                htmlString.Append("<div class='col-lg-" + divLength + "'>");
+                                                // htmlString.Append("<div style='position:absolute;height:"+height+"px;width:"+divWidth+"%;left:"+xPosition+"%;top:"+ yPosition + "px;text-align:center;'>");
+                                                if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
+                                                {
+                                                    var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
+                                                    customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", "Laura J Donald");
+                                                    customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", "4000 Executive Parkway, Saint Globin Rd #250,");
+                                                    customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", "Canary Wharf, E94583");
+                                                    htmlString.Append(customerHtmlWidget);
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
+                                                {
+                                                    htmlString.Append(HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML);
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
+                                                {
+                                                    var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", "assets/images/ImageWidget.PNG");
+                                                    htmlString.Append(imgHtmlWidget);
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
+                                                {
+                                                    var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
+                                                    htmlString.Append(vdoHtmlWidget);
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
+                                                {
+                                                    htmlString.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML);
+                                                }
                                                 htmlString.Append("</div>");
-                                                htmlString.Append("<div class='row'>");
+                                                if (tempRowWidth == 12)
+                                                {
+                                                    tempRowWidth = 0;
+                                                    htmlString.Append("</div>");
+                                                }
                                             }
-                                            htmlString.Append("<div class='col-lg-" + divLength + "'>");
-                                            // htmlString.Append("<div style='position:absolute;height:"+height+"px;width:"+divWidth+"%;left:"+xPosition+"%;top:"+ yPosition + "px;text-align:center;'>");
-                                            if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
+                                            mergedlst.ForEach(it =>
                                             {
-                                                var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", "Laura J Donald");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", "4000 Executive Parkway, Saint Globin Rd #250,");
-                                                customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", "Canary Wharf, E94583");
-                                                htmlString.Append(customerHtmlWidget);
-                                            }
-                                            else if (mergedlst[i].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
-                                            {
-                                                htmlString.Append(HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML);
-                                            }
-                                            else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
-                                            {
-                                                var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", "assets/images/ImageWidget.PNG");
-                                                htmlString.Append(imgHtmlWidget);
-                                            }
-                                            else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
-                                            {
-                                                var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
-                                                htmlString.Append(vdoHtmlWidget);
-                                            }
-                                            else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
-                                            {
-                                                htmlString.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML);
-                                            }
-                                            htmlString.Append("</div>");
-                                            if (tempRowWidth == 12)
-                                            {
-                                                tempRowWidth = 0;
-                                                htmlString.Append("</div>");
-                                            }
+                                                completelst.Remove(it);
+                                            });
                                         }
-                                        mergedlst.ForEach(it =>
-                                        {
-                                            completelst.Remove(it);
-                                        });
+                                        
                                     }
                                 }
                                 else
@@ -368,15 +392,20 @@ namespace nIS
 
                                 htmlString.Append(HtmlConstants.WIDGET_HTML_FOOTER);
                             }
-                            htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                        }
+                        else
+                        {
+                            htmlString.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
                         }
                     }
+
+                    navbarHtml = navbarHtml.Replace("{{NavItemList}}", navItemList.ToString());
+                    htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                    finalHtml = navbarHtml + htmlString.ToString();
                 }
-                
             }
 
-
-            return htmlString.ToString();
+            return finalHtml;
         }
 
         #endregion

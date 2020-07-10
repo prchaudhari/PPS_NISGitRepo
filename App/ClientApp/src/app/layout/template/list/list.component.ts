@@ -42,6 +42,7 @@ export class ListComponent implements OnInit {
 
     displayedColumns: string[] = ['name','pagetype', 'version', 'owner', 'publishedBy', 'date', 'status', 'actions'];
     dataSource = new MatTableDataSource<any>();
+    public userClaimsRolePrivilegeOperations: any[] = [];
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -102,6 +103,14 @@ export class ListComponent implements OnInit {
             filterPublishedOnFromDate: [null],
             filterPublishedOnToDate: [null],
         });
+
+        var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+        if (userClaimsDetail) {
+        this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+        }
+        else {
+        this.userClaimsRolePrivilegeOperations = [];
+        }
     }
 
     sortData(sort: MatSort) {
