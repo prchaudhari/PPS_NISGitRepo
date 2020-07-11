@@ -298,11 +298,13 @@ export class AddDashboardDesignerComponent implements OnInit {
             vdoUrl: [null, [Validators.required, Validators.pattern(this.validUrlRegexPattern)]]
         });
 
-        this.getWidgetsByPageType();
+        
         this.getAssetLibraries();
 
         if(this.pageEditModeOn) {
             this.getTemplate();
+        }else {
+            this.getWidgetsByPageType();
         }
 
         //gridster
@@ -569,6 +571,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             this.PageIdentifier = template.Identifier;
             this.pageVersion = template.Version;
 
+            this.getWidgetsByPageType();
             let pageWidgets: TemplateWidget[] = template.PageWidgets;
             if(pageWidgets.length != 0) {
                 for(let i=0; i < pageWidgets.length; i++) {    
@@ -587,6 +590,7 @@ export class AddDashboardDesignerComponent implements OnInit {
                     this.widgetsGridsterItemArray.push(gridsterItem);
                 }
             }
+
         }
     }
 
