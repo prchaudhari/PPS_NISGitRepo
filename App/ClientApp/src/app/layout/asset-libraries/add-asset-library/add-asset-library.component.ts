@@ -71,6 +71,7 @@ export class AddAssetLibraryComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   public image;
   public isImage = true;
+  public supportedFiles = "";
   public assetLibraryFormErrorObject: any = {
     showAssetLibraryNameError: false
   };
@@ -599,7 +600,11 @@ export class AddAssetLibraryComponent implements OnInit {
   }
 
   HandleFileUpload(e, multipleFileAssetUpload): void {
-
+    this.assetFileTypeError = false;
+    this.assetFileSizeError = false;
+    this.assetFileWidthHeightError = false;
+    this.assetFileWidthError = false;
+    this.assetFileHeightError = false;
     var files = e.target.files;
     var file = files[0];
 
@@ -883,6 +888,7 @@ export class AddAssetLibraryComponent implements OnInit {
         for (var i = 0; i < videoFileExtension.length; i++) {
           this.FileExtension.push(videoFileExtension[i]);
         }
+        this.supportedFiles = this.FileExtension.join(", ");
         //image/jpeg,image/jpg,video/mp4
         for (var i = 0; i < this.FileExtension.length; i++) {
           if (this.FileExtension[i] == "png") {
@@ -898,7 +904,7 @@ export class AddAssetLibraryComponent implements OnInit {
           }
         }
         this.actualSetting.VideoFileExtension = this.FileExtension.join(",");
-
+      
       },
       error => {
         $('.overlay').show();

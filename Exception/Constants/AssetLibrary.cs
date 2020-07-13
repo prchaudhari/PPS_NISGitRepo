@@ -87,6 +87,12 @@ namespace nIS
         public const string ASSET_REFERENCE_EXCEPTION = "Asset exist for a asset library";
 
         /// <summary>
+        /// The asset reference exception key
+        /// </summary>
+        //public const string ASSET_REFERENCE_EXCEPTION = "AssetReferenceException";
+        public const string ASSET_PAGE_REFERENCE_EXCEPTION = "Asset used in page configuration";
+
+        /// <summary>
         /// The asset path exception section key
         /// </summary>
         public const string ASSETPATH_EXCEPTION_SECTION = "AssetPathException";
