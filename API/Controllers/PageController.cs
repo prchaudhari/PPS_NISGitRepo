@@ -167,7 +167,8 @@ namespace nIS
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                return this.pageManager.PreviewPage(pageIdentifier, tenantCode);
+                var baseURL = Url.Content("~/");
+                return this.pageManager.PreviewPage(pageIdentifier, baseURL, tenantCode);
             }
             catch (Exception exception)
             {

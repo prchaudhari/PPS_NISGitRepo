@@ -5,6 +5,8 @@
 
 namespace nIS
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     #region References
     using System;
     using System.Collections.Generic;
@@ -232,7 +234,7 @@ namespace nIS
             return result;
         }
 
-        public string PreviewPage(long pageIdentifier, string tenantCode)
+        public string PreviewPage(long pageIdentifier, string baseURL, string tenantCode)
         {
             StringBuilder htmlString = new StringBuilder();
 
@@ -309,12 +311,16 @@ namespace nIS
                                     }
                                     else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                                     {
-                                        var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", "assets/images/ImageWidget.PNG");
+                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                        var imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                        var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
                                         htmlString.Append(imgHtmlWidget);
                                     }
                                     else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
                                     {
-                                        var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
+                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                        var vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                        var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", vdoAssetFilepath);
                                         htmlString.Append(vdoHtmlWidget);
                                     }
                                     else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)

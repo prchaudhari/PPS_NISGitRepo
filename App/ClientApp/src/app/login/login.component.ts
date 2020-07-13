@@ -91,10 +91,28 @@ export class LoginComponent implements OnInit {
     this.resetForm = this.fb.group({
       resetUserName: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
     });
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.route.navigate(['dashboard']);
+
+    if(localStorage.getItem('LastRequestTime') != null && localStorage.getItem('LastRequestTime') != '') {
+      let lastReqTime = new Date(localStorage.getItem('LastRequestTime'));
+      let currentDate = new Date();
+      let timeDiff = Math.floor((currentDate.getTime() - lastReqTime.getTime()) / (1000 * 60));
+      if(timeDiff < 15) {
+        var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+        if (userClaimsDetail) {
+          this.route.navigate(['dashboard']);
+        }else {
+          this.localstorageservice.removeLocalStorageData();
+          this.route.navigate(['login']);
+        }
+      }else {
+        this.localstorageservice.removeLocalStorageData();
+        this.route.navigate(['login']);
+      }
+    }else {
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
     }
+    
     this.dynamicGlobalVariable.IsSessionExpireMessageDisplyed = false;
   }
 

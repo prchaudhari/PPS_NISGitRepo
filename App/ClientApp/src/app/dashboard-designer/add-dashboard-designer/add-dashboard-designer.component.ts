@@ -71,6 +71,8 @@ export class AddDashboardDesignerComponent implements OnInit {
     public widgetItemCount: number = 0;
     public selectedWidgetItemCount: number = 0;
     public pageVersion: string;
+    public ImagePreviewSrc;
+    public videoPreviewSrc;
 
     constructor(private _location: Location,
       private injector: Injector,
@@ -207,6 +209,9 @@ export class AddDashboardDesignerComponent implements OnInit {
                 this.imgAssetLibraryId = widgetConfigObj.AssetLibraryId;
                 this.imgAssetLibraryName = widgetConfigObj.AssetLibrayName;
 
+                var url = this.baseURL + "assets/" + widgetConfigObj.AssetLibraryId + "/" + widgetConfigObj.AssetName;
+                this.ImagePreviewSrc = url;
+
                 if(widgetConfigObj.isPersonalize != null) {
                     this.isPersonalizeImage = widgetConfigObj.isPersonalize;
                 }
@@ -217,8 +222,9 @@ export class AddDashboardDesignerComponent implements OnInit {
                 this.ImageConfigForm.patchValue({
                     imgAssetLibrary: 0,
                     imgAsset: 0,
-                    imageUrl: ''
-                });           
+                    imageUrl: null
+                }); 
+                this.ImagePreviewSrc = ''; 
             }
         }
     }
@@ -259,6 +265,30 @@ export class AddDashboardDesignerComponent implements OnInit {
                 this.vdoAssetLibraryId = widgetConfigObj.AssetLibraryId;
                 this.vdoAssetLibraryName = widgetConfigObj.AssetLibrayName;
 
+                var url = this.baseURL + "assets/" + widgetConfigObj.AssetLibraryId + "/" + widgetConfigObj.AssetName;
+                this.videoPreviewSrc = url;
+
+                var videoDiv = document.getElementById('videoPreviewDiv');
+                if(videoDiv.hasChildNodes()) {
+                    videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                }
+
+                var video = document.createElement('video');
+                video.id = 'videoConfigPreviewSrc';
+                video.style.height = "200px";
+                video.style.width = "75%";
+
+                var sourceTag = document.createElement('source');
+                sourceTag.setAttribute('src', this.videoPreviewSrc);
+                sourceTag.setAttribute('type', 'video/mp4');
+                video.appendChild(sourceTag);
+
+                videoDiv.appendChild(video);
+
+                video.load();
+                video.currentTime = 0;
+                video.play();
+
                 if(widgetConfigObj.isPersonalize != null) {
                     this.isPersonalize = widgetConfigObj.isPersonalize;
                 }
@@ -274,6 +304,12 @@ export class AddDashboardDesignerComponent implements OnInit {
                     vdoAsset: 0,
                     vdoUrl: ''
                 });
+                
+                this.videoPreviewSrc = '';
+                var videoDiv = document.getElementById('videoPreviewDiv');
+                if(videoDiv.hasChildNodes()) {
+                    videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                }
             }
         }
     }
@@ -298,7 +334,6 @@ export class AddDashboardDesignerComponent implements OnInit {
             vdoUrl: [null, [Validators.required, Validators.pattern(this.validUrlRegexPattern)]]
         });
 
-        
         this.getAssetLibraries();
 
         if(this.pageEditModeOn) {
@@ -570,8 +605,8 @@ export class AddDashboardDesignerComponent implements OnInit {
             this.PageTypeId = template.PageTypeId;
             this.PageIdentifier = template.Identifier;
             this.pageVersion = template.Version;
-
             this.getWidgetsByPageType();
+            
             let pageWidgets: TemplateWidget[] = template.PageWidgets;
             if(pageWidgets.length != 0) {
                 for(let i=0; i < pageWidgets.length; i++) {    
@@ -590,7 +625,6 @@ export class AddDashboardDesignerComponent implements OnInit {
                     this.widgetsGridsterItemArray.push(gridsterItem);
                 }
             }
-
         }
     }
 
@@ -691,24 +725,53 @@ export class AddDashboardDesignerComponent implements OnInit {
     onAssetSelected(event, type) {
         const value = event.target.value;
         if (value == "0") {
-            if(type == 'image'){
+            if(type == 'image') {
                 this.imgAssetId = 0;
                 this.imgAssetName = '';
                 this.imageFormErrorObject.showAssetError = true;
             }else {
                 this.vdoAssetId = 0;
                 this.vdoAssetName = '';
+                this.videoPreviewSrc = '';
+                var videoDiv = document.getElementById('videoPreviewDiv');
+                if(videoDiv.hasChildNodes()) {
+                    videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                }
                 this.videoFormErrorObject.showAssetError = true;
             }
         }
         else {
-            if(type == 'image'){
+            if(type == 'image') {
                 this.imgAssetId = Number(value);
-                this.imgAssetName = this.assets.filter(x => x.Identifier == Number( event.target.value))[0].Name;
+                this.imgAssetName = this.assets.filter(x => x.Identifier == Number(event.target.value))[0].Name;
+                var url = this.baseURL + "assets/" + this.imgAssetLibraryId + "/" + this.imgAssetName;
+                this.ImagePreviewSrc = url;
                 this.imageFormErrorObject.showAssetError = false;
             }else {
                 this.vdoAssetId = Number(value);
-                this.vdoAssetName = this.assets.filter(x => x.Identifier == Number( event.target.value))[0].Name;
+                this.vdoAssetName = this.assets.filter(x => x.Identifier == Number(event.target.value))[0].Name;
+                var url = this.baseURL + "assets/" + this.vdoAssetLibraryId + "/" + this.vdoAssetName;
+                this.videoPreviewSrc = url;
+
+                var videoDiv = document.getElementById('videoPreviewDiv');
+                if(videoDiv.hasChildNodes()) {
+                    videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                }
+                var video = document.createElement('video');
+                video.id = 'videoConfigPreviewSrc';
+                video.style.height = "200px";
+                video.style.width = "75%";
+
+                var sourceTag = document.createElement('source');
+                sourceTag.setAttribute('src', this.videoPreviewSrc);
+                sourceTag.setAttribute('type', 'video/mp4');
+                video.appendChild(sourceTag);
+
+                videoDiv.appendChild(video);
+
+                video.load();
+                video.currentTime = 0;
+                video.play();
                 this.videoFormErrorObject.showAssetError = false;
             }
         }
@@ -766,7 +829,13 @@ export class AddDashboardDesignerComponent implements OnInit {
             imageConfig.SourceUrl = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imageUrl;
             imageConfig.isPersonalize = this.isPersonalizeImage;
             imageConfig.WidgetId = this.imageWidgetId;
-            this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(imageConfig);
+
+            let oldItem = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId  && x.widgetItemCount == this.selectedWidgetItemCount)[0];
+            let newItem = Object.assign({}, oldItem)
+            newItem.WidgetSetting = JSON.stringify(imageConfig);
+            const index: number = this.widgetsGridsterItemArray.indexOf(oldItem);
+            this.widgetsGridsterItemArray.splice(index, 1);
+            this.widgetsGridsterItemArray.push(newItem);
         }
         this.resetImageConfigForm();
         this.isImageConfig = !this.isImageConfig;
@@ -786,13 +855,21 @@ export class AddDashboardDesignerComponent implements OnInit {
             videoConfig.WidgetId = this.videoWidgetId;
             videoConfig.isPersonalize = this.isPersonalize;
             videoConfig.isEmbedded = this.isEmbedded;
-            this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId  && x.widgetItemCount == this.selectedWidgetItemCount)[0].WidgetSetting = JSON.stringify(videoConfig);
+
+            let oldItem = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId  && x.widgetItemCount == this.selectedWidgetItemCount)[0];
+            let newItem = Object.assign({}, oldItem)
+            newItem.WidgetSetting = JSON.stringify(videoConfig);
+            const index: number = this.widgetsGridsterItemArray.indexOf(oldItem);
+            this.widgetsGridsterItemArray.splice(index, 1);
+            this.widgetsGridsterItemArray.push(newItem);
         }
         this.resetVideoConfigForm();
         this.isVideoConfig = !this.isVideoConfig;
         this.videoWidgetId = 0;
         this.selectedWidgetItemCount = 0;
         this.isMasterSaveBtnDisabled = false;
+        let vid = <HTMLVideoElement>document.getElementById("videoConfigPreviewSrc");
+        vid.pause();
     }
 
     resetImageConfigForm() {

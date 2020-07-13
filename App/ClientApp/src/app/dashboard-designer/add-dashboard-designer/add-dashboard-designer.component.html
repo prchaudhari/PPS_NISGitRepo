@@ -46,6 +46,8 @@
           <button class='fa fa-trash-o widget-action' (click)="removeItem($event,item)"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
+          <vidyo [item]='item' [widgetsGridsterItemArray]='widgetsGridsterItemArray' *ngIf="item.value=='Video'"></vidyo>
+          <image [item]='item' [widgetsGridsterItemArray]='widgetsGridsterItemArray' *ngIf="item.value=='Image'"></image>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
       </gridster-item>
       </gridster>
@@ -113,9 +115,8 @@
           </div>
         </div>
         <div class="row" *ngIf="!isPersonalizeImage" style="margin-top: 40px;">
-          <div class="col-sm-12 text-center">
-              <img src="assets/images/icon-image.png" *ngIf="imgAssetId==0" class="width70">
-              <img src="assets/images/ImageWidget.PNG" *ngIf="imgAssetId!=0" class="width70"> 
+          <div class="col-sm-12 text-center" *ngIf="imgAssetId!=0">
+              <img [src]="ImagePreviewSrc" id="configImagePreview" class="width70">
           </div>
         </div>
       </div>
@@ -206,12 +207,11 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="!isEmbedded && !isPersonalize" style="margin-top: 40px;">
-            <div class="col-sm-12 text-center">
-              <img src="assets/images/video-icon.png" class="img-fluid width50" *ngIf="vdoAssetId == 0"/>
-              <video controls *ngIf="vdoAssetId != 0" style="height: 200px;width: 80%;">
-                <source src="assets/images/SampleVideo.mp4" type="video/mp4">
-              </video>
+          <div class="row" *ngIf="!isEmbedded && !isPersonalize">
+            <div class="col-sm-12 text-center" id="videoPreviewDiv">
+              <!-- <video controls *ngIf="vdoAssetId != 0" style="height: 200px;width: 80%;">
+                <source src='{{videoPreviewSrc}}' id="videoConfigPreviewSrc" type="video/mp4">
+              </video> -->
             </div>
           </div>
         </div>

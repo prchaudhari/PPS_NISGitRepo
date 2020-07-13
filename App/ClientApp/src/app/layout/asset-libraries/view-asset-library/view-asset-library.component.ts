@@ -3,9 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { WindowRef } from '../../../core/services/window-ref.service';
-import { environment } from '../../../../environments/environment';
-import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../asset-library';
-import { SortParameter, SearchMode } from '../../../shared/models/commonmodel';
+import { ConfigConstants } from '../../../shared/constants/configConstants';
+import { AssetLibrary, Asset } from '../asset-library';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Location } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
@@ -13,12 +12,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Constants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAccessor, FormArray, ValidatorFn } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { AssetLibraryService } from '../asset-library.service';
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-import { MatInput } from '@angular/material/input';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export interface ListElement {
   name: string;
@@ -48,7 +45,7 @@ export class ViewAssetLibraryComponent implements OnInit {
   public image;
   public isImage = true;
   public params;
-  public baseURL = environment.baseURL;
+  public baseURL = ConfigConstants.BaseURL;
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
@@ -126,7 +123,6 @@ export class ViewAssetLibraryComponent implements OnInit {
     this._window.nativeWindow.DownloadAsset = function (assetId: number): void {
       me.DownloadAsset(assetId);
     };
-
 
   }
 

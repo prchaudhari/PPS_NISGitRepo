@@ -22,7 +22,7 @@ export class HttpClientService {
    
    
     public CallHttp(httpMethod: string, httpAction: string, requestData?: any, params?: any, header?:any) : Observable<any>{
-      
+        localStorage.setItem('LastRequestTime', (new Date()).toString());
         let url = ConfigConstants.BaseURL + httpAction;
         httpMethod = httpMethod.toUpperCase();
         const req = new HttpRequest('POST', url, requestData, {
@@ -33,7 +33,7 @@ export class HttpClientService {
     }
 
     public CallGetHttp(httpMethod: string, httpAction: string,  params?: any, header?:any) : Observable<any>{
-      
+      localStorage.setItem('LastRequestTime', (new Date()).toString());
       let url = ConfigConstants.BaseURL + httpAction;
       httpMethod = httpMethod.toUpperCase();
       const req = new HttpRequest('GET', url);          

@@ -3,6 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 // import { EventEmitter } from 'events';
+import { ConfigConstants } from '../../shared/constants/configConstants';
 
 // Component Created for Customer Information Widget--
 @Component({
@@ -84,21 +85,42 @@ export class AccountInformationComponent  {
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center">
-        <img src="assets/images/icon-image.png" class="img-fluid" />
+        <img [src]="ImageSrc" class="img-fluid" style='height:220px;'/>
       </div>
     </div>
   </div>`
 })
 export class ImageComponent  {
-    @Input()
-    widgetsGridsterItemArray:any[] = [];
-    public isImageConfig: boolean = false;
-    public isPersonalizeImage: boolean = false;
 
-    removeItem(item) {
-        this.widgetsGridsterItemArray.splice(this.widgetsGridsterItemArray.indexOf(item), 1);
+    @Input() item:any;
+    @Input('widgetsGridsterItemArray') itemArr:any;
+
+    public ImageSrc: any;
+    public baseURL = ConfigConstants.BaseURL;
+    
+    ngOnInit() {
+      if(this.item != null && this.item.WidgetSetting != null && this.item.WidgetSetting != '' && this.testJSON(this.item.WidgetSetting)) {
+        let widgetSetting = JSON.parse(this.item.WidgetSetting);
+        if(widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
+          this.ImageSrc = this.baseURL + "assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+        }
+      }else {
+        this.ImageSrc = 'assets/images/icon-image.png';
+      }
     }
 
+    testJSON(text){
+      if (typeof text!=="string"){
+          return false;
+      }
+      try{
+          JSON.parse(text);
+          return true;
+      }
+      catch (error){
+          return false;
+      }
+  }
 }
 
 // Component Created for Video Widget--
@@ -110,19 +132,42 @@ export class ImageComponent  {
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center">
-        <img src="assets/images/video-icon.png" class="img-fluid width30" style="margin-top:25px;"/>
+        <video class="doc-video" controls style='height:calc(100% - 40px);width:75%;margin-right:15%;'>
+            <source [src]="videoSrc" type="video/mp4">
+          </video>
       </div>
     </div>
   </div>`
 })
 export class VideoComponent  {
-    @Input()
-    widgetsGridsterItemArray:any[] = [];
 
-    removeItem(item) {
-        this.widgetsGridsterItemArray.splice(this.widgetsGridsterItemArray.indexOf(item), 1);
+  @Input() item:any;
+  @Input('widgetsGridsterItemArray') itemArr:any;
+
+  public videoSrc: any;
+  public baseURL = ConfigConstants.BaseURL;
+    
+    ngOnInit() {
+      if(this.item != null && this.item.WidgetSetting != null && this.item.WidgetSetting != '' && this.testJSON(this.item.WidgetSetting)) {
+        let widgetSetting = JSON.parse(this.item.WidgetSetting);
+        if(widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
+          this.videoSrc = this.baseURL + "assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+        }
+      }
     }
 
+    testJSON(text){
+      if (typeof text!=="string"){
+          return false;
+      }
+      try{
+          JSON.parse(text);
+          return true;
+      }
+      catch (error){
+          return false;
+      }
+  }
 }
 
 // Component Created for Summary at glance Widget--

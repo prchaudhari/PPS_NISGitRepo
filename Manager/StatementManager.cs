@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+    using Newtonsoft.Json.Linq;
     #region References
     using System;
     using System.Collections.Generic;
@@ -235,7 +236,7 @@ namespace nIS
             return result;
         }
 
-        public string PreviewStatement(long statementIdentifier, string tenantCode)
+        public string PreviewStatement(long statementIdentifier, string baseURL, string tenantCode)
         {
             StringBuilder htmlString = new StringBuilder();
             string finalHtml = "";
@@ -312,12 +313,14 @@ namespace nIS
                                 string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);
                                 widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", divId);
                                 htmlString.Append(widgetHtmlHeader);
-                                int tempRowWidth = 0;
+                                int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
                                 int max = 0;
                                 if (pages[y].PageWidgets.Count > 0)
                                 {
                                     var completelst = pages[y].PageWidgets;
                                     int currentYPosition = 0;
+                                    var isRowComplete = false;
+
                                     while (completelst.Count != 0)
                                     {
                                         var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
@@ -327,23 +330,26 @@ namespace nIS
                                             var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
                                             var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
                                             currentYPosition = max;
-
                                             for (int i = 0; i < mergedlst.Count; i++)
                                             {
                                                 if (tempRowWidth == 0)
                                                 {
-                                                    htmlString.Append("<div class='row'>");
+                                                    htmlString.Append("<div class='row'>"); // to start new row class div 
+                                                    isRowComplete = false;
                                                 }
                                                 int divLength = (mergedlst[i].Width * 12) / 20;
                                                 tempRowWidth = tempRowWidth + divLength;
+
+                                                // If current col-lg class length is greater than 12, 
+                                                //then end parent row class div and then start new row class div
                                                 if (tempRowWidth > 12)
-                                                {
+                                                { 
                                                     tempRowWidth = divLength;
-                                                    htmlString.Append("</div>");
-                                                    htmlString.Append("<div class='row'>");
+                                                    htmlString.Append("</div>"); // to end row class div
+                                                    htmlString.Append("<div class='row'>"); // to start new row class div
+                                                    isRowComplete = false;
                                                 }
                                                 htmlString.Append("<div class='col-lg-" + divLength + "'>");
-                                                // htmlString.Append("<div style='position:absolute;height:"+height+"px;width:"+divWidth+"%;left:"+xPosition+"%;top:"+ yPosition + "px;text-align:center;'>");
                                                 if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
                                                 {
                                                     var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
@@ -358,23 +364,32 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                                                 {
-                                                    var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", "assets/images/ImageWidget.PNG");
+                                                    dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                    var imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                    var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
                                                     htmlString.Append(imgHtmlWidget);
                                                 }
                                                 else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
                                                 {
-                                                    var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
+                                                    dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                    var vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                    var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", vdoAssetFilepath);
                                                     htmlString.Append(vdoHtmlWidget);
                                                 }
                                                 else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
                                                 {
                                                     htmlString.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML);
                                                 }
-                                                htmlString.Append("</div>");
+
+                                                // To end current col-lg class div
+                                                htmlString.Append("</div>"); 
+
+                                                // if current col-lg class width is equal to 12, then end parent row class div
                                                 if (tempRowWidth == 12)
                                                 {
                                                     tempRowWidth = 0;
-                                                    htmlString.Append("</div>");
+                                                    htmlString.Append("</div>"); //To end row class div
+                                                    isRowComplete = true;
                                                 }
                                             }
                                             mergedlst.ForEach(it =>
@@ -382,7 +397,11 @@ namespace nIS
                                                 completelst.Remove(it);
                                             });
                                         }
-                                        
+                                    }
+                                    //If row class div end before complete col-lg-12 class
+                                    if (isRowComplete == false)
+                                    {
+                                        htmlString.Append("</div>");
                                     }
                                 }
                                 else
