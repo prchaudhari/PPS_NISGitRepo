@@ -182,6 +182,10 @@
                      accept="{{actualSetting.VideoFileExtension}}" type="file" (click)="multipleFileAssetUpload.value = null" (change)="HandleFileUpload($event,multipleFileAssetUpload)">
               <label class="custom-file-label"></label>
             </div>
+
+          </div>
+          <div>
+            <label style="font-size:11px">Supported file formats : {{setting.ImageFileExtension}},{{setting.VideoFileExtension}}</label>
           </div>
         </div>
         <div class="form-group col-sm-12 parent-rtl">
@@ -219,7 +223,7 @@
           </div>-->
           <div *ngIf="fileNameList.length > 0" class="file-list-container stylescrollbar-width">
             <div *ngFor="let fileName of fileNameList" class="file-list">
-              <span class="fas fa-times" (click)="removeFileFromUpload(fileName)"></span>
+              <span class="fa fa-times" (click)="removeFileFromUpload(fileName)"></span>
               {{fileName}}
             </div>
           </div>

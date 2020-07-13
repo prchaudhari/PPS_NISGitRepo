@@ -446,6 +446,10 @@ namespace nIS
                         //bool isAllowAssetLibraryReplace = true;
                         //if (isAllowAssetLibraryReplace)
                         //{
+                        var items = postedFile.FileName.Split('.');
+
+                        string fileExtension = items[items.Length - 1];
+                        fileName=fileName.Replace(fileExtension, fileExtension.ToLower());
                         assets.Add(new Asset()
                         {
                             Name = fileName,
