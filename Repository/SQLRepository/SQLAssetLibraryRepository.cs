@@ -5,10 +5,12 @@
 
 namespace nIS
 {
+    using Newtonsoft.Json.Linq;
     #region Referemces 
 
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity.Core.Metadata.Edm;
     using System.Data.SqlClient;
     using System.IO;
     using System.Linq;
@@ -289,7 +291,7 @@ namespace nIS
                         {
                             assetLibraryIdentifiers.Append(string.Format(" and IsDeleted.Equals(false)"));
                             assetRecords = nISEntitiesDataContext.AssetRecords.Where(assetLibraryIdentifiers.ToString()).ToList();
-                            if(assetRecords?.Count>0)
+                            if (assetRecords?.Count > 0)
                             {
                                 StringBuilder userIdentifier = new StringBuilder();
                                 userIdentifier.Append("(" + string.Join(" or ", assetRecords.Select(item => string.Format("Id.Equals({0})", item.LastUpdatedBy))) + ")");
@@ -297,7 +299,7 @@ namespace nIS
 
                                 users = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
                             }
-                          
+
                         }
                         assetLibraries = assetLibraryRecords.Select(AssetLibraryRecord => new AssetLibrary()
                         {
@@ -317,8 +319,10 @@ namespace nIS
                             })
                             .ToList()
                         }).ToList();
-                        assetLibraries?.ToList().ForEach(library => {
-                            library.Assets?.ToList().ForEach(asset => {
+                        assetLibraries?.ToList().ForEach(library =>
+                        {
+                            library.Assets?.ToList().ForEach(asset =>
+                            {
                                 UserRecord record = users.Where(item => item.Id == asset.LastUpdatedBy.Identifier)?.ToList().FirstOrDefault();
                                 asset.LastUpdatedBy.FirstName = record.FirstName;
                                 asset.LastUpdatedBy.LastName = record.LastName;
@@ -399,8 +403,8 @@ namespace nIS
                         FilePath = asset.FilePath,
                         AssetLibraryId = asset.AssetLibraryIdentifier,
                         IsDeleted = false,
-                        LastUpdatedDate=asset.LastUpdatedDate,
-                        LastUpdatedBy=asset.LastUpdatedBy.Identifier
+                        LastUpdatedDate = asset.LastUpdatedDate,
+                        LastUpdatedBy = asset.LastUpdatedBy.Identifier
                     });
                 });
 
@@ -496,6 +500,29 @@ namespace nIS
                         throw new AssetNotFoundException(tenantCode);
                     }
 
+                    IList<PageWidgetMapRecord> pageWidgetMapRecords = nVidYoEntitiesDataContext.PageWidgetMapRecords.Where(item => item.WidgetSetting != string.Empty).ToList();
+                    if (pageWidgetMapRecords?.Count > 0)
+                    {
+                        List<string> widgetSettings = new List<string>();
+                        widgetSettings = pageWidgetMapRecords.Select(item => item.WidgetSetting).ToList();
+                        widgetSettings.ToList().ForEach(setting =>
+                        {
+                            var widgetSetting = JObject.Parse(setting);
+                            if (widgetSetting != null)
+                            {
+                                assetRecords.ToList().ForEach(asset =>
+                                {
+                                    string id = (string)widgetSetting["AssetId"];
+                                    if (id == asset.Id.ToString())
+                                    {
+                                        throw new AssetPageReferenceException(tenantCode);
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+
                     //Delete files from path
                     assetRecords.ToList().ForEach(item =>
                     {
@@ -575,7 +602,8 @@ namespace nIS
                             LastUpdatedBy = new User { Identifier = (long)assetRecord.LastUpdatedBy },
                             LastUpdatedDate = DateTime.SpecifyKind((DateTime)assetRecord.LastUpdatedDate, DateTimeKind.Utc)
                         }).ToList();
-                        assets?.ToList().ForEach(asset => {
+                        assets?.ToList().ForEach(asset =>
+                        {
                             UserRecord record = users?.Where(item => item.Id == asset.LastUpdatedBy.Identifier)?.ToList().FirstOrDefault();
                             asset.LastUpdatedBy.FirstName = record.FirstName;
                             asset.LastUpdatedBy.LastName = record.LastName;

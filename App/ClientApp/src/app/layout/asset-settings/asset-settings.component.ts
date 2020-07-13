@@ -235,7 +235,7 @@ export class AssetSettingsComponent implements OnInit {
   onSelectAllImage(items: any) {
     this.imageselectedItems = [];
     for (var i = 0; i <= items.length; i++) {
-      this.imageselectedItems.push(items[0]);
+      this.imageselectedItems.push(items[i]);
     }
     this.isImageFileDropdownError = false;
   }
@@ -264,7 +264,7 @@ export class AssetSettingsComponent implements OnInit {
   onSelectAllVideo(items: any) {
     this.videoselectedItems = [];
     for (var i = 0; i <= items.length; i++) {
-      this.videoselectedItems.push(items[0]);
+      this.videoselectedItems.push(items[i]);
     }
     this.isVideoFileDropdownError = false;
 

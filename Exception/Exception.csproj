@@ -48,6 +48,7 @@
     <Compile Include="Asset Library\InvalidAssetLibrarySearchParameter.cs" />
     <Compile Include="Asset\AssetNotFoundException.cs" />
     <Compile Include="Asset\AssetPathNotFoundException.cs" />
+    <Compile Include="Asset\AssetPageReferenceException.cs" />
     <Compile Include="Asset\AssetReferenceException.cs" />
     <Compile Include="Asset\DuplicateAssetException.cs" />
     <Compile Include="Asset\InvalidAssetException.cs" />
