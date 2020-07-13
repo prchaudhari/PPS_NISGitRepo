@@ -31,10 +31,6 @@ export class CustomerInformationComponent  {
     @Input()
     widgetsGridsterItemArray:any[] = [];
 
-  removeItem(item) {
-    this.widgetsGridsterItemArray.splice(this.widgetsGridsterItemArray.indexOf(item), 1);
-  }
-
 }
 
 // Component Created for Account Information Widget--
@@ -70,15 +66,11 @@ export class AccountInformationComponent  {
         { title: 'RM Contact Number', value: '+4487867833'},
     ];
 
-  removeItem(item) {
-    this.widgetsGridsterItemArray.splice(this.widgetsGridsterItemArray.indexOf(item), 1);
-  }
-
 }
 
 // Component Created for Image Widget--
 @Component({
-    selector: 'image',
+    selector: 'image-widget',
     template: `<div class="widget">
     <div class="widget-header">
       <span class="widget-header-title">Image </span>
@@ -92,17 +84,18 @@ export class AccountInformationComponent  {
 })
 export class ImageComponent  {
 
-    @Input() item:any;
-    @Input('widgetsGridsterItemArray') itemArr:any;
+    @Input() imgItem:any;
 
     public ImageSrc: any;
     public baseURL = ConfigConstants.BaseURL;
     
     ngOnInit() {
-      if(this.item != null && this.item.WidgetSetting != null && this.item.WidgetSetting != '' && this.testJSON(this.item.WidgetSetting)) {
-        let widgetSetting = JSON.parse(this.item.WidgetSetting);
-        if(widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
+      if(this.imgItem != null && this.imgItem.WidgetSetting != null && this.imgItem.WidgetSetting != '' && this.testJSON(this.imgItem.WidgetSetting)) {
+        let widgetSetting = JSON.parse(this.imgItem.WidgetSetting);
+        if( !widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
           this.ImageSrc = this.baseURL + "assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+        }else {
+          this.ImageSrc = 'assets/images/icon-image.png';
         }
       }else {
         this.ImageSrc = 'assets/images/icon-image.png';
@@ -125,7 +118,7 @@ export class ImageComponent  {
 
 // Component Created for Video Widget--
 @Component({
-    selector: 'vidyo',
+    selector: 'vidyo-widget',
     template: `<div class="widget">
     <div class="widget-header">
       <span class="widget-header-title">Video </span>
@@ -141,18 +134,21 @@ export class ImageComponent  {
 })
 export class VideoComponent  {
 
-  @Input() item:any;
-  @Input('widgetsGridsterItemArray') itemArr:any;
+  @Input() vdoItem:any;
 
   public videoSrc: any;
   public baseURL = ConfigConstants.BaseURL;
     
-    ngOnInit() {
-      if(this.item != null && this.item.WidgetSetting != null && this.item.WidgetSetting != '' && this.testJSON(this.item.WidgetSetting)) {
-        let widgetSetting = JSON.parse(this.item.WidgetSetting);
-        if(widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
+  ngOnInit() {
+      if(this.vdoItem != null && this.vdoItem.WidgetSetting != null && this.vdoItem.WidgetSetting != '' && this.testJSON(this.vdoItem.WidgetSetting)) {
+        let widgetSetting = JSON.parse(this.vdoItem.WidgetSetting);
+        if(!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
           this.videoSrc = this.baseURL + "assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+        }else {
+          this.videoSrc = 'assets/images/SampleVideo.mp4';
         }
+      }else {
+        this.videoSrc = 'assets/images/SampleVideo.mp4';
       }
     }
 
@@ -229,15 +225,9 @@ export class SummaryAtGlanceComponent  {
         this.dataSourceSummary = new MatTableDataSource(List_Data_Summary);
         this.dataSourceSummary.sort = this.sort;
     }
-
-    removeItem(item) {
-        this.widgetsGridsterItemArray.splice(this.widgetsGridsterItemArray.indexOf(item), 1);
-    }
-
 }
 
 export interface ListSummary {
-  
     account: string;
     currency: string;
     amount: string;

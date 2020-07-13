@@ -112,6 +112,17 @@ namespace nIS
         /// Returna true if value is greater than or equals to 0
         /// </returns>
         bool IsValidLong(long longValue, bool isZeroCheck = false);
+
+        /// <summary>
+        /// This method use to validate json string value
+        /// </summary>
+        /// <param name="longValue">
+        /// Value of long
+        /// </param>
+        /// <returns>
+        /// Returna true if value is correct json string or false
+        /// </returns>
+        bool IsValidJson(string strInput);
         #endregion
     }
 }

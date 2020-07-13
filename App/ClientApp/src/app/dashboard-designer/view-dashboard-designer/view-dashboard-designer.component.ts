@@ -2,18 +2,12 @@ import { Component, OnInit, ViewChild, ComponentFactoryResolver, Injector, } fro
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
 import { Location } from '@angular/common';
 import { Constants } from 'src/app/shared/constants/constants';
-import * as $ from 'jquery';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { TemplateService } from '../../layout/template/template.service';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { ConfigConstants } from '../../shared/constants/configConstants';
 import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from '../widgetComponent/widgetComponent';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -37,7 +31,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
     public PageName;    
     public options: GridsterConfig;
     public dashboard: Array<GridsterItem>;
-    public baseURL: string = environment.baseURL;
+    public baseURL: string = ConfigConstants.BaseURL;
 
     public templateList: Template[] = [];
     public imgAssetLibraryId: number;

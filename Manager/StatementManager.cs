@@ -352,6 +352,16 @@ namespace nIS
                                                 htmlString.Append("<div class='col-lg-" + divLength + "'>");
                                                 if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
                                                 {
+                                                    //string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'4000 Executive Parkway','AddressLine2':'Saint Globin Rd #250','City':'Canary Wharf','State':'London','Country':'England','Zip':'E14 9RZ'}";
+
+                                                    //dynamic customerInfo = JObject.Parse(customerInfoJson);
+                                                    //var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
+                                                    //customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", customerInfo.FirstName + " "+ customerInfo.MiddleName+ " "+ customerInfo.LastName);
+                                                    //customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", customerInfo.AddressLine1 + ", " +customerInfo.AddressLine2 + ",");
+                                                    //string address2 = (customerInfo.City != "" ? customerInfo.City + "," : "") + (customerInfo.State != "" ? customerInfo.State + "," : "") + (customerInfo.Country != "" ? customerInfo.Country + "," : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
+                                                    //customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", address2);
+                                                    //htmlString.Append(customerHtmlWidget);
+
                                                     var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", "Laura J Donald");
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", "4000 Executive Parkway, Saint Globin Rd #250,");
@@ -364,15 +374,29 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                                                 {
-                                                    dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                                    var imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                    var imgAssetFilepath = "assets/images/icon-image.png";
+                                                    if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                    {
+                                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                        if (widgetSetting.isPersonalize == false)
+                                                        {
+                                                            imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                        }
+                                                    }
                                                     var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
                                                     htmlString.Append(imgHtmlWidget);
                                                 }
                                                 else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
                                                 {
-                                                    dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                                    var vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                    var vdoAssetFilepath = "assets/images/SampleVideo.mp4";
+                                                    if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                    {
+                                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                        if (widgetSetting.isPersonalize == false)
+                                                        {
+                                                            vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                        }
+                                                    }
                                                     var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", vdoAssetFilepath);
                                                     htmlString.Append(vdoHtmlWidget);
                                                 }

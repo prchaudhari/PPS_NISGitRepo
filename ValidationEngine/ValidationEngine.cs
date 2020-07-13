@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+    using Newtonsoft.Json;
     #region References
 
     using System;
@@ -199,6 +200,37 @@ namespace nIS
             }
             else
                 return false;
+        }
+
+        /// <summary>
+        /// This method use to validate json string value
+        /// </summary>
+        /// <param name="strInput">
+        /// Value of strInput
+        /// </param>
+        /// <returns>
+        /// Returna true if value is correct json string or false
+        /// </returns>
+        public bool IsValidJson(string strInput)
+        {
+            strInput = strInput.Trim();
+            if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
+                (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
+            {
+                try
+                {
+                    var obj = JsonConvert.DeserializeObject(strInput);
+                    return true;
+                }
+                catch // not valid
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
         #endregion
     }

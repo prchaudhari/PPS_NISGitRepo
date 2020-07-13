@@ -12,6 +12,22 @@
     line-height: 25px;
   }
 
+  .overflow-auto{
+      overflow:auto;
+  }
+  .modal-dialog .modal-body .bdy-scroll {
+    height: 370px;
+    overflow: auto;
+  }
+
+  .modal-xl {
+    max-width: 95%;
+  }
+
+  .modal-xl .modal-content {
+    max-height: 600px;
+  }
+
   td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
     padding-left: 10px;
   }

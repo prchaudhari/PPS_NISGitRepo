@@ -46,8 +46,8 @@
           <button class='fa fa-trash-o widget-action' (click)="removeItem($event,item)"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
-          <vidyo [item]='item' [widgetsGridsterItemArray]='widgetsGridsterItemArray' *ngIf="item.value=='Video'"></vidyo>
-          <image [item]='item' [widgetsGridsterItemArray]='widgetsGridsterItemArray' *ngIf="item.value=='Image'"></image>
+          <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
+          <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
       </gridster-item>
       </gridster>
