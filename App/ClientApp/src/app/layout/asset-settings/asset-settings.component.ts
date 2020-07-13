@@ -90,16 +90,16 @@ export class AssetSettingsComponent implements OnInit {
     console.log(this.onlyNumbers);
     this.imageForm = this.fb.group({
       assetImageHeight: [null, Validators.compose([Validators.required,
-        Validators.pattern(this.onlyNumbers)
+      Validators.pattern(this.onlyNumbers)
       ])],
       assetImageWidth: [null, Validators.compose([Validators.required,
-        Validators.pattern(this.onlyNumbers)
+      Validators.pattern(this.onlyNumbers)
       ])],
       assetImageSize: [null, Validators.compose([Validators.required,
-        Validators.pattern(this.onlyNumbers)
+      Validators.pattern(this.onlyNumbers)
       ])],
       assetVideoSize: [null, Validators.compose([Validators.required,
-       Validators.pattern(this.onlyNumbers)
+      Validators.pattern(this.onlyNumbers)
       ])],
       assetImageFile: [null],
       assetVideoFile: [null]
@@ -147,6 +147,8 @@ export class AssetSettingsComponent implements OnInit {
         this.imageForm.controls['assetImageWidth'].setValue(this.setting.ImageWidth);
         this.imageForm.controls['assetImageHeight'].setValue(this.setting.ImageHeight);
         var imageFile = this.setting.ImageFileExtension.split(",");
+        this.imageselectedItems = [];
+        this.videoselectedItems = [];
         for (var i = 0; i < imageFile.length; i++) {
           var item = this.imagedropdownList.filter(x => x.item_text == imageFile[i]);
           if (item != null && item.length > 0) {
@@ -211,7 +213,6 @@ export class AssetSettingsComponent implements OnInit {
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this._spinnerService.stop();
-
           if (httpEvent["status"] === 200) {
             this._messageDialogService.openDialogBox('Message', "Asset configuration saved successfully", Constants.msgBoxSuccess);
           }
@@ -227,9 +228,11 @@ export class AssetSettingsComponent implements OnInit {
   }
 
   onItemSelectImage(item: any) {
-    this.imageselectedItems.push(item);
-    this.isImageFileDropdownError = false;
-    console.log(item);
+    var elements = this.imageselectedItems.filter(x => x.item_text == item.item_text);
+    if (elements == null && elements.length == 0) {
+      this.imageselectedItems.push(item);
+      this.isImageFileDropdownError = false;
+    }
   }
 
   onSelectAllImage(items: any) {
@@ -258,7 +261,11 @@ export class AssetSettingsComponent implements OnInit {
   onItemSelectVideo(item: any) {
     this.videoselectedItems.push(item);
     this.isVideoFileDropdownError = false;
-
+    var elements = this.videoselectedItems.filter(x => x.item_text == item.item_text);
+    if (elements == null && elements.length == 0) {
+      this.videoselectedItems.push(item);
+      this.isVideoFileDropdownError = false;
+    }
   }
 
   onSelectAllVideo(items: any) {
