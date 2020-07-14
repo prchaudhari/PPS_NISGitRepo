@@ -359,7 +359,7 @@ namespace nIS
                                         if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                         {
                                             dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                            if (widgetSetting.isPersonalize == false)
+                                            if (widgetSetting.isPersonalize == false || widgetSetting.isPersonalize == false)
                                             {
                                                 vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                             }
