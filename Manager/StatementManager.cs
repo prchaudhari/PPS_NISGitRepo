@@ -406,10 +406,11 @@ namespace nIS
                                                 }
 
                                                 // To end current col-lg class div
-                                                htmlString.Append("</div>"); 
+                                                htmlString.Append("</div>");
 
-                                                // if current col-lg class width is equal to 12, then end parent row class div
-                                                if (tempRowWidth == 12)
+                                                // if current col-lg class width is equal to 12 or end before complete col-lg-12 class, 
+                                                //then end parent row class div
+                                                if (tempRowWidth == 12 || (i == mergedlst.Count - 1))
                                                 {
                                                     tempRowWidth = 0;
                                                     htmlString.Append("</div>"); //To end row class div
@@ -420,6 +421,13 @@ namespace nIS
                                             {
                                                 completelst.Remove(it);
                                             });
+                                        }
+                                        else
+                                        {
+                                            if (completelst.Count != 0)
+                                            {
+                                                currentYPosition = completelst.Min(it => it.Yposition);
+                                            }
                                         }
                                     }
                                     //If row class div end before complete col-lg-12 class

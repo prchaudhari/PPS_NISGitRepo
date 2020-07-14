@@ -271,6 +271,8 @@ namespace nIS
                     {
                         var completelst = pages[y].PageWidgets;
                         int currentYPosition = 0;
+                        var isRowComplete = false;
+
                         while (completelst.Count != 0)
                         {
                             var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
@@ -286,28 +288,40 @@ namespace nIS
                                     if (tempRowWidth == 0)
                                     {
                                         htmlString.Append("<div class='row'>");
+                                        isRowComplete = false;
                                     }
                                     int divLength = (mergedlst[i].Width * 12) / 20;
                                     tempRowWidth = tempRowWidth + divLength;
+
+                                    // If current col-lg class length is greater than 12, 
+                                    //then end parent row class div and then start new row class div
                                     if (tempRowWidth > 12)
                                     {
                                         tempRowWidth = divLength;
                                         htmlString.Append("</div>");
                                         htmlString.Append("<div class='row'>");
+                                        isRowComplete = false;
                                     }
                                     htmlString.Append("<div class='col-lg-" + divLength + "'>");
-                                    // htmlString.Append("<div style='position:absolute;height:"+height+"px;width:"+divWidth+"%;left:"+xPosition+"%;top:"+ yPosition + "px;text-align:center;'>");
                                     if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
                                     {
                                         //string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'4000 Executive Parkway','AddressLine2':'Saint Globin Rd #250','City':'Canary Wharf','State':'London','Country':'England','Zip':'E14 9RZ'}";
+                                        //if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
+                                        //{
+                                        //    dynamic customerInfo = JObject.Parse(customerInfoJson);
+                                        //    var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
 
-                                        //dynamic customerInfo = JObject.Parse(customerInfoJson);
-                                        //var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
-                                        //customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName);
-                                        //customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ",");
-                                        //string address2 = (customerInfo.City != "" ? customerInfo.City + "," : "") + (customerInfo.State != "" ? customerInfo.State + "," : "") + (customerInfo.Country != "" ? customerInfo.Country + "," : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
-                                        //customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", address2);
-                                        //htmlString.Append(customerHtmlWidget);
+                                        //    string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
+                                        //    customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", customerName);
+
+                                        //    string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ",";
+                                        //    customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", address1);
+
+                                        //    string address2 = (customerInfo.City != "" ? customerInfo.City + "," : "") + (customerInfo.State != "" ? customerInfo.State + "," : "") + (customerInfo.Country != "" ? customerInfo.Country + "," : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
+                                        //    customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", address2);
+
+                                        //    htmlString.Append(customerHtmlWidget);
+                                        //}
 
                                         var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
                                         customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", "Laura J Donald");
@@ -317,6 +331,12 @@ namespace nIS
                                     }
                                     else if (mergedlst[i].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
                                     {
+                                        //string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement','CustomerID':'ID2-8989-5656','RMName':'James Wiilims','RMContactNumber':'+4487867833'}";
+                                        //if (accountInfoJson != string.Empty && validationEngine.IsValidJson(accountInfoJson))
+                                        //{
+                                        //    dynamic accountInfo = JObject.Parse(accountInfoJson);
+                                        //    //if(accountInfo)
+                                        //}
                                         htmlString.Append(HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML);
                                     }
                                     else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
@@ -351,11 +371,17 @@ namespace nIS
                                     {
                                         htmlString.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML);
                                     }
+
+                                    // To end current col-lg class div
                                     htmlString.Append("</div>");
-                                    if (tempRowWidth == 12)
+
+                                    // if current col-lg class width is equal to 12 or end before complete col-lg-12 class, 
+                                    //then end parent row class div
+                                    if (tempRowWidth == 12 || (i == mergedlst.Count - 1))
                                     {
                                         tempRowWidth = 0;
                                         htmlString.Append("</div>");
+                                        isRowComplete = true;
                                     }
                                 }
                                 mergedlst.ForEach(it =>
@@ -363,6 +389,18 @@ namespace nIS
                                     completelst.Remove(it);
                                 });
                             }
+                            else 
+                            {
+                                if (completelst.Count != 0)
+                                {
+                                    currentYPosition = completelst.Min(it => it.Yposition);
+                                }
+                            }
+                        }
+                        //If row class div end before complete col-lg-12 class
+                        if (isRowComplete == false)
+                        {
+                            htmlString.Append("</div>");
                         }
                     }
                     else

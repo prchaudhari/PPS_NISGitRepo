@@ -209,11 +209,12 @@ export class AddDashboardDesignerComponent implements OnInit {
                 this.imgAssetLibraryId = widgetConfigObj.AssetLibraryId;
                 this.imgAssetLibraryName = widgetConfigObj.AssetLibrayName;
 
-                var url = this.baseURL + "assets/" + widgetConfigObj.AssetLibraryId + "/" + widgetConfigObj.AssetName;
-                this.ImagePreviewSrc = url;
-
                 if(widgetConfigObj.isPersonalize != null) {
                     this.isPersonalizeImage = widgetConfigObj.isPersonalize;
+                    if(widgetConfigObj.isPersonalize == false) {
+                        var url = this.baseURL + "assets/" + widgetConfigObj.AssetLibraryId + "/" + widgetConfigObj.AssetName;
+                        this.ImagePreviewSrc = url;
+                    }
                 }
                 if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
                     this.LoadAsset('image', widgetConfigObj.AssetLibraryId);
@@ -265,38 +266,44 @@ export class AddDashboardDesignerComponent implements OnInit {
                 this.vdoAssetLibraryId = widgetConfigObj.AssetLibraryId;
                 this.vdoAssetLibraryName = widgetConfigObj.AssetLibrayName;
 
-                var url = this.baseURL + "assets/" + widgetConfigObj.AssetLibraryId + "/" + widgetConfigObj.AssetName;
-                this.videoPreviewSrc = url;
-
-                var videoDiv = document.getElementById('videoPreviewDiv');
-                if(videoDiv.hasChildNodes()) {
-                    videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
-                }
-
-                var video = document.createElement('video');
-                video.id = 'videoConfigPreviewSrc';
-                video.style.height = "200px";
-                video.style.width = "75%";
-
-                var sourceTag = document.createElement('source');
-                sourceTag.setAttribute('src', this.videoPreviewSrc);
-                sourceTag.setAttribute('type', 'video/mp4');
-                video.appendChild(sourceTag);
-
-                videoDiv.appendChild(video);
-
-                video.load();
-                video.currentTime = 0;
-                video.play();
-
                 if(widgetConfigObj.isPersonalize != null) {
                     this.isPersonalize = widgetConfigObj.isPersonalize;
+                    if(widgetConfigObj.isPersonalize == false) {
+                        var url = this.baseURL + "assets/" + widgetConfigObj.AssetLibraryId + "/" + widgetConfigObj.AssetName;
+                        this.videoPreviewSrc = url;
+                    }
                 }
                 if(widgetConfigObj.isEmbedded != null) {
                     this.isEmbedded = widgetConfigObj.isEmbedded;
                 }
                 if(widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
                     this.LoadAsset('video', widgetConfigObj.AssetLibraryId);
+                }
+
+                if((widgetConfigObj.isPersonalize != null && widgetConfigObj.isPersonalize == false) || 
+                    (widgetConfigObj.isEmbedded != null && widgetConfigObj.isEmbedded == false))  {
+                        
+                        var videoDiv = document.getElementById('videoPreviewDiv');
+                        if(videoDiv != undefined && videoDiv != null) {
+                            if( videoDiv.hasChildNodes()) {
+                                videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                            }
+                            var video = document.createElement('video');
+                            video.id = 'videoConfigPreviewSrc';
+                            video.style.height = "200px";
+                            video.style.width = "75%";
+            
+                            var sourceTag = document.createElement('source');
+                            sourceTag.setAttribute('src', this.videoPreviewSrc);
+                            sourceTag.setAttribute('type', 'video/mp4');
+                            video.appendChild(sourceTag);
+            
+                            videoDiv.appendChild(video);
+            
+                            video.load();
+                            video.currentTime = 0;
+                            video.play();
+                        }
                 }
             }else {
                 this.VideoConfigForm.patchValue({
@@ -754,24 +761,26 @@ export class AddDashboardDesignerComponent implements OnInit {
                 this.videoPreviewSrc = url;
 
                 var videoDiv = document.getElementById('videoPreviewDiv');
-                if(videoDiv.hasChildNodes()) {
-                    videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                if(videoDiv != undefined && videoDiv != null) {
+                    if(videoDiv.hasChildNodes()) {
+                        videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                    }
+                    var video = document.createElement('video');
+                    video.id = 'videoConfigPreviewSrc';
+                    video.style.height = "200px";
+                    video.style.width = "75%";
+    
+                    var sourceTag = document.createElement('source');
+                    sourceTag.setAttribute('src', this.videoPreviewSrc);
+                    sourceTag.setAttribute('type', 'video/mp4');
+                    video.appendChild(sourceTag);
+    
+                    videoDiv.appendChild(video);
+    
+                    video.load();
+                    video.currentTime = 0;
+                    video.play();
                 }
-                var video = document.createElement('video');
-                video.id = 'videoConfigPreviewSrc';
-                video.style.height = "200px";
-                video.style.width = "75%";
-
-                var sourceTag = document.createElement('source');
-                sourceTag.setAttribute('src', this.videoPreviewSrc);
-                sourceTag.setAttribute('type', 'video/mp4');
-                video.appendChild(sourceTag);
-
-                videoDiv.appendChild(video);
-
-                video.load();
-                video.currentTime = 0;
-                video.play();
                 this.videoFormErrorObject.showAssetError = false;
             }
         }
@@ -823,9 +832,9 @@ export class AddDashboardDesignerComponent implements OnInit {
         if(actionFor == 'submit') {
             let imageConfig: any = {};
             imageConfig.AssetLibraryId = this.isPersonalizeImage == true ? 0 : this.imgAssetLibraryId;
-            imageConfig.AssetLibrayName = this.isPersonalizeImage == true ? 0 : this.imgAssetLibraryName;
+            imageConfig.AssetLibrayName = this.isPersonalizeImage == true ? "" : this.imgAssetLibraryName;
             imageConfig.AssetId = this.isPersonalizeImage == true ? 0 : this.imgAssetId;
-            imageConfig.AssetName = this.isPersonalizeImage == true ? 0 : this.imgAssetName;
+            imageConfig.AssetName = this.isPersonalizeImage == true ? "" : this.imgAssetName;
             imageConfig.SourceUrl = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imageUrl;
             imageConfig.isPersonalize = this.isPersonalizeImage;
             imageConfig.WidgetId = this.imageWidgetId;
@@ -848,9 +857,9 @@ export class AddDashboardDesignerComponent implements OnInit {
         if(actionFor == 'submit') { 
             let videoConfig: any = {};
             videoConfig.AssetLibraryId = this.isPersonalize == true ? 0 : this.vdoAssetLibraryId;
-            videoConfig.AssetLibrayName = this.isPersonalize == true ? 0 : this.vdoAssetLibraryName;
+            videoConfig.AssetLibrayName = this.isPersonalize == true ? "" : this.vdoAssetLibraryName;
             videoConfig.AssetId =  this.isPersonalize == true ? 0 : this.vdoAssetId;
-            videoConfig.AssetName = this.isPersonalize == true ? 0 : this.vdoAssetName;
+            videoConfig.AssetName = (this.isPersonalize == true || this.isEmbedded == true) ? "" : this.vdoAssetName;
             videoConfig.SourceUrl = (this.isPersonalize == false && this.isEmbedded == true) ? this.VideoConfigForm.value.vdoUrl : "";
             videoConfig.WidgetId = this.videoWidgetId;
             videoConfig.isPersonalize = this.isPersonalize;
@@ -869,7 +878,9 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.selectedWidgetItemCount = 0;
         this.isMasterSaveBtnDisabled = false;
         let vid = <HTMLVideoElement>document.getElementById("videoConfigPreviewSrc");
-        vid.pause();
+        if(vid != undefined && vid != null) {
+            vid.pause();
+        }
     }
 
     resetImageConfigForm() {
