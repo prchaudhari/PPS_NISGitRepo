@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountInformation.cs" />
+    <Compile Include="AccountSummary.cs" />
     <Compile Include="Asset.cs" />
     <Compile Include="AssetLibrary.cs" />
     <Compile Include="AssetPathSetting.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="Common\ModelConstant.cs" />
     <Compile Include="Common\PagingParameter.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="CustomerInformation.cs" />
     <Compile Include="Enum\Activity.cs" />
     <Compile Include="Enum\ClaimType.cs" />
     <Compile Include="Enum\StatemnetStatus.cs" />

@@ -305,39 +305,57 @@ namespace nIS
                                     htmlString.Append("<div class='col-lg-" + divLength + "'>");
                                     if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
                                     {
-                                        //string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'4000 Executive Parkway','AddressLine2':'Saint Globin Rd #250','City':'Canary Wharf','State':'London','Country':'England','Zip':'E14 9RZ'}";
-                                        //if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
-                                        //{
-                                        //    dynamic customerInfo = JObject.Parse(customerInfoJson);
-                                        //    var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
+                                        string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'4000 Executive Parkway','AddressLine2':'Saint Globin Rd','City':'Canary Wharf','State':'London','Country':'England','Zip':'E14 9RZ'}";
+                                        if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
+                                        {
+                                            CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
+                                            var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
 
-                                        //    string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
-                                        //    customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", customerName);
+                                            string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
+                                            customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", customerName);
 
-                                        //    string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ",";
-                                        //    customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", address1);
+                                            string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ",";
+                                            customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", address1);
 
-                                        //    string address2 = (customerInfo.City != "" ? customerInfo.City + "," : "") + (customerInfo.State != "" ? customerInfo.State + "," : "") + (customerInfo.Country != "" ? customerInfo.Country + "," : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
-                                        //    customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", address2);
+                                            string address2 = (customerInfo.City != "" ? customerInfo.City + "," : "") + (customerInfo.State != "" ? customerInfo.State + "," : "") + (customerInfo.Country != "" ? customerInfo.Country + "," : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
+                                            customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", address2);
 
-                                        //    htmlString.Append(customerHtmlWidget);
-                                        //}
-
-                                        var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
-                                        customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", "Laura J Donald");
-                                        customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", "4000 Executive Parkway, Saint Globin Rd #250,");
-                                        customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", "Canary Wharf, E94583");
-                                        htmlString.Append(customerHtmlWidget);
+                                            htmlString.Append(customerHtmlWidget);
+                                        }
                                     }
                                     else if (mergedlst[i].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
                                     {
-                                        //string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement','CustomerID':'ID2-8989-5656','RMName':'James Wiilims','RMContactNumber':'+4487867833'}";
-                                        //if (accountInfoJson != string.Empty && validationEngine.IsValidJson(accountInfoJson))
-                                        //{
-                                        //    dynamic accountInfo = JObject.Parse(accountInfoJson);
-                                        //    //if(accountInfo)
-                                        //}
-                                        htmlString.Append(HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML);
+                                        string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement','CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";
+
+                                        string accountInfoData = string.Empty;
+                                        StringBuilder AccDivData = new StringBuilder();
+                                        if (accountInfoJson != string.Empty && validationEngine.IsValidJson(accountInfoJson))
+                                        {
+                                            AccountInformation accountInfo = JsonConvert.DeserializeObject<AccountInformation>(accountInfoJson);
+                                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Date" +
+                                                "</div><label class='list-value mb-0'>" + accountInfo.StatementDate + "</label></div></div>");
+
+                                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Period" +
+                                                "</div><label class='list-value mb-0'>" + accountInfo.StatementPeriod + "</label></div></div>");
+
+                                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Cusomer ID" +
+                                                "</div><label class='list-value mb-0'>" + accountInfo.CustomerID + "</label></div></div>");
+
+                                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Name" +
+                                                "</div><label class='list-value mb-0'>" + accountInfo.RmName + "</label></div></div>");
+
+                                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number" +
+                                                "</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber + "</label></div></div>");
+
+                                            accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}", AccDivData.ToString());
+                                        }
+                                        else 
+                                        {
+                                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>No Record" +
+                                                "</div><label class='list-value mb-0'>Found</label></div></div>");
+                                            accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}", AccDivData.ToString());
+                                        }
+                                        htmlString.Append(accountInfoData);
                                     }
                                     else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                                     {
@@ -359,7 +377,7 @@ namespace nIS
                                         if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                         {
                                             dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                            if (widgetSetting.isPersonalize == false || widgetSetting.isPersonalize == false)
+                                            if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
                                             {
                                                 vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                             }
@@ -369,7 +387,31 @@ namespace nIS
                                     }
                                     else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
                                     {
-                                        htmlString.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML);
+                                        string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"Dollor\",\"Amount\":\"87356\"},{\"AccountType\":\"Current Account\",\"Currency\":\"Dollor\",\"Amount\":\"18654\"},{\"AccountType\":\"Recurring Account\",\"Currency\":\"Dollor\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\":\"Dollor\",\"Amount\":\"4589\"}]";
+
+                                        string accountSummary = string.Empty;
+                                        if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
+                                        {
+                                            IList<AccountSummary> lstAccountSummary = JsonConvert.DeserializeObject<List<AccountSummary>>(accountBalanceDataJson);
+                                            if (lstAccountSummary.Count > 0)
+                                            {
+                                                StringBuilder accSummary = new StringBuilder();
+                                                lstAccountSummary.ToList().ForEach(acc =>
+                                                {
+                                                    accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>" + acc.Amount + "</td></tr>");
+                                                });
+                                                accountSummary = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML.Replace("{{AccountSummary}}", accSummary.ToString());
+                                            }
+                                            else
+                                            {
+                                                accountSummary = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML.Replace("{{AccountSummary}}", string.Empty);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            accountSummary = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML.Replace("{{AccountSummary}}", string.Empty);
+                                        }
+                                        htmlString.Append(accountSummary);
                                     }
 
                                     // To end current col-lg class div
@@ -389,7 +431,7 @@ namespace nIS
                                     completelst.Remove(it);
                                 });
                             }
-                            else 
+                            else
                             {
                                 if (completelst.Count != 0)
                                 {

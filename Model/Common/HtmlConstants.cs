@@ -40,33 +40,13 @@ namespace nIS
 
         public const string ACCOUNT_INFORMATION_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Account Information</h5>" +
-            "</div><div class='card-body'>" +
-
-            "<div class='list-row-small ht70px'><div class='list-middle-row'>" +
-            "<div class='list-text'>Statement Date</div><label class='list-value mb-0'>1-APR-2020</label></div></div>" +
-
-            "<div class='list-row-small ht70px'><div class='list-middle-row'>" +
-            "<div class='list-text'>Statement Period</div><label class='list-value mb-0'>Annual Statement</label></div></div>" +
-
-            "<div class='list-row-small ht70px'><div class='list-middle-row'>" +
-            "<div class='list-text'>Customer ID</div><label class='list-value mb-0'>ID2-8989-5656</label></div></div>" +
-
-            "<div class='list-row-small ht70px'><div class='list-middle-row'>" +
-            "<div class='list-text'>RM Name</div><label class='list-value mb-0'>Laura J Donald</label></div></div>" +
-
-            "<div class='list-row-small ht70px'><div class='list-middle-row'>" +
-            "<div class='list-text'>RM Contact Number</div><label class='list-value mb-0'>+4487867833</label></div></div>" +
-
-            "</div></div>";
+            "</div><div class='card-body'>" +"{{AccountInfoData}}" +"</div></div>";
 
         public const string SUMMARY_AT_GLANCE_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Summary at Glance</h5></div>" +
             "<div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'>" +
             "<thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>" +
-            "<tr><td>Saving Account</td><td>Dollor</td><td>87356</td></tr>" +
-            "<tr><td>Current Account</td><td>Dollor</td><td>18356</td></tr>" +
-            "<tr><td>Recurring Account</td><td>Dollor</td><td>543678</td></tr>" +
-            "<tr><td>Wealth</td><td>Dollor</td><td>4567</td></tr>" +
+            "{{AccountSummary}}"+
             "</tbody></table></div></div></div>";
 
         public const string IMAGE_WIDGET_HTML = "<div class='card border-0'>" +
@@ -81,7 +61,7 @@ namespace nIS
             "<div class='card-header bg-light border-0'><h5 class='m-0'>No Configuration</h5> </div><div class='card-body text-center text-danger'>" +
             "<span>No configuration saved for this record.</span></div></div>";
 
-        public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3'>";
+        public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3 bdy-scroll stylescrollbar'>";
 
         public const string WIDGET_HTML_HEADER = "<div id='{{DivId}}' class='card border-0 p-2 tabDivClass {{ExtraClass}}'>";
 
