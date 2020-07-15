@@ -28,6 +28,9 @@ export class SidebarComponent implements OnInit {
   public IsMainMenu = true;
   iconTitle = "Asset Configuration Settings";
   public element: HTMLElement;
+  public userClaimsRolePrivilegeOperations;
+  public isSuperAdminUser: boolean = false;
+
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
       this.sidebar_class = "show-sidebar"
@@ -41,7 +44,6 @@ export class SidebarComponent implements OnInit {
       this.sidebar_footer = "hide-side-bar-footer"
     }
   }
-
 
   ChangeSideBar() {
     this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
@@ -137,6 +139,12 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
 
     this.loggedInUserName = localStorage.getItem('currentUserName');
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+
+    var loggedInUserDetails = JSON.parse(localStorage.getItem('user'));
+    this.isSuperAdminUser = loggedInUserDetails.RoleName == 'Super Admin' ? true : false;
+
     $(document).ready(function () {
       this.screenWidth = window.innerWidth;
       if (this.screenWidth <= 768) {
@@ -175,20 +183,25 @@ export class SidebarComponent implements OnInit {
 
 
     })
+    
     this.URL = this.route.url;
-    if (this.URL == '/settings') {
-      this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
-      this.element.className = 'fa fa-home'
-      this.iconTitle = "Home";
-      this.element.title = "Home"
-      this.IsMainMenu = false;
+    
+    if(this.isSuperAdminUser == true) {
+      if (this.URL == '/settings') {
+        this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
+        this.element.className = 'fa fa-home'
+        this.iconTitle = "Home";
+        this.element.title = "Home"
+        this.IsMainMenu = false;
+      }
+      else {
+        this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
+        this.element.className = 'fa fa-cog'
+        this.iconTitle = "Asset Configuration Settings"
+        this.element.title = "Asset Configuration Settings";
+      }
     }
-    else {
-      this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
-      this.element.className = 'fa fa-cog'
-      this.iconTitle = "Asset Configuration Settings"
-      this.element.title = "Asset Configuration Settings";
-    }
+
     if (this.URL.includes('/user')) {
       this.URL ='/user'
     }

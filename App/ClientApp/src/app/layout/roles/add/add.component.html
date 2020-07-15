@@ -40,13 +40,12 @@
         <div class="row">
           <div class="col-md-8 col-lg-6">
             <label id="lblDescription">Description</label>
-            <textarea class="form-control" name="roleDescription" rows="3" id="txtDescription"
-                            formControlName="roleDescription"></textarea>
-                            <div class="validation-msg" style="color:red" *ngIf="roleDescription.touched && roleDescription.errors">
-                              <ul style="list-style-type:none">
-                                  <li class="text-danger" *ngIf="roleDescription.errors?.maxlength">Role description length should not be greater than 255</li>
-                              </ul>
-                          </div>
+            <textarea class="form-control" name="roleDescription" rows="3" id="txtDescription" formControlName="roleDescription"></textarea>
+              <div class="validation-msg" style="color:red" *ngIf="roleDescription.touched && roleDescription.errors">
+                  <ul style="list-style-type:none">
+                      <li class="text-danger" *ngIf="roleDescription.errors?.maxlength">Role description length should not be greater than 255</li>
+                  </ul>
+              </div>
           </div>
         </div>
       </div>

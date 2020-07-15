@@ -32,7 +32,7 @@
 
   <!--mobile end-->
   <ul class='nav nav-toolbar float-right show-toolbar'>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="isSuperAdminUser">
       <a class="nav-link top-nav-link" id="settingsSideBar"  (click)="ChangeSideBar()">
         <span></span>
         <i id ="HomeSettingIcon"class="fa fa-cog"  title="Asset Configuration Settings"></i>
@@ -55,37 +55,55 @@
 <div class="side-bar-container" [ngClass]="sidebar_class">
   <div class="side-bar-nav stylescrollbar">
     <ul class='side-bar-ul'>
-      <li [ngClass]="(URL=='/dashboard')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToDashoard()">
+      
+      <li [ngClass]="(URL=='/dashboard')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToDashoard()" *ngIf="IsMainMenu">
         <a> <span class='nav-icon icon-machine-dashboard2' title="Dashboard"> </span><span class='nav-title'>Dashboard</span></a>
       </li>
-      <li [ngClass]="(URL=='/user')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToUser()">
+
+      <li [ngClass]="(URL=='/user')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToUser()"
+      *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-users-line2' title="Users"> </span><span class='nav-title'>Users</span>  </a>
       </li>
-      <li [ngClass]="(URL=='/roles')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToRoles()">
+
+      <li [ngClass]="(URL=='/roles')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToRoles()"
+      *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Role','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-roles-line2' title="Roles"> </span> <span class='nav-title'>Roles</span> </a>
       </li>
-      <li [ngClass]="(URL=='/assetlibrary')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToAssetLibraries()">
+
+      <li [ngClass]="(URL=='/assetlibrary')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToAssetLibraries()"
+      *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Asset Library','Operation' : 'View'}))">
         <a> <span class='nav-icon fa fa-folder-o' title="Asset Libraries"> </span> <span class='nav-title'>Asset Libraries</span> </a>
       </li>
-      <li [ngClass]="(URL=='/widgets')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToWidgets()">
+
+      <li [ngClass]="(URL=='/widgets')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToWidgets()"
+      *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Widgets','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-line-dashboard2' title="Widgets"></span><span class='nav-title'>Widgets</span>  </a>
       </li>
-      <li [ngClass]="(URL=='/pages')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToTemplates()">
+
+      <li [ngClass]="(URL=='/pages')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToTemplates()"
+      *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-templates2' title="Pages"></span><span class='nav-title'>Pages</span>  </a>
       </li>
-      <li [ngClass]="(URL=='/statementdefination')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToStatementDef()">
+
+      <li [ngClass]="(URL=='/statementdefination')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToStatementDef()"
+      *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definitions','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-statemenrDefinitions' title="Statement Definitions"> </span> <span class='nav-title'>Statement Definitions</span> </a>
       </li>
-      <li [ngClass]="(URL=='/schedulemanagement')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToScheduleManagement()">
+
+      <li [ngClass]="(URL=='/schedulemanagement')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToScheduleManagement()"
+      *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-production-plan-line2' title="Schedule Management"> </span> <span class='nav-title'>Schedule Management</span> </a>
       </li>
+
       <li [ngClass]="(URL=='/logs')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToLogs()">
         <a> <span class='nav-icon icon-reportGenerations2' title="Logs"> </span> <span class='nav-title'>Logs</span> </a>
       </li>
+
       <li [ngClass]="(URL=='/analytics')?'side-bar-li active-li':'side-bar-li'" *ngIf="IsMainMenu" (click)="navigateToAnalytics()">
         <a> <span class='nav-icon icon-rp-yield1' title="Analytics"> </span> <span class='nav-title'>Analytics</span> </a>
       </li>
-      <li [ngClass]="(URL=='/settings')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu" (click)="navigateToSettings()">
+      
+      <li [ngClass]="(URL=='/settings')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToSettings()">
         <!--<a> <span class='nav-icon icon-rp-yield1' title="Settings"> </span> <span class='nav-title'>Configure Assets</span> </a>-->
         <a> <span class='nav-icon icon-operations2' title="Configure Assets"> </span> <span class='nav-title'>Configure Assets</span> </a>
       </li>
