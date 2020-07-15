@@ -13,7 +13,12 @@ const routes: Routes = [
             { path: '', component: ListComponent,
             canActivate: [AuthGuard] },
             { path: 'Add', component: AddComponent,
-            canActivate: [AuthGuard] },
+            canActivate: [AuthGuard]
+          },
+          {
+            path: 'Edit', component: AddComponent,
+            canActivate: [AuthGuard]
+          },
             { path: 'View', component: ViewComponent,
             canActivate: [AuthGuard] },
             { path: 'List', component: ListComponent,

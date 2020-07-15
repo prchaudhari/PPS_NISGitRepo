@@ -102,18 +102,37 @@ export class ListComponent implements OnInit {
     this.dataSource = part;
     this.dataSource.sort = this.sort;
   }
+
   get filterDisplayName() {
     return this.ScheduleFilterForm.get('filterDisplayName');
   }
+
   get filterStatementDefiniton() {
     return this.ScheduleFilterForm.get('filterStatementDefiniton');
   }
+
   get filterStartDate() {
     return this.ScheduleFilterForm.get('filterStartDate');
   }
+
   get filterEndDate() {
     return this.ScheduleFilterForm.get('filterEndDate');
   }
+
+  resetFilterForm() {
+    this.ScheduleFilterForm.patchValue({
+      filterDisplayName: null,
+      filterStatementDefiniton: null,
+      filterEndDate: null,
+      filterStartDate: null
+    });
+
+    this.filterFromDateError = false;
+    this.filterToDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateErrorMessage = "";
+  }
+
   validateFilterDate(): boolean {
     if (this.ScheduleFilterForm.value.filterStartDate != null && this.ScheduleFilterForm.value.filterStartDate != '' &&
       this.ScheduleFilterForm.value.filterEndDate != null && this.ScheduleFilterForm.value.filterEndDate != '') {
@@ -126,12 +145,44 @@ export class ListComponent implements OnInit {
     }
     return true;
   }
+
+  onFilterDateChange(event) {
+    this.filterFromDateError = false;
+    this.filterToDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateErrorMessage = "";
+    let currentDte = new Date();
+    //if (this.ScheduleFilterForm.value.filterStartDate != null && this.ScheduleFilterForm.value.filterStartDate != '') {
+    //  let startDate = this.ScheduleFilterForm.value.filterStartDate;
+    //  if (startDate.getTime() < currentDte.getTime()) {
+    //    this.filterFromDateError = true;
+    //    this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanCurrentDateMessage;
+    //  }
+    //}
+    //if (this.ScheduleFilterForm.value.filterEndDate != null && this.ScheduleFilterForm.value.filterEndDate != '') {
+    //  let toDate = this.ScheduleFilterForm.value.filterEndDate;
+    //  if (toDate.getDate() < currentDte.getDate()) {
+    //    this.filterToDateError = true;
+    //    this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
+    //  }
+    //}
+    if (this.ScheduleFilterForm.value.filterStartDate != null && this.ScheduleFilterForm.value.filterStartDate != '' &&
+      this.ScheduleFilterForm.value.filterEndDate != null && this.ScheduleFilterForm.value.filterEndDate != '') {
+      let startDate = this.ScheduleFilterForm.value.filterStartDate;
+      let toDate = this.ScheduleFilterForm.value.filterEndDate;
+      if (startDate.getTime() > toDate.getTime()) {
+        this.filterFromDateError = true;
+        this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
+      }
+    }
+  }
+
   //This method has been used for fetching search records
   searchScheduleRecordFilter(searchType) {
     this.filterFromDateError = false;
     this.isFilterDone = true;
     if (searchType == 'reset') {
-      this.resetPageFilterForm();
+      this.resetFilterForm();
       this.getSchedule(null);
       this.isFilter = !this.isFilter;
     }
@@ -142,18 +193,22 @@ export class ListComponent implements OnInit {
         searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
         searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
         searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'DisplayName';
+        searchParameter.SortParameter.SortColumn = 'Name';
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
         searchParameter.SearchMode = Constants.Contains;
         if (this.ScheduleFilterForm.value.filterDisplayName != null && this.ScheduleFilterForm.value.filterDisplayName != '') {
-          searchParameter.DisplayName = this.ScheduleFilterForm.value.filterDisplayName.trim();
+          searchParameter.Name = this.ScheduleFilterForm.value.filterDisplayName.trim();
         }
-
+        if (this.ScheduleFilterForm.value.filterStatementDefiniton != null && this.ScheduleFilterForm.value.filterStatementDefiniton != '') {
+          searchParameter.StatementDefinitionName = this.ScheduleFilterForm.value.filterStatementDefiniton.trim();
+        }
         if (this.ScheduleFilterForm.value.filterStartDate != null && this.ScheduleFilterForm.value.filterStartDate != '') {
-          searchParameter.StartDate = this.ScheduleFilterForm.value.filterStartDate;
+          //searchParameter.StartDate = this.ScheduleFilterForm.value.filterStartDate;
+          searchParameter.StartDate = new Date(this.ScheduleFilterForm.value.filterStartDate.setHours(0, 0, 0));
         }
         if (this.ScheduleFilterForm.value.filterEndDate != null && this.ScheduleFilterForm.value.filterEndDate != '') {
-          searchParameter.EndDate = this.ScheduleFilterForm.value.filterEndDate;
+          //searchParameter.EndDate = this.ScheduleFilterForm.value.filterEndDate;
+          searchParameter.EndDate = new Date(this.ScheduleFilterForm.value.filterEndDate.setHours(23, 59, 59));
         }
         this.currentPage = 0;
         this.getSchedule(searchParameter);
@@ -188,12 +243,13 @@ export class ListComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
     }
+    searchParameter.IsStatementDefinitionRequired = true;
     this.scheduleList = await scheduleService.getSchedule(searchParameter);
     if (this.scheduleList.length == 0 && this.isFilterDone == true) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
-          //this.resetRoleFilterForm();
+          this.resetFilterForm();
           this.getSchedule(null);
         }
       });
@@ -204,36 +260,8 @@ export class ListComponent implements OnInit {
     this.totalSize = this.array.length;
     this.iterator();
   }
-  onFilterDateChange(event) {
-    this.filterFromDateError = false;
-    this.filterToDateError = false;
-    this.filterFromDateErrorMessage = "";
-    this.filterToDateErrorMessage = "";
-    let currentDte = new Date();
-    if (this.ScheduleFilterForm.value.filterStartDate != null && this.ScheduleFilterForm.value.filterStartDate != '') {
-      let startDate = this.ScheduleFilterForm.value.filterStartDate;
-      if (startDate.getTime() > currentDte.getTime()) {
-        this.filterFromDateError = true;
-        this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanCurrentDateMessage;
-      }
-    }
-    if (this.ScheduleFilterForm.value.filterEndDate != null && this.ScheduleFilterForm.value.filterEndDate != '') {
-      let toDate = this.ScheduleFilterForm.value.filterEndDate;
-      if (toDate.getTime() > currentDte.getTime()) {
-        this.filterToDateError = true;
-        this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
-      }
-    }
-    if (this.ScheduleFilterForm.value.filterStartDate != null && this.ScheduleFilterForm.value.filterStartDate != '' &&
-      this.ScheduleFilterForm.value.filterEndDate != null && this.ScheduleFilterForm.value.filterEndDate != '') {
-      let startDate = this.ScheduleFilterForm.value.filterStartDate;
-      let toDate = this.ScheduleFilterForm.value.filterEndDate;
-      if (startDate.getTime() > toDate.getTime()) {
-        this.filterFromDateError = true;
-        this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
-      }
-    }
-  }
+
+
   sortData(sort: MatSort) {
     const data = this.scheduleList.slice();
     if (!sort.active || sort.direction === '') {
@@ -319,6 +347,42 @@ export class ListComponent implements OnInit {
       }
     });
   }
+
+  activeDeactiveSchedule(schedule: Schedule) {
+    let message;
+    if (schedule.IsActive) {
+      message = "Do you really want to deactivate schedule?"
+      this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+        if (isConfirmed) {
+         
+          let isDeleted = await this.scheduleService.deactivate(schedule.Identifier);
+          if (isDeleted) {
+            let messageString = "Schedule deactivated successfully";
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.getSchedule(null);
+
+          }
+        }
+      });
+    }
+    else {
+      message = "Do you really want to activate schedule?"
+
+      this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+        if (isConfirmed) {
+          let isDeleted = await this.scheduleService.activate(schedule.Identifier);
+          if (isDeleted) {
+            let messageString = "Schedule activated successfully";
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.getSchedule(null);
+
+
+          }
+        }
+      });
+    }
+
+  }
 }
 
 function compare(a: number, b: number, isAsc: boolean) {
@@ -329,6 +393,9 @@ function compareStr(a: string, b: string, isAsc: boolean) {
   return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
+
 function compareDate(a: Date, b: Date, isAsc: boolean) {
-  return (a.getTime() < b.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
+  var a1 = new Date(a);
+  var b1 = new Date(b);
+  return (a1.getTime() < b1.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
 }

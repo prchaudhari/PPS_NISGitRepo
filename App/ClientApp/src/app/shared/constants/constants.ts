@@ -51,6 +51,10 @@ export class ErrorMessageConstants {
   public static get getEndDateLessThanCurrentDateMessage(): string { return "End Date should be less than current date." };
   public static get getStartDateLessThanEndDateMessage(): string { return "Start date should be less than end date." };
   public static get getNoRecordFoundMessage(): string { return "No record found." };
+
+  public static get getStartDateThanCurrentDateMessage(): string { return "Start Date should not be less than current date." };
+  public static get getEndDateThanCurrentDateMessage(): string { return "End Date should not be less than current date." };
+
 }
 
 @Injectable()

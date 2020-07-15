@@ -96,7 +96,11 @@ namespace nIS
                         EndDate = schedule.EndDate,
                         Status = schedule.Status,
                         IsDeleted = false,
-                        TenantCode = tenantCode
+                        TenantCode = tenantCode,
+                        StatementId = schedule.Statement.Identifier,
+                        IsExportToPDF = schedule.IsExportToPDF,
+                        UpdateBy = schedule.UpdateBy.Identifier,
+                        LastUpdatedDate = DateTime.UtcNow,
                     });
                 });
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -160,6 +164,11 @@ namespace nIS
                         scheduleRecord.Status = item.Status;
                         scheduleRecord.IsDeleted = false;
                         scheduleRecord.TenantCode = tenantCode;
+                        scheduleRecord.IsExportToPDF = item.IsExportToPDF;
+                        scheduleRecord.StatementId = item.Statement.Identifier;
+                        scheduleRecord.UpdateBy = item.UpdateBy.Identifier;
+                        scheduleRecord.LastUpdatedDate = DateTime.UtcNow;
+
                     });
 
                     nISEntitiesDataContext.SaveChanges();
@@ -231,8 +240,27 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(scheduleSearchParameter, tenantCode);
+
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    if (scheduleSearchParameter.StatementDefinitionName != null && scheduleSearchParameter.StatementDefinitionName != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("Name.Equals(\"{0}\")", scheduleSearchParameter.StatementDefinitionName));
+
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.StatementRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("StatementId.Equals({0}) ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return schedules;
+                        }
+                    }
                     IList<ScheduleRecord> scheduleRecords = new List<ScheduleRecord>();
                     if (scheduleSearchParameter.PagingParameter.PageIndex > 0 && scheduleSearchParameter.PagingParameter.PageSize > 0)
                     {
@@ -253,23 +281,42 @@ namespace nIS
 
                     if (scheduleRecords != null && scheduleRecords.Count > 0)
                     {
-                        StringBuilder scheduleIdentifiers = new StringBuilder();
-                        scheduleIdentifiers.Append("(" + string.Join(" or ", scheduleRecords.Select(item => string.Format("ScheduleIdentifier.Equals({0})", item.Id))) + ")");
 
                         schedules = scheduleRecords.Select(scheduleRecord => new Schedule()
                         {
+
                             Identifier = scheduleRecord.Id,
                             Name = scheduleRecord.Name,
                             Description = scheduleRecord.Description,
-                            IsActive = !scheduleRecord.IsDeleted,
+                            IsActive = !scheduleRecord.IsActive,
                             DayOfMonth = scheduleRecord.DayOfMonth,
                             HourOfDay = scheduleRecord.HourOfDay,
                             MinuteOfDay = scheduleRecord.MinuteOfDay,
-                            StartDate = scheduleRecord.StartDate,
-                            EndDate = scheduleRecord.EndDate,
+                            StartDate = DateTime.SpecifyKind((DateTime)scheduleRecord.StartDate, DateTimeKind.Utc),
+                            EndDate = scheduleRecord.EndDate != null ? DateTime.SpecifyKind((DateTime)scheduleRecord.EndDate, DateTimeKind.Utc) : DateTime .MinValue,
                             Status = scheduleRecord.Status,
+                            IsExportToPDF = scheduleRecord.IsExportToPDF,
+                            LastUpdatedDate = scheduleRecord.LastUpdatedDate,
+                            Statement = new Statement { Identifier = scheduleRecord.StatementId }
+
                         }).ToList();
+                        if (scheduleSearchParameter.IsStatementDefinitionRequired == true)
+                        {
+                            StringBuilder statementIdentifier = new StringBuilder();
+                            statementIdentifier.Append("(" + string.Join(" or ", scheduleRecords.Select(item => string.Format("Id.Equals({0})", item.StatementId))) + ")");
+                            IList<StatementRecord> statementRecords = new List<StatementRecord>();
+                            statementRecords = nISEntitiesDataContext.StatementRecords.Where(statementIdentifier.ToString()).ToList();
+                            schedules.ToList().ForEach(schedule =>
+                            {
+                                if (statementRecords.Where(item => item.Id == schedule.Statement.Identifier)?.FirstOrDefault() != null)
+                                {
+                                    schedule.Statement.Name = statementRecords.Where(item => item.Id == schedule.Statement.Identifier)?.FirstOrDefault().Name;
+                                }
+                            });
+                        }
                     }
+
+
                 }
             }
 
@@ -332,7 +379,7 @@ namespace nIS
 
                     scheduleRecords.ToList().ForEach(item =>
                     {
-                        item.IsDeleted = false;
+                        item.IsActive = false;
                     });
 
                     nISEntitiesDataContext.SaveChanges();
@@ -373,7 +420,7 @@ namespace nIS
 
                     scheduleRecords.ToList().ForEach(item =>
                     {
-                        item.IsDeleted = true;
+                        item.IsActive = true;
                     });
 
                     nISEntitiesDataContext.SaveChanges();
@@ -433,7 +480,26 @@ namespace nIS
             {
                 queryString.Append(string.Format("IsDeleted.Equals(true) and "));
             }
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
+            }
 
+            if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
+            {
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+                queryString.Append("EndDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+
+                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                               "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
             queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
