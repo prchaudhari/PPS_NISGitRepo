@@ -28,5 +28,7 @@ namespace nIS
         public string TenantCode { get; set; }
         public Nullable<System.DateTime> LastUpdatedDate { get; set; }
         public long UpdateBy { get; set; }
+        public bool IsExportToPDF { get; set; }
+        public long StatementId { get; set; }
     }
 }

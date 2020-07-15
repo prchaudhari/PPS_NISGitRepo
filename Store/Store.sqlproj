@@ -91,6 +91,7 @@
     <Build Include="Video.sql" />
     <Build Include="AssetSetting.sql" />
     <None Include="Seed Data Scripts\AssetSetting.sql" />
+    <Build Include="ScheduleRunHistory.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

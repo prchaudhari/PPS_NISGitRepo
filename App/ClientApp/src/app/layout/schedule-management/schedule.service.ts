@@ -24,10 +24,10 @@ export class ScheduleService {
   public countrycodeList = [];
   public ouList = [];
   public isDependencyPresent: boolean = false;
-  constructor(
+  constructor(private http: HttpClient,
     private injector: Injector,
     private uiLoader: NgxUiLoaderService,
-    private http: HttpClient) { }
+    private _messageDialogService: MessageDialogService) { }
 
   public async getSchedule(searchParameter): Promise<Schedule[]> {
     let httpClientService = this.injector.get(HttpClientService);
@@ -63,9 +63,9 @@ export class ScheduleService {
   //method to call api of delete Schedule.
   public async deleteSchedule(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.scheduleDeleteUrl + "?" + "identifier=" + postData;
+    let requestUrl = URLConfiguration.scheduleDeleteUrl ;
     this.uiLoader.start();
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -84,14 +84,73 @@ export class ScheduleService {
   }
 
   //This api is save schedule data--
-  public saveSchedule(postData, scheduleEditModeOn): Observable<any> {
+  public async saveSchedule(postData, scheduleEditModeOn): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.scheduleAddUrl;
     if (scheduleEditModeOn) {
       requestUrl = URLConfiguration.scheduleUpdateUrl;
     }
-    var baseUrl = ConfigConstants.BaseURL;
-    var fullURL = baseUrl + requestUrl;
-    return this.http.post(fullURL, postData);
+    this.uiLoader.start();
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            this.isRecordSaved = true;
+          }
+          else {
+            this.isRecordSaved = false;
+          }
+        }
+      }, (error) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this.isRecordSaved = false;
+        this.uiLoader.stop();
+      });
+    return <boolean>this.isRecordSaved;
   }
- 
+
+  public async activate(postData): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.scheduleActivate + "?" + "scheduleIdentifier=" + postData;
+    this.uiLoader.start();
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            this.isRecordDeleted = true;
+          }
+          else {
+            this.isRecordDeleted = false;
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+        this.isRecordDeleted = false;
+      });
+    return <boolean>this.isRecordDeleted;
+  }
+
+  public async deactivate(postData): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.scheduleDeactivate + "?" + "scheduleIdentifier=" + postData;
+    this.uiLoader.start();
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            this.isRecordDeleted = true;
+          }
+          else {
+            this.isRecordDeleted = false;
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+        this.isRecordDeleted = false;
+      });
+    return <boolean>this.isRecordDeleted;
+  }
 }

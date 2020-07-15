@@ -142,6 +142,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="StatementId" Type="bigint" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="DayOfMonth" Type="bigint" Nullable="false" />
           <Property Name="HourOfDay" Type="bigint" Nullable="false" />
@@ -154,6 +155,7 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastUpdatedDate" Type="datetime" />
           <Property Name="UpdateBy" Type="bigint" Nullable="false" />
+          <Property Name="IsExportToPDF" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -524,6 +526,8 @@
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateBy" Type="Int64" Nullable="false" />
+          <Property Name="IsExportToPDF" Type="Boolean" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="StatementRecord">
           <Key>
@@ -833,6 +837,8 @@
           <EntitySetMapping Name="ScheduleRecords">
             <EntityTypeMapping TypeName="NISModel.ScheduleRecord">
               <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="IsExportToPDF" ColumnName="IsExportToPDF" />
                 <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
                 <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />

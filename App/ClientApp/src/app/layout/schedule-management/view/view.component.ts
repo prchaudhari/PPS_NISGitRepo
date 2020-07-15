@@ -4,7 +4,6 @@ import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy } 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { WindowRef } from '../../../core/services/window-ref.service';
 import { environment } from '../../../../environments/environment';
 import { Schedule } from '../schedule';
 import { SortParameter, SearchMode } from '../../../shared/models/commonmodel';
@@ -28,12 +27,12 @@ export class ViewComponent implements OnInit {
   public schedule: Schedule;
   public params;
   public baseURL: string = environment.baseURL;
-    navigateToListPage() {
-        this._location.back();
-    }
+  public userClaimsRolePrivilegeOperations: any[] = [];
+  navigateToListPage() {
+    this._location.back();
+  }
   constructor(
     private _location: Location,
-    private _window: WindowRef,
     private _router: Router,
     private _activatedRouter: ActivatedRoute,
     private _http: HttpClient,
@@ -45,7 +44,7 @@ export class ViewComponent implements OnInit {
     private router: Router,
   ) {
     this.schedule = new Schedule;
-  
+
     let me = this;
 
     _router.events.subscribe(e => {
@@ -76,6 +75,13 @@ export class ViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.userClaimsRolePrivilegeOperations = [];
+    }
   }
   async getScheduleRecords() {
     let scheduleService = this.injector.get(ScheduleService);
@@ -88,10 +94,10 @@ export class ViewComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.schedule.Identifier;
-    searchParameter.IsAssetDataRequired = true;
+    searchParameter.IsStatementDefinitionRequired = true;
     let schedule = await scheduleService.getSchedule(searchParameter);
     this.schedule = schedule[0];
-   
+
   }
 
   navigateToScheduleEdit() {
@@ -108,7 +114,7 @@ export class ViewComponent implements OnInit {
     }
     localStorage.setItem("scheduleparams", JSON.stringify(queryParams))
     const router = this.injector.get(Router);
-    router.navigate(['schedule', 'Edit']);
+    router.navigate(['schedulemanagement', 'Edit']);
   }
 
   deleteSchedule() {

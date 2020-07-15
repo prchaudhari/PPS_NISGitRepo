@@ -62,6 +62,17 @@ namespace nIS
         /// </summary>
         private bool isActive;
 
+
+        /// <summary>
+        /// the is active flag
+        /// </summary>
+        private Statement statement;
+
+        /// <summary>
+        /// the is isExportToPDF flag
+        /// </summary>
+        private bool isExportToPDF;
+
         /// <summary>
         /// the laste updated date
         /// </summary>
@@ -230,6 +241,39 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Gets or sets Statement.
+        /// </summary>
+        [Description("Statement")]
+        public Statement Statement
+        {
+            get
+            {
+                return this.statement;
+            }
+            set
+            {
+                this.statement = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets user IsExportToPDF.
+        /// </summary>
+        [Description("IsExportToPDF")]
+        public bool IsExportToPDF
+        {
+            get
+            {
+                return this.isExportToPDF;
+            }
+            set
+            {
+                this.isExportToPDF = value;
+            }
+        }
+
+
 
         /// <summary>
         /// Gets or sets user Identifier.
@@ -300,10 +344,10 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("StartDate", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_ENDDATE);
                 }
-                if (this.EndDate == null)
-                {
-                    exception.Data.Add(this.utility.GetDescription("EndDate", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_STARTDATE);
-                }
+                //if (this.EndDate == null)
+                //{
+                //    exception.Data.Add(this.utility.GetDescription("EndDate", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_STARTDATE);
+                //}
                 if (exception.Data.Count > 0)
                 {
                     throw exception;

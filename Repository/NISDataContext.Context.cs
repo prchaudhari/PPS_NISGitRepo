@@ -20,7 +20,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                     : base(connectionString)
+              : base(connectionString)
         {
         }
 

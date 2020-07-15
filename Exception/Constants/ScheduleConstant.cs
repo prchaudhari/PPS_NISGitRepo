@@ -33,7 +33,7 @@ namespace nIS
         /// The invalid role exception
         /// </summary>
         //public const string INVALID_SCHEDULE_EXCEPTION = "InvalidSchedule";
-        public const string INVALID_SCHEDULE_EXCEPTION = "Invalid role";
+        public const string INVALID_SCHEDULE_EXCEPTION = "Invalid schedule";
 
         /// <summary>
         /// The invalid role paging parameter

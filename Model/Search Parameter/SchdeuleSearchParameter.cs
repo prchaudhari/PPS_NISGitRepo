@@ -43,9 +43,10 @@ namespace nIS
         private DateTime? endDate;
 
         /// <summary>
-        /// the status
+        /// isStatementDefinitionRequired
         /// </summary>
-        private string statementDefinitionId;
+        private bool? isStatementDefinitionRequired;
+
         #endregion
 
         #region Public Members
@@ -81,6 +82,21 @@ namespace nIS
         }
 
         /// <summary>
+        /// Gets or sets IsStatementDefinitionRequired
+        /// </summary>
+        public bool? IsStatementDefinitionRequired
+        {
+            get
+            {
+                return this.isStatementDefinitionRequired;
+            }
+            set
+            {
+                this.isStatementDefinitionRequired = value;
+            }
+        }
+
+        /// <summary>
         /// Get or sets the value of role status
         /// </summary>
         public bool? IsActive
@@ -96,44 +112,20 @@ namespace nIS
         }
 
         /// <summary>
-        /// Gets or sets user StartDate.
+        /// The start date
         /// </summary>
-        [Description("StartDate")]
-        public DateTime? StartDate
-        {
-            get
-            { return this.startDate; }
-            set
-            {
-                this.startDate = value;
-            }
-        }
+        public DateTime StartDate { get; set; }
+
         /// <summary>
-        /// Gets or sets user EndDate.
+        /// The end date
         /// </summary>
-        [Description("EndDate")]
-        public DateTime? EndDate
-        {
-            get
-            { return this.endDate; }
-            set
-            {
-                this.endDate = value;
-            }
-        }
+        public DateTime EndDate { get; set; }
+
         /// <summary>
         /// Gets or sets user Status.
         /// </summary>
-        [Description("Status")]
-        public string StatementDefinitionId
-        {
-            get
-            { return this.statementDefinitionId; }
-            set
-            {
-                this.statementDefinitionId = value;
-            }
-        }
+        [Description("StatementDefinitionId")]
+        public string StatementDefinitionName { get; set; }
 
         #endregion
 

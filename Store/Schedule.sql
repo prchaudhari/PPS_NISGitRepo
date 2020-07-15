@@ -13,5 +13,7 @@
     [IsDeleted] BIT NOT NULL, 
     [TenantCode] NVARCHAR(50) NOT NULL,
 	[LastUpdatedDate] DateTime  NULL,
-	[UpdateBy] BIGINT NOT NULL,
+	[UpdateBy] BIGINT NOT NULL, 
+    [IsExportToPDF] BIT NOT NULL, 
+    [StatementId] BIGINT NOT NULL,
 )

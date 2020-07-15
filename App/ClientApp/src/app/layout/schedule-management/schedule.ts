@@ -1,19 +1,22 @@
 
 import { User } from '../users/user'
+import { Statement } from '../statement-defination/statement';
 
 export class Schedule {
   "Identifier": number;
-  "Name": string;
-  "Description": string;
+  "Name": string="";
+  "Description": string="";
   "DayOfMonth": number;
   "HourOfDay": number;
   "MinuteOfDay": number;
   "StartDate": Date;
   "EndDate": Date;
-  "Status": string;
+  "Status": string="New";
   "IsActive": boolean;
   "IsDeleted": boolean;
   "TenantCode": string;
   "LastUpdatedDate": string;
-  "UpdateBy": User
+  "UpdateBy": User;
+  "Statement": Statement;
+  "IsExportToPDF":boolean
 }
