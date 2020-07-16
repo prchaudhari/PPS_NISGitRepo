@@ -56,7 +56,6 @@ export class ListComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-
   ngOnInit() {
     this.getSchedule(null);
     //this.getStatementDefinition(null);
@@ -75,10 +74,12 @@ export class ListComponent implements OnInit {
       this.userClaimsRolePrivilegeOperations = [];
     }
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
 
   }
+
   constructor(private injector: Injector,
     private fb: FormBuilder,
     private uiLoader: NgxUiLoaderService,
@@ -273,7 +274,7 @@ export class ListComponent implements OnInit {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'name': return compareStr(a.Name, b.Name, isAsc);
-        //case 'schedule': return compareStr(a.Stat, b.Status, isAsc);
+        case 'schedule': return compareStr(a.Statement.Name, b.Statement.Name, isAsc);
         case 'startDate': return compareDate(a.StartDate, b.StartDate, isAsc);
         case 'endDate': return compareDate(a.EndDate, b.EndDate, isAsc);
         case 'DayOfMonth': return compare(a.DayOfMonth, b.DayOfMonth, isAsc);

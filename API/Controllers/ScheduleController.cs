@@ -47,6 +47,8 @@ namespace nIS
 
         #region Public Methods
 
+        #region Schedule 
+
         /// <summary>
         /// This method helps to add schedules
         /// </summary>
@@ -205,6 +207,59 @@ namespace nIS
 
             return result;
         }
+        #endregion
+
+        #region ScheduleRunHistory 
+
+        /// <summary>
+        /// This method helps to add schedules
+        /// </summary>
+        /// <param name="schedules"></param>
+        /// <returns>boolean value</returns>
+        [HttpPost]
+        public bool AddScheduleHistory(IList<ScheduleRunHistory> schedules)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.scheduleManager.AddScheduleRunHistorys(schedules, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+      
+
+        /// <summary>
+        /// This method helps to get schedules list based on the search parameters.
+        /// </summary>
+        /// <param name="scheduleSearchParameter"></param>
+        /// <returns>List of schedules</returns>
+        [HttpPost]
+        public IList<ScheduleRunHistory> GetScheduleRunHistories(ScheduleSearchParameter scheduleSearchParameter)
+        {
+            IList<ScheduleRunHistory> schedules = new List<ScheduleRunHistory>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                schedules = this.scheduleManager.GetScheduleRunHistorys(scheduleSearchParameter, tenantCode);
+                HttpContext.Current.Response.AppendHeader("recordCount", this.scheduleManager.GetScheduleRunHistoryCount(scheduleSearchParameter, tenantCode).ToString());
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return schedules;
+        }
+
+    
+        #endregion
 
         #endregion
 

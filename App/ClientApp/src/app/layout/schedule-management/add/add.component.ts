@@ -26,6 +26,7 @@ export class AddComponent implements OnInit {
   public updateOperationMode: boolean;
   public params: any = [];
   public IsEndDateRequired = true;
+  public IsExportToPDF = false;
   public filterFromDateError: boolean = false;
   public filterFromDateErrorMessage: string = "";
   public filterToDateError: boolean = false;
@@ -81,11 +82,11 @@ export class AddComponent implements OnInit {
       ScheduleName: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50),
       Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
       StatementDefinition: [0, Validators.compose([Validators.required])],
-      DayOfMonth: ["", Validators.compose([Validators.required])],
-      TimeOfDayHours: ["", Validators.compose([Validators.required])],
-      TimeOfDayMinutes: ["", Validators.compose([Validators.required])],
-      filtershiftfromdate: ["", Validators.compose([Validators.required])],
-      filtershiftenddate: ["",],
+      DayOfMonth: ["Please Select", Validators.compose([Validators.required])],
+      TimeOfDayHours: ["Please Select", Validators.compose([Validators.required])],
+      TimeOfDayMinutes: ["Please Select", Validators.compose([Validators.required])],
+      filtershiftfromdate: ["Please Select", Validators.compose([Validators.required])],
+      filtershiftenddate: ["Please Select",],
       ExportToPDF: [false],
       NoEndDate: [false],
     })
@@ -98,10 +99,6 @@ export class AddComponent implements OnInit {
     this.TimeOfDayHoursList.push("Please Select");
 
     this.TimeOfDayMinutesList.push("Please Select");
-    this.scheduleForm.controls['StatementDefinition'].setValue(this.st.Identifier);
-    this.scheduleForm.controls['DayOfMonth'].setValue("Please Select");
-    this.scheduleForm.controls['TimeOfDayHours'].setValue("Please Select");
-    this.scheduleForm.controls['TimeOfDayMinutes'].setValue("Please Select");
     for (var i = 1; i <= 29; i++) {
       this.DayOfMonthList.push(i);
     }
@@ -111,6 +108,11 @@ export class AddComponent implements OnInit {
     for (var i = 0; i < 59; i++) {
       this.TimeOfDayMinutesList.push(i);
     }
+    this.scheduleForm.controls['StatementDefinition'].setValue(this.st.Identifier);
+    this.scheduleForm.controls['DayOfMonth'].setValue("Please Select");
+    this.scheduleForm.controls['TimeOfDayHours'].setValue("Please Select");
+    this.scheduleForm.controls['TimeOfDayMinutes'].setValue("Please Select");
+
     this.getStatements();
   }
 
@@ -171,6 +173,13 @@ export class AddComponent implements OnInit {
       this.scheduleForm.controls['filtershiftenddate'].setValue(this.schedule.EndDate);
 
     }
+    if (this.schedule.IsExportToPDF) {
+      this.IsExportToPDF = true;
+    }
+    else {
+      this.IsExportToPDF = false;
+
+    }
   }
 
   get ScheduleName() {
@@ -223,6 +232,12 @@ export class AddComponent implements OnInit {
       this.schedule.Statement.Identifier = Number(value);
 
     }
+  }
+  public IsExportToPDFClicked(event) {
+
+    const value = event.checked;
+    this.IsExportToPDF = value;
+
   }
   public NoEndDateClicked(event) {
 
@@ -318,7 +333,7 @@ export class AddComponent implements OnInit {
           }
         }
       }
-     
+
 
     }
   }
@@ -376,7 +391,7 @@ export class AddComponent implements OnInit {
     this.schedule.Statement.Identifier = this.scheduleForm.value.StatementDefinition;
     this.schedule.StartDate = this.scheduleForm.value.filtershiftfromdate;
     this.schedule.EndDate = this.IsEndDateRequired ? this.scheduleForm.value.filtershiftenddate : null;
-    this.schedule.IsExportToPDF = this.scheduleForm.value.ExportToPDF;
+    this.schedule.IsExportToPDF = this.IsExportToPDF;
     this.schedule.UpdateBy = new User();
     var userid = localStorage.getItem('UserId')
     this.schedule.UpdateBy.Identifier = Number(userid);

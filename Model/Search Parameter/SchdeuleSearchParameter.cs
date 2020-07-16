@@ -127,6 +127,12 @@ namespace nIS
         [Description("StatementDefinitionId")]
         public string StatementDefinitionName { get; set; }
 
+        /// <summary>
+        /// Gets or sets ScheduleName Status.
+        /// </summary>
+        [Description("ScheduleName")]
+        public string ScheduleName { get; set; }
+
         #endregion
 
         #region Public methods

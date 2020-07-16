@@ -51,5 +51,6 @@ namespace nIS
         public virtual DbSet<StateRecord> StateRecords { get; set; }
         public virtual DbSet<WidgetRecord> WidgetRecords { get; set; }
         public virtual DbSet<AssetSettingRecord> AssetSettingRecords { get; set; }
+        public virtual DbSet<ScheduleRunHistoryRecord> ScheduleRunHistoryRecords { get; set; }
     }
 }

@@ -136,6 +136,9 @@
     <Compile Include="ScheduleRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ScheduleRunHistoryRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="SQLRepository\SQLAssetSettingRepository.cs" />
     <Compile Include="SQLRepository\SQLAssetLibraryRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureUserRepository.cs" />

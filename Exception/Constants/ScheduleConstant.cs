@@ -24,6 +24,12 @@ namespace nIS
         public const string DUPLICATE_SCHEDULE_FOUND_EXCEPTION = "Schedule already exists";
 
         /// <summary>
+        /// Duplicate Schedule found exception
+        /// </summary>
+        //public const string DUPLICATE_SCHEDULE_FOUND_EXCEPTION = "DuplicateScheduleFoundException";
+        public const string SCHEDULE_REFERENCE_EXCEPTION = "Schedule is running";
+
+        /// <summary>
         /// Schedule not found exception
         /// </summary>
         //public const string SCHEDULE_NOT_FOUND_EXCEPTION = "ScheduleNotFoundException";

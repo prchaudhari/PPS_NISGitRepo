@@ -8,6 +8,7 @@ import { Schedule } from './schedule';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
+import { ScheduleRunHistory } from './scheduleHitory';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,35 @@ export class ScheduleService {
     return <Schedule[]>this.schedulesList;
   }
 
+  public async getScheduleHistory(searchParameter): Promise<ScheduleRunHistory[]> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.scheduleHistoryGetUrl;
+    this.uiLoader.start();
+    await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          if (httpEvent["status"] === 200) {
+            this.schedulesList = [];
+            this.uiLoader.stop();
+            if (httpEvent['body'] != null) {
+              httpEvent['body'].forEach(scheduleObject => {
+                this.schedulesList = [...this.schedulesList, scheduleObject];
+              });
+            }
+          }
+          else {
+            this.schedulesList = [];
+            this.isRecordFound = false;
+            this.uiLoader.stop();
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.schedulesList = [];
+        this.isRecordFound = false;
+        this.uiLoader.stop();
+      });
+    return <ScheduleRunHistory[]>this.schedulesList;
+  }
 
   //method to call api of delete Schedule.
   public async deleteSchedule(postData): Promise<boolean> {
@@ -76,7 +106,8 @@ export class ScheduleService {
             this.isRecordDeleted = false;
           }
         }
-      }, (error: HttpResponse<any>) => {
+      }, (error) => {
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
         this.isRecordDeleted = false;
       });

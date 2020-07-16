@@ -107,7 +107,9 @@
                 <label>Export to PDF</label>
                 <div>
                   <label class="switch d-block">
-                    <input type="checkbox" id="inputExportToPDF" formControlName="ExportToPDF">
+                    <!--<input type="checkbox" id="inputExportToPDF" formControlName="ExportToPDF">-->
+                    <input type="checkbox" id="inputExportToPDF" formControlName="ExportToPDF" [checked]="IsExportToPDF" value="" (change)="IsExportToPDFClicked($event.target)">
+
                     <span class="slider round"></span>
                   </label>
                 </div>

@@ -74,6 +74,7 @@
     <Compile Include="RolePrivilege.cs" />
     <Compile Include="RolePrivilegeOperation.cs" />
     <Compile Include="Schedule.cs" />
+    <Compile Include="ScheduleRunHistory.cs" />
     <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
     <Compile Include="Search Parameter\StatementSearchParameter.cs" />

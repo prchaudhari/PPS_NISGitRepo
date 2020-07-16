@@ -201,14 +201,11 @@ namespace nIS
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //var statementRecords = (from s in nISEntitiesDataContext.StatementRecords
-                    //                        join sp in nISEntitiesDataContext.StatementPageMapRecords on s.Id equals sp.StatementId
-                    //                        where s.IsDeleted == false && sp.ReferencePageId == statementIdentifier
-                    //                        select new { s.Id }).ToList();
-                    //if (statementRecords.Count > 0)
-                    //{
-                    //    throw new StatementReferenceException(tenantCode);
-                    //}
+                    var schheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(itm => itm.Id == statementIdentifier).ToList();
+                    if (schheduleRecords?.Count > 0)
+                    {
+                        throw new StatementReferenceException(tenantCode);
+                    }
 
                     IList<StatementRecord> statementRecords = nISEntitiesDataContext.StatementRecords.Where(itm => itm.Id == statementIdentifier).ToList();
                     if (statementRecords == null || statementRecords.Count <= 0)

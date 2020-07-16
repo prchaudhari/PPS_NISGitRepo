@@ -56,6 +56,7 @@ namespace nIS
 
         #region Public Methods
 
+        #region Schedule 
         /// <summary>
         /// This method will call add schedules method of repository.
         /// </summary>
@@ -225,6 +226,103 @@ namespace nIS
             }
             return result;
         }
+        #endregion
+
+        #region ScheduleRunHistory 
+        /// <summary>
+        /// This method will call add schedules method of repository.
+        /// </summary>
+        /// <param name="schedules">ScheduleRunHistorys are to be add.</param>
+        /// <param name="tenantCode">Tenant code of schedule.</param>
+        /// <returns>
+        /// Returns true if entities added successfully, false otherwise.
+        /// </returns>
+        public bool AddScheduleRunHistorys(IList<ScheduleRunHistory> schedules, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                result = this.scheduleRepository.AddScheduleRunHistorys(schedules, tenantCode);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method will call get schedules method of repository.
+        /// </summary>
+        /// <param name="scheduleSearchParameter">The schedule search parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns schedules if found for given parameters, else return null
+        /// </returns>
+        public IList<ScheduleRunHistory> GetScheduleRunHistorys(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
+        {
+            IList<ScheduleRunHistory> schedulesHistory = new List<ScheduleRunHistory>();
+            try
+            {
+                InvalidSearchParameterException invalidSearchParameterException = new InvalidSearchParameterException(tenantCode);
+                try
+                {
+                    scheduleSearchParameter.IsValid();
+                }
+                catch (Exception exception)
+                {
+                    invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
+                }
+
+                if (invalidSearchParameterException.Data.Count > 0)
+                {
+                    throw invalidSearchParameterException;
+                }
+
+                schedulesHistory = this.scheduleRepository.GetScheduleRunHistorys(scheduleSearchParameter, tenantCode);
+                if (schedulesHistory?.Count > 0)
+                {
+                    ScheduleSearchParameter parameter = new ScheduleSearchParameter();
+                    parameter.Identifier = string.Join(",", schedulesHistory.Select(item => item.Schedule.Identifier).ToList());
+                    parameter.IsStatementDefinitionRequired = true;
+                    parameter.SortParameter.SortColumn = "Id";
+                    IList<Schedule> schedules = new List<Schedule>();
+                    schedules = this.GetSchedules(parameter, tenantCode);
+                    schedulesHistory.ToList().ForEach(item =>
+                    {
+                        item.Schedule = schedules.Where(i => i.Identifier == item.Schedule.Identifier)?.FirstOrDefault();
+                    });
+                }
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return schedulesHistory;
+        }
+
+        /// <summary>
+        /// This method helps to get count of schedules.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns count of schedules
+        /// </returns>
+        public int GetScheduleRunHistoryCount(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
+        {
+            int scheduleCount = 0;
+            try
+            {
+                scheduleCount = this.scheduleRepository.GetScheduleRunHistoryCount(scheduleSearchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return scheduleCount;
+        }
+
+        #endregion
         #endregion
 
         #region Private Methods

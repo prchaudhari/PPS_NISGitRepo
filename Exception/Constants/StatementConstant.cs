@@ -50,7 +50,7 @@ namespace nIS
         /// <summary>
         /// Duplicate Statement page reference exit exception
         /// </summary>
-        public const string STATEMENT_REFERENCE_EXIST_EXCEPTION = "This page is already used in statement definition";
+        public const string STATEMENT_REFERENCE_EXIST_EXCEPTION = "This statement is used in schedule";
 
         /// <summary>
         /// Duplicate Page widget found exception

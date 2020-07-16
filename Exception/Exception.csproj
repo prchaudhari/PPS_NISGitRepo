@@ -66,6 +66,7 @@
     <Compile Include="InvalidSearchParameterException.cs" />
     <Compile Include="InvalidTenantException.cs" />
     <Compile Include="NullArgumentException.cs" />
+    <Compile Include="Schedule\RunningScheduleRefrenceException.cs" />
     <Compile Include="Statement\DuplicateStatementPageFoundException.cs" />
     <Compile Include="Statement\DuplicateStatementFoundException.cs" />
     <Compile Include="Statement\InvalidStatementException.cs" />

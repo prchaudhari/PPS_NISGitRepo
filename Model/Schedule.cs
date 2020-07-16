@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="User.cs" company="Websym Solutions Pvt. Ltd.">
+// Copyright (c) 2018 Websym Solutions Pvt. Ltd..
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace nIS
 {
-
+    #region References
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    #endregion
 
     public class Schedule
     {
@@ -111,6 +113,7 @@ namespace nIS
                 this.identifier = value;
             }
         }
+
         /// <summary>
         /// Gets or sets user Identifier.
         /// </summary>

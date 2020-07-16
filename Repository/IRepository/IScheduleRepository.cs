@@ -73,5 +73,35 @@ namespace nIS
         /// <returns></returns>
         bool DeActivateSchedule(long roleIdentifier, string tenantCode);
 
+
+        /// <summary>
+        /// This method adds the specified list of roles in role repository.
+        /// </summary>
+        /// <param name="roles">The list of roles</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if roles are added successfully, else false.
+        /// </returns>
+        bool AddScheduleRunHistorys(IList<ScheduleRunHistory> roles, string tenantCode);
+
+
+        /// <summary>
+        /// This method gets the specified list of roles from role repository.
+        /// </summary>
+        /// <param name="roleSearchParameter">The role search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of roles
+        /// </returns>
+        IList<ScheduleRunHistory> GetScheduleRunHistorys(ScheduleSearchParameter roleSearchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method reference to get role count
+        /// </summary>
+        /// <param name="roleSearchParameter"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>ScheduleRunHistory count</returns>
+        int GetScheduleRunHistoryCount(ScheduleSearchParameter roleSearchParameter, string tenantCode);
+
     }
 }

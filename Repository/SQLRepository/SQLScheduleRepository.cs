@@ -63,6 +63,7 @@ namespace nIS
 
         #region Public Methods
 
+        #region Schedule 
         /// <summary>
         /// This method adds the specified list of schedule in the repository.
         /// </summary>
@@ -210,6 +211,14 @@ namespace nIS
                     {
                         throw new ScheduleNotFoundException(tenantCode);
                     }
+                    query = new StringBuilder();
+                    query.Append("(" + string.Join("or ", string.Join(",", schedules.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("ScheduleId.Equals({0}) ", item))) + ") ");
+
+                    IList<ScheduleRunHistoryRecord> scheduleRunHistoryRecords = nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    if (scheduleRunHistoryRecords.Count()>0)
+                    {
+                        throw new RunningScheduleRefrenceException(tenantCode);
+                    }
 
                     scheduleRecords.ToList().ForEach(item =>
                     {
@@ -293,7 +302,7 @@ namespace nIS
                             HourOfDay = scheduleRecord.HourOfDay,
                             MinuteOfDay = scheduleRecord.MinuteOfDay,
                             StartDate = DateTime.SpecifyKind((DateTime)scheduleRecord.StartDate, DateTimeKind.Utc),
-                            EndDate = scheduleRecord.EndDate != null ? DateTime.SpecifyKind((DateTime)scheduleRecord.EndDate, DateTimeKind.Utc) : DateTime .MinValue,
+                            EndDate = scheduleRecord.EndDate != null ? DateTime.SpecifyKind((DateTime)scheduleRecord.EndDate, DateTimeKind.Utc) : DateTime.MinValue,
                             Status = scheduleRecord.Status,
                             IsExportToPDF = scheduleRecord.IsExportToPDF,
                             LastUpdatedDate = scheduleRecord.LastUpdatedDate,
@@ -434,6 +443,193 @@ namespace nIS
             }
         }
 
+        #endregion
+
+        #endregion
+
+
+        #region ScheduleRunHistory  Run History
+        /// <summary>
+        /// This method adds the specified list of schedule in the repository.
+        /// </summary>
+        /// <param name="schedules"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule values are added successfully, false otherwise
+        /// </returns>
+        public bool AddScheduleRunHistorys(IList<ScheduleRunHistory> schedules, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+                IList<ScheduleRunHistoryRecord> scheduleRecords = new List<ScheduleRunHistoryRecord>();
+                schedules.ToList().ForEach(schedule =>
+                {
+                    scheduleRecords.Add(new ScheduleRunHistoryRecord()
+                    {
+
+                        StartDate = schedule.StartDate,
+                        EndDate = schedule.EndDate,
+                        TenantCode = tenantCode,
+                        ScheduleId = schedule.Schedule.Identifier
+                    });
+                });
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleRunHistoryRecords.AddRange(scheduleRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+
+            catch
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// This method used to get the rolse based on search paramter.
+        /// </summary>
+        /// <param name="scheduleSearchParameter"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>List of schedules</returns>
+        public IList<ScheduleRunHistory> GetScheduleRunHistorys(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
+        {
+            IList<ScheduleRunHistory> schedules = new List<ScheduleRunHistory>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorHistory(scheduleSearchParameter, tenantCode);
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    if (scheduleSearchParameter.StatementDefinitionName != null && scheduleSearchParameter.StatementDefinitionName != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("Name.Equals(\"{0}\")", scheduleSearchParameter.StatementDefinitionName));
+
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.StatementRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("StatementId.Equals({0}) ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return schedules;
+                        }
+                    }
+
+                    if (scheduleSearchParameter.ScheduleName != null && scheduleSearchParameter.ScheduleName != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("Name.Equals(\"{0}\")", scheduleSearchParameter.ScheduleName));
+
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.ScheduleRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("ScheduleId.Equals({0}) ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return schedules;
+                        }
+                    }
+                    IList<ScheduleRunHistoryRecord> scheduleRecords = new List<ScheduleRunHistoryRecord>();
+                    if (scheduleSearchParameter.PagingParameter.PageIndex > 0 && scheduleSearchParameter.PagingParameter.PageSize > 0)
+                    {
+                        scheduleRecords = nISEntitiesDataContext.ScheduleRunHistoryRecords
+                        .OrderBy(scheduleSearchParameter.SortParameter.SortColumn + " " + scheduleSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((scheduleSearchParameter.PagingParameter.PageIndex - 1) * scheduleSearchParameter.PagingParameter.PageSize)
+                        .Take(scheduleSearchParameter.PagingParameter.PageSize)
+                        .ToList();
+                    }
+                    else
+                    {
+                        scheduleRecords = nISEntitiesDataContext.ScheduleRunHistoryRecords
+                        .Where(whereClause)
+                        .OrderBy(scheduleSearchParameter.SortParameter.SortColumn + " " + scheduleSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
+                    }
+
+                    if (scheduleRecords != null && scheduleRecords.Count > 0)
+                    {
+
+                        schedules = scheduleRecords.Select(scheduleRecord => new ScheduleRunHistory()
+                        {
+
+                            Identifier = scheduleRecord.Id,
+                            StartDate = DateTime.SpecifyKind((DateTime)scheduleRecord.StartDate, DateTimeKind.Utc),
+                            EndDate = scheduleRecord.EndDate != null ? DateTime.SpecifyKind((DateTime)scheduleRecord.EndDate, DateTimeKind.Utc) : DateTime.MinValue,
+                            Schedule = new Schedule { Identifier = scheduleRecord.ScheduleId }
+                        }).ToList();
+
+                        //StringBuilder scheduleIdentifier = new StringBuilder();
+                        //scheduleIdentifier.Append("(" + string.Join(" or ", scheduleRecords.Select(item => string.Format("Id.Equals({0})", item.ScheduleId))) + ")");
+                        //IList<ScheduleRecord> records = new List<ScheduleRecord>();
+                        //records = nISEntitiesDataContext.ScheduleRecords.Where(scheduleIdentifier.ToString()).ToList();
+                        //schedules.ToList().ForEach(schedule =>
+                        //{
+                        //    if (records.Where(item => item.Id == schedule.Schedule.Identifier)?.FirstOrDefault() != null)
+                        //    {
+                        //        ScheduleRecord record = new ScheduleRecord();
+                        //        record = records.Where(item => item.Id == schedule.Schedule.Identifier)?.FirstOrDefault();
+                        //        schedule.Schedule.Name = record.Name;
+                        //        schedule.Schedule.DayOfMonth = record.DayOfMonth;
+
+                        //    }
+                        //});
+
+                    }
+
+
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return schedules;
+        }
+
+        /// <summary>
+        /// This method helps to get count of schedules.
+        /// </summary>
+        /// <param name="scheduleSearchParameter"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        public int GetScheduleRunHistoryCount(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
+        {
+            int scheduleCount = 0;
+            string whereClause = this.WhereClauseGeneratorHistory(scheduleSearchParameter, tenantCode);
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    scheduleCount = nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(whereClause.ToString()).Count();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return scheduleCount;
+        }
 
         #endregion
 
@@ -503,6 +699,42 @@ namespace nIS
             queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
+
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="searchParameter">Schedule search Parameters</param>
+        /// <returns>
+        /// Returns a string.
+        /// </returns>
+        private string WhereClauseGeneratorHistory(ScheduleSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
+            {
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+                queryString.Append("EndDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+
+                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                               "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
 
         /// <summary>
         /// This method determines uniqueness of elements in repository.
