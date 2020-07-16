@@ -157,8 +157,8 @@ namespace nIS
                     throw invalidSearchParameterException;
                 }
 
-                pageSearchParameter.StartDate = this.validationEngine.IsValidDate(pageSearchParameter.StartDate) ? pageSearchParameter.StartDate.ToLocalTime() : pageSearchParameter.StartDate;
-                pageSearchParameter.EndDate = this.validationEngine.IsValidDate(pageSearchParameter.EndDate) ? pageSearchParameter.EndDate.ToLocalTime() : pageSearchParameter.EndDate;
+                pageSearchParameter.StartDate = this.validationEngine.IsValidDate(pageSearchParameter.StartDate) ? DateTime.SpecifyKind(Convert.ToDateTime(pageSearchParameter.StartDate), DateTimeKind.Utc) : pageSearchParameter.StartDate;
+                pageSearchParameter.EndDate = this.validationEngine.IsValidDate(pageSearchParameter.EndDate) ? DateTime.SpecifyKind(Convert.ToDateTime(pageSearchParameter.EndDate), DateTimeKind.Utc) : pageSearchParameter.EndDate;
 
                 return this.pageRepository.GetPages(pageSearchParameter, tenantCode);
             }

@@ -123,12 +123,14 @@ export class AddDashboardDesignerComponent implements OnInit {
 
     public imageFormErrorObject: any = {
         showAssetLibraryError: false,
-        showAssetError: false
+        showAssetError: false,
+        showTaargetLinkError: false
     };
 
     public videoFormErrorObject: any = {
         showAssetLibraryError: false,
-        showAssetError: false
+        showAssetError: false,
+        showTaargetLinkError: false
     }
     
     //Getters for Image config Forms
@@ -162,6 +164,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     saveImgFormValidation(): boolean {
+        
         if (this.ImageConfigForm.controls.imageUrl.invalid && !this.isPersonalizeImage) {
             return true;
         }
@@ -173,6 +176,20 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         return false; 
     }
+
+     /**
+   * Marks all controls in a form group as touched
+   * @param formGroup - The form group to touch
+   */
+  private markFormGroupUnTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach(control => {
+      control.markAsUntouched();
+
+      if (control.controls) {
+        this.markFormGroupUnTouched(control);
+      }
+    });
+  }
 
     saveVideoFormValidation(): boolean {
         if (this.VideoConfigForm.controls.vdoUrl.invalid && (!this.isPersonalize && this.isEmbedded)) {
@@ -187,7 +204,9 @@ export class AddDashboardDesignerComponent implements OnInit {
         return false; 
     }
 
-    isImageConfigForm(widgetId, widgetItemCount) {
+    isImageConfigForm(widgetId, widgetItemCount) {        
+        this.imageFormErrorObject.showAssetLibraryError = false;
+        this.imageFormErrorObject.showAssetError = false;
         this.isMasterSaveBtnDisabled = true;
         this.isImageConfig = true;
         this.imageWidgetId = widgetId;
@@ -224,7 +243,8 @@ export class AddDashboardDesignerComponent implements OnInit {
                     imgAssetLibrary: 0,
                     imgAsset: 0,
                     imageUrl: null
-                }); 
+                });
+                this.markFormGroupUnTouched(this.ImageConfigForm);
                 this.ImagePreviewSrc = ''; 
             }
         }
@@ -244,6 +264,8 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     isVideoConfigForm(widgetId, widgetItemCount) {
+        this.videoFormErrorObject.showAssetLibraryError = false;
+        this.videoFormErrorObject.showAssetError = false;
         this.isMasterSaveBtnDisabled = true;
         this.isVideoConfig = true;
         this.videoWidgetId = widgetId;
@@ -311,6 +333,7 @@ export class AddDashboardDesignerComponent implements OnInit {
                     vdoAsset: 0,
                     vdoUrl: ''
                 });
+                this.markFormGroupUnTouched(this.VideoConfigForm);
                 
                 this.videoPreviewSrc = '';
                 var videoDiv = document.getElementById('videoPreviewDiv');
@@ -511,71 +534,77 @@ export class AddDashboardDesignerComponent implements OnInit {
         let widgets = this.widgetsArray.filter(x => x.Identifier == widgetId);
         if(widgets.length != 0) {
             let widget = widgets[0];
-            this.widgetItemCount++;
-            if(widget.WidgetName == "CustomerInformation"){
-                return this.widgetsGridsterItemArray.push({
-                    cols: 15,
-                    rows: 7,
-                    y: 0,
-                    x: 0,
-                    component: CustomerInformationComponent,
-                    value : widget.WidgetName,
-                    widgetId : widget.Identifier,
-                    widgetItemCount: this.widgetItemCount,
-                    WidgetSetting: ''
-                })
-            }
-            else if(widget.WidgetName == "AccountInformation"){
-                return this.widgetsGridsterItemArray.push({
-                    cols: 5,
-                    rows: 7,
-                    y: 0,
-                    x: 0,
-                    component: AccountInformationComponent,
-                    value : widget.WidgetName,
-                    widgetId : widget.Identifier,
-                    widgetItemCount: this.widgetItemCount,
-                    WidgetSetting: ''
-                })
-            }
-            else if(widget.WidgetName == "Image"){
-                return this.widgetsGridsterItemArray.push({
-                    cols: 10,
-                    rows: 5,
-                    y: 0,
-                    x: 0,
-                    component: ImageComponent,
-                    value : widget.WidgetName,
-                    widgetId : widget.Identifier,
-                    widgetItemCount: this.widgetItemCount,
-                    WidgetSetting: ''
-                })
-            }
-            else if(widget.WidgetName == "Video"){
-                return this.widgetsGridsterItemArray.push({
-                    cols: 10,
-                    rows: 5,
-                    y: 0,
-                    x: 0,
-                    component: VideoComponent,
-                    value : widget.WidgetName,
-                    widgetId : widget.Identifier,
-                    widgetItemCount: this.widgetItemCount,
-                    WidgetSetting: ''
-                })
-            }
-            else if(widget.WidgetName == "Summary"){
-                return this.widgetsGridsterItemArray.push({
-                    cols: 15,
-                    rows: 6,
-                    y: 0,
-                    x: 0,
-                    component: SummaryAtGlanceComponent,
-                    value : widget.WidgetName,
-                    widgetId : widget.Identifier,
-                    widgetItemCount: this.widgetItemCount,
-                    WidgetSetting: ''
-                })
+            let widgetItems = this.widgetsGridsterItemArray.filter(w => w.widgetId == widget.Identifier);
+            if(widget.Instantiable == false && widgetItems.length > 0) {
+                let message = "You can not add multiple times "+ widget.DisplayName + " widget";
+                this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError);
+            }else {
+                this.widgetItemCount++;
+                if(widget.WidgetName == "CustomerInformation"){
+                    return this.widgetsGridsterItemArray.push({
+                        cols: 15,
+                        rows: 7,
+                        y: 0,
+                        x: 0,
+                        component: CustomerInformationComponent,
+                        value : widget.WidgetName,
+                        widgetId : widget.Identifier,
+                        widgetItemCount: this.widgetItemCount,
+                        WidgetSetting: ''
+                    })
+                }
+                else if(widget.WidgetName == "AccountInformation"){
+                    return this.widgetsGridsterItemArray.push({
+                        cols: 5,
+                        rows: 7,
+                        y: 0,
+                        x: 0,
+                        component: AccountInformationComponent,
+                        value : widget.WidgetName,
+                        widgetId : widget.Identifier,
+                        widgetItemCount: this.widgetItemCount,
+                        WidgetSetting: ''
+                    })
+                }
+                else if(widget.WidgetName == "Image"){
+                    return this.widgetsGridsterItemArray.push({
+                        cols: 10,
+                        rows: 5,
+                        y: 0,
+                        x: 0,
+                        component: ImageComponent,
+                        value : widget.WidgetName,
+                        widgetId : widget.Identifier,
+                        widgetItemCount: this.widgetItemCount,
+                        WidgetSetting: ''
+                    })
+                }
+                else if(widget.WidgetName == "Video"){
+                    return this.widgetsGridsterItemArray.push({
+                        cols: 10,
+                        rows: 5,
+                        y: 0,
+                        x: 0,
+                        component: VideoComponent,
+                        value : widget.WidgetName,
+                        widgetId : widget.Identifier,
+                        widgetItemCount: this.widgetItemCount,
+                        WidgetSetting: ''
+                    })
+                }
+                else if(widget.WidgetName == "Summary"){
+                    return this.widgetsGridsterItemArray.push({
+                        cols: 15,
+                        rows: 6,
+                        y: 0,
+                        x: 0,
+                        component: SummaryAtGlanceComponent,
+                        value : widget.WidgetName,
+                        widgetId : widget.Identifier,
+                        widgetItemCount: this.widgetItemCount,
+                        WidgetSetting: ''
+                    })
+                }
             }
         }
         
