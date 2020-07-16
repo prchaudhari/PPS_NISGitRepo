@@ -149,7 +149,7 @@ export class ListComponent implements OnInit {
             searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
             searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
             searchParameter.SortParameter = {};
-            searchParameter.SortParameter.SortColumn = 'CreatedDate';
+            searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
             searchParameter.SortParameter.SortOrder = Constants.Descending;
             searchParameter.SearchMode = Constants.Contains;
         }
@@ -234,8 +234,8 @@ export class ListComponent implements OnInit {
                 searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
                 searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
                 searchParameter.SortParameter = {};
-                searchParameter.SortParameter.SortColumn = 'DisplayName';
-                searchParameter.SortParameter.SortOrder = Constants.Ascending;
+                searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
+                searchParameter.SortParameter.SortOrder = Constants.Descending;
                 searchParameter.SearchMode = Constants.Contains;
                 if(this.TemplateFilterForm.value.filterDisplayName != null && this.TemplateFilterForm.value.filterDisplayName != '') {
                     searchParameter.DisplayName = this.TemplateFilterForm.value.filterDisplayName.trim();         
@@ -250,11 +250,17 @@ export class ListComponent implements OnInit {
                     searchParameter.Status = this.TemplateFilterForm.value.filterStatus;
                 }
                 if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
-                    searchParameter.StartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
+                    //searchParameter.StartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
+                    searchParameter.StartDate = new Date(this.TemplateFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
+                    searchParameter.SortParameter.SortColumn = 'PublishedOn';
                 }
                 if(this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
-                    searchParameter.EndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
+                    //searchParameter.EndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
+                    searchParameter.EndDate = new Date(this.TemplateFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
+                    searchParameter.SortParameter.SortColumn = 'PublishedOn';
                 }
+
+                console.log(searchParameter);
                 this.currentPage = 0;
                 this.getTemplates(searchParameter);
                 this.isFilter = !this.isFilter;
