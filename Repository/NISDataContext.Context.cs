@@ -52,5 +52,11 @@ namespace nIS
         public virtual DbSet<WidgetRecord> WidgetRecords { get; set; }
         public virtual DbSet<AssetSettingRecord> AssetSettingRecords { get; set; }
         public virtual DbSet<ScheduleRunHistoryRecord> ScheduleRunHistoryRecords { get; set; }
+        public virtual DbSet<CustomerInfoRecord> CustomerInfoRecords { get; set; }
+        public virtual DbSet<ImageRecord> ImageRecords { get; set; }
+        public virtual DbSet<NewsAlertRecord> NewsAlertRecords { get; set; }
+        public virtual DbSet<RenderEngineRecord> RenderEngineRecords { get; set; }
+        public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
+        public virtual DbSet<VideoRecord> VideoRecords { get; set; }
     }
 }

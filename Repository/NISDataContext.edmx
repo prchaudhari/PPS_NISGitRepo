@@ -72,6 +72,39 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="CustomerInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Lastname" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
+          <Property Name="City" Type="bigint" Nullable="false" />
+          <Property Name="State" Type="bigint" Nullable="false" />
+          <Property Name="Country" Type="bigint" Nullable="false" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Image" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NewsAlert">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Details" Type="nvarchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="Page">
           <Key>
             <PropertyRef Name="Id" />
@@ -115,6 +148,19 @@
           <Property Name="PageId" Type="bigint" Nullable="false" />
           <Property Name="WidgetSetting" Type="nvarchar(max)" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RenderEngine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="250" />
+          <Property Name="PriorityLevel" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="NumberOfThread" Type="int" Nullable="false" />
+          <Property Name="InUse" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -206,6 +252,17 @@
           <Property Name="SequenceNumber" Type="bigint" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="TransactionDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="TransactionType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Details" Type="nvarchar" MaxLength="500" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -261,6 +318,15 @@
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
           <Property Name="RoleId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Video" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Widget">
           <Key>
@@ -330,9 +396,13 @@
           <EntitySet Name="AssetSetting" EntityType="Self.AssetSetting" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="CustomerInfo" EntityType="Self.CustomerInfo" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="Image" EntityType="Self.Image" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NewsAlert" EntityType="Self.NewsAlert" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageType" EntityType="Self.PageType" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageWidgetMap" EntityType="Self.PageWidgetMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="RenderEngine" EntityType="Self.RenderEngine" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="RolePrivilege" EntityType="Self.RolePrivilege" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="NIS" store:Type="Tables" />
@@ -340,11 +410,13 @@
           <EntitySet Name="State" EntityType="Self.State" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Statement" EntityType="Self.Statement" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementPageMap" EntityType="Self.StatementPageMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserCredentialHistory" EntityType="Self.UserCredentialHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserLoginActivityHistory" EntityType="Self.UserLoginActivityHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserRoleMap" EntityType="Self.UserRoleMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="Video" EntityType="Self.Video" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
         </EntityContainer>
@@ -376,6 +448,12 @@
           <EntitySet Name="WidgetRecords" EntityType="NISModel.WidgetRecord" />
           <EntitySet Name="AssetSettingRecords" EntityType="NISModel.AssetSettingRecord" />
           <EntitySet Name="ScheduleRunHistoryRecords" EntityType="NISModel.ScheduleRunHistoryRecord" />
+          <EntitySet Name="CustomerInfoRecords" EntityType="NISModel.CustomerInfoRecord" />
+          <EntitySet Name="ImageRecords" EntityType="NISModel.ImageRecord" />
+          <EntitySet Name="NewsAlertRecords" EntityType="NISModel.NewsAlertRecord" />
+          <EntitySet Name="RenderEngineRecords" EntityType="NISModel.RenderEngineRecord" />
+          <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
+          <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -694,6 +772,72 @@
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CustomerInfoRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="Int64" Nullable="false" />
+          <Property Name="State" Type="Int64" Nullable="false" />
+          <Property Name="Country" Type="Int64" Nullable="false" />
+          <Property Name="Zip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ImageRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Image1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NewsAlertRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RenderEngineRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PriorityLevel" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="NumberOfThread" Type="Int32" Nullable="false" />
+          <Property Name="InUse" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionDetailRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="VideoRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Video1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1038,6 +1182,78 @@
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerInfoRecords">
+            <EntityTypeMapping TypeName="NISModel.CustomerInfoRecord">
+              <MappingFragment StoreEntitySet="CustomerInfo">
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ImageRecords">
+            <EntityTypeMapping TypeName="NISModel.ImageRecord">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="Image1" ColumnName="Image" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NewsAlertRecords">
+            <EntityTypeMapping TypeName="NISModel.NewsAlertRecord">
+              <MappingFragment StoreEntitySet="NewsAlert">
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RenderEngineRecords">
+            <EntityTypeMapping TypeName="NISModel.RenderEngineRecord">
+              <MappingFragment StoreEntitySet="RenderEngine">
+                <ScalarProperty Name="InUse" ColumnName="InUse" />
+                <ScalarProperty Name="NumberOfThread" ColumnName="NumberOfThread" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PriorityLevel" ColumnName="PriorityLevel" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetailRecords">
+            <EntityTypeMapping TypeName="NISModel.TransactionDetailRecord">
+              <MappingFragment StoreEntitySet="TransactionDetail">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VideoRecords">
+            <EntityTypeMapping TypeName="NISModel.VideoRecord">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="Video1" ColumnName="Video" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
