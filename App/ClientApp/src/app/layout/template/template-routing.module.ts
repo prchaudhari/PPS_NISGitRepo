@@ -9,16 +9,12 @@ const routes: Routes = [
     {
         path: '',
         children: [
-            { path: '', component: ListComponent,
-            canActivate: [AuthGuard] },
-            { path: 'list', component: ListComponent,
-            canActivate: [AuthGuard] },
-            { path: 'View', component: ViewComponent,
-            canActivate: [AuthGuard] },
-            { path: 'Add', component: AddComponent,
-            canActivate: [AuthGuard] },
-            { path: 'List', component: ListComponent,
-            canActivate: [AuthGuard] }
+            { path: '', component: ListComponent, canActivate: [AuthGuard] },
+            { path: 'list', component: ListComponent, canActivate: [AuthGuard] },
+            { path: 'View', component: ViewComponent, canActivate: [AuthGuard] },
+            { path: 'Add', component: AddComponent, canActivate: [AuthGuard] },
+            { path: 'Edit', component: AddComponent, canActivate: [AuthGuard] },
+            { path: 'List', component: ListComponent, canActivate: [AuthGuard] }
         ],
     }];
 

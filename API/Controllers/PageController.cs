@@ -199,5 +199,26 @@ namespace nIS
         }
 
         #endregion
+
+        #region Page Type
+        /// <summary>
+        /// This method helps to get page type list.
+        /// </summary>
+        /// <returns>List of page type</returns>
+        [HttpPost]
+        [Route("PageType/List")]
+        public IList<PageType> GetPageType()
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.pageManager.GetPageTypes(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+        #endregion
     }
 }

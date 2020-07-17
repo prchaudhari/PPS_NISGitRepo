@@ -59,6 +59,7 @@ export class URLConfiguration {
   public static get pagePublishUrl(): string { return "Page/Publish" };
   public static get pagePreviewUrl(): string { return "Page/Preview" };
   public static get pageCloneUrl(): string { return "Page/Clone" };
+  public static get pageTypeGetUrl(): string { return "PageType/List" };
 
 //widget Url methhod
 

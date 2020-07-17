@@ -12,12 +12,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DynamicModule } from 'ng-dynamic-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DisableControlDirective } from './../shared/directive/disabled-control.directive';
 import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from './widgetComponent/widgetComponent';
 
 @NgModule({
   declarations: [AddDashboardDesignerComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, 
-    AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, DisableControlDirective],
+    AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
     GridsterModule, LayoutModule, MatSortModule, MatTableModule, MatPaginatorModule, DynamicModule

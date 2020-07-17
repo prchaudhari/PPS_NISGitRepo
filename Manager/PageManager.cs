@@ -458,6 +458,25 @@ namespace nIS
             return htmlString.ToString();
         }
 
+        /// <summary>
+        /// This method will call get page types method of repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns page types
+        /// </returns>
+        public IList<PageType> GetPageTypes(string tenantCode)
+        {
+            try
+            {
+                return this.pageRepository.GetPageTypes(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
         #endregion
 
         #region Private Methods

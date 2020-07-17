@@ -94,7 +94,7 @@ export class ListComponent implements OnInit {
 
     ngOnInit() {
         this.getTemplates(null);
-        this.getPageTypes(null);
+        //this.getPageTypes();
         this.TemplateFilterForm = this.fb.group({
             filterDisplayName: [null],
             filterOwner: [null],
@@ -170,9 +170,18 @@ export class ListComponent implements OnInit {
         this.iterator();
     }
 
-    async getPageTypes(searchParameter) {
-        this.pageTypeList = [ {"Id": 1, "Name": "Home"}, {"Id": 2, "Name": "Saving Account"}, {"Id": 3, "Name": "Current Account"} ];
-    }
+    async getPageTypes() {
+        let templateService = this.injector.get(TemplateService);
+        this.pageTypeList = await templateService.getPageTypes();
+          if (this.pageTypeList.length == 0) {
+              let message = ErrorMessageConstants.getNoRecordFoundMessage;
+              this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+                  if (data == true) {
+                      this.getPageTypes();
+                  }
+              });
+          }
+      }
 
     validateFilterDate(): boolean {
         if(this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '' && 
@@ -374,6 +383,21 @@ export class ListComponent implements OnInit {
         if (resultHtmlString != '') {
             this._messageDialogService.openPreviewDialogBox(resultHtmlString);
         }
+    }
+
+    navigationToEditPage(template: Template) {
+        let queryParams = {
+            Routeparams: {
+                passingparams: {
+                    "PageName": template.DisplayName,
+                    "PageIdentifier": template.Identifier,
+                    "PageTypeId": template.PageTypeId,
+                    "pageEditModeOn": true
+                }
+            }
+        }
+        localStorage.setItem("pageEditRouteparams", JSON.stringify(queryParams))
+        this.route.navigate(['pages', 'Edit']);
     }
 
     navigationToDashboardDesignerEdit(template: Template) {

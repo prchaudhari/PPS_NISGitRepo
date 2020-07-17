@@ -72,7 +72,7 @@
                 *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages',Operation: 'View' }))">
                 <span class="fa fa-file-text-o"></span>
               </button>
-              <button type="button" title="Update" id="btnUpdate" (click)="navigationToDashboardDesignerEdit(element)"
+              <button type="button" title="Update" id="btnUpdate" (click)="navigationToEditPage(element)"
                 *ngIf="element.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages',Operation: 'Edit' }))">
                 <span class="fa fa-pencil-square-o"></span>
               </button>

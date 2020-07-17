@@ -1,6 +1,7 @@
 <div class="main-container">
   <div class="page-title">
-    <span class="xs-title">Add Page</span>
+    <span class="xs-title" *ngIf="pageEditModeOn == false"> Add Page  </span>
+    <span class="xs-title" *ngIf="pageEditModeOn == true"> Update Page  </span>
   </div>
 
   <form [formGroup]="pageFormGroup" name="pageForm">
@@ -27,8 +28,8 @@
         <div class="row">
           <div class="col-md-4 col-lg-4">
             <label id="lblPageType" for="inputageType">Page Type</label> <span class="text-danger"> *</span>
-            <select id="inputageType" formControlName="pageType" (change)="onPageTypeSelected($event)" class="form-control">
-              <option *ngFor="let pt of pageTypelist" [value]="pt.Identifier">{{pt.Name}}</option>
+            <select id="inputageType" formControlName="pageType" (change)="onPageTypeSelected($event)" class="form-control" [disableControl]="pageEditModeOn">
+              <option *ngFor="let pt of pageTypelist" [value]="pt.Identifier">{{pt.PageTypeName}}</option>
             </select>
             <div class="validation-msg" style="color:red">
               <ul style="list-style-type:none" *ngIf="pageFormErrorObject.showPageTypeError">

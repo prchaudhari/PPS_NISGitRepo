@@ -11,9 +11,10 @@ import { AddComponent } from './add/add.component';
 import { ViewComponent } from './view/view.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SharedModule } from '../../shared/modules/shared.module';
+import { DisableControlDirective } from '../../shared/directive/disabled-control.directive';
 
 @NgModule({
-  declarations: [ListComponent, AddComponent, ViewComponent],
+  declarations: [ListComponent, AddComponent, ViewComponent, DisableControlDirective],
   imports: [
     CommonModule,
       TemplateRoutingModule, MatSortModule, MatTableModule, MatPaginatorModule, OwlDateTimeModule, 

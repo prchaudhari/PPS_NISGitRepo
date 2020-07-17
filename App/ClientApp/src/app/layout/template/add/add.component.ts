@@ -8,6 +8,7 @@ import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.serv
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { TemplateService } from '../template.service';
+import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
 
 @Component({
   selector: 'app-add',
@@ -71,11 +72,13 @@ export class AddComponent implements OnInit {
       private router: Router,
       private localstorageservice: LocalStorageService ) 
       {
+
         if (localStorage.getItem("pageparams")) {
           this.pageEditModeOn = true;
         } else {
           this.pageEditModeOn = false;
         }
+
         router.events.subscribe(e => {
           if (e instanceof NavigationEnd) {
               if (e.url.includes('/pages')) {
@@ -94,10 +97,18 @@ export class AddComponent implements OnInit {
                     this.PageWidgetArrayStringBeforePageTypeChange = this.params.Routeparams.passingparams.PageWidgetArray
                     this.isPageTypeChangeActionByClickingPreviousButton = true;
                 }
+                if (localStorage.getItem('pageEditRouteparams')) {
+                  this.params = JSON.parse(localStorage.getItem('pageEditRouteparams'));
+                  this.PageName = this.params.Routeparams.passingparams.PageName
+                  this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
+                  this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
+                  this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
+              }
               }
               else {
                 localStorage.removeItem("pageparams");
                 localStorage.removeItem("pageAddRouteparams");
+                localStorage.removeItem("pageEditRouteparams");
               }
           }
         });
@@ -111,7 +122,6 @@ export class AddComponent implements OnInit {
             Validators.maxLength(Constants.inputMaxLenth), Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
           pageType: [0, Validators.compose([Validators.required])],
       });
-      this.getPageTypes();
 
       if(this.PageName != null && this.PageTypeId != null) {
         this.pageFormGroup.patchValue({
@@ -119,6 +129,7 @@ export class AddComponent implements OnInit {
           pageType: this.PageTypeId
         });
       }
+      this.getPageTypes();
     }
 
     saveBtnValidation(): boolean {
@@ -135,6 +146,9 @@ export class AddComponent implements OnInit {
       let pageObject: any = {};
         pageObject.DisplayName = this.pageFormGroup.value.pageName;
         pageObject.PageTypeId = this.PageTypeId;
+        if(this.pageEditModeOn) {
+          pageObject.Identifier = this.PageIdentifier
+        }
         pageObject.PageWidgets = [];
         this.saveTemplate(pageObject);
     }
@@ -205,17 +219,29 @@ export class AddComponent implements OnInit {
             "PageTypeId": this.PageTypeId,
             "PageTypeName": this.PageTypeName,
             "pageEditModeOn": this.pageEditModeOn,
+            "PageIdentifier": this.pageEditModeOn ? this.PageIdentifier : 0,
             "PageWidgetArrayString": this.PageWidgetArrayString
           }
         }
       }
-      localStorage.setItem("pageDesignRouteparams", JSON.stringify(queryParams))
+      localStorage.setItem(this.pageEditModeOn ? "pageDesignEditRouteparams" : "pageDesignRouteparams", JSON.stringify(queryParams));
       this.router.navigate(['../dashboardDesigner']);
     }
 
-    getPageTypes(){
-      this.pageTypelist = [ {"Identifier": 0, "Name": "Select Page Type"}, {"Identifier": 1, "Name": "Home"}, 
-      {"Identifier": 2, "Name": "Saving Account"}, {"Identifier": 3, "Name": "Current Account"} ];
+    async getPageTypes() {
+      let templateService = this.injector.get(TemplateService);
+      this.pageTypelist = [{ "Identifier": 0, "PageTypeName": "Select Page Type"}];
+      let list = await templateService.getPageTypes();
+        if (this.pageTypelist.length == 0) {
+            let message = ErrorMessageConstants.getNoRecordFoundMessage;
+            this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+                if (data == true) {
+                    this.getPageTypes();
+                }
+            });
+        } else {
+          this.pageTypelist = [...this.pageTypelist, ...list];
+        }
     }
 
 }

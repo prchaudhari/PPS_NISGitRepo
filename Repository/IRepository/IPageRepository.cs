@@ -82,5 +82,15 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         bool ClonePage(long pageIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of page type from page repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of page type
+        /// </returns>
+        IList<PageType> GetPageTypes(string tenantCode);
+
     }
 }

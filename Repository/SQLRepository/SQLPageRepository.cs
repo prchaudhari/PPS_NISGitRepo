@@ -448,6 +448,7 @@ namespace nIS
                     pages.ToList().ForEach(item =>
                     {
                         PageRecord pageRecord = pageRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
+                        pageRecord.DisplayName = item.DisplayName;
                         pageRecord.LastUpdatedDate = DateTime.Now;
                         pageRecord.UpdateBy = userId;
                         pageRecord.TenantCode = tenantCode;
@@ -561,6 +562,41 @@ namespace nIS
                 throw exception;
             }
             return result;
+        }
+
+        /// <summary>
+        /// This method gets the specified list of page types from page repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of page types
+        /// </returns>
+        public IList<PageType> GetPageTypes(string tenantCode)
+        {
+            IList<PageType> pageTypes = new List<PageType>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                IList<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(item => item.IsActive == true && item.IsDeleted == false)?.ToList();
+                }
+                pageTypeRecords?.ToList().ForEach(pageType => 
+                pageTypes.Add(new PageType()
+                { 
+                    Identifier = pageType.Id,
+                    PageTypeName = pageType.Name,
+                    IsActive = pageType.IsActive,
+                    IsDeleted = pageType.IsDeleted,
+                }));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return pageTypes;
         }
 
         #endregion

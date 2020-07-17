@@ -116,6 +116,7 @@ export class AddDashboardDesignerComponent implements OnInit {
                     }
                 } else {
                     localStorage.removeItem("pageDesignRouteparams");
+                    localStorage.removeItem("pageDesignEditRouteparams");
                 }
             }
         });
@@ -637,7 +638,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             });
         }else {
             let template = this.templateList[0];
-            this.PageName = template.DisplayName;
+            this.PageName = this.PageName == '' ? template.DisplayName : this.PageName;
             this.PageTypeId = template.PageTypeId;
             this.PageIdentifier = template.Identifier;
             this.pageVersion = template.Version;

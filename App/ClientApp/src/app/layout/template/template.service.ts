@@ -196,4 +196,36 @@ export class TemplateService {
             });
         return <string>resultString;
     }
+
+    //method to call api of get pages.
+    async getPageTypes(): Promise<any[]> {
+        let httpClientService = this.injector.get(HttpClientService);
+        let requestUrl = URLConfiguration.pageTypeGetUrl;
+        let pageTypes: any[] = [];
+        this.uiLoader.start();
+        await httpClientService.CallHttp("POST", requestUrl).toPromise()
+            .then((httpEvent: HttpEvent<any>) => {
+                if (httpEvent.type == HttpEventType.Response) {
+                    if (httpEvent["status"] === 200) {
+                        pageTypes = [];
+                        this.uiLoader.stop();
+                        httpEvent['body'].forEach(pageType => {
+                            pageTypes = [...pageTypes, pageType];
+                        });
+                    }
+                    else {
+                        pageTypes = [];
+                        this.uiLoader.stop();
+                    }
+                }
+            }, (error: HttpResponse<any>) => {
+                pageTypes = [];
+                this.uiLoader.stop();
+                if (error["error"] != null) {
+                    let errorMessage = error["error"].Error["Message"];
+                    this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+                }
+            });
+        return <any[]>pageTypes
+    }
 }
