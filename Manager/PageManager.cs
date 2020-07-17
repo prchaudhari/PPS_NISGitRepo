@@ -12,6 +12,7 @@ namespace nIS
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using Unity;
     #endregion
 
@@ -262,9 +263,11 @@ namespace nIS
                 htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
                 for (int y = 0; y < pages.Count; y++)
                 {
-                    string divId = pages[y].PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID ? HtmlConstants.HOME_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME : string.Empty;
+                    var page = pages[y];
+                    //string divId = pages[y].PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID ? HtmlConstants.HOME_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME : string.Empty;
 
-                    htmlString.Append(HtmlConstants.WIDGET_HTML_HEADER.Replace("{{DivId}}", divId));
+                    string tabClassName = Regex.Replace(page.DisplayName, @"\s+", "-");
+                    htmlString.Append(HtmlConstants.WIDGET_HTML_HEADER.Replace("{{DivId}}", tabClassName));
                     int tempRowWidth = 0;
                     int max = 0;
                     if (pages[y].PageWidgets.Count > 0)

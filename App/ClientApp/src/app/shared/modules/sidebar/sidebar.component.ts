@@ -189,16 +189,20 @@ export class SidebarComponent implements OnInit {
     if(this.isSuperAdminUser == true) {
       if (this.URL == '/settings') {
         this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
-        this.element.className = 'fa fa-home'
-        this.iconTitle = "Home";
-        this.element.title = "Home"
-        this.IsMainMenu = false;
+        if(this.element != null) {
+          this.element.className = 'fa fa-home'
+          this.iconTitle = "Home";
+          this.element.title = "Home"
+          this.IsMainMenu = false;
+        }
       }
       else {
         this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
-        this.element.className = 'fa fa-cog'
-        this.iconTitle = "Asset Configuration Settings"
-        this.element.title = "Asset Configuration Settings";
+        if(this.element != null) {
+          this.element.className = 'fa fa-cog'
+          this.iconTitle = "Asset Configuration Settings"
+          this.element.title = "Asset Configuration Settings";
+        }
       }
     }
 

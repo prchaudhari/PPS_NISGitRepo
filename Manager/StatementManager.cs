@@ -12,6 +12,7 @@ namespace nIS
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using Unity;
     #endregion
 
@@ -262,7 +263,7 @@ namespace nIS
             var statements = this.StatementRepository.GetStatements(statementSearchParameter, tenantCode);
             if (statements.Count != 0)
             {
-                var statementPages = statements[0].StatementPages;
+                var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                 if (statementPages.Count != 0)
                 {
                     //htmlString.Append(HtmlConstants.SCRIPT_TAG);
@@ -295,30 +296,33 @@ namespace nIS
                         {
                             for (int y = 0; y < pages.Count; y++)
                             {
-                                string divId = pages[y].PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID ? HtmlConstants.HOME_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME : string.Empty;
+                                var page = pages[y];
+                                //string divId = pages[y].PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID ? HtmlConstants.HOME_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME : string.Empty;
 
-                                if (divId == HtmlConstants.HOME_PAGE_DIV_NAME)
-                                {
-                                    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.HOME_PAGE_DIV_NAME + "' href='javascript:void(0);'>At a Glance</a> </li> ");
-                                }
-                                else if (divId == HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME)
-                                {
-                                    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Saving Account</a> </li> ");
-                                }
-                                else if (divId == HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME)
-                                {
-                                    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Current Account</a> </li> ");
-                                }
+                                //if (divId == HtmlConstants.HOME_PAGE_DIV_NAME)
+                                //{
+                                //    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.HOME_PAGE_DIV_NAME + "' href='javascript:void(0);'>At a Glance</a> </li> ");
+                                //}
+                                //else if (divId == HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME)
+                                //{
+                                //    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Saving Account</a> </li> ");
+                                //}
+                                //else if (divId == HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME)
+                                //{
+                                //    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Current Account</a> </li> ");
+                                //}
 
-                                string ExtraClassName = x > 0 ? "d-none " + divId : divId;
+                                string tabClassName = Regex.Replace(page.DisplayName, @"\s+", "-");
+                                navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
+                                string ExtraClassName = x > 0 ? "d-none " + tabClassName : tabClassName;
                                 string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);
-                                widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", divId);
+                                widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", tabClassName);
                                 htmlString.Append(widgetHtmlHeader);
                                 int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
                                 int max = 0;
-                                if (pages[y].PageWidgets.Count > 0)
+                                if (page.PageWidgets.Count > 0)
                                 {
-                                    var completelst = pages[y].PageWidgets;
+                                    var completelst = page.PageWidgets;
                                     int currentYPosition = 0;
                                     var isRowComplete = false;
 
@@ -359,7 +363,7 @@ namespace nIS
                                                     if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
                                                     {
                                                         CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
-                                                        var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", 
+                                                        var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}",
                                                             "assets/images/SampleVideo.mp4");
 
                                                         string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
@@ -368,9 +372,9 @@ namespace nIS
                                                         string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ",";
                                                         customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", address1);
 
-                                                        string address2 = (customerInfo.City != "" ? customerInfo.City + "," : "") + 
-                                                            (customerInfo.State != "" ? customerInfo.State + "," : "") + (customerInfo.Country != "" ? 
-                                                            customerInfo.Country + "," : "") +  (customerInfo.Zip != "" ? customerInfo.Zip : "");
+                                                        string address2 = (customerInfo.City != "" ? customerInfo.City + "," : "") +
+                                                            (customerInfo.State != "" ? customerInfo.State + "," : "") + (customerInfo.Country != "" ?
+                                                            customerInfo.Country + "," : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
                                                         customerHtmlWidget = customerHtmlWidget.Replace("{{Address2}}", address2);
 
                                                         htmlString.Append(customerHtmlWidget);
@@ -400,17 +404,17 @@ namespace nIS
                                                             "RM Name</div><label class='list-value mb-0'>" + accountInfo.RmName + "</label></div></div>");
 
                                                         AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" +
-                                                            "RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber + 
+                                                            "RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber +
                                                             "</label></div></div>");
 
-                                                        accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}", 
+                                                        accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}",
                                                             AccDivData.ToString());
                                                     }
                                                     else
                                                     {
                                                         AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" +
-                                                            "No Record" +"</div><label class='list-value mb-0'>Found</label></div></div>");
-                                                        accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}", 
+                                                            "No Record" + "</div><label class='list-value mb-0'>Found</label></div></div>");
+                                                        accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}",
                                                             AccDivData.ToString());
                                                     }
                                                     htmlString.Append(accountInfoData);
@@ -460,10 +464,10 @@ namespace nIS
                                                             StringBuilder accSummary = new StringBuilder();
                                                             lstAccountSummary.ToList().ForEach(acc =>
                                                             {
-                                                                accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>" 
+                                                                accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>"
                                                                     + acc.Amount + "</td></tr>");
                                                             });
-                                                            accountSummary = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML.Replace("{{AccountSummary}}", 
+                                                            accountSummary = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML.Replace("{{AccountSummary}}",
                                                                 accSummary.ToString());
                                                         }
                                                         else
