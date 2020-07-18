@@ -1,0 +1,91 @@
+<div class="main-container">
+    <div class="page-title">
+      <span class="xs-title" *ngIf="renderEngineEditModeOn == false"> Add Render Engine </span>
+      <span class="xs-title" *ngIf="renderEngineEditModeOn == true"> Update Render Engine </span>
+    </div>
+    <form [formGroup]="renderEngineForm" name="renderEngineForm" autocomplete="on" novalidate>
+      <div class="card border-0 mb-2 card-shadow">
+        <div class="card-body" id="collapseDetails">
+            <div class="row form-group">
+                <div class="col-md-6 col-sm-6 col-lg-4">
+                    <label id="lblRenderEngineName" for="inputRenderEngineName">Render Engine Name<span class="text-danger ml-2">*</span></label>
+                    <input type="text" class="form-control" id="inputRenderEngineName" name="RenderEngineName"
+                                    formControlName="RenderEngineName" />
+                    <!-- Error Masseges  -->
+                    <div class="validation-msg" style="color:red" *ngIf="RenderEngineName.touched && RenderEngineName.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="RenderEngineName.errors?.pattern">Invalid Render Engine Name</li>
+                            <li class="text-danger" *ngIf="RenderEngineName.errors?.required">Render Engine name required</li>
+                            <li class="text-danger" *ngIf="RenderEngineName.errors?.minlength">Render Engine name length should not be less than 2</li>
+                            <li class="text-danger" *ngIf="RenderEngineName.errors?.maxlength">Render Engine name length should not be greater than 50</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-4">
+                    <label id="lblRenderEngineURL" for="inputRenderEngineURL">Render Engine URL<span class="text-danger ml-2">*</span></label>
+                    <input type="text" class="form-control" id="inputRenderEngineURL" name="RenderEngineURL"
+                                    formControlName="RenderEngineURL" />
+                    <!-- Error Masseges  -->
+                    <div class="validation-msg" style="color:red" *ngIf="RenderEngineURL.touched && RenderEngineURL.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="RenderEngineURL.errors?.pattern">Invalid Render Engine URL</li>
+                            <li class="text-danger" *ngIf="RenderEngineURL.errors?.required">Render Engine URL name required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6 col-sm-6 col-lg-4">
+                    <label for="inputPriorityLevel">Priority Level</label><span class="text-danger ml-2">*</span>
+                    <select formControlName="RenderEnginePriorityLevel" (change)='onPriorityLevelSelected($event)' class="form-control">
+                        <option value="0">Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="renderEngineFormErrorObject.showPriorityLevelError" style="list-style-type:none">
+                        <li class="text-danger">
+                          Please select priority level
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-lg-4">
+                    <label for="inputConcurrencyCount">Concurrency Count</label><span class="text-danger ml-2">*</span>
+                    <select formControlName="RenderEngineConcurrencyCount" (change)='onConcurrencyCountSelected($event)' class="form-control">
+                        <option value="0">Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="renderEngineFormErrorObject.showConcurrencyCountError" style="list-style-type:none">
+                        <li class="text-danger">
+                          Please select concurrency count
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+            </div>
+        </div>
+      </div>
+      <div class="card border-0 mt-4 mb-3 bg-transparent">
+        <div class="card-body p-0">
+          <button class="btn-footer-fill mr-2" [disabled]="saveButtonValidation()" (click)="onSubmit()">Save</button>
+          <button class="btn-footer-outline" (click)="navigateToRenderEngineList()">Cancel</button>
+  
+        </div>
+      </div>
+    </form>
+  </div>
+  

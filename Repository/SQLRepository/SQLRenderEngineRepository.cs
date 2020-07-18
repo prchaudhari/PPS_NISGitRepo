@@ -93,7 +93,7 @@ namespace nIS
                         Name = renderEngine.RenderEngineName,
                         URL = renderEngine.URL,
                         PriorityLevel = renderEngine.PriorityLevel,
-                        IsActive = renderEngine.IsActive,
+                        IsActive = false,
                         IsDeleted = false,
                         InUse = false,
                         NumberOfThread = renderEngine.NumberOfThread
@@ -154,8 +154,8 @@ namespace nIS
                         renderEngineRecord.Name = renderEngine.RenderEngineName;
                         renderEngineRecord.URL = renderEngine.URL;
                         renderEngineRecord.PriorityLevel = renderEngine.PriorityLevel;
-                        renderEngineRecord.IsActive = renderEngine.IsActive;
-                        renderEngineRecord.IsDeleted = renderEngine.IsDeleted;
+                        //renderEngineRecord.IsActive = renderEngine.IsActive;
+                        //renderEngineRecord.IsDeleted = renderEngine.IsDeleted;
                         renderEngineRecord.NumberOfThread = renderEngine.NumberOfThread;
                     });
 

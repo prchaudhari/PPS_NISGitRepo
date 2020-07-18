@@ -22,6 +22,7 @@ const routes: Routes = [
       { path: 'schedulemanagement', loadChildren: () => import('./schedule-management/schedule-management.module').then(m => m.ScheduleManagementModule) },
       { path: 'statementdefination', loadChildren: () => import('./statement-defination/statement-defination.module').then(m => m.StatementDefinationModule) },
       { path: 'assetlibrary', loadChildren: () => import('./asset-libraries/asset-libraries.module').then(m => m.AssetLibrariesModule) },
+      { path: 'renderengines', loadChildren: () => import('./render-engine/render-engine.module').then(m => m.RenderEngineModule) },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'changepassword', component: ChangePasswordComponent },
       { path: 'profile', component: ProfileComponent },

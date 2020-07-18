@@ -46,23 +46,13 @@ export class SidebarComponent implements OnInit {
   }
 
   ChangeSideBar() {
-    this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
-    console.log(this.element);
     this.IsMainMenu = !this.IsMainMenu
     if (this.IsMainMenu) {
       this.URL = '/dashboard';
-      this.element.className = 'fa fa-cog';
-      this.element.title = "Asset Configuration Settings";
-      //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/dashboard']);
-      this.iconTitle = "Asset Configuration Settings";
     }
     else {
       this.URL = '/settings';
-      this.element.className = 'fa fa-home'
-      this.element.title = "Home";
-      this.iconTitle = "Home";
-      //$('.submenu-li').removeClass('active-li-submenu');
       this.route.navigate(['/settings']);
     }
   }
@@ -124,6 +114,11 @@ export class SidebarComponent implements OnInit {
 
     this.route.navigate(['/settings']);
   }
+  navigateToRenderEngine() {
+    this.URL = '/renderengines';
+    this.route.navigate(['/renderengines']);
+  }
+
   async logout() {
     this.localstorageservice.removeLocalStorageData();
     this.route.navigate(['login']);
@@ -185,24 +180,12 @@ export class SidebarComponent implements OnInit {
     })
     
     this.URL = this.route.url;
-    
     if(this.isSuperAdminUser == true) {
-      if (this.URL == '/settings') {
-        this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
-        if(this.element != null) {
-          this.element.className = 'fa fa-home'
-          this.iconTitle = "Home";
-          this.element.title = "Home"
-          this.IsMainMenu = false;
-        }
+      if (this.URL == '/settings' || this.URL == '/renderengines') {
+        this.IsMainMenu = false;
       }
       else {
-        this.element = document.getElementById('HomeSettingIcon') as HTMLElement;
-        if(this.element != null) {
-          this.element.className = 'fa fa-cog'
-          this.iconTitle = "Asset Configuration Settings"
-          this.element.title = "Asset Configuration Settings";
-        }
+        this.IsMainMenu = true;
       }
     }
 
@@ -226,6 +209,9 @@ export class SidebarComponent implements OnInit {
     }
     else if (this.URL.includes('/logs')) {
       this.URL = '/logs'
+    }
+    else if(this.URL.includes('/renderengines')) {
+      this.URL = '/renderengines';
     }
   }
 

@@ -39,6 +39,7 @@ namespace nIS
             unityContainer.RegisterType<IAssetSettingRepository, SQLAssetSettingRepository>();
             unityContainer.RegisterType<IScheduleRepository, SQLScheduleRepository>();
             unityContainer.RegisterType<IStatementRepository, SQLStatementRepository>();
+            unityContainer.RegisterType<IRenderEngineRepository, SQLRenderEngineRepository>();
 
             return unityContainer;
         }

@@ -461,15 +461,14 @@ namespace nIS
                 {
                     item.Identifier = pageRecords.ToList().Where(pageRec => pageRec.DisplayName == item.DisplayName && pageRec.PageTypeId == item.PageTypeId).FirstOrDefault().Id;
 
-                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                    {
-                        var existingPageWidgetMappingRecords = nISEntitiesDataContext.PageWidgetMapRecords.Where(itm => itm.PageId == item.Identifier).ToList();
-                        nISEntitiesDataContext.PageWidgetMapRecords.RemoveRange(existingPageWidgetMappingRecords);
-                        nISEntitiesDataContext.SaveChanges();
-                    }
-
                     if (item.PageWidgets?.Count > 0)
                     {
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            var existingPageWidgetMappingRecords = nISEntitiesDataContext.PageWidgetMapRecords.Where(itm => itm.PageId == item.Identifier).ToList();
+                            nISEntitiesDataContext.PageWidgetMapRecords.RemoveRange(existingPageWidgetMappingRecords);
+                            nISEntitiesDataContext.SaveChanges();
+                        }
                         AddPageWidgets(item.PageWidgets, item.Identifier, tenantCode);
                     }
                 });

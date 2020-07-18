@@ -35,7 +35,8 @@
     <li class="nav-item" *ngIf="isSuperAdminUser">
       <a class="nav-link top-nav-link" id="settingsSideBar"  (click)="ChangeSideBar()">
         <span></span>
-        <i id ="HomeSettingIcon"class="fa fa-cog"  title="Asset Configuration Settings"></i>
+        <i id ="HomeSettingIcon" *ngIf="!IsMainMenu" class="fa fa-home" title="Home"></i>
+        <i id ="HomeSettingIcon" *ngIf="IsMainMenu" class="fa fa-cog" title="Setings"></i>
       </a>
     </li>
     <li class="nav-item dropdown">
@@ -107,6 +108,12 @@
         <!--<a> <span class='nav-icon icon-rp-yield1' title="Settings"> </span> <span class='nav-title'>Configure Assets</span> </a>-->
         <a> <span class='nav-icon icon-operations2' title="Configure Assets"> </span> <span class='nav-title'>Configure Assets</span> </a>
       </li>
+
+      <li [ngClass]="(URL=='/renderengines')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToRenderEngine()">
+        <!--<a> <span class='nav-icon icon-rp-yield1' title="Settings"> </span> <span class='nav-title'>Configure Assets</span> </a>-->
+        <a> <span class='nav-icon icon-reportGenerations2' title="Render Engines"> </span> <span class='nav-title'>Render Engines</span> </a>
+      </li>
+
     </ul>
 
   </div>

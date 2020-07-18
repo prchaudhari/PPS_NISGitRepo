@@ -17,8 +17,6 @@ namespace nIS
     /// <summary>
     /// This class represent api controller for render engine
     /// </summary>
-    [EnableCors("*", "*", "*", "*")]
-    [RoutePrefix("RenderEngine")]
     public class RenderEngineController : ApiController
     {
 

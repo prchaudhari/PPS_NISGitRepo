@@ -83,4 +83,13 @@ export class URLConfiguration {
   public static get statementPublishUrl(): string { return "Statement/Publish" };
   public static get statementPreviewUrl(): string { return "Statement/Preview" };
   public static get statementCloneUrl(): string { return "Statement/Clone" };
+
+  //Render Engine Url Method
+  public static get renderEngineGetUrl(): string { return "RenderEngine/List" };
+  public static get renderEngineAddUrl(): string { return "RenderEngine/Add" };
+  public static get renderEngineUpdateUrl(): string { return "RenderEngine/Update" };
+  public static get renderEngineDeleteUrl(): string { return "RenderEngine/Delete" };
+  public static get renderEngineActivate(): string { return "RenderEngine/Activate" };
+  public static get renderEngineDeactivate(): string { return "RenderEngine/DeActivate" };
+
 }
