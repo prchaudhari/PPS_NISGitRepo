@@ -18,8 +18,9 @@ import { BnNgIdleService } from 'bn-ng-idle';
 import { DynamicGlobalVariable } from '../shared/constants/constants';
 import { AssetSettingsComponent } from './asset-settings/asset-settings.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { StatementSearchComponent } from './statement-search/statement-search.component';
 @NgModule({
-  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent],
+  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent],
   imports: [
     CommonModule,
     FormsModule,
