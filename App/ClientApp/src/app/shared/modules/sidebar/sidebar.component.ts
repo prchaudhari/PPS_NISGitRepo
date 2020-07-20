@@ -82,36 +82,30 @@ export class SidebarComponent implements OnInit {
   }
   navigateToProfile() {
     this.URL = '/profile';
-
     this.route.navigate(['/profile']);
   }
   navigateToScheduleManagement() {
     this.URL = '/schedulemanagement';
-
     this.route.navigate(['/schedulemanagement']);
   }
   navigateToStatementDef() {
     this.URL = '/statementdefination';
-
     this.route.navigate(['/statementdefination']);
   }
   navigateToAssetLibraries() {
     this.URL = '/assetlibrary';
-
     this.route.navigate(['/assetlibrary']);
   }
   navigateToLogs() {
     this.URL = '/logs';
-
     this.route.navigate(['/logs']);
   }
   navigateToAnalytics() {
     this.URL = '/analytics';
-
     this.route.navigate(['/analytics']);
   }
   navigateToSettings() {
-
+    this.URL = '/settings';
     this.route.navigate(['/settings']);
   }
   navigateToRenderEngine() {
@@ -209,6 +203,9 @@ export class SidebarComponent implements OnInit {
     }
     else if (this.URL.includes('/logs')) {
       this.URL = '/logs'
+    }
+    else if (this.URL.includes('/settings')) {
+      this.URL = '/settings'
     }
     else if(this.URL.includes('/renderengines')) {
       this.URL = '/renderengines';

@@ -113,6 +113,21 @@ export class AddDashboardDesignerComponent implements OnInit {
                         this.PageName = this.params.Routeparams.passingparams.PageName
                         this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
                         this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
+                        this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
+                        this.PageTypeName = this.params.Routeparams.passingparams.PageTypeName
+
+                        if(this.params.Routeparams.passingparams.PageWidgetArrayString != null && this.params.Routeparams.passingparams.PageWidgetArrayString != "" 
+                        && this.testJSON(this.params.Routeparams.passingparams.PageWidgetArrayString)) {
+
+                            this.widgetsGridsterItemArray = JSON.parse(this.params.Routeparams.passingparams.PageWidgetArrayString)
+                            for(let x=0; x < this.widgetsGridsterItemArray.length; x++) {
+                                let obj = this.bindComponent(this.widgetsGridsterItemArray[x].widgetId);
+                                if(obj != null) {
+                                    this.widgetsGridsterItemArray[x].component = obj.component;
+                                    this.widgetsGridsterItemArray[x].value = obj.value;
+                                }
+                            }
+                        }
                     }
                 } else {
                     localStorage.removeItem("pageDesignRouteparams");
@@ -367,7 +382,7 @@ export class AddDashboardDesignerComponent implements OnInit {
 
         this.getAssetLibraries();
 
-        if(this.pageEditModeOn) {
+        if(this.pageEditModeOn && this.widgetsGridsterItemArray.length == 0) {
             this.getTemplate();
         }else {
             this.getWidgetsByPageType();
@@ -469,18 +484,25 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
 
     prevBtnClicked() {
+        const router = this.injector.get(Router);
         let queryParams = {
             Routeparams: {
-              passingparams: {
-                "PageName": this.PageName,
-                "PageTypeId": this.PageTypeId,
-                "PageWidgetArray": JSON.stringify(this.widgetsGridsterItemArray)
-              }
+                passingparams: {
+                    "PageName": this.PageName,
+                    "PageTypeId": this.PageTypeId,
+                    "PageWidgetArray": JSON.stringify(this.widgetsGridsterItemArray),
+                    "pageEditModeOn": this.pageEditModeOn,
+                    "PageIdentifier": this.PageIdentifier
+                }
             }
-          }
-          localStorage.setItem("pageAddRouteparams", JSON.stringify(queryParams))
-        const router = this.injector.get(Router);
-        router.navigate(['pages', 'Add']);
+        }
+        if(this.pageEditModeOn) {
+            localStorage.setItem("pageEditRouteparams", JSON.stringify(queryParams))
+            router.navigate(['pages', 'Edit']);
+        }else {
+            localStorage.setItem("pageAddRouteparams", JSON.stringify(queryParams))
+            router.navigate(['pages', 'Add']);
+        }
     }
 
     OnSaveBtnClicked() {

@@ -59,7 +59,7 @@
                 <button type="button" id="btnViewRenderEngine" title="View Render Rengine" (click)="navigateToViewRenderEngine(re)">
                     <span class="fa fa-file-text-o"></span>
                 </button>
-                <button type="button" id="btnUpdateRenderEngine" title="Update Render Engine" (click)="navigateToEditRederEngine(re)">
+                <button type="button" id="btnUpdateRenderEngine" *ngIf="re.IsActive" title="Update Render Engine" (click)="navigateToEditRederEngine(re)">
                     <span class="fa fa-pencil-square-o"></span>
                 </button>
                 <button type="button" id="btnDeleteRenderEngine" (click)="deleteRenderEngine(re)">

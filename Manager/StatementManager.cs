@@ -312,7 +312,7 @@ namespace nIS
                                 //    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Current Account</a> </li> ");
                                 //}
 
-                                string tabClassName = Regex.Replace(page.DisplayName, @"\s+", "-");
+                                string tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
                                 navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
                                 string ExtraClassName = x > 0 ? "d-none " + tabClassName : tabClassName;
                                 string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);

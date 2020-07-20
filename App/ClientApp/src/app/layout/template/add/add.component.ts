@@ -103,7 +103,9 @@ export class AddComponent implements OnInit {
                   this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
                   this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
                   this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
-              }
+                  this.PageTypeIdBeforeChange = this.params.Routeparams.passingparams.PageTypeId
+                  this.PageWidgetArrayString = this.params.Routeparams.passingparams.PageWidgetArray
+                }
               }
               else {
                 localStorage.removeItem("pageparams");
@@ -149,7 +151,23 @@ export class AddComponent implements OnInit {
         if(this.pageEditModeOn) {
           pageObject.Identifier = this.PageIdentifier
         }
-        pageObject.PageWidgets = [];
+
+        let pageWidgets: any[] = [];
+        if(this.PageWidgetArrayString != null && this.PageWidgetArrayString != "" && this.testJSON(this.PageWidgetArrayString)) {
+          let widgetsGridsterItemArray = JSON.parse(this.PageWidgetArrayString);
+          for(var i=0; i < widgetsGridsterItemArray.length; i++) {
+            let widgetsGridsterItem = widgetsGridsterItemArray[i];
+            let pageWidget: any = {};
+            pageWidget.WidgetId = widgetsGridsterItem.widgetId;
+            pageWidget.Height = widgetsGridsterItem.rows;
+            pageWidget.Width = widgetsGridsterItem.cols;
+            pageWidget.Xposition = widgetsGridsterItem.x;
+            pageWidget.Yposition = widgetsGridsterItem.y;
+            pageWidget.WidgetSetting = widgetsGridsterItem.WidgetSetting != null ? widgetsGridsterItem.WidgetSetting : "";
+            pageWidgets.push(pageWidget);
+          }
+        }
+        pageObject.PageWidgets = pageWidgets;
         this.saveTemplate(pageObject);
     }
 
@@ -167,8 +185,24 @@ export class AddComponent implements OnInit {
               message = Constants.recordUpdatedMessage;
           }
           this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-          this.navigateToListPage()
+          this.navigateToListPage();
+          localStorage.removeItem("pageparams");
+          localStorage.removeItem("pageAddRouteparams");
+          localStorage.removeItem("pageEditRouteparams");
       }
+  }
+
+  testJSON(text){
+    if (typeof text!=="string"){
+        return false;
+    }
+    try{
+        JSON.parse(text);
+        return true;
+    }
+    catch (error){
+        return false;
+    }
   }
 
     public onPageTypeSelected(event) {

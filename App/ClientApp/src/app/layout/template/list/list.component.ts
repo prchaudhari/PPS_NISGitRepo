@@ -55,6 +55,12 @@ export class ListComponent implements OnInit {
         private localstorageservice: LocalStorageService,
         private templateService: TemplateService) {
             this.sortedTemplateList = this.templateList.slice();
+            if (localStorage.getItem('pageAddRouteparams')) {
+                localStorage.removeItem('pageAddRouteparams');
+            }
+            if (localStorage.getItem('pageEditRouteparams')) {
+                localStorage.removeItem('pageEditRouteparams');
+            }
         }
 
     public handlePage(e: any) {

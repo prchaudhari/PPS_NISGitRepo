@@ -540,12 +540,12 @@ namespace nIS
                 StringBuilder query = new StringBuilder();
                 if (operation.Equals(ModelConstant.ADD_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", renderEngines.Select(item => string.Format("URL.Equals(\"{0}\")", item.URL)).ToList()) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", renderEngines.Select(item => string.Format("(URL.Equals(\"{0}\") or Name.Equals(\"{1}\"))", item.URL, item.RenderEngineName)).ToList()) + ") and IsDeleted.Equals(false)");
                 }
 
                 if (operation.Equals(ModelConstant.UPDATE_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", renderEngines.Select(item => string.Format("(URL.Equals(\"{0}\") and !Id.Equals({1}))", item.URL, item.Identifier))) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", renderEngines.Select(item => string.Format("((URL.Equals(\"{0}\") or Name.Equals(\"{1}\")) and !Id.Equals({2}))", item.URL, item.RenderEngineName, item.Identifier))) + ") and IsDeleted.Equals(false)");
                 }
 
                 using (NISEntities nisEntitiesDataContext = new NISEntities(this.connectionString))

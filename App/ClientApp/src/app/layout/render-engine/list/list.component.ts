@@ -71,6 +71,12 @@ export class ListComponent implements OnInit {
     private localstorageservice: LocalStorageService,
     private renderEngineService: RenderengineService) { 
       this.sortedRenderEngines = this.renderEngines.slice();
+      if (localStorage.getItem('renderEngineEditRouteparams')) {
+        localStorage.removeItem('renderEngineEditRouteparams');
+    }
+    if (localStorage.getItem('renderEngineViewRouteparams')) {
+        localStorage.removeItem('renderEngineViewRouteparams');
+    }
     }
 
   sortData(sort: MatSort) {

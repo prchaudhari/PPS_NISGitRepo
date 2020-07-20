@@ -198,7 +198,8 @@ export class AddeditComponent implements OnInit {
               message = Constants.recordUpdatedMessage;
           }
           this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-          this.navigateToRenderEngineList()
+          this.navigateToRenderEngineList();
+          localStorage.removeItem("renderEngineEditRouteparams");
       }
   }
 
