@@ -62,7 +62,7 @@
                 <button type="button" id="btnUpdateRenderEngine" *ngIf="re.IsActive" title="Update Render Engine" (click)="navigateToEditRederEngine(re)">
                     <span class="fa fa-pencil-square-o"></span>
                 </button>
-                <button type="button" id="btnDeleteRenderEngine" (click)="deleteRenderEngine(re)">
+                <button type="button" id="btnDeleteRenderEngine" title="Delete Render Engine" (click)="deleteRenderEngine(re)">
                     <span class="fa fa-trash-o"></span>
                 </button>
                 <button type="button" title="Deactivate Render Engine" (click)="DeactivateRenderEngine(re)" *ngIf="re.IsActive">
