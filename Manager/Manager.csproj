@@ -50,6 +50,9 @@
     <Reference Include="Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Abstractions.3.3.1\lib\net46\Unity.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Websym.Core.EntityManager.Model">
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Model.dll</HintPath>
+    </Reference>
     <Reference Include="Websym.Core.EventManager.Model">
       <HintPath>..\References\Event Manager\Websym.Core.EventManager.Model.dll</HintPath>
     </Reference>

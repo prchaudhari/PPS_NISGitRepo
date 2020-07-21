@@ -201,7 +201,7 @@ namespace nIS
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var schheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(itm => itm.Id == statementIdentifier).ToList();
+                    var schheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(itm => itm.StatementId == statementIdentifier && itm.IsDeleted==false).ToList();
                     if (schheduleRecords?.Count > 0)
                     {
                         throw new StatementReferenceException(tenantCode);

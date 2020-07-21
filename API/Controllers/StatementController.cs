@@ -105,7 +105,7 @@ namespace nIS
             }
             catch (Exception exception)
             {
-                throw exception;
+                  throw exception;
             }
 
             return result;

@@ -11,6 +11,7 @@ namespace nIS
     using System.Collections.Generic;
     using System.Linq;
     using Unity;
+    using Websym.Core.EntityManager;
 
     #endregion
 
@@ -30,6 +31,11 @@ namespace nIS
         /// </summary>
         IRoleRepository roleRepository = null;
 
+        /// <summary>
+        /// The utility object
+        /// </summary>
+        private IConfigurationUtility configurationutility = null;
+
         #endregion
 
         #region Constructor
@@ -45,6 +51,8 @@ namespace nIS
             {
                 this.unityContainer = unityContainer;
                 this.roleRepository = this.unityContainer.Resolve<IRoleRepository>();
+                this.configurationutility = new ConfigurationUtility(this.unityContainer);
+
             }
             catch (Exception ex)
             {
@@ -224,6 +232,58 @@ namespace nIS
                 throw exception;
             }
             return result;
+        }
+
+        /// <summary>
+        /// THis method will call get method of entity manager.
+        /// </summary>
+        /// <param name="entitySearchParameter">The entity search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </returns>
+        public IList<RolePrivilege> GetRolePrivileges( string tenantCode)
+        {
+            IList<RolePrivilege> rolePrivileges = new List<RolePrivilege>();
+            IList<Entity> entities = new List<Entity>();
+            string resultContent = string.Empty;
+            try
+            {
+
+                //Creates a new object for entity search parameter with necessary values initialized
+                EntitySearchParameter entitySearchParameter = new EntitySearchParameter();
+                    entitySearchParameter.ComponentCode = ModelConstant.COMPONENTCODE;
+                    entitySearchParameter.SearchMode = Websym.Core.EntityManager.SearchMode.Exact;
+                    entitySearchParameter.SortParameter.SortColumn = ModelConstant.ENTITYSORTCOLUMN;
+                    entitySearchParameter.SortParameter.SortOrder = Websym.Core.EntityManager.SortOrder.Ascending;
+                
+
+                entities = configurationutility.GetRolePrivileges(entitySearchParameter, tenantCode);
+
+
+                if (entities != null && entities.Count > 0)
+                {
+                    entities.ToList().ForEach(item =>
+                    {
+                        IList<RolePrivilegeOperation> rolePrivilegeOperations = new List<RolePrivilegeOperation>();
+                        item.Operations.ToList().ForEach(item1 =>
+                        {
+                            rolePrivilegeOperations.Add(new RolePrivilegeOperation() { Operation = item1.ToString(), IsEnabled = false });
+                        });
+
+                        rolePrivileges.Add(new RolePrivilege() { 
+                            EntityName = item.EntityName.ToString(), 
+                            RolePrivilegeOperations = rolePrivilegeOperations,
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rolePrivileges;
         }
         #endregion
 

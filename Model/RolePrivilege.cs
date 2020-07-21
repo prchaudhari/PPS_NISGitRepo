@@ -27,6 +27,11 @@ namespace nIS
         private string entityName = string.Empty;
 
         /// <summary>
+        /// The entity name
+        /// </summary>
+        private string displayName = string.Empty;
+
+        /// <summary>
         ///  The role privileges operation
         /// </summary>
         private IList<RolePrivilegeOperation> rolePrivilegeOperations = new List<RolePrivilegeOperation>();
@@ -62,6 +67,26 @@ namespace nIS
             set
             {
                 this.entityName = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets and sets entity name
+        /// </summary>
+        /// <value>
+        /// The entity name.
+        /// </value>
+        [Description("Entity name")]
+        public string DisplayName
+        {
+            get
+            {
+                return this.displayName;
+            }
+
+            set
+            {
+                this.displayName = value;
             }
         }
 

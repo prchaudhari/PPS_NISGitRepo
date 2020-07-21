@@ -224,7 +224,31 @@ namespace nIS
 
             return result;
         }
+        /// <summary>
+        /// THis method will call get method of entity manager.
+        /// </summary>
+        /// <param name="entitySearchParameter">The entity search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </returns>
+        [HttpGet]
+        public IList<RolePrivilege> GetRolePrivileges()
+        {
+            IList<RolePrivilege> rolePrivileges = new List<RolePrivilege>();
+            string resultContent = string.Empty;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                rolePrivileges = this.roleManager.GetRolePrivileges(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
+            return rolePrivileges;
+        }
         #endregion
 
     }
