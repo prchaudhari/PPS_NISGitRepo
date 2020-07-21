@@ -3,7 +3,7 @@ export interface RolePrivilege {
   "DisplayName": string;
   "RolePrivilegeOperations": RolePrivilegeOperations[];
   "IsAllRolePrevilegeSelected": boolean;
-
+  "IsAllRolePrevilegeSelectedDisabled": boolean;
 }
 
 export interface RolePrivilegeOperations {

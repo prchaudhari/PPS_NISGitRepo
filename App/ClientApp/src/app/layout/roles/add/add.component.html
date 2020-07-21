@@ -25,15 +25,15 @@
           <div class="col-md-6 col-sm-6 col-lg-4">
             <label id="lblRoleName" for="inputRoleName">Name<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="inputRoleName" name="roleName"
-                            formControlName="roleName" />
+                   formControlName="roleName" />
             <!-- Error Masseges  -->
             <div class="validation-msg" style="color:red" *ngIf="roleName.touched && roleName.errors">
-                <ul style="list-style-type:none">
-                    <li class="text-danger" *ngIf="roleName.errors?.pattern">Invalid Role Name</li>
-                    <li class="text-danger" *ngIf="roleName.errors?.required">Role name required</li>
-                    <li class="text-danger" *ngIf="roleName.errors?.minlength">Role name length should not be less than 2</li>
-                    <li class="text-danger" *ngIf="roleName.errors?.maxlength">Role name length should not be greater than 50</li>
-                </ul>
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="roleName.errors?.pattern">Invalid Role Name</li>
+                <li class="text-danger" *ngIf="roleName.errors?.required">Role name required</li>
+                <li class="text-danger" *ngIf="roleName.errors?.minlength">Role name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="roleName.errors?.maxlength">Role name length should not be greater than 50</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -41,11 +41,11 @@
           <div class="col-md-8 col-lg-6">
             <label id="lblDescription">Description</label>
             <textarea class="form-control" name="roleDescription" rows="3" id="txtDescription" formControlName="roleDescription"></textarea>
-              <div class="validation-msg" style="color:red" *ngIf="roleDescription.touched && roleDescription.errors">
-                  <ul style="list-style-type:none">
-                      <li class="text-danger" *ngIf="roleDescription.errors?.maxlength">Role description length should not be greater than 255</li>
-                  </ul>
-              </div>
+            <div class="validation-msg" style="color:red" *ngIf="roleDescription.touched && roleDescription.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="roleDescription.errors?.maxlength">Role description length should not be greater than 255</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -56,9 +56,9 @@
           <label class="m-0">Permissions</label>
         </div>
         <div class="validation-msg" style="color:red">
-            <ul *ngIf="roleFormErrorObject.roleShowError" style="list-style-type:none">
-                <li class="text-danger"> Role Permissions required</li>
-            </ul>
+          <ul *ngIf="roleFormErrorObject.roleShowError" style="list-style-type:none">
+            <li class="text-danger"> Role Permissions required</li>
+          </ul>
         </div>
         <div>
           <button type="button" id="btnCollapsedPermissions"
@@ -71,45 +71,47 @@
       </div>
 
       <div class="card-body rtl-checkbox parent-rtl" id="collapsedPermissions" [ngbCollapse]="isCollapsedPermissions">
-          <!--repeat-->
-          <div class="custom-control custom-checkbox mb-4">
-              <input class="custom-control-input" type="checkbox" [(ngModel)]="allPermisions" id="allPermisions"
-                  name="allPermisions" value="allPermisions" (change)="selectAllPermissions($event)"
-                  [ngModelOptions]="{standalone: true}">
+        <!--repeat-->
+        <div class="custom-control custom-checkbox mb-4">
+          <input class="custom-control-input" type="checkbox" [(ngModel)]="allPermisions" id="allPermisions"  [checked]="allPermisions"
+                 name="allPermisions"  (change)="selectAllPermissions($event)"
+                 [ngModelOptions]="{standalone: true}"
+                 [disabled]="allPermisionsDisabled">
+          <label class="custom-control-label">Select All</label>
+        </div>
+        <div class="card mb-2 card-shadow border-0" *ngFor="let role of entityList;trackBy: trackByFn">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">{{role.EntityName}}</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input" type="checkbox"
+                     [(ngModel)]="role.IsAllRolePrevilegeSelected" [checked]="role.IsAllRolePrevilegeSelected"
+                     (change)="selectAllEntityOperations($event,role.EntityName)"
+                     [ngModelOptions]="{standalone: true}"
+                     [disabled]="role.IsAllRolePrevilegeSelectedDisabled">
               <label class="custom-control-label">Select All</label>
+            </div>
           </div>
-          <div class="card mb-2 card-shadow border-0" *ngFor="let role of entityList;trackBy: trackByFn">
-              <div class="card-header d-flex justify-content-between">
-                  <div>
-                      <label class="m-0">{{role.EntityName}}</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                      <input class="custom-control-input" type="checkbox"
-                          [(ngModel)]="role.IsAllRolePrevilegeSelected"                         
-                          (change)="selectAllEntityOperations($event,role.EntityName)"
-                          [ngModelOptions]="{standalone: true}">
-                      <label class="custom-control-label">Select All</label>
-                  </div>
-              </div>
 
-              <div class="card-body pt-2 pb-1 chk-container">
-                  <div class="row">
-                      <div class="col-sm-6 col-md-3 col-lg-3 col-6 form-group"
-                          *ngFor="let operation of role.RolePrivilegeOperations;trackBy: trackByFn">
-                          <div class="custom-control custom-checkbox">
-                              <input class="custom-control-input" type="checkbox"
-                                    name="roleprivilege"
-                                  [(ngModel)]="operation.IsEnabled" [checked]="operation.IsEnabled"
-                                  (change)="rowWiseSelection($event,operation,role.EntityName)"
-                                  [ngModelOptions]="{standalone: true}"
-                                     [disabled]="operation.IsDisabled">
-                              <label class="custom-control-label">{{operation.Operation}}</label>
-                          </div>
-                      </div>
-                  </div>
+          <div class="card-body pt-2 pb-1 chk-container">
+            <div class="row">
+              <div class="col-sm-6 col-md-3 col-lg-3 col-6 form-group"
+                   *ngFor="let operation of role.RolePrivilegeOperations;trackBy: trackByFn">
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox"
+                         name="roleprivilege"
+                         [(ngModel)]="operation.IsEnabled" [checked]="operation.IsEnabled"
+                         (change)="rowWiseSelection($event,operation,role.EntityName)"
+                         [ngModelOptions]="{standalone: true}"
+                         [disabled]="operation.IsDisabled">
+                  <label class="custom-control-label">{{operation.Operation}}</label>
+                </div>
               </div>
+            </div>
           </div>
-      </div>  
+        </div>
+      </div>
     </div>
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
