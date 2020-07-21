@@ -6,7 +6,7 @@
     </div>
     <div>
       <button class="btn-add btn-cust" id="btnAddUsers" (click)="navigateToStatementAdd()"
-              *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definitions',Operation: 'Create' }))">
+              *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition',Operation: 'Create' }))">
         <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Statement Definition
       </button>
 
@@ -61,19 +61,19 @@
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
                 <button type="button" id="btnViewRole" title="View" (click)="navigateToStatementView(element)"
-                        *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definitions',Operation: 'View' }))">
+                        *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition',Operation: 'View' }))">
                   <span class="fa fa-file-text-o"></span>
                 </button>
                 <button type="button" id="btnUpdateRole" title="Update" (click)="navigateToStatementEdit(element)"
-                        *ngIf="element.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definitions',Operation: 'Edit' }))">
+                        *ngIf="element.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition',Operation: 'Edit' }))">
                   <span class="fa fa-pencil-square-o"></span>
                 </button>
                 <button type="button" id="btnDeleteRole" title="Delete" (click)="deleteStatement(element)"
-                        *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definitions',Operation: 'Delete' }))">
+                        *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition',Operation: 'Delete' }))">
                   <span class="fa fa-trash-o"></span>
                 </button>
-                <button type="button" title="Publish" *ngIf="element.Status!='Published'" (click)="PublishStatement(element)" id="btnDelete"><span class="fa fa-share"></span></button>
-                <button type="button" title="Preview" id="btnPreview" data-toggle="modal" (click)="PreviewStatement(element)"><span class="fa fa-eye"></span></button>
+                <button type="button" title="Publish" *ngIf="element.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition',Operation: 'Publish' }))" (click)="PublishStatement(element)" id="btnDelete"><span class="fa fa-share"></span></button>
+                <button type="button" title="Preview" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition',Operation: 'View' }))"id="btnPreview" data-toggle="modal" (click)="PreviewStatement(element)"><span class="fa fa-eye"></span></button>
               </div>
             </td>
           </ng-container>

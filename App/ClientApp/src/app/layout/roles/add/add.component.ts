@@ -132,6 +132,67 @@ export class AddComponent implements OnInit {
       ]
     }];
 
+  public dependentEntityMap: any[] = [
+    {
+      "EntityName": "Dashboard",
+      "DependentEntity": []
+    },
+    {
+      "EntityName": "User",
+      "DependentEntity": [
+        "Log",
+      ]
+    },
+    {
+      "EntityName": "Role",
+      "DependentEntity": [
+        "User",
+      ]
+    },
+    {
+      "EntityName": "Asset Library",
+      "DependentEntity": [
+        "Page",
+
+      ]
+    },
+    {
+      "EntityName": "Widget",
+      "DependentEntity": [
+        "Page",
+        "Analytics"
+      ]
+    },
+    {
+      "EntityName": "Page",
+      "DependentEntity": [
+        "Statement Definition",
+        "Analytics"
+      ]
+    },
+    {
+      "EntityName": "Statement Definition",
+      "DependentEntity": [
+        "Schedule Management",
+        "Log"
+      ]
+    },
+    {
+      "EntityName": "Schedule Management",
+      "DependentEntity": [
+      ]
+    },
+    {
+      "EntityName": "Log",
+      "DependentEntity": [
+      ]
+    },
+    {
+      "EntityName": "Analytics",
+      "DependentEntity": [
+      ]
+    }];
+
   //getters of roleForm group
   get roleName() {
     return this.roleFormGroup.get('roleName');
@@ -162,7 +223,8 @@ export class AddComponent implements OnInit {
     private router: Router,
     private localstorageservice: LocalStorageService,
     // private spinner: NgxUiLoaderService,
-    private roleService: RoleService) {
+    private roleService: RoleService,
+    private changeDetector: ChangeDetectorRef) {
     router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/roles/Add')) {
@@ -300,14 +362,50 @@ export class AddComponent implements OnInit {
                   counter++;
                 }
               }
-              if (counter == this.checkedRole[i].RolePrivilegeOperations.length) {
-                this.checkedRole[i].IsAllRolePrevilegeSelected = true;
+            }
+            var dependentEntityObject = this.dependentEntity.filter(x => x.EntityName == this.entityList[count].EntityName);
+            if (dependentEntityObject != undefined && dependentEntityObject.length > 0) {
+              if (dependentEntityObject[0].DependentEntity != undefined) {
+                dependentEntityObject[0].DependentEntity.forEach(dEntity => {
+                  this.entityList.forEach(item => {
+                    if (item.EntityName == dEntity) {
+                      let operationLength = item.RolePrivilegeOperations.length;
+                      let counter = 0;
+
+                      item.RolePrivilegeOperations.forEach(previlgeOperationList => {
+                        if (previlgeOperationList.Operation == "View") {
+                          previlgeOperationList.IsEnabled = true;
+                          previlgeOperationList.IsDisabled = true;
+                        }
+                      });
+                      if (counter == operationLength) {
+                        item.IsAllRolePrevilegeSelected = true;
+
+                      }
+                      else {
+                        item.IsAllRolePrevilegeSelected = false;
+                      }
+                    }
+                  });
+                });
               }
+
             }
           }
         }
       }
+      for (let count = 0; count < this.entityList.length; count++) {
+        var selectOperation = this.entityList[count].RolePrivilegeOperations.filter(x => x.IsEnabled == true);
+        if (selectOperation.length == this.entityList[count].RolePrivilegeOperations.length) {
+          this.entityList[count].IsAllRolePrevilegeSelected = true;
+        }
+        else {
+          this.entityList[count].IsAllRolePrevilegeSelected = false;
+        }
+      }
     });
+
+
   }
 
   //navigate to role list
@@ -422,60 +520,66 @@ export class AddComponent implements OnInit {
         }
       }
     });
-    
+
     if (operation.Operation == "Create" || operation.Operation == "Edit" || entityName == "Dashboard" || entityName == "Analytics" || entityName == "Log") {
       if (operation.IsEnabled) {
         var dependentEntityObject = this.dependentEntity.filter(x => x.EntityName == entityName);
         if (dependentEntityObject != undefined && dependentEntityObject.length > 0) {
-          dependentEntityObject[0].DependentEntity.forEach(dEntity => {
+          if (dependentEntityObject[0].DependentEntity != undefined) {
+            dependentEntityObject[0].DependentEntity.forEach(dEntity => {
 
-            this.entityList.forEach(item => {
-              if (item.EntityName == dEntity) {
-                let operationLength = item.RolePrivilegeOperations.length;
-                let counter = 0;
+              this.entityList.forEach(item => {
+                if (item.EntityName == dEntity) {
+                  let operationLength = item.RolePrivilegeOperations.length;
 
-                item.RolePrivilegeOperations.forEach(previlgeOperationList => {
-                  if (previlgeOperationList.Operation == "View") {
-                    previlgeOperationList.IsEnabled = true;
-                    previlgeOperationList.IsDisabled = true;
+                  item.RolePrivilegeOperations.forEach(previlgeOperationList => {
+                    if (previlgeOperationList.Operation == "View") {
+                      previlgeOperationList.IsEnabled = true;
+                      previlgeOperationList.IsDisabled = true;
+                    }
+                  });
+                  var selectedItem = item.RolePrivilegeOperations.filter(i => i.IsEnabled == true);
+                  if (selectedItem.length == operationLength) {
+                    item.IsAllRolePrevilegeSelected = true;
                   }
-                });
-                if (counter == operationLength) {
-                  item.IsAllRolePrevilegeSelected = true;
-
+                  else {
+                    item.IsAllRolePrevilegeSelected = false;
+                  }
                 }
-                else {
-                  item.IsAllRolePrevilegeSelected = false;
-                }
-              }
+              });
             });
-          });
+          }
         }
       }
       if (!operation.IsEnabled) {
         var dependentEntityObject = this.dependentEntity.filter(x => x.EntityName == entityName);
         if (dependentEntityObject != undefined && dependentEntityObject.length > 0) {
-          dependentEntityObject[0].DependentEntity.forEach(dEntity => {
+          if (dependentEntityObject[0].DependentEntity != undefined) {
+            dependentEntityObject[0].DependentEntity.forEach(dEntity => {
 
-            this.entityList.forEach(item => {
-              if (item.EntityName == dEntity) {
-                let operationLength = item.RolePrivilegeOperations.length;
-                let counter = 0;
+              this.entityList.forEach(item => {
+                if (item.EntityName == dEntity) {
+                  let operationLength = item.RolePrivilegeOperations.length;
+                  let counter = 0;
 
-                item.RolePrivilegeOperations.forEach(previlgeOperationList => {
-                  if (previlgeOperationList.Operation == "View") {
+                  item.RolePrivilegeOperations.forEach(previlgeOperationList => {
+                    if (previlgeOperationList.Operation == "View") {
 
-                    previlgeOperationList.IsDisabled = false;
-                  }
-                })
-              }
+                      previlgeOperationList.IsDisabled = false;
+                    }
+                  })
+                }
+              });
             });
-          });
+          }
         }
       }
     }
 
   }
+
+
+
 
   saveBtnValidation(): boolean {
     if (this.roleFormGroup.controls.roleName.invalid) {

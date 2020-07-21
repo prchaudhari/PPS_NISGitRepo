@@ -50,8 +50,8 @@
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
       <button class="btn-footer-fill mr-2" id="btnSave" (click)="navigateToScheduleEdit()"
-              *ngIf="schedule.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Asset Library',Operation: 'Edit' }))">Update</button>
-      <button class="btn-footer-fill-delete bg-danger mr-2" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Asset Library',Operation: 'Delete' }))"
+              *ngIf="schedule.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Edit' }))">Update</button>
+      <button class="btn-footer-fill-delete bg-danger mr-2" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Delete' }))"
               id="btnDelete" (click)="deleteSchedule()">Delete</button>
       <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
     </div>

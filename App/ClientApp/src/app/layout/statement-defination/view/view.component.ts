@@ -22,7 +22,7 @@ export class ViewComponent implements OnInit {
   public isCollapsedPermissions: boolean = true;
   public statement: any = {};
   public params;
-
+  public userClaimsRolePrivilegeOperations: any[] = [];
 
   constructor(
     private _router: Router,
@@ -76,6 +76,13 @@ export class ViewComponent implements OnInit {
     this.statement = statements[0];
   }
   ngOnInit() {
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.userClaimsRolePrivilegeOperations = [];
+    }
   }
   navigateToStatementEdit() {
     let queryParams = {

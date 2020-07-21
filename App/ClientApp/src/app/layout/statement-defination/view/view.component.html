@@ -80,8 +80,8 @@
   </div>
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
-      <button class="btn-footer-fill mr-2" id="btnSave" *ngIf="statement.Status!='Published'" (click)="navigateToStatementEdit()">Update</button>
-      <button class="btn-footer-fill-delete bg-danger mr-2" *ngIf="statement.Status!='Published'" (click)="deleteStatement()" id="btnDelete">Delete</button>
+      <button class="btn-footer-fill mr-2" id="btnSave" *ngIf="statement.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition',Operation: 'Edit' }))" (click)="navigateToStatementEdit()">Update</button>
+      <button class="btn-footer-fill-delete bg-danger mr-2" *ngIf="statement.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Definition',Operation: 'Delete' }))" (click)="deleteStatement()" id="btnDelete">Delete</button>
       <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
     </div>
   </div>

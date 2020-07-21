@@ -42,6 +42,7 @@ export class ViewAssetLibraryComponent implements OnInit {
   public assets: Asset[];
   public array: any;
   public sortedAssetLibraryList: Asset[] = [];
+  public userClaimsRolePrivilegeOperations: any[] = [];
   public image;
   public isImage = true;
   public params;
@@ -63,7 +64,13 @@ export class ViewAssetLibraryComponent implements OnInit {
     paginatorIntl.previousPageLabel = '';
     paginatorIntl.firstPageLabel = '';
     paginatorIntl.lastPageLabel = '';
-
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.userClaimsRolePrivilegeOperations = [];
+    }
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

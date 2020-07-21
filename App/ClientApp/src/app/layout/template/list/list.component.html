@@ -6,7 +6,7 @@
     </div>
     <div>
       <button class="btn-add btn-cust" id="btnAddUsers" routerLink="Add"
-        *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages',Operation: 'Create' }))">
+        *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Page',Operation: 'Create' }))">
         <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Page
       </button>
 
@@ -69,24 +69,24 @@
           <td mat-cell *matCellDef="let element">
             <div class="action-btns btn-tbl-action">
               <button type="button" title="View" id="btnView" (click)="navigationTodashboardDesigner(element)"
-                *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages',Operation: 'View' }))">
+                *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Page',Operation: 'View' }))">
                 <span class="fa fa-file-text-o"></span>
               </button>
               <button type="button" title="Update" id="btnUpdate" (click)="navigationToEditPage(element)"
-                *ngIf="element.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages',Operation: 'Edit' }))">
+                *ngIf="element.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Page',Operation: 'Edit' }))">
                 <span class="fa fa-pencil-square-o"></span>
               </button>
               <button type="button" title="Delete" id="btnDelete" (click)="DeletePage(element)"
-                *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages',Operation: 'Delete' }))">
+                *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Page',Operation: 'Delete' }))">
                 <span class="fa fa-trash-o"></span>
               </button>
-              <button type="button" title="Publish" id="btnPublish" *ngIf="element.Status!='Published'" (click)="PublishPage(element)"><span class="fa fa-share"></span></button>
+              <button type="button" title="Publish" id="btnPublish" *ngIf="element.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Page',Operation: 'Publish' }))" (click)="PublishPage(element)"><span class="fa fa-share"></span></button>
               <button type="button" title="Clone" id="btnClone" (click)="ClonePage(element)"
-                *ngIf="element.Status!='New' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages',Operation: 'Create' }))">
+                *ngIf="element.Status!='New' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Page',Operation: 'Create' }))">
                 <span class="fa fa-clone"></span>
               </button>
               <button type="button" title="Preview" id="btnPreview" data-toggle="modal" (click)="PreviewPage(element)"
-                *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Pages',Operation: 'View' }))">
+                *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Page',Operation: 'View' }))">
                 <span class="fa fa-eye"></span>
               </button>
             </div>
