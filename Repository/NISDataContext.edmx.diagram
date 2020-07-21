@@ -34,6 +34,10 @@
         <EntityTypeShape EntityType="NISModel.RenderEngineRecord" Width="1.5" PointX="7" PointY="3.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TransactionDetailRecord" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.VideoRecord" Width="1.5" PointX="7" PointY="4.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.AccountMasterRecord" Width="1.75" PointX="4.875" PointY="5.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.AccountTransactionRecord" Width="1.75" PointX="7" PointY="5.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.CustomerMasterRecord" Width="1.75" PointX="2.75" PointY="5.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.CustomerMediaRecord" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

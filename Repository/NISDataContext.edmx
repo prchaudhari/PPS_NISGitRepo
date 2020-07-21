@@ -5,6 +5,59 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="NISModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.AccountMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AccountMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="AccountType" />
+            <PropertyRef Name="StatementDate" />
+            <PropertyRef Name="Currency" />
+            <PropertyRef Name="Balance" />
+            <PropertyRef Name="TotalDeposit" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StatementDate" Type="datetime" Nullable="false" />
+          <Property Name="StatementPeriod" Type="nvarchar" MaxLength="50" />
+          <Property Name="RmName" Type="nvarchar" MaxLength="100" />
+          <Property Name="RmContactNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Balance" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="TotalDeposit" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="TotalSpend" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="ProfitEarned" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Indicator" Type="nvarchar" MaxLength="50" />
+          <Property Name="FeesPaid" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="GrandTotal" Type="decimal" Precision="8" Scale="2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.AccountTransaction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AccountTransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="AccountId" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="AccountType" />
+            <PropertyRef Name="TransactionDate" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="AccountId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TransactionDate" Type="datetime" Nullable="false" />
+          <Property Name="TransactionType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Narration" Type="nvarchar" MaxLength="50" />
+          <Property Name="FCY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CurrentRate" Type="nvarchar" MaxLength="50" />
+          <Property Name="LCY" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Asset">
           <Key>
             <PropertyRef Name="Id" />
@@ -86,6 +139,47 @@
           <Property Name="State" Type="bigint" Nullable="false" />
           <Property Name="Country" Type="bigint" Nullable="false" />
           <Property Name="Zip" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.CustomerMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CustomerMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="AddressLine1" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.CustomerMedia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CustomerMedia">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="PageId" />
+            <PropertyRef Name="WidgetId" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="StatementId" Type="bigint" Nullable="false" />
+          <Property Name="PageId" Type="bigint" Nullable="false" />
+          <Property Name="WidgetId" Type="bigint" Nullable="false" />
+          <Property Name="ImageURL" Type="nvarchar(max)" />
+          <Property Name="VideoURL" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Image">
           <Key>
@@ -419,6 +513,67 @@
           <EntitySet Name="Video" EntityType="Self.Video" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
+          <EntitySet Name="AccountMaster" EntityType="Self.AccountMaster" store:Type="Tables" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [AccountMaster].[Id] AS [Id], 
+    [AccountMaster].[CustomerId] AS [CustomerId], 
+    [AccountMaster].[BatchId] AS [BatchId], 
+    [AccountMaster].[AccountType] AS [AccountType], 
+    [AccountMaster].[StatementDate] AS [StatementDate], 
+    [AccountMaster].[StatementPeriod] AS [StatementPeriod], 
+    [AccountMaster].[RmName] AS [RmName], 
+    [AccountMaster].[RmContactNumber] AS [RmContactNumber], 
+    [AccountMaster].[Currency] AS [Currency], 
+    [AccountMaster].[Balance] AS [Balance], 
+    [AccountMaster].[TotalDeposit] AS [TotalDeposit], 
+    [AccountMaster].[TotalSpend] AS [TotalSpend], 
+    [AccountMaster].[ProfitEarned] AS [ProfitEarned], 
+    [AccountMaster].[Indicator] AS [Indicator], 
+    [AccountMaster].[FeesPaid] AS [FeesPaid], 
+    [AccountMaster].[GrandTotal] AS [GrandTotal]
+    FROM [NIS].[AccountMaster] AS [AccountMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="AccountTransaction" EntityType="Self.AccountTransaction" store:Type="Tables" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [AccountTransaction].[Id] AS [Id], 
+    [AccountTransaction].[AccountId] AS [AccountId], 
+    [AccountTransaction].[CustomerId] AS [CustomerId], 
+    [AccountTransaction].[BatchId] AS [BatchId], 
+    [AccountTransaction].[AccountType] AS [AccountType], 
+    [AccountTransaction].[TransactionDate] AS [TransactionDate], 
+    [AccountTransaction].[TransactionType] AS [TransactionType], 
+    [AccountTransaction].[Narration] AS [Narration], 
+    [AccountTransaction].[FCY] AS [FCY], 
+    [AccountTransaction].[CurrentRate] AS [CurrentRate], 
+    [AccountTransaction].[LCY] AS [LCY]
+    FROM [NIS].[AccountTransaction] AS [AccountTransaction]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" store:Type="Tables" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [CustomerMaster].[Id] AS [Id], 
+    [CustomerMaster].[BatchId] AS [BatchId], 
+    [CustomerMaster].[FirstName] AS [FirstName], 
+    [CustomerMaster].[MiddleName] AS [MiddleName], 
+    [CustomerMaster].[LastName] AS [LastName], 
+    [CustomerMaster].[AddressLine1] AS [AddressLine1], 
+    [CustomerMaster].[City] AS [City], 
+    [CustomerMaster].[State] AS [State], 
+    [CustomerMaster].[Country] AS [Country], 
+    [CustomerMaster].[Zip] AS [Zip]
+    FROM [NIS].[CustomerMaster] AS [CustomerMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" store:Type="Tables" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [CustomerMedia].[Id] AS [Id], 
+    [CustomerMedia].[CustomerId] AS [CustomerId], 
+    [CustomerMedia].[BatchId] AS [BatchId], 
+    [CustomerMedia].[StatementId] AS [StatementId], 
+    [CustomerMedia].[PageId] AS [PageId], 
+    [CustomerMedia].[WidgetId] AS [WidgetId], 
+    [CustomerMedia].[ImageURL] AS [ImageURL], 
+    [CustomerMedia].[VideoURL] AS [VideoURL]
+    FROM [NIS].[CustomerMedia] AS [CustomerMedia]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -454,6 +609,10 @@
           <EntitySet Name="RenderEngineRecords" EntityType="NISModel.RenderEngineRecord" />
           <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
           <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
+          <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
+          <EntitySet Name="AccountTransactionRecords" EntityType="NISModel.AccountTransactionRecord" />
+          <EntitySet Name="CustomerMasterRecords" EntityType="NISModel.CustomerMasterRecord" />
+          <EntitySet Name="CustomerMediaRecords" EntityType="NISModel.CustomerMediaRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -838,6 +997,92 @@
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Video1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AccountMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="AccountType" />
+            <PropertyRef Name="StatementDate" />
+            <PropertyRef Name="Currency" />
+            <PropertyRef Name="Balance" />
+            <PropertyRef Name="TotalDeposit" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatementDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StatementPeriod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RmName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RmContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Balance" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="TotalDeposit" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="TotalSpend" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="ProfitEarned" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Indicator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FeesPaid" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="GrandTotal" Type="Decimal" Precision="8" Scale="2" />
+        </EntityType>
+        <EntityType Name="AccountTransactionRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="AccountId" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="AccountType" />
+            <PropertyRef Name="TransactionDate" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="AccountId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Narration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FCY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentRate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LCY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CustomerMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="AddressLine1" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CustomerMediaRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="BatchId" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="PageId" />
+            <PropertyRef Name="WidgetId" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="PageId" Type="Int64" Nullable="false" />
+          <Property Name="WidgetId" Type="Int64" Nullable="false" />
+          <Property Name="ImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VideoURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1254,6 +1499,75 @@
                 <ScalarProperty Name="Video1" ColumnName="Video" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountMasterRecords">
+            <EntityTypeMapping TypeName="NISModel.AccountMasterRecord">
+              <MappingFragment StoreEntitySet="AccountMaster">
+                <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
+                <ScalarProperty Name="FeesPaid" ColumnName="FeesPaid" />
+                <ScalarProperty Name="Indicator" ColumnName="Indicator" />
+                <ScalarProperty Name="ProfitEarned" ColumnName="ProfitEarned" />
+                <ScalarProperty Name="TotalSpend" ColumnName="TotalSpend" />
+                <ScalarProperty Name="TotalDeposit" ColumnName="TotalDeposit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="RmContactNumber" ColumnName="RmContactNumber" />
+                <ScalarProperty Name="RmName" ColumnName="RmName" />
+                <ScalarProperty Name="StatementPeriod" ColumnName="StatementPeriod" />
+                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountTransactionRecords">
+            <EntityTypeMapping TypeName="NISModel.AccountTransactionRecord">
+              <MappingFragment StoreEntitySet="AccountTransaction">
+                <ScalarProperty Name="LCY" ColumnName="LCY" />
+                <ScalarProperty Name="CurrentRate" ColumnName="CurrentRate" />
+                <ScalarProperty Name="FCY" ColumnName="FCY" />
+                <ScalarProperty Name="Narration" ColumnName="Narration" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerMasterRecords">
+            <EntityTypeMapping TypeName="NISModel.CustomerMasterRecord">
+              <MappingFragment StoreEntitySet="CustomerMaster">
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerMediaRecords">
+            <EntityTypeMapping TypeName="NISModel.CustomerMediaRecord">
+              <MappingFragment StoreEntitySet="CustomerMedia">
+                <ScalarProperty Name="VideoURL" ColumnName="VideoURL" />
+                <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

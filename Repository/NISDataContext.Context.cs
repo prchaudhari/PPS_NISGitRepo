@@ -20,7 +20,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-              : base(connectionString)
+        : base(connectionString)
         {
         }
 
@@ -58,5 +58,9 @@ namespace nIS
         public virtual DbSet<RenderEngineRecord> RenderEngineRecords { get; set; }
         public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
         public virtual DbSet<VideoRecord> VideoRecords { get; set; }
+        public virtual DbSet<AccountMasterRecord> AccountMasterRecords { get; set; }
+        public virtual DbSet<AccountTransactionRecord> AccountTransactionRecords { get; set; }
+        public virtual DbSet<CustomerMasterRecord> CustomerMasterRecords { get; set; }
+        public virtual DbSet<CustomerMediaRecord> CustomerMediaRecords { get; set; }
     }
 }
