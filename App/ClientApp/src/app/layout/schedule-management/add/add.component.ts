@@ -16,6 +16,13 @@ import { User } from '../../users/user';
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss']
 })
+
+
+//export interface DropDonw {
+//  Identifier: string,
+//  Name:string
+//}
+
 export class AddComponent implements OnInit {
 
   public scheduleForm: FormGroup;
@@ -33,9 +40,13 @@ export class AddComponent implements OnInit {
   public filterToDateErrorMessage: string = "";
   public scheduleFormErrorObject: any = {
   };
-  public DayOfMonthList: any = [];
+  //public DayOfMonthList: DropDonw[] = [];
+  //public TimeOfDayHoursList: DropDonw[] = [];
+  //public TimeOfDayMinutesList: DropDonw[] = [];
+    public DayOfMonthList: any = [];
   public TimeOfDayHoursList: any = [];
   public TimeOfDayMinutesList: any = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private spinner: NgxUiLoaderService,
@@ -78,6 +89,52 @@ export class AddComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.st = new Statement;
+    this.st.Name = "Please Select";
+    this.st.Identifier = 0;
+    this.statementDefinitionList.push(this.st);
+
+    var obj = { Identifier:"Please Select", Name: "Please Select" };
+
+    this.DayOfMonthList.push(obj);
+
+    this.TimeOfDayHoursList.push(obj);
+
+    this.TimeOfDayMinutesList.push(obj);
+ 
+    for (var i = 1; i <= 29; i++) {
+      var object = { Identifier: i.toString(), Name: "" };
+      if (i < 10) {
+        object.Name = "0" + i;
+      }
+      else {
+        object.Name = i.toString();
+      }
+      this.DayOfMonthList.push(object);
+    }
+
+    for (var i = 0; i <=23; i++) {
+      var object = { Identifier: i.toString(), Name: "" };
+      if (i < 10) {
+        object.Name = "0" + i;
+      }
+      else {
+        object.Name = i.toString();
+      }
+      this.TimeOfDayHoursList.push(object);
+    }
+
+    for (var i = 0; i <=59; i++) {
+      var object = { Identifier: i.toString(), Name: "" };
+      if (i < 10) {
+        object.Name = "0" + i;
+      }
+      else {
+        object.Name = i.toString();
+      }
+      this.TimeOfDayMinutesList.push(object);
+    }
+
     this.scheduleForm = this.formBuilder.group({
       ScheduleName: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50),
       Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
@@ -85,33 +142,16 @@ export class AddComponent implements OnInit {
       DayOfMonth: ["Please Select", Validators.compose([Validators.required])],
       TimeOfDayHours: ["Please Select", Validators.compose([Validators.required])],
       TimeOfDayMinutes: ["Please Select", Validators.compose([Validators.required])],
-      filtershiftfromdate: ["Please Select", Validators.compose([Validators.required])],
-      filtershiftenddate: ["Please Select",],
+      filtershiftfromdate: [null, Validators.compose([Validators.required])],
+      filtershiftenddate: [null,],
       ExportToPDF: [false],
       NoEndDate: [false],
     })
-    this.st = new Statement;
-    this.st.Name = "Please Select";
-    this.st.Identifier = 0;
-    this.statementDefinitionList.push(this.st);
-    this.DayOfMonthList.push("Please Select");
 
-    this.TimeOfDayHoursList.push("Please Select");
-
-    this.TimeOfDayMinutesList.push("Please Select");
-    for (var i = 1; i <= 29; i++) {
-      this.DayOfMonthList.push(i);
-    }
-    for (var i = 1; i <= 24; i++) {
-      this.TimeOfDayHoursList.push(i);
-    }
-    for (var i = 0; i < 59; i++) {
-      this.TimeOfDayMinutesList.push(i);
-    }
     this.scheduleForm.controls['StatementDefinition'].setValue(this.st.Identifier);
-    this.scheduleForm.controls['DayOfMonth'].setValue("Please Select");
-    this.scheduleForm.controls['TimeOfDayHours'].setValue("Please Select");
-    this.scheduleForm.controls['TimeOfDayMinutes'].setValue("Please Select");
+    this.scheduleForm.controls['DayOfMonth'].setValue(obj.Identifier);
+    this.scheduleForm.controls['TimeOfDayHours'].setValue(obj.Identifier);
+    this.scheduleForm.controls['TimeOfDayMinutes'].setValue(obj.Identifier);
 
     this.getStatements();
   }
@@ -233,12 +273,14 @@ export class AddComponent implements OnInit {
 
     }
   }
+
   public IsExportToPDFClicked(event) {
 
     const value = event.checked;
     this.IsExportToPDF = value;
 
   }
+
   public NoEndDateClicked(event) {
 
     const value = event.checked;
@@ -249,6 +291,7 @@ export class AddComponent implements OnInit {
       this.scheduleForm.controls['filtershiftenddate'].setValue("");
     }
   }
+
   public onDayOfMonthSelected(event) {
 
     const value = event.target.value;
@@ -337,24 +380,14 @@ export class AddComponent implements OnInit {
 
     }
   }
+
   monthDiff(d1, d2) {
-    //var months;
-    //months = (d2.getFullYear() - d1.getFullYear()) * 12;
-    //months -= d1.getMonth() + 1;
-    //months += d2.getMonth();
-    //// edit: increment months if d2 comes later in its month than d1 in its month
-    //if (d2.getDate() >= d1.getDate())
-    //  months++
-    //// end edit
-    //return months <= 0 ? 0 : months;
-    //var d1Year = d1.getFullYear();
-    //var d2Year = d2.getFullYear();
-    //var d1Month = d1.getMonth();
-    //var d2Month = d2.getMonth();
+   
     return Math.floor((Date.UTC(d2.getFullYear(), d2.getMonth(), d2.getDate())
       - Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate())) / (1000 * 60 * 60 * 24));
 
   }
+
   vaildateForm() {
     if (this.scheduleForm.invalid)
       return true;

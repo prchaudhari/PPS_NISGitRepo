@@ -8,6 +8,7 @@ namespace nIS
     using System.Net.Http;
     using System.Net.Mail;
     using Websym.Core.ConfigurationManager;
+    using Websym.Core.EntityManager;
 
     #endregion
 
@@ -38,13 +39,14 @@ namespace nIS
         /// </returns>
         string GetConnectionString(string section, string configurationKey, string configurationBaseURLKey, string tenantKey, string tenantCode);
 
-        #region other component api
-
-        //IList<Websym.Core.EventManager.Event> AddUserNotificationSubscription(Websym.Core.EventManager.EventSearchParameter eventSearchParameter,Websym.Core.NotificationEngine.SubscrptionDeliveryMode deliveryMode, string userIdentifier, string contactNumber, string emailAddress, string tenantCode);
-
-        //bool SendNotification(Websym.Core.EventManager.EventContext eventContext, Websym.Core.NotificationEngine.SubscrptionDeliveryMode deliveryMode, string tenantCode);
-
-
-        #endregion
+        /// <summary>
+        /// THis method will call get method of entity manager.
+        /// </summary>
+        /// <param name="entitySearchParameter">The entity search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </returns>
+        IList<Entity> GetRolePrivileges(EntitySearchParameter entitySearchParameter, string tenantCode);
     }
 }

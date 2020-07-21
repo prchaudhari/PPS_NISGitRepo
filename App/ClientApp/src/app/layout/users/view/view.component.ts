@@ -101,6 +101,9 @@ export class ViewComponent implements OnInit {
 
   ngOnInit() {
     this.fillUserDetail();
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    this.loggedInUserIdentifier = userClaimsDetail.UserIdentifier;
   }
 
   //Function call to view the perticular user detail by passing user identifier--

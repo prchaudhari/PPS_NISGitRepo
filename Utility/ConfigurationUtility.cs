@@ -15,16 +15,14 @@ namespace nIS
     using Newtonsoft.Json.Linq;
     using System.Net.Mail;
     using System.Net.Http;
-    //using Websym.Core.ConfigurationManager;
-    //using Websym.Core.ResourceManager;
-    //using Websym.Core.EventManager;
-    //using Websym.Core.NotificationEngine;
+
     using System.Configuration;
     using System.Reflection;
     using System.Net.Http.Headers;
     using Websym.Core.ConfigurationManager;
     using Unity;
     using Websym.Core.EventManager;
+    using Websym.Core.EntityManager;
 
     #endregion
 
@@ -108,7 +106,7 @@ namespace nIS
 
                 sqlConnectionString = sqlConnectionString.EndsWith(";") ? sqlConnectionString : sqlConnectionString + ";";
                 // sqlConnectionString = "metadata=res://*/NISDataContext.csdl|res://*/NISDataContext.ssdl|res://*/NISDataContext.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=192.168.100.7;Initial Catalog=nvidyo;User ID=sa;Password=Admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
-                sqlConnectionString = @"metadata=res://*/NISDataContext.csdl|res://*/NISDataContext.ssdl|res://*/NISDataContext.msl;provider=System.Data.SqlClient;provider connection string=';"+ sqlConnectionString + "multipleactiveresultsets=True;application name=EntityFramework';";
+                sqlConnectionString = @"metadata=res://*/NISDataContext.csdl|res://*/NISDataContext.ssdl|res://*/NISDataContext.msl;provider=System.Data.SqlClient;provider connection string=';" + sqlConnectionString + "multipleactiveresultsets=True;application name=EntityFramework';";
 
 
 
@@ -121,157 +119,30 @@ namespace nIS
             return sqlConnectionString;
         }
 
-        #region other component integration api
+        /// <summary>
+        /// THis method will call get method of entity manager.
+        /// </summary>
+        /// <param name="entitySearchParameter">The entity search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </returns>
+        public IList<Entity> GetRolePrivileges(EntitySearchParameter entitySearchParameter, string tenantCode)
+        {
+            IList<Entity> entities = new List<Entity>();
+            try
+            {
 
-        //public IList<Websym.Core.EventManager.Event> AddUserNotificationSubscription(EventSearchParameter eventSearchParameter, SubscrptionDeliveryMode deliveryMode, string userIdentifier, string contactNumber, string emailAddress, string tenantCode)
-        //{
-        //    try
-        //    {
-        //        IList<Websym.Core.EventManager.Event> eventList = null;
+                EntityManager manager = new EntityManager(this.unityContainer);
 
-        //        #region DLL related changes
+                entities = manager.GetEntities(entitySearchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-        //        #region Add & Get Entity 
-
-        //        Websym.Core.EventManager.EventManager eventmanager = null;
-        //        eventmanager = new Websym.Core.EventManager.EventManager(this.unityContainer);
-        //        eventList = eventmanager.GetEvents(eventSearchParameter, tenantCode.ToString())?.ToList();
-
-        //        //if event is not exist add events for specific client(While added client )
-        //        if (eventList?.Count <= 0 || eventList == null)
-        //        {
-        //            IList<Event> events = new List<Event>();
-        //            events.Add(new Event()
-        //            {
-        //                EventCode = 1,
-        //                EventName = "UserAdd",
-        //                EntityName = "User",
-        //                ComponentCode = "nVidYo",
-        //                IsNotificationEnable = true,
-        //                NotifyAllSubscribers = false
-
-        //            });
-        //            events.Add(new Event()
-        //            {
-        //                EventCode = 2,
-        //                EventName = "ForgotPassword",
-        //                EntityName = "User",
-        //                ComponentCode = "nVidYo",
-        //                IsNotificationEnable = true,
-        //                NotifyAllSubscribers = false
-
-        //            });
-        //            bool eventres = eventmanager.AddEvents(events, tenantCode);
-        //            if (eventres == true)
-        //            {
-        //                eventList = eventmanager.GetEvents(eventSearchParameter, tenantCode.ToString())?.ToList();
-
-        //                #region Add Template
-
-        //                Websym.Core.NotificationEngine.TemplateManager templateManager = new TemplateManager(this.unityContainer);
-        //                IList<Template> templates = new List<Template>();
-        //                IList<string> list = new List<string>();
-        //                list.Add("FIRSTNAME");
-        //                list.Add("HTMLLink");
-        //                templates.Add(new Template()
-        //                {
-        //                    TemplateCode = "1",
-        //                    ComponentCode = "nVidYo",
-        //                    EventCode = eventList.FirstOrDefault().EventCode,
-        //                    EntityName = "User",
-        //                    DeliveryMode = Websym.Core.NotificationEngine.TemplateDeliveryMode.HTMLEmail,
-        //                    TemplateSubject = "User Added",
-        //                    Attributes = list,
-        //                    TemplateBody = "Hello |FIRSTNAME|,<br/><br/>Please <a href='|HTMLLink|'>click here</a>  to activate your account. <br/><br/><br/>Regards,<br/>nVidYo Team",
-        //                    IsActive = true,
-        //                    EmailProvider = EmailProvider.SMTP
-        //                });
-
-        //                templates.Add(new Template()
-        //                {
-        //                    TemplateCode = "2",
-        //                    ComponentCode = "nVidYo",
-        //                    EventCode = eventList.LastOrDefault().EventCode,
-        //                    EntityName = "User",
-        //                    DeliveryMode = Websym.Core.NotificationEngine.TemplateDeliveryMode.HTMLEmail,
-        //                    TemplateSubject = "Reset Password",
-        //                    Attributes = list,
-        //                    TemplateBody = "Hello |FIRSTNAME|,<br/><br/>Please <a href='|HTMLLink|'>click here</a>  to reactivate your account. <br/><br/><br/>Regards,<br/>nVidYo Team",
-        //                    IsActive = true,
-        //                    EmailProvider = EmailProvider.SMTP
-        //                });
-
-        //                bool temres = templateManager.AddTemplates(templates, tenantCode);
-
-        //                if (temres == false)
-        //                {
-        //                    throw new InvalidTemplateException(tenantCode);
-        //                }
-
-        //                #endregion
-        //            }
-        //            else
-        //            {
-        //                throw new InvalidEventException(tenantCode);
-        //            }
-        //        }
-
-        //        #endregion
-
-        //        #region Add Subscription
-
-        //        IList<Subscription> subscriptions = eventList?.Select(eventDetail => new Subscription()
-        //        {
-        //            ComponentCode = eventDetail.ComponentCode,
-        //            EntityName = eventDetail.EntityName,
-        //            EventCode = eventDetail.EventCode,
-        //            UserIdentifier = userIdentifier,
-        //            MobileNumber = contactNumber,
-        //            EmailAddress = emailAddress,
-        //            DeliveryMode = deliveryMode,
-        //            IsActive = true
-        //        })
-        //            .ToList();
-
-        //        // Websym.Core.EventManager.EventManager eventmanager = null;
-        //        Websym.Core.NotificationEngine.SubscriptionManager subscriptionManager = null;
-        //        subscriptionManager = new Websym.Core.NotificationEngine.SubscriptionManager(this.unityContainer);
-        //        bool res = subscriptionManager.AddSubscriptions(subscriptions, tenantCode.ToString());
-
-        //        #endregion
-
-        //        if (res == true)
-        //        {
-        //            return eventList;
-        //        }
-
-        //        #endregion
-
-        //        return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //public bool SendNotification(EventContext eventContext, SubscrptionDeliveryMode deliveryMode, string tenantCode)
-        //{
-        //    try
-        //    {
-        //        Websym.Core.NotificationEngine.NotificationManager noificationManager = null;
-        //        SubscrptionDeliveryMode delivery = (SubscrptionDeliveryMode)Enum.Parse(typeof(SubscrptionDeliveryMode), deliveryMode.ToString());
-
-        //        noificationManager = new Websym.Core.NotificationEngine.NotificationManager(unityContainer);
-        //        bool res = noificationManager.ProcessNotification(eventContext, delivery);
-        //        return res;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        #endregion
+            return entities;
+        }
     }
 }

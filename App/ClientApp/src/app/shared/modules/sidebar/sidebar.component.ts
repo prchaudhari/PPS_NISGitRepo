@@ -108,6 +108,10 @@ export class SidebarComponent implements OnInit {
     this.URL = '/settings';
     this.route.navigate(['/settings']);
   }
+  navigateToStatemenetSearch() {
+    this.URL = '/statemenetsearch';
+    this.route.navigate(['/statemenetsearch']);
+  }
   navigateToRenderEngine() {
     this.URL = '/renderengines';
     this.route.navigate(['/renderengines']);

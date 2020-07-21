@@ -91,17 +91,19 @@
                       <label class="custom-control-label">Select All</label>
                   </div>
               </div>
+
               <div class="card-body pt-2 pb-1 chk-container">
                   <div class="row">
                       <div class="col-sm-6 col-md-3 col-lg-3 col-6 form-group"
-                          *ngFor="let operation of role.Operation;trackBy: trackByFn">
+                          *ngFor="let operation of role.RolePrivilegeOperations;trackBy: trackByFn">
                           <div class="custom-control custom-checkbox">
                               <input class="custom-control-input" type="checkbox"
                                     name="roleprivilege"
                                   [(ngModel)]="operation.IsEnabled" [checked]="operation.IsEnabled"
                                   (change)="rowWiseSelection($event,operation,role.EntityName)"
-                                  [ngModelOptions]="{standalone: true}">
-                              <label class="custom-control-label">{{operation.operation}}</label>
+                                  [ngModelOptions]="{standalone: true}"
+                                     [disabled]="operation.IsDisabled">
+                              <label class="custom-control-label">{{operation.Operation}}</label>
                           </div>
                       </div>
                   </div>
@@ -116,6 +118,4 @@
       </div>
     </div>
   </form>
-
-    
 </div>

@@ -71,6 +71,17 @@ namespace nIS
         /// </summary>
         public const string SORT_COLUMN = "Id";
 
+
+        /// <summary>
+        /// The entity sort column
+        /// </summary>
+        public const string ENTITYSORTCOLUMN = "Id";
+
+        /// <summary>
+        /// The component code
+        /// </summary>
+        public const string COMPONENTCODE = "nIS";
+
         #endregion
 
         #region Operations

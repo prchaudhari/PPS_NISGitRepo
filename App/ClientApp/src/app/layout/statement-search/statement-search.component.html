@@ -1,0 +1,138 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2">Statement Search</span>
+      <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+    </div>
+  </div>
+  <!--desktop view start-->
+  <div class="card border-0 mb-3 card-shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
+          </mat-paginator>
+        </div>
+      </div>
+      <div class="widget-area-grid padding-0">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="date">
+            <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="period">
+            <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Period </th>
+            <td mat-cell *matCellDef="let element"> {{element.period}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="customer">
+            <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Customer </th>
+            <td mat-cell *matCellDef="let element"> {{element.customer}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="accountId">
+            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Account ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.accountId}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="city">
+            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header>City </th>
+            <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="action-btns btn-tbl-action">
+                <button type="button" title="Export PDF"><span class="fa fa-file-pdf-o"></span></button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--desktop view end-->
+
+  <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+    <div class="filter-head">
+      <label class="m-0">Apply Filter</label>
+    </div>
+    <div class="filter-body-left d-flex flex-column stylescrollbar">
+      <div class="form-group">
+        <label>Statement Date</label>
+        <div class="position-relative">
+          <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate">
+          <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+            <i class="fa fa-calendar"></i>
+          </span>
+          <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Statement Period</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Customer</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Account ID</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" class="form-control">
+      </div>
+      <!--<div class="form-group">
+    <label>End Date</label>
+    <div class="position-relative">
+      <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filtershiftenddate">
+      <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
+        <i class="fa fa-calendar"></i>
+      </span>
+      <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+    </div>
+  </div>-->
+    </div>
+    <!--[ngClass]="filterClass"-->
+    <div class="filter-footer">
+      <ul class="nav">
+        <li class="nav-item width33" title="Search">
+          <a class="nav-link p-0">
+            <span class="fa fa-check"></span>
+          </a>
+        </li>
+        <li class="nav-item width33" title="Reset">
+          <a class="nav-link p-0">
+            <span class="fa fa-refresh"></span>
+          </a>
+        </li>
+        <li class="nav-item width33" title="Close" (click)="closeFilter()">
+          <a class="nav-link p-0">
+            <span class="fa fa-close"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>
+

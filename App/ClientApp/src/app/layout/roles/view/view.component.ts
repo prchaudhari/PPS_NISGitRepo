@@ -43,7 +43,7 @@ export class ViewComponent implements OnInit {
     public isRolePrivilegeIsAssigned: boolean = true;
     public roleRecord: any = {};
     public roleStatus: any;
-
+  public loggedInUserIdentifier;
     constructor(
         private injector: Injector,
         private uiLoader: NgxUiLoaderService,
@@ -69,7 +69,10 @@ export class ViewComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
+  ngOnInit() {
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    this.loggedInUserIdentifier = userClaimsDetail.UserIdentifier;
         this.getRoleRecords();
     }
 

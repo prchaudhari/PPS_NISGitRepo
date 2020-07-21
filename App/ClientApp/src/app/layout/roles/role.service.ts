@@ -7,6 +7,7 @@ import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfigurati
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import { Role } from 'src/app/layout/roles/role';
+import { RolePrivilege } from '../../shared/models/rolePrivilege';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class RoleService {
 
   public accessToken;
   public roleList: Role[] = [];
+  public rolePrivilegeList: RolePrivilege[] = [];
   public isRecordFound: boolean = false;
   public isRecordSaved: boolean = false;
   public isDependencyPresent: boolean = false;
@@ -124,7 +126,35 @@ public async checkDependency(postData): Promise<boolean> {
         });
     return <boolean>this.isDependencyPresent;
 }
-
+  public async getRolePrivilleges(): Promise<RolePrivilege[]> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.roleGetRolePrivileges;
+    this.uiLoader.start();
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          if (httpEvent["status"] === 200) {
+            this.rolePrivilegeList = [];
+            this.uiLoader.stop();
+            httpEvent['body'].forEach(roleObject => {
+              this.rolePrivilegeList = [...this.rolePrivilegeList, roleObject];
+            });
+          }
+          else {
+            this.rolePrivilegeList = [];
+            this.uiLoader.stop();
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+          this.rolePrivilegeList = [];
+        this.uiLoader.stop();
+        if (error["error"] != null) {
+          let errorMessage = error["error"].Error["Message"];
+          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+        }
+      });
+    return <RolePrivilege[]>this.rolePrivilegeList
+  }
 //method to call api of delete role.
 public async deleteRole(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);

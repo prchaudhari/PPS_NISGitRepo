@@ -8,7 +8,7 @@
       <div class="card-body">
         <div class="row form-group">
           <div class="col-md-4 col-lg-4">
-            <label id="lblName" for="inputRoleName">Name</label>
+            <label id="lblName" for="inputRoleName">Name<span class="text-danger">*</span></label>
             <input type="text" class="form-control" formControlName="ScheduleName" id="lblName" />
             <div class="validation-msg" style="color:red">
               <ul *ngIf="ScheduleName.touched && ScheduleName.errors" style="list-style-type:none">
@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="col-md-4 col-lg-4">
-            <label id="lblTemplate" for="inputRoleName">Statement Defination</label>
+            <label id="lblTemplate" for="inputRoleName">Statement Defination<span class="text-danger">*</span></label>
             <select formControlName="StatementDefinition" (change)="onStateDefinitionSelected($event)" class="form-control">
               <option *ngFor="let sd of statementDefinitionList" [value]="sd.Identifier">{{sd.Name}}</option>
             </select>
@@ -35,9 +35,9 @@
         </div>
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
-            <label id="lblTemplate" for="inputRoleName">Day of Month</label>
-            <select formControlName="StatementDefinition" (change)="onDayOfMonthSelected($event)" class="form-control">
-              <option *ngFor="let sd of DayOfMonthList" [value]="sd">{{sd}}</option>
+            <label id="lblTemplate" for="inputRoleName">Day of Month<span class="text-danger">*</span></label>
+            <select formControlName="DayOfMonth" (change)="onDayOfMonthSelected($event)" class="form-control">
+              <option *ngFor="let sd of DayOfMonthList" [value]="sd.Identifier">{{sd.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
               <ul *ngIf="scheduleFormErrorObject.dayOfmonthShowError" style="list-style-type:none">
@@ -48,11 +48,11 @@
             </div>
           </div>
           <div class="col-md-4 col-lg-4 form-group">
-            <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) </label>
+            <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) <span class="text-danger">*</span></label>
             <div class="row">
               <div class="col-md-6 col-lg-6">
-                <select formControlName="StatementDefinition" (change)="onTimeOfDayHoursSelected($event)" class="form-control">
-                  <option *ngFor="let sd of TimeOfDayHoursList" [value]="sd">{{sd}}</option>
+                <select formControlName="TimeOfDayHours" (change)="onTimeOfDayHoursSelected($event)" class="form-control">
+                  <option *ngFor="let sd of TimeOfDayHoursList" [value]="sd.Identifier">{{sd.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
                   <ul *ngIf="scheduleFormErrorObject.hourOfDayShowError" style="list-style-type:none">
@@ -63,8 +63,8 @@
                 </div>
               </div>
               <div class="col-md-6 col-lg-6">
-                <select formControlName="StatementDefinition" (change)="onTimeOfDayMinutesSelected($event)" class="form-control">
-                  <option *ngFor="let sd of TimeOfDayMinutesList" [value]="sd">{{sd}}</option>
+                <select formControlName="TimeOfDayMinutes" (change)="onTimeOfDayMinutesSelected($event)" class="form-control">
+                  <option *ngFor="let sd of TimeOfDayMinutesList" [value]="sd.Identifier">{{sd.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
                   <ul *ngIf="scheduleFormErrorObject.minuteOfHourShowError" style="list-style-type:none">
@@ -79,7 +79,7 @@
         </div>
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
-            <label>Start Date</label>
+            <label>Start Date<span class="text-danger">*</span></label>
             <div class="position-relative">
               <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate"
                      placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)">
@@ -121,7 +121,7 @@
         </div>
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
-            <label>End Date</label>
+            <label>End Date</label><span class="text-danger" *ngIf="IsEndDateRequired">*</span>
             <div class="position-relative">
               <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filtershiftenddate"
                      placeholder="Please select end date" readonly (ngModelChange)="onFilterDateChange($event)" [disabled]="!IsEndDateRequired">

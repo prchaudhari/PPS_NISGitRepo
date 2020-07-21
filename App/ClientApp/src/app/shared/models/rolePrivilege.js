@@ -1,18 +1,5 @@
-export interface RolePrivilege {
-  "EntityName": string;
-  "DisplayName": string;
-  "RolePrivilegeOperations": RolePrivilegeOperations[];
-  "IsAllRolePrevilegeSelected": boolean;
-
-}
-
-export interface RolePrivilegeOperations {
-  "Operation": string;
-  "EntityName": string;
-  "IsEnabled": boolean;
-  "IsDisabled": boolean;
-}
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 //export var RolePrivilegeDummyList: RolePrivilege[] = [
 //  {
 //    "EntityName": "Alert",
@@ -493,7 +480,6 @@ export interface RolePrivilegeOperations {
 //    "EntityName": "Forgot Password",
 //    "DisplayName": "Forgot Password",
 //    "RolePrivilegeOperations": [
-
 //    ]
 //  },
 //  {
@@ -1650,3 +1636,4 @@ export interface RolePrivilegeOperations {
 //    ]
 //  }
 //];
+//# sourceMappingURL=rolePrivilege.js.map

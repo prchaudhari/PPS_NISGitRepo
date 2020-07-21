@@ -9,6 +9,7 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { LogsDetailsComponent } from './logs-details/logs-details.component';
 import { SourcedataComponent } from './sourcedata/sourcedata.component';
 import { AssetSettingsComponent } from './asset-settings/asset-settings.component';
+import { StatementSearchComponent } from './statement-search/statement-search.component';
 
 const routes: Routes = [
   {
@@ -30,7 +31,8 @@ const routes: Routes = [
       { path: 'logsDetails', component: LogsDetailsComponent },
       { path: 'sourceData', component: SourcedataComponent },
       { path: 'analytics', component: AnalyticsComponent },
-      { path: 'settings', component: AssetSettingsComponent }
+      { path: 'settings', component: AssetSettingsComponent },
+      { path: 'statemenetsearch', component: StatementSearchComponent },
     ]
   }
 
