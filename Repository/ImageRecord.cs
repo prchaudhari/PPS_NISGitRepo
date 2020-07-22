@@ -15,6 +15,10 @@ namespace nIS
     public partial class ImageRecord
     {
         public int Id { get; set; }
+        public long BatchId { get; set; }
+        public long StatementId { get; set; }
+        public long PageId { get; set; }
+        public long WidgetId { get; set; }
         public System.DateTime Date { get; set; }
         public string Title { get; set; }
         public string Image1 { get; set; }

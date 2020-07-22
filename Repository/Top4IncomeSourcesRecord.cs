@@ -12,15 +12,13 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class VideoRecord
+    public partial class Top4IncomeSourcesRecord
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
+        public long CustomerId { get; set; }
         public long BatchId { get; set; }
-        public long StatementId { get; set; }
-        public long PageId { get; set; }
-        public long WidgetId { get; set; }
-        public System.DateTime Date { get; set; }
-        public string Title { get; set; }
-        public string Video1 { get; set; }
+        public string Source { get; set; }
+        public Nullable<decimal> CurrentSpend { get; set; }
+        public Nullable<decimal> AverageSpend { get; set; }
     }
 }

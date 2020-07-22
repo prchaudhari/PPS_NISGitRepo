@@ -12,15 +12,14 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class VideoRecord
+    public partial class BatchMasterRecord
     {
-        public int Id { get; set; }
-        public long BatchId { get; set; }
-        public long StatementId { get; set; }
-        public long PageId { get; set; }
-        public long WidgetId { get; set; }
-        public System.DateTime Date { get; set; }
-        public string Title { get; set; }
-        public string Video1 { get; set; }
+        public long Id { get; set; }
+        public string TenantCode { get; set; }
+        public string BatchName { get; set; }
+        public Nullable<long> CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<long> ScheduleId { get; set; }
+        public Nullable<bool> IsExecuted { get; set; }
     }
 }

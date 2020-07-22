@@ -20,7 +20,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-        : base(connectionString)
+            : base(connectionString)
         {
         }
 
@@ -53,14 +53,19 @@ namespace nIS
         public virtual DbSet<AssetSettingRecord> AssetSettingRecords { get; set; }
         public virtual DbSet<ScheduleRunHistoryRecord> ScheduleRunHistoryRecords { get; set; }
         public virtual DbSet<CustomerInfoRecord> CustomerInfoRecords { get; set; }
-        public virtual DbSet<ImageRecord> ImageRecords { get; set; }
         public virtual DbSet<NewsAlertRecord> NewsAlertRecords { get; set; }
         public virtual DbSet<RenderEngineRecord> RenderEngineRecords { get; set; }
         public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
-        public virtual DbSet<VideoRecord> VideoRecords { get; set; }
         public virtual DbSet<AccountMasterRecord> AccountMasterRecords { get; set; }
         public virtual DbSet<AccountTransactionRecord> AccountTransactionRecords { get; set; }
         public virtual DbSet<CustomerMasterRecord> CustomerMasterRecords { get; set; }
         public virtual DbSet<CustomerMediaRecord> CustomerMediaRecords { get; set; }
+        public virtual DbSet<BatchDetailRecord> BatchDetailRecords { get; set; }
+        public virtual DbSet<BatchMasterRecord> BatchMasterRecords { get; set; }
+        public virtual DbSet<ImageRecord> ImageRecords { get; set; }
+        public virtual DbSet<VideoRecord> VideoRecords { get; set; }
+        public virtual DbSet<ReminderAndRecommendationRecord> ReminderAndRecommendationRecords { get; set; }
+        public virtual DbSet<SavingTrendRecord> SavingTrendRecords { get; set; }
+        public virtual DbSet<Top4IncomeSourcesRecord> Top4IncomeSourcesRecord { get; set; }
     }
 }
