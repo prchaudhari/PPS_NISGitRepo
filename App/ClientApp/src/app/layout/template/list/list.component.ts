@@ -100,7 +100,7 @@ export class ListComponent implements OnInit {
 
     ngOnInit() {
         this.getTemplates(null);
-        //this.getPageTypes();
+        this.getPageTypes();
         this.TemplateFilterForm = this.fb.group({
             filterDisplayName: [null],
             filterOwner: [null],
