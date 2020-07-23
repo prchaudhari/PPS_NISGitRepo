@@ -83,12 +83,54 @@ export class AddComponent implements OnInit {
         this.widgetList[i].WidgetIcon = "icon-videoWidget";
 
       }
+
+      else if (this.widgetList[i].WidgetName == "Video") {
+        this.widgetList[i].ImageSource = "assets/images/VideoWidget.PNG"
+        this.widgetList[i].WidgetIcon = "icon-videoWidget";
+
+      }
+      else if (this.widgetList[i].WidgetName == "Analytics") {
+        this.widgetList[i].ImageSource = "assets/images/Analytics.png"
+        this.widgetList[i].WidgetIcon = "icon-AnalyticsWidget";
+
+      }
+      else if (this.widgetList[i].WidgetName == "SavingTransaction") {
+        this.widgetList[i].ImageSource = "assets/images/TranscationListWidget.PNG"
+        this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+
+      }
+      else if (this.widgetList[i].WidgetName == "CurrentTransaction") {
+        this.widgetList[i].ImageSource = "assets/images/TranscationListWidget.PNG"
+        this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+
+      }
+      else if (this.widgetList[i].WidgetName == "SavingTrend") {
+        this.widgetList[i].ImageSource = "assets/images/SavingTrendWidget.PNG"
+        this.widgetList[i].WidgetIcon = "icon-widget-line-chart2";
+
+      }
+      else if (this.widgetList[i].WidgetName == "Top4IncomeSources") {
+        this.widgetList[i].ImageSource = "assets/images/Top4IncomeWidget.PNG"
+        this.widgetList[i].WidgetIcon = "icon-rp-quality1";
+
+      }
+      else if (this.widgetList[i].WidgetName == "CurrentAvailableBalance") {
+        this.widgetList[i].ImageSource = "assets/images/AvailableBalanceWidget.PNG"
+        this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
+
+      }
+      else if (this.widgetList[i].WidgetName == "SavingAvailableBalance") {
+        this.widgetList[i].ImageSource = "assets/images/AvailableBalanceWidget.PNG"
+        this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
+
+      }
       this.widgetList[0].Checked = true;
       this.selectedLink = this.widgetList[0];
 
     }
    // this.spinner.stop();
   }
+
 
   public onPageTypeSelected(event) {
     var searchParameter: any = {};

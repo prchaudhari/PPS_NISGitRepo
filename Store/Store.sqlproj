@@ -61,6 +61,7 @@
     <Folder Include="Tenant Manager" />
     <Folder Include="Seed Data Scripts" />
     <Folder Include="Configuration Manager" />
+    <Folder Include="Entity Manager" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Asset.sql" />
@@ -93,6 +94,10 @@
     <None Include="Seed Data Scripts\AssetSetting.sql" />
     <Build Include="ScheduleRunHistory.sql" />
     <Build Include="RenderEngine.sql" />
+    <None Include="Seed Data Scripts\Entities.sql" />
+    <Build Include="Entity Manager\Entities.sql" />
+    <Build Include="Entity Manager\Operations.sql" />
+    <Build Include="Entity Manager\EntityManagerSchema.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

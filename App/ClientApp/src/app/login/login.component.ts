@@ -37,6 +37,59 @@ export class LoginComponent implements OnInit {
   public loginErrorMsg: string = '';
   public status;
   public result;
+
+
+
+
+  public statePrivilegeMap: any = [{
+    "State": "dashboard",
+    "Entity": "Dashboard",
+  },
+  {
+    "State": "user",
+    "Entity": "User",
+  },
+  {
+    "State": "dashboard",
+    "Entity": "Dashboard",
+  },
+  {
+    "State": "roles",
+    "Entity": "Role",
+  },
+  {
+    "State": "assetlibrary",
+    "Entity": "Asset Library",
+  },
+  {
+    "State": "widgets",
+    "Entity": "Widget",
+  },
+  {
+    "State": "pages",
+    "Entity": "Page",
+  },
+  {
+    "State": "statementdefination",
+    "Entity": "Statement Definition",
+  },
+  {
+    "State": "schedulemanagement",
+    "Entity": "Schedule Management",
+  },
+  {
+    "State": "logs",
+    "Entity": "Log",
+  },
+  {
+    "State": "analytics",
+    "Entity": "Analytics",
+  },
+  {
+    "State": "statemenetsearch",
+    "Entity": "Statement Search",
+  },
+  ]
   // login form error Obj created.
   public loginFormErrorObject: any = {
     showUserNameError: false,
@@ -91,29 +144,44 @@ export class LoginComponent implements OnInit {
     this.resetForm = this.fb.group({
       resetUserName: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
     });
-
-    if(localStorage.getItem('LastRequestTime') != null && localStorage.getItem('LastRequestTime') != '') {
+    this.dynamicGlobalVariable.IsSessionExpireMessageDisplyed = false;
+    if (localStorage.getItem('LastRequestTime') != null && localStorage.getItem('LastRequestTime') != '') {
       let lastReqTime = new Date(localStorage.getItem('LastRequestTime'));
       let currentDate = new Date();
       let timeDiff = Math.floor((currentDate.getTime() - lastReqTime.getTime()) / (1000 * 60));
-      if(timeDiff < 15) {
+      if (timeDiff < 15) {
         var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+        var userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
         if (userClaimsDetail) {
-          this.route.navigate(['dashboard']);
-        }else {
+          var isFound = false;
+          var state = 0;
+          this.statePrivilegeMap.forEach(map => {
+            var isPresent = userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
+            if (isPresent != undefined && isPresent.length > 0) {
+              if (isFound == false) {
+                isFound = true;
+                state = map.State;
+              }
+            }
+          });
+          if (isFound) {
+             this.route.navigate([state]);
+          }
+          // this.route.navigate(['dashboard']);
+        } else {
           this.localstorageservice.removeLocalStorageData();
           this.route.navigate(['login']);
         }
-      }else {
+      } else {
         this.localstorageservice.removeLocalStorageData();
         this.route.navigate(['login']);
       }
-    }else {
+    } else {
       this.localstorageservice.removeLocalStorageData();
       this.route.navigate(['login']);
     }
-    
-    this.dynamicGlobalVariable.IsSessionExpireMessageDisplyed = false;
+
+
   }
 
   //custom validation check
@@ -208,7 +276,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', access_token);
         this.localstorageservice.SetCurrentUser(data);
         let userName = userData.UserName;
-        
+
         localStorage.setItem("UserId", userData.UserIdentifier);
         localStorage.setItem("UserEmail", userData.UserPrimaryEmailAddress);
         localStorage.setItem("currentUserName", userName);
@@ -219,7 +287,22 @@ export class LoginComponent implements OnInit {
         //this.handleTheme(userData.UserTheme);
         //this.navigateToLandingPage();
         this.loginErrorMsg = '';
-        this.route.navigate(['dashboard']);
+        var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+        var userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+        var isFound = false;
+        var state = 0;
+        this.statePrivilegeMap.forEach(map => {
+          var isPresent = userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
+          if (isPresent != undefined && isPresent.length > 0) {
+            if (isFound == false) {
+              isFound = true;
+              state = map.State;
+            }
+          }
+        });
+        if (isFound) {
+          this.route.navigate([state]);
+        }
       }
     }, (error: HttpResponse<any>) => {
       this.spinner.stop();
