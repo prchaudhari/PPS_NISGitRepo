@@ -549,29 +549,32 @@ export class AddComponent implements OnInit {
             }
             if (entityMapping.OtherDependentEntity != undefined) {
               //check and other dependent entity view operations
-              var filterEntity = entityMapping.OtherDependentEntity.filter(en => en == entity.EntityName);
+              var filterEntity = entityMapping.OtherDependentEntity;
               if (filterEntity != undefined && filterEntity.length > 0) {
-                this.entityList.forEach(x => {
-                  if (x.EntityName == filterEntity[0]) {
-                    x.RolePrivilegeOperations.forEach(opt => {
-                      if (opt.Operation == "View") {
-                        opt.IsDisabled = true;
-                        opt.IsEnabled = true;
-                      }
-                    });
-                    this.dependentEntityCount.forEach(en => {
-                      if (en.EntityName == entity.EntityName) {
-                        //if (operation.Operation == "Create") {
-                        //  en.Count = en.Count + 2;
-                        //}
-                        //else {
-                        //  en.Count = en.Count + 1;
-                        //}
-                        en.Count = en.Count + 1;
-                      }
-                    })
-                  }
+                filterEntity.forEach(fE => {
+                  this.entityList.forEach(x => {
+                    if (x.EntityName == fE) {
+                      x.RolePrivilegeOperations.forEach(opt => {
+                        if (opt.Operation == "View") {
+                          opt.IsDisabled = true;
+                          opt.IsEnabled = true;
+                        }
+                      });
+                      this.dependentEntityCount.forEach(en => {
+                        if (en.EntityName == x.EntityName) {
+                          //if (operation.Operation == "Create") {
+                          //  en.Count = en.Count + 2;
+                          //}
+                          //else {
+                          //  en.Count = en.Count + 1;
+                          //}
+                          en.Count = en.Count + 1;
+                        }
+                      })
+                    }
+                  })
                 })
+
               }
             }
 
@@ -662,29 +665,32 @@ export class AddComponent implements OnInit {
           }
           if (entityMapping.OtherDependentEntity != undefined) {
             //check and other dependent entity view operations
-            var filterEntity = entityMapping.OtherDependentEntity.filter(en => en == entity.EntityName);
+            var filterEntity = entityMapping.OtherDependentEntity;
             if (filterEntity != undefined && filterEntity.length > 0) {
-              this.entityList.forEach(x => {
-                if (x.EntityName == filterEntity[0]) {
-                  x.RolePrivilegeOperations.forEach(opt => {
-                    if (opt.Operation == "View") {
-                      opt.IsDisabled = true;
-                      opt.IsEnabled = true;
-                    }
-                  });
-                  this.dependentEntityCount.forEach(en => {
-                    if (en.EntityName == entity.EntityName) {
-                      //if (operation.Operation == "Create") {
-                      //  en.Count = en.Count + 2;
-                      //}
-                      //else {
-                      //  en.Count = en.Count + 1;
-                      //}
-                      en.Count = en.Count + 1;
-                    }
-                  })
-                }
+              filterEntity.forEach(fE => {
+                this.entityList.forEach(x => {
+                  if (x.EntityName == fE) {
+                    x.RolePrivilegeOperations.forEach(opt => {
+                      if (opt.Operation == "View") {
+                        opt.IsDisabled = true;
+                        opt.IsEnabled = true;
+                      }
+                    });
+                    this.dependentEntityCount.forEach(en => {
+                      if (en.EntityName == x.EntityName) {
+                        //if (operation.Operation == "Create") {
+                        //  en.Count = en.Count + 2;
+                        //}
+                        //else {
+                        //  en.Count = en.Count + 1;
+                        //}
+                        en.Count = en.Count + 1;
+                      }
+                    })
+                  }
+                })
               })
+            
             }
           }
 
@@ -849,6 +855,20 @@ export class AddComponent implements OnInit {
                       else if (opt.Operation == "View" && operation.Operation == "Publish") {
                         opt.IsDisabled = false;
                       }
+                      else if (opt.Operation == "View" && operation.Operation == "Delete") {
+                        //check if publish is selected
+                        var isPublishSelected = entity.RolePrivilegeOperations.filter(e => e.Operation == "Publish" && e.IsEnabled == true);
+                        if (isPublishSelected == undefined || isPublishSelected.length == 0) {
+                          opt.IsDisabled = false;
+                        }
+
+                      }
+                      else if (opt.Operation == "View" && operation.Operation == "Publish") {
+                        var isDeleteSelected = entity.RolePrivilegeOperations.filter(e => e.Operation == "Delete" && e.IsEnabled == true);
+                        if (isDeleteSelected == undefined || isDeleteSelected.length == 0) {
+                          opt.IsDisabled = false;
+                        }
+                      }
                     }
                   }
                 });
@@ -911,6 +931,9 @@ export class AddComponent implements OnInit {
     if (allSelectedList != undefined && allSelectedList.length > 0) {
       if (this.entityList.length == allSelectedList.length)
         this.allPermisions = true
+      else {
+        this.allPermisions = false;
+      }
     }
     else {
       this.allPermisions = false;
@@ -987,6 +1010,7 @@ export class AddComponent implements OnInit {
                   }
 
                 }
+
                 else if (opt.Operation == "View" && operation.Operation == "Publish") {
                   var isDeleteSelected = entity.RolePrivilegeOperations.filter(e => e.Operation == "Delete" && e.IsEnabled == true);
                   if (isDeleteSelected == undefined || isDeleteSelected.length == 0) {
@@ -1006,16 +1030,29 @@ export class AddComponent implements OnInit {
             var filterEntityCount = this.dependentEntityCount.filter(en => en.EntityName == entity.EntityName);
             if (filterEntityCount != undefined && filterEntityCount.length > 0) {
               if (filterEntityCount[0].Count == 1) {
-                entity.RolePrivilegeOperations.forEach(opt => {
-                  if (opt.Operation == "View") {
-                    opt.IsDisabled = false;
+                var entities = entity.RolePrivilegeOperations.filter(e => (e.Operation == "Edit" || e.Operation == "Create" || e.Operation == "Delete") && e.IsEnabled == true);
+                if (entities == undefined || entities.length == 0) {
+                  entity.RolePrivilegeOperations.forEach(opt => {
+
+                    if (opt.Operation == "View") {
+                      opt.IsDisabled = false;
+
+                    }
                     this.dependentEntityCount.forEach(en => {
                       if (en.EntityName == entity.EntityName) {
                         en.Count = 0;
                       }
                     })
-                  }
-                });
+                  });
+                }
+                else {
+                  this.dependentEntityCount.forEach(en => {
+                    if (en.EntityName == entity.EntityName) {
+                      en.Count = 0;
+                    }
+                  })
+                }
+                
               }
               else {
                 this.dependentEntityCount.forEach(en => {
@@ -1052,6 +1089,9 @@ export class AddComponent implements OnInit {
     if (allSelectedList != undefined && allSelectedList.length > 0) {
       if (this.entityList.length == allSelectedList.length)
         this.allPermisions = true
+      else {
+        this.allPermisions = false;
+      }
     }
     else {
       this.allPermisions = false;
