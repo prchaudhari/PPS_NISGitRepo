@@ -10,3 +10,9 @@ export interface Role {
     "RolePrivilegesIdentifiers":[]
 }
 
+export interface RoleprivilegeMapping {
+  "EntityName": string,
+  "Operation": string,
+  "RelatedOperation": string[] ,
+  "OtherDependentEntity": string[],
+}
