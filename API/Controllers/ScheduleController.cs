@@ -207,6 +207,25 @@ namespace nIS
 
             return result;
         }
+
+        /// <summary>
+        /// This method helps to run the schedule
+        /// </summary>
+        /// <returns>True if schedule runs successfully false otherwise</returns>
+        [HttpGet]
+        public bool RunSchedule()
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                var baseURL = "http://nisqa-api.azurewebsites.net/";//Url.Content("~/");
+                return this.scheduleManager.RunSchedule(baseURL, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         #region ScheduleRunHistory 
@@ -258,7 +277,9 @@ namespace nIS
             return schedules;
         }
 
-    
+       
+
+
         #endregion
 
         #endregion

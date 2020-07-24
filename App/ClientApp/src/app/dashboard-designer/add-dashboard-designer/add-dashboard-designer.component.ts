@@ -10,7 +10,7 @@ import { TemplateService } from '../../layout/template/template.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
-import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from '../widgetComponent/widgetComponent';
+import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
 import { HttpClient } from '@angular/common/http';
@@ -628,6 +628,19 @@ export class AddDashboardDesignerComponent implements OnInit {
                         WidgetSetting: ''
                     })
                 }
+                // else if(widget.WidgetName == "CurrentTransaction" || "SavingTransaction"){
+                //     return this.widgetsGridsterItemArray.push({
+                //         cols: 20,
+                //         rows: 6,
+                //         y: 0,
+                //         x: 0,
+                //         component: TransactionDetailsComponent,
+                //         value : widget.WidgetName,
+                //         widgetId : widget.Identifier,
+                //         widgetItemCount: this.widgetItemCount,
+                //         WidgetSetting: ''
+                //     })
+                // }
             }
         }
         

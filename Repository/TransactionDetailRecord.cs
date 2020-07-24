@@ -15,6 +15,9 @@ namespace nIS
     public partial class TransactionDetailRecord
     {
         public int Id { get; set; }
+        public long CustomerId { get; set; }
+        public long AccountId { get; set; }
+        public long BatchId { get; set; }
         public System.DateTime Date { get; set; }
         public string TransactionType { get; set; }
         public string AccountType { get; set; }

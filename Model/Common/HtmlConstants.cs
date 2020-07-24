@@ -23,6 +23,8 @@ namespace nIS
 
         public const int CURRENT_ACCOUNT_PAGE_TYPE_ID = 3;
 
+        public const string HTML_HEADER = "<html><head><title>NIS Output</title><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css'><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'><script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js'></script><script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js'></script><script src='https://code.highcharts.com/highcharts.js'></script><script src='https://code.highcharts.com/modules/series-label.js'></script><script src='https://code.highcharts.com/modules/exporting.js'></script><script src='https://code.highcharts.com/modules/export-data.js'></script><script src='https://code.highcharts.com/modules/accessibility.js'></script><script src='script.js'></script><link rel='stylesheet' href='site.css'></head><body>";
+
         public const string SCRIPT_TAG = "<script>function onTabChangeClicked(e){var t=document.getElementsByClassName('tabDivClass');for(x=0;x<t.length;x++)t[x].style.display='none';'Home'==e?document.getElementById('Home-Div').style.display='block':'Current'==e?document.getElementById('CurrentAcc-Div').style.display='block':'Saving'==e&&(document.getElementById('SavingAcc-Div').style.display='block')}  </script>";
 
         public const string NAVBAR_HTML = "<nav class='navbar navbar-expand-sm bg-white navbar-light'>" +
@@ -74,5 +76,9 @@ namespace nIS
         public const string SAVING_ACCOUNT_PAGE_DIV_NAME = "SavingAcc-Div";
 
         public const string CURRENT_ACCOUNT_PAGE_DIV_NAME = "CurrentAcc-Div";
+
+        public const string TAB_NAVIGATION_SCRIPT = "<script type='text/javascript'>$(document).ready(function(){$('.nav-link').click(function(t){$('.tabDivClass').hide(),$('.nav-link').removeClass('active');let a='active '+$(t.currentTarget).attr('class');$(t.currentTarget).attr('class',a);let e=$(t.currentTarget).attr('class').split(' '),n=e[e.length-1];$('.'+n).hasClass('d-none')&&$('.'+n).removeClass('d-none'),$('.'+n).show()})});</script>";
+
+        public const string HTML_FOOTER = "</body></html>";
     }
 }

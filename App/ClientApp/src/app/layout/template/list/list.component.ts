@@ -100,7 +100,7 @@ export class ListComponent implements OnInit {
 
     ngOnInit() {
         this.getTemplates(null);
-        this.getPageTypes();
+        //this.getPageTypes();
         this.TemplateFilterForm = this.fb.group({
             filterDisplayName: [null],
             filterOwner: [null],
@@ -168,6 +168,9 @@ export class ListComponent implements OnInit {
                     this.getTemplates(null);
                 }
             });
+        }
+        if(this.pageTypeList.length == 0) {
+            this.getPageTypes();
         }
         this.dataSource = new MatTableDataSource<Template>(this.templateList);
         this.dataSource.sort = this.sort;

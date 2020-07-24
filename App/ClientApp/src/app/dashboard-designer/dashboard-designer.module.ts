@@ -12,11 +12,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DynamicModule } from 'ng-dynamic-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from './widgetComponent/widgetComponent';
+import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent } from './widgetComponent/widgetComponent';
 
 @NgModule({
   declarations: [AddDashboardDesignerComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, 
-    AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent],
+    AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
     GridsterModule, LayoutModule, MatSortModule, MatTableModule, MatPaginatorModule, DynamicModule
@@ -26,6 +26,7 @@ import { CustomerInformationComponent, AccountInformationComponent, ImageCompone
     AccountInformationComponent,
     ImageComponent,
     VideoComponent,
-    SummaryAtGlanceComponent],
+    SummaryAtGlanceComponent,
+    TransactionDetailsComponent],
 })
 export class DashboardDesignerModule { }

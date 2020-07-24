@@ -322,6 +322,18 @@ namespace nIS
             return scheduleCount;
         }
 
+        public bool RunSchedule(string baseURL, string tenantCode)
+        {
+            try 
+            {
+                return this.scheduleRepository.RunSchedule(baseURL, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
         #endregion
 

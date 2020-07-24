@@ -311,6 +311,11 @@ namespace nIS
         /// StatementUpdatedByUserName
         /// </summary>
         public string StatementUpdatedByUserName { get; set; }
+
+        /// <summary>
+        /// Gets or sets page list.
+        /// </summary>
+        public IList<Page> Pages { get; set; }
         #endregion
 
         #region

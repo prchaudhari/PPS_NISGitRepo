@@ -5,18 +5,9 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="NISModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.AccountMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AccountMaster">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="AccountType" />
-            <PropertyRef Name="StatementDate" />
-            <PropertyRef Name="Currency" />
-            <PropertyRef Name="Balance" />
-            <PropertyRef Name="TotalDeposit" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
@@ -35,16 +26,9 @@ warning 6002: The table/view 'NIS.NIS.AccountMaster' does not have a primary key
           <Property Name="FeesPaid" Type="decimal" Precision="8" Scale="2" />
           <Property Name="GrandTotal" Type="decimal" Precision="8" Scale="2" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.AccountTransaction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AccountTransaction">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="AccountId" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="AccountType" />
-            <PropertyRef Name="TransactionDate" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="AccountId" Type="bigint" Nullable="false" />
@@ -164,15 +148,9 @@ warning 6002: The table/view 'NIS.NIS.AccountTransaction' does not have a primar
           <Property Name="Country" Type="bigint" Nullable="false" />
           <Property Name="Zip" Type="nvarchar" MaxLength="500" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.CustomerMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CustomerMaster">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="FirstName" />
-            <PropertyRef Name="LastName" />
-            <PropertyRef Name="AddressLine1" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
@@ -180,21 +158,15 @@ warning 6002: The table/view 'NIS.NIS.CustomerMaster' does not have a primary ke
           <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
           <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="State" Type="nvarchar" MaxLength="50" />
           <Property Name="Country" Type="nvarchar" MaxLength="50" />
           <Property Name="Zip" Type="nvarchar" MaxLength="10" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.CustomerMedia' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CustomerMedia">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="StatementId" />
-            <PropertyRef Name="PageId" />
-            <PropertyRef Name="WidgetId" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
@@ -271,15 +243,9 @@ warning 6002: The table/view 'NIS.NIS.CustomerMedia' does not have a primary key
           <Property Name="WidgetSetting" Type="nvarchar(max)" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.ReminderAndRecommendation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ReminderAndRecommendation">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="StatementId" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="Description" />
-            <PropertyRef Name="LabelText" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="StatementId" Type="bigint" Nullable="false" />
@@ -321,16 +287,9 @@ warning 6002: The table/view 'NIS.NIS.ReminderAndRecommendation' does not have a
           <Property Name="Operation" Type="nvarchar(max)" Nullable="false" />
           <Property Name="IsEnable" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.SavingTrend' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SavingTrend">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="AccountId" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="Month" />
-            <PropertyRef Name="SpendAmount" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="AccountId" Type="bigint" Nullable="false" />
@@ -412,13 +371,9 @@ warning 6002: The table/view 'NIS.NIS.SavingTrend' does not have a primary key d
           <Property Name="SequenceNumber" Type="bigint" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Top4IncomeSources">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
@@ -432,11 +387,14 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="AccountId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="TransactionType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Details" Type="nvarchar" MaxLength="500" />
-          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="8" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -568,7 +526,21 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_CustomerMedia_CustomerMedia">
+          <End Role="CustomerMedia" Type="Self.CustomerMedia" Multiplicity="1" />
+          <End Role="CustomerMedia1" Type="Self.CustomerMedia" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerMedia">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerMedia1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="NISModelStoreContainer">
+          <EntitySet Name="AccountMaster" EntityType="Self.AccountMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="AccountTransaction" EntityType="Self.AccountTransaction" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Asset" EntityType="Self.Asset" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AssetLibrary" EntityType="Self.AssetLibrary" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AssetPathSetting" EntityType="Self.AssetPathSetting" Schema="NIS" store:Type="Tables" />
@@ -578,19 +550,24 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <EntitySet Name="City" EntityType="Self.City" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerInfo" EntityType="Self.CustomerInfo" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NewsAlert" EntityType="Self.NewsAlert" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageType" EntityType="Self.PageType" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageWidgetMap" EntityType="Self.PageWidgetMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="ReminderAndRecommendation" EntityType="Self.ReminderAndRecommendation" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="RenderEngine" EntityType="Self.RenderEngine" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="RolePrivilege" EntityType="Self.RolePrivilege" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="SavingTrend" EntityType="Self.SavingTrend" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="ScheduleRunHistory" EntityType="Self.ScheduleRunHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="State" EntityType="Self.State" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Statement" EntityType="Self.Statement" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementPageMap" EntityType="Self.StatementPageMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="Top4IncomeSources" EntityType="Self.Top4IncomeSources" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserCredentialHistory" EntityType="Self.UserCredentialHistory" Schema="NIS" store:Type="Tables" />
@@ -600,100 +577,10 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <EntitySet Name="Video" EntityType="Self.Video" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
-          <EntitySet Name="AccountMaster" EntityType="Self.AccountMaster" store:Type="Tables" store:Schema="NIS">
-            <DefiningQuery>SELECT 
-    [AccountMaster].[Id] AS [Id], 
-    [AccountMaster].[CustomerId] AS [CustomerId], 
-    [AccountMaster].[BatchId] AS [BatchId], 
-    [AccountMaster].[AccountType] AS [AccountType], 
-    [AccountMaster].[StatementDate] AS [StatementDate], 
-    [AccountMaster].[StatementPeriod] AS [StatementPeriod], 
-    [AccountMaster].[RmName] AS [RmName], 
-    [AccountMaster].[RmContactNumber] AS [RmContactNumber], 
-    [AccountMaster].[Currency] AS [Currency], 
-    [AccountMaster].[Balance] AS [Balance], 
-    [AccountMaster].[TotalDeposit] AS [TotalDeposit], 
-    [AccountMaster].[TotalSpend] AS [TotalSpend], 
-    [AccountMaster].[ProfitEarned] AS [ProfitEarned], 
-    [AccountMaster].[Indicator] AS [Indicator], 
-    [AccountMaster].[FeesPaid] AS [FeesPaid], 
-    [AccountMaster].[GrandTotal] AS [GrandTotal]
-    FROM [NIS].[AccountMaster] AS [AccountMaster]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="AccountTransaction" EntityType="Self.AccountTransaction" store:Type="Tables" store:Schema="NIS">
-            <DefiningQuery>SELECT 
-    [AccountTransaction].[Id] AS [Id], 
-    [AccountTransaction].[AccountId] AS [AccountId], 
-    [AccountTransaction].[CustomerId] AS [CustomerId], 
-    [AccountTransaction].[BatchId] AS [BatchId], 
-    [AccountTransaction].[AccountType] AS [AccountType], 
-    [AccountTransaction].[TransactionDate] AS [TransactionDate], 
-    [AccountTransaction].[TransactionType] AS [TransactionType], 
-    [AccountTransaction].[Narration] AS [Narration], 
-    [AccountTransaction].[FCY] AS [FCY], 
-    [AccountTransaction].[CurrentRate] AS [CurrentRate], 
-    [AccountTransaction].[LCY] AS [LCY]
-    FROM [NIS].[AccountTransaction] AS [AccountTransaction]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" store:Type="Tables" store:Schema="NIS">
-            <DefiningQuery>SELECT 
-    [CustomerMaster].[Id] AS [Id], 
-    [CustomerMaster].[BatchId] AS [BatchId], 
-    [CustomerMaster].[FirstName] AS [FirstName], 
-    [CustomerMaster].[MiddleName] AS [MiddleName], 
-    [CustomerMaster].[LastName] AS [LastName], 
-    [CustomerMaster].[AddressLine1] AS [AddressLine1], 
-    [CustomerMaster].[City] AS [City], 
-    [CustomerMaster].[State] AS [State], 
-    [CustomerMaster].[Country] AS [Country], 
-    [CustomerMaster].[Zip] AS [Zip]
-    FROM [NIS].[CustomerMaster] AS [CustomerMaster]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" store:Type="Tables" store:Schema="NIS">
-            <DefiningQuery>SELECT 
-    [CustomerMedia].[Id] AS [Id], 
-    [CustomerMedia].[CustomerId] AS [CustomerId], 
-    [CustomerMedia].[BatchId] AS [BatchId], 
-    [CustomerMedia].[StatementId] AS [StatementId], 
-    [CustomerMedia].[PageId] AS [PageId], 
-    [CustomerMedia].[WidgetId] AS [WidgetId], 
-    [CustomerMedia].[ImageURL] AS [ImageURL], 
-    [CustomerMedia].[VideoURL] AS [VideoURL]
-    FROM [NIS].[CustomerMedia] AS [CustomerMedia]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ReminderAndRecommendation" EntityType="Self.ReminderAndRecommendation" store:Type="Tables" store:Schema="NIS">
-            <DefiningQuery>SELECT 
-    [ReminderAndRecommendation].[Id] AS [Id], 
-    [ReminderAndRecommendation].[StatementId] AS [StatementId], 
-    [ReminderAndRecommendation].[CustomerId] AS [CustomerId], 
-    [ReminderAndRecommendation].[Description] AS [Description], 
-    [ReminderAndRecommendation].[LabelText] AS [LabelText], 
-    [ReminderAndRecommendation].[TargetURL] AS [TargetURL]
-    FROM [NIS].[ReminderAndRecommendation] AS [ReminderAndRecommendation]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="SavingTrend" EntityType="Self.SavingTrend" store:Type="Tables" store:Schema="NIS">
-            <DefiningQuery>SELECT 
-    [SavingTrend].[Id] AS [Id], 
-    [SavingTrend].[AccountId] AS [AccountId], 
-    [SavingTrend].[CustomerId] AS [CustomerId], 
-    [SavingTrend].[BatchId] AS [BatchId], 
-    [SavingTrend].[Month] AS [Month], 
-    [SavingTrend].[SpendAmount] AS [SpendAmount], 
-    [SavingTrend].[SpendPercentage] AS [SpendPercentage], 
-    [SavingTrend].[Income] AS [Income], 
-    [SavingTrend].[IncomePercentage] AS [IncomePercentage]
-    FROM [NIS].[SavingTrend] AS [SavingTrend]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Top4IncomeSources" EntityType="Self.Top4IncomeSources" store:Type="Tables" store:Schema="NIS">
-            <DefiningQuery>SELECT 
-    [Top4IncomeSources].[Id] AS [Id], 
-    [Top4IncomeSources].[CustomerId] AS [CustomerId], 
-    [Top4IncomeSources].[BatchId] AS [BatchId], 
-    [Top4IncomeSources].[Source] AS [Source], 
-    [Top4IncomeSources].[CurrentSpend] AS [CurrentSpend], 
-    [Top4IncomeSources].[AverageSpend] AS [AverageSpend]
-    FROM [NIS].[Top4IncomeSources] AS [Top4IncomeSources]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK_CustomerMedia_CustomerMedia" Association="Self.FK_CustomerMedia_CustomerMedia">
+            <End Role="CustomerMedia" EntitySet="CustomerMedia" />
+            <End Role="CustomerMedia1" EntitySet="CustomerMedia" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -723,21 +610,21 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <EntitySet Name="WidgetRecords" EntityType="NISModel.WidgetRecord" />
           <EntitySet Name="AssetSettingRecords" EntityType="NISModel.AssetSettingRecord" />
           <EntitySet Name="ScheduleRunHistoryRecords" EntityType="NISModel.ScheduleRunHistoryRecord" />
-          <EntitySet Name="CustomerInfoRecords" EntityType="NISModel.CustomerInfoRecord" />
-          <EntitySet Name="NewsAlertRecords" EntityType="NISModel.NewsAlertRecord" />
           <EntitySet Name="RenderEngineRecords" EntityType="NISModel.RenderEngineRecord" />
-          <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
           <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
           <EntitySet Name="AccountTransactionRecords" EntityType="NISModel.AccountTransactionRecord" />
-          <EntitySet Name="CustomerMasterRecords" EntityType="NISModel.CustomerMasterRecord" />
-          <EntitySet Name="CustomerMediaRecords" EntityType="NISModel.CustomerMediaRecord" />
           <EntitySet Name="BatchDetailRecords" EntityType="NISModel.BatchDetailRecord" />
           <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
+          <EntitySet Name="CustomerInfoRecords" EntityType="NISModel.CustomerInfoRecord" />
+          <EntitySet Name="CustomerMasterRecords" EntityType="NISModel.CustomerMasterRecord" />
+          <EntitySet Name="CustomerMediaRecords" EntityType="NISModel.CustomerMediaRecord" />
           <EntitySet Name="ImageRecords" EntityType="NISModel.ImageRecord" />
-          <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
+          <EntitySet Name="NewsAlertRecords" EntityType="NISModel.NewsAlertRecord" />
           <EntitySet Name="ReminderAndRecommendationRecords" EntityType="NISModel.ReminderAndRecommendationRecord" />
           <EntitySet Name="SavingTrendRecords" EntityType="NISModel.SavingTrendRecord" />
           <EntitySet Name="Top4IncomeSourcesRecord" EntityType="NISModel.Top4IncomeSourcesRecord" />
+          <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
+          <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1057,30 +944,6 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="CustomerInfoRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="Int64" Nullable="false" />
-          <Property Name="State" Type="Int64" Nullable="false" />
-          <Property Name="Country" Type="Int64" Nullable="false" />
-          <Property Name="Zip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="NewsAlertRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="RenderEngineRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1094,27 +957,9 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <Property Name="NumberOfThread" Type="Int32" Nullable="false" />
           <Property Name="InUse" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="TransactionDetailRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-        </EntityType>
         <EntityType Name="AccountMasterRecord">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="AccountType" />
-            <PropertyRef Name="StatementDate" />
-            <PropertyRef Name="Currency" />
-            <PropertyRef Name="Balance" />
-            <PropertyRef Name="TotalDeposit" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="CustomerId" Type="Int64" Nullable="false" />
@@ -1136,11 +981,6 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
         <EntityType Name="AccountTransactionRecord">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="AccountId" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="AccountType" />
-            <PropertyRef Name="TransactionDate" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="AccountId" Type="Int64" Nullable="false" />
@@ -1153,43 +993,6 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <Property Name="FCY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CurrentRate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LCY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="CustomerMasterRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="FirstName" />
-            <PropertyRef Name="LastName" />
-            <PropertyRef Name="AddressLine1" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Zip" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="CustomerMediaRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="StatementId" />
-            <PropertyRef Name="PageId" />
-            <PropertyRef Name="WidgetId" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="PageId" Type="Int64" Nullable="false" />
-          <Property Name="WidgetId" Type="Int64" Nullable="false" />
-          <Property Name="ImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="VideoURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="BatchDetailRecord">
           <Key>
@@ -1215,6 +1018,50 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <Property Name="ScheduleId" Type="Int64" />
           <Property Name="IsExecuted" Type="Boolean" />
         </EntityType>
+        <EntityType Name="CustomerInfoRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="Int64" Nullable="false" />
+          <Property Name="State" Type="Int64" Nullable="false" />
+          <Property Name="Country" Type="Int64" Nullable="false" />
+          <Property Name="Zip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CustomerMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CustomerMediaRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="PageId" Type="Int64" Nullable="false" />
+          <Property Name="WidgetId" Type="Int64" Nullable="false" />
+          <Property Name="ImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VideoURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="ImageRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1228,26 +1075,18 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Image1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="VideoRecord">
+        <EntityType Name="NewsAlertRecord">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="PageId" Type="Int64" Nullable="false" />
-          <Property Name="WidgetId" Type="Int64" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Video1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ReminderAndRecommendationRecord">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="StatementId" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="Description" />
-            <PropertyRef Name="LabelText" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="StatementId" Type="Int64" Nullable="false" />
@@ -1259,11 +1098,6 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
         <EntityType Name="SavingTrendRecord">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="AccountId" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
-            <PropertyRef Name="Month" />
-            <PropertyRef Name="SpendAmount" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="AccountId" Type="Int64" Nullable="false" />
@@ -1278,8 +1112,6 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
         <EntityType Name="Top4IncomeSourcesRecord">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="BatchId" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="CustomerId" Type="Int64" Nullable="false" />
@@ -1287,6 +1119,33 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
           <Property Name="Source" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CurrentSpend" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="AverageSpend" Type="Decimal" Precision="8" Scale="2" />
+        </EntityType>
+        <EntityType Name="TransactionDetailRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="AccountId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+        </EntityType>
+        <EntityType Name="VideoRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="PageId" Type="Int64" Nullable="false" />
+          <Property Name="WidgetId" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Video1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1635,32 +1494,6 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CustomerInfoRecords">
-            <EntityTypeMapping TypeName="NISModel.CustomerInfoRecord">
-              <MappingFragment StoreEntitySet="CustomerInfo">
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
-                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NewsAlertRecords">
-            <EntityTypeMapping TypeName="NISModel.NewsAlertRecord">
-              <MappingFragment StoreEntitySet="NewsAlert">
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RenderEngineRecords">
             <EntityTypeMapping TypeName="NISModel.RenderEngineRecord">
               <MappingFragment StoreEntitySet="RenderEngine">
@@ -1671,18 +1504,6 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
                 <ScalarProperty Name="PriorityLevel" ColumnName="PriorityLevel" />
                 <ScalarProperty Name="URL" ColumnName="URL" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TransactionDetailRecords">
-            <EntityTypeMapping TypeName="NISModel.TransactionDetailRecord">
-              <MappingFragment StoreEntitySet="TransactionDetail">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
-                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1726,36 +1547,6 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CustomerMasterRecords">
-            <EntityTypeMapping TypeName="NISModel.CustomerMasterRecord">
-              <MappingFragment StoreEntitySet="CustomerMaster">
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CustomerMediaRecords">
-            <EntityTypeMapping TypeName="NISModel.CustomerMediaRecord">
-              <MappingFragment StoreEntitySet="CustomerMedia">
-                <ScalarProperty Name="VideoURL" ColumnName="VideoURL" />
-                <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
-                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
-                <ScalarProperty Name="PageId" ColumnName="PageId" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BatchDetailRecords">
             <EntityTypeMapping TypeName="NISModel.BatchDetailRecord">
               <MappingFragment StoreEntitySet="BatchDetails">
@@ -1782,6 +1573,53 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CustomerInfoRecords">
+            <EntityTypeMapping TypeName="NISModel.CustomerInfoRecord">
+              <MappingFragment StoreEntitySet="CustomerInfo">
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerMasterRecords">
+            <EntityTypeMapping TypeName="NISModel.CustomerMasterRecord">
+              <MappingFragment StoreEntitySet="CustomerMaster">
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerMediaRecords">
+            <EntityTypeMapping TypeName="NISModel.CustomerMediaRecord">
+              <MappingFragment StoreEntitySet="CustomerMedia">
+                <ScalarProperty Name="VideoURL" ColumnName="VideoURL" />
+                <ScalarProperty Name="ImageURL" ColumnName="ImageURL" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ImageRecords">
             <EntityTypeMapping TypeName="NISModel.ImageRecord">
               <MappingFragment StoreEntitySet="Image">
@@ -1796,16 +1634,12 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="VideoRecords">
-            <EntityTypeMapping TypeName="NISModel.VideoRecord">
-              <MappingFragment StoreEntitySet="Video">
-                <ScalarProperty Name="Video1" ColumnName="Video" />
+          <EntitySetMapping Name="NewsAlertRecords">
+            <EntityTypeMapping TypeName="NISModel.NewsAlertRecord">
+              <MappingFragment StoreEntitySet="NewsAlert">
+                <ScalarProperty Name="Details" ColumnName="Details" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
-                <ScalarProperty Name="PageId" ColumnName="PageId" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1845,6 +1679,35 @@ warning 6002: The table/view 'NIS.NIS.Top4IncomeSources' does not have a primary
                 <ScalarProperty Name="Source" ColumnName="Source" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetailRecords">
+            <EntityTypeMapping TypeName="NISModel.TransactionDetailRecord">
+              <MappingFragment StoreEntitySet="TransactionDetail">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VideoRecords">
+            <EntityTypeMapping TypeName="NISModel.VideoRecord">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="Video1" ColumnName="Video" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

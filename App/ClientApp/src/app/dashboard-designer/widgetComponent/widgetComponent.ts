@@ -239,3 +239,138 @@ const List_Data_Summary: ListSummary[] = [
     { account: 'Recurring Deposit', currency: 'GBP', amount: '873899' },
     { account: 'Wealth', currency: 'GBP', amount: '873899' },
 ];
+
+// Component Created for Transaction details Widget--
+@Component({
+  selector: 'transactionDetails',
+  template: `<div class="widget">
+  <div class="widget-header">
+    <span class="widget-header-title"> Transaction Details </span>
+  </div>
+  <div class="widget-area-grid padding-0">
+    <div class="d-flex justify-content-center mb-4">
+      <div class="pagination-mat position-relative d-md-block d-none">
+        <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                       [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
+        </mat-paginator>
+      </div>
+    </div>
+    <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+      <!-- Position Column -->
+      <ng-container matColumnDef="date">
+        <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="type">
+        <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="narration">
+        <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Narration </th>
+        <td mat-cell *matCellDef="let element"> {{element.narration}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="fcy">
+        <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> FCY(GBP) </th>
+        <td mat-cell *matCellDef="let element"> {{element.fcy}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currentRate">
+        <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Current Rate </th>
+        <td mat-cell *matCellDef="let element"> {{element.currentRate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lyc">
+        <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> LCY(GBP) </th>
+        <td mat-cell *matCellDef="let element"> {{element.lyc}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-btns btn-tbl-action">
+            <button type="button" title="View" id="btnView" routerLink="View"><span class="fa fa-paper-plane-o"></span></button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!--mobile view start-->
+    <div class="mobile-tile card-shadow d-md-none border-0" *ngFor="let list of TransactionDetailData" style="display:none;">
+      <div class="row mb-1">
+        <div class="col-5"> <label class="m-0"> Date </label> </div>
+        <div class="col-7">  {{list.date}} </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-5"> <label class="m-0"> Type </label> </div>
+        <div class="col-7">  {{list.type}} </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-5"> <label class="m-0">Narration </label> </div>
+        <div class="col-7">  {{list.narration}} </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-5"> <label class="m-0">FCY(GBP) </label> </div>
+        <div class="col-7">  {{list.fcy}} </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-5"> <label class="m-0"> Current Rate </label> </div>
+        <div class="col-7">  {{list.currentRate}} </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-5"> <label class="m-0">LCY(GBP) </label> </div>
+        <div class="col-7">  {{list.lyc}} </div>
+      </div>
+      <div class="text-center">
+        <div class="action-btns btn-tbl-action">
+          <button type="button"><span class="fa fa-paper-plane-o"></span></button>
+        </div>
+      </div>
+    </div>
+    <!--mobile view end-->
+  </div>`
+})
+export class TransactionDetailsComponent  {
+  @Input()
+  widgetsGridsterItemArray:any[] = [];
+  displayedColumns: string[] = ['date', 'type', 'narration', 'fcy', 'currentRate', 'lyc', 'action'];
+  dataSource = new MatTableDataSource<any>();
+  public pageSize = 5;
+  public currentPage = 0;
+  public totalSize = 0;
+
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
+  TransactionDetailData: TransactionDetail[] = [
+    { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL6574562', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
+    { date: 'D3/D4/19', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1254.71', currentRate: '1.123', lyc: '1876.00' },
+    { date: 'D3/D4/25', type: 'CR', narration: 'NXT TXN: IIFL IIFL8965435', fcy: '2345.12', currentRate: '1.461', lyc: '1453.21' },
+    { date: 'D3/D4/34', type: 'CR', narration: 'NXT TXN: IIFL IIFL0034212', fcy: '1435.89', currentRate: '0.962', lyc: '1654.56' },
+  ];
+
+  ngAfterViewInit() {
+      this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnInit() {
+      this.dataSource = new MatTableDataSource(this.TransactionDetailData);
+      this.dataSource.sort = this.sort;
+  }
+}
+
+export interface TransactionDetail {
+  date: string;
+  type: string;
+  narration: string;
+  fcy: string;
+  currentRate: string;
+  lyc: string;
+}

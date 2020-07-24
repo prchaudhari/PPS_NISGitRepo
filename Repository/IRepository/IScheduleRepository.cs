@@ -103,5 +103,7 @@ namespace nIS
         /// <returns>ScheduleRunHistory count</returns>
         int GetScheduleRunHistoryCount(ScheduleSearchParameter roleSearchParameter, string tenantCode);
 
+        bool RunSchedule(string baseURL, string tenantCode);
+
     }
 }

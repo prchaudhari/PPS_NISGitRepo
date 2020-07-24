@@ -536,6 +536,11 @@ namespace nIS
             return finalHtml;
         }
 
+        public bool GeneratesStatements(long scheduleIdentifier, string baseURL, string tenantCode)
+        {
+            return this.StatementRepository.GenerateStatements(scheduleIdentifier, baseURL, tenantCode);
+        }
+
         #endregion
 
         #region Private Methods

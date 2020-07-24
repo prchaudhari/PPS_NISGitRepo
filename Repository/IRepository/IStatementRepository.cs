@@ -82,5 +82,7 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         bool CloneStatement(long statementIdentifier, string tenantCode);
+
+        bool GenerateStatements(long scheduleIdentifier, string baseURL, string tenantCode);
     }
 }
