@@ -46,7 +46,7 @@ export class AddComponent implements OnInit {
     public DayOfMonthList: any = [];
   public TimeOfDayHoursList: any = [];
   public TimeOfDayMinutesList: any = [];
-
+  public  isFirstimeLoad = false;
   constructor(
     private formBuilder: FormBuilder,
     private spinner: NgxUiLoaderService,
@@ -177,6 +177,9 @@ export class AddComponent implements OnInit {
 
       this.getSchedule();
     }
+    else {
+      this.isFirstimeLoad = true;
+    }
   }
 
   async getSchedule() {
@@ -205,12 +208,12 @@ export class AddComponent implements OnInit {
     this.scheduleForm.controls['DayOfMonth'].setValue(this.schedule.DayOfMonth);
     this.scheduleForm.controls['TimeOfDayHours'].setValue(this.schedule.HourOfDay);
     this.scheduleForm.controls['TimeOfDayMinutes'].setValue(this.schedule.MinuteOfDay);
-    this.scheduleForm.controls['filtershiftfromdate'].setValue(this.schedule.StartDate);
+    this.scheduleForm.controls['filtershiftfromdate'].setValue(new Date(this.schedule.StartDate));
     if (this.schedule.EndDate.toString() == "0001-01-01T00:00:00") {
       this.IsEndDateRequired = false;
     }
     else {
-      this.scheduleForm.controls['filtershiftenddate'].setValue(this.schedule.EndDate);
+      this.scheduleForm.controls['filtershiftenddate'].setValue(new Date(this.schedule.EndDate));
 
     }
     if (this.schedule.IsExportToPDF) {
@@ -220,6 +223,7 @@ export class AddComponent implements OnInit {
       this.IsExportToPDF = false;
 
     }
+    this.isFirstimeLoad = true;
   }
 
   get ScheduleName() {
@@ -341,43 +345,46 @@ export class AddComponent implements OnInit {
   }
 
   onFilterDateChange(event) {
-    this.filterFromDateError = false;
-    this.filterToDateError = false;
-    this.filterFromDateErrorMessage = "";
-    this.filterToDateErrorMessage = "";
-    let currentDte = new Date();
-    if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '') {
-      let startDate = this.scheduleForm.value.filtershiftfromdate;
-      if (startDate.getTime() < currentDte.getTime()) {
-        this.filterFromDateError = true;
-        this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateThanCurrentDateMessage;
-      }
-    }
-    //if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
-    //  let toDate = this.scheduleForm.value.filtershiftenddate;
-    //  if (toDate.getDate() < currentDte.getDate()) {
-    //    this.filterToDateError = true;
-    //    this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
-    //  }
-    //}
-    if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
-      this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
-      let startDate = this.scheduleForm.value.filtershiftfromdate;
-      let toDate = this.scheduleForm.value.filtershiftenddate;
-      if (this.IsEndDateRequired) {
-        if (startDate.getTime() > toDate.getTime()) {
-          this.filterToDateError = true;
-          this.filterToDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
+    if (this.isFirstimeLoad) {
+      this.filterFromDateError = false;
+      this.filterToDateError = false;
+      this.filterFromDateErrorMessage = "";
+      this.filterToDateErrorMessage = "";
+      let currentDte = new Date();
+      if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '') {
+        let startDate = this.scheduleForm.value.filtershiftfromdate;
+       
+        if (startDate.getTime() < currentDte.getTime()) {
+          this.filterFromDateError = true;
+          this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateThanCurrentDateMessage;
         }
-        else {
-          if (this.monthDiff(startDate, toDate) < 30) {
+      }
+      //if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
+      //  let toDate = this.scheduleForm.value.filtershiftenddate;
+      //  if (toDate.getDate() < currentDte.getDate()) {
+      //    this.filterToDateError = true;
+      //    this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
+      //  }
+      //}
+      if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
+        this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
+        let startDate = this.scheduleForm.value.filtershiftfromdate;
+        let toDate = this.scheduleForm.value.filtershiftenddate;
+        if (this.IsEndDateRequired) {
+          if (startDate.getTime() > toDate.getTime()) {
             this.filterToDateError = true;
-            this.filterToDateErrorMessage = "Start date and end date should have minimum one month diffrenece";
+            this.filterToDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
+          }
+          else {
+            if (this.monthDiff(startDate, toDate) < 30) {
+              this.filterToDateError = true;
+              this.filterToDateErrorMessage = "Start date and end date should have minimum one month diffrenece";
+            }
           }
         }
+
+
       }
-
-
     }
   }
 
@@ -391,15 +398,15 @@ export class AddComponent implements OnInit {
   vaildateForm() {
     if (this.scheduleForm.invalid)
       return true;
-    else if (this.schedule.DayOfMonth == 0 || this.schedule.DayOfMonth == undefined) {
+    else if (this.scheduleForm.value.DayOfMonth == "Please Select") {
 
       return true;
     }
-    else if (this.schedule.HourOfDay == 0 || this.schedule.HourOfDay == undefined) {
+    else if (this.scheduleForm.value.HourOfDay == "Please Select") {
 
       return true;
     }
-    else if (this.schedule.MinuteOfDay == 0 || this.schedule.MinuteOfDay == undefined) {
+    else if (this.scheduleForm.value.MinuteOfDay == "Please Select") {
 
       return true;
     }

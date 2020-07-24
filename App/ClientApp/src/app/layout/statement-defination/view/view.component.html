@@ -39,7 +39,8 @@
               <h6>{{statement.StatementOwnerName}}</h6>
               <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:"dd/MM/yyyy"}}</span></div>
               <div>
-                <label>Status :  </label><span class="badge badge-primary p-1" *ngIf="statement.Status=='New'"> {{statement.Status}}</span><span class="badge badge-success p-1" *ngIf="statement.Status=='Published'"> {{statement.Status}}</span>
+                <label *ngIf="statement.Status=='New'">Status : <span class="badge badge-primary p-1">{{statement.Status}} </span></label>
+                <label *ngIf="statement.Status=='Published'">Status : <span class="badge badge-success p-1" >{{statement.Status}} </span></label>
               </div>
             </div>
 

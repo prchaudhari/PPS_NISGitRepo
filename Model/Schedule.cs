@@ -335,14 +335,7 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("DayOfMonth", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_DAYOFMONTH);
                 }
-                if (!this.validationEngine.IsValidLong(this.HourOfDay))
-                {
-                    exception.Data.Add(this.utility.GetDescription("HourOfDay", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_HOUROFDAY);
-                }
-                if (!this.validationEngine.IsValidLong(this.MinuteOfDay))
-                {
-                    exception.Data.Add(this.utility.GetDescription("MinuteOfDay", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_MINOFDAY);
-                }
+                
                 if (this.StartDate == null)
                 {
                     exception.Data.Add(this.utility.GetDescription("StartDate", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_ENDDATE);

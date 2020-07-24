@@ -245,13 +245,13 @@ export class AddComponent implements OnInit {
       "EntityName": "Page",
       "Operation": "Create",
       "RelatedOperation": ["Edit", "Delete", "View"],
-      "OtherDependentEntity": ["Asset Libarary", "Widget"]
+      "OtherDependentEntity": ["Asset Library", "Widget"]
     },
     {
       "EntityName": "Page",
       "Operation": "Edit",
       "RelatedOperation": ["Delete", "View"],
-      "OtherDependentEntity": ["Asset Libarary", "Widget"]
+      "OtherDependentEntity": ["Asset Library", "Widget"]
     },
     {
       "EntityName": "Page",
