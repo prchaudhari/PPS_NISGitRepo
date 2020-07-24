@@ -767,7 +767,8 @@ namespace nIS
                     if (scheduleSearchParameter.StatementDefinitionName != null && scheduleSearchParameter.StatementDefinitionName != string.Empty)
                     {
                         StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("Name.Equals(\"{0}\")", scheduleSearchParameter.StatementDefinitionName));
+
+                        queryString.Append(string.Format("Name.Contains(\"{0}\")", scheduleSearchParameter.StatementDefinitionName));
 
                         queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
                         var userRecordIds = nISEntitiesDataContext.StatementRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
@@ -786,7 +787,7 @@ namespace nIS
                     if (scheduleSearchParameter.ScheduleName != null && scheduleSearchParameter.ScheduleName != string.Empty)
                     {
                         StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("Name.Equals(\"{0}\")", scheduleSearchParameter.ScheduleName));
+                        queryString.Append(string.Format("Name.Contains(\"{0}\")", scheduleSearchParameter.ScheduleName));
 
                         queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
                         var userRecordIds = nISEntitiesDataContext.ScheduleRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();

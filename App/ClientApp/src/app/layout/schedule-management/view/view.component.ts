@@ -129,7 +129,7 @@ export class ViewComponent implements OnInit {
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-          this._router.navigate(['schedule']);
+          this._router.navigate(['schedulemanagement']);
         }
       }
     });

@@ -4,5 +4,6 @@
     [ScheduleId] BIGINT NOT NULL, 
     [StartDate] DATETIME NOT NULL, 
     [EndDate] DATETIME NOT NULL, 
-    [TenantCode] NVARCHAR(50) NULL
+    [TenantCode] NVARCHAR(50) NULL, 
+    [StatementId] BIGINT NOT NULL
 )

@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="col-md-4 col-lg-4">
-            <label id="lblTemplate" for="inputRoleName">Statement Defination<span class="text-danger">*</span></label>
+            <label id="lblTemplate" for="inputRoleName">Statement Definition<span class="text-danger">*</span></label>
             <select formControlName="StatementDefinition" (change)="onStateDefinitionSelected($event)" class="form-control">
               <option *ngFor="let sd of statementDefinitionList" [value]="sd.Identifier">{{sd.Name}}</option>
             </select>
