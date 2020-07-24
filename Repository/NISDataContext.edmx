@@ -331,6 +331,7 @@
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="EndDate" Type="datetime" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="StatementId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -526,18 +527,6 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK_CustomerMedia_CustomerMedia">
-          <End Role="CustomerMedia" Type="Self.CustomerMedia" Multiplicity="1" />
-          <End Role="CustomerMedia1" Type="Self.CustomerMedia" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="CustomerMedia">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CustomerMedia1">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="NISModelStoreContainer">
           <EntitySet Name="AccountMaster" EntityType="Self.AccountMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AccountTransaction" EntityType="Self.AccountTransaction" Schema="NIS" store:Type="Tables" />
@@ -577,10 +566,6 @@
           <EntitySet Name="Video" EntityType="Self.Video" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
-          <AssociationSet Name="FK_CustomerMedia_CustomerMedia" Association="Self.FK_CustomerMedia_CustomerMedia">
-            <End Role="CustomerMedia" EntitySet="CustomerMedia" />
-            <End Role="CustomerMedia1" EntitySet="CustomerMedia" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -943,6 +928,7 @@
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="RenderEngineRecord">
           <Key>
@@ -1486,6 +1472,7 @@
           <EntitySetMapping Name="ScheduleRunHistoryRecords">
             <EntityTypeMapping TypeName="NISModel.ScheduleRunHistoryRecord">
               <MappingFragment StoreEntitySet="ScheduleRunHistory">
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />

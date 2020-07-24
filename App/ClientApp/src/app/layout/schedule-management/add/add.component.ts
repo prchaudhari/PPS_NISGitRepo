@@ -43,10 +43,11 @@ export class AddComponent implements OnInit {
   //public DayOfMonthList: DropDonw[] = [];
   //public TimeOfDayHoursList: DropDonw[] = [];
   //public TimeOfDayMinutesList: DropDonw[] = [];
-    public DayOfMonthList: any = [];
+  public DayOfMonthList: any = [];
   public TimeOfDayHoursList: any = [];
   public TimeOfDayMinutesList: any = [];
-  public  isFirstimeLoad = false;
+  public isFirstimeLoad = false;
+  public IsStartDateDisable = false;
   constructor(
     private formBuilder: FormBuilder,
     private spinner: NgxUiLoaderService,
@@ -94,14 +95,14 @@ export class AddComponent implements OnInit {
     this.st.Identifier = 0;
     this.statementDefinitionList.push(this.st);
 
-    var obj = { Identifier:"Please Select", Name: "Please Select" };
+    var obj = { Identifier: "Please Select", Name: "Please Select" };
 
     this.DayOfMonthList.push(obj);
 
     this.TimeOfDayHoursList.push(obj);
 
     this.TimeOfDayMinutesList.push(obj);
- 
+
     for (var i = 1; i <= 29; i++) {
       var object = { Identifier: i.toString(), Name: "" };
       if (i < 10) {
@@ -113,7 +114,7 @@ export class AddComponent implements OnInit {
       this.DayOfMonthList.push(object);
     }
 
-    for (var i = 0; i <=23; i++) {
+    for (var i = 0; i <= 23; i++) {
       var object = { Identifier: i.toString(), Name: "" };
       if (i < 10) {
         object.Name = "0" + i;
@@ -124,7 +125,7 @@ export class AddComponent implements OnInit {
       this.TimeOfDayHoursList.push(object);
     }
 
-    for (var i = 0; i <=59; i++) {
+    for (var i = 0; i <= 59; i++) {
       var object = { Identifier: i.toString(), Name: "" };
       if (i < 10) {
         object.Name = "0" + i;
@@ -177,9 +178,7 @@ export class AddComponent implements OnInit {
 
       this.getSchedule();
     }
-    else {
-      this.isFirstimeLoad = true;
-    }
+
   }
 
   async getSchedule() {
@@ -209,6 +208,12 @@ export class AddComponent implements OnInit {
     this.scheduleForm.controls['TimeOfDayHours'].setValue(this.schedule.HourOfDay);
     this.scheduleForm.controls['TimeOfDayMinutes'].setValue(this.schedule.MinuteOfDay);
     this.scheduleForm.controls['filtershiftfromdate'].setValue(new Date(this.schedule.StartDate));
+    var startDate = new Date(this.schedule.StartDate);
+    var endDate = new Date(this.schedule.StartDate);
+    var currentDate = new Date();
+    if (startDate.getTime() < currentDate.getTime()) {
+      this.IsStartDateDisable = true;
+    }
     if (this.schedule.EndDate.toString() == "0001-01-01T00:00:00") {
       this.IsEndDateRequired = false;
     }
@@ -223,7 +228,7 @@ export class AddComponent implements OnInit {
       this.IsExportToPDF = false;
 
     }
-    this.isFirstimeLoad = true;
+
   }
 
   get ScheduleName() {
@@ -345,51 +350,52 @@ export class AddComponent implements OnInit {
   }
 
   onFilterDateChange(event) {
-    if (this.isFirstimeLoad) {
-      this.filterFromDateError = false;
-      this.filterToDateError = false;
-      this.filterFromDateErrorMessage = "";
-      this.filterToDateErrorMessage = "";
-      let currentDte = new Date();
-      if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '') {
-        let startDate = this.scheduleForm.value.filtershiftfromdate;
-       
+
+    this.filterFromDateError = false;
+    this.filterToDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateErrorMessage = "";
+    let currentDte = new Date();
+    if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '') {
+      let startDate = this.scheduleForm.value.filtershiftfromdate;
+      if (this.IsStartDateDisable == false) {
         if (startDate.getTime() < currentDte.getTime()) {
           this.filterFromDateError = true;
           this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateThanCurrentDateMessage;
         }
       }
-      //if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
-      //  let toDate = this.scheduleForm.value.filtershiftenddate;
-      //  if (toDate.getDate() < currentDte.getDate()) {
-      //    this.filterToDateError = true;
-      //    this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
-      //  }
-      //}
-      if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
-        this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
-        let startDate = this.scheduleForm.value.filtershiftfromdate;
-        let toDate = this.scheduleForm.value.filtershiftenddate;
-        if (this.IsEndDateRequired) {
-          if (startDate.getTime() > toDate.getTime()) {
+     
+    }
+    if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
+      let toDate = this.scheduleForm.value.filtershiftenddate;
+      if (toDate.getDate() < currentDte.getDate()) {
+        this.filterToDateError = true;
+        this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
+      }
+    }
+    if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
+      this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
+      let startDate = this.scheduleForm.value.filtershiftfromdate;
+      let toDate = this.scheduleForm.value.filtershiftenddate;
+      if (this.IsEndDateRequired) {
+        if (startDate.getTime() > toDate.getTime()) {
+          this.filterToDateError = true;
+          this.filterToDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
+        }
+        else {
+          if (this.monthDiff(startDate, toDate) < 30) {
             this.filterToDateError = true;
-            this.filterToDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
-          }
-          else {
-            if (this.monthDiff(startDate, toDate) < 30) {
-              this.filterToDateError = true;
-              this.filterToDateErrorMessage = "Start date and end date should have minimum one month diffrenece";
-            }
+            this.filterToDateErrorMessage = "Start date and end date should have minimum one month diffrenece";
           }
         }
-
-
       }
+
+
     }
   }
 
   monthDiff(d1, d2) {
-   
+
     return Math.floor((Date.UTC(d2.getFullYear(), d2.getMonth(), d2.getDate())
       - Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate())) / (1000 * 60 * 60 * 24));
 
