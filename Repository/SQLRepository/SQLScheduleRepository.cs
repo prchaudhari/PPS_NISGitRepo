@@ -476,6 +476,11 @@ namespace nIS
                 IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
                 schedules.ToList().ForEach(schedule =>
                 {
+                    ScheduleRunHistoryRecord runHistory = new ScheduleRunHistoryRecord();
+                    runHistory.StartDate = DateTime.UtcNow;
+                    runHistory.TenantCode = tenantCode;
+                    runHistory.ScheduleId = schedule.Id;
+
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id)?.ToList()?.FirstOrDefault();
@@ -508,6 +513,8 @@ namespace nIS
                         if (statements.Count > 0)
                         {
                             statement = statements[0];
+                            runHistory.StatementId = statement.Identifier;
+                            
                             //Start to generate common html string
                             var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                             if (statementPages.Count != 0)
@@ -680,9 +687,16 @@ namespace nIS
                         //{
                         //    GenerateStatements(customer, statement, finalHtml, batchMaster, batchDetails, baseURL);
                         //});
+
+                    }
+
+                    runHistory.EndDate = DateTime.UtcNow;
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.ScheduleRunHistoryRecords.Add(runHistory);
+                        nISEntitiesDataContext.SaveChanges();
                     }
                 });
-                
             }
             return true;
         }
@@ -713,7 +727,6 @@ namespace nIS
                 {
                     scheduleRecords.Add(new ScheduleRunHistoryRecord()
                     {
-
                         StartDate = schedule.StartDate,
                         EndDate = schedule.EndDate,
                         TenantCode = tenantCode,
