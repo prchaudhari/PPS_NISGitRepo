@@ -212,13 +212,13 @@ namespace nIS
         /// This method helps to run the schedule
         /// </summary>
         /// <returns>True if schedule runs successfully false otherwise</returns>
-        [HttpGet]
+        [HttpPost]
         public bool RunSchedule()
         {
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                var baseURL = "http://nisqa-api.azurewebsites.net/";//Url.Content("~/");
+                var baseURL = Url.Content("~/");
                 return this.scheduleManager.RunSchedule(baseURL, tenantCode);
             }
             catch (Exception ex)

@@ -68,21 +68,11 @@ namespace nIS
         bool PublishStatement(long statementIdentifier, string tenantCode);
 
         /// <summary>
-        /// This method reference to preview statement
-        /// </summary>
-        /// <param name="statementIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns></returns>
-        bool PreviewStatement(long statementIdentifier, string tenantCode);
-
-        /// <summary>
         /// This method reference to clone statement
         /// </summary>
         /// <param name="statementIdentifier"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         bool CloneStatement(long statementIdentifier, string tenantCode);
-
-        bool GenerateStatements(long scheduleIdentifier, string baseURL, string tenantCode);
     }
 }

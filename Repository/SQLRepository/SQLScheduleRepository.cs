@@ -71,8 +71,8 @@ namespace nIS
             this.validationEngine = new ValidationEngine();
             this.utility = new Utility();
             this.configurationutility = new ConfigurationUtility(this.unityContainer);
-            this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
             this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
+            this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
         }
 
         #endregion
@@ -463,219 +463,207 @@ namespace nIS
         {
             StringBuilder htmlbody = new StringBuilder();
             StringBuilder finalHtml = new StringBuilder();
-            Statement statement = new Statement();
-
-            ScheduleSearchParameter scheduleSearchParameter = new ScheduleSearchParameter()
+            IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
+            
+            this.SetAndValidateConnectionString(tenantCode);
+            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
             {
-                IsActive = true,
-                IsStatementDefinitionRequired = false,
-                StartDate = DateTime.Now,
-                PagingParameter = new PagingParameter
-                {
-                    PageIndex = 0,
-                    PageSize = 0,
-                },
-                SortParameter = new SortParameter()
-                {
-                    SortOrder = SortOrder.Ascending,
-                    SortColumn = "Name",
-                },
-                SearchMode = SearchMode.Equals
-            };
-            var schedules = GetSchedules(scheduleSearchParameter, tenantCode).ToList();
+                schedules = nISEntitiesDataContext.ScheduleRecords.Where(item => item.StartDate <= DateTime.UtcNow && item.IsActive).ToList();
+            }
             if (schedules.Count != 0)
             {
+                BatchMasterRecord batchMaster = new BatchMasterRecord();
+                IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
                 schedules.ToList().ForEach(schedule =>
                 {
-                    StatementSearchParameter statementSearchParameter = new StatementSearchParameter
-                    {
-                        Identifier = schedule.Statement.Identifier,
-                        IsActive = true,
-                        IsStatementPagesRequired = true,
-                        PagingParameter = new PagingParameter
-                        {
-                            PageIndex = 0,
-                            PageSize = 0,
-                        },
-                        SortParameter = new SortParameter()
-                        {
-                            SortOrder = SortOrder.Ascending,
-                            SortColumn = "Name",
-                        },
-                        SearchMode = SearchMode.Equals
-                    };
-                    var statements = this.statementRepository.GetStatements(statementSearchParameter, tenantCode);
-                    if (statements.Count > 0)
-                    {
-                        statement = statements[0];
-                        //Start to generate common html string
-                        var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
-                        if (statementPages.Count != 0)
-                        {
-                            string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "absa-logo.png");
-                            navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
-                            StringBuilder navItemList = new StringBuilder();
-                            htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-
-                            statement.Pages = new List<Page>();
-                            for (int i = 0; i < statementPages.Count; i++)
-                            {
-                                PageSearchParameter pageSearchParameter = new PageSearchParameter
-                                {
-                                    Identifier = statementPages[i].ReferencePageId,
-                                    IsPageWidgetsRequired = true,
-                                    IsActive = true,
-                                    PagingParameter = new PagingParameter
-                                    {
-                                        PageIndex = 0,
-                                        PageSize = 0,
-                                    },
-                                    SortParameter = new SortParameter()
-                                    {
-                                        SortOrder = SortOrder.Ascending,
-                                        SortColumn = "DisplayName",
-                                    },
-                                    SearchMode = SearchMode.Equals
-                                };
-                                var pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
-                                if (pages.Count != 0)
-                                {
-                                    for (int j = 0; j < pages.Count; j++)
-                                    {
-                                        var page = pages[j];
-                                        statement.Pages.Add(page);
-                                        string tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
-                                        navItemList.Append(" <li class='nav-item'><a class='nav-link " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
-                                        string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
-                                        string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);
-                                        widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", tabClassName);
-                                        htmlbody.Append(widgetHtmlHeader);
-
-                                        int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
-                                        int max = 0;
-                                        if (page.PageWidgets.Count > 0)
-                                        {
-                                            var completelst = new List<PageWidget>(page.PageWidgets);
-                                            int currentYPosition = 0;
-                                            var isRowComplete = false;
-
-                                            while (completelst.Count != 0)
-                                            {
-                                                var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
-                                                if (lst.Count > 0)
-                                                {
-                                                    max = max + lst.Max(it => it.Height);
-                                                    var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
-                                                    var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
-                                                    currentYPosition = max;
-                                                    for (int x = 0; x < mergedlst.Count; x++)
-                                                    {
-                                                        if (tempRowWidth == 0)
-                                                        {
-                                                            htmlbody.Append("<div class='row'>"); // to start new row class div 
-                                                            isRowComplete = false;
-                                                        }
-                                                        int divLength = (mergedlst[x].Width * 12) / 20;
-                                                        tempRowWidth = tempRowWidth + divLength;
-
-                                                        // If current col-lg class length is greater than 12, 
-                                                        //then end parent row class div and then start new row class div
-                                                        if (tempRowWidth > 12)
-                                                        {
-                                                            tempRowWidth = divLength;
-                                                            htmlbody.Append("</div>"); // to end row class div
-                                                            htmlbody.Append("<div class='row'>"); // to start new row class div
-                                                            isRowComplete = false;
-                                                        }
-                                                        htmlbody.Append("<div class='col-lg-" + divLength + "'>");
-                                                        if (mergedlst[x].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
-                                                        {
-                                                            htmlbody.Append(HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
-                                                        }
-                                                        else if (mergedlst[x].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
-                                                        {
-                                                            htmlbody.Append(HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
-                                                        {
-                                                            htmlbody.Append(HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
-                                                        }
-                                                        else if (mergedlst[x].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
-                                                        {
-                                                            htmlbody.Append(HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
-                                                        }
-                                                        else if (mergedlst[x].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
-                                                        {
-                                                            htmlbody.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML);
-                                                        }
-
-                                                        // To end current col-lg class div
-                                                        htmlbody.Append("</div>");
-
-                                                        // if current col-lg class width is equal to 12 or end before complete col-lg-12 class, 
-                                                        //then end parent row class div
-                                                        if (tempRowWidth == 12 || (x == mergedlst.Count - 1))
-                                                        {
-                                                            tempRowWidth = 0;
-                                                            htmlbody.Append("</div>"); //To end row class div
-                                                            isRowComplete = true;
-                                                        }
-                                                    }
-                                                    mergedlst.ForEach(it =>
-                                                    {
-                                                        completelst.Remove(it);
-                                                    });
-                                                }
-                                                else
-                                                {
-                                                    if (completelst.Count != 0)
-                                                    {
-                                                        currentYPosition = completelst.Min(it => it.Yposition);
-                                                    }
-                                                }
-                                            }
-                                            //If row class div end before complete col-lg-12 class
-                                            if (isRowComplete == false)
-                                            {
-                                                htmlbody.Append("</div>");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            htmlbody.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
-                                        }
-                                        htmlbody.Append(HtmlConstants.WIDGET_HTML_FOOTER);
-                                    }
-                                }
-                                else
-                                {
-                                    htmlbody.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
-                                }
-                            }
-
-                            htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
-                            navbarHtml = navbarHtml.Replace("{{NavItemList}}", navItemList.ToString());
-
-                            finalHtml.Append(HtmlConstants.HTML_HEADER);
-                            finalHtml.Append(navbarHtml);
-                            finalHtml.Append(htmlbody.ToString());
-                            //finalHtml.Append(HtmlConstants.TAB_NAVIGATION_SCRIPT);
-                            finalHtml.Append(HtmlConstants.HTML_FOOTER);
-                        }
-                    }
-
-                    BatchMasterRecord batchMaster = new BatchMasterRecord();
-                    IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
-
-                    this.SetAndValidateConnectionString(tenantCode);
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Identifier)?.ToList()?.FirstOrDefault();
-                        batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id)?.ToList();
+                        batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id)?.ToList()?.FirstOrDefault();
                     }
-
                     if (batchMaster != null)
                     {
+                        Statement statement = new Statement();
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id)?.ToList();
+                        }
+                        StatementSearchParameter statementSearchParameter = new StatementSearchParameter
+                        {
+                            Identifier = schedule.StatementId,
+                            IsActive = true,
+                            IsStatementPagesRequired = true,
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Name",
+                            },
+                            SearchMode = SearchMode.Equals
+                        };
+                        var statements = this.statementRepository.GetStatements(statementSearchParameter, tenantCode);
+                        if (statements.Count > 0)
+                        {
+                            statement = statements[0];
+                            //Start to generate common html string
+                            var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
+                            if (statementPages.Count != 0)
+                            {
+                                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "absa-logo.png");
+                                navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
+                                StringBuilder navItemList = new StringBuilder();
+                                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+
+                                statement.Pages = new List<Page>();
+                                for (int i = 0; i < statementPages.Count; i++)
+                                {
+                                    PageSearchParameter pageSearchParameter = new PageSearchParameter
+                                    {
+                                        Identifier = statementPages[i].ReferencePageId,
+                                        IsPageWidgetsRequired = true,
+                                        IsActive = true,
+                                        PagingParameter = new PagingParameter
+                                        {
+                                            PageIndex = 0,
+                                            PageSize = 0,
+                                        },
+                                        SortParameter = new SortParameter()
+                                        {
+                                            SortOrder = SortOrder.Ascending,
+                                            SortColumn = "DisplayName",
+                                        },
+                                        SearchMode = SearchMode.Equals
+                                    };
+                                    var pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
+                                    if (pages.Count != 0)
+                                    {
+                                        for (int j = 0; j < pages.Count; j++)
+                                        {
+                                            var page = pages[j];
+                                            statement.Pages.Add(page);
+                                            string tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
+                                            navItemList.Append(" <li class='nav-item'><a class='nav-link " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
+                                            string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
+                                            string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);
+                                            widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", tabClassName);
+                                            htmlbody.Append(widgetHtmlHeader);
+
+                                            int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
+                                            int max = 0;
+                                            if (page.PageWidgets.Count > 0)
+                                            {
+                                                var completelst = new List<PageWidget>(page.PageWidgets);
+                                                int currentYPosition = 0;
+                                                var isRowComplete = false;
+
+                                                while (completelst.Count != 0)
+                                                {
+                                                    var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
+                                                    if (lst.Count > 0)
+                                                    {
+                                                        max = max + lst.Max(it => it.Height);
+                                                        var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
+                                                        var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
+                                                        currentYPosition = max;
+                                                        for (int x = 0; x < mergedlst.Count; x++)
+                                                        {
+                                                            if (tempRowWidth == 0)
+                                                            {
+                                                                htmlbody.Append("<div class='row'>"); // to start new row class div 
+                                                                isRowComplete = false;
+                                                            }
+                                                            int divLength = (mergedlst[x].Width * 12) / 20;
+                                                            tempRowWidth = tempRowWidth + divLength;
+
+                                                            // If current col-lg class length is greater than 12, 
+                                                            //then end parent row class div and then start new row class div
+                                                            if (tempRowWidth > 12)
+                                                            {
+                                                                tempRowWidth = divLength;
+                                                                htmlbody.Append("</div>"); // to end row class div
+                                                                htmlbody.Append("<div class='row'>"); // to start new row class div
+                                                                isRowComplete = false;
+                                                            }
+                                                            htmlbody.Append("<div class='col-lg-" + divLength + "'>");
+                                                            if (mergedlst[x].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
+                                                            {
+                                                                htmlbody.Append(HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
+                                                            }
+                                                            else if (mergedlst[x].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
+                                                            {
+                                                                htmlbody.Append(HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML);
+                                                            }
+                                                            else if (mergedlst[x].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
+                                                            {
+                                                                htmlbody.Append(HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
+                                                            }
+                                                            else if (mergedlst[x].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
+                                                            {
+                                                                htmlbody.Append(HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
+                                                            }
+                                                            else if (mergedlst[x].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
+                                                            {
+                                                                htmlbody.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML);
+                                                            }
+
+                                                            // To end current col-lg class div
+                                                            htmlbody.Append("</div>");
+
+                                                            // if current col-lg class width is equal to 12 or end before complete col-lg-12 class, 
+                                                            //then end parent row class div
+                                                            if (tempRowWidth == 12 || (x == mergedlst.Count - 1))
+                                                            {
+                                                                tempRowWidth = 0;
+                                                                htmlbody.Append("</div>"); //To end row class div
+                                                                isRowComplete = true;
+                                                            }
+                                                        }
+                                                        mergedlst.ForEach(it =>
+                                                        {
+                                                            completelst.Remove(it);
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        if (completelst.Count != 0)
+                                                        {
+                                                            currentYPosition = completelst.Min(it => it.Yposition);
+                                                        }
+                                                    }
+                                                }
+                                                //If row class div end before complete col-lg-12 class
+                                                if (isRowComplete == false)
+                                                {
+                                                    htmlbody.Append("</div>");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                htmlbody.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
+                                            }
+                                            htmlbody.Append(HtmlConstants.WIDGET_HTML_FOOTER);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        htmlbody.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
+                                    }
+                                }
+
+                                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                                navbarHtml = navbarHtml.Replace("{{NavItemList}}", navItemList.ToString());
+
+                                finalHtml.Append(HtmlConstants.HTML_HEADER);
+                                finalHtml.Append(navbarHtml);
+                                finalHtml.Append(htmlbody.ToString());
+                                //finalHtml.Append(HtmlConstants.TAB_NAVIGATION_SCRIPT);
+                                finalHtml.Append(HtmlConstants.HTML_FOOTER);
+                            }
+                        }
+                        
                         IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                         {
@@ -683,7 +671,7 @@ namespace nIS
                         }
 
                         customerMasters.ToList().ForEach(customer => {
-                            GenerateStatements(customer, statement, finalHtml, batchMaster, batchDetails, baseURL);
+                            GenerateStatement(customer, statement, finalHtml, batchMaster, batchDetails, baseURL);
                         });
 
                         //ParallelOptions parallelOptions = new ParallelOptions();
@@ -1063,7 +1051,7 @@ namespace nIS
 
         #endregion
 
-        private void GenerateStatements(CustomerMasterRecord customer, Statement statement, StringBuilder finalHtml, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL)
+        private void GenerateStatement(CustomerMasterRecord customer, Statement statement, StringBuilder finalHtml, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL)
         {
             //start to render actual html content data
             StringBuilder currentCustomerHtmlStatement = new StringBuilder(finalHtml.ToString());
@@ -1213,17 +1201,19 @@ namespace nIS
                 }
             }
 
-            WriteToFile(currentCustomerHtmlStatement.ToString(), "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_") + ".html");
+            string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_") + ".html";
+            WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id);
         }
 
-        private void WriteToFile(string Message, string fileName)
+        private void WriteToFile(string Message, string fileName, long batchId, long customerId)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Statements";
+            string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Statements" + "\\" + batchId + "\\" + "\\" + customerId + "\\";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements\\" + fileName;
+            string filepath = path + fileName;
             if (!File.Exists(filepath))
             {
                 // Create a file to write to.
@@ -1237,6 +1227,47 @@ namespace nIS
                 using (StreamWriter sw = File.AppendText(filepath))
                 {
                     sw.WriteLine(Message);
+                }
+            }
+
+            //To move script.js, style.css and other assets contents which are common to each statment file
+            DirectoryCopy(resourceFilePath, path, false);
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException( "Source directory does not exist or could not be found: " + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                if (!File.Exists(temppath))
+                {
+                    file.CopyTo(temppath, false);
+                }
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
                 }
             }
         }

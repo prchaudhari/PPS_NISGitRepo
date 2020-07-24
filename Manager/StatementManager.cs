@@ -238,6 +238,15 @@ namespace nIS
             return result;
         }
 
+        /// <summary>
+        /// This method will geenerate preview Statement html string
+        /// </summary>
+        /// <param name="StatementIdentifier">Statement identifier</param>
+        /// <param name="baseURL">API base URL</param>
+        /// <param name="tenantCode">Tenant code of Statement.</param>
+        /// <returns>
+        /// Returns Statements preview html string.
+        /// </returns>
         public string PreviewStatement(long statementIdentifier, string baseURL, string tenantCode)
         {
             StringBuilder htmlString = new StringBuilder();
@@ -535,12 +544,7 @@ namespace nIS
 
             return finalHtml;
         }
-
-        public bool GeneratesStatements(long scheduleIdentifier, string baseURL, string tenantCode)
-        {
-            return this.StatementRepository.GenerateStatements(scheduleIdentifier, baseURL, tenantCode);
-        }
-
+       
         #endregion
 
         #region Private Methods

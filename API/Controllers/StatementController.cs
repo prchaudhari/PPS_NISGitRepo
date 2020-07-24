@@ -198,20 +198,6 @@ namespace nIS
             return result;
         }
 
-        public bool GeneratesStatements(long SscheduleIdentifier)
-        {
-            try
-            {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                var baseURL = "http://nisqa-api.azurewebsites.net/";//Url.Content("~/");
-                return this.StatementManager.GeneratesStatements(SscheduleIdentifier, baseURL, tenantCode);
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-        }
-
         #endregion
     }
 }
