@@ -66,6 +66,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tenant Manager", "Tenant Ma
 		References\Tenant Manager\Websym.Core.TenantManager.Utility.dll = References\Tenant Manager\Websym.Core.TenantManager.Utility.dll
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatementGeneratorService", "StatementGeneratorService\StatementGeneratorService.csproj", "{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,10 @@ Global
 		{C020822D-A6FC-4F3A-87E4-5E4BB007181E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C020822D-A6FC-4F3A-87E4-5E4BB007181E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C020822D-A6FC-4F3A-87E4-5E4BB007181E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE6ADE04-DF7C-4D52-85A9-61EAB52A3B43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
