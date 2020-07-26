@@ -16,6 +16,7 @@ namespace nIS
     {
         public long Id { get; set; }
         public long BatchId { get; set; }
+        public string CustomerCode { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -25,5 +26,9 @@ namespace nIS
         public string State { get; set; }
         public string Country { get; set; }
         public string Zip { get; set; }
+        public Nullable<System.DateTime> StatementDate { get; set; }
+        public string StatementPeriod { get; set; }
+        public string RmName { get; set; }
+        public string RmContactNumber { get; set; }
     }
 }

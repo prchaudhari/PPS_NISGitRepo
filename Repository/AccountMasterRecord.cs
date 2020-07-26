@@ -17,11 +17,8 @@ namespace nIS
         public long Id { get; set; }
         public long CustomerId { get; set; }
         public long BatchId { get; set; }
+        public string AccountNumber { get; set; }
         public string AccountType { get; set; }
-        public System.DateTime StatementDate { get; set; }
-        public string StatementPeriod { get; set; }
-        public string RmName { get; set; }
-        public string RmContactNumber { get; set; }
         public string Currency { get; set; }
         public decimal Balance { get; set; }
         public decimal TotalDeposit { get; set; }
