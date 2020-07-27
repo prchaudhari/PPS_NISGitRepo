@@ -363,7 +363,11 @@ namespace nIS
 
                 // calling current class method to encrypt password and then change it.
                 result = this.ChangePassword(new UserLogin() { UserIdentifier = user.EmailAddress, UserPassword = newPassword, TeanantCode = user.TenantCode }, tenantCode);
-
+                IList<UserLoginActivityHistory> histories = this.GetUserLogInActivityHistory(user.Identifier.ToString(), tenantCode);
+                if (histories == null)
+                {
+                    this.ActivateUser(user.Identifier, tenantCode);
+                }
                 return result;
             }
             catch (Exception exception)
@@ -807,7 +811,7 @@ namespace nIS
                     }
                     else
                     {
-                        duplicateUserCount = users.GroupBy(c =>c.EmailAddress).Where(g => g.Count() > 1).Count();
+                        duplicateUserCount = users.GroupBy(c => c.EmailAddress).Where(g => g.Count() > 1).Count();
                         if (duplicateUserCount > 0)
                         {
                             throw new DuplicateUserEmailAddressFoundException(tenantCode);
@@ -822,7 +826,7 @@ namespace nIS
                         }
                     }
 
-                    
+
                 }
             }
             catch (Exception exception)
