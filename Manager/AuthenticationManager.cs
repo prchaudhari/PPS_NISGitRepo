@@ -84,7 +84,7 @@ namespace nIS
                     EmailAddress = username,
                 };
                 UserManager userManager = new UserManager(this.unityContainer);
-                IList<User> users = userManager.GetUsers(userSearchParameter, tenantCode);
+                IList<User> users = userManager.GetUserToAuthentication(userSearchParameter, tenantCode);
 
                 if (users == null || users.Count <= 0)
                 {

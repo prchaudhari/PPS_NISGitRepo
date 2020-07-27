@@ -324,6 +324,12 @@ namespace nIS
                         .ToList();
                     }
 
+                    if ((roleSearchParameter.Identifier == string.Empty || roleSearchParameter.Identifier == "0"))
+                    {
+                        var superAdminRole = roleRecords.Where(item => item.Name == ModelConstant.SUPER_ADMIN_ROLE).ToList().FirstOrDefault();
+                        roleRecords.Remove(superAdminRole);
+                    }
+
                     if (roleRecords != null && roleRecords.Count > 0)
                     {
                         StringBuilder roleIdentifiers = new StringBuilder();

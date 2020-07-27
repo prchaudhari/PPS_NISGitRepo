@@ -253,6 +253,44 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method helps to get specified users from database using given user's search parameter.
+        /// </summary>
+        /// <param name="searchParameter">
+        /// Search parameter to search specified user.
+        /// </param>
+        /// <param name="tenantCode">
+        /// The tenant code
+        /// </param> 
+        /// <returns>
+        /// Returns a list of user if any found otherwise it will return enpty list.
+        /// </returns>
+        public IList<User> GetUserToAuthentication(UserSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                if (searchParameter == null)
+                {
+                    throw new NullArgumentException(tenantCode);
+                }
+                InvalidSearchParameterException invalidSearchParameterException = new InvalidSearchParameterException(tenantCode);
+                try
+                {
+                    searchParameter.IsValid();
+                }
+                catch (Exception exception)
+                {
+                    invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
+                    throw invalidSearchParameterException;
+                }
+                return this.userRepository.GetUserToAuthentication(searchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
         #endregion
 
         #region User Authentication

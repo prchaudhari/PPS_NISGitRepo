@@ -51,6 +51,16 @@ namespace nIS
         IList<User> GetUsers(UserSearchParameter userSearchParameter, string tenantCode);
 
         /// <summary>
+        /// This method gets the specified list of users from user repository.
+        /// </summary>
+        /// <param name="userSearchParameter">The user search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of Users
+        /// </returns>
+        IList<User> GetUserToAuthentication(UserSearchParameter userSearchParameter, string tenantCode);
+
+        /// <summary>
         /// This method's reference helps to update user's password to database.
         /// </summary>
         /// <param name="userLoginDetail">User login object.</param>

@@ -42,23 +42,23 @@
 
           <!-- Name Column -->
           <ng-container matColumnDef="email">
-            <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <th class="width20 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
             <td mat-cell *matCellDef="let element"> {{element.EmailAddress}} </td>
           </ng-container>
 
           <!-- Weight Column -->
           <ng-container matColumnDef="mobileno">
-            <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
+            <th class="width13 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
             <td mat-cell *matCellDef="let element"> {{element.ContactNumber}} </td>
           </ng-container>
           <!-- Symbol Column -->
           <ng-container matColumnDef="role">
-            <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+            <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
             <td mat-cell *matCellDef="let element"> {{element.Roles[0].Name}} </td>
           </ng-container>
 
           <ng-container matColumnDef="active">
-            <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef> Active </th>
+            <th class="width8 ip-w-5" mat-header-cell *matHeaderCellDef> Active </th>
             <td mat-cell *matCellDef="let element">
               <span *ngIf="element.IsActive">Yes</span>
               <span *ngIf="!element.IsActive">No</span>
@@ -67,7 +67,7 @@
           </ng-container>
 
           <ng-container matColumnDef="lock">
-            <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef> Lock </th>
+            <th class="width8 ip-w-5" mat-header-cell *matHeaderCellDef> Lock </th>
             <td mat-cell *matCellDef="let element">
               <span *ngIf="element.IsLocked">Yes</span>
               <span *ngIf="!element.IsLocked">No</span>
@@ -76,11 +76,12 @@
           </ng-container>
 
           <ng-container matColumnDef="actions">
-            <th class="width20 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
+            <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
-                <button type="button" title="View" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'View' }))" (click)="viewUser(element)" id="btnView" routerLink="View"><span class="fa fa-file-text-o"></span></button>
-                <button type="button" [disabled]="!element.IsActive" title="Update" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" (click)="editUser(element)" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
+                <button type="button" title="View User" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'View' }))" (click)="viewUser(element)" id="btnView" routerLink="View"><span class="fa fa-file-text-o"></span></button>
+                <button type="button" title="Update User" 
+                *ngIf="(element.IsActive && (userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" (click)="editUser(element)" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
                 <!--<button type="button" title="Delete" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Delete' }))" (click)="deleteUser(element)" id="btnDelete" data-toggle="modal" data-target="#confirmModal"><span class="fa fa-trash-o"></span></button>-->
                 <button type="button" (click)="unLockUser(element)" *ngIf="element.IsLocked && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" title="Unlock User"><span class="fa fa-lock"></span></button>
                 <button type="button" (click)="unLockUser(element)" *ngIf="!element.IsLocked && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" title="Lock User"><span class="fa fa-unlock-alt"></span></button>

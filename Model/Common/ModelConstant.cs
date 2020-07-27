@@ -197,10 +197,13 @@ namespace nIS
 
         #region Role
 
+
         /// <summary>
         /// The role model section
         /// </summary>
         public const string ROLE_MODEL_SECTION = "RoleModel";
+
+        public const string SUPER_ADMIN_ROLE = "Super Admin";
 
         /// <summary>
         /// The invalid role name

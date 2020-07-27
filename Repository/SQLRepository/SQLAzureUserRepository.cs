@@ -266,7 +266,7 @@ namespace nIS
         /// <returns></returns>
         public IList<User> GetUsers(UserSearchParameter userSearchParameter, string tenantCode)
         {
-            IList<User> users = null;
+            IList<User> users = new List<User>();
             IList<UserRecord> userRecords = null;
 
             try
@@ -326,7 +326,7 @@ namespace nIS
                         .ToList();
                     }
                 }
-                users = new List<User>();
+                IList<User> tempUsers = new List<User>();
                 userRecords?.ToList().ForEach(userRecord =>
                 {
                     //Country country = null;
@@ -336,6 +336,62 @@ namespace nIS
 
                     //Get country
                     //country = this.GetCountry(userRecord.CountryId, tenantCode);
+                    tempUsers.Add(new User()
+                    {
+                        Identifier = userRecord.Id,
+                        FirstName = userRecord.FirstName,
+                        LastName = userRecord.LastName,
+                        EmailAddress = userRecord.EmailAddress,
+                        ContactNumber = userRecord.ContactNumber,
+                        Image = userRecord.Image,
+                        IsActive = userRecord.IsActive,
+                        IsLocked = userRecord.IsLocked,
+                        NoofAttempts = userRecord.NoofAttempts,
+                        TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? userRecord.TenantCode : tenantCode,
+                        Roles = roles
+                    });
+
+                });
+
+                if (tempUsers.Count > 0)
+                {
+                    users = tempUsers.Where(item => item.Roles[0].Name != ModelConstant.SUPER_ADMIN_ROLE).ToList();
+                }
+            }
+            catch (SqlException)
+            {
+                throw new RepositoryStoreNotAccessibleException(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return users;
+        }
+
+        /// <summary>
+        /// This method helps to retrieve list of user based on specified search paramters.
+        /// </summary>
+        /// <param name="userSearchParameter"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        public IList<User> GetUserToAuthentication(UserSearchParameter userSearchParameter, string tenantCode)
+        {
+            IList<User> users = null;
+            IList<UserRecord> userRecords = null;
+
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntities = new NISEntities(this.connectionString))
+                {
+                    userRecords = nISEntities.UserRecords.Where(item => item.EmailAddress == userSearchParameter.EmailAddress).ToList();
+                }
+                users = new List<User>();
+                userRecords?.ToList().ForEach(userRecord =>
+                {
+                    IList<Role> roles = this.GetRoles(userRecord.Id, userSearchParameter.IsRolePrivilegesRequired, userRecord.TenantCode);
                     users.Add(new User()
                     {
                         Identifier = userRecord.Id,
