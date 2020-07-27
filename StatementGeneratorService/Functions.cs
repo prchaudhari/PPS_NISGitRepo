@@ -21,10 +21,10 @@ namespace StatementGeneratorService
     {
         static string ApiBaseAddress;
 
-        // This function will get triggered/executed immediately on startup, and then every 30 minutes thereafter.
-        public static void ProcessQueueBasedOnTimer([TimerTrigger("0 */30 * * * *", RunOnStartup = true)] TimerInfo timer)
+        // This function will get triggered/executed immediately on startup, and then every 1 minute thereafter.
+        public static void ProcessQueueBasedOnTimer([TimerTrigger("0 */1 * * * *", RunOnStartup = true)] TimerInfo timer)
         {
-            Console.WriteLine("This should run every 30 minutes");
+            Console.WriteLine("This should run every 1 minute");
             ApiBaseAddress = ConfigurationManager.AppSettings["ApiBaseAddress"];
             RunStatementGenerationSchedule();
         }
