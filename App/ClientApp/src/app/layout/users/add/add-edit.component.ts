@@ -492,7 +492,7 @@ export class UserAddEditComponent implements OnInit {
     this.service.saveUser(UserArr, this.userEditModeOn).subscribe(data => {
      this.spinner.stop();
       if (data == true) {
-        let message = Constants.recordAddedMessage;
+        let message = "User added successfully.Please check your email to activate user and set password";
         if (this.userEditModeOn) {
           message = Constants.recordUpdatedMessage;
         }
