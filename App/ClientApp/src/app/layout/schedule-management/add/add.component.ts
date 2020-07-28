@@ -207,7 +207,7 @@ export class AddComponent implements OnInit {
     this.scheduleForm.controls['DayOfMonth'].setValue(this.schedule.DayOfMonth);
     this.scheduleForm.controls['TimeOfDayHours'].setValue(this.schedule.HourOfDay);
     this.scheduleForm.controls['TimeOfDayMinutes'].setValue(this.schedule.MinuteOfDay);
-    this.scheduleForm.controls['filtershiftfromdate'].setValue(new Date(this.schedule.StartDate));
+    this.scheduleForm.controls['filtershiftfromdate'].setValue(this.schedule.StartDate);
     var startDate = new Date(this.schedule.StartDate);
     var endDate = new Date(this.schedule.StartDate);
     var currentDate = new Date();
@@ -218,7 +218,7 @@ export class AddComponent implements OnInit {
       this.IsEndDateRequired = false;
     }
     else {
-      this.scheduleForm.controls['filtershiftenddate'].setValue(new Date(this.schedule.EndDate));
+      this.scheduleForm.controls['filtershiftenddate'].setValue(this.schedule.EndDate);
 
     }
     if (this.schedule.IsExportToPDF) {
@@ -358,21 +358,20 @@ export class AddComponent implements OnInit {
     let currentDte = new Date();
     if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '') {
       let startDate = this.scheduleForm.value.filtershiftfromdate;
-      if (this.IsStartDateDisable == false) {
+    
         if (startDate.getTime() < currentDte.getTime()) {
           this.filterFromDateError = true;
           this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateThanCurrentDateMessage;
         }
-      }
      
     }
-    if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
-      let toDate = this.scheduleForm.value.filtershiftenddate;
-      if (toDate.getDate() < currentDte.getDate()) {
-        this.filterToDateError = true;
-        this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
-      }
-    }
+    //if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
+    //  let toDate = this.scheduleForm.value.filtershiftenddate;
+    //  if (toDate.getDate() < currentDte.getDate()) {
+    //    this.filterToDateError = true;
+    //    this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
+    //  }
+    //}
     if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
       this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
       let startDate = this.scheduleForm.value.filtershiftfromdate;

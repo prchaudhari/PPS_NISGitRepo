@@ -22,4 +22,7 @@ VALUES
 ('Saving Trend','SavingTrend','','2',0,@SuperTenantCode,0,1,@DateTime,@SuperTenantIdentifier,0),
 ('Top 4 Income Sources','Top4IncomeSources','','2',0,@SuperTenantCode,0,1,@DateTime,@SuperTenantIdentifier,0),
 ('Current : Available Balance','CurrentAvailableBalance','','3',0,@SuperTenantCode,0,1,@DateTime,@SuperTenantIdentifier,0),
-('Saving : Available Balance','SavingAvailableBalance','','2',0,@SuperTenantCode,0,1,@DateTime,@SuperTenantIdentifier,0);
+('Saving : Available Balance','SavingAvailableBalance','','2',0,@SuperTenantCode,0,1,@DateTime,@SuperTenantIdentifier,0),
+('Reminder and Recommendation','ReminderaAndRecommendation','','1',0,@SuperTenantCode,0,1,@DateTime,@SuperTenantIdentifier,0),
+('Spending Trend','SpendingTrend','','3',0,@SuperTenantCode,0,1,@DateTime,@SuperTenantIdentifier,0);
+

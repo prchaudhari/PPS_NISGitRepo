@@ -124,6 +124,16 @@ export class AddComponent implements OnInit {
         this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
 
       }
+      else if (this.widgetList[i].WidgetName == "SpendingTrend") {
+        this.widgetList[i].ImageSource = "assets/images/SpendingTrendWidget.PNG"
+        this.widgetList[i].WidgetIcon = "icon-rp-production1";
+
+      }
+      else if (this.widgetList[i].WidgetName == "ReminderaAndRecommendation") {
+        this.widgetList[i].ImageSource = "assets/images/ReminderWidget.PNG"
+        this.widgetList[i].WidgetIcon = "fa fa-bell-o";
+
+      }
       this.widgetList[0].Checked = true;
       this.selectedLink = this.widgetList[0];
 

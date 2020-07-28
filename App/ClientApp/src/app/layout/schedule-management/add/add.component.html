@@ -21,7 +21,7 @@
           </div>
           <div class="col-md-4 col-lg-4">
             <label id="lblTemplate" for="inputRoleName">Statement Definition<span class="text-danger">*</span></label>
-            <select formControlName="StatementDefinition" (change)="onStateDefinitionSelected($event)" [attr.disabled]="IsStartDateDisable==true" class="form-control">
+            <select formControlName="StatementDefinition" (change)="onStateDefinitionSelected($event)" class="form-control">
               <option *ngFor="let sd of statementDefinitionList" [value]="sd.Identifier">{{sd.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
@@ -36,7 +36,7 @@
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
             <label id="lblTemplate" for="inputRoleName">Day of Month<span class="text-danger">*</span></label>
-            <select formControlName="DayOfMonth" (change)="onDayOfMonthSelected($event)" [attr.disabled]="IsStartDateDisable==true"  class="form-control">
+            <select formControlName="DayOfMonth" (change)="onDayOfMonthSelected($event)" class="form-control">
               <option *ngFor="let sd of DayOfMonthList" [value]="sd.Identifier">{{sd.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
@@ -51,7 +51,7 @@
             <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) <span class="text-danger">*</span></label>
             <div class="row">
               <div class="col-md-6 col-lg-6">
-                <select formControlName="TimeOfDayHours" [attr.disabled]="IsStartDateDisable==true" (change)="onTimeOfDayHoursSelected($event)" class="form-control">
+                <select formControlName="TimeOfDayHours" (change)="onTimeOfDayHoursSelected($event)" class="form-control">
                   <option *ngFor="let sd of TimeOfDayHoursList" [value]="sd.Identifier">{{sd.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
@@ -63,7 +63,7 @@
                 </div>
               </div>
               <div class="col-md-6 col-lg-6">
-                <select formControlName="TimeOfDayMinutes" [attr.disabled]="IsStartDateDisable==true" (change)="onTimeOfDayMinutesSelected($event)" class="form-control">
+                <select formControlName="TimeOfDayMinutes" (change)="onTimeOfDayMinutesSelected($event)" class="form-control">
                   <option *ngFor="let sd of TimeOfDayMinutesList" [value]="sd.Identifier">{{sd.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
@@ -83,10 +83,10 @@
             <div class="position-relative">
               <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate"
                      placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)">
-              <span [owlDateTimeTrigger]="dt" class="datetime-icon" >
+              <span [owlDateTimeTrigger]="dt" class="datetime-icon">
                 <i class="fa fa-calendar"></i>
               </span>
-              <owl-date-time #dt [pickerType]="'calendar'" [disabled]="IsStartDateDisable"></owl-date-time>
+              <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
             </div>
             <div class="text-danger" *ngIf="filterFromDateError">
               {{filterFromDateErrorMessage}}
@@ -98,7 +98,7 @@
                 <label>No End Date</label>
                 <div>
                   <label class="switch d-block">
-                    <input type="checkbox"  id="inputNoEndDate" formControlName="NoEndDate"  [checked]="!IsEndDateRequired"  value="" (change)="NoEndDateClicked($event.target)">
+                    <input type="checkbox" id="inputNoEndDate" formControlName="NoEndDate" [checked]="!IsEndDateRequired" value="" (change)="NoEndDateClicked($event.target)">
                     <span class="slider round"></span>
                   </label>
                 </div>
