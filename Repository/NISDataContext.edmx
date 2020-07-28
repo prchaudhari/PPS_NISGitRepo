@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -27,7 +27,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AccountId" Type="bigint" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
@@ -89,7 +89,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="StatementId" Type="bigint" Nullable="false" />
           <Property Name="PageId" Type="bigint" Nullable="false" />
@@ -101,7 +101,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TenantCode" Type="varchar" MaxLength="100" />
           <Property Name="BatchName" Type="varchar" MaxLength="100" />
           <Property Name="CreatedBy" Type="bigint" />
@@ -149,7 +149,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="CustomerCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -170,7 +170,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="StatementId" Type="bigint" Nullable="false" />
@@ -183,7 +183,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="StatementId" Type="bigint" Nullable="false" />
           <Property Name="PageId" Type="bigint" Nullable="false" />
@@ -324,6 +324,38 @@
           <Property Name="UpdateBy" Type="bigint" Nullable="false" />
           <Property Name="IsExportToPDF" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ScheduleLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RenderEngineId" Type="bigint" Nullable="false" />
+          <Property Name="RenderEngineName" Type="nvarchar" MaxLength="100" />
+          <Property Name="RenderEngineURL" Type="nvarchar(max)" />
+          <Property Name="NumberOfRetry" Type="int" Nullable="false" />
+          <Property Name="LogFilePath" Type="nvarchar(max)" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScheduleLogDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleLogId" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="250" />
+          <Property Name="NumberOfRetry" Type="int" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="LogMessage" Type="nvarchar(max)" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StatementFilePath" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="ScheduleRunHistory">
           <Key>
             <PropertyRef Name="Id" />
@@ -389,7 +421,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="AccountId" Type="bigint" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
@@ -459,7 +491,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="StatementId" Type="bigint" Nullable="false" />
           <Property Name="PageId" Type="bigint" Nullable="false" />
@@ -554,6 +586,8 @@
           <EntitySet Name="RolePrivilege" EntityType="Self.RolePrivilege" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="SavingTrend" EntityType="Self.SavingTrend" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="ScheduleLog" EntityType="Self.ScheduleLog" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="ScheduleLogDetail" EntityType="Self.ScheduleLogDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="ScheduleRunHistory" EntityType="Self.ScheduleRunHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="State" EntityType="Self.State" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Statement" EntityType="Self.Statement" Schema="NIS" store:Type="Tables" />
@@ -603,15 +637,17 @@
           <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
           <EntitySet Name="CustomerInfoRecords" EntityType="NISModel.CustomerInfoRecord" />
           <EntitySet Name="CustomerMediaRecords" EntityType="NISModel.CustomerMediaRecord" />
-          <EntitySet Name="ImageRecords" EntityType="NISModel.ImageRecord" />
           <EntitySet Name="NewsAlertRecords" EntityType="NISModel.NewsAlertRecord" />
           <EntitySet Name="ReminderAndRecommendationRecords" EntityType="NISModel.ReminderAndRecommendationRecord" />
           <EntitySet Name="SavingTrendRecords" EntityType="NISModel.SavingTrendRecord" />
           <EntitySet Name="Top4IncomeSourcesRecord" EntityType="NISModel.Top4IncomeSourcesRecord" />
-          <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
-          <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
           <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
           <EntitySet Name="CustomerMasterRecords" EntityType="NISModel.CustomerMasterRecord" />
+          <EntitySet Name="ImageRecords" EntityType="NISModel.ImageRecord" />
+          <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
+          <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
+          <EntitySet Name="ScheduleLogRecords" EntityType="NISModel.ScheduleLogRecord" />
+          <EntitySet Name="ScheduleLogDetailRecords" EntityType="NISModel.ScheduleLogDetailRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1013,19 +1049,6 @@
           <Property Name="ImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="VideoURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="ImageRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="PageId" Type="Int64" Nullable="false" />
-          <Property Name="WidgetId" Type="Int64" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Image1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="NewsAlertRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1071,33 +1094,6 @@
           <Property Name="CurrentSpend" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="AverageSpend" Type="Decimal" Precision="8" Scale="2" />
         </EntityType>
-        <EntityType Name="TransactionDetailRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="AccountId" Type="Int64" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
-        </EntityType>
-        <EntityType Name="VideoRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="PageId" Type="Int64" Nullable="false" />
-          <Property Name="WidgetId" Type="Int64" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Video1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="AccountMasterRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1136,6 +1132,78 @@
           <Property Name="StatementPeriod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RmName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RmContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ImageRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="PageId" Type="Int64" Nullable="false" />
+          <Property Name="WidgetId" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Image1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TransactionDetailRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="AccountId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+        </EntityType>
+        <EntityType Name="VideoRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="PageId" Type="Int64" Nullable="false" />
+          <Property Name="WidgetId" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Video1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ScheduleLogRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RenderEngineId" Type="Int64" Nullable="false" />
+          <Property Name="RenderEngineName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RenderEngineURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfRetry" Type="Int32" Nullable="false" />
+          <Property Name="LogFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ScheduleLogDetailRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleLogId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfRetry" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LogMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatementFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1572,20 +1640,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ImageRecords">
-            <EntityTypeMapping TypeName="NISModel.ImageRecord">
-              <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="Image1" ColumnName="Image" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
-                <ScalarProperty Name="PageId" ColumnName="PageId" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="NewsAlertRecords">
             <EntityTypeMapping TypeName="NISModel.NewsAlertRecord">
               <MappingFragment StoreEntitySet="NewsAlert">
@@ -1635,35 +1689,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TransactionDetailRecords">
-            <EntityTypeMapping TypeName="NISModel.TransactionDetailRecord">
-              <MappingFragment StoreEntitySet="TransactionDetail">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
-                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VideoRecords">
-            <EntityTypeMapping TypeName="NISModel.VideoRecord">
-              <MappingFragment StoreEntitySet="Video">
-                <ScalarProperty Name="Video1" ColumnName="Video" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
-                <ScalarProperty Name="PageId" ColumnName="PageId" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AccountMasterRecords">
             <EntityTypeMapping TypeName="NISModel.AccountMasterRecord">
               <MappingFragment StoreEntitySet="AccountMaster">
@@ -1701,6 +1726,83 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ImageRecords">
+            <EntityTypeMapping TypeName="NISModel.ImageRecord">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="Image1" ColumnName="Image" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetailRecords">
+            <EntityTypeMapping TypeName="NISModel.TransactionDetailRecord">
+              <MappingFragment StoreEntitySet="TransactionDetail">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VideoRecords">
+            <EntityTypeMapping TypeName="NISModel.VideoRecord">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="Video1" ColumnName="Video" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleLogRecords">
+            <EntityTypeMapping TypeName="NISModel.ScheduleLogRecord">
+              <MappingFragment StoreEntitySet="ScheduleLog">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="LogFilePath" ColumnName="LogFilePath" />
+                <ScalarProperty Name="NumberOfRetry" ColumnName="NumberOfRetry" />
+                <ScalarProperty Name="RenderEngineURL" ColumnName="RenderEngineURL" />
+                <ScalarProperty Name="RenderEngineName" ColumnName="RenderEngineName" />
+                <ScalarProperty Name="RenderEngineId" ColumnName="RenderEngineId" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleLogDetailRecords">
+            <EntityTypeMapping TypeName="NISModel.ScheduleLogDetailRecord">
+              <MappingFragment StoreEntitySet="ScheduleLogDetail">
+                <ScalarProperty Name="StatementFilePath" ColumnName="StatementFilePath" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="LogMessage" ColumnName="LogMessage" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="NumberOfRetry" ColumnName="NumberOfRetry" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="ScheduleLogId" ColumnName="ScheduleLogId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -121,6 +121,7 @@
     <Compile Include="IRepository\IAssetSettingRepository.cs" />
     <Compile Include="IRepository\IAssetLibraryRepository.cs" />
     <Compile Include="IRepository\IRenderEngineRepository.cs" />
+    <Compile Include="IRepository\IScheduleLogRepository.cs" />
     <Compile Include="IRepository\IStatementRepository.cs" />
     <Compile Include="IRepository\IPageRepository.cs" />
     <Compile Include="IRepository\IScheduleRepository.cs" />
@@ -170,6 +171,12 @@
     <Compile Include="SavingTrendRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ScheduleLogDetailRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScheduleLogRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ScheduleRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -180,6 +187,7 @@
     <Compile Include="SQLRepository\SQLAssetLibraryRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureUserRepository.cs" />
     <Compile Include="SQLRepository\SQLRenderEngineRepository.cs" />
+    <Compile Include="SQLRepository\SQLScheduleLogRepository.cs" />
     <Compile Include="SQLRepository\SQLStatementRepository.cs" />
     <Compile Include="SQLRepository\SQLPageRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureWidgetRepository.cs" />

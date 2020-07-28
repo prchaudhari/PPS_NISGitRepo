@@ -20,7 +20,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                       : base(connectionString)
+                           : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -57,14 +57,16 @@ namespace nIS
         public virtual DbSet<BatchMasterRecord> BatchMasterRecords { get; set; }
         public virtual DbSet<CustomerInfoRecord> CustomerInfoRecords { get; set; }
         public virtual DbSet<CustomerMediaRecord> CustomerMediaRecords { get; set; }
-        public virtual DbSet<ImageRecord> ImageRecords { get; set; }
         public virtual DbSet<NewsAlertRecord> NewsAlertRecords { get; set; }
         public virtual DbSet<ReminderAndRecommendationRecord> ReminderAndRecommendationRecords { get; set; }
         public virtual DbSet<SavingTrendRecord> SavingTrendRecords { get; set; }
         public virtual DbSet<Top4IncomeSourcesRecord> Top4IncomeSourcesRecord { get; set; }
-        public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
-        public virtual DbSet<VideoRecord> VideoRecords { get; set; }
         public virtual DbSet<AccountMasterRecord> AccountMasterRecords { get; set; }
         public virtual DbSet<CustomerMasterRecord> CustomerMasterRecords { get; set; }
+        public virtual DbSet<ImageRecord> ImageRecords { get; set; }
+        public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
+        public virtual DbSet<VideoRecord> VideoRecords { get; set; }
+        public virtual DbSet<ScheduleLogRecord> ScheduleLogRecords { get; set; }
+        public virtual DbSet<ScheduleLogDetailRecord> ScheduleLogDetailRecords { get; set; }
     }
 }

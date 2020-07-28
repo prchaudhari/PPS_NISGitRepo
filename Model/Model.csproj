@@ -62,6 +62,8 @@
     <Compile Include="CustomerInformation.cs" />
     <Compile Include="Enum\Activity.cs" />
     <Compile Include="Enum\ClaimType.cs" />
+    <Compile Include="Enum\ScheduleLogStatus.cs" />
+    <Compile Include="Enum\ScheduleStatus.cs" />
     <Compile Include="Enum\StatemnetStatus.cs" />
     <Compile Include="Enum\PageStatus.cs" />
     <Compile Include="Enum\SearchMode.cs" />
@@ -76,10 +78,14 @@
     <Compile Include="RolePrivilege.cs" />
     <Compile Include="RolePrivilegeOperation.cs" />
     <Compile Include="Schedule.cs" />
+    <Compile Include="ScheduleLog.cs" />
+    <Compile Include="ScheduleLogDetail.cs" />
+    <Compile Include="ScheduleLogDetailSearchParameter.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
     <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
     <Compile Include="Search Parameter\RenderEngineSearchParameter.cs" />
+    <Compile Include="Search Parameter\ScheduleLogSearchParameter.cs" />
     <Compile Include="Search Parameter\StatementSearchParameter.cs" />
     <Compile Include="Search Parameter\PageSearchParameter.cs" />
     <Compile Include="Search Parameter\SchdeuleSearchParameter.cs" />

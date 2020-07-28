@@ -62,6 +62,7 @@
     <Compile Include="AssetLibraryManager.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="RenderEngineManager.cs" />
+    <Compile Include="ScheduleLogManager.cs" />
     <Compile Include="StatementManager.cs" />
     <Compile Include="PageManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
