@@ -30,7 +30,7 @@ namespace nIS
         public const string NAVBAR_HTML = "<nav class='navbar navbar-expand-sm bg-white navbar-light'>" +
             "<a class='navbar-brand ml-auto' href='javascript:void(0);'> <img src = '{{BrandLogo}}' height='60'></a> </nav> " +
             "<nav class='navbar navbar-expand-sm bg-dark navbar-dark'><div class='collapse navbar-collapse' id='collapsibleNavbar'>" +
-            "<ul class='navbar-nav nav'>" + "{{NavItemList}}"+ "</ul>" +
+            "<ul class='navbar-nav nav'>" + "{{NavItemList}}" + "</ul>" +
             "<ul class='navbar-nav ml-auto width80px'>" + "<li class='nav-item date'><a class='text-white'>{{Today}}</a></li>" + "</ul></div></nav>";
 
         public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='card border-0'>" +
@@ -42,13 +42,13 @@ namespace nIS
 
         public const string ACCOUNT_INFORMATION_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Account Information</h5>" +
-            "</div><div class='card-body'>" +"{{AccountInfoData}}" +"</div></div>";
+            "</div><div class='card-body'>" + "{{AccountInfoData}}" + "</div></div>";
 
         public const string SUMMARY_AT_GLANCE_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Summary at Glance</h5></div>" +
             "<div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'>" +
             "<thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>" +
-            "{{AccountSummary}}"+
+            "{{AccountSummary}}" +
             "</tbody></table></div></div></div>";
 
         public const string IMAGE_WIDGET_HTML = "<div class='card border-0'>" +
@@ -63,6 +63,21 @@ namespace nIS
             "<div class='card-header bg-light border-0'><h5 class='m-0'>No Configuration</h5> </div><div class='card-body text-center text-danger'>" +
             "<span>No configuration saved for this record.</span></div></div>";
 
+        public const string SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML = "<div class='card border-0'>" +
+            "< div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Available Balance</h5> </div>" +
+            "<div class='card-body'><div><h4 style = 'text-align:right' class='mb-4'>" +
+            "<i style = 'color: limegreen' class='fa fa-sort-asc'aria-hidden='true'></i>{{TotalValue}}</h4>" +
+            "<span style = 'float:left;' > Total Deposits</span><span style = 'float:right;' >{{TotalDeposit}}</span><br />" +
+            "<span style = 'float:left;' > Total Spend</span><span style = 'float:right;' >{{TotalSpend}}</span><br />" +
+            "<span style = 'float:left;' > Savings </ span >< span style='float:right;'>{{Savings}}</span><br /></div></div></div>";
+
+        public const string CURRENTTRANSACTION_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Transaction Details</h5></div>" +
+            "< div style = 'float:left;' >< input type= 'radio' id= 'showAll' name= 'showAll' value= 'showAll' >" +
+            "< label for='showAll'>Show All</label><input type = 'radio' id= 'grpDate' name= 'grpDate' value= 'grpDate' >< label for='grpDate'>Group By Date</label></div>" +
+            " < div style = 'float:right;' >< button class='' type='button'>Seach</button><button type = 'button' > Reset </ button >< button type='button'>Print</button></div>" +
+            "< div class='card-body'><div class='table-responsive'><table class='table m-0 table-hover'>" +
+            "<thead><tr><th>Date</th><th>Type</th><th>Narration</th><th>Credit</th><th>Debit</th><th>Query</th><th>Balance</th></tr>" +
+            "</thead><tbody>{{SavingAccountTransactionDetails}}</tbody></table></div></div></div>";
         public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3 bdy-scroll stylescrollbar'>";
 
         public const string WIDGET_HTML_HEADER = "<div id='{{DivId}}' class='card border-0 p-2 tabDivClass {{ExtraClass}}'>";

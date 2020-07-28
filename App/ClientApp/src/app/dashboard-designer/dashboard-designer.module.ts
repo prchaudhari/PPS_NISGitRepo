@@ -12,11 +12,25 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DynamicModule } from 'ng-dynamic-component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent } from './widgetComponent/widgetComponent';
+import {
+  CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent,
+  TransactionDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+  SpendindTrendsComponent,
+  TopIncomeSourcesComponent,
+  SavingTrendsComponent,
+  AnalyticsWidgetComponent,
+  ReminderAndRecommComponent
+} from './widgetComponent/widgetComponent';
 
 @NgModule({
   declarations: [AddDashboardDesignerComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, 
-    AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent],
+    AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+    SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+    SpendindTrendsComponent,
+    TopIncomeSourcesComponent,
+    SavingTrendsComponent,
+    AnalyticsWidgetComponent,
+    ReminderAndRecommComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
     GridsterModule, LayoutModule, MatSortModule, MatTableModule, MatPaginatorModule, DynamicModule
@@ -27,6 +41,11 @@ import { CustomerInformationComponent, AccountInformationComponent, ImageCompone
     ImageComponent,
     VideoComponent,
     SummaryAtGlanceComponent,
-    TransactionDetailsComponent],
+    TransactionDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+    SpendindTrendsComponent,
+    TopIncomeSourcesComponent,
+    SavingTrendsComponent,
+    AnalyticsWidgetComponent,
+    ReminderAndRecommComponent],
 })
 export class DashboardDesignerModule { }
