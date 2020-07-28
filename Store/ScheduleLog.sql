@@ -1,0 +1,9 @@
+﻿CREATE TABLE [NIS].[ScheduleLog]
+(
+	[Id] BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ScheduleId] BIGINT NOT NULL,
+	[RenderEngineId] BIGINT NOT NULL,
+	[NumberOfRetry] INT NULL,
+	[LogFilePath] NVARCHAR(MAX) NULL,
+	[CreationDate] DATETIME NOT NULL,
+)

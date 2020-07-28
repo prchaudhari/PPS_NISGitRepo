@@ -98,6 +98,13 @@
     <Build Include="Entity Manager\Entities.sql" />
     <Build Include="Entity Manager\Operations.sql" />
     <Build Include="Entity Manager\EntityManagerSchema.sql" />
+    <Build Include="BatchDetails.sql" />
+    <Build Include="BatchMaster.sql" />
+    <Build Include="CustomerMaster.sql" />
+    <Build Include="CustomerMedia.sql" />
+    <Build Include="AccountMaster.sql" />
+    <Build Include="ScheduleLog.sql" />
+    <Build Include="ScheduleLogDetail.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

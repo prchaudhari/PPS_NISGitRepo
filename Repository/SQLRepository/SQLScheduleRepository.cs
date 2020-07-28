@@ -1251,7 +1251,7 @@ namespace nIS
                 }
             }
 
-            string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_") + ".html";
+            string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".html";
             WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id);
         }
 
