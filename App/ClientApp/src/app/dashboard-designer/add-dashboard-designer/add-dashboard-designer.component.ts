@@ -701,7 +701,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         else if (widget.WidgetName == "ReminderaAndRecommendation") {
           return this.widgetsGridsterItemArray.push({
             cols: 6,
-            rows: 6,
+            rows: 4,
             y: 0,
             x: 0,
             component: ReminderAndRecommComponent,
@@ -715,7 +715,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         else if (widget.WidgetName == "Top4IncomeSources") {
           return this.widgetsGridsterItemArray.push({
             cols: 6,
-            rows: 6,
+            rows: 4,
             y: 0,
             x: 0,
             component: TopIncomeSourcesComponent,

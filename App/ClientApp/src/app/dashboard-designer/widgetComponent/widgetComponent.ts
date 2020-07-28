@@ -591,24 +591,16 @@ export class SavingTransactionDetailsComponent {
         <div class="widget-header">
             <span class="widget-header-title"> Reminder and Recommendations </span>
         </div>
-        <div class="widget-area">
-            <div class="row" style="color: red;float: right;">
-            <i class="fa fa-caret-left fa-3x" style="color:red" aria-hidden="true"></i><label>Click</label>
-            </div>
-
-            <div class="row" *ngFor="let list of actionList">
-              
-
-                    <div class="col-sm-8" style="background-color: #d7d2d2;">
-                        <label >{{list.title}} </label>
-                    </div>
-                    <div class="col-sm-4">
-                            <a><i class="fa fa-caret-left fa-3x" style="color:red"aria-hidden="true"></i>{{list.action}}</a>
-                    </div>
-
-            </div>
-        </div>
-    </div>
+        <div class="widget-area-grid ">
+            <table >
+                <thead>
+                    <tr><td></td><td style="color:red;float: right;"> <span><i class="fa fa-caret-left fa-3x"  aria-hidden="true"></i>Click</span></td></tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let list of actionList">
+                        <td style="width:80%"><label style="background-color: #dce3dc;">{{list.title}} </label></td>
+                        <td style="float: left;"><a><i class="fa fa-caret-left fa-3x" style="color:red"aria-hidden="true"></i>{{list.action}}</a></td>
+                    </tr></tbody></table> </div>  </div>
 </div>`
 })
 export class ReminderAndRecommComponent {
@@ -618,6 +610,8 @@ export class ReminderAndRecommComponent {
     { title: "Update Missing Inofrmation", action: "Update" },
     { title: "Your Rewards Video ia available", action: "View" },
     { title: "Payment Due for Home Loan", action: "Pay" },
+
+   
 
   ]
 
@@ -640,7 +634,7 @@ export class ReminderAndRecommComponent {
 export class AnalyticsWidgetComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
-  
+
   public options4: any = {
     chart: {
       plotBackgroundColor: null,
@@ -725,19 +719,51 @@ export class SavingTrendsComponent {
   selector: 'topFourIncomdeSources',
   template: `<div class="widget">
     <div class="widget">
-    <div class="widget-header">
-        <span class="widget-header-title"> Analytics </span>
-    </div>
-    <div class="widget-area  position-relative width100">
-        
-          
+        <div class="widget-header">
+            <span class="widget-header-title"> Reminder and Recommendations </span>
+        </div>
+        <div class="widget-area">
+
+            <table>
+                <thead>
+                    <tr>
+                        <td style="width:50%"></td>
+                        <td style="width:15%">This Month</td>
+                        <td style="width:35%;float:center;">Usually you spend</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let list of actionList">
+                        <td style="width:50%">
+                            <label>{{list.name}} </label>
+                        </td>
+                        <td style="width:15%">
+                            <label>{{list.thisMonth}} </label>
+                        </td>
+                        <td style="width:35%;float:center">
+                           
+                            <label> <span style="color: red" class="{{list.icon}}" aria-hidden="true"></span>{{list.usuallySpend}} </label>
+                        </td>
+                       
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>`
 })
 export class TopIncomeSourcesComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
+  public actionList: any[] = [
+    { name: " Salary Transfer", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon:"fa fa-sort-asc fa-2x"},
+    { name: "Cash Deposit", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red" ,icon: "fa fa-sort-desc fa-2x"},
+    { name: "Profit Earned", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red", icon: "fa fa-sort-desc fa-2x"},
+    { name: "Rebete", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x"},
 
+
+
+  ]
 }
 
 @Component({
