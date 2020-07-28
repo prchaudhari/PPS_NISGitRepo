@@ -71,13 +71,22 @@ namespace nIS
             "<span style = 'float:left;' > Total Spend</span><span style = 'float:right;' >{{TotalSpend}}</span><br />" +
             "<span style = 'float:left;' > Savings </ span >< span style='float:right;'>{{Savings}}</span><br /></div></div></div>";
 
-        public const string CURRENTTRANSACTION_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Transaction Details</h5></div>" +
+        public const string SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Transaction Details</h5></div>" +
             "< div style = 'float:left;' >< input type= 'radio' id= 'showAll' name= 'showAll' value= 'showAll' >" +
             "< label for='showAll'>Show All</label><input type = 'radio' id= 'grpDate' name= 'grpDate' value= 'grpDate' >< label for='grpDate'>Group By Date</label></div>" +
             " < div style = 'float:right;' >< button class='' type='button'>Seach</button><button type = 'button' > Reset </ button >< button type='button'>Print</button></div>" +
             "< div class='card-body'><div class='table-responsive'><table class='table m-0 table-hover'>" +
             "<thead><tr><th>Date</th><th>Type</th><th>Narration</th><th>Credit</th><th>Debit</th><th>Query</th><th>Balance</th></tr>" +
-            "</thead><tbody>{{SavingAccountTransactionDetails}}</tbody></table></div></div></div>";
+            "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
+
+        public const string CURRENT_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Transaction Details</h5></div>" +
+            "<div style='float:left;'><input type='radio' id='showAll' name='showAll' value='showAll'>" +
+            "<label for='showAll'>Show All</label><input type='radio' id='grpDate' name='grpDate' value='grpDate'><labelfor='grpDate'>Group By Date</label></div>" +
+            "<div style='float:right;'><button class='' type='button'>Seach</button><button type='button'>Reset</button><button type='button'>Print</button></div>" +
+            "<div class='card-body'><div class='table-responsive'><table class='table m-0 table-hover'><thead><tr>" +
+            "<th>Date</th><th>Type</th><th>Narration</th><th>FYC(GBP)</th><th>Current Rate</th><th>LCY(GBP)</th></tr>" +
+            "</thead><tbody>{{CurrentAccountTransactionDetails}}</tbody></table></div></div></div>";
+
         public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3 bdy-scroll stylescrollbar'>";
 
         public const string WIDGET_HTML_HEADER = "<div id='{{DivId}}' class='card border-0 p-2 tabDivClass {{ExtraClass}}'>";
