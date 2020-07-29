@@ -330,6 +330,23 @@ export class ListComponent implements OnInit {
     router.navigate(['schedulemanagement', 'Edit']);
   }
 
+  navigateToScheduleHistory(schedule) {
+    let queryParams = {
+      Routeparams: {
+        passingparams: {
+          "ScheduleIdentifier": schedule.Identifier,
+        },
+        filteredparams: {
+          //passing data using json stringify.
+          "ScheduleName": this.ScheduleFilterForm.value.filterRoleName != null ? this.ScheduleFilterForm.value.filterRoleName : ""
+        }
+      }
+    }
+    localStorage.setItem("scheduleparams", JSON.stringify(queryParams))
+    const router = this.injector.get(Router);
+    router.navigate(['schedulemanagement', 'History']);
+  }
+
   //function written to delete role
   deleteSchedule(role: Schedule) {
     let message = 'Are you sure, you want to delete this record?';

@@ -20,5 +20,6 @@ namespace nIS
         public System.DateTime EndDate { get; set; }
         public string TenantCode { get; set; }
         public long StatementId { get; set; }
+        public string FilePath { get; set; }
     }
 }

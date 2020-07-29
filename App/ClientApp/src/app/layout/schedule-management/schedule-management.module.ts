@@ -12,18 +12,21 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SharedModule } from '../../shared/modules/shared.module';
 import { HistoryComponent } from './history/history.component';
 import { ScheduleManagementRoutingModule } from './schedule-management-routing.module';
-
+import { WindowRef } from '../../core/services/window-ref.service';
 @NgModule({
   declarations: [ListComponent, AddComponent, ViewComponent, HistoryComponent],
   imports: [
     CommonModule,
-      ScheduleManagementRoutingModule,
-      MatTableModule,
-      MatSortModule,
-      NgbModule,
-      MatPaginatorModule,
+    ScheduleManagementRoutingModule,
+    MatTableModule,
+    MatSortModule,
+    NgbModule,
+    MatPaginatorModule,
     OwlDateTimeModule, OwlNativeDateTimeModule, SharedModule, FormsModule,
     ReactiveFormsModule,
+  ],
+  providers: [
+    WindowRef
   ]
 })
 export class ScheduleManagementModule { }

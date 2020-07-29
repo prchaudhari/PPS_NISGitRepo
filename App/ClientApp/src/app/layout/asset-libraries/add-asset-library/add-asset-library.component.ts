@@ -618,6 +618,7 @@ export class AddAssetLibraryComponent implements OnInit {
       var imagePattern = /image-*/;
       var vedioPattern = /video-*/;
       if (file.type.match(imagePattern)) {
+        this.fileType = 'Image';
         if (file.size > this.actualSetting.ImageSize) {
           this.fileSize = this.setting.ImageSize
           this.assetFileSizeError = true;
@@ -675,14 +676,14 @@ export class AddAssetLibraryComponent implements OnInit {
             this.fileNameList = [];
           }
         }
-        this.fileType = 'Image';
+      
 
       }
       else if (file.type.match(vedioPattern)) {
-
+        this.fileType = 'Video';
         if (file.size > this.actualSetting.VideoSize) {
           this.fileSize = this.setting.VideoSize;
-          this.fileType = 'Video';
+          
           this.assetFileSizeError = true;
           this.assetFileTypeError = false;
           this.fileNameList = [];

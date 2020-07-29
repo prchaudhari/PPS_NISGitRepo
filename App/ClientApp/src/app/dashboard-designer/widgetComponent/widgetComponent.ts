@@ -611,7 +611,7 @@ export class ReminderAndRecommComponent {
     { title: "Your Rewards Video ia available", action: "View" },
     { title: "Payment Due for Home Loan", action: "Pay" },
 
-   
+
 
   ]
 
@@ -701,10 +701,11 @@ export class AnalyticsWidgetComponent {
   template: `<div class="widget">
     <div class="widget">
     <div class="widget-header">
-        <span class="widget-header-title"> Analytics </span>
+        <span class="widget-header-title"> Your Saving Trends </span>
     </div>
     <div class="widget-area  position-relative width100">
         
+           <div id="savingTrendsWidgetPiecontainer"></div>
           
     </div>
 </div>`
@@ -712,7 +713,71 @@ export class AnalyticsWidgetComponent {
 export class SavingTrendsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
+  public savingTrends: any = {
+    title: {
+      text: 'What you have saving'
+    },
 
+    //subtitle: {
+    //  text: 'Source: thesolarfoundation.com'
+    //},
+
+    yAxis: {
+      //title: {
+      //  text: 'Number of Employees'
+      //}
+    },
+
+    xAxis: {
+      accessibility: {
+        rangeDescription: 'Range: 2010 to 2017'
+      }
+    },
+
+    legend: {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+      series: {
+        label: {
+          connectorAllowed: false
+        },
+        pointStart: 2010
+      }
+    },
+
+    series: [
+      {
+        name: 'Installation',
+        data: [43934, 52503, 57177, 69658, 97031]
+      }
+    ],
+
+    responsive: {
+      rules: [{
+        condition: {
+          maxWidth: 500
+        },
+        chartOptions: {
+          legend: {
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'bottom'
+          }
+        }
+      }]
+    }
+
+  }
+
+  ngAfterViewInit() {
+    Highcharts.chart('savingTrendsWidgetPiecontainer', this.savingTrends);
+
+
+  }
 }
 
 @Component({
@@ -720,7 +785,7 @@ export class SavingTrendsComponent {
   template: `<div class="widget">
     <div class="widget">
         <div class="widget-header">
-            <span class="widget-header-title"> Reminder and Recommendations </span>
+            <span class="widget-header-title"> Top Four Income Sources </span>
         </div>
         <div class="widget-area">
 
@@ -756,10 +821,10 @@ export class TopIncomeSourcesComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
   public actionList: any[] = [
-    { name: " Salary Transfer", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon:"fa fa-sort-asc fa-2x"},
-    { name: "Cash Deposit", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red" ,icon: "fa fa-sort-desc fa-2x"},
-    { name: "Profit Earned", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red", icon: "fa fa-sort-desc fa-2x"},
-    { name: "Rebete", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x"},
+    { name: " Salary Transfer", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x" },
+    { name: "Cash Deposit", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red", icon: "fa fa-sort-desc fa-2x" },
+    { name: "Profit Earned", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red", icon: "fa fa-sort-desc fa-2x" },
+    { name: "Rebete", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x" },
 
 
 
@@ -771,7 +836,7 @@ export class TopIncomeSourcesComponent {
   template: `<div class="widget">
     <div class="widget">
     <div class="widget-header">
-        <span class="widget-header-title"> Analytics </span>
+        <span class="widget-header-title"> Spending Trends </span>
     </div>
     <div class="widget-area  position-relative width100">
         

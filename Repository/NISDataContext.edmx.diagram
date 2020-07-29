@@ -44,7 +44,7 @@
         <EntityTypeShape EntityType="NISModel.TransactionDetailRecord" Width="1.5" PointX="2.625" PointY="5.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.VideoRecord" Width="1.5" PointX="4.75" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ScheduleLogRecord" Width="1.5" PointX="6.75" PointY="5.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogDetailRecord" Width="1.5" PointX="8.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NISModel.ScheduleLogDetailRecord" Width="1.5" PointX="8.75" PointY="5.875" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

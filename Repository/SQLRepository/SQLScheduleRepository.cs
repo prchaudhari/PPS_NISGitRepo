@@ -905,7 +905,8 @@ namespace nIS
                             Identifier = scheduleRecord.Id,
                             StartDate = DateTime.SpecifyKind((DateTime)scheduleRecord.StartDate, DateTimeKind.Utc),
                             EndDate = scheduleRecord.EndDate != null ? DateTime.SpecifyKind((DateTime)scheduleRecord.EndDate, DateTimeKind.Utc) : DateTime.MinValue,
-                            Schedule = new Schedule { Identifier = scheduleRecord.ScheduleId }
+                            Schedule = new Schedule { Identifier = scheduleRecord.ScheduleId },
+                            StatementFilePath = scheduleRecord.FilePath != null ? scheduleRecord.FilePath : string.Empty
                         }).ToList();
 
                         //StringBuilder scheduleIdentifier = new StringBuilder();
@@ -1043,7 +1044,10 @@ namespace nIS
         private string WhereClauseGeneratorHistory(ScheduleSearchParameter searchParameter, string tenantCode)
         {
             StringBuilder queryString = new StringBuilder();
-
+            if (validationEngine.IsValidText(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("ScheduleId.Equals({0}) ", item))) + ") and ");
+            }
             if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
             {
                 DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);

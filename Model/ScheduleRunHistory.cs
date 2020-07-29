@@ -40,6 +40,7 @@ namespace nIS
         /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
 
+        private string filePath = string.Empty;
         #endregion
         #region public members
 
@@ -93,6 +94,15 @@ namespace nIS
             }
         }
 
+        public string StatementFilePath
+        {
+            get
+            { return this.filePath; }
+            set
+            {
+                this.filePath = value;
+            }
+        }
         #endregion
 
     }

@@ -21,7 +21,7 @@
           </div>
           <div class="col-md-4 col-lg-4">
             <label id="lblTemplate" for="inputRoleName">Statement Definition<span class="text-danger">*</span></label>
-            <select formControlName="StatementDefinition" (change)="onStateDefinitionSelected($event)" class="form-control">
+            <select formControlName="StatementDefinition" (change)="onStateDefinitionSelected($event)" class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
               <option *ngFor="let sd of statementDefinitionList" [value]="sd.Identifier">{{sd.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
@@ -36,7 +36,7 @@
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
             <label id="lblTemplate" for="inputRoleName">Day of Month<span class="text-danger">*</span></label>
-            <select formControlName="DayOfMonth" (change)="onDayOfMonthSelected($event)" class="form-control">
+            <select formControlName="DayOfMonth" (change)="onDayOfMonthSelected($event)" class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
               <option *ngFor="let sd of DayOfMonthList" [value]="sd.Identifier">{{sd.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
@@ -51,7 +51,7 @@
             <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) <span class="text-danger">*</span></label>
             <div class="row">
               <div class="col-md-6 col-lg-6">
-                <select formControlName="TimeOfDayHours" (change)="onTimeOfDayHoursSelected($event)" class="form-control">
+                <select formControlName="TimeOfDayHours" (change)="onTimeOfDayHoursSelected($event)" class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
                   <option *ngFor="let sd of TimeOfDayHoursList" [value]="sd.Identifier">{{sd.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
@@ -63,7 +63,7 @@
                 </div>
               </div>
               <div class="col-md-6 col-lg-6">
-                <select formControlName="TimeOfDayMinutes" (change)="onTimeOfDayMinutesSelected($event)" class="form-control">
+                <select formControlName="TimeOfDayMinutes" (change)="onTimeOfDayMinutesSelected($event)" class="form-control"  [attr.disabled]="IsStartDateDisable?'':null">
                   <option *ngFor="let sd of TimeOfDayMinutesList" [value]="sd.Identifier">{{sd.Name}}</option>
                 </select>
                 <div class="validation-msg" style="color:red">
@@ -82,11 +82,11 @@
             <label>Start Date<span class="text-danger">*</span></label>
             <div class="position-relative">
               <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate"
-                     placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)">
+                     placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)" [disabled]="IsStartDateDisable">
               <span [owlDateTimeTrigger]="dt" class="datetime-icon">
                 <i class="fa fa-calendar"></i>
               </span>
-              <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+              <owl-date-time #dt [pickerType]="'calendar'" [disabled]="IsStartDateDisable"></owl-date-time>
             </div>
             <div class="text-danger" *ngIf="filterFromDateError">
               {{filterFromDateErrorMessage}}
@@ -132,6 +132,9 @@
             </div>
             <div class="text-danger" *ngIf="filterToDateError">
               {{filterToDateErrorMessage}}
+            </div>
+            <div class="text-danger" *ngIf="filterDateDifferenecError">
+              {{filterDateDiffErrorMessage}}
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Constants } from 'src/app/shared/constants/constants';
 import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
@@ -12,8 +12,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ScheduleService } from '../schedule.service';
 import { Schedule } from '../schedule';
 import { ScheduleRunHistory } from '../scheduleHitory';
-
-
+import { WindowRef } from '../../../core/services/window-ref.service';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpRequest } from '@angular/common/http';
+import * as $ from 'jquery';
+import { map } from 'rxjs/operators';
+import { ConfigConstants } from '../../../shared/constants/configConstants';
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
@@ -33,17 +37,19 @@ export class HistoryComponent implements OnInit {
   public filterToDateErrorMessage: string = "";
   public isFilterDone = false;
   public array: any;
+  public baseURL = ConfigConstants.BaseURL;
   public userClaimsRolePrivilegeOperations: any[] = [];
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
   displayedColumns: string[] = ['name', 'template', 'startDate', 'endDate', 'DayOfMonth', 'actions'];
-
+  public params: any = [];
   dataSource = new MatTableDataSource<any>();
-
+  public scheduleIdentifier;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
+  public isFirstCall = true;
+  public scheduleName = '';
   ngOnInit() {
     this.getSchedule(null);
     //this.getStatementDefinition(null);
@@ -67,8 +73,37 @@ export class HistoryComponent implements OnInit {
     private _messageDialogService: MessageDialogService,
     private route: Router,
     private localstorageservice: LocalStorageService,
-    private scheduleService: ScheduleService) {
+    private scheduleService: ScheduleService,
+    private _window: WindowRef, private http: HttpClient) {
+    let me = this;
     this.sortedscheduleHistoryList = this.scheduleHistoryList.slice();
+    route.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        //if (e.url.includes('/schedulemanagement/History')) {
+        //  localStorage.removeItem("scheduleparams");
+        //}
+      }
+    });
+
+    route.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        if (e.url.includes('/schedulemanagement')) {
+          //set passing parameters to localstorage.
+          this.params = JSON.parse(localStorage.getItem('scheduleparams'));
+          if (localStorage.getItem('scheduleparams')) {
+            this.scheduleIdentifier = this.params.Routeparams.passingparams.ScheduleIdentifier;
+          }
+        } else {
+          localStorage.removeItem("scheduleparams");
+        }
+      }
+
+    });
+
+    this._window.nativeWindow.DownloadAsset = function (id: number): void {
+      //me.DownloadAsset(id);
+    };
+
   }
 
   public handlePage(e: any) {
@@ -89,9 +124,6 @@ export class HistoryComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  get filterDisplayName() {
-    return this.ScheduleFilterForm.get('filterDisplayName');
-  }
 
   get filterStatementDefiniton() {
     return this.ScheduleFilterForm.get('filterStatementDefiniton');
@@ -107,7 +139,6 @@ export class HistoryComponent implements OnInit {
 
   resetFilterForm() {
     this.ScheduleFilterForm.patchValue({
-      filterDisplayName: null,
       filterStatementDefiniton: null,
       filterEndDate: null,
       filterStartDate: null
@@ -169,9 +200,7 @@ export class HistoryComponent implements OnInit {
         searchParameter.SortParameter.SortColumn = 'Id';
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
         searchParameter.SearchMode = Constants.Contains;
-        if (this.ScheduleFilterForm.value.filterDisplayName != null && this.ScheduleFilterForm.value.filterDisplayName != '') {
-          searchParameter.ScheduleName = this.ScheduleFilterForm.value.filterDisplayName.trim();
-        }
+
         if (this.ScheduleFilterForm.value.filterStatementDefiniton != null && this.ScheduleFilterForm.value.filterStatementDefiniton != '') {
           searchParameter.StatementDefinitionName = this.ScheduleFilterForm.value.filterStatementDefiniton.trim();
         }
@@ -192,7 +221,6 @@ export class HistoryComponent implements OnInit {
 
   resetPageFilterForm() {
     this.ScheduleFilterForm.patchValue({
-      filterDisplayName: null,
       filterStatementDefiniton: null,
       filterStartDate: null,
       filterEndDate: null
@@ -218,16 +246,28 @@ export class HistoryComponent implements OnInit {
       searchParameter.SearchMode = Constants.Contains;
     }
     searchParameter.IsStatementDefinitionRequired = true;
+    searchParameter.Identifier = this.scheduleIdentifier;
     this.scheduleHistoryList = await scheduleService.getScheduleHistory(searchParameter);
-    if (this.scheduleHistoryList.length == 0 && this.isFilterDone == true) {
-      let message = ErrorMessageConstants.getNoRecordFoundMessage;
-      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
-        if (data == true) {
-          this.resetFilterForm();
-          this.getSchedule(null);
-        }
-      });
+    if (this.isFirstCall) {
+      if (this.scheduleHistoryList.length == 0) {
+        let message = ErrorMessageConstants.getNoRecordFoundMessage;
+        this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError)
+        this.route.navigate(['/schedulemanagement']);
+      }
     }
+    else {
+      if (this.scheduleHistoryList.length == 0 && this.isFilterDone == true) {
+        let message = ErrorMessageConstants.getNoRecordFoundMessage;
+        this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+          if (data == true) {
+            this.resetFilterForm();
+            this.getSchedule(null);
+          }
+        });
+      }
+    }
+    this.scheduleName = this.scheduleHistoryList[0].Schedule.Name;
+
     this.dataSource = new MatTableDataSource<ScheduleRunHistory>(this.scheduleHistoryList);
     this.dataSource.sort = this.sort;
     this.array = this.scheduleHistoryList;
@@ -249,7 +289,7 @@ export class HistoryComponent implements OnInit {
         case 'startDate': return compareDate(a.StartDate, b.StartDate, isAsc);
         case 'endDate': return compareDate(a.EndDate, b.EndDate, isAsc);
         case 'DayOfMonth': return compare(a.Schedule.DayOfMonth, b.Schedule.DayOfMonth, isAsc);
-        
+
         default: return 0;
       }
     });

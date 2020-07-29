@@ -366,6 +366,7 @@
           <Property Name="EndDate" Type="datetime" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
           <Property Name="StatementId" Type="bigint" Nullable="false" />
+          <Property Name="FilePath" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -967,6 +968,7 @@
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="FilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RenderEngineRecord">
           <Key>
@@ -1544,6 +1546,7 @@
           <EntitySetMapping Name="ScheduleRunHistoryRecords">
             <EntityTypeMapping TypeName="NISModel.ScheduleRunHistoryRecord">
               <MappingFragment StoreEntitySet="ScheduleRunHistory">
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />

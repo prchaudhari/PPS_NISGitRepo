@@ -38,6 +38,8 @@ export class AddComponent implements OnInit {
   public filterFromDateErrorMessage: string = "";
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
+  public filterDateDifferenecError: boolean = false;
+  public filterDateDiffErrorMessage: string = "";
   public scheduleFormErrorObject: any = {
   };
   //public DayOfMonthList: DropDonw[] = [];
@@ -157,6 +159,17 @@ export class AddComponent implements OnInit {
     this.getStatements();
   }
 
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
+
   async getStatements() {
     let statementService = this.injector.get(StatementService);
     var searchParameter: any = {}
@@ -207,7 +220,7 @@ export class AddComponent implements OnInit {
     this.scheduleForm.controls['DayOfMonth'].setValue(this.schedule.DayOfMonth);
     this.scheduleForm.controls['TimeOfDayHours'].setValue(this.schedule.HourOfDay);
     this.scheduleForm.controls['TimeOfDayMinutes'].setValue(this.schedule.MinuteOfDay);
-    this.scheduleForm.controls['filtershiftfromdate'].setValue(this.schedule.StartDate);
+    this.scheduleForm.controls['filtershiftfromdate'].setValue(new Date(this.schedule.StartDate));
     var startDate = new Date(this.schedule.StartDate);
     var endDate = new Date(this.schedule.StartDate);
     var currentDate = new Date();
@@ -295,8 +308,10 @@ export class AddComponent implements OnInit {
     const value = event.checked;
     this.IsEndDateRequired = !value;
     if (!this.IsEndDateRequired) {
-      this.filterFromDateError = false;
-      this.filterFromDateErrorMessage = "";
+      this.filterToDateError = false;
+      this.filterToDateErrorMessage = "";
+      this.filterDateDifferenecError = false;
+      this.filterDateDiffErrorMessage = "";;
       this.scheduleForm.controls['filtershiftenddate'].setValue("");
     }
   }
@@ -355,36 +370,42 @@ export class AddComponent implements OnInit {
     this.filterToDateError = false;
     this.filterFromDateErrorMessage = "";
     this.filterToDateErrorMessage = "";
+    this.filterDateDifferenecError = false;
+    this.filterDateDiffErrorMessage = "";
     let currentDte = new Date();
     if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '') {
-      let startDate = this.scheduleForm.value.filtershiftfromdate;
-    
+      if (this.IsStartDateDisable == false) {
+        let startDate = this.scheduleForm.value.filtershiftfromdate;
+
         if (startDate.getTime() < currentDte.getTime()) {
           this.filterFromDateError = true;
           this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateThanCurrentDateMessage;
         }
-     
+      }
     }
-    //if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
-    //  let toDate = this.scheduleForm.value.filtershiftenddate;
-    //  if (toDate.getDate() < currentDte.getDate()) {
-    //    this.filterToDateError = true;
-    //    this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
-    //  }
-    //}
+    if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
+      let toDate = this.scheduleForm.value.filtershiftenddate;
+      if (toDate.getTime() < currentDte.getTime()) {
+        this.filterToDateError = true;
+        this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
+      }
+    }
     if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
       this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
       let startDate = this.scheduleForm.value.filtershiftfromdate;
       let toDate = this.scheduleForm.value.filtershiftenddate;
       if (this.IsEndDateRequired) {
-        if (startDate.getTime() > toDate.getTime()) {
+        if (startDate.getTime() >= toDate.getTime()) {
           this.filterToDateError = true;
-          this.filterToDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
+          this.filterToDateErrorMessage = "Start date should be less than end date.";
         }
         else {
           if (this.monthDiff(startDate, toDate) < 30) {
-            this.filterToDateError = true;
-            this.filterToDateErrorMessage = "Start date and end date should have minimum one month diffrenece";
+            
+              this.filterDateDifferenecError = true;
+              this.filterDateDiffErrorMessage = "Start date and end date should have minimum one month diffrenece";
+            this.filterToDateError = false;
+            this.filterToDateErrorMessage = "";
           }
         }
       }
