@@ -13,6 +13,7 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { RolePrivilege } from '../../../shared/models/rolePrivilege';
 import { RoleprivilegeMapping } from '../role';
+import { UserService } from '../../users/user.service';
 
 @Component({
   selector: 'app-add',
@@ -24,6 +25,7 @@ export class AddComponent implements OnInit {
   //variable declaration here
   public isCollapsedRoles: boolean = true;
   public isCollapsedDetails: boolean = false;
+  public isCollapsedUsers: boolean = true;
   public isCollapsedPermissions: boolean = true;
   public isLoaderActive: boolean = false;
   public isShowFilterRoles: boolean = false;
@@ -51,7 +53,7 @@ export class AddComponent implements OnInit {
     showRoleNameError: false
   };
   public roleEditModeOn: boolean = false;
-
+  public IsUserDetailsGet = false;
   //regex
   public onlyAlphabetsWithSpace = '[a-zA-Z ]*';
   public onlyAlphabetswithInbetweenSpaceUpto50Characters = Constants.onlyAlphabetswithInbetweenSpaceUpto50Characters;
@@ -77,6 +79,7 @@ export class AddComponent implements OnInit {
   public checkedRoles = [];
   public userClaimsRolePrivilegeOperations;
   public IsAllRole: any;
+  public usersList = [];
 
   public dependentEntityCount: any = [
     {
@@ -376,6 +379,7 @@ export class AddComponent implements OnInit {
 
   constructor(private _location: Location,
     private formbuilder: FormBuilder,
+    private service: UserService,
     private injector: Injector,
     private _dialogService: DialogService,
     private uiLoader: NgxUiLoaderService,
@@ -1106,6 +1110,29 @@ export class AddComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  async getRoleUser() {
+    this.isCollapsedUsers = !this.isCollapsedUsers
+    if (this.IsUserDetailsGet==false) {
+      let userService = this.injector.get(UserService);
+      let searchParameter: any = {};
+      searchParameter.IsRolePrivilegesRequired = true;
+      searchParameter.RoleIdentifier = this.RoleIdentifier;
+      searchParameter.PagingParameter = {};
+      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.SortParameter = {};
+      searchParameter.SortParameter.SortColumn = "Id";
+      searchParameter.SortParameter.SortOrder = Constants.Ascending;
+      searchParameter.SearchMode = Constants.Contains;
+      //this.spinner.start();
+      this.usersList = await userService.getUser(searchParameter);
+      
+      this.IsUserDetailsGet = true;
+    }
+    
+
   }
 
 }

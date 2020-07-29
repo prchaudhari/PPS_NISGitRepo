@@ -92,4 +92,7 @@ export class URLConfiguration {
   public static get renderEngineActivate(): string { return "RenderEngine/Activate" };
   public static get renderEngineDeactivate(): string { return "RenderEngine/DeActivate" };
 
+  //Schedule Url Method
+  public static get scheduleLogGetUrl(): string { return "ScheduleLogs/List" };
+
 }

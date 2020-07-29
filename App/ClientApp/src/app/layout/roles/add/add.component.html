@@ -73,8 +73,8 @@
       <div class="card-body rtl-checkbox parent-rtl" id="collapsedPermissions" [ngbCollapse]="isCollapsedPermissions">
         <!--repeat-->
         <div class="custom-control custom-checkbox mb-4">
-          <input class="custom-control-input" type="checkbox" [(ngModel)]="allPermisions" id="allPermisions"  [checked]="allPermisions"
-                 name="allPermisions"  (change)="selectAllPermissions($event)"
+          <input class="custom-control-input" type="checkbox" [(ngModel)]="allPermisions" id="allPermisions" [checked]="allPermisions"
+                 name="allPermisions" (change)="selectAllPermissions($event)"
                  [ngModelOptions]="{standalone: true}"
                  [disabled]="allPermisionsDisabled">
           <label class="custom-control-label">Select All</label>
@@ -110,6 +110,35 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-0 mb-2 card-shadow" *ngIf="roleEditModeOn">
+      <div class="card-header bg-white d-flex justify-content-between">
+        <div>
+          <label class="m-0">Users</label>
+        </div>
+        <div>
+          <button type="button" id="btnCollapsedUsers"
+                  class="toggle-btn border-0 p-0 bg-transparent"
+                  (click)="getRoleUser()"
+                  [attr.aria-expanded]="!isCollapsedUsers"
+                  aria-controls="collapseUsers">
+            <span class="fa" [ngClass]="!isCollapsedUsers? 'fa-angle-down' : 'fa-angle-right'"></span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body" id="collapseUsers" [ngbCollapse]="isCollapsedUsers">
+        <div class="card mb-2 card-shadow border-0" *ngFor="let item of usersList">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+              <label class="m-0">{{item.FirstName}} {{item.LastName}}</label>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="usersList.length == 0 ">
+          No user found with this role.
         </div>
       </div>
     </div>

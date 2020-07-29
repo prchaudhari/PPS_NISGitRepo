@@ -95,6 +95,25 @@ namespace nIS
                 IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    if (scheduleLogSearchParameter.ScheduleName != null && scheduleLogSearchParameter.ScheduleName != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("Name.Contains(\"{0}\")", scheduleLogSearchParameter.ScheduleName));
+
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.ScheduleRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("ScheduleId.Equals({0}) ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return scheduleLogs;
+                        }
+                    }
+
                     if (scheduleLogSearchParameter.PagingParameter.PageIndex > 0 && scheduleLogSearchParameter.PagingParameter.PageSize > 0)
                     {
                         scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords
