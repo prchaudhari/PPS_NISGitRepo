@@ -1,4 +1,4 @@
-﻿// <copyright file="ScheduleLogController.cs" company="Websym Solutions Pvt Ltd">
+﻿// <copyright file="ScheduleLogsController.cs" company="Websym Solutions Pvt Ltd">
 // Copyright (c) 2020 Websym Solutions Pvt Ltd.
 // </copyright>
 // -----------------------------------------------------------------------  
@@ -22,7 +22,7 @@ namespace nIS
     /// </summary>
     [EnableCors("*", "*", "*", "*")]
     [RoutePrefix("ScheduleLog")]
-    public class ScheduleLogController: ApiController
+    public class ScheduleLogsController : ApiController
     {
         #region Private Members
 
@@ -40,7 +40,7 @@ namespace nIS
 
         #region Constructor
 
-        public ScheduleLogController(IUnityContainer unityContainer)
+        public ScheduleLogsController(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
             this.scheduleLogManager = new ScheduleLogManager(this.unityContainer);
@@ -74,6 +74,28 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method helps to re run the schedule for failed customer records
+        /// </summary>
+        /// <param name="scheduleLogIdentifier">The schedule log identifier</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
+        [HttpPost]
+        public bool ReRunSchedule(long scheduleLogIdentifier)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                var baseURL = Url.Content("~/");
+                return this.scheduleLogManager.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method helps to get schedule log details list based on the search parameters.
         /// </summary>
         /// <param name="scheduleLogDetailSearchParameter"></param>
@@ -94,6 +116,29 @@ namespace nIS
                 throw ex;
             }
             return scheduleLogDetails;
+        }
+
+        /// <summary>
+        /// This method helps to retry to generate html statements for failed customer records
+        /// </summary>
+        /// <param name="scheduleLogDetails">The schedule log detail object list</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
+        [HttpPost]
+        [Route("ScheduleLogDetail/Retry")]
+        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                var baseURL = Url.Content("~/");
+                return this.scheduleLogManager.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion

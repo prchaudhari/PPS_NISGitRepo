@@ -40,5 +40,23 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         int GetScheduleLogDetailsCount(ScheduleLogDetailSearchParameter scheduleLogDetailSearchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method helps to retry to generate html statements for failed customer records
+        /// </summary>
+        /// <param name="scheduleLogDetails">The schedule log detail object list</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
+        bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string tenantCode);
+
+        /// <summary>
+        /// This method helps to re run the schedule for failed customer records
+        /// </summary>
+        /// <param name="scheduleLogIdentifier">The schedule log identifier</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
+        bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string tenantCode);
     }
 }

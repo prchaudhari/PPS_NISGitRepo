@@ -586,6 +586,87 @@
         //    }
         //}
 
+        /// This method help to write html string to actual file
+        /// </summary>
+        /// <param name="Message"> the message string </param>
+        /// <param name="fileName"> the file name </param>
+        /// <param name="batchId"> the batch identifier </param>
+        /// <param name="customerId"> the customer identifier </param>
+        public string WriteToFile(string Message, string fileName, long batchId, long customerId)
+        {
+            string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+            string statementDestPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements";
+            string path = statementDestPath + "\\" + batchId + "\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filepath = path + fileName;
+            if (!File.Exists(filepath))
+            {
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+
+            //To move js, css and other assets contents which are common to each statment file
+            DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
+            return filepath;
+        }
+
+        /// <summary>
+        /// This method help to copy files from one directory to another directory
+        /// </summary>
+        /// <param name="sourceDirName"> the path of source directory </param>
+        /// <param name="destDirName"> the path of destinaation diretory </param>
+        /// <param name="copySubDirs"> the bool value of is want to copy sub directory of source directory </param>
+        public void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                if (!File.Exists(temppath))
+                {
+                    file.CopyTo(temppath, false);
+                }
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
+        }
+
         #endregion       
 
     }

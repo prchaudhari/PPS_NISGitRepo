@@ -161,6 +161,44 @@ namespace nIS
             return scheduleLogDetailCount;
         }
 
+        /// <summary>
+        /// This method helps to retry to generate html statements for failed customer records
+        /// </summary>
+        /// <param name="scheduleLogDetails">The schedule log detail object list</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
+        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to re run the schedule for failed customer records
+        /// </summary>
+        /// <param name="scheduleLogIdentifier">The schedule log identifier</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
+        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }

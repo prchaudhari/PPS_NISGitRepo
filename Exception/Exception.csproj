@@ -58,6 +58,7 @@
     <Compile Include="Constants\AssetLibrary.cs" />
     <Compile Include="Constants\ExceptionConstant.cs" />
     <Compile Include="Constants\RenderEngineConstant.cs" />
+    <Compile Include="Constants\ScheduleLogConstant.cs" />
     <Compile Include="Constants\StatementConstant.cs" />
     <Compile Include="Constants\PageConstant.cs" />
     <Compile Include="Constants\ScheduleConstant.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Render Engine\DuplicateRenderEngineFoundException.cs" />
     <Compile Include="Render Engine\InvalidRenderEngineException.cs" />
     <Compile Include="Render Engine\RenderEngineNotFoundException.cs" />
+    <Compile Include="ScheduleLog\ScheduleLogDetailNotFoundException.cs" />
     <Compile Include="Schedule\RunningScheduleRefrenceException.cs" />
     <Compile Include="Statement\DuplicateStatementPageFoundException.cs" />
     <Compile Include="Statement\DuplicateStatementFoundException.cs" />

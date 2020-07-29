@@ -141,6 +141,21 @@
 
         //bool SendNotification(EventContext eventContext, DeliveryMode deliveryMode, string tenantCode);
 
+        /// This method help to write html string to actual file
+        /// </summary>
+        /// <param name="Message"> the message string </param>
+        /// <param name="fileName"> the file name </param>
+        /// <param name="batchId"> the batch identifier </param>
+        /// <param name="customerId"> the customer identifier </param>
+        string WriteToFile(string Message, string fileName, long batchId, long customerId);
+
+        /// <summary>
+        /// This method help to copy files from one directory to another directory
+        /// </summary>
+        /// <param name="sourceDirName"> the path of source directory </param>
+        /// <param name="destDirName"> the path of destinaation diretory </param>
+        /// <param name="copySubDirs"> the bool value of is want to copy sub directory of source directory </param>
+        void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs);
         #endregion
 
 
