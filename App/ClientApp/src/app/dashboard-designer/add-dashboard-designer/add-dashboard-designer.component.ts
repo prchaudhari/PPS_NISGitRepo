@@ -470,7 +470,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = "WidgetName";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
-    //searchParameter.PageTypeId = this.PageTypeId;
+    searchParameter.PageTypeId = this.PageTypeId;
     searchParameter.IsPageTypeDetailsRequired = false;
     this._http.post(this.baseURL + URLConfiguration.widgetGetUrl, searchParameter).subscribe(
       data => {

@@ -275,7 +275,6 @@ namespace nIS
                 var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                 if (statementPages.Count != 0)
                 {
-                    //htmlString.Append(HtmlConstants.SCRIPT_TAG);
                     string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/absa-logo.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                     StringBuilder navItemList = new StringBuilder();
@@ -306,21 +305,6 @@ namespace nIS
                             for (int y = 0; y < pages.Count; y++)
                             {
                                 var page = pages[y];
-                                //string divId = pages[y].PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID ? HtmlConstants.HOME_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME : pages[y].PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID ? HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME : string.Empty;
-
-                                //if (divId == HtmlConstants.HOME_PAGE_DIV_NAME)
-                                //{
-                                //    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.HOME_PAGE_DIV_NAME + "' href='javascript:void(0);'>At a Glance</a> </li> ");
-                                //}
-                                //else if (divId == HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME)
-                                //{
-                                //    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.SAVING_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Saving Account</a> </li> ");
-                                //}
-                                //else if (divId == HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME)
-                                //{
-                                //    navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + HtmlConstants.CURRENT_ACCOUNT_PAGE_DIV_NAME + "' href='javascript:void(0);'>Current Account</a> </li> ");
-                                //}
-
                                 string tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
                                 navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
                                 string ExtraClassName = x > 0 ? "d-none " + tabClassName : tabClassName;
@@ -334,7 +318,6 @@ namespace nIS
                                     var completelst = page.PageWidgets;
                                     int currentYPosition = 0;
                                     var isRowComplete = false;
-
                                     while (completelst.Count != 0)
                                     {
                                         var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
@@ -490,7 +473,118 @@ namespace nIS
                                                     }
                                                     htmlString.Append(accountSummary);
                                                 }
-
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
+                                                {
+                                                    string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'R', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current'}";
+                                                    if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
+                                                    {
+                                                        AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(currentAvailBalanceJson);
+                                                        var CurrentAvailBalance = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML;
+                                                        CurrentAvailBalance = CurrentAvailBalance.Replace("{{TotalValue}}", (accountMaster.Currency + accountMaster.GrandTotal));
+                                                        CurrentAvailBalance = CurrentAvailBalance.Replace("{{TotalDeposit}}", (accountMaster.Currency + accountMaster.TotalDeposit));
+                                                        CurrentAvailBalance = CurrentAvailBalance.Replace("{{TotalSpend}}", (accountMaster.Currency + accountMaster.TotalSpend));
+                                                        CurrentAvailBalance = CurrentAvailBalance.Replace("{{Savings}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                                                        htmlString.Append(CurrentAvailBalance);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
+                                                {
+                                                    string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'R', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving'}";
+                                                    if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
+                                                    {
+                                                        AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(savingAvailBalanceJson);
+                                                        var SavingAvailBalance = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML;
+                                                        SavingAvailBalance = SavingAvailBalance.Replace("{{TotalValue}}", (accountMaster.Currency + accountMaster.GrandTotal));
+                                                        SavingAvailBalance = SavingAvailBalance.Replace("{{TotalDeposit}}", (accountMaster.Currency + accountMaster.TotalDeposit));
+                                                        SavingAvailBalance = SavingAvailBalance.Replace("{{TotalSpend}}", (accountMaster.Currency + accountMaster.TotalSpend));
+                                                        SavingAvailBalance = SavingAvailBalance.Replace("{{Savings}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                                                        htmlString.Append(SavingAvailBalance);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
+                                                {
+                                                    string savingTransactionJson = "[{ 'TransactionDate': '14/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'Credit': '1666.67', 'Debit': '1.062', 'Balance': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'Credit': '1254.71', 'Debit': '1.123', 'Balance': '1876.00' }, { 'TransactionDate': '21/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'Credit': '2345.12', 'Debit': '1.461', 'Balance': '1453.21' }, { 'TransactionDate': '27/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'Credit': '1435.89', 'Debit': '0.962', 'Balance': '1654.56' }]";
+                                                    if (savingTransactionJson != string.Empty && validationEngine.IsValidJson(savingTransactionJson))
+                                                    {
+                                                        IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(savingTransactionJson);
+                                                        StringBuilder transaction = new StringBuilder();
+                                                        accountTransactions.ToList().ForEach(trans =>
+                                                        {
+                                                            transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
+                                                                trans.Narration + "</td><td class='text-success'>" + trans.Credit + "</td><td class='text-danger'>"
+                                                                + trans.Debit + "</td><td class='text-danger'><i class='fa fa-caret-left fa-2x' aria-hidden='true'></i> </td>" +
+                                                                "<td>" + trans.Balance + "</td></tr>");
+                                                        });
+                                                        string accountTransactionstr = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                        htmlString.Append(accountTransactionstr);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
+                                                {
+                                                    string currentTransactionJson = "[{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1876.00' }, { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' }, { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' }]";
+                                                    if (currentTransactionJson != string.Empty && validationEngine.IsValidJson(currentTransactionJson))
+                                                    {
+                                                        IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(currentTransactionJson);
+                                                        StringBuilder transaction = new StringBuilder();
+                                                        accountTransactions.ToList().ForEach(trans =>
+                                                        {
+                                                            transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
+                                                                trans.Narration + "</td><td>" + trans.FCY + "</td><td>" + trans.CurrentRate + "</td><td>"
+                                                                + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'><button type='button' title='View'>" +
+                                                                "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
+                                                        });
+                                                        string accountTransactionstr = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{CurrentAccountTransactionDetails}}", transaction.ToString());
+                                                        htmlString.Append(accountTransactionstr);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
+                                                {
+                                                    string incomeSourceListJson = "[{ 'Source': 'Salary Transfer', 'CurrentSpend': 3453, 'AverageSpend': 123},{ 'Source': 'Cash Deposit', 'CurrentSpend': 3453, 'AverageSpend': 6123},{ 'Source': 'Profit Earned', 'CurrentSpend': 3453, 'AverageSpend': 6123}, { 'Source': 'Rebete', 'CurrentSpend': 3453, 'AverageSpend': 123}]";
+                                                    if (incomeSourceListJson != string.Empty && validationEngine.IsValidJson(incomeSourceListJson))
+                                                    {
+                                                        IList<IncomeSources> incomeSources = JsonConvert.DeserializeObject<List<IncomeSources>>(incomeSourceListJson);
+                                                        StringBuilder incomeSrc = new StringBuilder();
+                                                        incomeSources.ToList().ForEach(item =>
+                                                        {
+                                                            incomeSrc.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend +
+                                                              "" + "</td><td class='align-text-top'>" + "<span class='fa fa-sort-asc fa-2x text-danger align-text-top' " +
+                                                              "aria-hidden='true'>" + "</span>&nbsp;" + item.AverageSpend + " " + "</td></tr>");
+                                                        });
+                                                        string srcstring = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML.Replace("{{IncomeSourceList}}", incomeSrc.ToString());
+                                                        htmlString.Append(srcstring);
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
+                                                {
+                                                    htmlString.Append(HtmlConstants.ANALYTIC_WIDGET_HTML);
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
+                                                {
+                                                    htmlString.Append(HtmlConstants.SPENDING_TRENDS_WIDGET_HTML);
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
+                                                {
+                                                    htmlString.Append(HtmlConstants.SAVING_TRENDS_WIDGET_HTML);
+                                                }
+                                                else if (mergedlst[i].WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
+                                                {
+                                                    string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video ia available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }]";
+                                                    if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))
+                                                    {
+                                                        IList<ReminderAndRecommendation> reminderAndRecommendations =
+                                                            JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(reminderJson);
+                                                        StringBuilder reminderstr = new StringBuilder();
+                                                        reminderAndRecommendations.ToList().ForEach(item =>
+                                                        {
+                                                            reminderstr.Append("<tr><td class='width75 text-left'><label style='background-color: #dce3dc;'>" +
+                                                                item.Title +"</label></td><td><a>" +
+                                                                "<i class='fa fa-caret-left fa-2x' style='color:red' aria-hidden='true'>" +
+                                                                "</i>" + item.Action + "</a></td></tr>");
+                                                        });
+                                                        string widgetstr = HtmlConstants.REMINDER_WIDGET_HTML.Replace("{{ReminderAndRecommdationDataList}}", reminderstr.ToString());
+                                                        htmlString.Append(widgetstr);
+                                                    }
+                                                }
                                                 // To end current col-lg class div
                                                 htmlString.Append("</div>");
 

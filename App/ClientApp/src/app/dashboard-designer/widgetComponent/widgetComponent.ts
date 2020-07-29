@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 // import { EventEmitter } from 'events';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import * as Highcharts from 'highcharts';
+import * as $ from 'jquery';
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
@@ -135,7 +136,7 @@ export class ImageComponent {
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center">
-        <video class="doc-video" controls style='height:calc(100% - 40px);width:75%;margin-right:15%;'>
+        <video class="doc-video" controls style='height:240px;width:75%;margin-right:15%;'>
             <source [src]="videoSrc" type="video/mp4">
           </video>
       </div>
@@ -175,8 +176,6 @@ export class VideoComponent {
     }
   }
 }
-
-
 
 // Component Created for Summary at glance Widget--
 @Component({
@@ -252,7 +251,7 @@ const List_Data_Summary: ListSummary[] = [
   { account: 'Wealth', currency: 'GBP', amount: '873899' },
 ];
 
-// Component Created for Account Information Widget--
+// Component Created for saving Available Balance Widget--
 @Component({
   selector: 'savingAvailableBalance',
   template: `<div class="widget">
@@ -278,7 +277,7 @@ export class CurrentAvailableBalanceComponent {
 
 }
 
-// Component Created for Account Information Widget--
+// Component Created for Saving Available Balance Widget--
 @Component({
   selector: 'currentAvailableBalance',
   template: `<div class="widget">
@@ -302,7 +301,7 @@ export class SavingAvailableBalanceComponent {
 
 }
 
-// Component Created for Transaction details Widget--
+// Component Created for Current Transaction details Widget--
 @Component({
   selector: 'transactionDetails',
   template: `<div class="widget">
@@ -310,17 +309,14 @@ export class SavingAvailableBalanceComponent {
     <span class="widget-header-title"> Transaction Details </span>
   </div>
   <div class="widget-area-grid padding-0">
- <div style="float:left;">
-    
-        <input type="radio" id="showAll" name="showAll" value="showAll">
-        <label for="showAll">Show All</label>
-        <input type="radio" id="grpDate" name="grpDate" value="grpDate">
-        <label for="grpDate">Group By Date</label>
+      <div class='float-left'>
+        <input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;<label for='showAll'>Show All</label>&nbsp;
+        <input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<label for='grpDate'>Group By Date</label>&nbsp;
       </div>
-      <div style="float:right;">
-        <button class="" type="button">Seach</button>
-        <button type="button">Reset</button>
-        <button type="button">Print</button>
+      <div class='float-right'> 
+        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;
+        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;
+        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> 
       </div>
     <div class="d-flex justify-content-center mb-4">
       <div class="pagination-mat position-relative d-md-block d-none">
@@ -424,10 +420,10 @@ export class TransactionDetailsComponent {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   TransactionDetailData: TransactionDetail[] = [
-    { date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL6574562', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-    { date: 'D3/D4/19', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1254.71', currentRate: '1.123', lyc: '1876.00' },
-    { date: 'D3/D4/25', type: 'CR', narration: 'NXT TXN: IIFL IIFL8965435', fcy: '2345.12', currentRate: '1.461', lyc: '1453.21' },
-    { date: 'D3/D4/34', type: 'CR', narration: 'NXT TXN: IIFL IIFL0034212', fcy: '1435.89', currentRate: '0.962', lyc: '1654.56' },
+    { date: '15/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL6574562', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
+    { date: '19/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1254.71', currentRate: '1.123', lyc: '1876.00' },
+    { date: '25/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL8965435', fcy: '2345.12', currentRate: '1.461', lyc: '1453.21' },
+    { date: '28/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL0034212', fcy: '1435.89', currentRate: '0.962', lyc: '1654.56' },
   ];
 
   ngAfterViewInit() {
@@ -440,8 +436,7 @@ export class TransactionDetailsComponent {
   }
 }
 
-
-// Component Created for Transaction details Widget--
+// Component Created for Saving Transaction details Widget--
 @Component({
   selector: 'savingtransactionDetails',
   template: `<div class="widget">
@@ -450,17 +445,14 @@ export class TransactionDetailsComponent {
 
     </div>
     <div class="widget-area-grid padding-0">
-      <div style="float:left;">
-    
-        <input type="radio" id="showAll" name="showAll" value="showAll">
-        <label for="showAll">Show All</label>
-        <input type="radio" id="grpDate" name="grpDate" value="grpDate">
-        <label for="grpDate">Group By Date</label>
+      <div class='float-left'>
+        <input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;<label for='showAll'>Show All</label>&nbsp;
+        <input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<label for='grpDate'>Group By Date</label>&nbsp;
       </div>
-      <div style="float:right;">
-        <button class="" type="button">Seach</button>
-        <button type="button">Reset</button>
-        <button type="button">Print</button>
+      <div class='float-right'> 
+        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;
+        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;
+        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> 
       </div>
       <div class="d-flex justify-content-center mb-4">
         <div class="pagination-mat position-relative d-md-block d-none">
@@ -560,18 +552,13 @@ export class SavingTransactionDetailsComponent {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   TransactionDetailData: any[] = [
-    { date: 'D3/D4/15', type: 'CR', query: '', narration: 'ACB Credit :Salary', credit: 'R\'1666.67', debit: '', balance: 'R\'1771.42' },
-    { date: 'D3/D4/19', type: 'DB', query: '', narration: 'ACB Debit :DSTV', credit: '', debit: '-R\'1.123', balance: 'R\'1876.00' },
-    { date: 'D3/D4/25', type: 'DB', query: '', narration: 'Bank Charges', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
-    { date: 'D3/D4/34', type: 'DB', query: '', narration: 'INTERNET BANKING FEE', credit: '', debit: '-R\'0.962', balance: 'R\'1654.56' },
-    { date: 'D3/D4/15', type: 'CR', query: '', narration: 'ACB Credit :Medical Aid', credit: 'R\'1666.67', debit: '-R\'1.062', balance: 'R\'1771.42' },
-    { date: 'D3/D4/25', type: 'DB', query: '', narration: 'IBANK Payement:Electricity', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
-    { date: 'D3/D4/25', type: 'DB', query: '', narration: 'IBANK Payement:Home Loan', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
-
-    //{ date: 'D3/D4/15', type: 'CR', narration: 'NXT TXN: IIFL IIFL6574562', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
-    //{ date: 'D3/D4/19', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1254.71', currentRate: '1.123', lyc: '1876.00' },
-    //{ date: 'D3/D4/25', type: 'CR', narration: 'NXT TXN: IIFL IIFL8965435', fcy: '2345.12', currentRate: '1.461', lyc: '1453.21' },
-    //{ date: 'D3/D4/34', type: 'CR', narration: 'NXT TXN: IIFL IIFL0034212', fcy: '1435.89', currentRate: '0.962', lyc: '1654.56' },
+    { date: '15/07/2020', type: 'CR', query: '', narration: 'ACB Credit :Salary', credit: 'R\'1666.67', debit: '', balance: 'R\'1771.42' },
+    { date: '18/07/2020', type: 'DB', query: '', narration: 'ACB Debit :DSTV', credit: '', debit: '-R\'1.123', balance: 'R\'1876.00' },
+    { date: '22/07/2020', type: 'DB', query: '', narration: 'Bank Charges', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
+    { date: '23/07/2020', type: 'DB', query: '', narration: 'INTERNET BANKING FEE', credit: '', debit: '-R\'0.962', balance: 'R\'1654.56' },
+    { date: '25/07/2020', type: 'CR', query: '', narration: 'ACB Credit :Medical Aid', credit: 'R\'1666.67', debit: '-R\'1.062', balance: 'R\'1771.42' },
+    { date: '26/07/2020', type: 'DB', query: '', narration: 'IBANK Payement:Electricity', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
+    { date: '29/07/2020', type: 'DB', query: '', narration: 'IBANK Payement:Home Loan', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
   ];
 
   ngAfterViewInit() {
@@ -584,7 +571,7 @@ export class SavingTransactionDetailsComponent {
   }
 }
 
-// Component Created for Account Information Widget--
+// Component Created for Reminder and Recommendation Widget--
 @Component({
   selector: 'reminderAndRecommendation',
   template: `<div class="widget">
@@ -592,16 +579,23 @@ export class SavingTransactionDetailsComponent {
         <div class="widget-header">
             <span class="widget-header-title"> Reminder and Recommendations </span>
         </div>
-        <div class="widget-area-grid ">
+        <div class="widget-area-grid">
             <table >
                 <thead>
-                    <tr><td></td><td style="color:red;float: right;"> <span><i class="fa fa-caret-left fa-3x"  aria-hidden="true"></i>Click</span></td></tr>
+                  <tr>
+                    <td></td>
+                    <td style="color:red;float: right;"> <span><i class="fa fa-caret-left fa-3x"  aria-hidden="true"></i>Click</span></td>
+                  </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let list of actionList">
-                        <td style="width:80%"><label style="background-color: #dce3dc;">{{list.title}} </label></td>
-                        <td style="float: left;"><a><i class="fa fa-caret-left fa-3x" style="color:red"aria-hidden="true"></i>{{list.action}}</a></td>
-                    </tr></tbody></table> </div>  </div>
+                  <tr *ngFor="let list of actionList">
+                    <td style="width:80%"><label style="background-color: #dce3dc;">{{list.title}} </label></td>
+                    <td style="float: left;"><a><i class="fa fa-caret-left fa-3x" style="color:red"aria-hidden="true"></i>{{list.action}}</a></td>
+                  </tr>
+                </tbody>
+            </table> 
+          </div>  
+        </div>
 </div>`
 })
 export class ReminderAndRecommComponent {
@@ -610,15 +604,11 @@ export class ReminderAndRecommComponent {
   public actionList: any[] = [
     { title: "Update Missing Inofrmation", action: "Update" },
     { title: "Your Rewards Video ia available", action: "View" },
-    { title: "Payment Due for Home Loan", action: "Pay" },
-
-
-
-  ]
-
+    { title: "Payment Due for Home Loan", action: "Pay" }
+  ];
 }
 
-// Component Created for Account Information Widget--
+// Component Created for Analytics Widget--
 @Component({
   selector: 'analytics',
   template: `<div class="widget">
@@ -626,9 +616,8 @@ export class ReminderAndRecommComponent {
     <div class="widget-header">
         <span class="widget-header-title"> Analytics </span>
     </div>
-    <div class="widget-area  position-relative width100">
-       
-           <div id="chartWidgetPiecontainer"></div>
+    <div class="widget-area position-relative width100">       
+        <div id="chartWidgetPiecontainer"></div>
     </div>
 </div>`
 })
@@ -687,13 +676,18 @@ export class AnalyticsWidgetComponent {
           y: 7.05
         }]
     }]
-
   }
 
   ngAfterViewInit() {
     Highcharts.chart('chartWidgetPiecontainer', this.options4);
+  }
 
-
+  ngOnInit() {  
+    $(document).ready(function(){
+      setTimeout(function() { 
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
   }
 }
 
@@ -704,10 +698,9 @@ export class AnalyticsWidgetComponent {
     <div class="widget-header">
         <span class="widget-header-title"> Your Saving Trends </span>
     </div>
-    <div class="widget-area  position-relative width100">
-            <h4 style="text-align:right" class='mb-4'>+5.6%</h4><h4 style="text-align:right" class='mb-4'>+3.5%</h4>
-           <div id="savingTrendscontainer"></div>
-          
+    <div class="widget-area position-relative width100">
+          <h4 style="text-align:right" class='mb-4'>+5.6%</h4><h4 style="text-align:right" class='mb-4'>+3.5%</h4>
+          <div id="savingTrendscontainer"></div>        
     </div>
 </div>`
 })
@@ -747,8 +740,14 @@ export class SavingTrendsComponent {
   }
   ngAfterViewInit() {
     Highcharts.chart('savingTrendscontainer', this.options4);
+  }
 
-
+  ngOnInit() {  
+    $(document).ready(function(){
+      setTimeout(function() { 
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
   }
 }
 
@@ -796,10 +795,7 @@ export class TopIncomeSourcesComponent {
     { name: " Salary Transfer", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x" },
     { name: "Cash Deposit", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red", icon: "fa fa-sort-desc fa-2x" },
     { name: "Profit Earned", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red", icon: "fa fa-sort-desc fa-2x" },
-    { name: "Rebete", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x" },
-
-
-
+    { name: "Rebete", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x" }
   ]
 }
 
@@ -811,8 +807,7 @@ export class TopIncomeSourcesComponent {
         <span class="widget-header-title"> Spending Trends </span>
     </div>
     <div class="widget-area  position-relative width100">
-          <div id="spendingTrendscontainer"></div>
-          
+          <div id="spendingTrendscontainer"></div>       
     </div>
 </div>`
 })
@@ -860,8 +855,14 @@ export class SpendindTrendsComponent {
   }
   ngAfterViewInit() {
     Highcharts.chart('spendingTrendscontainer', this.options4);
+  }
 
-
+  ngOnInit() {  
+    $(document).ready(function(){
+      setTimeout(function() { 
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
   }
 }
 

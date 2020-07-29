@@ -24,13 +24,16 @@ import { BnNgIdleService } from 'bn-ng-idle';
 import { DynamicGlobalVariable } from './shared/constants/constants';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PagePreviewComponent } from './shared/pagepreview/pagepreview.component';
+import { SafeHtmlPip } from './shared/pagepreview/pagepreview.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MsgBoxComponent,
     ConfirmUserComponent,
-    PagePreviewComponent
+    PagePreviewComponent,
+    SafeHtmlPip
   ],
   imports: [
     BrowserModule,

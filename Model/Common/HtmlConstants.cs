@@ -17,6 +17,24 @@ namespace nIS
 
         public const int VIDEO_WIDGET_ID = 5;
 
+        public const int ANALYTICS_WIDGET_ID = 6;
+
+        public const int SAVING_TRANSACTION_WIDGET_ID = 7;
+
+        public const int CURRENT_TRANSACTION_WIDGET_ID = 8;
+
+        public const int SAVING_TREND_WIDGET_ID = 9;
+
+        public const int TOP_4_INCOME_SOURCES_WIDGET_ID = 10;
+
+        public const int CURRENT_AVAILABLE_BALANCE_WIDGET_ID = 11;
+
+        public const int SAVING_AVAILABLE_BALANCE_WIDGET_ID = 12;
+
+        public const int REMINDER_AND_RECOMMENDATION_WIDGET_ID = 13;
+
+        public const int SPENDING_TREND_WIDGET_ID = 14;
+
         public const int HOME_PAGE_TYPE_ID = 1;
 
         public const int SAVING_ACCOUNT_PAGE_TYPE_ID = 2;
@@ -48,8 +66,7 @@ namespace nIS
             "<div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Summary at Glance</h5></div>" +
             "<div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'>" +
             "<thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>" +
-            "{{AccountSummary}}" +
-            "</tbody></table></div></div></div>";
+            "{{AccountSummary}}</tbody></table></div></div></div>";
 
         public const string IMAGE_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Image Information</h5></div>" +
@@ -64,50 +81,51 @@ namespace nIS
             "<span>No configuration saved for this record.</span></div></div>";
 
         public const string SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML = "<div class='card border-0'>" +
-            "< div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Available Balance</h5> </div>" +
-            "<div class='card-body'><div><h4 style = 'text-align:right' class='mb-4'>" +
-            "<i style = 'color: limegreen' class='fa fa-sort-asc'aria-hidden='true'></i>{{TotalValue}}</h4>" +
-            "<span style = 'float:left;' > Total Deposits</span><span style = 'float:right;' >{{TotalDeposit}}</span><br />" +
-            "<span style = 'float:left;' > Total Spend</span><span style = 'float:right;' >{{TotalSpend}}</span><br />" +
-            "<span style = 'float:left;' > Savings </ span >< span style='float:right;'>{{Savings}}</span><br /></div></div></div>";
+            "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Available Balance</h5> </div>" +
+            "<div class='card-body'><div><h4 class='mb-4 text-right'>" +
+            "<i class='fa fa-sort-asc text-success' aria-hidden='true'></i>&nbsp;{{TotalValue}}</h4>" +
+            "<span class='float-left'> Total Deposits</span><span class='float-right'>{{TotalDeposit}}</span><br/>" +
+            "<span class='float-left'> Total Spend</span><span class='float-right'>{{TotalSpend}}</span><br/>" +
+            "<span class='float-left'> Savings </span><span class='float-right'>{{Savings}}</span><br/></div></div></div>";
 
-        public const string SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Transaction Details</h5></div>" +
-            "< div style = 'float:left;' >< input type= 'radio' id= 'showAll' name= 'showAll' value= 'showAll' >" +
-            "< label for='showAll'>Show All</label><input type = 'radio' id= 'grpDate' name= 'grpDate' value= 'grpDate' >< label for='grpDate'>Group By Date</label></div>" +
-            " < div style = 'float:right;' >< button class='' type='button'>Seach</button><button type = 'button' > Reset </ button >< button type='button'>Print</button></div>" +
-            "< div class='card-body'><div class='table-responsive'><table class='table m-0 table-hover'>" +
+        public const string SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
+            "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
+            "<input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;" + "<label for='showAll'>Show All</label>&nbsp;" +
+            "<input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
+            " <div class='float-right'> <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> </div>" +
+            "<div class='table-responsive'><table class='table m-1 table-hover table-sm'>" +
             "<thead><tr><th>Date</th><th>Type</th><th>Narration</th><th>Credit</th><th>Debit</th><th>Query</th><th>Balance</th></tr>" +
             "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
-        public const string CURRENT_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Transaction Details</h5></div>" +
-            "<div style='float:left;'><input type='radio' id='showAll' name='showAll' value='showAll'>" +
-            "<label for='showAll'>Show All</label><input type='radio' id='grpDate' name='grpDate' value='grpDate'><labelfor='grpDate'>Group By Date</label></div>" +
-            "<div style='float:right;'><button class='' type='button'>Seach</button><button type='button'>Reset</button><button type='button'>Print</button></div>" +
-            "<div class='card-body'><div class='table-responsive'><table class='table m-0 table-hover'><thead><tr>" +
-            "<th>Date</th><th>Type</th><th>Narration</th><th>FYC(GBP)</th><th>Current Rate</th><th>LCY(GBP)</th></tr>" +
+        public const string CURRENT_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
+            "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
+            "<input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;" + "<label for='showAll'>Show All</label>&nbsp;" +
+            "<input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
+            " <div class='float-right'> <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;" +
+            "<a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> </div>" +
+            "<div class='table-responsive'><table class='table m-1 table-hover'><thead><tr>" +
+            "<th>Date</th><th>Type</th><th>Narration</th><th>FCY</th><th>Current Rate</th><th>LCY</th><th>Action</th></tr>" +
             "</thead><tbody>{{CurrentAccountTransactionDetails}}</tbody></table></div></div></div>";
 
-        public const string REMINDER_WIDGET_HTML = "< div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Transaction Details</h5>" +
-            "</div><div class='card-body'>div class='table-responsive'><table ><thead><tr><td></td><td style = 'color:red;float: right;' > < span >< i class='fa fa-caret-left fa-3x'  aria-hidden='true'></i>Click</span></td></tr></thead>" +
-            "<tbody><tr* ngFor = 'let list of actionList' >< td style='width:80%'><label style = 'background-color: #dce3dc;' >{{list.title}} </label></td>" +
-            "<td style = 'float: left;' >< a >< i class='fa fa-caret-left fa-3x' style='color:red'aria-hidden='true'></i>{{list.action}}</a></td></tr></tbody></table> </div>  </div></div>";
+        public const string REMINDER_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
+            "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'><table><thead><tr><td class='width75'></td>" +
+            "<td class='text-danger width25'> <span><i class='fa fa-caret-left fa-2x' aria-hidden='true'></i>Click</span></td></tr></thead>" +
+            "<tbody>{{ReminderAndRecommdationDataList}}</tbody></table> " +
+            "</div></div></div>";
 
-        public const string TOPINCOME_SOURCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Top 4 Income Sources</h5>" +
-            "</div><div class='card-body'>div class='table-responsive'><table><thead><tr>" + "<td style='width:50%'></td><td style='width:15%'>This Month</td><td style='width:35%;float:center;'>Usually you spend</td></tr>" +
-            "</thead><tbody><tr *ngFor='let list of actionList'><td style='width:50%'><label>{{list.name}} </label></td>" +
-            "<td style='width:15%'><label>{{list.thisMonth}} </label> </td><td style='width:35%;float:center'><label> <span style='color: red' class='{{list.icon}}' aria-hidden='true'></span>{{list.usuallySpend}} </label>" +
-            "</td></tr></tbody></table></div></div></div>";
+        public const string TOP_4_INCOME_SOURCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
+            "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><div class='table-responsive'><table><thead class='border-bottom'><tr>" +
+            "<td class='width50'></td><td class='width17'>This Month</td><td class='width33'>Usually you spend</td></tr>" +
+            "</thead><tbody>{{IncomeSourceList}}</tbody></table></div></div></div>";
 
-        public const string ANALYTIC_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Analytics</h5></div>" +
-        "<div class='card-body'> <div id = 'chartWidgetPiecontainer' ></ div ></ div ></ div > ";
+        public const string ANALYTIC_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'> " +
+            "<h5 class='m-0'>Analytics</h5></div>" + "<div class='card-body'> <div id=\"analyticschartcontainer\"></div></div></div> ";
 
+        public const string SAVING_TRENDS_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'> " +
+            "<h5 class='m-0'>Saving Trends</h5></div><div class='card-body'> <div id=\"savingTrendscontainer\"></div></div></div> ";
 
-        public const string SAVING_TRENDS_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Analytics</h5></div>" +
-        "<div class='card-body'> <div id = 'savingTrendsWidgetPiecontainer' ></ div ></ div ></ div > ";
-
-
-        public const string SPENDING_TRENDS_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Analytics</h5></div>" +
-        "<div class='card-body'> <div id = 'spendingTrendscontainer' ></ div ></ div ></ div > ";
+        public const string SPENDING_TRENDS_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'> " +
+            "<h5 class='m-0'>Spending Trends</h5></div><div class='card-body'> <div id=\"spendingTrendscontainer\"></div></div></div> ";
 
         public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3 bdy-scroll stylescrollbar'>";
 
@@ -124,6 +142,8 @@ namespace nIS
         public const string CURRENT_ACCOUNT_PAGE_DIV_NAME = "CurrentAcc-Div";
 
         public const string TAB_NAVIGATION_SCRIPT = "<script type='text/javascript'>$(document).ready(function(){$('.nav-link').click(function(t){$('.tabDivClass').hide(),$('.nav-link').removeClass('active');let a='active '+$(t.currentTarget).attr('class');$(t.currentTarget).attr('class',a);let e=$(t.currentTarget).attr('class').split(' '),n=e[e.length-1];$('.'+n).hasClass('d-none')&&$('.'+n).removeClass('d-none'),$('.'+n).show()})});</script>";
+
+        public const string ANALYTICS_CHART_WIDGET_SCRIPT = "<script type='text/javascript'> setTimeout(function () { Highcharts.chart('analyticschartcontainer', { chart: { plotBackgroundColor: null, plotBorderWidth: null, plotShadow: !1, type: 'pie' }, title: { text: '' }, tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' }, accessibility: { point: { valueSuffix: '%' } }, plotOptions: { pie: { allowPointSelect: !0, cursor: 'pointer', dataLabels: { enabled: !0, format: '{point.percentage:.1f} %' }, showInLegend: !0 } }, series: [{ name: 'Percentage', colorByPoint: !0, data: [{ name: 'Cutomer Information', y: 11.84 }, { name: 'Account Information', y: 10.85 }, { name: 'Image', y: 4.67 }, { name: 'Video', y: 4.18 }, { name: 'News Alerts', y: 7.05 }] }] }) }, 100); </script>";
 
         public const string HTML_FOOTER = "</body></html>";
     }

@@ -23,7 +23,7 @@ export class MessageDialogService {
 
   openPreviewDialogBox(message): Observable<any> {
     return this._dialogService.addDialog(PagePreviewComponent, {
-      message: message,
+      htmlContent: message,
     });
   }
 

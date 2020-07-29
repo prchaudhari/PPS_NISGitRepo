@@ -8,7 +8,11 @@ import { TemplateService } from '../../layout/template/template.service';
 import { Template } from '../../layout/template/template';
 import { TemplateWidget } from '../../layout/template/templateWidget';
 import { ConfigConstants } from '../../shared/constants/configConstants';
-import { CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent } from '../widgetComponent/widgetComponent';
+import {
+    CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
+    SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+    SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent
+  } from '../widgetComponent/widgetComponent';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -268,6 +272,42 @@ export class ViewDashboardDesignerComponent implements OnInit {
             gridObj.component = SummaryAtGlanceComponent;
             gridObj.value = "Summary";
         }
+        else if (widgetId == 11) {
+            gridObj.component = CurrentAvailableBalanceComponent;
+            gridObj.value = "CurrentAvailableBalance";
+          }
+          else if (widgetId == 12) {
+            gridObj.component = SavingAvailableBalanceComponent;
+            gridObj.value = "SavingAvailableBalance";
+          }
+          else if (widgetId == 8) {
+            gridObj.component = TransactionDetailsComponent;
+            gridObj.value = "CurrentTransaction";
+          }
+          else if (widgetId == 7) {
+            gridObj.component = SavingTransactionDetailsComponent;
+            gridObj.value = "SavingTransaction";
+          }
+          else if (widgetId == 14) {
+            gridObj.component = SpendindTrendsComponent;
+            gridObj.value = "SpendingTrend";
+          }
+          else if (widgetId == 10) {
+            gridObj.component = TopIncomeSourcesComponent;
+            gridObj.value = "Top4IncomeSources";
+          }
+          else if (widgetId == 9) {
+            gridObj.component = SavingTrendsComponent;
+            gridObj.value = "SavingTrend";
+          }
+          else if (widgetId == 6) {
+            gridObj.component = AnalyticsWidgetComponent;
+            gridObj.value = "Analytics";
+          }
+          else if (widgetId == 13) {
+            gridObj.component = ReminderAndRecommComponent;
+            gridObj.value = "ReminderaAndRecommendation";
+          }
         return gridObj;
     }
     
