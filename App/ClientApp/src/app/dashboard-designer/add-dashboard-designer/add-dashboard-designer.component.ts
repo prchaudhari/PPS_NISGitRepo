@@ -470,7 +470,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = "WidgetName";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
-    searchParameter.PageTypeId = this.PageTypeId;
+    //searchParameter.PageTypeId = this.PageTypeId;
     searchParameter.IsPageTypeDetailsRequired = false;
     this._http.post(this.baseURL + URLConfiguration.widgetGetUrl, searchParameter).subscribe(
       data => {
@@ -686,8 +686,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "SpendingTrend") {
           return this.widgetsGridsterItemArray.push({
-            cols: 6,
-            rows: 6,
+            cols: 7,
+            rows: 8,
             y: 0,
             x: 0,
             component: SpendindTrendsComponent,

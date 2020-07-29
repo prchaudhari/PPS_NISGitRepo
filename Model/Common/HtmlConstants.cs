@@ -101,6 +101,14 @@ namespace nIS
         public const string ANALYTIC_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Analytics</h5></div>" +
         "<div class='card-body'> <div id = 'chartWidgetPiecontainer' ></ div ></ div ></ div > ";
 
+
+        public const string SAVING_TRENDS_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Analytics</h5></div>" +
+        "<div class='card-body'> <div id = 'savingTrendsWidgetPiecontainer' ></ div ></ div ></ div > ";
+
+
+        public const string SPENDING_TRENDS_WIDGET_HTML = "<div class='card border-0'>< div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Analytics</h5></div>" +
+        "<div class='card-body'> <div id = 'spendingTrendscontainer' ></ div ></ div ></ div > ";
+
         public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3 bdy-scroll stylescrollbar'>";
 
         public const string WIDGET_HTML_HEADER = "<div id='{{DivId}}' class='card border-0 p-2 tabDivClass {{ExtraClass}}'>";

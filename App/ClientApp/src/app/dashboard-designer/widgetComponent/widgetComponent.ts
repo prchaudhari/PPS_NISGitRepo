@@ -259,14 +259,15 @@ const List_Data_Summary: ListSummary[] = [
     <div class="widget">
     <div class="widget-header">
         <span class="widget-header-title"> Saving : Available Balance </span>
+
     </div>
     <div class="widget-area">
         <div>
             <h4 style="text-align:right" class='mb-4'><i style="color: limegreen" class="fa fa-sort-asc"
-                    aria-hidden="true"></i>R 32'453,23</h4>
-            <span style="float:left;">Total Deposits</span><span style="float:right;">R 16'750,00</span><br />
-            <span style="float:left;">Total Spend</span><span style="float:right;">R 16'750,00</span><br />
-            <span style="float:left;">Savings</span><span style="float:right;">R 3'250.00</span><br />
+                    aria-hidden="true"></i>3245323</h4>
+            <span style="float:left;">Total Deposits</span><span style="float:right;">16750,00</span><br />
+            <span style="float:left;">Total Spend</span><span style="float:right;">16750,00</span><br />
+            <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br />
 </div>
     </div>
 </div>`
@@ -287,10 +288,10 @@ export class CurrentAvailableBalanceComponent {
     </div>
     <div class="widget-area  position-relative width100">
           <h4 style="text-align:right" class='mb-4'><i style="color: limegreen" class="fa fa-sort-asc"
-                    aria-hidden="true"></i>R 32'453,23</h4>
-            <span style="float:left;">Total Deposits</span><span style="float:right;">R 16'750,00</span><br />
-            <span style="float:left;">Total Spend</span><span style="float:right;">R 16'750,00</span><br />
-            <span style="float:left;">Savings</span><span style="float:right;">R 3'250.00</span><br />
+                    aria-hidden="true"></i> 3245323</h4>
+            <span style="float:left;">Total Deposits</span><span style="float:right;">1675000</span><br />
+            <span style="float:left;">Total Spend</span><span style="float:right;">1675000</span><br />
+            <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br />
           
     </div>
 </div>`
@@ -704,8 +705,8 @@ export class AnalyticsWidgetComponent {
         <span class="widget-header-title"> Your Saving Trends </span>
     </div>
     <div class="widget-area  position-relative width100">
-        
-           <div id="savingTrendsWidgetPiecontainer"></div>
+            <h4 style="text-align:right" class='mb-4'>+5.6%</h4><h4 style="text-align:right" class='mb-4'>+3.5%</h4>
+           <div id="savingTrendscontainer"></div>
           
     </div>
 </div>`
@@ -713,68 +714,39 @@ export class AnalyticsWidgetComponent {
 export class SavingTrendsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
-  public savingTrends: any = {
+  public options4: any = {
     title: {
-      text: 'What you have saving'
+      text: 'Your Spending Trends'
     },
-
-    //subtitle: {
-    //  text: 'Source: thesolarfoundation.com'
-    //},
-
-    yAxis: {
-      //title: {
-      //  text: 'Number of Employees'
-      //}
-    },
-
     xAxis: {
-      accessibility: {
-        rangeDescription: 'Range: 2010 to 2017'
-      }
+      categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
     },
-
-    legend: {
-      layout: 'vertical',
-      align: 'right',
-      verticalAlign: 'middle'
-    },
-
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false
-        },
-        pointStart: 2010
-      }
-    },
-
-    series: [
-      {
-        name: 'Installation',
-        data: [43934, 52503, 57177, 69658, 97031]
-      }
-    ],
-
-    responsive: {
-      rules: [{
-        condition: {
-          maxWidth: 500
-        },
-        chartOptions: {
-          legend: {
-            layout: 'horizontal',
-            align: 'center',
-            verticalAlign: 'bottom'
-          }
+    labels: {
+      items: [{
+        //html: 'How you have been spending',
+        style: {
+          left: '50px',
+          top: '18px',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'black'
         }
       }]
-    }
-
+    },
+    series: [{
+      // type: 'spline',
+      name: '',
+      data: [1.5, 2.5, 3, 1.5, 3, 2, 4],
+      marker: {
+        lineWidth: 1,
+        lineColor: Highcharts.getOptions().colors[3],
+        fillColor: 'white'
+      }
+    }]
   }
-
   ngAfterViewInit() {
-    Highcharts.chart('savingTrendsWidgetPiecontainer', this.savingTrends);
+    Highcharts.chart('savingTrendscontainer', this.options4);
 
 
   }
@@ -839,7 +811,7 @@ export class TopIncomeSourcesComponent {
         <span class="widget-header-title"> Spending Trends </span>
     </div>
     <div class="widget-area  position-relative width100">
-        
+          <div id="spendingTrendscontainer"></div>
           
     </div>
 </div>`
@@ -847,7 +819,50 @@ export class TopIncomeSourcesComponent {
 export class SpendindTrendsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    title: {
+      text: 'Your Spending Trends'
+    },
+    xAxis: {
+      categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr']
+    },
+    labels: {
+      items: [{
+        //html: 'How you have been spending',
+        style: {
+          left: '50px',
+          top: '18px',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'black'
+        }
+      }]
+    },
+    series: [{
+      type: 'column',
+      name: 'Your Income',
+      data: [1, 3, 4, 2, 5]
+    }, {
+      type: 'column',
+      name: 'Your Spending',
+      data: [2, 2, 1, 4, 1]
+    }, {
+      type: 'spline',
+      name: '',
+      data: [1.5, 2.5, 3, 1.5, 3],
+      marker: {
+        lineWidth: 2,
+        lineColor: Highcharts.getOptions().colors[3],
+        fillColor: 'white'
+      }
+    }]
+  }
+  ngAfterViewInit() {
+    Highcharts.chart('spendingTrendscontainer', this.options4);
 
+
+  }
 }
 
 export interface TransactionDetail {
