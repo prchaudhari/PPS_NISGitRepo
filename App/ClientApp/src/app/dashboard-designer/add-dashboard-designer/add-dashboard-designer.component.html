@@ -24,14 +24,14 @@
   <div class="widget-sidebar stylescrollbar" [ngClass]="isWidgetSidebar? 'show-sidebar show-sidebar-widget':'hide-sidebar'">
     <ul class="side-bar-ul">
       <li class="side-bar-li" title={{widget.DisplayName}} *ngFor="let widget of widgetsArray">
-          <a (click)="selectWidget(widget.Identifier)">
-              <span class="nav-icon fa" [ngClass]="{
+        <a (click)="selectWidget(widget.Identifier)">
+          <span class="nav-icon fa" [ngClass]="{
                   'fa-address-book-o': widget.WidgetName == 'CustomerInformation',
                   'fa-address-card-o' : widget.WidgetName == 'AccountInformation',
                   'fa-image fa-lg' : widget.WidgetName == 'Image',
                   'icon-videoWidget' : widget.WidgetName == 'Video',
                   'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'Summary',
-                  'fa-bell-o fa-lg' : widget.WidgetName == 'ReminderAndRecommendation',
+                  'fa fa-bell-o' : widget.WidgetName == 'ReminderAndRecommendation',
                   'icon-rp-loss1 fa-lg' : widget.WidgetName == 'InvestmentPortfolioRisk',
                   'icon-AnalyticsWidget' : widget.WidgetName == 'Analytics',
                   'icon-AvailableBalanceWidget' : widget.WidgetName == 'SavingAvailableBalance' || widget.WidgetName == 'CurrentAvailableBalance',
@@ -44,23 +44,23 @@
                   'icon-rp-quality1' : widget.WidgetName == 'Top4IncomeSources'
               }">
           </span><span class="nav-title"> {{widget.DisplayName}} </span>
-          </a>
+        </a>
       </li>
-  </ul>
+    </ul>
   </div>
 
   <div class="overlay" [ngClass]="isWidgetSidebar? 'show' : 'hide'"></div>
   <div class="dashboard-inner-container">
     <div class="widget-container">
-      <gridster [options]="options">        
-        <gridster-item  [item]="item" *ngFor="let item of widgetsGridsterItemArray">
+      <gridster [options]="options">
+        <gridster-item [item]="item" *ngFor="let item of widgetsGridsterItemArray">
           <button class='fa fa-trash-o widget-action' (click)="removeItem($event,item)"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
           <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
           <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
-      </gridster-item>
+        </gridster-item>
       </gridster>
     </div>
   </div>
@@ -85,8 +85,9 @@
         </div>
         <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12 form-group">
-            <label> Asset Library </label> <span class="text-danger"> *</span>
-            <select formControlName="imgAssetLibrary" (change)="onAssetLibrarySelected($event, 'image')" class="form-control" >
+            <label> Asset Library </label>
+            <span class="text-danger"> *</span>
+            <select formControlName="imgAssetLibrary" (change)="onAssetLibrarySelected($event, 'image')" class="form-control">
               <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
             </select>
             <div class="validation-msg" style="color:red">
@@ -98,7 +99,8 @@
         </div>
         <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12 form-group">
-            <label> Assets </label> <span class="text-danger"> *</span>
+            <label> Assets </label>
+            <span class="text-danger"> *</span>
             <select class="form-control" formControlName="imgAsset" (change)="onAssetSelected($event, 'image')">
               <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
             </select>
@@ -111,8 +113,9 @@
         </div>
         <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12">
-            <label> Target Link </label> <span class="text-danger"> *</span>
-            <input type="text" class="form-control" formControlName="imageUrl"/>
+            <label> Target Link </label>
+            <span class="text-danger"> *</span>
+            <input type="text" class="form-control" formControlName="imageUrl" />
             <div class="validation-msg" style="color:red" *ngIf="imgForm.imageUrl.touched && imgForm.imageUrl.errors">
               <ul style="list-style-type:none">
                 <li class="text-danger" *ngIf="imgForm.imageUrl.errors?.required">
@@ -127,14 +130,14 @@
         </div>
         <div class="row" *ngIf="!isPersonalizeImage" style="margin-top: 40px;">
           <div class="col-sm-12 text-center" *ngIf="imgAssetId!=0">
-              <img [src]="ImagePreviewSrc" id="configImagePreview" class="width70">
+            <img [src]="ImagePreviewSrc" id="configImagePreview" class="width70">
           </div>
         </div>
       </div>
       <div class="filter-footer">
         <ul class="nav nav-toolbar">
           <li class="nav-item width50">
-            <button title="Save" id="btnCloseForm" [disabled]="saveImgFormValidation()" (click)="OnImageConfigBtnClicked('submit')" class="btn-footer-fill btn-block rounded-0 height100" >
+            <button title="Save" id="btnCloseForm" [disabled]="saveImgFormValidation()" (click)="OnImageConfigBtnClicked('submit')" class="btn-footer-fill btn-block rounded-0 height100">
               <span class="fa fa-check"></span>
             </button>
           </li>
@@ -169,7 +172,7 @@
             <label> Embedded </label>
             <div>
               <label class="switch d-block">
-                <input type="checkbox" (change)="isEmbedded=!isEmbedded" [checked]="isEmbedded" [disabled]="isPersonalize"> 
+                <input type="checkbox" (change)="isEmbedded=!isEmbedded" [checked]="isEmbedded" [disabled]="isPersonalize">
                 <span class="slider round" [ngClass]="isPersonalize ? 'disabled-cursor bg-secondary':''"></span>
               </label>
             </div>
@@ -202,7 +205,7 @@
                 <ul style="list-style-type:none" *ngIf="videoFormErrorObject.showAssetLibraryError">
                   <li class="text-danger">Please select asset library</li>
                 </ul>
-              </div>             
+              </div>
             </div>
           </div>
           <div class="row" *ngIf="!isEmbedded && !isPersonalize">
@@ -226,13 +229,13 @@
             </div>
           </div>
         </div>
-        
+
       </div>
       <div class="filter-footer">
         <ul class="nav nav-toolbar">
           <li class="nav-item width50">
             <button title="Save" id="btnCloseForm" class="btn-footer-fill btn-block rounded-0 height100" [disabled]="saveVideoFormValidation()"
-            (click)="OnVideoConfigBtnClicked('submit')">
+                    (click)="OnVideoConfigBtnClicked('submit')">
               <span class="fa fa-check"></span>
             </button>
           </li>
@@ -245,7 +248,7 @@
       </div>
     </div>
   </form>
-  
+
 </div>
 
 <div class="overlay a" id="divOverlayFilter" [ngClass]="!isImageConfig? 'hide':'show'"></div>
