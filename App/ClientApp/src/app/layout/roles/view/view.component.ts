@@ -253,6 +253,8 @@ export class ViewComponent implements OnInit {
       searchParameter.SortParameter.SortColumn = "Id";
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
+      searchParameter.ActivationStatus = true;
+
       //this.spinner.start();
       this.usersList = await userService.getUser(searchParameter);
 

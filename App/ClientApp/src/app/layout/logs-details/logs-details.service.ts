@@ -1,10 +1,11 @@
+
 import { Injectable, Injector } from '@angular/core';
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
 import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfiguration';
 import { Observable } from 'rxjs';
 import { HttpEvent, HttpEventType, HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Constants } from 'src/app/shared/constants/constants';
-import { ScheduleLog } from './schedulelog';
+import { ScheduleLogDetail } from './log-details';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
@@ -12,7 +13,7 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 @Injectable({
   providedIn: 'root'
 })
-export class ScheduleLogService {
+export class ScheduleLogServiceDetail {
   //public variables
   public schedulesList;
   public profileList;
@@ -29,9 +30,9 @@ export class ScheduleLogService {
     private uiLoader: NgxUiLoaderService,
     private _messageDialogService: MessageDialogService) { }
 
-  public async getScheduleLog(searchParameter): Promise<ScheduleLog[]> {
+  public async getScheduleLogDetail(searchParameter): Promise<ScheduleLogDetail[]> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.scheduleLogGetUrl;
+    let requestUrl = URLConfiguration.scheduleLogGetDetailUrl;
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -56,14 +57,13 @@ export class ScheduleLogService {
         this.isRecordFound = false;
         this.uiLoader.stop();
       });
-    return <ScheduleLog[]>this.schedulesList;
+    return <ScheduleLogDetail[]>this.schedulesList;
   }
-
-  public async reRunSchdeulLog(postData): Promise<boolean> {
+  public async reRunSchdeulLogDetail(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.reRunScheduleLogGetUrl + "?" + "scheduleLogIdentifier=" + postData;
+    let requestUrl = URLConfiguration.reRunScheduleLogDetailGetUrl ;
     this.uiLoader.start();
-    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();

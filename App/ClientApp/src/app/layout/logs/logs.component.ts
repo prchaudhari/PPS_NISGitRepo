@@ -306,7 +306,35 @@ export class LogsComponent implements OnInit {
 
   }
 
+  navigationLogDetails(template: ScheduleLog) {
+    let queryParams = {
+      Routeparams: {
+        passingparams: {
+          "SchdeuleName": template.ScheduleName,
+          "SchdeuleLogIdetifiier": template.Identifier,
+        }
+      }
+    }
+    localStorage.setItem("scheduleLogParams", JSON.stringify(queryParams))
+    this.route.navigate(['../logsDetails']);
+  }
 
+  //function written to delete role
+  reTryLog(log: ScheduleLog) {
+    let message = 'Are you sure, you want to run this schedule?';
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+    
+
+        let isDeleted = await this.scheduleLogService.reRunSchdeulLog(log.Identifier);
+        if (isDeleted) {
+          let messageString = Constants.recordDeletedMessage;
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          this.getScheduleLogs(null);
+        }
+      }
+    });
+  }
 }
 
 function compare(a: number, b: number, isAsc: boolean) {
