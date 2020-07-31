@@ -145,6 +145,6 @@ namespace nIS
 
         public const string ANALYTICS_CHART_WIDGET_SCRIPT = "<script type='text/javascript'> setTimeout(function () { Highcharts.chart('analyticschartcontainer', { chart: { plotBackgroundColor: null, plotBorderWidth: null, plotShadow: !1, type: 'pie' }, title: { text: '' }, tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' }, accessibility: { point: { valueSuffix: '%' } }, plotOptions: { pie: { allowPointSelect: !0, cursor: 'pointer', dataLabels: { enabled: !0, format: '{point.percentage:.1f} %' }, showInLegend: !0 } }, series: [{ name: 'Percentage', colorByPoint: !0, data: [{ name: 'Cutomer Information', y: 11.84 }, { name: 'Account Information', y: 10.85 }, { name: 'Image', y: 4.67 }, { name: 'Video', y: 4.18 }, { name: 'News Alerts', y: 7.05 }] }] }) }, 100); </script>";
 
-        public const string HTML_FOOTER = "</body></html>";
+        public const string HTML_FOOTER = " {{ChartScripts}} </body></html>";
     }
 }

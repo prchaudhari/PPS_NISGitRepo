@@ -237,6 +237,7 @@
     <Content Include="Resources\css\bootstrap.min.css" />
     <Content Include="Resources\css\font-awesome.min.css" />
     <Content Include="Resources\css\ltr.css" />
+    <Content Include="Resources\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\images\absa-logo.png" />
     <Content Include="Resources\js\accessibility.js" />
     <Content Include="Resources\js\bootstrap.min.js" />
@@ -248,6 +249,8 @@
     <Content Include="Resources\js\script.js" />
     <Content Include="Resources\css\site.css" />
     <Content Include="Resources\js\series-label.js" />
+    <Content Include="Resources\sampledata\icon-image.png" />
+    <Content Include="Resources\sampledata\SampleVideo.mp4" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +289,11 @@
     <None Include="Properties\PublishProfiles\nisqa-api - ReadOnly - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - Web Deploy.pubxml" />
     <Content Include="Properties\webjobs-list.json" />
+    <Content Include="Resources\fonts\fontawesome-webfont.eot" />
+    <Content Include="Resources\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Resources\fonts\fontawesome-webfont.woff" />
+    <Content Include="Resources\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Resources\fonts\FontAwesome.otf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

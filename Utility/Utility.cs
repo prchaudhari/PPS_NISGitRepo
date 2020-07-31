@@ -598,6 +598,7 @@
             string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
             string statementDestPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements";
             string path = statementDestPath + "\\" + batchId + "\\";
+            string statementVirtualPath = "\\Statements" + "\\" + batchId + "\\" + fileName;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -621,7 +622,7 @@
 
             //To move js, css and other assets contents which are common to each statment file
             DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
-            return filepath;
+            return statementVirtualPath;
         }
 
         /// <summary>
@@ -662,8 +663,11 @@
             {
                 foreach (DirectoryInfo subdir in dirs)
                 {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                    if (subdir.Name.ToLower() != "sampledata")
+                    {
+                        string temppath = Path.Combine(destDirName, subdir.Name);
+                        DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                    }
                 }
             }
         }
