@@ -31,21 +31,6 @@ namespace nIS
         public string ScheduleName { get; set; }
 
         /// <summary>
-        /// The render engine identifier
-        /// </summary>
-        public long RenderEngineId { get; set; }
-
-        /// <summary>
-        /// The render engine name
-        /// </summary>
-        public string RenderEngineName { get; set; }
-
-        /// <summary>
-        /// The render engine url
-        /// </summary>
-        public string RenderEngineURL { get; set; }
-
-        /// <summary>
         /// The number of retry of schedule run attempt
         /// </summary>
         public int NumberOfRetry { get; set; }

@@ -249,9 +249,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
-          <Property Name="StatementId" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="LabelText" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="TargetURL" Type="nvarchar" MaxLength="500" />
@@ -331,9 +331,6 @@
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScheduleId" Type="bigint" Nullable="false" />
           <Property Name="ScheduleName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="RenderEngineId" Type="bigint" Nullable="false" />
-          <Property Name="RenderEngineName" Type="nvarchar" MaxLength="100" />
-          <Property Name="RenderEngineURL" Type="nvarchar(max)" />
           <Property Name="NumberOfRetry" Type="int" Nullable="false" />
           <Property Name="LogFilePath" Type="nvarchar(max)" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
@@ -349,7 +346,10 @@
           <Property Name="ScheduleId" Type="bigint" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="CustomerName" Type="nvarchar" MaxLength="250" />
-          <Property Name="NumberOfRetry" Type="int" />
+          <Property Name="RenderEngineId" Type="bigint" Nullable="false" />
+          <Property Name="RenderEngineName" Type="nvarchar" MaxLength="100" />
+          <Property Name="RenderEngineURL" Type="nvarchar(max)" />
+          <Property Name="NumberOfRetry" Type="int" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="20" />
           <Property Name="LogMessage" Type="nvarchar(max)" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
@@ -411,7 +411,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="Source" Type="nvarchar" MaxLength="100" />
@@ -639,7 +639,6 @@
           <EntitySet Name="CustomerInfoRecords" EntityType="NISModel.CustomerInfoRecord" />
           <EntitySet Name="CustomerMediaRecords" EntityType="NISModel.CustomerMediaRecord" />
           <EntitySet Name="NewsAlertRecords" EntityType="NISModel.NewsAlertRecord" />
-          <EntitySet Name="ReminderAndRecommendationRecords" EntityType="NISModel.ReminderAndRecommendationRecord" />
           <EntitySet Name="SavingTrendRecords" EntityType="NISModel.SavingTrendRecord" />
           <EntitySet Name="Top4IncomeSourcesRecord" EntityType="NISModel.Top4IncomeSourcesRecord" />
           <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
@@ -647,6 +646,7 @@
           <EntitySet Name="ImageRecords" EntityType="NISModel.ImageRecord" />
           <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
           <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
+          <EntitySet Name="ReminderAndRecommendationRecords" EntityType="NISModel.ReminderAndRecommendationRecord" />
           <EntitySet Name="ScheduleLogRecords" EntityType="NISModel.ScheduleLogRecord" />
           <EntitySet Name="ScheduleLogDetailRecords" EntityType="NISModel.ScheduleLogDetailRecord" />
         </EntityContainer>
@@ -1060,17 +1060,6 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="ReminderAndRecommendationRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="LabelText" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="TargetURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="SavingTrendRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1175,6 +1164,17 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Video1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="ReminderAndRecommendationRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LabelText" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TargetURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="ScheduleLogRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1182,9 +1182,6 @@
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ScheduleId" Type="Int64" Nullable="false" />
           <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RenderEngineId" Type="Int64" Nullable="false" />
-          <Property Name="RenderEngineName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RenderEngineURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NumberOfRetry" Type="Int32" Nullable="false" />
           <Property Name="LogFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1200,7 +1197,10 @@
           <Property Name="ScheduleId" Type="Int64" Nullable="false" />
           <Property Name="CustomerId" Type="Int64" Nullable="false" />
           <Property Name="CustomerName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="NumberOfRetry" Type="Int32" />
+          <Property Name="RenderEngineId" Type="Int64" Nullable="false" />
+          <Property Name="RenderEngineName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RenderEngineURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfRetry" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LogMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1653,18 +1653,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ReminderAndRecommendationRecords">
-            <EntityTypeMapping TypeName="NISModel.ReminderAndRecommendationRecord">
-              <MappingFragment StoreEntitySet="ReminderAndRecommendation">
-                <ScalarProperty Name="TargetURL" ColumnName="TargetURL" />
-                <ScalarProperty Name="LabelText" ColumnName="LabelText" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SavingTrendRecords">
             <EntityTypeMapping TypeName="NISModel.SavingTrendRecord">
               <MappingFragment StoreEntitySet="SavingTrend">
@@ -1776,6 +1764,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ReminderAndRecommendationRecords">
+            <EntityTypeMapping TypeName="NISModel.ReminderAndRecommendationRecord">
+              <MappingFragment StoreEntitySet="ReminderAndRecommendation">
+                <ScalarProperty Name="TargetURL" ColumnName="TargetURL" />
+                <ScalarProperty Name="LabelText" ColumnName="LabelText" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ScheduleLogRecords">
             <EntityTypeMapping TypeName="NISModel.ScheduleLogRecord">
               <MappingFragment StoreEntitySet="ScheduleLog">
@@ -1784,9 +1784,6 @@
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="LogFilePath" ColumnName="LogFilePath" />
                 <ScalarProperty Name="NumberOfRetry" ColumnName="NumberOfRetry" />
-                <ScalarProperty Name="RenderEngineURL" ColumnName="RenderEngineURL" />
-                <ScalarProperty Name="RenderEngineName" ColumnName="RenderEngineName" />
-                <ScalarProperty Name="RenderEngineId" ColumnName="RenderEngineId" />
                 <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -1802,6 +1799,9 @@
                 <ScalarProperty Name="LogMessage" ColumnName="LogMessage" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="NumberOfRetry" ColumnName="NumberOfRetry" />
+                <ScalarProperty Name="RenderEngineURL" ColumnName="RenderEngineURL" />
+                <ScalarProperty Name="RenderEngineName" ColumnName="RenderEngineName" />
+                <ScalarProperty Name="RenderEngineId" ColumnName="RenderEngineId" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />

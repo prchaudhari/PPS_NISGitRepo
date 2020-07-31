@@ -88,24 +88,24 @@ namespace nIS
             "<span class='float-left'> Total Spend</span><span class='float-right'>{{TotalSpend}}</span><br/>" +
             "<span class='float-left'> Savings </span><span class='float-right'>{{Savings}}</span><br/></div></div></div>";
 
-        public const string SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-            "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
-            "<input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;" + "<label for='showAll'>Show All</label>&nbsp;" +
-            "<input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
-            " <div class='float-right'> <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> </div>" +
-            "<div class='table-responsive'><table class='table m-1 table-hover table-sm'>" +
-            "<thead><tr><th>Date</th><th>Type</th><th>Narration</th><th>Credit</th><th>Debit</th><th>Query</th><th>Balance</th></tr>" +
-            "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
+        //public const string SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
+        //    "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
+        //    "<input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;" + "<label for='showAll'>Show All</label>&nbsp;" +
+        //    "<input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
+        //    " <div class='float-right'> <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> </div>" +
+        //    "<div class='table-responsive'><table class='table m-1 table-hover table-sm'>" +
+        //    "<thead><tr><th>Date</th><th>Type</th><th>Narration</th><th>Credit</th><th>Debit</th><th>Query</th><th>Balance</th></tr>" +
+        //    "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
-        public const string CURRENT_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
+        public const string CURRENT_SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
             "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
             "<input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;" + "<label for='showAll'>Show All</label>&nbsp;" +
             "<input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
             " <div class='float-right'> <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;" +
             "<a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> </div>" +
             "<div class='table-responsive'><table class='table m-1 table-hover'><thead><tr>" +
-            "<th>Date</th><th>Type</th><th>Narration</th><th>FCY</th><th>Current Rate</th><th>LCY</th><th>Action</th></tr>" +
-            "</thead><tbody>{{CurrentAccountTransactionDetails}}</tbody></table></div></div></div>";
+            "<th class='width12'>Date</th><th class='width8'>Type</th class='width30'><th>Narration</th><th class='width12'>FCY</th><th class='width13'>Current Rate</th> <th class='width13'>LCY</th><th class='width12'>Action</th></tr>" +
+            "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
         public const string REMINDER_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
             "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'><table><thead><tr><td class='width75'></td>" +

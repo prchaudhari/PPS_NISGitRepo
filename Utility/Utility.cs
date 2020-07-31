@@ -8,6 +8,7 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -592,7 +593,7 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, long batchId, long customerId)
+        public string WriteToFile(string Message, string fileName, long batchId)
         {
             string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
             string statementDestPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements";
@@ -667,7 +668,62 @@
             }
         }
 
-        #endregion       
+
+        public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId)
+        {
+            string destPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements";
+            string resourceFilePath = destPath + "\\common";
+            
+            string path = destPath + "\\" + batchId + "\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string zipFileVirtualPath = "\\Statements" +"\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
+            string zipfilepath = AppDomain.CurrentDomain.BaseDirectory + zipFileVirtualPath;
+            string temppath = path + "\\temp\\";
+            if (!Directory.Exists(temppath))
+            {
+                Directory.CreateDirectory(temppath);
+            }
+
+            string spath = temppath + "\\statement\\";
+            if (!Directory.Exists(spath))
+            {
+                Directory.CreateDirectory(spath);
+            }
+            string filepath = spath + fileName;
+            if (!File.Exists(filepath))
+            {
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(filepath))
+                {
+                    sw.WriteLine(htmlstr);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    sw.WriteLine(htmlstr);
+                }
+            }
+            DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
+            ZipFile.CreateFromDirectory(temppath, zipfilepath);
+
+            string deleteFile = path + "\\temp";
+            DirectoryInfo directoryInfo = new DirectoryInfo(deleteFile);
+            if (directoryInfo.Exists)
+            {
+                directoryInfo.Delete(true);
+            }
+
+            return zipFileVirtualPath;
+        }
+
+
+        #endregion
 
     }
 }

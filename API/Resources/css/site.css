@@ -52,8 +52,6 @@
     width: 100%;
   }
 
-  font-size: 13px;
-
   .cust-modal .close {
     opacity: 1;
     position: absolute;
@@ -143,7 +141,6 @@
     width: 60px;
   }
 
-
   .hide-sidebar .mr-l-10 {
     margin-left: 0px;
   }
@@ -155,25 +152,7 @@
   .hide-side-bar-footer {
     display: none;
   }
-  /*.side-bar-container:hover {
-    width: 190px;
-  }
 
-  .side-bar-container:hover .nav-title,
-  .side-bar-container:hover .side-bar-footer,
-  .side-bar-container:hover .caret-icon {
-    display: block;
-  }
-
-  .side-bar-container:hover .nav-icon {
-    line-height: 40px !important;
-    margin: 0px 15px;
-    width: auto;
-  }
-
-  .side-bar-container:hover .side-bar-nav {
-    height: calc(100% - 100px);
-  }*/
   .side-bar-logo {
     width: auto;
     height: 50px;
@@ -221,9 +200,6 @@
   }
 
   .side-bar-li {
-    /*-webkit-transition: .3s ease all;
-        -o-transition: .3s ease all;
-        transition: .3s ease all;*/
     list-style-type: none;
     margin-top: 4px;
     font-size: 13px;
@@ -249,7 +225,6 @@
     font-size: 18px;
     line-height: 40px;
   }
-
 
   .caret-icon {
     position: absolute;
@@ -324,11 +299,9 @@
     width: 100%;
   }
 
-
   .submenu-title {
     color: #000;
     padding: 0px 0 0px 30px;
-    /*border-bottom: solid thin #f3f1f2;*/
     cursor: pointer;
     height: 40px;
     line-height: 40px;
@@ -429,7 +402,6 @@
   .table-fixed thead tr th {
     float: left;
   }
-
 
   .table-cust tbody .custom-control-label, .chk-container .custom-control-label {
     font-weight: normal;
@@ -620,12 +592,7 @@
   .btn-icon-fill, .btn-icon-outline, .btn-icon-outline-grey {
     border-radius: .25rem 0 0 .25rem;
   }
-  /* .tooltip-inner {
-    background: #dddddd;
-  }
-  .bs-tooltip-auto[x-placement^=top] .arrow::before, .bs-tooltip-top .arrow::before {
-    border-top-color: #dddddd !important;
-  } */
+
   .stylescrollbar::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -788,7 +755,6 @@
     background: #fff;
   }
 
-
   .cust-tree-list .cust-tree-list-in .jqx-widget .jqx-grid-cell {
     border-color: transparent;
   }
@@ -855,7 +821,6 @@
     border-radius: 4px;
   }
 
-
   .cdk-drag-preview {
     box-sizing: border-box;
     border-radius: 4px;
@@ -869,7 +834,6 @@
   .cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
-
 
   .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
@@ -914,8 +878,6 @@
     align-items: center;
   }
 
-
-
   .mat-paginator-range-label {
     margin: 0px 10px 0 10px;
   }
@@ -945,8 +907,6 @@
     position: absolute;
     left: 30px;
   }
-
-
 
   .preview-file-contailer {
     width: 100%;
@@ -1032,7 +992,6 @@
     border-radius: 50%;
   }
 
-
   .toggle-btn {
     width: 40px;
     text-align: center;
@@ -1043,7 +1002,6 @@
     height: 48px;
   }
 
-
   button:focus {
     outline: none;
   }
@@ -1052,9 +1010,7 @@
     border-bottom: solid thin #f5f5f5;
     border-radius: 10px 10px 0px 0px;
   }
-  /*.card-header .icon-filter, .card-header label, .filter-head label {
-        color: #fff;
-    }*/
+ 
   .card-shadow {
     box-shadow: 0px 1px 4px rgba(0,0,0,.2);
     -moz-box-shadow: 0px 1px 4px rgba(0,0,0,.2);
@@ -1148,43 +1104,6 @@
     align-items: center;
   }
 
-  .login-main {
-    width: 65%;
-    height: auto;
-    padding: 0px;
-  }
-
-  .login-control {
-    width: 100%;
-    float: left;
-    height: 40px;
-    position: relative;
-    background-color: #d4d3d3;
-    border-radius: 5px;
-    padding-left: 40px;
-  }
-
-  .login-control span {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    left: 0px;
-    line-height: 40px;
-    top: 0px;
-    text-align: center;
-  }
-
-  .txtLogin {
-    width: 100%;
-    float: left;
-    height: 100%;
-    outline: none;
-    background-color: #f5f5f5;
-    border: none;
-    border-radius: 0px 4px 4px 0px;
-    padding-left: 10px;
-  }
-
   .box-shadow {
     box-shadow: 0 4px 7px 0 rgba(0, 0, 0, .2);
     -moz-box-shadow: 0 4px 7px 0 rgba(0, 0, 0, .2);
@@ -1222,37 +1141,6 @@
     height: auto;
     text-align: center;
     display: inline-block;
-  }
-
-  .profile-avtar {
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    display: inline-block;
-    /*border-radius: 50%;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;*/
-    /*background: #f5f5f5;*/
-  }
-
-  .selected-avatar {
-    background-color: rgb(32,151,255) !important;
-  }
-
-  .selected-avatar {
-    background-color: #4f96ff;
-    color: #fff;
-  }
-
-  .profile-avtar-box label {
-    width: 100%;
-    display: inline-block;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-
-  .profile-avtar-box label:hover {
-    color: rgba(0,0,0,1);
   }
 
   .z-index12 {
@@ -1317,7 +1205,6 @@
   .bg-cust-grey {
     background-color: #e6e6e6 !important;
   }
-
 
   .table thead th {
     vertical-align: middle;
@@ -1418,8 +1305,6 @@
     position: absolute;
   }
 
-
-
   .text-ellipses {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -1470,7 +1355,6 @@
     z-index: 1;
     border: none;
   }
-
 
   .widget-sidebar {
     height: 100%;
@@ -1645,7 +1529,6 @@
     font-size: 14px !important;
   }
 
-
   .hamburger-dashboard:focus {
     outline: none;
   }
@@ -1751,22 +1634,9 @@
     .card-tile {
       width: 25% !important;
     }
-
-    .login-right {
-      width: 500px;
-    }
-
-    .login-left {
-      width: calc(100% - 500px);
-    }
-
-    .login-logo {
-      height: 100px;
-    }
   }
 
   @media only screen and (min-device-width : 768px) and (max-device-width : 991px) {
-
 
     .login-main {
       width: 45%;
@@ -1834,30 +1704,11 @@
     .side-bar-container {
       top: 50px;
     }
-    /*.fa-long-arrow-left:before {
-            content: "\f00d";
-        }*/
+
   }
 
   @media only screen and (max-width:768px) {
-    .login-logo {
-      height: 80px;
-    }
-
-    .login-control span {
-      color: #000;
-    }
-
-    .login-left {
-      display: none !important;
-    }
-
-    .login-right {
-      width: 100%;
-      background: #292828;
-      color: #fff;
-    }
-
+ 
     .dash-in h5 {
       font-size: 20px;
     }
@@ -1975,11 +1826,9 @@
       margin-top: 0 !important;
     }
 
-
     .xs-hide {
       display: none;
     }
-
 
     .custom-control-input {
       z-index: 1;
@@ -2196,7 +2045,6 @@
 
   @media only screen and (max-width:767px) and (orientation: landscape) {
 
-
     .card-deck-doc, .small-docs .card-deck-doc {
       width: 33.33%;
     }
@@ -2229,7 +2077,6 @@
     .xs-frm label {
       float: left;
     }
-
 
     .xs-frm input {
       float: left;
@@ -2294,8 +2141,5 @@
       display: block;
       visibility: visible;
     }
-    /*.pr-xs-0 {
-            padding-right: 0;
-        }*/
-  }
 
+  }

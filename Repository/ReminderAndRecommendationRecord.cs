@@ -15,8 +15,8 @@ namespace nIS
     public partial class ReminderAndRecommendationRecord
     {
         public long Id { get; set; }
-        public long StatementId { get; set; }
         public long CustomerId { get; set; }
+        public long BatchId { get; set; }
         public string Description { get; set; }
         public string LabelText { get; set; }
         public string TargetURL { get; set; }

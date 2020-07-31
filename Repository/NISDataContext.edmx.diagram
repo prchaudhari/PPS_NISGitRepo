@@ -35,7 +35,6 @@
         <EntityTypeShape EntityType="NISModel.CustomerInfoRecord" Width="1.5" PointX="9" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.CustomerMediaRecord" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.NewsAlertRecord" Width="1.5" PointX="6.75" PointY="5.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ReminderAndRecommendationRecord" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.SavingTrendRecord" Width="1.5" PointX="4.75" PointY="5.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.Top4IncomeSourcesRecord" Width="1.5" PointX="8.75" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AccountMasterRecord" Width="1.5" PointX="2.75" PointY="5.25" IsExpanded="false" />
@@ -43,8 +42,9 @@
         <EntityTypeShape EntityType="NISModel.ImageRecord" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TransactionDetailRecord" Width="1.5" PointX="2.625" PointY="5.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.VideoRecord" Width="1.5" PointX="4.75" PointY="5.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ReminderAndRecommendationRecord" Width="1.5" PointX="0.875" PointY="5.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ScheduleLogRecord" Width="1.5" PointX="6.75" PointY="5.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogDetailRecord" Width="1.5" PointX="8.75" PointY="5.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ScheduleLogDetailRecord" Width="1.5" PointX="8.875" PointY="5.875" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

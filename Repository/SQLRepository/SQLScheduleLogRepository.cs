@@ -141,9 +141,6 @@ namespace nIS
                         CreateDate = logRecord.CreationDate,
                         LogFilePath = logRecord.LogFilePath,
                         NumberOfRetry = logRecord.NumberOfRetry,
-                        RenderEngineId = logRecord.RenderEngineId,
-                        RenderEngineName = logRecord.RenderEngineName,
-                        RenderEngineURL = logRecord.RenderEngineURL,
                         ScheduleStatus = logRecord.Status,
                         ProcessingTime = "",
                         RecordProcessed = ""
@@ -224,7 +221,10 @@ namespace nIS
                         CustomerId = logDetail.CustomerId,
                         CustomerName = logDetail.CustomerName,
                         LogMessage = logDetail.LogMessage,
-                        NumberOfRetry = logDetail.NumberOfRetry ?? 0,
+                        RenderEngineId = logDetail.RenderEngineId,
+                        RenderEngineName = logDetail.RenderEngineName,
+                        RenderEngineURL = logDetail.RenderEngineURL,
+                        NumberOfRetry = logDetail.NumberOfRetry,
                         ScheduleId = logDetail.ScheduleId,
                         ScheduleLogId = logDetail.ScheduleLogId,
                         Status = logDetail.Status,
@@ -876,7 +876,7 @@ namespace nIS
                 if (logDetailRecord.Status != ScheduleLogStatus.Failed.ToString())
                 {
                     string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id);
+                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id);
 
                     logDetailRecord.StatementFilePath = filePath;
                     logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();

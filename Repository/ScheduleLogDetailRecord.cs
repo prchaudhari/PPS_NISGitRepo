@@ -19,7 +19,10 @@ namespace nIS
         public long ScheduleId { get; set; }
         public long CustomerId { get; set; }
         public string CustomerName { get; set; }
-        public Nullable<int> NumberOfRetry { get; set; }
+        public long RenderEngineId { get; set; }
+        public string RenderEngineName { get; set; }
+        public string RenderEngineURL { get; set; }
+        public int NumberOfRetry { get; set; }
         public string Status { get; set; }
         public string LogMessage { get; set; }
         public System.DateTime CreationDate { get; set; }

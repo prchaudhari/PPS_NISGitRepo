@@ -17,9 +17,6 @@ namespace nIS
         public long Id { get; set; }
         public long ScheduleId { get; set; }
         public string ScheduleName { get; set; }
-        public long RenderEngineId { get; set; }
-        public string RenderEngineName { get; set; }
-        public string RenderEngineURL { get; set; }
         public int NumberOfRetry { get; set; }
         public string LogFilePath { get; set; }
         public System.DateTime CreationDate { get; set; }

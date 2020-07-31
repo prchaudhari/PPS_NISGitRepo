@@ -236,6 +236,7 @@
     <Content Include="Global.asax" />
     <Content Include="Resources\css\bootstrap.min.css" />
     <Content Include="Resources\css\font-awesome.min.css" />
+    <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\images\absa-logo.png" />
     <Content Include="Resources\js\accessibility.js" />
     <Content Include="Resources\js\bootstrap.min.js" />
