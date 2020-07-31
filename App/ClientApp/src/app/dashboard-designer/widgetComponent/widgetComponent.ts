@@ -1,4 +1,6 @@
 import { Component, ViewChild, Output, Input, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -312,14 +314,28 @@ export class SavingAvailableBalanceComponent {
   </div>
   <div class="widget-area-grid padding-0">
       <div class='float-left'>
-        <input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;<label for='showAll'>Show All</label>&nbsp;
-        <input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<label for='grpDate'>Group By Date</label>&nbsp;
+        <input type='radio' id='showAll' name='showAll' [checked]='isShowAll' (change)='ShowAll($event.target)'>&nbsp;<label for='showAll'>Show All</label>&nbsp;
+        <input type='radio' id='grpDate' name='showAll' [checked]='isGroupByDate' (change)='GroupByDate($event.target)'>&nbsp;<label for='grpDate'>Group By Date</label>&nbsp;
       </div>
-      <div class='float-right'> 
-        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;
-        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;
-        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> 
+      
+      <form [formGroup]="transactionForm">
+
+      <div class='float-right'>
+          <div  *ngIf="isShowAll">
+         
+            <select  class="form-control" formControlName="filterStatus" id="filterStatus">
+              <option value="0" selected> Search Item</option>
+              <option value="Failed">Failed</option>
+              <option value="Completed">Completed</option>
+              <option value="In Progress">In Progress</option>
+            </select>
+          </div>
+          <button href='javascript:void(0)'  *ngIf="isShowAll" class='btn btn-light btn-sm'>Search</button>&nbsp;
+          <button href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</button>&nbsp;
+          <button href='javascript:void(0)' class='btn btn-light btn-sm'>Print</button> 
       </div>
+    </form>
+
     <div class="d-flex justify-content-center mb-4">
       <div class="pagination-mat position-relative d-md-block d-none">
         <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
@@ -417,24 +433,80 @@ export class TransactionDetailsComponent {
   public pageSize = 5;
   public currentPage = 0;
   public totalSize = 0;
+  public transactionForm: FormGroup;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   TransactionDetailData: TransactionDetail[] = [
     { date: '15/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL6574562', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
+    { date: '15/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL6574562', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
+    { date: '15/07/2020', type: 'DB', narration: 'NXT TXN: IIFL IIFL6574562', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
+
     { date: '19/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1254.71', currentRate: '1.123', lyc: '1876.00' },
+    { date: '19/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL3557346', fcy: '1254.71', currentRate: '1.123', lyc: '1876.00' },
+
     { date: '25/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL8965435', fcy: '2345.12', currentRate: '1.461', lyc: '1453.21' },
     { date: '28/07/2020', type: 'CR', narration: 'NXT TXN: IIFL IIFL0034212', fcy: '1435.89', currentRate: '0.962', lyc: '1654.56' },
+  ];
+  TransactionDetailDataGroup: TransactionDetail[] = [
+    { date: '15/07/2020', type: 'CR', narration: '-', fcy: '3333.34', currentRate: '2.124', lyc: '3542.84' },
+    { date: '15/07/2020', type: 'DB', narration: '-', fcy: '1666.67', currentRate: '1.062', lyc: '1771.42' },
+
+    { date: '19/07/2020', type: 'CR', narration: '-', fcy: '2491.42', currentRate: '2.246', lyc: '3752.00' },
+
+    { date: '28/07/2020', type: 'CR', narration: '-', fcy: '1435.89', currentRate: '0.962', lyc: '1654.56' },
+    { date: '25/07/2020', type: 'CR', narration: '-', fcy: '2345.12', currentRate: '1.461', lyc: '1453.21' },
   ];
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
+  public isShowAll = true;
+  public isGroupByDate = false;
+  ShowAll(event) {
+    const value = event.checked;
+    this.isShowAll = event.checked;
+    if (value) {
+      this.isGroupByDate = false;
 
+      this.dataSource = new MatTableDataSource(this.TransactionDetailData);
+      this.dataSource.sort = this.sort;
+    }
+    else {
+      this.isGroupByDate = true;
+
+      this.dataSource = new MatTableDataSource(this.TransactionDetailDataGroup);
+      this.dataSource.sort = this.sort;
+    }
+  }
+  GroupByDate(event) {
+    const value = event.checked;
+    this.isGroupByDate = event.checked;
+
+    if (value) {
+      this.isShowAll = false;
+      this.dataSource = new MatTableDataSource(this.TransactionDetailDataGroup);
+      this.dataSource.sort = this.sort;
+    }
+    else {
+      this.isShowAll = true;
+
+      this.dataSource = new MatTableDataSource(this.TransactionDetailData);
+      this.dataSource.sort = this.sort;
+    }
+  }
   ngOnInit() {
+    this.transactionForm = this.fb.group({
+      filterStatus: [0],
+    });
     this.dataSource = new MatTableDataSource(this.TransactionDetailData);
     this.dataSource.sort = this.sort;
+  }
+  constructor(
+    private fb: FormBuilder,
+   ) {
+    
   }
 }
 
@@ -685,9 +757,9 @@ export class AnalyticsWidgetComponent {
     Highcharts.chart('chartWidgetPiecontainer', this.options4);
   }
 
-  ngOnInit() {  
-    $(document).ready(function(){
-      setTimeout(function() { 
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
       }, 10);
     });
@@ -746,9 +818,9 @@ export class SavingTrendsComponent {
     Highcharts.chart('savingTrendscontainer', this.options4);
   }
 
-  ngOnInit() {  
-    $(document).ready(function(){
-      setTimeout(function() { 
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
       }, 10);
     });
@@ -758,47 +830,48 @@ export class SavingTrendsComponent {
 @Component({
   selector: 'topFourIncomdeSources',
   template: `<div class="widget">
-    <div class="widget">
-        <div class="widget-header">
-            <span class="widget-header-title"> Top Four Income Sources </span>
-        </div>
-        <div class="widget-area">
-            <table>
-                <thead>
-                    <tr>
-                        <td style="width:50%"></td>
-                        <td style="width:15%">This Month</td>
-                        <td style="width:35%;float:center;">Usually you spend</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let list of actionList">
-                        <td style="width:50%">
-                            {{list.name}}
-                        </td>
-                        <td style="width:15%">
-                           {{list.thisMonth}}
-                        </td>
-                        <td style="width:35%;">
-                           <span style="color: red" class="{{list.icon}} mt-1 float-left" aria-hidden="true"></span>
-<span class="ml-2 d-inline-block">{{list.usuallySpend}}</span>
-                        </td>
-                       
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+   <div class="widget">
+      <div class="widget-header">
+         <span class="widget-header-title"> Top Four Income Sources </span>
+      </div>
+      <div class="widget-area">
+         <table>
+            <thead>
+               <tr>
+                  <td style="width:50%"></td>
+                  <td style="width:15%">This Month</td>
+                  <td style="width:35%;">Usually you spend</td>
+               </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let list of actionList">
+                  <td style="width:50%">
+                     <label>{{list.name}}</label>
+                  </td>
+                  <td style="width:15%">
+                     {{list.thisMonth}}
+                  </td>
+                  <td style="width:35%;">
+                     <span *ngIf="!list.isAscIcon" style="color: red" class="fa fa-sort-desc fa-2x" aria-hidden="true"></span>
+                     <span *ngIf="!list.isAscIcon" class="ml-2">{{list.usuallySpend}}</span>
+                      <span *ngIf="list.isAscIcon" class="fa fa-sort-asc fa-2x mt-1 float-left" aria-hidden="true" style="position:relative;top:6px;color:limegreen"></span>
+                     <span *ngIf="list.isAscIcon" class="ml-2" style="position:relative;top:6px;">{{list.usuallySpend}}</span>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
 </div>`
 })
 export class TopIncomeSourcesComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
   public actionList: any[] = [
-    { name: " Salary Transfer", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x" },
-    { name: "Cash Deposit", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red", icon: "fa fa-sort-desc fa-2x" },
-    { name: "Profit Earned", thisMonth: 3453, usuallySpend: 6123, iconColor: "color: red", icon: "fa fa-sort-desc fa-2x" },
-    { name: "Rebete", thisMonth: 3453, usuallySpend: 123, iconColor: "color: limegreen", icon: "fa fa-sort-asc fa-2x" }
+    { name: "Salary Transfer", thisMonth: 3453, usuallySpend: 123, isAscIcon: true },
+    { name: "Cash Deposit", thisMonth: 3453, usuallySpend: 6123, isAscIcon: false },
+    { name: "Profit Earned", thisMonth: 3453, usuallySpend: 6123, isAscIcon: false },
+    { name: "Rebete", thisMonth: 3453, usuallySpend: 123, isAscIcon: true }
   ]
 }
 
@@ -860,9 +933,9 @@ export class SpendindTrendsComponent {
     Highcharts.chart('spendingTrendscontainer', this.options4);
   }
 
-  ngOnInit() {  
-    $(document).ready(function(){
-      setTimeout(function() { 
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
       }, 10);
     });

@@ -312,6 +312,7 @@ export class LogsComponent implements OnInit {
         passingparams: {
           "SchdeuleName": template.ScheduleName,
           "SchdeuleLogIdetifiier": template.Identifier,
+          "ExecutionDate": template.CreateDate,
         }
       }
     }

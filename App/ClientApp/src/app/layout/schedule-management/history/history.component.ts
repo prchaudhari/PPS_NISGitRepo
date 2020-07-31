@@ -301,6 +301,35 @@ export class HistoryComponent implements OnInit {
   }
 
 
+   download(url: string): void {
+
+    var blob = this.http.get(url, {
+      responseType: 'blob'
+    });
+    let fileName = "";
+          //const blob = new Blob([data.body], { type: contentType });
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, fileName);
+          } else {
+            var link = document.createElement('a');
+            link.setAttribute("type", "hidden");
+            link.download = fileName;
+            link.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+          }
+
+
+           // link.setAttribute("type", "hidden");
+           // link.download = 'Test';
+            //link.href = window.URL.createObjectURL(blob);
+            //link.href = window.URL.createObjectURL(new Blob(blob, {type: "application/zip"}))
+
+            //document.body.appendChild(link);
+            //link.click();
+  
+  }
+
 }
 
 
