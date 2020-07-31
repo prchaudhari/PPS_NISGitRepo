@@ -47,8 +47,8 @@
           </ng-container>
 
           <ng-container matColumnDef="date">
-            <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
-            <td mat-cell *matCellDef="let element">{{element.CreateDate | date : "dd/MM/yyyy" }} </td>
+            <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Execution Date </th>
+            <td mat-cell *matCellDef="let element">{{element.CreateDate | date : "dd/MM/yyyy  h:mm a" }} </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
@@ -56,7 +56,7 @@
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
                 <button type="button" title="View" id="btnDelete" (click)="navigationLogDetails(element)"><span class="fa fa-file-text-o"></span></button>
-                <button type="button" title="Retry" id="btnUpdate" (click)="reTryLog(element)" *ngIf="element.status=='Failed'"><span class="fa fa-refresh"></span></button>
+                <button type="button" title="Retry" id="btnUpdate" (click)="reTryLog(element)" *ngIf="element.status=='Failed'"><span class="fa fa-repeat"></span></button>
               </div>
             </td>
           </ng-container>

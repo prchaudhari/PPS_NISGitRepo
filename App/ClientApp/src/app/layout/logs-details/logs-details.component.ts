@@ -47,10 +47,11 @@ export class LogsDetailsComponent implements OnInit {
   public isCheckAll: boolean = false
   public disableMultipleDelete = true;
   public scheduleName: string;
+  public executionDate;
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
-  displayedColumns: string[] = ['UserID', 'status', 'date', 'actions'];
+  displayedColumns: string[] = ['UserID', 'renderEngineName', 'status', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -92,7 +93,7 @@ export class LogsDetailsComponent implements OnInit {
     private localstorageservice: LocalStorageService,
     private scheduleLogService: ScheduleLogServiceDetail) {
     this.sortedScheduleLogList = this.scheduleLogList.slice();
-  
+
 
     route.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
@@ -102,6 +103,7 @@ export class LogsDetailsComponent implements OnInit {
           if (localStorage.getItem('scheduleLogParams')) {
             this.scheduleLogIdentifier = this.params.Routeparams.passingparams.SchdeuleLogIdetifiier;
             this.scheduleName = this.params.Routeparams.passingparams.SchdeuleName;
+            this.executionDate = this.params.Routeparams.passingparams.ExecutionDate
           }
         } else {
           localStorage.removeItem("scheduleLogParams");
@@ -141,7 +143,9 @@ export class LogsDetailsComponent implements OnInit {
     this.sortedScheduleLogList = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'UserID': return compare(a.CustomerId, b.CustomerId, isAsc);
+        case 'UserID': return compareStr(a.CustomerName, b.CustomerName, isAsc);
+        case 'renderEngineName': return compareStr(a.RenderEngineName, b.RenderEngineName, isAsc);
+
         case 'status': return compareStr(a.Status, b.Status, isAsc);
         case 'date': return compareDate(a.CreateDate, b.CreateDate, isAsc);
         default: return 0;
@@ -167,7 +171,7 @@ export class LogsDetailsComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
     }
-    searchParameter.ScheduleLogDetailId = this.scheduleLogIdentifier
+    searchParameter.ScheduleLogId = this.scheduleLogIdentifier
     this.scheduleLogList = await scheduleLogService.getScheduleLogDetail(searchParameter);
     if (this.scheduleLogList.length == 0 && this.isFilterDone == true) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
@@ -203,7 +207,7 @@ export class LogsDetailsComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
       if (this.ScheduleLogFilterForm.value.filterUserId != null && this.ScheduleLogFilterForm.value.filterUserId != '') {
-        searchParameter.CustomerId = this.ScheduleLogFilterForm.value.filterUserId.trim();
+        searchParameter.CustomerName = this.ScheduleLogFilterForm.value.filterUserId.trim();
       }
       if (this.ScheduleLogFilterForm.value.filterStatus != null && this.ScheduleLogFilterForm.value.filterStatus != 0) {
         searchParameter.ScheduleStatus = this.ScheduleLogFilterForm.value.filterStatus;
@@ -249,7 +253,7 @@ export class LogsDetailsComponent implements OnInit {
         }
       });
     }
-    
+
   }
 
 

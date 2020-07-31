@@ -22,6 +22,12 @@ namespace nIS
         /// </summary>
         private string identifier = string.Empty;
 
+
+        /// <summary>
+        /// The role identifier
+        /// </summary>
+        private string scheduleHistoryIdentifier = string.Empty;
+
         /// <summary>
         /// The role name
         /// </summary>
@@ -66,6 +72,19 @@ namespace nIS
             }
         }
 
+        public string ScheduleHistoryIdentifier
+        {
+            get
+            {
+                return this.scheduleHistoryIdentifier;
+
+            }
+            set
+            {
+                this.scheduleHistoryIdentifier = value;
+
+            }
+        }
         /// <summary>
         /// Gets or sets role name
         /// </summary>

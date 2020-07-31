@@ -445,14 +445,21 @@ namespace nIS
                                             {
                                                 IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(transactionJson);
                                                 StringBuilder transaction = new StringBuilder();
+                                                StringBuilder selectOption = new StringBuilder();
                                                 accountTransactions.ToList().ForEach(trans =>
                                                 {
+                                                   
                                                     transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
                                                         trans.Narration + "</td><td>" + trans.FCY + "</td><td>" + trans.CurrentRate + "</td><td>"
                                                         + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'><button type='button' title='View'>" +
                                                         "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                 });
+                                                var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
+                                                distinctNaration.ToList().ForEach(item=> {
+                                                    selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                });
                                                 string accountTransactionstr = HtmlConstants.CURRENT_SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
                                                 htmlString.Append(accountTransactionstr);
                                             }
                                         }
@@ -463,6 +470,8 @@ namespace nIS
                                             {
                                                 IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(transactionJson);
                                                 StringBuilder transaction = new StringBuilder();
+                                                StringBuilder selectOption = new StringBuilder();
+
                                                 accountTransactions.ToList().ForEach(trans =>
                                                 {
                                                     transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
@@ -470,7 +479,13 @@ namespace nIS
                                                         + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'><button type='button' title='View'>" +
                                                         "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                 });
+                                                var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
+                                                distinctNaration.ToList().ForEach(item => {
+                                                    selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                });
                                                 string accountTransactionstr = HtmlConstants.CURRENT_SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
+                                                
                                                 htmlString.Append(accountTransactionstr);
                                             }
                                         }
@@ -513,10 +528,9 @@ namespace nIS
                                                 StringBuilder reminderstr = new StringBuilder();
                                                 reminderAndRecommendations.ToList().ForEach(item =>
                                                 {
-                                                    reminderstr.Append("<tr><td class='width75 text-left' style='background-color: #dce3dc;'><label>" +
+                                                    reminderstr.Append( "< tr >< td style = 'width:80%' >< label style = 'background-color: #dce3dc;' class='p-1 width100'>" +
                                                         item.Title + "</label></td><td><a>" +
-                                                        "<i class='fa fa-caret-left fa-2x' style='color:red' aria-hidden='true'>" +
-                                                        "</i>" + item.Action + "</a></td></tr>");
+                                                        "<i class='fa fa-caret-left fa-3x float-left' style='color:red'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></td></tr>");
                                                 });
                                                 string widgetstr = HtmlConstants.REMINDER_WIDGET_HTML.Replace("{{ReminderAndRecommdationDataList}}", reminderstr.ToString());
                                                 htmlString.Append(widgetstr);

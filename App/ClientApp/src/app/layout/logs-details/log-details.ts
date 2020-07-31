@@ -11,4 +11,6 @@ export class ScheduleLogDetail {
   "CreateDate": Date;
   "Status": string;
   "IsChecked": boolean = false;
+  "RenderEngineName": string;
+  "RenderEngineURL": string;
 }

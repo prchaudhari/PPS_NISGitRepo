@@ -52,7 +52,8 @@
             <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
-                <button type="button" title="Download" ><span class="fa fa-download"></span></button>
+                <button type="button" title="Download" (click)="download(element)" ><span class="fa fa-download"></span></button>
+                <!--<a  title="Download" href="E:/TayyabaShaikh/NIS/API/Statements/1/statement31_07_2020_12_27_57.zip"><span class="fa fa-download"></span></a>-->
                 <button type="button" title="Export PDF"><span class="fa fa-file-pdf-o"></span></button>
               </div>
             </td>

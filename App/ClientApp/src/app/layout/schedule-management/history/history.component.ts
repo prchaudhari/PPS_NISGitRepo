@@ -300,6 +300,54 @@ export class HistoryComponent implements OnInit {
     this.iterator();
   }
 
+  download(item): void {
+
+   this.uiLoader.start();
+    this.http.get(this.baseURL + 'ScheduleHistory/Download?scheduelHistoryIdentifier=' + item.Identifier, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+        this.uiLoader.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
+          const blob = new Blob([data.body], { type: contentType });
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, fileName);
+          } else {
+            var link = document.createElement('a');
+            link.setAttribute("type", "hidden");
+            link.download = fileName;
+            link.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+          }
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this.uiLoader.stop();
+        });
+
+    //var fileLocation = this.baseURL + item.StatementFilePath;
+    //var blob = this.http.get(fileLocation, {
+    //  responseType: 'blob'
+    //});
+    //let fileName = "";
+    ////const blob = new Blob([data.body], { type: contentType });
+    //if (window.navigator.msSaveOrOpenBlob) {
+    //  window.navigator.msSaveOrOpenBlob(blob, fileName);
+    //} else {
+    //  var link = document.createElement('a');
+    //  link.setAttribute("type", "hidden");
+    //  link.download = fileName;
+    //  link.href = window.URL.createObjectURL(blob);
+    //  document.body.appendChild(link);
+    //  link.click();
+    //}
+
+
+
+  }
 
 }
 
