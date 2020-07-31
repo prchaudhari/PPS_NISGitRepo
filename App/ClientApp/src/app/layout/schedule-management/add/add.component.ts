@@ -428,11 +428,11 @@ export class AddComponent implements OnInit {
 
       return true;
     }
-    else if (this.scheduleForm.value.HourOfDay == "Please Select") {
+    else if (this.scheduleForm.value.TimeOfDayHours == "Please Select") {
 
       return true;
     }
-    else if (this.scheduleForm.value.MinuteOfDay == "Please Select") {
+    else if (this.scheduleForm.value.TimeOfDayMinutes == "Please Select") {
 
       return true;
     }
@@ -443,7 +443,7 @@ export class AddComponent implements OnInit {
       return true;
     }
     else if (this.IsEndDateRequired) {
-      if (this.filterToDateError || this.scheduleForm.value.filtershiftenddate == "") {
+      if (this.filterToDateError || this.scheduleForm.value.filtershiftenddate == "" || this.scheduleForm.value.filtershiftenddate==null) {
         return true;
       }
     }

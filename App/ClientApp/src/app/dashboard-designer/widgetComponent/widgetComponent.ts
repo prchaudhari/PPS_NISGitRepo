@@ -321,10 +321,10 @@ export class SavingAvailableBalanceComponent {
       <form [formGroup]="transactionForm">
 
       <div class='float-right'>
-          <div  *ngIf="isShowAll">
+          <div class="float-left mr-2" *ngIf="isShowAll">
          
-            <select  class="form-control" formControlName="filterStatus" id="filterStatus">
-              <option value="0" selected> Search Item</option>
+            <select  class="form-control float-left" formControlName="filterStatus" id="filterStatus">
+              <option value="0"> Search Item</option>
               <option value="Failed">Failed</option>
               <option value="Completed">Completed</option>
               <option value="In Progress">In Progress</option>
@@ -519,14 +519,24 @@ export class TransactionDetailsComponent {
 
     </div>
     <div class="widget-area-grid padding-0">
-      <div class='float-left'>
-        <input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;<label for='showAll'>Show All</label>&nbsp;
-        <input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<label for='grpDate'>Group By Date</label>&nbsp;
+    <div class='float-left'>
+        <input type='radio' id='showAll' name='showAll' [checked]='isShowAll' (change)='ShowAll($event.target)'>&nbsp;<label for='showAll'>Show All</label>&nbsp;
+        <input type='radio' id='grpDate' name='showAll' [checked]='isGroupByDate' (change)='GroupByDate($event.target)'>&nbsp;<label for='grpDate'>Group By Date</label>&nbsp;
       </div>
-      <div class='float-right'> 
-        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;
-        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;
-        <a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> 
+    
+     <div class='float-right'>
+          <div class="float-left mr-2">
+         
+            <select  class="form-control float-left"  id="filterStatus">
+              <option value="0"> Search Item</option>
+              <option value="Failed">Failed</option>
+              <option value="Completed">Completed</option>
+              <option value="In Progress">In Progress</option>
+            </select>
+          </div>
+          <button href='javascript:void(0)'  class='btn btn-light btn-sm'>Search</button>&nbsp;
+          <button href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</button>&nbsp;
+          <button href='javascript:void(0)' class='btn btn-light btn-sm'>Print</button> 
       </div>
       <div class="d-flex justify-content-center mb-4">
         <div class="pagination-mat position-relative d-md-block d-none">
@@ -621,18 +631,31 @@ export class SavingTransactionDetailsComponent {
   public pageSize = 5;
   public currentPage = 0;
   public totalSize = 0;
-
+  public transactionForm: FormGroup;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   TransactionDetailData: any[] = [
     { date: '15/07/2020', type: 'CR', query: '', narration: 'ACB Credit :Salary', credit: 'R\'1666.67', debit: '', balance: 'R\'1771.42' },
-    { date: '18/07/2020', type: 'DB', query: '', narration: 'ACB Debit :DSTV', credit: '', debit: '-R\'1.123', balance: 'R\'1876.00' },
+    { date: '15/07/2020', type: 'CR', query: '', narration: 'INTEREST', credit: 'R\'500.00', debit: '', balance: 'R\'1771.42' },
+    { date: '18/07/2020', type: 'DB', query: '', narration: 'ACB Debit :Mobile', credit: '', debit: '-R\'100.123', balance: 'R\'1876.00' },
+    { date: '18/07/2020', type: 'DB', query: '', narration: 'ACB Debit :DSTV', credit: '', debit: '-R\'500.00', balance: 'R\'1876.00' },
     { date: '22/07/2020', type: 'DB', query: '', narration: 'Bank Charges', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
     { date: '23/07/2020', type: 'DB', query: '', narration: 'INTERNET BANKING FEE', credit: '', debit: '-R\'0.962', balance: 'R\'1654.56' },
     { date: '25/07/2020', type: 'CR', query: '', narration: 'ACB Credit :Medical Aid', credit: 'R\'1666.67', debit: '-R\'1.062', balance: 'R\'1771.42' },
+    { date: '25/07/2020', type: 'CR', query: '', narration: 'INTEREST', credit: 'R\'500.00', debit: '', balance: 'R\'1771.42' },
     { date: '26/07/2020', type: 'DB', query: '', narration: 'IBANK Payement:Electricity', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
     { date: '29/07/2020', type: 'DB', query: '', narration: 'IBANK Payement:Home Loan', credit: '', debit: '-R\'1.461', balance: 'R\'1453.21' },
+  ];
+
+  TransactionDetailDataGroup: any[] = [
+    { date: '15/07/2020', type: 'CR', query: '', narration: '-', credit: 'R\'2166.67', debit: '', balance: 'R\'2271.42' },
+    { date: '18/07/2020', type: 'DB', query: '', narration: '-', credit: '', debit: '-R\'600.123', balance: 'R\'1671.29' },
+    { date: '22/07/2020', type: 'DB', query: '', narration: '-', credit: '', debit: '-R\'1.461', balance: 'R\'1669.83' },
+    { date: '23/07/2020', type: 'DB', query: '', narration: '-', credit: '', debit: '-R\'0.962', balance: 'R\'1668.87' },
+    { date: '25/07/2020', type: 'CR', query: '', narration: '-', credit: 'R\'2166.67', debit: '', balance: 'R\'3835.54' },
+    { date: '26/07/2020', type: 'DB', query: '', narration: '-', credit: '', debit: '-R\'1.461', balance: 'R\'3834.07' },
+    { date: '29/07/2020', type: 'DB', query: '', narration: '-', credit: '', debit: '-R\'1.461', balance: 'R\'3882.60' },
   ];
 
   ngAfterViewInit() {
@@ -642,6 +665,41 @@ export class SavingTransactionDetailsComponent {
   ngOnInit() {
     this.dataSource = new MatTableDataSource(this.TransactionDetailData);
     this.dataSource.sort = this.sort;
+  }
+  public isShowAll = true;
+  public isGroupByDate = false;
+
+  ShowAll(event) {
+    const value = event.checked;
+    this.isShowAll = event.checked;
+    if (value) {
+      this.isGroupByDate = false;
+
+      this.dataSource = new MatTableDataSource(this.TransactionDetailData);
+      this.dataSource.sort = this.sort;
+    }
+    else {
+      this.isGroupByDate = true;
+
+      this.dataSource = new MatTableDataSource(this.TransactionDetailDataGroup);
+      this.dataSource.sort = this.sort;
+    }
+  }
+  GroupByDate(event) {
+    const value = event.checked;
+    this.isGroupByDate = event.checked;
+
+    if (value) {
+      this.isShowAll = false;
+      this.dataSource = new MatTableDataSource(this.TransactionDetailDataGroup);
+      this.dataSource.sort = this.sort;
+    }
+    else {
+      this.isShowAll = true;
+
+      this.dataSource = new MatTableDataSource(this.TransactionDetailData);
+      this.dataSource.sort = this.sort;
+    }
   }
 }
 

@@ -71,6 +71,13 @@ export class ViewAssetLibraryComponent implements OnInit {
     else {
       this.userClaimsRolePrivilegeOperations = [];
     }
+    this.params = JSON.parse(localStorage.getItem('assetLibraryparams'));
+    if (localStorage.getItem('assetLibraryparams')) {
+      this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
+      this.getAssetLibraryRecords();
+
+    }
+
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -117,7 +124,7 @@ export class ViewAssetLibraryComponent implements OnInit {
           this.params = JSON.parse(localStorage.getItem('assetLibraryparams'));
           if (localStorage.getItem('assetLibraryparams')) {
             this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
-            this.getAssetLibraryRecords();
+            //this.getAssetLibraryRecords();
 
           }
         } else {

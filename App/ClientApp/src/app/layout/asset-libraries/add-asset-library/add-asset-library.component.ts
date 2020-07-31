@@ -153,7 +153,7 @@ export class AddAssetLibraryComponent implements OnInit {
           this.params = JSON.parse(localStorage.getItem('assetLibraryparams'));
           if (localStorage.getItem('assetLibraryparams')) {
             this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
-            this.getAssetLibraryRecords('', false);
+           // this.getAssetLibraryRecords('', false);
 
           }
         } else {
@@ -191,6 +191,12 @@ export class AddAssetLibraryComponent implements OnInit {
     paginatorIntl.firstPageLabel = '';
     paginatorIntl.lastPageLabel = '';
     this.LoadAssetSettings();
+    this.params = JSON.parse(localStorage.getItem('assetLibraryparams'));
+    if (localStorage.getItem('assetLibraryparams')) {
+      this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
+      this.getAssetLibraryRecords('', false);
+
+    }
   }
 
   ngAfterViewInit() {

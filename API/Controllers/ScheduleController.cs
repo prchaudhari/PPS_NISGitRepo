@@ -286,7 +286,69 @@ namespace nIS
 
 
         #endregion
-       
+
+        #region Download
+
+        [HttpGet]
+        [Route("ScheduleHistory/Download")]
+        public HttpResponseMessage Download(string scheduelHistoryIdentifier)
+        {
+            try
+            {
+
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                string path = string.Empty;
+                ScheduleRunHistory history = this.scheduleManager.GetScheduleRunHistorys(new ScheduleSearchParameter()
+                {
+                    Identifier = scheduelHistoryIdentifier,
+                    SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
+                }, tenantCode).FirstOrDefault();
+
+
+                string relativePath = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH;
+                string FileName = history.StatementFilePath.Split('\'').ToList().LastOrDefault();
+                path = history.StatementFilePath.Replace("\'","/");
+                path = relativePath + ModelConstant.ASSETPATHSLASH + path;
+
+                if (!File.Exists(path))
+                {
+                    throw new HttpResponseException(HttpStatusCode.NotFound);
+                }
+
+                try
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+                        {
+                            byte[] bytes = new byte[file.Length];
+                            file.Read(bytes, 0, (int)file.Length);
+                            ms.Write(bytes, 0, (int)file.Length);
+
+                            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+                            httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
+                            httpResponseMessage.Content.Headers.Add("x-filename", FileName);
+                            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                            httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                            httpResponseMessage.Content.Headers.ContentDisposition.FileName = FileName;
+                            httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                            return httpResponseMessage;
+                        }
+                    }
+                }
+                catch (IOException)
+                {
+                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
         #endregion
 
     }

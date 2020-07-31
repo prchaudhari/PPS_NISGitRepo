@@ -99,19 +99,18 @@ namespace nIS
 
         public const string CURRENT_SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
             "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
-            "<input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;" + "<label for='showAll'>Show All</label>&nbsp;" +
-            "<input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
-            " <div class='float-right'> <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;" +
+            "<input type='radio' id='showAll' name='showAll' [checked]='isShowAll' (change)='ShowAll($event.target)'>&nbsp;<label for='showAll'>Show All</label>&nbsp;" +
+            "<input type='radio' id='showAll' name='showAll' [checked]='isShowAll' (change)='ShowAll($event.target)'>&nbsp;<label for='showAll'>Show All</label>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
+            " <div class='float-right'><div class='float-left mr-2'><select class='form-control float-left'  id='filterStatus'><option value = '0' > Search Item</option>" +
+            "{{SelectOption}}  </select></div><a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;" +
             "<a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> </div>" +
             "<div class='table-responsive'><table class='table m-1 table-hover'><thead><tr>" +
             "<th class='width12'>Date</th><th class='width8'>Type</th class='width30'><th>Narration</th><th class='width12'>FCY</th><th class='width13'>Current Rate</th> <th class='width13'>LCY</th><th class='width12'>Action</th></tr>" +
             "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
-        public const string REMINDER_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-            "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'><table><thead><tr><td class='width75'></td>" +
-            "<td class='text-danger width25'> <span><i class='fa fa-caret-left fa-2x' aria-hidden='true'></i>Click</span></td></tr></thead>" +
-            "<tbody>{{ReminderAndRecommdationDataList}}</tbody></table> " +
-            "</div></div></div>";
+        public const string REMINDER_WIDGET_HTML = "<div class='widget'><div class='widget'><div class='widget-header'><span class='widget-header-title'> Reminder and Recommendations </span></div><div class='widget-area-grid'><table ><thead> " +
+        "< tr >< td ></ td >< td style='color:red;float: right;'><i class='fa fa-caret-left fa-3x float-left' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></td>" +
+        "</tr></thead><tbody>{{ReminderAndRecommdationDataList}}</tbody></table> </div>  </div></div>";
 
         public const string TOP_4_INCOME_SOURCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
             "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><div class='table-responsive'><table><thead class='border-bottom'><tr>" +
