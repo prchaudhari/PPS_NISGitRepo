@@ -80,7 +80,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        [HttpPost]
+        [HttpGet]
         public bool ReRunSchedule(long scheduleLogIdentifier)
         {
             try

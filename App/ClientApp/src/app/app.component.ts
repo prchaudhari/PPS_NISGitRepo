@@ -28,7 +28,7 @@ export class AppComponent {
   public isMessageBoxDisplyed = false;
 
   ngOnInit(): void {
-    this.bnIdle.startWatching(600).subscribe((isTimedOut: boolean) => {
+    this.bnIdle.startWatching(1800).subscribe((isTimedOut: boolean) => {
       if (isTimedOut) {
         console.log('session expired');
         console.log(this.router.url);

@@ -80,7 +80,7 @@ export class AddComponent implements OnInit {
   public userClaimsRolePrivilegeOperations;
   public IsAllRole: any;
   public usersList = [];
-
+  public Name;
   public dependentEntityCount: any = [
     {
       "EntityName": "Dashboard",
@@ -506,6 +506,7 @@ export class AddComponent implements OnInit {
     if (this.RoleIdentifier != null)
       searchParameter.Identifier = this.RoleIdentifier;
     this.rolRecord = await roleService.getRoles(searchParameter);
+    this.Name = this.rolRecord[0].Name;
     this.rolRecord.forEach(roleObject => {
       this.roleFormGroup.patchValue({
         roleName: roleObject.Name,
@@ -1126,6 +1127,7 @@ export class AddComponent implements OnInit {
       searchParameter.SortParameter.SortColumn = "Id";
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
+      searchParameter.ActivationStatus = true;
       //this.spinner.start();
       this.usersList = await userService.getUser(searchParameter);
       

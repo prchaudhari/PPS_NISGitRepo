@@ -94,5 +94,11 @@ export class URLConfiguration {
 
   //Schedule Url Method
   public static get scheduleLogGetUrl(): string { return "ScheduleLogs/List" };
+  public static get scheduleLogGetDetailUrl(): string { return "ScheduleLog/ScheduleLogDetail/List" };
+
+  public static get reRunScheduleLogGetUrl(): string { return "ScheduleLogs/ReRunSchedule" };
+
+  public static get reRunScheduleLogDetailGetUrl(): string { return "ScheduleLogs/RetryStatementForFailedCustomerReocrds" };
+
 
 }

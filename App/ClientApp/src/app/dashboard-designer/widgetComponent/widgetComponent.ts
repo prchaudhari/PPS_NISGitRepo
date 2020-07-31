@@ -306,7 +306,9 @@ export class SavingAvailableBalanceComponent {
   selector: 'transactionDetails',
   template: `<div class="widget">
   <div class="widget-header">
-    <span class="widget-header-title"> Transaction Details </span>
+    <span class="widget-header-title"> Transaction Details
+<span class="float-right mr-4"><i class="fa fa-caret-left mr-2" style="color:red;font-size: 20px;"></i>Chat Now</span>
+</span>
   </div>
   <div class="widget-area-grid padding-0">
       <div class='float-left'>
@@ -584,13 +586,14 @@ export class SavingTransactionDetailsComponent {
                 <thead>
                   <tr>
                     <td></td>
-                    <td style="color:red;float: right;"> <span><i class="fa fa-caret-left fa-3x"  aria-hidden="true"></i>Click</span></td>
+                    <td style="color:red;float: right;"><i class="fa fa-caret-left fa-3x float-left" aria-hidden="true"></i><span class="mt-2 d-inline-block ml-2">Click</span></td>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let list of actionList">
-                    <td style="width:80%"><label style="background-color: #dce3dc;">{{list.title}} </label></td>
-                    <td style="float: left;"><a><i class="fa fa-caret-left fa-3x" style="color:red"aria-hidden="true"></i>{{list.action}}</a></td>
+                    <td style="width:80%"><label style="background-color: #dce3dc;" class="p-1 width100">{{list.title}} </label></td>
+                    <td style="float: left;"><a><i class="fa fa-caret-left fa-3x float-left" style="color:red"></i>
+                        <span class="mt-2 d-inline-block ml-2">{{list.action}}</span></a></td>
                   </tr>
                 </tbody>
             </table> 
@@ -699,7 +702,8 @@ export class AnalyticsWidgetComponent {
         <span class="widget-header-title"> Your Saving Trends </span>
     </div>
     <div class="widget-area position-relative width100">
-          <h4 style="text-align:right" class='mb-4'>+5.6%</h4><h4 style="text-align:right" class='mb-4'>+3.5%</h4>
+<div class="text-right" style="font-size:20px"><span>+5.6%</span><span class="pl-3">+3.5%</span></div>
+          
           <div id="savingTrendscontainer"></div>        
     </div>
 </div>`
@@ -709,7 +713,7 @@ export class SavingTrendsComponent {
   widgetsGridsterItemArray: any[] = [];
   public options4: any = {
     title: {
-      text: 'Your Spending Trends'
+      text: ''
     },
     xAxis: {
       categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
@@ -759,7 +763,6 @@ export class SavingTrendsComponent {
             <span class="widget-header-title"> Top Four Income Sources </span>
         </div>
         <div class="widget-area">
-
             <table>
                 <thead>
                     <tr>
@@ -771,14 +774,14 @@ export class SavingTrendsComponent {
                 <tbody>
                     <tr *ngFor="let list of actionList">
                         <td style="width:50%">
-                            <label>{{list.name}} </label>
+                            {{list.name}}
                         </td>
                         <td style="width:15%">
-                            <label>{{list.thisMonth}} </label>
+                           {{list.thisMonth}}
                         </td>
-                        <td style="width:35%;float:center">
-                           
-                            <label> <span style="color: red" class="{{list.icon}}" aria-hidden="true"></span>{{list.usuallySpend}} </label>
+                        <td style="width:35%;">
+                           <span style="color: red" class="{{list.icon}} mt-1 float-left" aria-hidden="true"></span>
+<span class="ml-2 d-inline-block">{{list.usuallySpend}}</span>
                         </td>
                        
                     </tr>
@@ -816,7 +819,7 @@ export class SpendindTrendsComponent {
   widgetsGridsterItemArray: any[] = [];
   public options4: any = {
     title: {
-      text: 'Your Spending Trends'
+      text: ''
     },
     xAxis: {
       categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr']

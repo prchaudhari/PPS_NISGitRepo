@@ -12,8 +12,7 @@
       <div class="row">
         <div class="col-sm-7">
 
-          <div *ngFor="let widget of widgetList">
-            <div class="widget-card">
+            <div class="widget-card" *ngFor="let widget of widgetList">
               <div class="hide-radio widget-icons">
                 <label>
                   <input type="radio" name="widgetType" id="inputWidgetImage" (click)="setWidgetType(widget)"[checked]="widget.Checked">
@@ -22,7 +21,6 @@
               </div>
               <label class="text-center width100 pt-2 m-0 widget-name">{{widget.DisplayName}}</label>
             </div>
-          </div>
 
         </div>
         <div class="col-sm-5">
