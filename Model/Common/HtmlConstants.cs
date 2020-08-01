@@ -88,29 +88,20 @@ namespace nIS
             "<span class='float-left'> Total Spend</span><span class='float-right'>{{TotalSpend}}</span><br/>" +
             "<span class='float-left'> Savings </span><span class='float-right'>{{Savings}}</span><br/></div></div></div>";
 
-        //public const string SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-        //    "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
-        //    "<input type='radio' id='showAll' name='showAll' value='showAll'>&nbsp;" + "<label for='showAll'>Show All</label>&nbsp;" +
-        //    "<input type='radio' id='grpDate' name='grpDate' value='grpDate'>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
-        //    " <div class='float-right'> <a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> </div>" +
-        //    "<div class='table-responsive'><table class='table m-1 table-hover table-sm'>" +
-        //    "<thead><tr><th>Date</th><th>Type</th><th>Narration</th><th>Credit</th><th>Debit</th><th>Query</th><th>Balance</th></tr>" +
-        //    "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
-
         public const string CURRENT_SAVING_TRANSACTION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
             "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
-            "<input type='radio' id='showAll' name='showAll' [checked]='isShowAll' (change)='ShowAll($event.target)'>&nbsp;<label for='showAll'>Show All</label>&nbsp;" +
-            "<input type='radio' id='showAll' name='showAll' [checked]='isShowAll' (change)='ShowAll($event.target)'>&nbsp;<label for='showAll'>Show All</label>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
-            " <div class='float-right'><div class='float-left mr-2'><select class='form-control float-left'  id='filterStatus'><option value = '0' > Search Item</option>" +
-            "{{SelectOption}}  </select></div><a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;" +
+            "<input type='radio' id='showAll' name='showAll'>&nbsp;<label for='showAll'>Show All</label>&nbsp;" +
+            "<input type='radio' id='grpDate' name='showAll'>&nbsp;<labelfor='grpDate'>Group By Date</label></div>" +
+            " <div class='float-right'><div class='float-left mr-2'><select class='form-control float-left' id='filterStatus'><option value = '0'> Search Item</option>" +
+            "{{SelectOption}} </select></div><a href='javascript:void(0)' class='btn btn-light btn-sm'>Search</a>&nbsp;" +
             "<a href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</a>&nbsp;<a href='javascript:void(0)' class='btn btn-light btn-sm'>Print</a> </div>" +
             "<div class='table-responsive'><table class='table m-1 table-hover'><thead><tr>" +
-            "<th class='width12'>Date</th><th class='width8'>Type</th class='width30'><th>Narration</th><th class='width12'>FCY</th><th class='width13'>Current Rate</th> <th class='width13'>LCY</th><th class='width12'>Action</th></tr>" +
+            "<th class='width12'>Date</th><th class='width8'>Type</th class='width30'><th>Narration</th><th class='width12 text-right'>FCY</th><th class='width13 text-right'>Current Rate</th> <th class='width13 text-right'>LCY</th><th class='width12'>Action</th></tr>" +
             "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
-        public const string REMINDER_WIDGET_HTML = "<div class='widget'><div class='widget'><div class='widget-header'><span class='widget-header-title'> Reminder and Recommendations </span></div><div class='widget-area-grid'><table ><thead> " +
-        "< tr >< td ></ td >< td style='color:red;float: right;'><i class='fa fa-caret-left fa-3x float-left' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></td>" +
-        "</tr></thead><tbody>{{ReminderAndRecommdationDataList}}</tbody></table> </div>  </div></div>";
+        public const string REMINDER_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
+            "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'><table><thead><tr><td class='width75'></td>" +
+            "<td class='text-danger width25'> <i class='fa fa-caret-left fa-2x' aria-hidden='true'></i> <span class='mt-2 d-inline-block ml-2'>Click</span></td></tr></thead><tbody>{{ReminderAndRecommdationDataList}}</tbody></table></div></div></div>";
 
         public const string TOP_4_INCOME_SOURCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
             "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><div class='table-responsive'><table><thead class='border-bottom'><tr>" +
@@ -143,6 +134,10 @@ namespace nIS
         public const string TAB_NAVIGATION_SCRIPT = "<script type='text/javascript'>$(document).ready(function(){$('.nav-link').click(function(t){$('.tabDivClass').hide(),$('.nav-link').removeClass('active');let a='active '+$(t.currentTarget).attr('class');$(t.currentTarget).attr('class',a);let e=$(t.currentTarget).attr('class').split(' '),n=e[e.length-1];$('.'+n).hasClass('d-none')&&$('.'+n).removeClass('d-none'),$('.'+n).show()})});</script>";
 
         public const string ANALYTICS_CHART_WIDGET_SCRIPT = "<script type='text/javascript'> setTimeout(function () { Highcharts.chart('analyticschartcontainer', { chart: { plotBackgroundColor: null, plotBorderWidth: null, plotShadow: !1, type: 'pie' }, title: { text: '' }, tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' }, accessibility: { point: { valueSuffix: '%' } }, plotOptions: { pie: { allowPointSelect: !0, cursor: 'pointer', dataLabels: { enabled: !0, format: '{point.percentage:.1f} %' }, showInLegend: !0 } }, series: [{ name: 'Percentage', colorByPoint: !0, data: [{ name: 'Cutomer Information', y: 11.84 }, { name: 'Account Information', y: 10.85 }, { name: 'Image', y: 4.67 }, { name: 'Video', y: 4.18 }, { name: 'News Alerts', y: 7.05 }] }] }) }, 100); </script>";
+
+        public const string SAVING_TREND_CHART_WIDGET_SCRIPT = "<script type='text/javascript'>setTimeout(function () { Highcharts.chart('savingTrendscontainer', { title: { text: '' }, xAxis: { categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] }, labels: { items: [{ style: { left: '50px', top: '18px', color: Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color || 'black' } }] }, series: [{ name: '', data: [1.5, 2.5, 3, 1.5, 3, 2, 4], marker: { lineWidth: 1, lineColor: Highcharts.getOptions().colors[3], fillColor: 'white' } }] }) }, 100);</script>";
+
+        public const string SPENDING_TREND_CHART_WIDGET_SCRIPT = "<script type='text/javascript'>setTimeout(function () { Highcharts.chart('spendingTrendscontainer', { title: { text: '' }, xAxis: { categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr'] }, labels: { items: [{ style: { left: '50px', top: '18px', color: Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color || 'black' } }] }, series: [{ type: 'column', name: 'Your Income', data: [1, 3, 4, 2, 5] }, { type: 'column', name: 'Your Spending', data: [2, 2, 1, 4, 1] }, { type: 'spline', name: '', data: [1.5, 2.5, 3, 1.5, 3], marker: { lineWidth: 2, lineColor: Highcharts.getOptions().colors[3], fillColor: 'white' } }] }) }, 100);</script>";
 
         public const string HTML_FOOTER = " {{ChartScripts}} </body></html>";
     }

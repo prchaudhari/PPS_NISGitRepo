@@ -273,13 +273,12 @@ const List_Data_Summary: ListSummary[] = [
     </div>
 </div>`
 })
-export class CurrentAvailableBalanceComponent {
+export class SavingAvailableBalanceComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
-
 }
 
-// Component Created for Saving Available Balance Widget--
+// Component Created for Current Available Balance Widget--
 @Component({
   selector: 'currentAvailableBalance',
   template: `<div class="widget">
@@ -297,10 +296,9 @@ export class CurrentAvailableBalanceComponent {
     </div>
 </div>`
 })
-export class SavingAvailableBalanceComponent {
+export class CurrentAvailableBalanceComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
-
 }
 
 // Component Created for Current Transaction details Widget--
