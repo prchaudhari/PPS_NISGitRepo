@@ -292,8 +292,8 @@ namespace nIS
                                             htmlString.Append("<div class='row'>");
                                             isRowComplete = false;
                                         }
-                                        int divLength = ((mergedlst[x].Width * 12) % 20) != 0 ? (((mergedlst[x].Width * 12) / 20) + 1)
-                                                                    : ((mergedlst[x].Width * 12) / 20);
+                                        int divLength = ((mergedlst[i].Width * 12) % 20) != 0 ? (((mergedlst[i].Width * 12) / 20) + 1)
+                                                                    : ((mergedlst[i].Width * 12) / 20);
                                         tempRowWidth = tempRowWidth + divLength;
 
                                         // If current col-lg class length is greater than 12, 
