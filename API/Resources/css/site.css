@@ -23,9 +23,9 @@
     max-width: 95%;
   }
 
-  .modal-xl .modal-content {
-    max-height: 600px;
-  }
+    .modal-xl .modal-content {
+        list-row-small max-height: 600px;
+    }
 
   td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
     padding-left: 10px;
@@ -1442,7 +1442,7 @@
     width: 460px;
   }
 
-  .list-row-small {
+.list-row-small {
     width: 100%;
     float: left;
     min-height: 20%;
@@ -1450,7 +1450,8 @@
     text-align: center;
     direction: ltr;
     position: relative;
-  }
+    border-bottom: thin solid #dee2e6;
+}
 
   .ht70px {
     height: 70px;

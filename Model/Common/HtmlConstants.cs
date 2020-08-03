@@ -41,7 +41,7 @@ namespace nIS
 
         public const int CURRENT_ACCOUNT_PAGE_TYPE_ID = 3;
 
-        public const string HTML_HEADER = "<html><head><title>NIS Output</title><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel='stylesheet' href='../common/css/bootstrap.min.css'><link rel='stylesheet' href='../common/css/font-awesome.min.css'><script src='../common/js/jquery.min.js'></script><script src='../common/js/popper.min.js'></script><script src='../common/js/bootstrap.min.js'></script><script src='../common/js/highcharts.js'></script><script src='../common/js/series-label.js'></script><script src='../common/js/exporting.js'></script><script src='../common/js/export-data.js'></script><script src='../common/js/accessibility.js'></script><script src='../common/js/script.js'></script><link rel='stylesheet' href='../common/css/site.css'></head><body>";
+        public const string HTML_HEADER = "<html><head><title>NIS Output</title><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel='stylesheet' href='../common/css/bootstrap.min.css'><link rel='stylesheet' href='../common/css/font-awesome.min.css'><script src='../common/js/jquery.min.js'></script><script src='../common/js/popper.min.js'></script><script src='../common/js/bootstrap.min.js'></script><script src='../common/js/highcharts.js'></script><script src='../common/js/series-label.js'></script><script src='../common/js/exporting.js'></script><script src='../common/js/export-data.js'></script><script src='../common/js/accessibility.js'></script><script src='../common/js/script.js'></script><link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'></head><body>";
 
         public const string SCRIPT_TAG = "<script>function onTabChangeClicked(e){var t=document.getElementsByClassName('tabDivClass');for(x=0;x<t.length;x++)t[x].style.display='none';'Home'==e?document.getElementById('Home-Div').style.display='block':'Current'==e?document.getElementById('CurrentAcc-Div').style.display='block':'Saving'==e&&(document.getElementById('SavingAcc-Div').style.display='block')}  </script>";
 
@@ -49,7 +49,7 @@ namespace nIS
             "<a class='navbar-brand ml-auto' href='javascript:void(0);'> <img src = '{{BrandLogo}}' height='60'></a> </nav> " +
             "<nav class='navbar navbar-expand-sm bg-dark navbar-dark'><div class='collapse navbar-collapse' id='collapsibleNavbar'>" +
             "<ul class='navbar-nav nav'>" + "{{NavItemList}}" + "</ul>" +
-            "<ul class='navbar-nav ml-auto width80px'>" + "<li class='nav-item date'><a class='text-white'>{{Today}}</a></li>" + "</ul></div></nav>";
+            "<ul class='navbar-nav ml-auto'>" + "<li class='nav-item date'><a class='text-white'>{{Today}}</a></li>" + "</ul></div></nav>";
 
         public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div>" +
@@ -83,7 +83,7 @@ namespace nIS
         public const string SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Available Balance</h5> </div>" +
             "<div class='card-body'><div><h4 class='mb-4 text-right'>" +
-            "<i class='fa fa-sort-asc text-success' aria-hidden='true'></i>&nbsp;{{TotalValue}}</h4>" +
+            "<i class='{{AccountIndicatorClass}}' aria-hidden='true'></i>&nbsp;{{TotalValue}}</h4>" +
             "<span class='float-left'> Total Deposits</span><span class='float-right'>{{TotalDeposit}}</span><br/>" +
             "<span class='float-left'> Total Spend</span><span class='float-right'>{{TotalSpend}}</span><br/>" +
             "<span class='float-left'> Savings </span><span class='float-right'>{{Savings}}</span><br/></div></div></div>";
@@ -100,8 +100,7 @@ namespace nIS
             "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
         public const string REMINDER_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-            "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'><table><thead><tr> <td></td>" +
-            "<td style='color:red;float: right;'><i class='fa fa-caret-left fa-3x float-left' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></td></tr></thead><tbody>{{ReminderAndRecommdationDataList}}</tbody></table></div></div></div>";
+            "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'>{{ReminderAndRecommdationDataList}}</div></div></div>";
 
         public const string TOP_4_INCOME_SOURCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
             "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><div class='table-responsive'><table><thead class='border-bottom'><tr>" +
