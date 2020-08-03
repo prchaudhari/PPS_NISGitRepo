@@ -586,19 +586,23 @@
         //        throw;
         //    }
         //}
-
+        /// <summary>
         /// This method help to write html string to actual file
         /// </summary>
         /// <param name="Message"> the message string </param>
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, long batchId)
+        public string WriteToFile(string Message, string fileName, long batchId, long customerId)
         {
             string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-            string statementDestPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements";
-            string path = statementDestPath + "\\" + batchId + "\\";
-            string statementVirtualPath = "\\Statements" + "\\" + batchId + "\\" + fileName;
+            string statementDestPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements" + "\\" + batchId;
+            if (!Directory.Exists(statementDestPath))
+            {
+                Directory.CreateDirectory(statementDestPath);
+            }
+            string path = statementDestPath + "\\" + customerId + "\\";
+            string statementVirtualPath = "\\Statements" + "\\" + batchId + "\\" + customerId + "\\" + fileName;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -623,6 +627,37 @@
             //To move js, css and other assets contents which are common to each statment file
             DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
             return statementVirtualPath;
+        }
+
+        /// <summary>
+        /// This method help to write json stringin to actual file
+        /// </summary>
+        /// <param name="Message"> the message string </param>
+        /// <param name="fileName"> the file name </param>
+        /// <param name="batchId"> the batch identifier </param>
+        /// <param name="customerId"> the customer identifier </param>
+        public void WriteToJsonFile(string Message, string fileName, long batchId, long customerId)
+        {
+            string jsonFileDestPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements" + "\\" + batchId;
+            if (!Directory.Exists(jsonFileDestPath))
+            {
+                Directory.CreateDirectory(jsonFileDestPath);
+            }
+            string path = jsonFileDestPath + "\\" + customerId + "\\";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filepath = path + fileName;
+            if (File.Exists(filepath))
+            {
+                File.Delete(filepath);
+            }
+            // Create a file to write to.
+            using (StreamWriter sw = File.CreateText(filepath))
+            {
+                sw.WriteLine(Message);
+            }
         }
 
         /// <summary>
@@ -672,18 +707,22 @@
             }
         }
 
-
+        /// <summary>
+        /// This method help to create zip file of common html with js, css, and image files
+        /// </summary>
+        /// <param name="htmlstr"> the html string </param>
+        /// <param name="fileName"> the filename </param>
+        /// <param name="batchId"> the batch id </param>
         public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId)
         {
             string destPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements";
-            string resourceFilePath = destPath + "\\common";
-            
             string path = destPath + "\\" + batchId + "\\";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-
+            
+            string resourceFilePath = destPath + "\\" + batchId + "\\common";
             string zipFileVirtualPath = "\\Statements" +"\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
             string zipfilepath = AppDomain.CurrentDomain.BaseDirectory + zipFileVirtualPath;
             string temppath = path + "\\temp\\";
@@ -698,20 +737,15 @@
                 Directory.CreateDirectory(spath);
             }
             string filepath = spath + fileName;
-            if (!File.Exists(filepath))
+            if (File.Exists(filepath))
             {
-                // Create a file to write to.
-                using (StreamWriter sw = File.CreateText(filepath))
-                {
-                    sw.WriteLine(htmlstr);
-                }
+                File.Delete(filepath);
             }
-            else
+
+            // Create a file to write to.
+            using (StreamWriter sw = File.CreateText(filepath))
             {
-                using (StreamWriter sw = File.AppendText(filepath))
-                {
-                    sw.WriteLine(htmlstr);
-                }
+                sw.WriteLine(htmlstr);
             }
             DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
             ZipFile.CreateFromDirectory(temppath, zipfilepath);

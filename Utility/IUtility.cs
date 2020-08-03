@@ -140,14 +140,23 @@
         //  IList<Websym.Core.EventManager.Event> AddUserNotificationSubscription(EventSearchParameter eventSearchParameter, DeliveryMode deliveryMode, string userIdentifier, string contactNumber, string emailAddress, string tenantCode);
 
         //bool SendNotification(EventContext eventContext, DeliveryMode deliveryMode, string tenantCode);
-
+        /// <summary>
         /// This method help to write html string to actual file
         /// </summary>
         /// <param name="Message"> the message string </param>
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        string WriteToFile(string Message, string fileName, long batchId);
+        string WriteToFile(string Message, string fileName, long batchId, long customerId);
+
+        /// <summary>
+        /// This method help to write json stringin to actual file
+        /// </summary>
+        /// <param name="Message"> the message string </param>
+        /// <param name="fileName"> the file name </param>
+        /// <param name="batchId"> the batch identifier </param>
+        /// <param name="customerId"> the customer identifier </param>
+        void WriteToJsonFile(string Message, string fileName, long batchId, long customerId);
 
         /// <summary>
         /// This method help to copy files from one directory to another directory
@@ -157,6 +166,12 @@
         /// <param name="copySubDirs"> the bool value of is want to copy sub directory of source directory </param>
         void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs);
 
+        /// <summary>
+        /// This method help to create zip file of common html with js, css, and image files
+        /// </summary>
+        /// <param name="htmlstr"> the html string </param>
+        /// <param name="fileName"> the filename </param>
+        /// <param name="batchId"> the batch id </param>
         string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId);
         #endregion
 

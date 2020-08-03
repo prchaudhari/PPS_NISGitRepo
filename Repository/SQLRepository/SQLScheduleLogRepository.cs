@@ -876,7 +876,7 @@ namespace nIS
                 if (logDetailRecord.Status != ScheduleLogStatus.Failed.ToString())
                 {
                     string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id);
+                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id);
 
                     logDetailRecord.StatementFilePath = filePath;
                     logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();

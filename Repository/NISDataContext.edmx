@@ -15,13 +15,13 @@
           <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Currency" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Balance" Type="decimal" Precision="8" Scale="2" Nullable="false" />
-          <Property Name="TotalDeposit" Type="decimal" Precision="8" Scale="2" Nullable="false" />
-          <Property Name="TotalSpend" Type="decimal" Precision="8" Scale="2" />
-          <Property Name="ProfitEarned" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Balance" Type="decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="TotalDeposit" Type="decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="TotalSpend" Type="decimal" Precision="11" Scale="2" />
+          <Property Name="ProfitEarned" Type="decimal" Precision="11" Scale="2" />
           <Property Name="Indicator" Type="nvarchar" MaxLength="50" />
-          <Property Name="FeesPaid" Type="decimal" Precision="8" Scale="2" />
-          <Property Name="GrandTotal" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="FeesPaid" Type="decimal" Precision="11" Scale="2" />
+          <Property Name="GrandTotal" Type="decimal" Precision="11" Scale="2" />
         </EntityType>
         <EntityType Name="AccountTransaction">
           <Key>
@@ -293,15 +293,15 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AccountId" Type="bigint" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="Month" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="SpendAmount" Type="decimal" Precision="8" Scale="2" Nullable="false" />
-          <Property Name="SpendPercentage" Type="decimal" Precision="2" Scale="2" />
-          <Property Name="Income" Type="decimal" Precision="8" Scale="2" />
-          <Property Name="IncomePercentage" Type="decimal" Precision="2" Scale="2" />
+          <Property Name="SpendAmount" Type="decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="SpendPercentage" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="Income" Type="decimal" Precision="11" Scale="2" />
+          <Property Name="IncomePercentage" Type="decimal" Precision="4" Scale="2" />
         </EntityType>
         <EntityType Name="Schedule">
           <Key>
@@ -415,8 +415,8 @@
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="Source" Type="nvarchar" MaxLength="100" />
-          <Property Name="CurrentSpend" Type="decimal" Precision="8" Scale="2" />
-          <Property Name="AverageSpend" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="CurrentSpend" Type="decimal" Precision="11" Scale="2" />
+          <Property Name="AverageSpend" Type="decimal" Precision="11" Scale="2" />
         </EntityType>
         <EntityType Name="TransactionDetail">
           <Key>
@@ -430,7 +430,7 @@
           <Property Name="TransactionType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Details" Type="nvarchar" MaxLength="500" />
-          <Property Name="Amount" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="11" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -633,22 +633,22 @@
           <EntitySet Name="AssetSettingRecords" EntityType="NISModel.AssetSettingRecord" />
           <EntitySet Name="ScheduleRunHistoryRecords" EntityType="NISModel.ScheduleRunHistoryRecord" />
           <EntitySet Name="RenderEngineRecords" EntityType="NISModel.RenderEngineRecord" />
-          <EntitySet Name="AccountTransactionRecords" EntityType="NISModel.AccountTransactionRecord" />
           <EntitySet Name="BatchDetailRecords" EntityType="NISModel.BatchDetailRecord" />
           <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
           <EntitySet Name="CustomerInfoRecords" EntityType="NISModel.CustomerInfoRecord" />
           <EntitySet Name="CustomerMediaRecords" EntityType="NISModel.CustomerMediaRecord" />
           <EntitySet Name="NewsAlertRecords" EntityType="NISModel.NewsAlertRecord" />
-          <EntitySet Name="SavingTrendRecords" EntityType="NISModel.SavingTrendRecord" />
-          <EntitySet Name="Top4IncomeSourcesRecord" EntityType="NISModel.Top4IncomeSourcesRecord" />
-          <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
           <EntitySet Name="CustomerMasterRecords" EntityType="NISModel.CustomerMasterRecord" />
           <EntitySet Name="ImageRecords" EntityType="NISModel.ImageRecord" />
-          <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
           <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
           <EntitySet Name="ReminderAndRecommendationRecords" EntityType="NISModel.ReminderAndRecommendationRecord" />
           <EntitySet Name="ScheduleLogRecords" EntityType="NISModel.ScheduleLogRecord" />
           <EntitySet Name="ScheduleLogDetailRecords" EntityType="NISModel.ScheduleLogDetailRecord" />
+          <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
+          <EntitySet Name="AccountTransactionRecords" EntityType="NISModel.AccountTransactionRecord" />
+          <EntitySet Name="SavingTrendRecords" EntityType="NISModel.SavingTrendRecord" />
+          <EntitySet Name="Top4IncomeSourcesRecord" EntityType="NISModel.Top4IncomeSourcesRecord" />
+          <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -983,22 +983,6 @@
           <Property Name="NumberOfThread" Type="Int32" Nullable="false" />
           <Property Name="InUse" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="AccountTransactionRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="AccountId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TransactionType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Narration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FCY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CurrentRate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LCY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="BatchDetailRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1060,49 +1044,6 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="SavingTrendRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="AccountId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="Month" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SpendAmount" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
-          <Property Name="SpendPercentage" Type="Decimal" Precision="2" Scale="2" />
-          <Property Name="Income" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="IncomePercentage" Type="Decimal" Precision="2" Scale="2" />
-        </EntityType>
-        <EntityType Name="Top4IncomeSourcesRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="Source" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CurrentSpend" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="AverageSpend" Type="Decimal" Precision="8" Scale="2" />
-        </EntityType>
-        <EntityType Name="AccountMasterRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="AccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Currency" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Balance" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
-          <Property Name="TotalDeposit" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
-          <Property Name="TotalSpend" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="ProfitEarned" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Indicator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FeesPaid" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="GrandTotal" Type="Decimal" Precision="8" Scale="2" />
-        </EntityType>
         <EntityType Name="CustomerMasterRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1136,20 +1077,6 @@
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Image1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TransactionDetailRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="AccountId" Type="Int64" Nullable="false" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
         </EntityType>
         <EntityType Name="VideoRecord">
           <Key>
@@ -1206,6 +1133,79 @@
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StatementFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AccountMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="AccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Balance" Type="Decimal" Nullable="false" Precision="11" Scale="2" />
+          <Property Name="TotalDeposit" Type="Decimal" Nullable="false" Precision="11" Scale="2" />
+          <Property Name="TotalSpend" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="ProfitEarned" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Indicator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FeesPaid" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="GrandTotal" Type="Decimal" Precision="11" Scale="2" />
+        </EntityType>
+        <EntityType Name="AccountTransactionRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Narration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FCY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentRate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LCY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SavingTrendRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Month" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SpendAmount" Type="Decimal" Nullable="false" Precision="11" Scale="2" />
+          <Property Name="SpendPercentage" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="Income" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="IncomePercentage" Type="Decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <EntityType Name="Top4IncomeSourcesRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Source" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentSpend" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="AverageSpend" Type="Decimal" Precision="11" Scale="2" />
+        </EntityType>
+        <EntityType Name="TransactionDetailRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="AccountId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="11" Scale="2" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1570,23 +1570,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AccountTransactionRecords">
-            <EntityTypeMapping TypeName="NISModel.AccountTransactionRecord">
-              <MappingFragment StoreEntitySet="AccountTransaction">
-                <ScalarProperty Name="LCY" ColumnName="LCY" />
-                <ScalarProperty Name="CurrentRate" ColumnName="CurrentRate" />
-                <ScalarProperty Name="FCY" ColumnName="FCY" />
-                <ScalarProperty Name="Narration" ColumnName="Narration" />
-                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
-                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
-                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BatchDetailRecords">
             <EntityTypeMapping TypeName="NISModel.BatchDetailRecord">
               <MappingFragment StoreEntitySet="BatchDetails">
@@ -1653,52 +1636,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SavingTrendRecords">
-            <EntityTypeMapping TypeName="NISModel.SavingTrendRecord">
-              <MappingFragment StoreEntitySet="SavingTrend">
-                <ScalarProperty Name="IncomePercentage" ColumnName="IncomePercentage" />
-                <ScalarProperty Name="Income" ColumnName="Income" />
-                <ScalarProperty Name="SpendPercentage" ColumnName="SpendPercentage" />
-                <ScalarProperty Name="SpendAmount" ColumnName="SpendAmount" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Top4IncomeSourcesRecord">
-            <EntityTypeMapping TypeName="NISModel.Top4IncomeSourcesRecord">
-              <MappingFragment StoreEntitySet="Top4IncomeSources">
-                <ScalarProperty Name="AverageSpend" ColumnName="AverageSpend" />
-                <ScalarProperty Name="CurrentSpend" ColumnName="CurrentSpend" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AccountMasterRecords">
-            <EntityTypeMapping TypeName="NISModel.AccountMasterRecord">
-              <MappingFragment StoreEntitySet="AccountMaster">
-                <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
-                <ScalarProperty Name="FeesPaid" ColumnName="FeesPaid" />
-                <ScalarProperty Name="Indicator" ColumnName="Indicator" />
-                <ScalarProperty Name="ProfitEarned" ColumnName="ProfitEarned" />
-                <ScalarProperty Name="TotalSpend" ColumnName="TotalSpend" />
-                <ScalarProperty Name="TotalDeposit" ColumnName="TotalDeposit" />
-                <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
-                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CustomerMasterRecords">
             <EntityTypeMapping TypeName="NISModel.CustomerMasterRecord">
               <MappingFragment StoreEntitySet="CustomerMaster">
@@ -1731,21 +1668,6 @@
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TransactionDetailRecords">
-            <EntityTypeMapping TypeName="NISModel.TransactionDetailRecord">
-              <MappingFragment StoreEntitySet="TransactionDetail">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
-                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1806,6 +1728,84 @@
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="ScheduleLogId" ColumnName="ScheduleLogId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountMasterRecords">
+            <EntityTypeMapping TypeName="NISModel.AccountMasterRecord">
+              <MappingFragment StoreEntitySet="AccountMaster">
+                <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
+                <ScalarProperty Name="FeesPaid" ColumnName="FeesPaid" />
+                <ScalarProperty Name="Indicator" ColumnName="Indicator" />
+                <ScalarProperty Name="ProfitEarned" ColumnName="ProfitEarned" />
+                <ScalarProperty Name="TotalSpend" ColumnName="TotalSpend" />
+                <ScalarProperty Name="TotalDeposit" ColumnName="TotalDeposit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountTransactionRecords">
+            <EntityTypeMapping TypeName="NISModel.AccountTransactionRecord">
+              <MappingFragment StoreEntitySet="AccountTransaction">
+                <ScalarProperty Name="LCY" ColumnName="LCY" />
+                <ScalarProperty Name="CurrentRate" ColumnName="CurrentRate" />
+                <ScalarProperty Name="FCY" ColumnName="FCY" />
+                <ScalarProperty Name="Narration" ColumnName="Narration" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SavingTrendRecords">
+            <EntityTypeMapping TypeName="NISModel.SavingTrendRecord">
+              <MappingFragment StoreEntitySet="SavingTrend">
+                <ScalarProperty Name="IncomePercentage" ColumnName="IncomePercentage" />
+                <ScalarProperty Name="Income" ColumnName="Income" />
+                <ScalarProperty Name="SpendPercentage" ColumnName="SpendPercentage" />
+                <ScalarProperty Name="SpendAmount" ColumnName="SpendAmount" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Top4IncomeSourcesRecord">
+            <EntityTypeMapping TypeName="NISModel.Top4IncomeSourcesRecord">
+              <MappingFragment StoreEntitySet="Top4IncomeSources">
+                <ScalarProperty Name="AverageSpend" ColumnName="AverageSpend" />
+                <ScalarProperty Name="CurrentSpend" ColumnName="CurrentSpend" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetailRecords">
+            <EntityTypeMapping TypeName="NISModel.TransactionDetailRecord">
+              <MappingFragment StoreEntitySet="TransactionDetail">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

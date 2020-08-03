@@ -294,6 +294,8 @@
     <Content Include="Resources\fonts\fontawesome-webfont.woff" />
     <Content Include="Resources\fonts\fontawesome-webfont.woff2" />
     <Content Include="Resources\fonts\FontAwesome.otf" />
+    <Content Include="Resources\sampledata\savingtrenddata.json" />
+    <Content Include="Resources\sampledata\spendingtrenddata.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

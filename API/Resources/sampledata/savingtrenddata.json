@@ -1,0 +1,4 @@
+savingdata = [{'Month': 'Jan', 'Income': 123.5},{'Month': 'Feb', 'Income': 208.5},
+{'Month': 'Mar', 'Income': 233},{'Month': 'Apr', 'Income': 1.5},
+{'Month': 'May', 'Income': 204},{'Month': 'Jun', 'Income': 234.9},
+{'Month': 'Jul', 'Income': 221.3}]
