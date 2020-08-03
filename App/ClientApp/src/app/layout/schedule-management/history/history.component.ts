@@ -324,7 +324,7 @@ export class HistoryComponent implements OnInit {
         },
         error => {
           $('.overlay').show();
-          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this._messageDialogService.openDialogBox('Error',"File Not Found", Constants.msgBoxError);
           this.uiLoader.stop();
         });
 

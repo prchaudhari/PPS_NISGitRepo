@@ -100,8 +100,8 @@ namespace nIS
             "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
         public const string REMINDER_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-            "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'><table><thead><tr><td class='width75'></td>" +
-            "<td class='text-danger width25'> <i class='fa fa-caret-left fa-2x' aria-hidden='true'></i> <span class='mt-2 d-inline-block ml-2'>Click</span></td></tr></thead><tbody>{{ReminderAndRecommdationDataList}}</tbody></table></div></div></div>";
+            "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'><table><thead><tr> <td></td>" +
+            "<td style='color:red;float: right;'><i class='fa fa-caret-left fa-3x float-left' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></td></tr></thead><tbody>{{ReminderAndRecommdationDataList}}</tbody></table></div></div></div>";
 
         public const string TOP_4_INCOME_SOURCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
             "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><div class='table-responsive'><table><thead class='border-bottom'><tr>" +

@@ -529,8 +529,7 @@ namespace nIS
                                                 StringBuilder reminderstr = new StringBuilder();
                                                 reminderAndRecommendations.ToList().ForEach(item =>
                                                 {
-                                                    reminderstr.Append( "< tr >< td style = 'width:80%' >< label style = 'background-color: #dce3dc;' class='p-1 width100'>" +
-                                                        item.Title + "</label></td><td><a>" +
+                                                    reminderstr.Append( "<tr><td style = 'width:80%'><label style = 'background-color: #dce3dc;' class='p-1 width100'>" +item.Title + "</label></td><td><a>" +
                                                         "<i class='fa fa-caret-left fa-3x float-left' style='color:red'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></td></tr>");
                                                 });
                                                 string widgetstr = HtmlConstants.REMINDER_WIDGET_HTML.Replace("{{ReminderAndRecommdationDataList}}", reminderstr.ToString());

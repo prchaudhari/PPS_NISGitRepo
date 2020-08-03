@@ -300,7 +300,7 @@ namespace nIS
                 string path = string.Empty;
                 ScheduleRunHistory history = this.scheduleManager.GetScheduleRunHistorys(new ScheduleSearchParameter()
                 {
-                    Identifier = scheduelHistoryIdentifier,
+                    ScheduleHistoryIdentifier = scheduelHistoryIdentifier,
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
 

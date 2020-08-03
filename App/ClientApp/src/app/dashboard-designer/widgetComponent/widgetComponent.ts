@@ -705,28 +705,29 @@ export class SavingTransactionDetailsComponent {
 @Component({
   selector: 'reminderAndRecommendation',
   template: `<div class="widget">
-    <div class="widget">
-        <div class="widget-header">
-            <span class="widget-header-title"> Reminder and Recommendations </span>
-        </div>
-        <div class="widget-area-grid">
-            <table >
-                <thead>
-                  <tr>
-                    <td></td>
-                    <td style="color:red;float: right;"><i class="fa fa-caret-left fa-3x float-left" aria-hidden="true"></i><span class="mt-2 d-inline-block ml-2">Click</span></td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let list of actionList">
-                    <td style="width:80%"><label style="background-color: #dce3dc;" class="p-1 width100">{{list.title}} </label></td>
-                    <td style="float: left;"><a><i class="fa fa-caret-left fa-3x float-left" style="color:red"></i>
-                        <span class="mt-2 d-inline-block ml-2">{{list.action}}</span></a></td>
-                  </tr>
-                </tbody>
-            </table> 
-          </div>  
-        </div>
+   <div class="widget">
+      <div class="widget-header">
+         <span class="widget-header-title"> Reminder and Recommendations </span>
+      </div>
+      <div class="widget-area-grid">
+         <table >
+            <thead>
+               <tr>
+                  <td></td>
+                  <td style="color:red;float: right;"><i class="fa fa-caret-left fa-3x float-left" aria-hidden="true"></i><span class="mt-2 d-inline-block ml-2">Click</span></td>
+               </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let list of actionList">
+                  <td style="width:80%"><label style="background-color: #dce3dc;" class="p-1 width100">{{list.title}} </label></td>
+                  <td style="float: left;"><a><i class="fa fa-caret-left fa-3x float-left" style="color:red"></i>
+                     <span class="mt-2 d-inline-block ml-2">{{list.action}}</span></a>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
 </div>`
 })
 export class ReminderAndRecommComponent {
