@@ -803,6 +803,7 @@ namespace nIS
 
                             if (customerMasters.Count > 0)
                             {
+                                IList<ScheduleLogDetailRecord> logDetailRecords = new List<ScheduleLogDetailRecord>();
                                 customerMasters.ToList().ForEach(customer =>
                                 {
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -814,6 +815,10 @@ namespace nIS
                                     ScheduleLogDetailRecord logDetailRecord = GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL);
                                     if (logDetailRecord != null)
                                     {
+                                        if (logDetailRecord.Status == ScheduleLogStatus.Failed.ToString())
+                                        {
+                                            this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id);
+                                        }
                                         logDetailRecord.ScheduleLogId = scheduleLog.Id;
                                         logDetailRecord.CustomerId = customer.Id;
                                         logDetailRecord.CustomerName = (customer.FirstName + " " + customer.MiddleName + " " + customer.LastName);
@@ -823,19 +828,25 @@ namespace nIS
                                         logDetailRecord.RenderEngineURL = renderEngine.URL;
                                         logDetailRecord.NumberOfRetry = 1;
                                         logDetailRecord.CreationDate = DateTime.Now;
-                                        logDetailRecord.TenantCode = tenantCode;
-                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                        {
-                                            nISEntitiesDataContext.ScheduleLogDetailRecords.Add(logDetailRecord);
-                                            nISEntitiesDataContext.SaveChanges();
-                                        }
+                                        logDetailRecord.TenantCode = tenantCode;                                       
+                                        logDetailRecords.Add(logDetailRecord);
                                     }
                                 });
 
-                                string finalCommonStatementHtml = GenerateCommonStatement(statement, finalHtml, baseURL, batchMaster);
-                                string fileName = "Statement_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                                string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(finalCommonStatementHtml, fileName, batchMaster.Id);
-                                runHistory.FilePath = CommonStatementZipFilePath;
+                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                {
+                                    nISEntitiesDataContext.ScheduleLogDetailRecords.AddRange(logDetailRecords);
+                                    nISEntitiesDataContext.SaveChanges();
+                                }
+
+                                var successRecords = logDetailRecords.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
+                                if (successRecords != null && successRecords.Count > 0)
+                                {
+                                    string finalCommonStatementHtml = GenerateCommonStatement(statement, finalHtml, baseURL, batchMaster);
+                                    string fileName = "Statement_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+                                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(finalCommonStatementHtml, fileName, batchMaster.Id);
+                                    runHistory.FilePath = CommonStatementZipFilePath;
+                                }
                             }
 
                             runHistory.EndDate = DateTime.Now;
@@ -1774,6 +1785,12 @@ namespace nIS
                                         }
                                         pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgAssetFilepath);
                                     }
+                                    else
+                                    {
+                                        logDetailRecord.LogMessage = "Image widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!";
+                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                                        break;
+                                    }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID) //Video widget
                                 {
@@ -1812,6 +1829,12 @@ namespace nIS
                                             }
                                         }
                                         pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", vdoAssetFilepath);
+                                    }
+                                    else
+                                    {
+                                        logDetailRecord.LogMessage = "Video widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!";
+                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                                        break;
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID) //Summary at Glance Widget
@@ -1899,23 +1922,22 @@ namespace nIS
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
                                         accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving") && item.AccountId == accountId)?.OrderByDescending(item => item.TransactionDate)?.ToList();
+                                        
+                                        StringBuilder transaction = new StringBuilder();
                                         if (accountTransactions != null && accountTransactions.Count > 0)
                                         {
                                             pageContent.Replace("{{Currency}}", currency);
-                                            StringBuilder transaction = new StringBuilder();
                                             accountTransactions.ToList().ForEach(trans =>
                                             {
                                                 transaction.Append("<tr><td>" + Convert.ToDateTime(trans.TransactionDate).ToShortDateString() + "</td><td>" + trans.TransactionType + "</td><td>" + trans.Narration + "</td><td class='text-right'>" + trans.FCY + "</td><td class='text-right'>" + trans.CurrentRate + "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
                                                     "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                             });
-                                            pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
                                         }
                                         else
                                         {
-                                            logDetailRecord.LogMessage = "Account transactions data is not available related to Saving Transaction widget..!!";
-                                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                            break;
+                                            transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
                                         }
+                                        pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
@@ -1924,23 +1946,23 @@ namespace nIS
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
                                         accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current") && item.AccountId == accountId)?.OrderByDescending(item => item.TransactionDate)?.ToList();
+                                           
+                                        StringBuilder transaction = new StringBuilder();
                                         if (accountTransactions != null && accountTransactions.Count > 0)
                                         {
                                             pageContent.Replace("{{Currency}}", currency);
-                                            StringBuilder transaction = new StringBuilder();
                                             accountTransactions.ToList().ForEach(trans =>
                                             {
                                                 transaction.Append("<tr><td>" + Convert.ToDateTime(trans.TransactionDate).ToShortDateString() + "</td><td>" + trans.TransactionType + "</td><td>" + trans.Narration + "</td><td class='text-right'>" + trans.FCY + "</td><td class='text-right'>" + trans.CurrentRate + "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
                                                     "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                             });
-                                            pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
                                         }
                                         else
                                         {
-                                            logDetailRecord.LogMessage = "Account transactions data is not available related to Current Transaction widget..!!";
-                                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                            break;
+                                            transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
                                         }
+                                        pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
+
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
@@ -1950,26 +1972,52 @@ namespace nIS
                                     {
                                         top4IncomeSources = nISEntitiesDataContext.Top4IncomeSourcesRecord.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id)?.OrderByDescending(item => item.CurrentSpend)?.Take(4)?.ToList();
                                     }
+                                    
+                                    StringBuilder incomeSources = new StringBuilder();
                                     if (top4IncomeSources != null && top4IncomeSources.Count > 0)
                                     {
-                                        StringBuilder incomeSources = new StringBuilder();
                                         top4IncomeSources.ToList().ForEach(src =>
                                         {
                                             incomeSources.Append("<tr><td class='float-left'>" + src.Source + "</td>" + "<td> " + src.CurrentSpend +
                                                 "" + "</td><td class='align-text-top'>" + "<span class='fa fa-sort-asc fa-2x text-danger align-text-top' " +
                                                 "aria-hidden='true'>" + "</span>&nbsp;" + src.AverageSpend + " " + "</td></tr>");
                                         });
-                                        pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomeSources.ToString());
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "Top Income sources data is not available related to Top 4 Income Source widget..!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        incomeSources.Append("<tr><td colspan='2' class='text-danger text-center'><span>No data available</span></td></tr>");
                                     }
+                                    pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomeSources.ToString());
                                 }
                                 else if (widget.WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
                                 {
+                                    if (accountrecords.Count > 0)
+                                    {
+                                        IList<AccountMasterRecord> accounts = new List<AccountMasterRecord>();
+                                        var records = accountrecords.GroupBy(item => item.AccountType).ToList();
+                                        records.ToList().ForEach(acc => accounts.Add(new AccountMasterRecord()
+                                        {
+                                            AccountType = acc.FirstOrDefault().AccountType,
+                                            Percentage = acc.Average(item => item.Percentage == null ? 0 : item.Percentage )
+                                        }));
+
+                                        string accountsJson = JsonConvert.SerializeObject(accounts);
+                                        if (accountsJson != null && accountsJson != string.Empty)
+                                        {
+                                            AnalyticsChartJson = "analyticsdata=" + accountsJson;
+                                        }
+                                        else
+                                        {
+                                            AnalyticsChartJson = "analyticsdata=[]";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        AnalyticsChartJson = "analyticsdata=[]";
+                                    }
+
+                                    this.utility.WriteToJsonFile(AnalyticsChartJson, "analyticschartdata.json", batchMaster.Id, customer.Id);
+                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./analyticschartdata.json'></script>");
                                     scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT);
                                 }
                                 else if (widget.WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
@@ -1985,23 +2033,20 @@ namespace nIS
                                         if (savingtrendjson != null && savingtrendjson != string.Empty)
                                         {
                                             SavingTrendChartJson = "savingdata=" + savingtrendjson;
-                                            this.utility.WriteToJsonFile(SavingTrendChartJson, "savingtrenddata.json", batchMaster.Id, customer.Id);
-                                            scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtrenddata.json'></script>");
-                                            scriptHtmlRenderer.Append(HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT);
                                         }
                                         else
                                         {
-                                            logDetailRecord.LogMessage = "Invalid saving trend data is not available related to Saving trend chart widget..!!";
-                                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                            break;
+                                            SavingTrendChartJson = "savingdata=[]";
                                         }
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "Saving trend data is not available related to Saving trend chart widget..!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        SavingTrendChartJson = "savingdata=[]";
                                     }
+
+                                    this.utility.WriteToJsonFile(SavingTrendChartJson, "savingtrenddata.json", batchMaster.Id, customer.Id);
+                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtrenddata.json'></script>");
+                                    scriptHtmlRenderer.Append(HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT);
                                 }
                                 else if (widget.WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
                                 {
@@ -2016,23 +2061,20 @@ namespace nIS
                                         if (spendingtrendjson != null && spendingtrendjson != string.Empty)
                                         {
                                             SpendingTrendChartJson = "spendingdata=" + spendingtrendjson;
-                                            this.utility.WriteToJsonFile(SpendingTrendChartJson, "spendingtrenddata.json", batchMaster.Id, customer.Id);
-                                            scriptHtmlRenderer.Append("<script type='text/javascript' src='./spendingtrenddata.json'></script>");
-                                            scriptHtmlRenderer.Append(HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT);
                                         }
                                         else
                                         {
-                                            logDetailRecord.LogMessage = "Invalid spending trend data is not available related to Saving trend chart widget..!!";
-                                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                            break;
+                                            SpendingTrendChartJson = "spendingdata=[]";
                                         }
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "Spending trend data is not available related to Saving trend chart widget..!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        SpendingTrendChartJson = "spendingdata=[]";
                                     }
+
+                                    this.utility.WriteToJsonFile(SpendingTrendChartJson, "spendingtrenddata.json", batchMaster.Id, customer.Id);
+                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./spendingtrenddata.json'></script>");
+                                    scriptHtmlRenderer.Append(HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT);
                                 }
                                 else if (widget.WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
                                 {
@@ -2041,25 +2083,24 @@ namespace nIS
                                     {
                                         reminderAndRecommendations = nISEntitiesDataContext.ReminderAndRecommendationRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id)?.ToList();
                                     }
+                                    
+                                    StringBuilder reminderstr = new StringBuilder();
                                     if (reminderAndRecommendations != null && reminderAndRecommendations.Count > 0)
                                     {
-                                        StringBuilder reminderstr = new StringBuilder();
                                         reminderAndRecommendations.ToList().ForEach(item =>
                                         {
                                             string targetlink = item.TargetURL != null && item.TargetURL != string.Empty ? item.TargetURL : "javascript:void(0)";
                                             reminderstr.Append("<tr><td class='width75 text-left' style='background-color: #dce3dc;'><label>" +
-                                                item.Description + "</label></td><td><a href='" + targetlink + "'>" +
+                                                item.Description + "</label></td><td class='width25'><a href='" + targetlink + "'>" +
                                                 "<i class='fa fa-caret-left fa-2x' style='color:red' aria-hidden='true'>" +
                                                 "</i><span class='mt-2 d-inline-block ml-2'>" + item.LabelText + "</span></a></td></tr>");
                                         });
-                                        pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "The data is not available related to Reminder and Recommendation widget..!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        reminderstr.Append("<tr><td colspan='2' class='text-danger text-center'><span>No data available</span></td></tr>");
                                     }
+                                    pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
                                 }
                             }
 
@@ -2286,6 +2327,7 @@ namespace nIS
                         }
                         else if (widget.WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
                         {
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + baseURL + "\\Resources\\sampledata\\analyticschartdata.json'></script>");
                             scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT);
                         }
                         else if (widget.WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)

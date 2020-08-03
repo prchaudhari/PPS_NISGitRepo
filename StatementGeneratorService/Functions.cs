@@ -27,6 +27,7 @@ namespace StatementGeneratorService
             Console.WriteLine("This should run every 1 minute");
             ApiBaseAddress = ConfigurationManager.AppSettings["ApiBaseAddress"];
             RunStatementGenerationSchedule();
+            Console.WriteLine("Execution done..!! ");
         }
 
         public static void RunStatementGenerationSchedule()
@@ -39,6 +40,7 @@ namespace StatementGeneratorService
             try
             {
                 var response = client.PostAsync("Schedule/RunSchedule", null).Result;
+                Console.WriteLine("Response from RunSchedule: " + response);
                 WriteToFile("Response from RunSchedule: " + response);
             }
             catch (Exception ex)

@@ -175,6 +175,6 @@
         string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId);
         #endregion
 
-
+        bool DeleteUnwantedDirectory(long batchId, long customerId);
     }
 }

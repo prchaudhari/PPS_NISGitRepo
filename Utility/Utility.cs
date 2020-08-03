@@ -760,6 +760,16 @@
             return zipFileVirtualPath;
         }
 
+        public bool DeleteUnwantedDirectory(long batchId, long customerId)
+        {
+            string deleteDirPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements" + "\\" + batchId + "\\" + customerId;
+            DirectoryInfo directoryInfo = new DirectoryInfo(deleteDirPath);
+            if (directoryInfo.Exists)
+            {
+                directoryInfo.Delete(true);
+            }
+            return true;
+        }
 
         #endregion
 

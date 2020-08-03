@@ -296,6 +296,7 @@
     <Content Include="Resources\fonts\FontAwesome.otf" />
     <Content Include="Resources\sampledata\savingtrenddata.json" />
     <Content Include="Resources\sampledata\spendingtrenddata.json" />
+    <Content Include="Resources\sampledata\analyticschartdata.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

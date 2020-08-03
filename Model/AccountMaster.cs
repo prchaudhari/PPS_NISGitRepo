@@ -25,5 +25,6 @@ namespace nIS
         public string Indicator { get; set; }
         public string FeesPaid { get; set; }
         public string GrandTotal { get; set; }
+        public string Percentage { get; set; }
     }
 }
