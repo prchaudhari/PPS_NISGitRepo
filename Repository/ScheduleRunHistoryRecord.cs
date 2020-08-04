@@ -21,5 +21,6 @@ namespace nIS
         public string TenantCode { get; set; }
         public long StatementId { get; set; }
         public string FilePath { get; set; }
+        public long ScheduleLogId { get; set; }
     }
 }

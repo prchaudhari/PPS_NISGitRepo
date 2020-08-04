@@ -99,6 +99,7 @@
     <Compile Include="Statement.cs" />
     <Compile Include="StatementPage.cs" />
     <Compile Include="StatementPageContent.cs" />
+    <Compile Include="TenantConfiguration.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserLogin.cs" />
     <Compile Include="UserLoginActivityHistory.cs" />

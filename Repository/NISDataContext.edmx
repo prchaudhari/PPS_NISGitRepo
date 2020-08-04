@@ -363,6 +363,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleLogId" Type="bigint" Nullable="false" />
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="EndDate" Type="datetime" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
@@ -417,6 +418,7 @@
           <Property Name="InputDataSourcePath" Type="nvarchar(max)" Nullable="false" />
           <Property Name="OutputHTMLPath" Type="nvarchar(max)" Nullable="false" />
           <Property Name="OutputPDFPath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Top4IncomeSources">
           <Key>
@@ -982,6 +984,7 @@
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StatementId" Type="Int64" Nullable="false" />
           <Property Name="FilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ScheduleLogId" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="RenderEngineRecord">
           <Key>
@@ -1230,6 +1233,7 @@
           <Property Name="InputDataSourcePath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="OutputHTMLPath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="OutputPDFPath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1570,6 +1574,7 @@
           <EntitySetMapping Name="ScheduleRunHistoryRecords">
             <EntityTypeMapping TypeName="NISModel.ScheduleRunHistoryRecord">
               <MappingFragment StoreEntitySet="ScheduleRunHistory">
+                <ScalarProperty Name="ScheduleLogId" ColumnName="ScheduleLogId" />
                 <ScalarProperty Name="FilePath" ColumnName="FilePath" />
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
@@ -1838,6 +1843,7 @@
           <EntitySetMapping Name="TenantConfigurationRecords">
             <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
               <MappingFragment StoreEntitySet="TenantConfiguration">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="OutputPDFPath" ColumnName="OutputPDFPath" />
                 <ScalarProperty Name="OutputHTMLPath" ColumnName="OutputHTMLPath" />
                 <ScalarProperty Name="InputDataSourcePath" ColumnName="InputDataSourcePath" />

@@ -19,5 +19,6 @@ namespace nIS
         public string InputDataSourcePath { get; set; }
         public string OutputHTMLPath { get; set; }
         public string OutputPDFPath { get; set; }
+        public string TenantCode { get; set; }
     }
 }
