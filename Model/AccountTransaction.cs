@@ -24,7 +24,7 @@ namespace nIS
         public string Balance { get; set; }
         public string Credit { get; set; }
         public string Debit { get; set; }
-        
 
+        
     }
 }

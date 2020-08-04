@@ -45,6 +45,7 @@
         <EntityTypeShape EntityType="NISModel.Top4IncomeSourcesRecord" Width="1.5" PointX="4.875" PointY="6" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TransactionDetailRecord" Width="1.5" PointX="4.875" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AccountMasterRecord" Width="1.5" PointX="2.75" PointY="5.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.TenantConfigurationRecord" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

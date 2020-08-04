@@ -105,6 +105,8 @@
     <Build Include="AccountMaster.sql" />
     <Build Include="ScheduleLog.sql" />
     <Build Include="ScheduleLogDetail.sql" />
+    <Build Include="TenantConfiguration.sql" />
+    <None Include="Seed Data Scripts\TenantConfiguration.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

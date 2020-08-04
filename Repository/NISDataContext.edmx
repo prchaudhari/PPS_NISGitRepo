@@ -408,6 +408,16 @@
           <Property Name="SequenceNumber" Type="bigint" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="TenantConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="InputDataSourcePath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OutputHTMLPath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OutputPDFPath" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Top4IncomeSources">
           <Key>
             <PropertyRef Name="Id" />
@@ -594,6 +604,7 @@
           <EntitySet Name="State" EntityType="Self.State" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Statement" EntityType="Self.Statement" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementPageMap" EntityType="Self.StatementPageMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="TenantConfiguration" EntityType="Self.TenantConfiguration" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Top4IncomeSources" EntityType="Self.Top4IncomeSources" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="NIS" store:Type="Tables" />
@@ -650,6 +661,7 @@
           <EntitySet Name="Top4IncomeSourcesRecord" EntityType="NISModel.Top4IncomeSourcesRecord" />
           <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
           <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
+          <EntitySet Name="TenantConfigurationRecords" EntityType="NISModel.TenantConfigurationRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1208,6 +1220,16 @@
           <Property Name="FeesPaid" Type="Decimal" Precision="11" Scale="2" />
           <Property Name="GrandTotal" Type="Decimal" Precision="11" Scale="2" />
           <Property Name="Percentage" Type="Decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <EntityType Name="TenantConfigurationRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InputDataSourcePath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OutputHTMLPath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OutputPDFPath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1809,6 +1831,17 @@
                 <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TenantConfigurationRecords">
+            <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
+              <MappingFragment StoreEntitySet="TenantConfiguration">
+                <ScalarProperty Name="OutputPDFPath" ColumnName="OutputPDFPath" />
+                <ScalarProperty Name="OutputHTMLPath" ColumnName="OutputHTMLPath" />
+                <ScalarProperty Name="InputDataSourcePath" ColumnName="InputDataSourcePath" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

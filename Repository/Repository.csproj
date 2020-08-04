@@ -202,6 +202,9 @@
     <Compile Include="StateRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="TenantConfigurationRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="TenantRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
