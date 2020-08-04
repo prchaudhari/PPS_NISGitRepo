@@ -58,6 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TenantConfigurationManager.cs" />
     <Compile Include="AssetSettingManager.cs" />
     <Compile Include="AssetLibraryManager.cs" />
     <Compile Include="AuthenticationManager.cs" />
