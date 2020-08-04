@@ -512,9 +512,9 @@ namespace nIS
                                                         accountTransactions.ToList().ForEach(trans =>
                                                         {
                                                             transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
-                                                                trans.Narration + "</td><td>" + trans.FCY + "</td><td>" + trans.CurrentRate + "</td><td>"
-                                                                + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'><button type='button' title='View'>" +
-                                                                "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
+                                                                trans.Narration + "</td><td class='text-right'>" + trans.FCY + "</td><td class='text-right'>" + trans.CurrentRate +
+                                                                "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
+                                                                "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                         });
                                                         string accountTransactionstr = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                         htmlString.Append(accountTransactionstr);
@@ -530,9 +530,9 @@ namespace nIS
                                                         accountTransactions.ToList().ForEach(trans =>
                                                         {
                                                             transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
-                                                                trans.Narration + "</td><td>" + trans.FCY + "</td><td>" + trans.CurrentRate + "</td><td>"
-                                                                + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'><button type='button' title='View'>" +
-                                                                "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
+                                                                trans.Narration + "</td><td class='text-right'>" + trans.FCY + "</td><td class='text-right'>" + trans.CurrentRate +
+                                                                "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
+                                                                "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                         });
                                                         string accountTransactionstr = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                         htmlString.Append(accountTransactionstr);

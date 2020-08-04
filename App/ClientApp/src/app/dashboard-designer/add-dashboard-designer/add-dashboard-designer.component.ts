@@ -375,7 +375,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.ImageConfigForm = this.fb.group({
       imgAssetLibrary: [null, [Validators.required]],
       imgAsset: [null, [Validators.required]],
-      imageUrl: [null, [Validators.required, Validators.pattern(this.validUrlRegexPattern)]]
+      imageUrl: [null, [Validators.pattern(this.validUrlRegexPattern)]]
     });
 
     this.VideoConfigForm = this.fb.group({

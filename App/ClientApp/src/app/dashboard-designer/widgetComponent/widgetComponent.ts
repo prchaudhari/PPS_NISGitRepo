@@ -155,7 +155,10 @@ export class VideoComponent {
   ngOnInit() {
     if (this.vdoItem != null && this.vdoItem.WidgetSetting != null && this.vdoItem.WidgetSetting != '' && this.testJSON(this.vdoItem.WidgetSetting)) {
       let widgetSetting = JSON.parse(this.vdoItem.WidgetSetting);
-      if (!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
+      if(widgetSetting.isEmbedded) {
+        this.videoSrc = widgetSetting.SourceUrl;
+      }
+      else if (!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
         this.videoSrc = this.baseURL + "assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
       } else {
         this.videoSrc = 'assets/images/SampleVideo.mp4';

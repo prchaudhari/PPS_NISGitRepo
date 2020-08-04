@@ -230,13 +230,16 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
               'text': "-"
             }));
             tr.append($("<td>", {
-              'text': sumOfFCY
+              'text': sumOfFCY,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
-              'text': sumOfCR
+              'text': sumOfCR,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
-              'text': sumOfLCY
+              'text': sumOfLCY,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
               'text': "-"
@@ -264,19 +267,22 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
               'text': data.TransactionDate
             }));
             tr.append($("<td>", {
-              'text': data.TransactionDate
+              'text': data.TransactionType
             }));
             tr.append($("<td>", {
               'text': data.Narration
             }));
             tr.append($("<td>", {
-              'text': data.FCY
+              'text': data.FCY,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
-              'text': data.CurrentRate
+              'text': data.CurrentRate,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
-              'text': data.LCY
+              'text': data.LCY,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
               'html': "<div class='action-btns btn-tbl-action'><button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div>"
@@ -338,13 +344,16 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
               'text': "-"
             }));
             tr.append($("<td>", {
-              'text': sumOfFCY
+              'text': sumOfFCY,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
-              'text': sumOfCR
+              'text': sumOfCR,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
-              'text': sumOfLCY
+              'text': sumOfLCY,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
               'text': "-"
@@ -373,19 +382,22 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
               'text': data.TransactionDate
             }));
             tr.append($("<td>", {
-              'text': data.TransactionDate
+              'text': data.TransactionType
             }));
             tr.append($("<td>", {
               'text': data.Narration
             }));
             tr.append($("<td>", {
-              'text': data.FCY
+              'text': data.FCY,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
-              'text': data.CurrentRate
+              'text': data.CurrentRate,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
-              'text': data.LCY
+              'text': data.LCY,
+              'class': 'text-right'
             }));
             tr.append($("<td>", {
               'html': "<div class='action-btns btn-tbl-action'><button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div>"

@@ -114,13 +114,13 @@
         <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12">
             <label> Target Link </label>
-            <span class="text-danger"> *</span>
+            <!-- <span class="text-danger"> *</span> -->
             <input type="text" class="form-control" formControlName="imageUrl" />
             <div class="validation-msg" style="color:red" *ngIf="imgForm.imageUrl.touched && imgForm.imageUrl.errors">
               <ul style="list-style-type:none">
-                <li class="text-danger" *ngIf="imgForm.imageUrl.errors?.required">
+                <!-- <li class="text-danger" *ngIf="imgForm.imageUrl.errors?.required">
                   Target link required
-                </li>
+                </li> -->
                 <li class="text-danger" *ngIf="imgForm.imageUrl.errors?.pattern">
                   Invalid target link
                 </li>
@@ -248,42 +248,7 @@
       </div>
     </div>
   </form>
-  <!--top-4-->
-  <!--<table>
-    <thead>
-      <tr>
-        <td style="width:50%"></td>
-        <td style="width:15%">This Month</td>
-        <td style="width:35%;">Usually you spend</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="width:50%">
-          <label>Salary Transfer </label>
-        </td>
-        <td style="width:15%">
-          3454
-        </td>
-        <td style="width:35%;">
-          <span class="fa fa-sort-asc fa-2x mt-1 float-left" aria-hidden="true" style="position:relative;top:6px;color:limegreen"></span>
-          <span class="ml-2" style="position:relative;top:6px;">123</span>
-        </td>
-      </tr>
-      <tr>
-        <td style="width:50%">
-          <label>Salary Transfer </label>
-        </td>
-        <td style="width:15%">
-          3454
-        </td>
-        <td style="width:35%;">
-          <span style="color: red" class="fa fa-sort-desc fa-2x" aria-hidden="true"></span>
-          <span class="ml-2">123</span>
-        </td>
-      </tr>
-    </tbody>
-  </table>-->
+  
 
 </div>
 
