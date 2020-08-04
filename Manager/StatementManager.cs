@@ -512,7 +512,7 @@ namespace nIS
                                                                 + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'><button type='button' title='View'>" +
                                                                 "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                         });
-                                                        string accountTransactionstr = HtmlConstants.CURRENT_SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                        string accountTransactionstr = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                         htmlString.Append(accountTransactionstr);
                                                     }
                                                 }
@@ -530,7 +530,7 @@ namespace nIS
                                                                 + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'><button type='button' title='View'>" +
                                                                 "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                         });
-                                                        string accountTransactionstr = HtmlConstants.CURRENT_SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                        string accountTransactionstr = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                         htmlString.Append(accountTransactionstr);
                                                     }
                                                 }

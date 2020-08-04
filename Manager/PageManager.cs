@@ -445,7 +445,14 @@ namespace nIS
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
                                         {
-                                            string transactionJson = "[{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1876.00' }, { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' }, { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' }]";
+                                            string transactionJson = "[" +
+                                            "{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'ACB Credit :Salary', 'Credit': '1000.00', 'Debit': '', 'Balance': '2500' }," +
+                                            "{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'INTEREST', 'Credit': '1500.00', 'Debit': '', 'Balance': '4000.00' }," +
+                                            "{ 'TransactionDate': '19/07/2020', 'TransactionType': 'DB', 'Narration': 'Bank Charges', 'Credit': '', 'Debit': '100', 'Balance': '3900.00' }," +
+                                            "{ 'TransactionDate': '25/07/2020', 'TransactionType': 'DB', 'Narration': 'INTERNET BANKING FEE', 'Credit': '', 'Debit': '50', 'Balance': '3850.00' }," +
+                                            "{ 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'ACB Credit :Medical Aid', 'Credit': '500.50', 'Debit': '', 'Balance': '4350.50' }," +
+                                            "{ 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'INTEREST', 'Credit': '100.00', 'Debit': '', 'Balance': '4450.50' } " +
+                                            "]";
                                             if (transactionJson != string.Empty && validationEngine.IsValidJson(transactionJson))
                                             {
                                                 IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(transactionJson);
@@ -453,24 +460,24 @@ namespace nIS
                                                 StringBuilder selectOption = new StringBuilder();
                                                 accountTransactions.ToList().ForEach(trans =>
                                                 {
-                                                   
+
                                                     transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
-                                                        trans.Narration + "</td><td>" + trans.FCY + "</td><td>" + trans.CurrentRate + "</td><td>"
-                                                        + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'><button type='button' title='View'>" +
-                                                        "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
+                                                        trans.Narration + "</td><td>-" + trans.Debit + "</td><td>" + trans.Credit + "</td><td>"
+                                                        + "<i class='fa fa-caret-left fa-2x' style='color:red' aria-hidden='true'></i>" + " </td><td>" + trans.Balance + "</td></tr>");
                                                 });
                                                 var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
-                                                distinctNaration.ToList().ForEach(item=> {
+                                                distinctNaration.ToList().ForEach(item =>
+                                                {
                                                     selectOption.Append("<option value='" + item + "'> " + item + "</option>");
                                                 });
-                                                string accountTransactionstr = HtmlConstants.CURRENT_SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                string accountTransactionstr = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                 accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
                                                 htmlString.Append(accountTransactionstr);
                                             }
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
                                         {
-                                            string transactionJson = "[{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1876.00' }, { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' }, { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' }]";
+                                            string transactionJson = "[{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1876.00' }, { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' }, { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.00', 'CurrentRate': '0.962', 'LCY': '1654.56' }]";
                                             if (transactionJson != string.Empty && validationEngine.IsValidJson(transactionJson))
                                             {
                                                 IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(transactionJson);
@@ -485,12 +492,13 @@ namespace nIS
                                                         "<span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                 });
                                                 var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
-                                                distinctNaration.ToList().ForEach(item => {
+                                                distinctNaration.ToList().ForEach(item =>
+                                                {
                                                     selectOption.Append("<option value='" + item + "'> " + item + "</option>");
                                                 });
-                                                string accountTransactionstr = HtmlConstants.CURRENT_SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                string accountTransactionstr = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                 accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
-                                                
+
                                                 htmlString.Append(accountTransactionstr);
                                             }
                                         }
