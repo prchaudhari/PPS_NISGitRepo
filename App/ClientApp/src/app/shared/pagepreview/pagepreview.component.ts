@@ -181,57 +181,44 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
         if (e.currentTarget.id == "savingGrpDate") {
           $("#SavingTransactionTable tbody tr").remove();
           console.log(e.type);
-          var d = [
-            { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'ACB Credit :Salary', 'Credit': '1000.00', 'Debit': '-', 'Balance': '2500' },
-            { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'INTEREST', 'Credit': '1500.00', 'Debit': '-', 'Balance': '4000.00' },
-            { 'TransactionDate': '19/07/2020', 'TransactionType': 'DB', 'Narration': 'Bank Charges', 'Credit': '-', 'Debit': '100', 'Balance': '3900.00' },
-            { 'TransactionDate': '25/07/2020', 'TransactionType': 'DB', 'Narration': 'INTERNET BANKING FEE', 'Credit': '-', 'Debit': '50', 'Balance': '3850.00' },
-            { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'ACB Credit :Medical Aid', 'Credit': '500.50', 'Debit': '-', 'Balance': '4350.50' },
-            { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'INTEREST', 'Credit': '100.00', 'Debit': '-', 'Balance': '4450.50' }
+          var d =   [
+            { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },
+            { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574563', 'FCY': '1435.00', 'CurrentRate': '0.962', 'LCY': '1654.56' },
+            { 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1976.00' },
+            { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' },
+            { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' },
           ];
-          var aggregateDate= d.reduce(function (groups, item) {
+          var savingAggregateDate = d.reduce(function (groups, item) {
             const val = item["TransactionDate"]
             groups[val] = groups[val] || []
             groups[val].push(item)
             return groups
           }, {});
-          console.log(aggregateDate);
+          console.log(savingAggregateDate);
 
-          $.each(aggregateDate, function (index, data) {
-            var sumOfCredit = '';
-            var sumOfDebit = 0;
-            var sumOfBalance = 0;
+          $.each(savingAggregateDate, function (index, data) {
+            var sumOfFCY = 0;
+            var sumOfLCY = 0;
+            var sumOfCR = 0;
 
             if (data.length > 1) {
-              sumOfCredit = data.reduce(function (a, b) {
-                if (b.Credit != "-")
-                  return a + parseFloat(b.Credit);
-                else {
-                  return a + 0;
-                }
+              sumOfFCY = data.reduce(function (a, b) {
+                return a + parseFloat(b.FCY);
               }, 0);
-              sumOfDebit = data.reduce(function (a, b) {
-                if (b.Debit != "")
-                  return a + parseFloat(b.Debit);
-                else {
-                  return a + 0;
-                }
+              sumOfLCY = data.reduce(function (a, b) {
+                return a + parseFloat(b.LCY);
               }, 0);
-              sumOfBalance = data.reduce(function (a, b) {
-                return a + parseFloat(b.Balance);
+              sumOfCR = data.reduce(function (a, b) {
+                return a + parseFloat(b.CurrentRate);
               }, 0);
-              //if (sumOfDebit==0) {
-              //  sumOfDebit = "-";
-              //}
             }
             else {
-              sumOfDebit = data[0].Debit;
-              sumOfCredit = data[0].Credit;
-              sumOfBalance = data[0].Balance;
+              sumOfFCY = data[0].FCY;
+              sumOfLCY = data[0].LCY;
+              sumOfCR = data[0].CurrentRate;
             }
-
             var tbody = $("#SavingTransactionTable> tbody");
-            console.log(data);
+
             var tr = $("<tr>");
             tr.append($("<td>", {
               'text': data[0].TransactionDate
@@ -243,17 +230,16 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
               'text': "-"
             }));
             tr.append($("<td>", {
-              'text': sumOfDebit == 0 ? "-" : sumOfDebit
-           
+              'text': sumOfFCY
             }));
             tr.append($("<td>", {
-              'text': sumOfCredit
+              'text': sumOfCR
             }));
             tr.append($("<td>", {
-              'text':"-"
+              'text': sumOfLCY
             }));
             tr.append($("<td>", {
-              'text': sumOfBalance
+              'text': "-"
             }));
             tbody.append(tr);
           });
@@ -262,38 +248,38 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
           $("#SavingTransactionTable tbody tr").remove();
           console.log(e.type);
           var data = [
-            { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'ACB Credit :Salary', 'Credit': '1000.00', 'Debit': '', 'Balance': '2500' },
-            { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'INTEREST', 'Credit': '1500.00', 'Debit': '', 'Balance': '4000.00' },
-            { 'TransactionDate': '19/07/2020', 'TransactionType': 'DB', 'Narration': 'Bank Charges', 'Credit': '-', 'Debit': '100', 'Balance': '3900.00' },
-            { 'TransactionDate': '25/07/2020', 'TransactionType': 'DB', 'Narration': 'INTERNET BANKING FEE', 'Credit': '-', 'Debit': '50', 'Balance': '3850.00' },
-            { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'ACB Credit :Medical Aid', 'Credit': '500.50', 'Debit': '', 'Balance': '4350.50' },
-          ]
+            { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },
+            { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574563', 'FCY': '1435.00', 'CurrentRate': '0.962', 'LCY': '1654.56' },
+            { 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1976.00' },
+            { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' },
+            { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' },
+            { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034213', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' }
+          ];
           console.log(data);
 
           $.each(data, function (index, data) {
             var tbody = $("#SavingTransactionTable> tbody");
-            console.log(data);
             var tr = $("<tr>");
             tr.append($("<td>", {
               'text': data.TransactionDate
             }));
             tr.append($("<td>", {
-              'text': data.TransactionType
+              'text': data.TransactionDate
             }));
             tr.append($("<td>", {
               'text': data.Narration
             }));
             tr.append($("<td>", {
-              'text': data.Debit
+              'text': data.FCY
             }));
             tr.append($("<td>", {
-              'text': data.Credit
+              'text': data.CurrentRate
             }));
             tr.append($("<td>", {
-              'html': "<i class='fa fa-caret-left fa-2x' style='color:red' aria-hidden='true'></i>"
+              'text': data.LCY
             }));
             tr.append($("<td>", {
-              'text': data.Balance
+              'html': "<div class='action-btns btn-tbl-action'><button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div>"
             }));
             tbody.append(tr);
           });
