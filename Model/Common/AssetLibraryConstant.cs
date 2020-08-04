@@ -127,5 +127,34 @@ namespace nIS
         public const string INVALID_ASSETSETTINGS_VIDEOSIZE = "VideoSize";
 
         #endregion
+
+        #region Asset  Setting
+
+        /// <summary>
+        /// The asset model section
+        /// </summary>
+        public const string TENANTCONFIG_MODEL_SECTION = "AssetSettingModelSection";
+
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_TENANTCONFIGS_ = "InvalidAssetSeeting";
+
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_TENANTCONFIGS_IMAGEDATASOURCEPATH = "InputDataSourcePath";
+
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_TENANTCONFIGS_OUTPUTHTMLPATH= "OutputHTMLPath";
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_TENANTCONFIGS_OUTPUTPDFPATH = "OutputPDFPath";
+      
+
+        #endregion
     }
 }
