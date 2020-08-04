@@ -175,6 +175,19 @@
         string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId);
         #endregion
 
+        /// <summary>
+        /// This method help to delete unwantedly added json files if html generation failed for customer
+        /// </summary>
+        /// <param name="batchId"> the batch identifier </param>
+        /// <param name="customerId"> the customer identifier </param>
+        /// <returns>true if deleted successfully, otherwise false.</returns>
         bool DeleteUnwantedDirectory(long batchId, long customerId);
+
+        /// <summary>
+        /// This method help to get string value of month
+        /// </summary>
+        /// <param name="m"> the numeric value of month </param>
+        /// <returns>string value of month</returns>
+        string getMonth(int m);
     }
 }

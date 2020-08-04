@@ -133,18 +133,50 @@ namespace nIS
 
                 if (scheduleLogRecords != null && scheduleLogRecords.Count > 0)
                 {
-                    scheduleLogRecords.ToList().ForEach(logRecord => scheduleLogs.Add(new ScheduleLog()
+                    IList<ScheduleLogDetailRecord> logDetails = new List<ScheduleLogDetailRecord>();
+                    IList<ScheduleRunHistoryRecord> runHistoryRecords = new List<ScheduleRunHistoryRecord>();
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        Identifier = logRecord.Id,
-                        ScheduleId = logRecord.ScheduleId,
-                        ScheduleName = logRecord.ScheduleName,
-                        CreateDate = logRecord.CreationDate,
-                        LogFilePath = logRecord.LogFilePath,
-                        NumberOfRetry = logRecord.NumberOfRetry,
-                        ScheduleStatus = logRecord.Status,
-                        ProcessingTime = "",
-                        RecordProcessed = ""
-                    }));
+                        logDetails = nISEntitiesDataContext.ScheduleLogDetailRecords.ToList();
+                        runHistoryRecords = nISEntitiesDataContext.ScheduleRunHistoryRecords.ToList();
+                    }
+
+                    for (int i = 0; i < scheduleLogRecords.Count; i++)
+                    {
+                        ScheduleLog log = new ScheduleLog();
+                        log.Identifier = scheduleLogRecords[i].Id;
+                        log.ScheduleId = scheduleLogRecords[i].ScheduleId;
+                        log.ScheduleName = scheduleLogRecords[i].ScheduleName;
+                        log.CreateDate = scheduleLogRecords[i].CreationDate;
+                        log.LogFilePath = scheduleLogRecords[i].LogFilePath;
+                        log.NumberOfRetry = scheduleLogRecords[i].NumberOfRetry;
+                        log.ScheduleStatus = scheduleLogRecords[i].Status;
+
+                        var logdtails = logDetails.Where(item => item.ScheduleLogId == log.Identifier && item.ScheduleId == log.ScheduleId).ToList();
+                        var runHistryRecords = runHistoryRecords.Where(item => item.ScheduleLogId == log.Identifier && item.ScheduleId == log.ScheduleId).ToList();
+
+                        if (logdtails != null && logdtails.Count > 0)
+                        {
+                            var successRecordCount = logdtails.Where(it => it.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))?.ToList()?.Count;
+                            log.RecordProcessed = "" + (successRecordCount != null ? successRecordCount : 0) + " / " + logdtails.Count;
+                        }
+                        else
+                        {
+                            log.RecordProcessed = "--";
+                        }
+                        if (runHistryRecords != null && runHistryRecords.Count > 0)
+                        {
+                            var diff = Math.Ceiling(runHistryRecords.FirstOrDefault().EndDate.Subtract(runHistryRecords.FirstOrDefault().StartDate).TotalMinutes);
+                            log.ProcessingTime = diff + " minute" + (diff == 1 ? "" : "s");
+                        }
+                        else
+                        {
+                            log.ProcessingTime = "--";
+                        }
+
+                        scheduleLogs.Add(log);
+                    }
+                    
                 }
             }
             catch (Exception ex)

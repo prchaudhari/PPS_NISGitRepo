@@ -760,6 +760,12 @@
             return zipFileVirtualPath;
         }
 
+        /// <summary>
+        /// This method help to delete unwantedly added json files if html generation failed for customer
+        /// </summary>
+        /// <param name="batchId"> the batch identifier </param>
+        /// <param name="customerId"> the customer identifier </param>
+        /// <returns>true if deleted successfully, otherwise false.</returns>
         public bool DeleteUnwantedDirectory(long batchId, long customerId)
         {
             string deleteDirPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements" + "\\" + batchId + "\\" + customerId;
@@ -769,6 +775,59 @@
                 directoryInfo.Delete(true);
             }
             return true;
+        }
+
+        /// <summary>
+        /// This method help to get string value of month
+        /// </summary>
+        /// <param name="m"> the numeric value of month </param>
+        /// <returns>string value of month</returns>
+        public string getMonth(int m)
+        {
+            string res;
+            switch (m)
+            {
+                case 1:
+                    res = "Jan";
+                    break;
+                case 2:
+                    res = "Feb";
+                    break;
+                case 3:
+                    res = "Mar";
+                    break;
+                case 4:
+                    res = "Apr";
+                    break;
+                case 5:
+                    res = "May";
+                    break;
+                case 6:
+                    res = "Jun";
+                    break;
+                case 7:
+                    res = "Jul";
+                    break;
+                case 8:
+                    res = "Aug";
+                    break;
+                case 9:
+                    res = "Sep";
+                    break;
+                case 10:
+                    res = "Oct";
+                    break;
+                case 11:
+                    res = "Nov";
+                    break;
+                case 12:
+                    res = "Dec";
+                    break;
+                default:
+                    res = "Nulo";
+                    break;
+            }
+            return res;
         }
 
         #endregion

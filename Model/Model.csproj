@@ -81,6 +81,7 @@
     <Compile Include="Role.cs" />
     <Compile Include="RolePrivilege.cs" />
     <Compile Include="RolePrivilegeOperation.cs" />
+    <Compile Include="SavingTrend.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="ScheduleLog.cs" />
     <Compile Include="ScheduleLogDetail.cs" />

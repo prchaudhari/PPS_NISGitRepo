@@ -850,6 +850,19 @@ namespace nIS
                                     string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(finalCommonStatementHtml, fileName, batchMaster.Id);
                                     runHistory.FilePath = CommonStatementZipFilePath;
                                 }
+
+                                var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+                                var failedRecords = logDetailRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
+                                if (failedRecords != null && failedRecords.Count > 0)
+                                {
+                                    scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+                                }
+                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                {
+                                    ScheduleLogRecord scheduleLogRecord = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).FirstOrDefault();
+                                    scheduleLogRecord.Status = ScheduleLogStatus.Completed.ToString();
+                                    nISEntitiesDataContext.SaveChanges();
+                                }
                             }
 
                             runHistory.EndDate = DateTime.Now;
@@ -857,9 +870,13 @@ namespace nIS
                             {
                                 ScheduleLogRecord scheduleLogRecord = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).FirstOrDefault();
                                 scheduleLogRecord.Status = ScheduleLogStatus.Completed.ToString();
+                                runHistory.ScheduleLogId = scheduleLogRecord.Id;
 
                                 var scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == schedule.Id).FirstOrDefault();
                                 scheduleRecord.Status = ScheduleStatus.Completed.ToString();
+
+                                var batch = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().FirstOrDefault();
+                                batch.IsExecuted = true;
 
                                 nISEntitiesDataContext.ScheduleRunHistoryRecords.Add(runHistory);
                                 nISEntitiesDataContext.SaveChanges();
@@ -1655,6 +1672,18 @@ namespace nIS
                         logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
                         return logDetailRecord;
                     }
+                    else
+                    {
+                        for (int i = 0; i < accountrecords.Count; i++)
+                        {
+                            if (accountrecords[i].AccountType.Equals(string.Empty))
+                            {
+                                logDetailRecord.LogMessage = "Invalid account master data for this customer..!!";
+                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                                return logDetailRecord;
+                            }
+                        }
+                    }
 
                     StringBuilder htmlbody = new StringBuilder();
                     currency = accountrecords[0].Currency;
@@ -1706,6 +1735,7 @@ namespace nIS
 
                         for (int x = 0; x < accountCount; x++)
                         {
+                            accountNumber = string.Empty;
                             if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
                             {
                                 accountNumber = savingaccountrecords[x].AccountNumber;
@@ -1822,7 +1852,7 @@ namespace nIS
                                     if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                                     {
                                         dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                                        if (widgetSetting.isEmbedded == false)//If embedded then assigned it it from widget config json source url
+                                        if (widgetSetting.isEmbedded == true)//If embedded then assigned it it from widget config json source url
                                         {
                                             vdoAssetFilepath = widgetSetting.SourceUrl;
                                         }
@@ -1895,6 +1925,7 @@ namespace nIS
                                             records?.ToList().ForEach(acc =>
                                             {
                                                 var accountIndicatorClass = acc.FirstOrDefault().Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
+                                                pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
                                                 pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.GrandTotal).ToString()));
                                                 pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalDeposit).ToString()));
                                                 pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalSpend).ToString()));
@@ -2062,7 +2093,34 @@ namespace nIS
                                     }
                                     if (savingtrends != null && savingtrends.Count > 0)
                                     {
-                                        string savingtrendjson = JsonConvert.SerializeObject(savingtrends);
+                                        IList<SavingTrend> savingTrendRecords = new List<SavingTrend>();
+                                        int mnth = DateTime.Now.Month;
+                                        for (int t = savingtrends.Count; t > 0; t--)
+                                        {
+                                            string month = this.utility.getMonth(mnth);
+                                            var lst = savingtrends.Where(it => it.Month.ToLower().Contains(month.ToLower()))?.ToList();
+                                            if (lst != null && lst.Count > 0)
+                                            {
+                                                SavingTrend trend = new SavingTrend();
+                                                trend.Month = lst[0].Month;
+                                                trend.NumericMonth = mnth;
+                                                trend.Income = lst[0].Income ?? 0;
+                                                trend.IncomePercentage = lst[0].IncomePercentage ?? 0;
+                                                trend.SpendAmount = lst[0].SpendAmount;
+                                                trend.SpendPercentage = lst[0].SpendPercentage ?? 0;
+                                                savingTrendRecords.Add(trend);
+                                            }
+                                            else
+                                            {
+                                                logDetailRecord.LogMessage = "Invalid consecutive month data for Saving trend widget..!!";
+                                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                                                break;
+                                            }
+                                            mnth = mnth - 1 == 0 ? 12 : mnth - 1;
+                                        }
+
+                                        var records = savingTrendRecords.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
+                                        string savingtrendjson = JsonConvert.SerializeObject(records);
                                         if (savingtrendjson != null && savingtrendjson != string.Empty)
                                         {
                                             SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=" + savingtrendjson;
@@ -2093,7 +2151,34 @@ namespace nIS
                                     }
                                     if (spendingtrends != null && spendingtrends.Count > 0)
                                     {
-                                        string spendingtrendjson = JsonConvert.SerializeObject(spendingtrends);
+                                        IList<SavingTrend> trends = new List<SavingTrend>();
+                                        int mnth = DateTime.Now.Month;
+                                        for (int t = spendingtrends.Count; t > 0; t--)
+                                        {
+                                            string month = this.utility.getMonth(mnth);
+                                            var lst = spendingtrends.Where(it => it.Month.ToLower().Contains(month.ToLower()))?.ToList();
+                                            if (lst != null && lst.Count > 0)
+                                            {
+                                                SavingTrend trend = new SavingTrend();
+                                                trend.Month = lst[0].Month;
+                                                trend.NumericMonth = mnth;
+                                                trend.Income = lst[0].Income ?? 0;
+                                                trend.IncomePercentage = lst[0].IncomePercentage ?? 0;
+                                                trend.SpendAmount = lst[0].SpendAmount;
+                                                trend.SpendPercentage = lst[0].SpendPercentage ?? 0;
+                                                trends.Add(trend);
+                                            }
+                                            else
+                                            {
+                                                logDetailRecord.LogMessage = "Invalid consecutive month data for Spending trend widget..!!";
+                                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                                                break;
+                                            }
+                                            mnth = mnth - 1 == 0 ? 12 : mnth - 1;
+                                        }
+
+                                        var records = trends.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
+                                        string spendingtrendjson = JsonConvert.SerializeObject(records);
                                         if (spendingtrendjson != null && spendingtrendjson != string.Empty)
                                         {
                                             SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=" + spendingtrendjson;
@@ -2144,7 +2229,7 @@ namespace nIS
                                     pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
                                 }
                             }
-
+                            
                             htmlbody.Append(pageContent);
                         }
                     }
@@ -2527,7 +2612,11 @@ namespace nIS
                             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                             {
                                 dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                                if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
+                                if (widgetSetting.isEmbedded == true)
+                                {
+                                    vdoAssetFilepath = widgetSetting.SourceUrl;
+                                }
+                                else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
                                 {
                                     vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                 }
