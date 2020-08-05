@@ -166,8 +166,8 @@ namespace nIS
                         }
                         if (runHistryRecords != null && runHistryRecords.Count > 0)
                         {
-                            var diff = Math.Ceiling(runHistryRecords.FirstOrDefault().EndDate.Subtract(runHistryRecords.FirstOrDefault().StartDate).TotalMinutes);
-                            log.ProcessingTime = diff + " minute" + (diff == 1 ? "" : "s");
+                            var diff = Math.Round(runHistryRecords.FirstOrDefault().EndDate.Subtract(runHistryRecords.FirstOrDefault().StartDate).TotalMinutes, 2);
+                            log.ProcessingTime = diff + " minute" + (diff > 2 ? "" : "s");
                         }
                         else
                         {

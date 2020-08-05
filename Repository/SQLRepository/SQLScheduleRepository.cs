@@ -560,6 +560,7 @@ namespace nIS
                                 if (statementPages.Count > 0)
                                 {
                                     string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/absa-logo.png");
+                                    navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/logo.png");
                                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                                     StringBuilder navItemList = new StringBuilder();
                                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
@@ -695,15 +696,15 @@ namespace nIS
                                                                 }
                                                                 else if (mergedlst[x].WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
                                                                 {
-                                                                    htmlbody.Append(HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                                    htmlbody.Append(HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
 
-                                                                    pageHtmlContent.Append(HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                                    pageHtmlContent.Append(HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
                                                                 }
                                                                 else if (mergedlst[x].WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
                                                                 {
-                                                                    htmlbody.Append(HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                                    htmlbody.Append(HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
 
-                                                                    pageHtmlContent.Append(HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                                    pageHtmlContent.Append(HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
                                                                 }
                                                                 else if (mergedlst[x].WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
                                                                 {
@@ -1338,6 +1339,7 @@ namespace nIS
                     StringBuilder htmlbody = new StringBuilder();
                     currency = accountrecords[0].Currency;
                     string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/absa-logo.png");
+                    navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/logo.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
@@ -1351,6 +1353,8 @@ namespace nIS
                     string SavingTrendChartJson = string.Empty;
                     string SpendingTrendChartJson = string.Empty;
                     string AnalyticsChartJson = string.Empty;
+                    string SavingTransactionGridJson = string.Empty;
+                    string CurrentTransactionGridJson = string.Empty;
 
                     for (int i = 0; i < statement.Pages.Count; i++)
                     {
@@ -1640,19 +1644,52 @@ namespace nIS
                                         accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving") && item.AccountId == accountId)?.OrderByDescending(item => item.TransactionDate)?.ToList();
 
                                         StringBuilder transaction = new StringBuilder();
+                                        StringBuilder selectOption = new StringBuilder();
                                         if (accountTransactions != null && accountTransactions.Count > 0)
                                         {
+                                            IList<AccountTransaction> transactions = new List<AccountTransaction>();
                                             pageContent.Replace("{{Currency}}", currency);
                                             accountTransactions.ToList().ForEach(trans =>
                                             {
-                                                transaction.Append("<tr><td>" + Convert.ToDateTime(trans.TransactionDate).ToShortDateString() + "</td><td>" + trans.TransactionType + "</td><td>" + trans.Narration + "</td><td class='text-right'>" + trans.FCY + "</td><td class='text-right'>" + trans.CurrentRate + "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
-                                                    "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
+                                                AccountTransaction accountTransaction = new AccountTransaction();
+                                                accountTransaction.AccountType = trans.AccountType;
+                                                accountTransaction.TransactionDate = Convert.ToDateTime(trans.TransactionDate).ToShortDateString();
+                                                accountTransaction.TransactionType = trans.TransactionType;
+                                                accountTransaction.FCY = trans.FCY;
+                                                accountTransaction.Narration = trans.Narration;
+                                                accountTransaction.LCY = trans.LCY;
+                                                accountTransaction.CurrentRate = trans.CurrentRate;
+                                                transactions.Add(accountTransaction);
                                             });
+                                            string savingtransactionjson = JsonConvert.SerializeObject(transactions);
+                                            if (savingtransactionjson != null && savingtransactionjson != string.Empty)
+                                            {
+                                                var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
+                                                distinctNaration.ToList().ForEach(item =>
+                                                {
+                                                    selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                });
+                                                pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+
+                                                SavingTransactionGridJson = "savingtransactiondata" + accountId + page.Identifier + "=" + savingtransactionjson;
+                                                this.utility.WriteToJsonFile(SavingTransactionGridJson, "savingtransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id);
+                                                scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtransactiondetail" + accountId + page.Identifier + ".json'></script>");
+
+                                                var scriptval = HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT.Replace("SavingTransactionTable", "SavingTransactionTable" + accountId + page.Identifier).Replace("savingtransactiondata", "savingtransactiondata" + accountId + page.Identifier);
+                                                scriptHtmlRenderer.Append(scriptval);
+
+                                                pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + accountId + page.Identifier);
+                                            }
+                                            else
+                                            {
+                                                transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
+                                            }
                                         }
                                         else
                                         {
                                             transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
                                         }
+                                        
                                         pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
                                     }
                                 }
@@ -1664,21 +1701,52 @@ namespace nIS
                                         accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current") && item.AccountId == accountId)?.OrderByDescending(item => item.TransactionDate)?.ToList();
 
                                         StringBuilder transaction = new StringBuilder();
+                                        StringBuilder selectOption = new StringBuilder();
                                         if (accountTransactions != null && accountTransactions.Count > 0)
                                         {
+                                            IList<AccountTransaction> transactions = new List<AccountTransaction>();
                                             pageContent.Replace("{{Currency}}", currency);
                                             accountTransactions.ToList().ForEach(trans =>
                                             {
-                                                transaction.Append("<tr><td>" + Convert.ToDateTime(trans.TransactionDate).ToShortDateString() + "</td><td>" + trans.TransactionType + "</td><td>" + trans.Narration + "</td><td class='text-right'>" + trans.FCY + "</td><td class='text-right'>" + trans.CurrentRate + "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
-                                                    "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
+                                                AccountTransaction accountTransaction = new AccountTransaction();
+                                                accountTransaction.AccountType = trans.AccountType;
+                                                accountTransaction.TransactionDate = Convert.ToDateTime(trans.TransactionDate).ToShortDateString();
+                                                accountTransaction.TransactionType = trans.TransactionType;
+                                                accountTransaction.FCY = trans.FCY;
+                                                accountTransaction.Narration = trans.Narration;
+                                                accountTransaction.LCY = trans.LCY;
+                                                accountTransaction.CurrentRate = trans.CurrentRate;
+                                                transactions.Add(accountTransaction);
                                             });
+                                            string currenttransactionjson = JsonConvert.SerializeObject(transactions);
+                                            if (currenttransactionjson != null && currenttransactionjson != string.Empty)
+                                            {
+                                                var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
+                                                distinctNaration.ToList().ForEach(item =>
+                                                {
+                                                    selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                });
+                                                pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+                                                
+                                                CurrentTransactionGridJson = "currenttransactiondata" + accountId + page.Identifier + "=" + currenttransactionjson;
+                                                this.utility.WriteToJsonFile(CurrentTransactionGridJson, "currenttransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id);
+                                                scriptHtmlRenderer.Append("<script type='text/javascript' src='./currenttransactiondetail" + accountId + page.Identifier + ".json'></script>");
+
+                                                var scriptval = HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT.Replace("CurrentTransactionTable", "CurrentTransactionTable" + accountId + page.Identifier).Replace("currenttransactiondata", "currenttransactiondata" + accountId + page.Identifier);
+                                                scriptHtmlRenderer.Append(scriptval);
+
+                                                pageContent.Replace("CurrentTransactionTable", "CurrentTransactionTable" + accountId + page.Identifier);
+                                            }
+                                            else
+                                            {
+                                                transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
+                                            }
                                         }
                                         else
                                         {
                                             transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
                                         }
                                         pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
-
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
@@ -1945,6 +2013,7 @@ namespace nIS
                 //start to render common html content data
                 StringBuilder htmlbody = new StringBuilder();
                 string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/absa-logo.png");
+                navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/logo.png");
                 navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
@@ -2100,37 +2169,37 @@ namespace nIS
                         }
                         else if (widget.WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
                         {
-                            string transactionJson = "[{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1876.00' }, { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' }, { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' }]";
-                            if (transactionJson != string.Empty && validationEngine.IsValidJson(transactionJson))
+                            StringBuilder selectOption = new StringBuilder();
+                            var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
+                            distinctNaration.ToList().ForEach(item =>
                             {
-                                IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(transactionJson);
-                                StringBuilder transaction = new StringBuilder();
-                                accountTransactions.ToList().ForEach(trans =>
-                                {
-                                    transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
-                                        trans.Narration + "</td><td class='text-right'>" + trans.FCY + "</td><td class='text-right'>" + trans.CurrentRate +
-                                        "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
-                                        "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
-                                });
-                                pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
-                            }
+                                selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                            });
+                            pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+                            
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + baseURL + "\\Resources\\sampledata\\savingtransactiondetail.json'></script>");
+                            var scriptval = HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
+                            scriptHtmlRenderer.Append(scriptval);
+
+                            pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
+                            pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
                         }
                         else if (widget.WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
                         {
-                            string transactionJson = "[{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1876.00' }, { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' }, { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' }]";
-                            if (transactionJson != string.Empty && validationEngine.IsValidJson(transactionJson))
+                            StringBuilder selectOption = new StringBuilder();
+                            var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
+                            distinctNaration.ToList().ForEach(item =>
                             {
-                                IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(transactionJson);
-                                StringBuilder transaction = new StringBuilder();
-                                accountTransactions.ToList().ForEach(trans =>
-                                {
-                                    transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
-                                        trans.Narration + "</td><td class='text-right'>" + trans.FCY + "</td><td class='text-right'>" + trans.CurrentRate +
-                                        "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
-                                        "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
-                                });
-                                pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
-                            }
+                                selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                            });
+                            pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + baseURL + "\\Resources\\sampledata\\currenttransactiondetail.json'></script>");
+                            var scriptval = HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
+                            scriptHtmlRenderer.Append(scriptval);
+
+                            pageContent.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
+                            pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
                         }
                         else if (widget.WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
                         {

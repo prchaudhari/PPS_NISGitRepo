@@ -239,6 +239,7 @@
     <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\images\absa-logo.png" />
+    <Content Include="Resources\images\logo.png" />
     <Content Include="Resources\js\accessibility.js" />
     <Content Include="Resources\js\bootstrap.min.js" />
     <Content Include="Resources\js\export-data.js" />
@@ -298,6 +299,8 @@
     <Content Include="Resources\sampledata\savingtrenddata.json" />
     <Content Include="Resources\sampledata\spendingtrenddata.json" />
     <Content Include="Resources\sampledata\analyticschartdata.json" />
+    <Content Include="Resources\sampledata\currenttransactiondetail.json" />
+    <Content Include="Resources\sampledata\savingtransactiondetail.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

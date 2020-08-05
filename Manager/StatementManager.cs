@@ -275,7 +275,7 @@ namespace nIS
                 var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                 if (statementPages.Count != 0)
                 {
-                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/absa-logo.png");
+                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/absa-logo.png").Replace("{{logo}}", "assets/images/logo_black.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                     StringBuilder navItemList = new StringBuilder();
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
@@ -509,6 +509,7 @@ namespace nIS
                                                     {
                                                         IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(transactionJson);
                                                         StringBuilder transaction = new StringBuilder();
+                                                        StringBuilder selectOption = new StringBuilder();
                                                         accountTransactions.ToList().ForEach(trans =>
                                                         {
                                                             transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
@@ -516,7 +517,13 @@ namespace nIS
                                                                 "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
                                                                 "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                         });
+                                                        var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
+                                                        distinctNaration.ToList().ForEach(item =>
+                                                        {
+                                                            selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                        });
                                                         string accountTransactionstr = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                        accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
                                                         htmlString.Append(accountTransactionstr);
                                                     }
                                                 }
@@ -527,6 +534,7 @@ namespace nIS
                                                     {
                                                         IList<AccountTransaction> accountTransactions = JsonConvert.DeserializeObject<List<AccountTransaction>>(transactionJson);
                                                         StringBuilder transaction = new StringBuilder();
+                                                        StringBuilder selectOption = new StringBuilder();
                                                         accountTransactions.ToList().ForEach(trans =>
                                                         {
                                                             transaction.Append("<tr><td>" + trans.TransactionDate + "</td><td>" + trans.TransactionType + "</td><td>" +
@@ -534,7 +542,13 @@ namespace nIS
                                                                 "</td><td class='text-right'>" + trans.LCY + "</td><td><div class='action-btns btn-tbl-action'>" +
                                                                 "<button type='button' title='View'><span class='fa fa-paper-plane-o'></span></button></div></td></tr>");
                                                         });
+                                                        var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
+                                                        distinctNaration.ToList().ForEach(item =>
+                                                        {
+                                                            selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                        });
                                                         string accountTransactionstr = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
+                                                        accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
                                                         htmlString.Append(accountTransactionstr);
                                                     }
                                                 }
