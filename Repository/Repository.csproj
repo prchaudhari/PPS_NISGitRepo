@@ -195,6 +195,12 @@
     <Compile Include="SQLRepository\SQLAzureWidgetRepository.cs" />
     <Compile Include="SQLRepository\SQLScheduleRepository.cs" />
     <Compile Include="SQLRepository\SQLRoleRepository.cs" />
+    <Compile Include="StatementAnalyticRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StatementMetadataRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="StatementPageMapRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
