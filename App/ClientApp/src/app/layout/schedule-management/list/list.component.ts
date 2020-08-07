@@ -240,7 +240,7 @@ export class ListComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
       searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = 'Name';
+      searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
     }

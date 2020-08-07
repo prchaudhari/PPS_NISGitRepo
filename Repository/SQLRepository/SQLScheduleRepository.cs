@@ -114,12 +114,13 @@ namespace nIS
                         EndDate = schedule.EndDate,
                         Status = schedule.Status,
                         IsDeleted = false,
+                        IsActive = true,
                         TenantCode = tenantCode,
                         StatementId = schedule.Statement.Identifier,
                         IsExportToPDF = schedule.IsExportToPDF,
                         UpdateBy = schedule.UpdateBy.Identifier,
                         LastUpdatedDate = DateTime.UtcNow,
-                    });
+                    }); ;
                 });
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
@@ -181,17 +182,16 @@ namespace nIS
                         scheduleRecord.EndDate = item.EndDate;
                         scheduleRecord.Status = item.Status;
                         scheduleRecord.IsDeleted = false;
+                        scheduleRecord.IsActive = item.IsActive;
                         scheduleRecord.TenantCode = tenantCode;
                         scheduleRecord.IsExportToPDF = item.IsExportToPDF;
                         scheduleRecord.StatementId = item.Statement.Identifier;
                         scheduleRecord.UpdateBy = item.UpdateBy.Identifier;
                         scheduleRecord.LastUpdatedDate = DateTime.UtcNow;
-
                     });
 
                     nISEntitiesDataContext.SaveChanges();
                 }
-
 
                 result = true;
             }
@@ -314,7 +314,7 @@ namespace nIS
                             Identifier = scheduleRecord.Id,
                             Name = scheduleRecord.Name,
                             Description = scheduleRecord.Description,
-                            IsActive = !scheduleRecord.IsActive,
+                            IsActive = scheduleRecord.IsActive,
                             DayOfMonth = scheduleRecord.DayOfMonth,
                             HourOfDay = scheduleRecord.HourOfDay,
                             MinuteOfDay = scheduleRecord.MinuteOfDay,
@@ -405,7 +405,7 @@ namespace nIS
 
                     scheduleRecords.ToList().ForEach(item =>
                     {
-                        item.IsActive = false;
+                        item.IsActive = true;
                     });
 
                     nISEntitiesDataContext.SaveChanges();
@@ -446,7 +446,7 @@ namespace nIS
 
                     scheduleRecords.ToList().ForEach(item =>
                     {
-                        item.IsActive = true;
+                        item.IsActive = false;
                     });
 
                     nISEntitiesDataContext.SaveChanges();
