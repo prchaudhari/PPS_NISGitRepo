@@ -275,7 +275,7 @@ namespace nIS
                 var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                 if (statementPages.Count != 0)
                 {
-                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/absa-logo.png").Replace("{{logo}}", "assets/images/logo_black.png");
+                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/absa-logo.png").Replace("{{logo}}", "assets/images/nisLogo.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                     StringBuilder navItemList = new StringBuilder();
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
@@ -306,7 +306,7 @@ namespace nIS
                             {
                                 var page = pages[y];
                                 string tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
-                                navItemList.Append(" <li class='nav-item'><a class='nav-link " + (x == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
+                                navItemList.Append(" <li class='nav-item p-1 '><a class='nav-link " + (x == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
                                 string ExtraClassName = x > 0 ? "d-none " + tabClassName : tabClassName;
                                 string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);
                                 widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", tabClassName);
@@ -334,8 +334,7 @@ namespace nIS
                                                     htmlString.Append("<div class='row'>"); // to start new row class div 
                                                     isRowComplete = false;
                                                 }
-                                                int divLength = ((mergedlst[i].Width * 12) % 20) != 0 ? (((mergedlst[i].Width * 12) / 20) + 1)
-                                                                    : ((mergedlst[i].Width * 12) / 20);
+                                                int divLength = ((mergedlst[i].Width * 12) % 20) != 0 ? (((mergedlst[i].Width * 12) / 20) + 1) : ((mergedlst[i].Width * 12) / 20);
                                                 tempRowWidth = tempRowWidth + divLength;
 
                                                 // If current col-lg class length is greater than 12, 
@@ -446,10 +445,10 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
                                                 {
-                                                    string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"Dollor\",\"Amount\":\"87356\"}" +
-                                                        ",{\"AccountType\":\"Current Account\",\"Currency\":\"Dollor\",\"Amount\":\"18654\"},{\"AccountType\":" +
-                                                        "\"Recurring Account\",\"Currency\":\"Dollor\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" +
-                                                        ":\"Dollor\",\"Amount\":\"4589\"}]";
+                                                    string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"8356\"}" +
+                                                        ",{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"6654\"},{\"AccountType\":" +
+                                                        "\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"9367\"},{\"AccountType\":\"Wealth\",\"Currency\"" +
+                                                        ":\"$\",\"Amount\":\"4589\"}]";
 
                                                     string accountSummary = string.Empty;
                                                     if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))

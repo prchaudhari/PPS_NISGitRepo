@@ -21,5 +21,7 @@ namespace nIS
         public string DisplayName { get; set; }
         public string HtmlContent { get; set; } 
         public string TabClassName { get; set; }
+        public string PageHeaderContent { get; set; }
+        public string PageFooterContent { get; set; }
     }
 }

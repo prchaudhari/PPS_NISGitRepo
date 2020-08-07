@@ -240,6 +240,7 @@
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\images\absa-logo.png" />
     <Content Include="Resources\images\logo.png" />
+    <Content Include="Resources\images\nisLogo.png" />
     <Content Include="Resources\js\accessibility.js" />
     <Content Include="Resources\js\bootstrap.min.js" />
     <Content Include="Resources\js\export-data.js" />

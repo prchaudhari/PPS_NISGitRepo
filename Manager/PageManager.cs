@@ -292,8 +292,7 @@ namespace nIS
                                             htmlString.Append("<div class='row'>");
                                             isRowComplete = false;
                                         }
-                                        int divLength = ((mergedlst[i].Width * 12) % 20) != 0 ? (((mergedlst[i].Width * 12) / 20) + 1)
-                                                                    : ((mergedlst[i].Width * 12) / 20);
+                                        int divLength = ((mergedlst[i].Width * 12) % 20) != 0 ? (((mergedlst[i].Width * 12) / 20) + 1) : ((mergedlst[i].Width * 12) / 20);
                                         tempRowWidth = tempRowWidth + divLength;
 
                                         // If current col-lg class length is greater than 12, 
@@ -396,7 +395,7 @@ namespace nIS
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
                                         {
-                                            string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"Dollor\",\"Amount\":\"87356\"},{\"AccountType\":\"Current Account\",\"Currency\":\"Dollor\",\"Amount\":\"18654\"},{\"AccountType\":\"Recurring Account\",\"Currency\":\"Dollor\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\":\"Dollor\",\"Amount\":\"4589\"}]";
+                                            string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"8356\"},{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"5654\"},{\"AccountType\":\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"4367\"},{\"AccountType\":\"Wealth\",\"Currency\":\"$\",\"Amount\":\"4589\"}]";
 
                                             string accountSummary = string.Empty;
                                             if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
