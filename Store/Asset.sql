@@ -1,8 +1,10 @@
 ﻿CREATE TABLE [NIS].[Asset]
 (
-	[Id] BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[Name] NVARCHAR(100) NULL,
-	[FilePath] NVARCHAR(500) NOT NULL,
-	[AssetLibraryId] BIGINT  NOT NULL,
-	[IsDeleted] BIT NOT NULL
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NULL,
+	[FilePath] [nvarchar](500) NOT NULL,
+	[AssetLibraryId] [bigint] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[LastUpdatedDate] [datetime] NULL,
+	[LastUpdatedBy] [bigint] NULL,
 )

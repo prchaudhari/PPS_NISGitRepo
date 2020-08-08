@@ -107,6 +107,12 @@
     <Build Include="ScheduleLogDetail.sql" />
     <Build Include="TenantConfiguration.sql" />
     <None Include="Seed Data Scripts\TenantConfiguration.sql" />
+    <Build Include="AccountTransaction.sql" />
+    <Build Include="ReminderAndRecommendation.sql" />
+    <Build Include="SavingTrend.sql" />
+    <Build Include="StatementAnalytics.sql" />
+    <Build Include="StatementMetadata.sql" />
+    <Build Include="Top4IncomeSources.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

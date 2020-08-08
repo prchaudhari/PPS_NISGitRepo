@@ -5,4 +5,5 @@
     [InputDataSourcePath] NVARCHAR(MAX) NOT NULL, 
     [OutputHTMLPath] NVARCHAR(MAX) NOT NULL, 
     [OutputPDFPath] NVARCHAR(MAX) NOT NULL,
+    [TenantCode] [nvarchar](50) NULL,
 )
