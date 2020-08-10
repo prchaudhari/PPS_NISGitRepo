@@ -123,9 +123,17 @@ namespace nIS
 
         public const string WIDGET_HTML_HEADER = "<div id='{{DivId}}' class='card border-0 p-2 tabDivClass {{ExtraClass}}'>";
 
+        public const string PAGE_TAB_CONTENT_HEADER = "<div class='tab-content'>";
+
         public const string WIDGET_HTML_FOOTER = "</div>";
 
+        public const string PAGE_TAB_CONTENT_FOOTER = "</div>";
+
         public const string CONTAINER_DIV_HTML_FOOTER = "</div>";
+
+        public const string END_DIV_TAG = "</div>";
+
+        public const string START_ROW_DIV_TAG = "<div class='row'>";
 
         public const string HOME_PAGE_DIV_NAME = "Home-Div";
 

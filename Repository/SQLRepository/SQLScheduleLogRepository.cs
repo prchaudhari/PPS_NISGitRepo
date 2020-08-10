@@ -306,9 +306,7 @@ namespace nIS
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
         public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string tenantCode)
         {
-            bool scheduleRunStatus = false;
-            StringBuilder htmlbody = new StringBuilder();
-            StringBuilder finalHtml = new StringBuilder();
+            bool retryStatementStatus = false;
             IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
 
             try
@@ -319,7 +317,7 @@ namespace nIS
                 {
                     StringBuilder query = new StringBuilder();
                     query.Append("(" + string.Join("or ", string.Join(",", scheduleLogDetails.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
-                    query.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+                    query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
 
                     scheduleLogDetailRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
                     if (scheduleLogDetailRecords == null || scheduleLogDetailRecords.Count <= 0 || scheduleLogDetailRecords.Count() != string.Join(",", scheduleLogDetailRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
@@ -334,6 +332,7 @@ namespace nIS
                     ScheduleRecord scheduleRecord = new ScheduleRecord();
                     CustomerMasterRecord customerMaster = new CustomerMasterRecord();
                     IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
+                    RenderEngineRecord renderEngine = new RenderEngineRecord();
 
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
@@ -352,6 +351,7 @@ namespace nIS
                     if (scheduleRecord != null && batchMaster != null && customerMaster != null)
                     {
                         Statement statement = new Statement();
+                        IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
                         StatementSearchParameter statementSearchParameter = new StatementSearchParameter
                         {
                             Identifier = scheduleRecord.StatementId,
@@ -373,185 +373,77 @@ namespace nIS
                         if (statements.Count > 0)
                         {
                             statement = statements[0];
-
-                            //Start to generate common html string
-                            var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
-                            if (statementPages.Count != 0)
+                            var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
+                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                             {
-                                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "absa-logo.png");
-                                navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
-                                StringBuilder navItemList = new StringBuilder();
-                                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-
-                                statement.Pages = new List<Page>();
-                                for (int i = 0; i < statementPages.Count; i++)
+                                renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
+                            }
+                            var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, statementPageContents, batchMaster, batchDetails, baseURL);
+                            if (logDetailRecord != null)
+                            {
+                                if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                                 {
-                                    PageSearchParameter pageSearchParameter = new PageSearchParameter
+                                    this.utility.DeleteUnwantedDirectory(batchMaster.Id, customerMaster.Id);
+                                }
+                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                {
+                                    ScheduleLogDetailRecord scheduleLogDetailRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Id == scheduleLogDetail.Id).FirstOrDefault();
+                                    if (scheduleLogDetailRecord != null)
                                     {
-                                        Identifier = statementPages[i].ReferencePageId,
-                                        IsPageWidgetsRequired = true,
-                                        IsActive = true,
-                                        PagingParameter = new PagingParameter
-                                        {
-                                            PageIndex = 0,
-                                            PageSize = 0,
-                                        },
-                                        SortParameter = new SortParameter()
-                                        {
-                                            SortOrder = SortOrder.Ascending,
-                                            SortColumn = "DisplayName",
-                                        },
-                                        SearchMode = SearchMode.Equals
-                                    };
-                                    var pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
-                                    if (pages.Count != 0)
-                                    {
-                                        for (int j = 0; j < pages.Count; j++)
-                                        {
-                                            var page = pages[j];
-                                            statement.Pages.Add(page);
-                                            string tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
-                                            navItemList.Append(" <li class='nav-item'><a class='nav-link " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
-                                            string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
-                                            string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);
-                                            widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", tabClassName);
-                                            htmlbody.Append(widgetHtmlHeader);
+                                        scheduleLogDetailRecord.CustomerId = customerMaster.Id;
+                                        scheduleLogDetailRecord.CustomerName = customerMaster.FirstName.Trim() + (customerMaster.MiddleName == string.Empty ? string.Empty : " " + customerMaster.MiddleName.Trim()) + " " + customerMaster.LastName.Trim();
+                                        scheduleLogDetailRecord.RenderEngineId = renderEngine.Id; //To be change once render engine implmentation start
+                                        scheduleLogDetailRecord.RenderEngineName = renderEngine.Name;
+                                        scheduleLogDetailRecord.RenderEngineURL = renderEngine.URL;
+                                        scheduleLogDetailRecord.LogMessage = logDetailRecord.LogMessage;
+                                        scheduleLogDetailRecord.Status = logDetailRecord.Status;
+                                        scheduleLogDetailRecord.NumberOfRetry++;
+                                        scheduleLogDetailRecord.StatementFilePath = logDetailRecord.StatementFilePath;
 
-                                            int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
-                                            int max = 0;
-                                            if (page.PageWidgets.Count > 0)
+                                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.StatementMetadataRecords.Count > 0)
+                                        {
+                                            logDetailRecord.StatementMetadataRecords.ToList().ForEach(metarec =>
                                             {
-                                                var completelst = new List<PageWidget>(page.PageWidgets);
-                                                int currentYPosition = 0;
-                                                var isRowComplete = false;
+                                                metarec.ScheduleLogId = logDetailRecord.ScheduleLogId;
+                                                metarec.ScheduleId = logDetailRecord.ScheduleLogId;
+                                                metarec.StatementDate = DateTime.Now;
+                                                metarec.StatementURL = logDetailRecord.StatementFilePath;
+                                                statementMetadataRecords.Add(metarec);
+                                            });
+                                        }
 
-                                                while (completelst.Count != 0)
-                                                {
-                                                    var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
-                                                    if (lst.Count > 0)
-                                                    {
-                                                        max = max + lst.Max(it => it.Height);
-                                                        var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
-                                                        var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
-                                                        currentYPosition = max;
-                                                        for (int x = 0; x < mergedlst.Count; x++)
-                                                        {
-                                                            if (tempRowWidth == 0)
-                                                            {
-                                                                htmlbody.Append("<div class='row'>"); // to start new row class div 
-                                                                isRowComplete = false;
-                                                            }
-                                                            int divLength = ((mergedlst[x].Width * 12) % 20) != 0 ? (((mergedlst[x].Width * 12) / 20) + 1)
-                                                                    : ((mergedlst[x].Width * 12) / 20);
-                                                            tempRowWidth = tempRowWidth + divLength;
-
-                                                            // If current col-lg class length is greater than 12, 
-                                                            //then end parent row class div and then start new row class div
-                                                            if (tempRowWidth > 12)
-                                                            {
-                                                                tempRowWidth = divLength;
-                                                                htmlbody.Append("</div>"); // to end row class div
-                                                                htmlbody.Append("<div class='row'>"); // to start new row class div
-                                                                isRowComplete = false;
-                                                            }
-                                                            htmlbody.Append("<div class='col-lg-" + divLength + "'>");
-                                                            if (mergedlst[x].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
-                                                            {
-                                                                htmlbody.Append(HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
-                                                            }
-                                                            else if (mergedlst[x].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
-                                                            {
-                                                                htmlbody.Append(HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML);
-                                                            }
-                                                            else if (mergedlst[x].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
-                                                            {
-                                                                htmlbody.Append(HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
-                                                            }
-                                                            else if (mergedlst[x].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
-                                                            {
-                                                                htmlbody.Append(HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].WidgetId + "}}"));
-                                                            }
-                                                            else if (mergedlst[x].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
-                                                            {
-                                                                htmlbody.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML);
-                                                            }
-
-                                                            // To end current col-lg class div
-                                                            htmlbody.Append("</div>");
-
-                                                            // if current col-lg class width is equal to 12 or end before complete col-lg-12 class, 
-                                                            //then end parent row class div
-                                                            if (tempRowWidth == 12 || (x == mergedlst.Count - 1))
-                                                            {
-                                                                tempRowWidth = 0;
-                                                                htmlbody.Append("</div>"); //To end row class div
-                                                                isRowComplete = true;
-                                                            }
-                                                        }
-                                                        mergedlst.ForEach(it =>
-                                                        {
-                                                            completelst.Remove(it);
-                                                        });
-                                                    }
-                                                    else
-                                                    {
-                                                        if (completelst.Count != 0)
-                                                        {
-                                                            currentYPosition = completelst.Min(it => it.Yposition);
-                                                        }
-                                                    }
-                                                }
-                                                //If row class div end before complete col-lg-12 class
-                                                if (isRowComplete == false)
-                                                {
-                                                    htmlbody.Append("</div>");
-                                                }
+                                        ScheduleLogRecord scheduleLog = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId).ToList().FirstOrDefault();
+                                        if (scheduleLog != null)
+                                        {
+                                            var _lstScheduleLogDetail = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId).ToList();
+                                            var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
+                                            if (successRecords != null && successRecords.Count == _lstScheduleLogDetail.Count)
+                                            {
+                                                scheduleLog.Status = ScheduleLogStatus.Completed.ToString();
                                             }
                                             else
                                             {
-                                                htmlbody.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
+                                                scheduleLog.Status = ScheduleLogStatus.Failed.ToString();
                                             }
-                                            htmlbody.Append(HtmlConstants.WIDGET_HTML_FOOTER);
                                         }
-                                    }
-                                    else
-                                    {
-                                        htmlbody.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
+                                        
+                                        nISEntitiesDataContext.SaveChanges();
                                     }
                                 }
-
-                                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
-                                navbarHtml = navbarHtml.Replace("{{NavItemList}}", navItemList.ToString());
-
-                                finalHtml.Append(HtmlConstants.HTML_HEADER);
-                                finalHtml.Append(navbarHtml);
-                                finalHtml.Append(htmlbody.ToString());
-                                //finalHtml.Append(HtmlConstants.TAB_NAVIGATION_SCRIPT);
-                                finalHtml.Append(HtmlConstants.HTML_FOOTER);
                             }
-                        }
-
-                        var logDetailRecord = GenerateStatement(customerMaster, statement, finalHtml, batchMaster, batchDetails, baseURL);
-                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                        {
-                            ScheduleLogDetailRecord scheduleLogDetailRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Id == scheduleLogDetail.Id).FirstOrDefault();
-                            if (logDetailRecord.Status != ScheduleLogStatus.Failed.ToString() && scheduleLogDetailRecord != null)
-                            {
-                                scheduleLogDetailRecord.LogMessage = logDetailRecord.LogMessage;
-                                scheduleLogDetailRecord.Status = logDetailRecord.Status;
-                                scheduleLogDetailRecord.StatementFilePath = logDetailRecord.StatementFilePath;
-                                nISEntitiesDataContext.SaveChanges();
-                            }
+                            
                         }
                     }
 
                 });
+
+                retryStatementStatus = true;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return scheduleRunStatus;
+            return retryStatementStatus;
         }
 
         /// <summary>
