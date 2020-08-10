@@ -91,12 +91,14 @@
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
     <Compile Include="Search Parameter\RenderEngineSearchParameter.cs" />
     <Compile Include="Search Parameter\ScheduleLogSearchParameter.cs" />
+    <Compile Include="Search Parameter\StatementSearchSearchParameter.cs" />
     <Compile Include="Search Parameter\StatementSearchParameter.cs" />
     <Compile Include="Search Parameter\PageSearchParameter.cs" />
     <Compile Include="Search Parameter\SchdeuleSearchParameter.cs" />
     <Compile Include="Search Parameter\WidgetSearchParameter.cs" />
     <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
+    <Compile Include="StatementSearch.cs" />
     <Compile Include="Statement.cs" />
     <Compile Include="StatementPage.cs" />
     <Compile Include="StatementPageContent.cs" />

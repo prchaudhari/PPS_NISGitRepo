@@ -19,8 +19,9 @@ import { DynamicGlobalVariable } from '../shared/constants/constants';
 import { AssetSettingsComponent } from './asset-settings/asset-settings.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { StatementSearchComponent } from './statement-search/statement-search.component';
+import { TenantConfigurationComponent } from './tenant-configuration/tenant-configuration.component';
 @NgModule({
-  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent],
+  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent],
   imports: [
     CommonModule,
     FormsModule,

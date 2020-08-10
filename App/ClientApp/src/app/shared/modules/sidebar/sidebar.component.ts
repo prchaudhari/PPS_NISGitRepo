@@ -52,8 +52,8 @@ export class SidebarComponent implements OnInit {
       this.route.navigate(['/dashboard']);
     }
     else {
-      this.URL = '/settings';
-      this.route.navigate(['/settings']);
+      this.URL = '/tenantConfiguration';
+      this.route.navigate(['/tenantConfiguration']);
     }
   }
   navigateToRoles() {
@@ -107,6 +107,10 @@ export class SidebarComponent implements OnInit {
   navigateToSettings() {
     this.URL = '/settings';
     this.route.navigate(['/settings']);
+  }
+  navigateToTenantConfig() {
+    this.URL = '/tenantConfiguration';
+    this.route.navigate(['/tenantConfiguration']);
   }
   navigateToStatemenetSearch() {
     this.URL = '/statemenetsearch';
@@ -179,7 +183,7 @@ export class SidebarComponent implements OnInit {
     
     this.URL = this.route.url;
     if(this.isSuperAdminUser == true) {
-      if (this.URL == '/settings' || this.URL == '/renderengines') {
+      if (this.URL == '/tenantConfiguration' ||this.URL == '/settings' || this.URL == '/renderengines') {
         this.IsMainMenu = false;
       }
       else {
@@ -213,6 +217,9 @@ export class SidebarComponent implements OnInit {
     }
     else if(this.URL.includes('/renderengines')) {
       this.URL = '/renderengines';
+    }
+    else if (this.URL.includes('/tenantConfiguration')) {
+      this.URL = '/tenantConfiguration'
     }
   }
 

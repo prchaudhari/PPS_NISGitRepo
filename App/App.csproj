@@ -37,6 +37,8 @@
     <None Remove="ClientApp\src\app\layout\schedule-management\schedule.ts" />
     <None Remove="ClientApp\src\app\layout\schedule-management\scheduleHitory.ts" />
     <None Remove="ClientApp\src\app\layout\statement-defination\statement.ts" />
+    <None Remove="ClientApp\src\app\layout\tenant-configuration\tenantConfiguration.service.ts" />
+    <None Remove="ClientApp\src\app\layout\tenant-configuration\tenatConfiguration.ts" />
     <None Remove="ClientApp\src\app\layout\users\user.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\widget.service.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\Widget.ts" />
