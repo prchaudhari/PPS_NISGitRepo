@@ -143,7 +143,7 @@ namespace nIS
         /// <summary>
         /// The invalid asset path
         /// </summary>
-        public const string INVALID_TENANTCONFIGS_IMAGEDATASOURCEPATH = "InputDataSourcePath";
+        public const string INVALID_TENANTCONFIGS_NAME= "Name";
 
         /// <summary>
         /// The invalid asset path

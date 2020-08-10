@@ -445,11 +445,12 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="InputDataSourcePath" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="OutputHTMLPath" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="OutputPDFPath" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="InputDataSourcePath" Type="nvarchar(max)" />
+          <Property Name="OutputHTMLPath" Type="nvarchar(max)" />
+          <Property Name="OutputPDFPath" Type="nvarchar(max)" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Top4IncomeSources">
           <Key>
@@ -1264,11 +1265,12 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="InputDataSourcePath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OutputHTMLPath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OutputPDFPath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InputDataSourcePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OutputHTMLPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OutputPDFPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="StatementAnalyticRecord">
           <Key>
@@ -1909,6 +1911,7 @@
           <EntitySetMapping Name="TenantConfigurationRecords">
             <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
               <MappingFragment StoreEntitySet="TenantConfiguration">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="OutputPDFPath" ColumnName="OutputPDFPath" />
                 <ScalarProperty Name="OutputHTMLPath" ColumnName="OutputHTMLPath" />

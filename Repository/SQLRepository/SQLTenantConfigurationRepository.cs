@@ -95,6 +95,7 @@ namespace nIS
                         InputDataSourcePath = item.InputDataSourcePath,
                         OutputHTMLPath = item.OutputHTMLPath,
                         OutputPDFPath = item.OutputPDFPath,
+                        Name= item.Name
                     }).ToList();
                 }
             }
@@ -129,7 +130,7 @@ namespace nIS
                     record.InputDataSourcePath = setting.InputDataSourcePath;
                     record.OutputHTMLPath = setting.OutputHTMLPath;
                     record.OutputPDFPath = setting.OutputPDFPath;
-                  
+                    record.Name = setting.Name;
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }

@@ -6,8 +6,7 @@
     <div class="card border-0 mb-2 card-shadow">
       <div class="card-body" id="collapseDetails">
         <div class="row form-group">
-
-          <div class="col-md-6 col-sm-6 col-lg-4">
+          <div class="col-md-6 col-sm-6 col-lg-3">
             <label id="lblTenantConfigurationName" for="inputTenantConfigurationName">Name<span class="text-danger ml-2">*</span></label>
             <input type="text" class="form-control" rows="3" id="inputTenantConfigurationName" name="TenantConfigurationName"
                    formControlName="TenantConfigurationName" />
@@ -21,7 +20,7 @@
               </ul>
             </div>
           </div>
-          <div class="col-md-6 col-sm-6 col-lg-4">
+          <div class="col-md-6 col-sm-6 col-lg-3">
             <label id="lblTenantConfigurationInputDataSourcePath" for="inputTenantConfigurationInputDataSourcePath">Input Data Source Path</label>
             <input type="text" class="form-control" id="inputTenantConfigurationInputDataSourcePath" name="TenantConfigurationInputDataSourcePath"
                    formControlName="TenantConfigurationInputDataSourcePath" />
@@ -35,8 +34,34 @@
           </div>
         </div>
         <div class="row form-group">
+          <div class="col-md-6 col-sm-6 col-lg-3">
+            <label for="inputPriorityLevel">Output HTML Path</label>
+            <input type="text" class="form-control" id="inputTenantConfigurationOutputHTMLPath" name="TenantConfigurationOutputHTMLPath"
+                   formControlName="TenantConfigurationOutputHTMLPath" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputHTMLPath.touched && TenantConfigurationOutputHTMLPath.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationOutputHTMLPath.errors?.pattern">Invalid Output HTML Path</li>
+                <li class="text-danger" *ngIf="TenantConfigurationOutputHTMLPath.errors?.required">Output HTML path required</li>
+              </ul>
+            </div>
+          </div>
 
-          <div class="col-md-6 col-sm-6 col-lg-4">
+          <div class="col-md-6 col-sm-6 col-lg-3">
+            <label for="inputConcurrencyCount">Output PDF Path</label>
+            <input type="text" class="form-control" id="inputTenantConfigurationOutputPDFPath" name="TenantConfigurationOutputPDFPath"
+                   formControlName="TenantConfigurationOutputPDFPath" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputPDFPath.touched && TenantConfigurationOutputPDFPath.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationOutputPDFPath.errors?.pattern">Invalid Output PDF Path</li>
+                <li class="text-danger" *ngIf="TenantConfigurationOutputPDFPath.errors?.required">Output PDF path required</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-8 col-sm-6 col-lg-6">
             <label id="lblTenantConfigurationDescription" for="inputTenantConfigurationDescription">Description</label>
             <textarea class="form-control" rows="3" id="inputTenantConfigurationDescription" name="TenantConfigurationDescription"
                       formControlName="TenantConfigurationDescription"></textarea>
@@ -50,36 +75,6 @@
               </ul>
             </div>
           </div>
-
-          <div class="col-md-6 col-sm-6 col-lg-4">
-            <label for="inputPriorityLevel">Output HTML Path</label>
-            <input type="text" class="form-control" id="inputTenantConfigurationOutputHTMLPath" name="TenantConfigurationOutputHTMLPath"
-                   formControlName="TenantConfigurationOutputHTMLPath" />
-            <!-- Error Masseges  -->
-            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputHTMLPath.touched && TenantConfigurationOutputHTMLPath.errors">
-              <ul style="list-style-type:none">
-                <li class="text-danger" *ngIf="TenantConfigurationOutputHTMLPath.errors?.pattern">Invalid Output HTML Path</li>
-                <li class="text-danger" *ngIf="TenantConfigurationOutputHTMLPath.errors?.required">Output HTML path required</li>
-              </ul>
-            </div>
-            <label for="inputConcurrencyCount">Output PDF Path</label>
-            <input type="text" class="form-control" id="inputTenantConfigurationOutputPDFPath" name="TenantConfigurationOutputPDFPath"
-                   formControlName="TenantConfigurationOutputPDFPath" />
-            <!-- Error Masseges  -->
-            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputPDFPath.touched && TenantConfigurationOutputPDFPath.errors">
-              <ul style="list-style-type:none">
-                <li class="text-danger" *ngIf="TenantConfigurationOutputPDFPath.errors?.pattern">Invalid Output PDF Path</li>
-                <li class="text-danger" *ngIf="TenantConfigurationOutputPDFPath.errors?.required">Output PDF path required</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-sm-6 col-lg-4">
-
-          </div>
-        </div>
-        <div class="row form-group">
-
         </div>
       </div>
     </div>

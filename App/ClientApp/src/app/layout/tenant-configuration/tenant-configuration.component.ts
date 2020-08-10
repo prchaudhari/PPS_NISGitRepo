@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Constants } from 'src/app/shared/constants/constants';
 import { TenantConfigurationService } from './tenantConfiguration.service';
-import { HttpClient,HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { MsgBoxComponent } from 'src/app/shared/modules/message/messagebox.component';
 import { Router, NavigationEnd } from '@angular/router';
@@ -12,6 +12,8 @@ import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.serv
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { TenantConfiguration } from './tenatconfiguration';
+import { HttpClientService } from 'src/app/core/services/httpClient.service';
+
 import * as $ from 'jquery';
 @Component({
   selector: 'app-tenant-configuration',
@@ -97,53 +99,56 @@ export class TenantConfigurationComponent implements OnInit {
   ngOnInit() {
     // Render engine form validations.
     this.tenantConfigurationForm = this.formBuilder.group({
-      TenantConfigurationName: [null, Validators.compose([Validators.required])],
-      TenantConfigurationDescription: [null, Validators.compose([Validators.required])],
-      TenantConfigurationOutputPDFPath: [null, Validators.compose([Validators.required])],
-      TenantConfigurationOutputHTMLPath: [null, Validators.compose([Validators.required])],
-      TenantConfigurationInputDataSourcePath: [null, Validators.compose([Validators.required])],
+      TenantConfigurationName: [null, Validators.compose([Validators.required, ,
+      Validators.minLength(Constants.inputMinLenth), Validators.maxLength(Constants.inputMaxLenth),
+      Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
+      TenantConfigurationDescription: [null, Validators.compose([])],
+      TenantConfigurationOutputPDFPath: [null, Validators.compose([])],
+      TenantConfigurationOutputHTMLPath: [null, Validators.compose([])],
+      TenantConfigurationInputDataSourcePath: [null, Validators.compose([])],
     });
-      this.getTenantConfigurationDetails();
+    this.getTenantConfigurationDetails();
   }
 
   async getTenantConfigurationDetails() {
     this.spinner.start();
     var AssetSearchParameter;
-    this._http.post(this.baseURL + 'AssetSetting/list', AssetSearchParameter).subscribe(
+    this._http.post(this.baseURL + 'TenantConfiguration/list', AssetSearchParameter).subscribe(
       data => {
-        this.setting= <TenantConfiguration>data[0];
+        this.setting = <TenantConfiguration>data[0];
         this.spinner.stop();
-      
-          this.tenantConfigurationForm.patchValue({
-            TenantConfigurationDescription: this.setting.Description,
-            TenantConfigurationOutputPDFPath: this.setting.OutputPDFPath,
-            TenantConfigurationOutputHTMLPath: this.setting.OutputHTMLPath,
-            TenantConfigurationInputDataSourcePath: this.setting.InputDataSourcePath
-          });
-      
-
+        this.tenantConfigurationForm.patchValue({
+          TenantConfigurationName: this.setting.Name,
+          TenantConfigurationDescription: this.setting.Description,
+          TenantConfigurationOutputPDFPath: this.setting.OutputPDFPath,
+          TenantConfigurationOutputHTMLPath: this.setting.OutputHTMLPath,
+          TenantConfigurationInputDataSourcePath: this.setting.InputDataSourcePath
+        });
       },
       error => {
         $('.overlay').show();
         this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.spinner.stop();
       });
-   
+
   };
 
   saveButtonValidation(): boolean {
-    if (this.tenantConfigurationForm.controls.TenantConfigurationDescription.invalid) {
+    if (this.tenantConfigurationForm.controls.TenantConfigurationName.invalid) {
       return true;
     }
-    if (this.tenantConfigurationForm.controls.TenantConfigurationOutputPDFPath.invalid) {
-      return true;
-    }
-    if (this.tenantConfigurationForm.controls.TenantConfigurationOutputHTMLPath.invalid) {
-      return true;
-    }
-    if (this.tenantConfigurationForm.controls.TenantConfigurationInputDataSourcePath.invalid) {
-      return true;
-    }
+    //if (this.tenantConfigurationForm.controls.TenantConfigurationDescription.invalid) {
+    //  return true;
+    //}
+    //if (this.tenantConfigurationForm.controls.TenantConfigurationOutputPDFPath.invalid) {
+    //  return true;
+    //}
+    //if (this.tenantConfigurationForm.controls.TenantConfigurationOutputHTMLPath.invalid) {
+    //  return true;
+    //}
+    //if (this.tenantConfigurationForm.controls.TenantConfigurationInputDataSourcePath.invalid) {
+    //  return true;
+    //}
     return false;
   }
 
@@ -176,32 +181,40 @@ export class TenantConfigurationComponent implements OnInit {
   }
 
   onSubmit() {
-    let tenantConfigurationObj: any = {
-      "TenantConfigurationDescription": this.tenantConfigurationForm.value.TenantConfigurationDescription.trim(),
-      "URL": this.tenantConfigurationForm.value.TenantConfigurationOutputPDFPath.trim(),
-      "PriorityLevel": this.PriorityLevel,
-      "NumberOfThread": this.ConcurrencyCount
-    };
-    if (this.tenantConfigurationEditModeOn) {
-      tenantConfigurationObj.Identifier = this.TenantConfigurationIdentifier;
-    }
-    this.saveTenantConfigurationRecord(tenantConfigurationObj);
+
+    this.setting.Name = this.tenantConfigurationForm.value.TenantConfigurationName;
+    this.setting.OutputPDFPath = this.tenantConfigurationForm.value.TenantConfigurationDescription;
+    this.setting.Description = this.tenantConfigurationForm.value.TenantConfigurationOutputPDFPath;
+    this.setting.OutputHTMLPath = this.tenantConfigurationForm.value.TenantConfigurationOutputHTMLPath;
+    this.setting.InputDataSourcePath = this.tenantConfigurationForm.value.TenantConfigurationInputDataSourcePath;
+
+    this.saveTenantConfigurationRecord(this.setting);
   }
 
   //Api called here to save render engine record
   async saveTenantConfigurationRecord(tenantConfigurationObj) {
-    var TenantConfigurationArr = [];
-    TenantConfigurationArr.push(tenantConfigurationObj);
-    let isRecordSaved = await this.tenantConfigurationService.saveTenantConfiguration(TenantConfigurationArr, this.tenantConfigurationEditModeOn);
-    if (isRecordSaved) {
-      let message = Constants.recordAddedMessage;
-      if (this.tenantConfigurationEditModeOn) {
-        message = Constants.recordUpdatedMessage;
-      }
-      this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-      this.navigateToTenantConfigurationList();
-      localStorage.removeItem("tenantConfigurationEditRouteparams");
-    }
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = 'TenantConfiguration/Save';
+    this.spinner.start();
+    var data = [];
+
+    data.push(tenantConfigurationObj);
+    await httpClientService.CallHttp("POST", requestUrl, data).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.spinner.stop();
+          if (httpEvent["status"] === 200) {
+            this._messageDialogService.openDialogBox('Message', "Asset configuration saved successfully", Constants.msgBoxSuccess);
+          }
+
+        }
+      }, (error) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+
+        this.spinner.stop();
+
+      });
+
   }
 
 }

@@ -31,7 +31,7 @@ export class TenantConfigurationService {
   //method to call api of get render engine.
   async getTenantConfigurations(searchParameter): Promise<TenantConfiguration[]> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.renderEngineGetUrl;
+    let requestUrl = "TenantConfiguration/list";
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
