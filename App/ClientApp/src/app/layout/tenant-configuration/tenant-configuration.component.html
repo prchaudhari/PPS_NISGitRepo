@@ -1,0 +1,94 @@
+<div class="main-container">
+  <div class="page-title">
+    <span class="xs-title" *ngIf="tenantConfigurationEditModeOn == false"> Tenant Configuration</span>
+  </div>
+  <form [formGroup]="tenantConfigurationForm" name="tenantConfigurationForm" autocomplete="on" novalidate>
+    <div class="card border-0 mb-2 card-shadow">
+      <div class="card-body" id="collapseDetails">
+        <div class="row form-group">
+
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblTenantConfigurationName" for="inputTenantConfigurationName">Name<span class="text-danger ml-2">*</span></label>
+            <input type="text" class="form-control" rows="3" id="inputTenantConfigurationName" name="TenantConfigurationName"
+                   formControlName="TenantConfigurationName" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationName.touched && TenantConfigurationName.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationName.errors?.pattern">Invalid Tenant Configuration Name</li>
+                <li class="text-danger" *ngIf="TenantConfigurationName.errors?.required">Tenant Configuration name required</li>
+                <li class="text-danger" *ngIf="TenantConfigurationName.errors?.minlength">Tenant Configuration name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="TenantConfigurationName.errors?.maxlength">Tenant Configuration name length should not be greater than 50</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblTenantConfigurationInputDataSourcePath" for="inputTenantConfigurationInputDataSourcePath">Input Data Source Path</label>
+            <input type="text" class="form-control" id="inputTenantConfigurationInputDataSourcePath" name="TenantConfigurationInputDataSourcePath"
+                   formControlName="TenantConfigurationInputDataSourcePath" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationInputDataSourcePath.touched && TenantConfigurationInputDataSourcePath.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationInputDataSourcePath.errors?.pattern">Invalid Input Data Source Path</li>
+                <li class="text-danger" *ngIf="TenantConfigurationInputDataSourcePath.errors?.required">Input data source path required</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label id="lblTenantConfigurationDescription" for="inputTenantConfigurationDescription">Description</label>
+            <textarea class="form-control" rows="3" id="inputTenantConfigurationDescription" name="TenantConfigurationDescription"
+                      formControlName="TenantConfigurationDescription"></textarea>
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationDescription.touched && TenantConfigurationDescription.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationDescription.errors?.pattern">Invalid Tenant Configuration Description</li>
+                <li class="text-danger" *ngIf="TenantConfigurationDescription.errors?.required">Tenant Configuration description required</li>
+                <li class="text-danger" *ngIf="TenantConfigurationDescription.errors?.minlength">Tenant Configuration description length should not be less than 2</li>
+                <li class="text-danger" *ngIf="TenantConfigurationDescription.errors?.maxlength">Tenant Configuration description length should not be greater than 50</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-lg-4">
+            <label for="inputPriorityLevel">Output HTML Path</label>
+            <input type="text" class="form-control" id="inputTenantConfigurationOutputHTMLPath" name="TenantConfigurationOutputHTMLPath"
+                   formControlName="TenantConfigurationOutputHTMLPath" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputHTMLPath.touched && TenantConfigurationOutputHTMLPath.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationOutputHTMLPath.errors?.pattern">Invalid Output HTML Path</li>
+                <li class="text-danger" *ngIf="TenantConfigurationOutputHTMLPath.errors?.required">Output HTML path required</li>
+              </ul>
+            </div>
+            <label for="inputConcurrencyCount">Output PDF Path</label>
+            <input type="text" class="form-control" id="inputTenantConfigurationOutputPDFPath" name="TenantConfigurationOutputPDFPath"
+                   formControlName="TenantConfigurationOutputPDFPath" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputPDFPath.touched && TenantConfigurationOutputPDFPath.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationOutputPDFPath.errors?.pattern">Invalid Output PDF Path</li>
+                <li class="text-danger" *ngIf="TenantConfigurationOutputPDFPath.errors?.required">Output PDF path required</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-lg-4">
+
+          </div>
+        </div>
+        <div class="row form-group">
+
+        </div>
+      </div>
+    </div>
+    <div class="card border-0 mt-4 mb-3 bg-transparent">
+      <div class="card-body p-0">
+        <button class="btn-footer-fill mr-2" [disabled]="saveButtonValidation()" (click)="onSubmit()">Save</button>
+        <!--<button class="btn-footer-outline" (click)="navigateToTenantConfigurationList()">Cancel</button>-->
+
+      </div>
+    </div>
+  </form>
+</div>
