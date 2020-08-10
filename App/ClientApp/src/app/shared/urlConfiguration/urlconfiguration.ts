@@ -98,7 +98,7 @@ export class URLConfiguration {
 
   public static get reRunScheduleLogGetUrl(): string { return "ScheduleLogs/ReRunSchedule" };
 
-  public static get reRunScheduleLogDetailGetUrl(): string { return "ScheduleLogs/RetryStatementForFailedCustomerReocrds" };
+  public static get reRunScheduleLogDetailGetUrl(): string { return "ScheduleLog/ScheduleLogDetail/Retry" };
 
 
 }

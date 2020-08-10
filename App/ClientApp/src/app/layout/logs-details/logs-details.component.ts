@@ -268,7 +268,7 @@ export class LogsDetailsComponent implements OnInit {
 
         let isDeleted = await this.scheduleLogService.reRunSchdeulLogDetail(logDetailList);
         if (isDeleted) {
-          let messageString = Constants.recordDeletedMessage;
+          let messageString = Constants.StatementGeneratedSuccessfullyForSelectedRecordMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
           this.getScheduleLogs(null);
         }

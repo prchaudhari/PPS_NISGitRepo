@@ -21,15 +21,6 @@ export interface ListElement {
   record: string;
 }
 
-const List_Data: ListElement[] = [
-  { schedule: 'SM 01', time: '40 Minutes', record: '25/25', status: 'Completed', date: '02/05/2020' },
-  { schedule: 'SM 01', time: '20 Minutes', record: '0/25', status: 'Failed', date: '03/05/2020' },
-  { schedule: 'SM 01', time: '30 Minutes', record: '13/25', status: 'In Progress', date: '04/05/2020' },
-  { schedule: 'SM 01', time: '50 Minutes', record: '30/30', status: 'Completed', date: '02/05/2020' },
-  { schedule: 'SM 01', time: '60 Minutes', record: '125/125', status: 'Completed', date: '05/05/2020' },
-  { schedule: 'SM 01', time: '20 Minutes', record: '0/25', status: 'Failed', date: '02/05/2020' },
-];
-
 @Component({
   selector: 'app-logs',
   templateUrl: './logs.component.html',
@@ -325,11 +316,9 @@ export class LogsComponent implements OnInit {
     let message = 'Are you sure, you want to run this schedule?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-    
-
         let isDeleted = await this.scheduleLogService.reRunSchdeulLog(log.Identifier);
         if (isDeleted) {
-          let messageString = Constants.recordDeletedMessage;
+          let messageString = Constants.ScheduleReRunSuccessfullyMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
           this.getScheduleLogs(null);
         }

@@ -59,9 +59,9 @@ export class ScheduleLogService {
     return <ScheduleLog[]>this.schedulesList;
   }
 
-  public async reRunSchdeulLog(postData): Promise<boolean> {
+  public async reRunSchdeulLog(scheduleLogIdentifier): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.reRunScheduleLogGetUrl + "?" + "scheduleLogIdentifier=" + postData;
+    let requestUrl = URLConfiguration.reRunScheduleLogGetUrl + "?" + "scheduleLogIdentifier=" + scheduleLogIdentifier;
     this.uiLoader.start();
     await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {

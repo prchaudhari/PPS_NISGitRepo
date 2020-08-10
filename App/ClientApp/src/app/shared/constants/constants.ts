@@ -44,6 +44,8 @@ export class Constants {
   public static get PagePublishedSuccessfullyMessage(): string { return "Page Published successfully." };
   public static get PageCloneSuccessfullyMessage(): string { return "Page Clone successfully." };
   public static get StatementPublishedSuccessfullyMessage(): string { return "Statement Published successfully." };
+  public static get ScheduleReRunSuccessfullyMessage(): string { return "Schedule Re-Run successfully." };
+  public static get StatementGeneratedSuccessfullyForSelectedRecordMessage(): string { return "Statement generated successfully for this record." };
 }
 
 export class ErrorMessageConstants {
