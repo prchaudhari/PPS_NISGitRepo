@@ -100,5 +100,7 @@ export class URLConfiguration {
 
   public static get reRunScheduleLogDetailGetUrl(): string { return "ScheduleLog/ScheduleLogDetail/Retry" };
 
-
+  //Statement Search Method
+  public static get statementSearchGetUrl(): string { return "StatementSearch/List" };
+ 
 }

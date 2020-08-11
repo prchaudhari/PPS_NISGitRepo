@@ -1,5 +1,4 @@
 import { PagingParameter, SortParameter, SearchMode } from "../../shared/models/commonmodel";
-
 export class TenantConfiguration {
   Identifier: number;
   Name: string;
@@ -7,7 +6,10 @@ export class TenantConfiguration {
   Description: string;
   OutputHTMLPath: string;
   InputDataSourcePath: string;
+  AssetPath: string;
+  ArchivalPath: string;
 }
+
 export class TenantConfigurationSearchParameter {
   Identifier: number;
   TenantConfigurationName: string;

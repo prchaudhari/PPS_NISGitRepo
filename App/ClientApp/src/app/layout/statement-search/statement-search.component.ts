@@ -1,8 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Router } from '@angular/router';
+import { Constants } from 'src/app/shared/constants/constants';
+import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
+import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { Location } from '@angular/common';
+import { StatementSearchService } from './statementsearch.service';
+import { StatementSearch } from './statementsearch';
+
 export interface ListElement {
   id: string;
   date: string;
@@ -12,52 +21,282 @@ export interface ListElement {
   city: string;
 }
 
-const List_Data: ListElement[] = [
-  { id: 'SD 01', date: '01/02/2020', period: '01/02/2020 - 02/02/2020', customer: 'customer A', accountId: '29', city: 'Pune' },
-  { id: 'SD 01', date: '01/02/2020', period: '01/02/2020 - 02/02/2020', customer: 'customer A', accountId: '29', city: 'Pune' },
-  { id: 'SD 01', date: '01/02/2020', period: '01/02/2020 - 02/02/2020', customer: 'customer A', accountId: '29', city: 'Mumbai' },
-  { id: 'SD 01', date: '01/02/2020', period: '01/02/2020 - 02/02/2020', customer: 'customer A', accountId: '29', city: 'Pune' },
-];
-
-
 @Component({
   selector: 'app-statement-search',
   templateUrl: './statement-search.component.html',
   styleUrls: ['./statement-search.component.scss']
 })
 export class StatementSearchComponent implements OnInit {
-
+  //public variables
   public isFilter: boolean = false;
+  public scheduleLogList: StatementSearch[] = [];
+  public isLoaderActive: boolean = false;
+  public isRecordFound: boolean = false;
+  public pageNo = 0;
   public pageSize = 5;
   public currentPage = 0;
   public totalSize = 0;
+  public array: any;
+  public isFilterDone = false;
+  public sortedStatementSearchList: StatementSearch[] = [];
+  public pageTypeList: any[] = [];
+  public StatementSearchFilterForm: FormGroup;
+  public filterPageTypeId: number = 0;
+  public filterPageStatus: string = '';
+  public filterFromDateError: boolean = false;
+  public filterFromDateErrorMessage: string = "";
+  public filterToDateError: boolean = false;
+  public filterToDateErrorMessage: string = "";
+  public userClaimsRolePrivilegeOperations: any[] = [];
+
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
-  displayedColumns: string[] = ['id', 'date', 'period', 'customer', 'accountId','city', 'actions'];
+
+  displayedColumns: string[] = ['id', 'date', 'period', 'customer', 'accountId',  'actions'];
+
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+  constructor(private injector: Injector,
+    private fb: FormBuilder,
+    private uiLoader: NgxUiLoaderService,
+    private _messageDialogService: MessageDialogService,
+    private route: Router,
+    private localstorageservice: LocalStorageService,
+    private scheduleLogService: StatementSearchService) {
+    this.sortedStatementSearchList = this.scheduleLogList.slice();
+  }
+
+  public handlePage(e: any) {
+    this.currentPage = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.iterator();
+  }
+
+  private iterator() {
+    const end = (this.currentPage + 1) * this.pageSize;
+    const start = this.currentPage * this.pageSize;
+    const part = this.array.slice(start, end);
+    this.dataSource = part;
+    this.dataSource.sort = this.sort;
+  }
+
+  //Getters for Page Forms
+  get filterScheduleName() {
+    return this.StatementSearchFilterForm.get('filterScheduleName');
+  }
+
+  get filterStatus() {
+    return this.StatementSearchFilterForm.get('filterStatus');
+  }
+
+  get filterPublishedOnFromDate() {
+    return this.StatementSearchFilterForm.get('filterPublishedOnFromDate');
+  }
+
+  get filterPublishedOnToDate() {
+    return this.StatementSearchFilterForm.get('filterPublishedOnToDate');
+  }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(List_Data);
-    this.dataSource.sort = this.sort;
+    this.getStatementSearchs(null);
+    //this.getPageTypes();
+    this.StatementSearchFilterForm = this.fb.group({
+      filterScheduleName: [null],
+      filterStatus: [0],
+      filterPublishedOnFromDate: [null],
+      filterPublishedOnToDate: [null],
+    });
 
-    //to hide tooltip
-    const paginatorIntl = this.paginator._intl;
-    paginatorIntl.nextPageLabel = '';
-    paginatorIntl.previousPageLabel = '';
-    paginatorIntl.firstPageLabel = '';
-    paginatorIntl.lastPageLabel = '';
-
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.userClaimsRolePrivilegeOperations = [];
+    }
   }
+
+  sortData(sort: MatSort) {
+    const data = this.scheduleLogList.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedStatementSearchList = data;
+      return;
+    }
+    //displayedColumns: string[] = ['id', 'date', 'period', 'customer', 'accountId', 'actions'];
+    this.sortedStatementSearchList = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'accountId': return compareStr(a.AccountNumber, b.AccountNumber, isAsc);
+        case 'customer': return compareStr(a.CustomerName, b.CustomerName, isAsc);
+        case 'period': return compareStr(a.StatementPeriod, b.StatementPeriod, isAsc);
+        case 'date': return compareDate(a.StatementDate, b.StatementDate, isAsc);
+        default: return 0;
+      }
+    });
+    this.dataSource = new MatTableDataSource<StatementSearch>(this.sortedStatementSearchList);
+    this.dataSource.sort = this.sort;
+    this.array = this.sortedStatementSearchList;
+    this.totalSize = this.array.length;
+    this.iterator();
+  }
+
+  async getStatementSearchs(searchParameter) {
+    let scheduleLogService = this.injector.get(StatementSearchService);
+    if (searchParameter == null) {
+      searchParameter = {};
+      searchParameter.PagingParameter = {};
+      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.SortParameter = {};
+      searchParameter.SortParameter.SortColumn = 'Id';
+      searchParameter.SortParameter.SortOrder = Constants.Descending;
+      searchParameter.SearchMode = Constants.Contains;
+    }
+    this.scheduleLogList = await scheduleLogService.getStatementSearch(searchParameter);
+    if (this.scheduleLogList.length == 0 && this.isFilterDone == true) {
+      let message = ErrorMessageConstants.getNoRecordFoundMessage;
+      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+        if (data == true) {
+          //this.resetRoleFilterForm();
+          this.getStatementSearchs(null);
+        }
+      });
+    }
+    this.dataSource = new MatTableDataSource<StatementSearch>(this.scheduleLogList);
+    this.dataSource.sort = this.sort;
+    this.array = this.scheduleLogList;
+    this.totalSize = this.array.length;
+    this.iterator();
+  }
+
+  validateFilterDate(): boolean {
+    if (this.StatementSearchFilterForm.value.filterPublishedOnFromDate != null && this.StatementSearchFilterForm.value.filterPublishedOnFromDate != '' &&
+      this.StatementSearchFilterForm.value.filterPublishedOnToDate != null && this.StatementSearchFilterForm.value.filterPublishedOnToDate != '') {
+      let startDate = this.StatementSearchFilterForm.value.filterPublishedOnFromDate;
+      let toDate = this.StatementSearchFilterForm.value.filterPublishedOnToDate;
+      if (startDate.getTime() > toDate.getTime()) {
+        this.filterFromDateError = true;
+        return false;
+      }
+    }
+    return true;
+  }
+
+  onPublishedFilterDateChange(event) {
+    this.filterFromDateError = false;
+    this.filterToDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateErrorMessage = "";
+    let currentDte = new Date();
+    if (this.StatementSearchFilterForm.value.filterPublishedOnFromDate != null && this.StatementSearchFilterForm.value.filterPublishedOnFromDate != '') {
+      let startDate = this.StatementSearchFilterForm.value.filterPublishedOnFromDate;
+      if (startDate.getTime() > currentDte.getTime()) {
+        this.filterFromDateError = true;
+        this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanCurrentDateMessage;
+      }
+    }
+    if (this.StatementSearchFilterForm.value.filterPublishedOnToDate != null && this.StatementSearchFilterForm.value.filterPublishedOnToDate != '') {
+      let toDate = this.StatementSearchFilterForm.value.filterPublishedOnToDate;
+      if (toDate.getTime() > currentDte.getTime()) {
+        this.filterToDateError = true;
+        this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
+      }
+    }
+    if (this.StatementSearchFilterForm.value.filterPublishedOnFromDate != null && this.StatementSearchFilterForm.value.filterPublishedOnFromDate != '' &&
+      this.StatementSearchFilterForm.value.filterPublishedOnToDate != null && this.StatementSearchFilterForm.value.filterPublishedOnToDate != '') {
+      let startDate = this.StatementSearchFilterForm.value.filterPublishedOnFromDate;
+      let toDate = this.StatementSearchFilterForm.value.filterPublishedOnToDate;
+      if (startDate.getTime() > toDate.getTime()) {
+        this.filterFromDateError = true;
+        this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
+      }
+    }
+  }
+
+  //This method has been used for fetching search records
+  searchStatementSearchRecordFilter(searchType) {
+    this.filterFromDateError = false;
+    this.isFilterDone = true;
+    if (searchType == 'reset') {
+      this.resetSchdeuleLogFilterForm();
+      this.getStatementSearchs(null);
+      this.isFilter = !this.isFilter;
+    }
+    else {
+      if (this.validateFilterDate()) {
+        let searchParameter: any = {};
+        searchParameter.PagingParameter = {};
+        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.SortParameter = {};
+        searchParameter.SortParameter.SortColumn = 'Id';
+        searchParameter.SortParameter.SortOrder = Constants.Descending;
+        searchParameter.SearchMode = Constants.Contains;
+        if (this.StatementSearchFilterForm.value.filterScheduleName != null && this.StatementSearchFilterForm.value.filterScheduleName != '') {
+          searchParameter.ScheduleName = this.StatementSearchFilterForm.value.filterScheduleName.trim();
+        }
+        if (this.StatementSearchFilterForm.value.filterOwner != null && this.StatementSearchFilterForm.value.filterOwner != '') {
+          searchParameter.PageOwner = this.StatementSearchFilterForm.value.filterOwner.trim();
+        }
+        if (this.filterPageTypeId != 0) {
+          searchParameter.PageTypeId = this.filterPageTypeId;
+        }
+        if (this.StatementSearchFilterForm.value.filterStatus != null && this.StatementSearchFilterForm.value.filterStatus != 0) {
+          searchParameter.ScheduleStatus = this.StatementSearchFilterForm.value.filterStatus;
+        }
+        if (this.StatementSearchFilterForm.value.filterPublishedOnFromDate != null && this.StatementSearchFilterForm.value.filterPublishedOnFromDate != '') {
+          //searchParameter.StartDate = this.StatementSearchFilterForm.value.filterPublishedOnFromDate;
+          searchParameter.StartDate = new Date(this.StatementSearchFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
+          searchParameter.SortParameter.SortColumn = 'PublishedOn';
+        }
+        if (this.StatementSearchFilterForm.value.filterPublishedOnToDate != null && this.StatementSearchFilterForm.value.filterPublishedOnToDate != '') {
+          //searchParameter.EndDate = this.StatementSearchFilterForm.value.filterPublishedOnToDate;
+          searchParameter.EndDate = new Date(this.StatementSearchFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
+          searchParameter.SortParameter.SortColumn = 'PublishedOn';
+        }
+
+        console.log(searchParameter);
+        this.currentPage = 0;
+        this.getStatementSearchs(searchParameter);
+        this.isFilter = !this.isFilter;
+      }
+    }
+  }
+
+  resetSchdeuleLogFilterForm() {
+    this.StatementSearchFilterForm.patchValue({
+      filterScheduleName: null,
+      filterOwner: null,
+      filterPageType: 0,
+      filterStatus: 0,
+      filterPublishedOnFromDate: null,
+      filterPublishedOnToDate: null
+    });
+
+    this.filterFromDateError = false;
+    this.filterToDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateErrorMessage = "";
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
 
   }
-  constructor(private _location: Location) { }
-
 }
 
+function compare(a: number, b: number, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareStr(a: string, b: string, isAsc: boolean) {
+  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareDate(a: Date, b: Date, isAsc: boolean) {
+  return (Date.parse("" + a) < Date.parse("" + b) ? -1 : 1) * (isAsc ? 1 : -1);
+}
