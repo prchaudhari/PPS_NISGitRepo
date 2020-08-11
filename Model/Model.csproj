@@ -86,6 +86,7 @@
     <Compile Include="ScheduleLog.cs" />
     <Compile Include="ScheduleLogDetail.cs" />
     <Compile Include="ScheduleLogDetailSearchParameter.cs" />
+    <Compile Include="ScheduleLogErrorDetail.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
     <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />

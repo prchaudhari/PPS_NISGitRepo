@@ -176,7 +176,7 @@ namespace nIS
 
                         scheduleLogs.Add(log);
                     }
-                    
+
                 }
             }
             catch (Exception ex)
@@ -426,12 +426,12 @@ namespace nIS
                                                 scheduleLog.Status = ScheduleLogStatus.Failed.ToString();
                                             }
                                         }
-                                        
+
                                         nISEntitiesDataContext.SaveChanges();
                                     }
                                 }
                             }
-                            
+
                         }
                     }
 
@@ -485,6 +485,49 @@ namespace nIS
                 throw ex;
             }
             return scheduleRunStatus;
+        }
+
+        /// <summary>
+        /// This method helps to get error log message of schedule for failed customer records
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier">The schedule log identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>list of schedule log error detail object</returns>
+        public List<ScheduleLogErrorDetail> GetScheduleLogErrorDetails(long ScheduleLogIdentifier, string tenantCode)
+        {
+            List<ScheduleLogErrorDetail> scheduleLogErrors = new List<ScheduleLogErrorDetail>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    scheduleLogErrors = (from sl in nISEntitiesDataContext.ScheduleLogRecords
+                                         join sld in nISEntitiesDataContext.ScheduleLogDetailRecords on sl.Id equals sld.ScheduleLogId
+                                         join srh in nISEntitiesDataContext.ScheduleRunHistoryRecords on sl.Id equals srh.ScheduleLogId
+                                         join s in nISEntitiesDataContext.StatementRecords on srh.StatementId equals s.Id
+                                         where sl.Id == ScheduleLogIdentifier && sld.Status.ToLower() == ScheduleLogStatus.Failed.ToString().ToLower()
+                                         && sl.TenantCode == tenantCode
+                                         orderby sld.Id ascending
+                                         select new ScheduleLogErrorDetail()
+                                         {
+                                             ScheduleId = sl.ScheduleId,
+                                             ScheduleName = sl.ScheduleName,
+                                             ScheduleLogId = sl.Id,
+                                             StatementId = srh.StatementId,
+                                             StatementName = s.Name,
+                                             ScheduleLogDetailId = sld.Id,
+                                             CustomerId = sld.CustomerId,
+                                             CustomerName = sld.CustomerName,
+                                             ErrorLogMessage = sld.LogMessage,
+                                             ExecutionDate = sld.CreationDate
+                                         }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return scheduleLogErrors;
         }
 
         #endregion

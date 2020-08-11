@@ -58,5 +58,13 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
         bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string tenantCode);
+
+        /// <summary>
+        /// This method helps to get error log message of schedule for failed customer records
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier">The schedule log identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>list of schedule log error detail object</returns>
+        List<ScheduleLogErrorDetail> GetScheduleLogErrorDetails(long ScheduleLogIdentifier, string tenantCode);
     }
 }

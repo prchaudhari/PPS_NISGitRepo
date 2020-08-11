@@ -12,6 +12,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ScheduleLogService } from './schedulelog.service';
 import { ScheduleLog } from './schedulelog';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ConfigConstants } from '../../shared/constants/configConstants';
+import { map } from 'rxjs/operators';
+import * as $ from 'jquery';
 
 export interface ListElement {
   schedule: string;
@@ -49,6 +53,7 @@ export class LogsComponent implements OnInit {
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
   public userClaimsRolePrivilegeOperations: any[] = [];
+  public baseURL = ConfigConstants.BaseURL;
 
   closeFilter() {
     this.isFilter = !this.isFilter;
@@ -66,6 +71,7 @@ export class LogsComponent implements OnInit {
     private uiLoader: NgxUiLoaderService,
     private _messageDialogService: MessageDialogService,
     private route: Router,
+    private _http: HttpClient,
     private localstorageservice: LocalStorageService,
     private scheduleLogService: ScheduleLogService) {
     this.sortedScheduleLogList = this.scheduleLogList.slice();
@@ -324,6 +330,33 @@ export class LogsComponent implements OnInit {
         }
       }
     });
+  }
+
+  DownloadErrorLog(log: ScheduleLog): void {
+    this.uiLoader.start();
+    this._http.get(this.baseURL + 'ScheduleLog/ScheduleLog/DownloadErrorLogs?ScheduleLogIndentifier=' + log.Identifier , { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this.uiLoader.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          const blob = new Blob([data.body], { type: contentType });
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, fileName);
+          } else {
+            var link = document.createElement('a');
+            link.setAttribute("type", "hidden");
+            link.download = fileName;
+            link.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+          }
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this.uiLoader.stop();
+        });
   }
 }
 

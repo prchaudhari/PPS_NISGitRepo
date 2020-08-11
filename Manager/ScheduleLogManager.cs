@@ -199,6 +199,24 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method helps to get error log message of schedule for failed customer records
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier">The schedule log identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>list of schedule log error detail object</returns>
+        public List<ScheduleLogErrorDetail> GetScheduleLogErrorDetails(long ScheduleLogIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.GetScheduleLogErrorDetails(ScheduleLogIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }
