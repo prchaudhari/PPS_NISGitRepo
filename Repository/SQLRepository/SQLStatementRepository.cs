@@ -1183,10 +1183,12 @@ namespace nIS
                     IList<AccountMasterRecord> accountrecords = new List<AccountMasterRecord>();
                     IList<AccountMasterRecord> savingaccountrecords = new List<AccountMasterRecord>();
                     IList<AccountMasterRecord> curerntaccountrecords = new List<AccountMasterRecord>();
+                    IList<CustomerMediaRecord> customerMedias = new List<CustomerMediaRecord>();
 
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id)?.ToList();
+                        customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.BatchId == batchMaster.Id)?.ToList();
                     }
                     if (accountrecords == null && accountrecords.Count == 0)
                     {
@@ -1329,16 +1331,11 @@ namespace nIS
                                 var widget = pagewidgets[j];
                                 if (widget.WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID) //Customer Information Widget
                                 {
-                                    IList<CustomerMediaRecord> customerMedias = new List<CustomerMediaRecord>();
                                     pageContent.Replace("{{CustomerName}}", (customer.FirstName.Trim() + " " + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim()));
                                     pageContent.Replace("{{Address1}}", customer.AddressLine1);
                                     string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
                                     pageContent.Replace("{{Address2}}", address2);
-
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                    {
-                                        customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier)?.ToList();
-                                    }
+                                    
                                     var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
                                     if (custMedia != null && custMedia.VideoURL != string.Empty)
                                     {
@@ -1379,14 +1376,10 @@ namespace nIS
                                         }
                                         else //Is dynamic image, then assign it from database 
                                         {
-                                            ImageRecord imageRecord = new ImageRecord();
-                                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                            var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+                                            if (custMedia != null && custMedia.ImageURL != string.Empty)
                                             {
-                                                imageRecord = nISEntitiesDataContext.ImageRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
-                                            }
-                                            if (imageRecord != null && imageRecord.Image1 != string.Empty)
-                                            {
-                                                imgAssetFilepath = imageRecord.Image1;
+                                                imgAssetFilepath = custMedia.ImageURL;
                                             }
                                             else
                                             {
@@ -1428,14 +1421,10 @@ namespace nIS
                                         }
                                         else //If dynamic video, then assign it from database 
                                         {
-                                            VideoRecord videoRecord = new VideoRecord();
-                                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                            var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+                                            if (custMedia != null && custMedia.VideoURL != string.Empty)
                                             {
-                                                videoRecord = nISEntitiesDataContext.VideoRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
-                                            }
-                                            if (videoRecord != null && videoRecord.Video1 != string.Empty)
-                                            {
-                                                vdoAssetFilepath = videoRecord.Video1;
+                                                vdoAssetFilepath = custMedia.VideoURL;
                                             }
                                             else
                                             {

@@ -521,8 +521,6 @@ namespace nIS
                             {
                                 nISEntitiesDataContext.ScheduleLogRecords.Add(scheduleLog);
                                 nISEntitiesDataContext.SaveChanges();
-
-                                batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id)?.ToList();
                             }
 
                             Statement statement = new Statement();
@@ -556,6 +554,7 @@ namespace nIS
                             IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                             {
+                                batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier)?.ToList();
                                 customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id).ToList();
                             }
 
