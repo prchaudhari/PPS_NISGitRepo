@@ -95,7 +95,10 @@ namespace nIS
                         InputDataSourcePath = item.InputDataSourcePath,
                         OutputHTMLPath = item.OutputHTMLPath,
                         OutputPDFPath = item.OutputPDFPath,
-                        Name= item.Name
+                        Name = item.Name,
+                        AssetPath = item.AssetPath,
+                        ArchivalPath = item.ArchivalPath,
+
                     }).ToList();
                 }
             }
@@ -120,7 +123,7 @@ namespace nIS
             bool result;
             try
             {
-                
+
                 this.SetAndValidateConnectionString(tenantCode);
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -131,6 +134,8 @@ namespace nIS
                     record.OutputHTMLPath = setting.OutputHTMLPath;
                     record.OutputPDFPath = setting.OutputPDFPath;
                     record.Name = setting.Name;
+                    record.AssetPath = setting.AssetPath;
+                    record.ArchivalPath = setting.ArchivalPath;
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }

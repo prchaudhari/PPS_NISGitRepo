@@ -34,6 +34,13 @@ namespace nIS
         [Description("OutputPDFPath")]
         public string OutputPDFPath { get; set; }
 
+        [Description("AssetPath")]
+        public string AssetPath { get; set; }
+
+        [Description("ArchivalPath")]
+        public string ArchivalPath { get; set; }
+       
+
         /// <summary>
         /// The utility object
         /// </summary>

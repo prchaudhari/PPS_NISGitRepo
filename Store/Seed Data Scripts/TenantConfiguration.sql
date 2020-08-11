@@ -6,6 +6,8 @@ INSERT INTO [NIS].[TenantConfiguration]
            ,[InputDataSourcePath]
            ,[OutputHTMLPath]
            ,[OutputPDFPath]
+           ,[ArchivalPath]
+           ,[AssetPath]
            ,[TenantCode])
-VALUES('','','','','',@SuperTenantCode);
+VALUES('','','','','','','',@SuperTenantCode);
 GO

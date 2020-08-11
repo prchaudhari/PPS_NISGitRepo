@@ -21,5 +21,7 @@ namespace nIS
         public string OutputPDFPath { get; set; }
         public string TenantCode { get; set; }
         public string Name { get; set; }
+        public string ArchivalPath { get; set; }
+        public string AssetPath { get; set; }
     }
 }

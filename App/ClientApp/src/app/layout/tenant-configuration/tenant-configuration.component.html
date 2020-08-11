@@ -61,6 +61,33 @@
           </div>
         </div>
         <div class="row form-group">
+          <div class="col-md-6 col-sm-6 col-lg-3">
+            <label for="inputPriorityLevel">Asset Path</label>
+            <input type="text" class="form-control" id="inputTenantConfigurationAssetPath" name="TenantConfigurationAssetPath"
+                   formControlName="TenantConfigurationAssetPath" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationAssetPath.touched && TenantConfigurationAssetPath.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationAssetPath.errors?.pattern">Invalid Asset Path</li>
+                <li class="text-danger" *ngIf="TenantConfigurationAssetPath.errors?.required">Asset path required</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-lg-3">
+            <label for="inputConcurrencyCount">Archival Path</label>
+            <input type="text" class="form-control" id="inputTenantConfigurationArchivalPath" name="TenantConfigurationArchivalPath"
+                   formControlName="TenantConfigurationArchivalPath" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationArchivalPath.touched && TenantConfigurationArchivalPath.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationArchivalPath.errors?.pattern">Invalid Output PDF Path</li>
+                <li class="text-danger" *ngIf="TenantConfigurationArchivalPath.errors?.required">Output PDF path required</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
           <div class="col-md-8 col-sm-6 col-lg-6">
             <label id="lblTenantConfigurationDescription" for="inputTenantConfigurationDescription">Description</label>
             <textarea class="form-control" rows="3" id="inputTenantConfigurationDescription" name="TenantConfigurationDescription"

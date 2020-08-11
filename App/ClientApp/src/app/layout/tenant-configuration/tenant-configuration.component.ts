@@ -42,6 +42,13 @@ export class TenantConfigurationComponent implements OnInit {
   get TenantConfigurationName() {
     return this.tenantConfigurationForm.get('TenantConfigurationName');
   }
+
+  get TenantConfigurationAssetPath() {
+    return this.tenantConfigurationForm.get('TenantConfigurationAssetPath');
+  }
+  get TenantConfigurationArchivalPath() {
+    return this.tenantConfigurationForm.get('TenantConfigurationArchivalPath');
+  }
   get TenantConfigurationDescription() {
     return this.tenantConfigurationForm.get('TenantConfigurationDescription');
   }
@@ -106,6 +113,8 @@ export class TenantConfigurationComponent implements OnInit {
       TenantConfigurationOutputPDFPath: [null, Validators.compose([])],
       TenantConfigurationOutputHTMLPath: [null, Validators.compose([])],
       TenantConfigurationInputDataSourcePath: [null, Validators.compose([])],
+      TenantConfigurationAssetPath: [null, Validators.compose([])],
+      TenantConfigurationArchivalPath: [null, Validators.compose([])],
     });
     this.getTenantConfigurationDetails();
   }
@@ -122,7 +131,9 @@ export class TenantConfigurationComponent implements OnInit {
           TenantConfigurationDescription: this.setting.Description,
           TenantConfigurationOutputPDFPath: this.setting.OutputPDFPath,
           TenantConfigurationOutputHTMLPath: this.setting.OutputHTMLPath,
-          TenantConfigurationInputDataSourcePath: this.setting.InputDataSourcePath
+          TenantConfigurationInputDataSourcePath: this.setting.InputDataSourcePath,
+          TenantConfigurationAssetPath: this.setting.AssetPath,
+          TenantConfigurationArchivalPath: this.setting.ArchivalPath
         });
       },
       error => {
@@ -187,6 +198,8 @@ export class TenantConfigurationComponent implements OnInit {
     this.setting.Description = this.tenantConfigurationForm.value.TenantConfigurationOutputPDFPath;
     this.setting.OutputHTMLPath = this.tenantConfigurationForm.value.TenantConfigurationOutputHTMLPath;
     this.setting.InputDataSourcePath = this.tenantConfigurationForm.value.TenantConfigurationInputDataSourcePath;
+    this.setting.AssetPath = this.tenantConfigurationForm.value.TenantConfigurationAssetPath;
+    this.setting.ArchivalPath = this.tenantConfigurationForm.value.TenantConfigurationArchivalPath;
 
     this.saveTenantConfigurationRecord(this.setting);
   }
