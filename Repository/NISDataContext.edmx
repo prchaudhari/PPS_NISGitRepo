@@ -109,6 +109,9 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ScheduleId" Type="bigint" />
           <Property Name="IsExecuted" Type="bit" />
+          <Property Name="IsDataReady" Type="bit" />
+          <Property Name="DataExtractionDay" Type="int" />
+          <Property Name="BatchExecutionDayOfMonth" Type="int" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -1060,6 +1063,9 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ScheduleId" Type="Int64" />
           <Property Name="IsExecuted" Type="Boolean" />
+          <Property Name="IsDataReady" Type="Boolean" />
+          <Property Name="DataExtractionDay" Type="Int32" />
+          <Property Name="BatchExecutionDayOfMonth" Type="Int32" />
         </EntityType>
         <EntityType Name="CustomerInfoRecord">
           <Key>
@@ -1687,6 +1693,9 @@
           <EntitySetMapping Name="BatchMasterRecords">
             <EntityTypeMapping TypeName="NISModel.BatchMasterRecord">
               <MappingFragment StoreEntitySet="BatchMaster">
+                <ScalarProperty Name="BatchExecutionDayOfMonth" ColumnName="BatchExecutionDayOfMonth" />
+                <ScalarProperty Name="DataExtractionDay" ColumnName="DataExtractionDay" />
+                <ScalarProperty Name="IsDataReady" ColumnName="IsDataReady" />
                 <ScalarProperty Name="IsExecuted" ColumnName="IsExecuted" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />

@@ -21,5 +21,8 @@ namespace nIS
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<long> ScheduleId { get; set; }
         public Nullable<bool> IsExecuted { get; set; }
+        public Nullable<bool> IsDataReady { get; set; }
+        public Nullable<int> DataExtractionDay { get; set; }
+        public Nullable<int> BatchExecutionDayOfMonth { get; set; }
     }
 }
