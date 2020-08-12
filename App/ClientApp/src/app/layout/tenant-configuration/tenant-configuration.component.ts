@@ -31,6 +31,8 @@ export class TenantConfigurationComponent implements OnInit {
   public params;
   public TenantConfigurationIdentifier: number = 0;
   public baseURL: string = ConfigConstants.BaseURL;
+  public AssetPathToolTip: string = '';
+  public OutputPathToolTip: string = '';
 
   // Object created to initlialize the error boolean value.
   public tenantConfigurationFormErrorObject: any = {
@@ -135,6 +137,18 @@ export class TenantConfigurationComponent implements OnInit {
           TenantConfigurationAssetPath: this.setting.AssetPath,
           TenantConfigurationArchivalPath: this.setting.ArchivalPath
         });
+        if (this.setting.IsAssetPathEditable) {
+          this.AssetPathToolTip = "";
+        }
+        else {
+          this.AssetPathToolTip = "If Assets are present in the system then you cannot change asset path";
+        }
+        if (this.setting.IsOutputHTMLPathEditable) {
+          this.OutputPathToolTip = "";
+        }
+        else {
+          this.OutputPathToolTip = "If schedule is executed then you cannot change output HTML or PDF path";
+        }
       },
       error => {
         $('.overlay').show();

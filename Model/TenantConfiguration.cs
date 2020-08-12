@@ -39,7 +39,13 @@ namespace nIS
 
         [Description("ArchivalPath")]
         public string ArchivalPath { get; set; }
-       
+
+
+        [Description("IsAssetPathEditable")]
+        public bool IsAssetPathEditable { get; set; }
+
+        [Description("IsAssetPathEditable")]
+        public bool IsOutputHTMLPathEditable { get; set; }
 
         /// <summary>
         /// The utility object

@@ -100,6 +100,29 @@ namespace nIS
                         ArchivalPath = item.ArchivalPath,
 
                     }).ToList();
+                    if (tenantConfigurations?.Count > 0)
+                    {
+                        AssetRecord assetRecord = nISEntitiesDataContext.AssetRecords.Where(item => item.IsDeleted == false)?.ToList()?.FirstOrDefault();
+                        if (assetRecord != null)
+                        {
+                            tenantConfigurations[0].IsAssetPathEditable = false;
+                        }
+                        else
+                        {
+                            tenantConfigurations[0].IsAssetPathEditable = true;
+
+                        }
+                        ScheduleLogDetailRecord scheduleLogDetialsRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.TenantCode == tenantCode&& item.Status== "Completed")?.ToList()?.FirstOrDefault();
+                        if (scheduleLogDetialsRecord != null)
+                        {
+                            tenantConfigurations[0].IsOutputHTMLPathEditable = false;
+                        }
+                        else
+                        {
+                            tenantConfigurations[0].IsOutputHTMLPathEditable = true;
+
+                        }
+                    }
                 }
             }
 

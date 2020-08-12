@@ -8,6 +8,9 @@ export class TenantConfiguration {
   InputDataSourcePath: string;
   AssetPath: string;
   ArchivalPath: string;
+  IsAssetPathEditable: boolean;
+  IsOutputHTMLPathEditable: boolean;
+
 }
 
 export class TenantConfigurationSearchParameter {
