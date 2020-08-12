@@ -260,19 +260,6 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (statementSearchParameter.StatementSearchOwner != null && statementSearchParameter.StatementSearchOwner != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("FirstName.Contains(\"{0}\") or LastName.Contains(\"{1}\") ", statementSearchParameter.StatementSearchOwner, statementSearchParameter.StatementSearchOwner));
-                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        var userRecordIds = nISEntitiesDataContext.UserRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("Owner.Equals({0}) ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                    }
                     statementCount = nISEntitiesDataContext.StatementMetadataRecords.Where(whereClause.ToString()).Count();
                 }
             }
@@ -301,13 +288,25 @@ namespace nIS
 
             if (searchParameter.SearchMode == SearchMode.Equals)
             {
-                if (validationEngine.IsValidLong(searchParameter.Identifier))
+                if (validationEngine.IsValidText(searchParameter.Identifier))
                 {
                     queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
                 }
                 if (validationEngine.IsValidText(searchParameter.Name))
                 {
                     queryString.Append(string.Format("Name.Equals(\"{0}\") and ", searchParameter.Name));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementCustomer))
+                {
+                    queryString.Append(string.Format("CustomerName.Equals(\"{0}\") and ", searchParameter.StatementCustomer));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementAccount))
+                {
+                    queryString.Append(string.Format("AccountNumber.Contains(\"{0}\") and ", searchParameter.StatementAccount));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementPeriod))
+                {
+                    queryString.Append(string.Format("StatementPeriod.Contains(\"{0}\") and ", searchParameter.StatementPeriod));
                 }
             }
             if (searchParameter.SearchMode == SearchMode.Contains)
@@ -316,40 +315,33 @@ namespace nIS
                 {
                     queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
                 }
+                if (validationEngine.IsValidText(searchParameter.StatementCustomer))
+                {
+                    queryString.Append(string.Format("CustomerName.Contains(\"{0}\") and ", searchParameter.StatementCustomer));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementAccount))
+                {
+                    queryString.Append(string.Format("AccountNumber.Contains(\"{0}\") and ", searchParameter.StatementAccount));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementPeriod))
+                {
+                    queryString.Append(string.Format("StatementPeriod.Contains(\"{0}\") and ", searchParameter.StatementPeriod));
+                }
             }
-            if (validationEngine.IsValidText(searchParameter.Status))
+            if (this.validationEngine.IsValidDate(searchParameter.StatementStartDate))
             {
-                queryString.Append(string.Format("Status.Equals(\"{0}\") and ", searchParameter.Status));
-            }
-            if (validationEngine.IsValidLong(searchParameter.StatementSearchTypeId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.StatementSearchTypeId.ToString().Split(',').Select(item => string.Format("StatementSearchTypeId.Equals({0}) ", item))) + ") and ");
-            }
-            if (searchParameter.IsActive != null)
-            {
-                queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.IsActive));
-            }
-            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
-            {
-                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
-                queryString.Append("PublishedOn >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
-            }
+                //DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementStartDate), DateTimeKind.Utc);
+                //DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementEndDate), DateTimeKind.Utc);
+                DateTime fromDateTime = searchParameter.StatementStartDate;
+                DateTime toDateTime = searchParameter.StatementEndDate;
 
-            if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
-            {
-                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
-                queryString.Append("PublishedOn <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+                queryString.Append("StatementDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                               "and StatementDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
-
-            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
+            if (queryString.ToString() != string.Empty)
             {
-                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
-                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
-
-                queryString.Append("PublishedOn >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
-                               "and PublishedOn <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+                queryString.Remove(queryString.Length - 4, 4);
             }
-
             //queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false)", tenantCode));
             return queryString.ToString();
         }

@@ -32,7 +32,7 @@ namespace nIS
         /// <summary>
         /// The page identifier
         /// </summary>
-        public long Identifier { get; set; }
+        public string Identifier { get; set; }
 
         /// <summary>
         /// The page dispaly name
@@ -45,11 +45,6 @@ namespace nIS
         public bool? IsActive { get; set; }
 
         /// <summary>
-        /// The page type identifier
-        /// </summary>
-        public long StatementSearchTypeId { get; set; }
-
-        /// <summary>
         /// The page status
         /// </summary>
         public string Status { get; set; }
@@ -57,22 +52,30 @@ namespace nIS
         /// <summary>
         /// The start date
         /// </summary>
-        public DateTime StartDate { get; set; }
+        public DateTime StatementStartDate { get; set; }
 
         /// <summary>
-        /// The end date
+        /// The start date
         /// </summary>
-        public DateTime EndDate { get; set; }
+        public DateTime StatementEndDate { get; set; }
 
-        /// <summary>
-        /// The page page owner
-        /// </summary>
-        public string StatementSearchOwner { get; set; }
 
         /// <summary>
         /// The page page owner
         /// </summary>
-        public bool? IsStatementSearchPagesRequired { get; set; }
+        public string StatementCustomer { get; set; }
+
+
+        /// <summary>
+        /// The page page owner
+        /// </summary>
+        public string StatementPeriod { get; set; }
+
+        /// <summary>
+        /// The page page owner
+        /// </summary>
+        public string StatementAccount { get; set; }
+
 
         #endregion
 

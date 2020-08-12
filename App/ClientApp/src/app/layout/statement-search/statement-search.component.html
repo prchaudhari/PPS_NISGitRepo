@@ -63,70 +63,57 @@
     </div>
   </div>
   <!--desktop view end-->
-
-  <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
-    <div class="filter-head">
-      <label class="m-0">Apply Filter</label>
-    </div>
-    <div class="filter-body-left d-flex flex-column stylescrollbar">
-      <div class="form-group">
-        <label>Statement Date</label>
-        <div class="position-relative">
-          <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate">
-          <span [owlDateTimeTrigger]="dt" class="datetime-icon">
-            <i class="fa fa-calendar"></i>
-          </span>
-          <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+  <form [formGroup]="StatementSearchFilterForm">
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
+      </div>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>Statement Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filterStatementDate">
+            <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Statement Period</label>
+          <input type="text" class="form-control" formControlName="filterStatementPeriod">
+        </div>
+        <div class="form-group">
+          <label>Customer</label>
+          <input type="text" class="form-control" formControlName="filterStatementCustomer">
+        </div>
+        <div class="form-group">
+          <label>Account ID</label>
+          <input type="text" class="form-control" formControlName="filterStatementAccountId">
         </div>
       </div>
-      <div class="form-group">
-        <label>Statement Period</label>
-        <input type="text" class="form-control">
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" title="Search" (click)="searchStatementSearchRecordFilter('search')">
+            <a class="nav-link p-0">
+              <span class="fa fa-check"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Reset" (click)="searchStatementSearchRecordFilter('reset')">
+            <a class="nav-link p-0">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Close" (click)="closeFilter()">
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
       </div>
-      <div class="form-group">
-        <label>Customer</label>
-        <input type="text" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Account ID</label>
-        <input type="text" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>City</label>
-        <input type="text" class="form-control">
-      </div>
-      <!--<div class="form-group">
-    <label>End Date</label>
-    <div class="position-relative">
-      <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filtershiftenddate">
-      <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
-        <i class="fa fa-calendar"></i>
-      </span>
-      <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
     </div>
-  </div>-->
-    </div>
-    <!--[ngClass]="filterClass"-->
-    <div class="filter-footer">
-      <ul class="nav">
-        <li class="nav-item width33" title="Search">
-          <a class="nav-link p-0">
-            <span class="fa fa-check"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Reset">
-          <a class="nav-link p-0">
-            <span class="fa fa-refresh"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Close" (click)="closeFilter()">
-          <a class="nav-link p-0">
-            <span class="fa fa-close"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+  </form>
 </div>
 
 <div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>

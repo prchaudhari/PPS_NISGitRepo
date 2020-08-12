@@ -115,9 +115,7 @@ namespace nIS
                     throw invalidSearchParameterException;
                 }
 
-                StatementSearchSearchParameter.StartDate = this.validationEngine.IsValidDate(StatementSearchSearchParameter.StartDate) ? StatementSearchSearchParameter.StartDate.ToLocalTime() : StatementSearchSearchParameter.StartDate;
-                StatementSearchSearchParameter.EndDate = this.validationEngine.IsValidDate(StatementSearchSearchParameter.EndDate) ? StatementSearchSearchParameter.EndDate.ToLocalTime() : StatementSearchSearchParameter.EndDate;
-
+               
                 return this.StatementSearchRepository.GetStatementSearchs(StatementSearchSearchParameter, tenantCode);
             }
             catch (Exception exception)

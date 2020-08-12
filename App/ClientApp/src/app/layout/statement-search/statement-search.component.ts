@@ -85,32 +85,31 @@ export class StatementSearchComponent implements OnInit {
   }
 
   //Getters for Page Forms
-  get filterScheduleName() {
-    return this.StatementSearchFilterForm.get('filterScheduleName');
+  get filterStatementCustomer() {
+    return this.StatementSearchFilterForm.get('filterStatementCustomer');
   }
 
-  get filterStatus() {
-    return this.StatementSearchFilterForm.get('filterStatus');
+  get filterStatementAccountId() {
+    return this.StatementSearchFilterForm.get('filterStatementAccountId');
   }
 
-  get filterPublishedOnFromDate() {
-    return this.StatementSearchFilterForm.get('filterPublishedOnFromDate');
+  get filterStatementDate() {
+    return this.StatementSearchFilterForm.get('filterStatementDate');
   }
 
-  get filterPublishedOnToDate() {
-    return this.StatementSearchFilterForm.get('filterPublishedOnToDate');
+  get filterStatementPeriod() {
+    return this.StatementSearchFilterForm.get('filterStatementPeriod');
   }
 
   ngOnInit() {
     this.getStatementSearchs(null);
     //this.getPageTypes();
     this.StatementSearchFilterForm = this.fb.group({
-      filterScheduleName: [null],
-      filterStatus: [0],
-      filterPublishedOnFromDate: [null],
-      filterPublishedOnToDate: [null],
+      filterStatementCustomer: [null],
+      filterStatementAccountId: [null],
+      filterStatementDate: [null],
+      filterStatementPeriod: [null],
     });
-
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
@@ -130,6 +129,7 @@ export class StatementSearchComponent implements OnInit {
     this.sortedStatementSearchList = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
+        case 'id': return compare(a.Identifier, b.Identifier, isAsc);
         case 'accountId': return compareStr(a.AccountNumber, b.AccountNumber, isAsc);
         case 'customer': return compareStr(a.CustomerName, b.CustomerName, isAsc);
         case 'period': return compareStr(a.StatementPeriod, b.StatementPeriod, isAsc);
@@ -172,52 +172,18 @@ export class StatementSearchComponent implements OnInit {
     this.totalSize = this.array.length;
     this.iterator();
   }
-
   validateFilterDate(): boolean {
-    if (this.StatementSearchFilterForm.value.filterPublishedOnFromDate != null && this.StatementSearchFilterForm.value.filterPublishedOnFromDate != '' &&
-      this.StatementSearchFilterForm.value.filterPublishedOnToDate != null && this.StatementSearchFilterForm.value.filterPublishedOnToDate != '') {
-      let startDate = this.StatementSearchFilterForm.value.filterPublishedOnFromDate;
-      let toDate = this.StatementSearchFilterForm.value.filterPublishedOnToDate;
-      if (startDate.getTime() > toDate.getTime()) {
-        this.filterFromDateError = true;
-        return false;
-      }
-    }
+    //if (this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != '' &&
+    //  this.ScheduleLogFilterForm.value.filterPublishedOnToDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnToDate != '') {
+    //  let startDate = this.ScheduleLogFilterForm.value.filterPublishedOnFromDate;
+    //  let toDate = this.ScheduleLogFilterForm.value.filterPublishedOnToDate;
+    //  if (startDate.getTime() > toDate.getTime()) {
+    //    this.filterFromDateError = true;
+    //    return false;
+    //  }
+    //}
     return true;
   }
-
-  onPublishedFilterDateChange(event) {
-    this.filterFromDateError = false;
-    this.filterToDateError = false;
-    this.filterFromDateErrorMessage = "";
-    this.filterToDateErrorMessage = "";
-    let currentDte = new Date();
-    if (this.StatementSearchFilterForm.value.filterPublishedOnFromDate != null && this.StatementSearchFilterForm.value.filterPublishedOnFromDate != '') {
-      let startDate = this.StatementSearchFilterForm.value.filterPublishedOnFromDate;
-      if (startDate.getTime() > currentDte.getTime()) {
-        this.filterFromDateError = true;
-        this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanCurrentDateMessage;
-      }
-    }
-    if (this.StatementSearchFilterForm.value.filterPublishedOnToDate != null && this.StatementSearchFilterForm.value.filterPublishedOnToDate != '') {
-      let toDate = this.StatementSearchFilterForm.value.filterPublishedOnToDate;
-      if (toDate.getTime() > currentDte.getTime()) {
-        this.filterToDateError = true;
-        this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
-      }
-    }
-    if (this.StatementSearchFilterForm.value.filterPublishedOnFromDate != null && this.StatementSearchFilterForm.value.filterPublishedOnFromDate != '' &&
-      this.StatementSearchFilterForm.value.filterPublishedOnToDate != null && this.StatementSearchFilterForm.value.filterPublishedOnToDate != '') {
-      let startDate = this.StatementSearchFilterForm.value.filterPublishedOnFromDate;
-      let toDate = this.StatementSearchFilterForm.value.filterPublishedOnToDate;
-      if (startDate.getTime() > toDate.getTime()) {
-        this.filterFromDateError = true;
-        this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
-      }
-    }
-  }
-
-  //This method has been used for fetching search records
   searchStatementSearchRecordFilter(searchType) {
     this.filterFromDateError = false;
     this.isFilterDone = true;
@@ -236,27 +202,23 @@ export class StatementSearchComponent implements OnInit {
         searchParameter.SortParameter.SortColumn = 'Id';
         searchParameter.SortParameter.SortOrder = Constants.Descending;
         searchParameter.SearchMode = Constants.Contains;
-        if (this.StatementSearchFilterForm.value.filterScheduleName != null && this.StatementSearchFilterForm.value.filterScheduleName != '') {
-          searchParameter.ScheduleName = this.StatementSearchFilterForm.value.filterScheduleName.trim();
+        if (this.StatementSearchFilterForm.value.filterStatementCustomer != null && this.StatementSearchFilterForm.value.filterStatementCustomer != '') {
+          searchParameter.StatementCustomer = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
         }
-        if (this.StatementSearchFilterForm.value.filterOwner != null && this.StatementSearchFilterForm.value.filterOwner != '') {
-          searchParameter.PageOwner = this.StatementSearchFilterForm.value.filterOwner.trim();
+        if (this.StatementSearchFilterForm.value.filterStatementAccountId != null && this.StatementSearchFilterForm.value.filterStatementAccountId != '') {
+          searchParameter.StatementAccount = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
         }
-        if (this.filterPageTypeId != 0) {
-          searchParameter.PageTypeId = this.filterPageTypeId;
+        if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
+          //searchParameter.StartDate = this.StatementSearchFilterForm.value.filterStatementDate;
+          searchParameter.StatementStartDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(0, 0, 0));
+          searchParameter.StatementEndDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(23, 59, 59));
+
+          searchParameter.SortParameter.SortColumn = 'StatementDate';
         }
-        if (this.StatementSearchFilterForm.value.filterStatus != null && this.StatementSearchFilterForm.value.filterStatus != 0) {
-          searchParameter.ScheduleStatus = this.StatementSearchFilterForm.value.filterStatus;
-        }
-        if (this.StatementSearchFilterForm.value.filterPublishedOnFromDate != null && this.StatementSearchFilterForm.value.filterPublishedOnFromDate != '') {
-          //searchParameter.StartDate = this.StatementSearchFilterForm.value.filterPublishedOnFromDate;
-          searchParameter.StartDate = new Date(this.StatementSearchFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
-          searchParameter.SortParameter.SortColumn = 'PublishedOn';
-        }
-        if (this.StatementSearchFilterForm.value.filterPublishedOnToDate != null && this.StatementSearchFilterForm.value.filterPublishedOnToDate != '') {
-          //searchParameter.EndDate = this.StatementSearchFilterForm.value.filterPublishedOnToDate;
-          searchParameter.EndDate = new Date(this.StatementSearchFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
-          searchParameter.SortParameter.SortColumn = 'PublishedOn';
+        if (this.StatementSearchFilterForm.value.filterStatementPeriod != null && this.StatementSearchFilterForm.value.filterStatementPeriod != '') {
+          //searchParameter.EndDate = this.StatementSearchFilterForm.value.filterStatementPeriod;
+          searchParameter.StatementPeriod = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
+
         }
 
         console.log(searchParameter);
@@ -269,12 +231,10 @@ export class StatementSearchComponent implements OnInit {
 
   resetSchdeuleLogFilterForm() {
     this.StatementSearchFilterForm.patchValue({
-      filterScheduleName: null,
-      filterOwner: null,
-      filterPageType: 0,
-      filterStatus: 0,
-      filterPublishedOnFromDate: null,
-      filterPublishedOnToDate: null
+      filterStatementCustomer: [null],
+      filterStatementAccountId: [null],
+      filterStatementDate: [null],
+      filterStatementPeriod: [null],
     });
 
     this.filterFromDateError = false;
