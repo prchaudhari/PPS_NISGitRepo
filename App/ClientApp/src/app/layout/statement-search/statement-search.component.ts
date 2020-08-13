@@ -254,7 +254,10 @@ export class StatementSearchComponent implements OnInit {
   }
 
   ViewHTML(element) {
-   // window.location.href = "https://www.google.com"
+    //window.location.href = "C:/Users/tayyaba.shaikh/Downloads/statement8_3_2020_5_09_28_AM%20(1)/statement/Statement_5_8_3_2020_5_09_27_AM.html"
+    //window.location.href = "https://www.google.com/";
+    //window.open("file:///C:/Users/tayyaba.shaikh/Downloads/statement8_3_2020_5_09_28_AM%20(1)/statement/Statement_5_8_3_2020_5_09_27_AM.html", null);
+
   }
 }
 

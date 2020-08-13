@@ -392,7 +392,7 @@ export class AddComponent implements OnInit {
       let toDate = this.scheduleForm.value.filtershiftenddate;
       if (this.updateOperationMode) {
         var date =new Date( this.schedule.EndDate);
-        if (toDate.getDate() < date.getDate()) {
+        if (toDate.getTime() < date.getTime()) {
           this.filterToDateError = true;
           this.filterToDateErrorMessage = "End date should not be less than previous end date";
         }

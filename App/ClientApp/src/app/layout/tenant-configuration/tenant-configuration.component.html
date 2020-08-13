@@ -36,7 +36,7 @@
         <div class="row form-group">
           <div class="col-md-6 col-sm-6 col-lg-3">
             <label for="inputPriorityLevel">Output HTML Path</label>
-            <input title="{{OutputPathToolTip}}" type="text" class="form-control" id="inputTenantConfigurationOutputHTMLPath" [readonly]="!setting.IsOutputHTMLPathEditable" name="TenantConfigurationOutputHTMLPath"
+            <input  type="text" class="form-control" id="inputTenantConfigurationOutputHTMLPath"  name="TenantConfigurationOutputHTMLPath"
                    formControlName="TenantConfigurationOutputHTMLPath" />
             <!-- Error Masseges  -->
             <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputHTMLPath.touched && TenantConfigurationOutputHTMLPath.errors">
@@ -49,7 +49,7 @@
           
           <div class="col-md-6 col-sm-6 col-lg-3">
             <label for="inputConcurrencyCount">Output PDF Path</label>
-            <input title="{{OutputPathToolTip}}" type="text" class="form-control"  [readonly]="!setting.IsOutputHTMLPathEditable" id="inputTenantConfigurationOutputPDFPath" name="TenantConfigurationOutputPDFPath"
+            <input  type="text" class="form-control"   id="inputTenantConfigurationOutputPDFPath" name="TenantConfigurationOutputPDFPath"
                    formControlName="TenantConfigurationOutputPDFPath" />
             <!-- Error Masseges  -->
             <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputPDFPath.touched && TenantConfigurationOutputPDFPath.errors">
