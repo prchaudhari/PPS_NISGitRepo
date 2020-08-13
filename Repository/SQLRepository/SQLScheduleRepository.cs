@@ -878,6 +878,8 @@ namespace nIS
         public bool AddBatchMaster(ScheduleRecord schedule, bool isScheduleUpdate, string tenantCode)
         {
             bool result = false;
+            this.SetAndValidateConnectionString(tenantCode);
+
             List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
             if (isScheduleUpdate)
             {
@@ -959,6 +961,7 @@ namespace nIS
         {
             IList<BatchMaster> batchMasters = new List<BatchMaster>();
             IList<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+            this.SetAndValidateConnectionString(tenantCode);
 
             try
             {

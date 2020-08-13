@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
@@ -18,6 +16,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAcce
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ScheduleService } from '../schedule.service';
+import { ConfigConstants } from '../../../shared/constants/configConstants';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -26,8 +25,18 @@ import { ScheduleService } from '../schedule.service';
 export class ViewComponent implements OnInit {
   public schedule: Schedule;
   public params;
-  public baseURL: string = environment.baseURL;
   public userClaimsRolePrivilegeOperations: any[] = [];
+  public isCollapsedDetails: boolean = false;
+  public isCollapsedBatch: boolean = true;
+  public IsBatchDetailsGet = false;
+  displayedColumns: string[] = ['id', 'BatchName', 'IsExecuted', 'IsDataReady', 'DataExtractionDate', 'BatchExecutionDate','Actions'];
+  dataSource = new MatTableDataSource<any>();
+  public pageSize = 5;
+  public currentPage = 0;
+  public totalSize = 0;
+  public array: any;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   navigateToListPage() {
     this._location.back();
   }
@@ -134,4 +143,92 @@ export class ViewComponent implements OnInit {
       }
     });
   }
+  public batchmasterList: any = [];
+  public baseURL: string = ConfigConstants.BaseURL;
+  async getBatchMaster() {
+    this.isCollapsedBatch = !this.isCollapsedBatch;
+    if (this.IsBatchDetailsGet == false) {
+      this._spinnerService.start();
+      this._http.post(this.baseURL + 'Schedule/GetBatchMaster?scheduleIdentifier=' + this.schedule.Identifier, null).subscribe(
+        data => {
+          this.IsBatchDetailsGet = true;
+          this.batchmasterList = data;
+          for (var i = 0; i < this.batchmasterList.length; i++) {
+            this.batchmasterList[i].Identifier = i+1;
+          }
+          
+          this.dataSource = new MatTableDataSource<Schedule>(this.batchmasterList);
+          this.dataSource.sort = this.sort;
+          this.array = this.batchmasterList;
+          this.totalSize = this.array.length;
+          this.iterator();
+          this._spinnerService.stop();
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this._spinnerService.stop();
+        });
+
+
+    }
+
+
+  }
+
+  public handlePage(e: any) {
+    this.currentPage = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.iterator();
+  }
+
+  private iterator() {
+    const end = (this.currentPage + 1) * this.pageSize;
+    const start = this.currentPage * this.pageSize;
+    const part = this.array.slice(start, end);
+    this.dataSource = part;
+    this.dataSource.sort = this.sort;
+  }
+
+  public sortedscheduleList: any = [];
+  sortData(sort: MatSort) {
+    const data = this.batchmasterList.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedscheduleList = data;
+      return;
+    }
+    // ['id', 'BatchName', 'IsExecuted', 'IsDataReady', 'DataExtractionDate', 'BatchExecutionDate', 'Actions'];
+
+    this.sortedscheduleList = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'id': return compare(a.Identifier, b.Identifier, isAsc);
+        case 'BatchName': return compareStr(a.BatchName, b.BatchName, isAsc);
+        case 'IsExecuted': return compareStr(a.IsExecuted, b.IsExecuted, isAsc);
+        case 'IsDataReady': return compareStr(a.IsDataReady, b.IsDataReady, isAsc);
+        case 'DataExtractionDate': return compareDate(a.DataExtractionDate, b.DataExtractionDate, isAsc);
+        case 'BatchExecutionDate': return compareDate(a.BatchExecutionDate, b.BatchExecutionDate, isAsc);
+        default: return 0;
+      }
+    });
+    this.dataSource = new MatTableDataSource<Schedule>(this.sortedscheduleList);
+    this.dataSource.sort = this.sort;
+    this.array = this.sortedscheduleList;
+    this.totalSize = this.array.length;
+    this.iterator();
+  }
+}
+
+function compare(a: number, b: number, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareStr(a: string, b: string, isAsc: boolean) {
+  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareDate(a: Date, b: Date, isAsc: boolean) {
+  var a1 = new Date(a);
+  var b1 = new Date(b);
+  return (a1.getTime() < b1.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
 }

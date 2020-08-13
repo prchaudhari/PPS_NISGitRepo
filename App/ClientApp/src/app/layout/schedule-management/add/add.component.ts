@@ -147,8 +147,8 @@ export class AddComponent implements OnInit {
       TimeOfDayMinutes: ["Please Select", Validators.compose([Validators.required])],
       filtershiftfromdate: [null, Validators.compose([Validators.required])],
       filtershiftenddate: [null,],
-      ExportToPDF: [false],
-      NoEndDate: [false],
+      //ExportToPDF: [false],
+      //NoEndDate: [false],
     })
 
     this.scheduleForm.controls['StatementDefinition'].setValue(this.st.Identifier);
@@ -272,13 +272,13 @@ export class AddComponent implements OnInit {
     return this.scheduleForm.get('filtershiftenddate');
   }
 
-  get ExportToPDF() {
-    return this.scheduleForm.get('ExportToPDF');
-  }
+  //get ExportToPDF() {
+  //  return this.scheduleForm.get('ExportToPDF');
+  //}
 
-  get NoEndDate() {
-    return this.scheduleForm.get('NoEndDate');
-  }
+  //get NoEndDate() {
+  //  return this.scheduleForm.get('NoEndDate');
+  //}
 
   public onStateDefinitionSelected(event) {
 
