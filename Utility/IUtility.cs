@@ -189,5 +189,13 @@
         /// <param name="m"> the numeric value of month </param>
         /// <returns>string value of month</returns>
         string getMonth(int m);
+
+        /// <summary>
+        /// This method help to get month difference in between 2 dates
+        /// </summary>
+        /// <param name="endDate"> the end date value </param>
+        /// <param name="startDate"> the start date value </param>
+        /// <returns>difference between 2 dates in numeric</returns>
+        int MonthDifference(DateTime endDate, DateTime startDate);
     }
 }

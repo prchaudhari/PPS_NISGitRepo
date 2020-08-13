@@ -830,6 +830,17 @@
             return res;
         }
 
+        /// <summary>
+        /// This method help to get month difference in between 2 dates
+        /// </summary>
+        /// <param name="endDate"> the end date value </param>
+        /// <param name="startDate"> the start date value </param>
+        /// <returns>difference between 2 dates in numeric</returns>
+        public int MonthDifference(DateTime endDate, DateTime startDate)
+        {
+            return (endDate.Month - startDate.Month) + 12 * (endDate.Year - startDate.Year);
+        }
+
         #endregion
 
     }

@@ -13,6 +13,7 @@ namespace nIS
     using System.IO;
     using System.Linq;
     using System.Linq.Dynamic;
+    using System.Security.Claims;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
@@ -94,6 +95,10 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId = 1;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
                 this.SetAndValidateConnectionString(tenantCode);
 
                 if (this.IsDuplicateSchedule(schedules, "AddOperation", tenantCode))
@@ -118,9 +123,9 @@ namespace nIS
                         TenantCode = tenantCode,
                         StatementId = schedule.Statement.Identifier,
                         IsExportToPDF = schedule.IsExportToPDF,
-                        UpdateBy = schedule.UpdateBy.Identifier,
+                        UpdateBy = userId,
                         LastUpdatedDate = DateTime.UtcNow,
-                    }); ;
+                    });
                 });
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
@@ -128,10 +133,15 @@ namespace nIS
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
-                if(result)
+                if (result)
                 {
-                    scheduleRecords.ToList().ForEach(item => {
-                        this.AddBatchMaster(item, false,tenantCode);
+                    scheduleRecords.ToList().ForEach(item =>
+                    {
+                        int diff = this.utility.MonthDifference(item.EndDate ?? DateTime.Now, item.StartDate ?? DateTime.Now);
+                        if (diff > 0)
+                        {
+                            this.AddBatchMaster(item.StartDate ?? DateTime.Now, 1, diff, tenantCode, item.Id, userId);
+                        }
                     });
                 }
             }
@@ -157,6 +167,10 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId = 1;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
                 this.SetAndValidateConnectionString(tenantCode);
 
                 if (this.IsDuplicateSchedule(schedules, "UpdateOperation", tenantCode))
@@ -185,30 +199,30 @@ namespace nIS
                         scheduleRecord.HourOfDay = item.HourOfDay;
                         scheduleRecord.MinuteOfDay = item.MinuteOfDay;
                         scheduleRecord.StartDate = item.StartDate;
+
+                        int prevDiff = this.utility.MonthDifference(scheduleRecord.EndDate ?? DateTime.Now, scheduleRecord.StartDate ?? DateTime.Now);
+                        int newDiff = this.utility.MonthDifference(item.EndDate ?? DateTime.Now, scheduleRecord.EndDate ?? DateTime.Now);
                         scheduleRecord.EndDate = item.EndDate;
+
                         scheduleRecord.Status = item.Status;
                         scheduleRecord.IsDeleted = false;
                         scheduleRecord.IsActive = item.IsActive;
                         scheduleRecord.TenantCode = tenantCode;
                         scheduleRecord.IsExportToPDF = item.IsExportToPDF;
                         scheduleRecord.StatementId = item.Statement.Identifier;
-                        scheduleRecord.UpdateBy = item.UpdateBy.Identifier;
+                        scheduleRecord.UpdateBy = userId;
                         scheduleRecord.LastUpdatedDate = DateTime.UtcNow;
+                        nISEntitiesDataContext.SaveChanges();
+
+                        if (newDiff > 0)
+                        {
+                            this.AddBatchMaster(item.StartDate ?? DateTime.Now, (prevDiff + 1), (prevDiff + newDiff), tenantCode, item.Identifier, userId);
+                        }
                     });
 
-                    nISEntitiesDataContext.SaveChanges();
                     result = true;
-                    if (result)
-                    {
-                        scheduleRecords.ToList().ForEach(item => {
-                            this.AddBatchMaster(item, true, tenantCode);
-                        });
-                    }
                 }
-
-
             }
-
             catch (Exception exception)
             {
                 throw exception;
@@ -875,78 +889,29 @@ namespace nIS
         #endregion
 
         #region Batch master
-        public bool AddBatchMaster(ScheduleRecord schedule, bool isScheduleUpdate, string tenantCode)
+        public bool AddBatchMaster(DateTime startDate, int start, int end, string tenantCode, long ScheduleId, int userId)
         {
             bool result = false;
             this.SetAndValidateConnectionString(tenantCode);
 
             List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
-            if (isScheduleUpdate)
+            if (end > 0)
             {
-                int diff = ((schedule.EndDate.Value.Year - schedule.StartDate.Value.Year) * 12) + schedule.EndDate.Value.Month - schedule.StartDate.Value.Month;
-                List<BatchMasterRecord> existingBatchRecords = new List<BatchMasterRecord>();
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    existingBatchRecords = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.TenantCode == tenantCode).ToList();
-
-                }
-                for (int index = 1; index >= diff + 1; index++)
-                {
-                    if (!existingBatchRecords.Any(item => item.BatchName == "Batch_" + index))
-                    {
-                        BatchMasterRecord record = new BatchMasterRecord();
-                        record.BatchName = "Batch_" + index;
-                        record.TenantCode = tenantCode;
-                        record.CreatedBy = schedule.UpdateBy;
-                        record.CreatedDate = DateTime.UtcNow;
-                        record.ScheduleId = schedule.Id;
-                        record.IsExecuted = false;
-                        record.IsDataReady = false;
-                        //record.BatchExecutionDayOfMonth = (int)schedule.DayOfMonth;
-
-                        //if (schedule.DayOfMonth == 29)
-                        //{
-                        //    record.DataExtractionDay = 1;
-                        //}
-                        //else
-                        //{
-                        //    record.DataExtractionDay = (int)schedule.DayOfMonth - 1;
-
-                        //}
-                        batchMasterRecords.Add(record);
-                    }
-                }
-            }
-            else
-            {
-                int diff = ((schedule.EndDate.Value.Year - schedule.StartDate.Value.Year) * 12) + schedule.EndDate.Value.Month - schedule.StartDate.Value.Month;
-                for (int index = 1; index >= diff + 1; index++)
+                for (int index = start; index <= end; index++)
                 {
                     BatchMasterRecord record = new BatchMasterRecord();
                     record.BatchName = "Batch_" + index;
                     record.TenantCode = tenantCode;
-                    record.CreatedBy = schedule.UpdateBy;
+                    record.CreatedBy = userId;
                     record.CreatedDate = DateTime.UtcNow;
-                    record.ScheduleId = schedule.Id;
+                    record.ScheduleId = ScheduleId;
                     record.IsExecuted = false;
                     record.IsDataReady = false;
-                    //record.BatchExecutionDayOfMonth = (int)schedule.DayOfMonth;
-
-                    //if (schedule.DayOfMonth == 29)
-                    //{
-                    //    record.DataExtractionDay = 1;
-                    //}
-                    //else
-                    //{
-                    //    record.DataExtractionDay = (int)schedule.DayOfMonth - 1;
-
-                    //}
+                    record.BatchExecutionDate = startDate.AddMonths(index);
+                    record.DataExtractionDate = startDate.AddMonths(index).AddDays(-1);
                     batchMasterRecords.Add(record);
                 }
 
-            }
-            if (batchMasterRecords.Count() > 0)
-            {
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
@@ -954,6 +919,7 @@ namespace nIS
                     result = true;
                 }
             }
+
             return result;
         }
 
@@ -968,9 +934,10 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schdeuleIdentifier && item.TenantCode == tenantCode).ToList();
-                    if(batchMasterRecords?.Count()>0)
+                    if (batchMasterRecords?.Count() > 0)
                     {
-                        batchMasterRecords.ToList().ForEach(item => {
+                        batchMasterRecords.ToList().ForEach(item =>
+                        {
                             batchMasters.Add(new BatchMaster
                             {
                                 Identifier = item.Id,
@@ -982,15 +949,17 @@ namespace nIS
                                 IsExecuted = item.IsExecuted,
                                 IsDataReady = item.IsDataReady,
                                 BatchExecutionDate = item.BatchExecutionDate,
-                                DataExtractionDate=item.DataExtractionDate
-                            }); 
+                                DataExtractionDate = item.DataExtractionDate
+                            });
                         });
                     }
 
                 }
-            } catch (Exception ex) { 
-            
-            
+            }
+            catch (Exception ex)
+            {
+
+
             }
             return batchMasters;
         }
