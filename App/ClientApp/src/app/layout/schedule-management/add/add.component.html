@@ -97,10 +97,10 @@
             <div class="position-relative">
               <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filtershiftenddate"
                      placeholder="Please select end date" readonly (ngModelChange)="onFilterDateChange($event)" [disabled]="!IsEndDateRequired">
-              <span [owlDateTimeTrigger]="dt1" class="datetime-icon" [disabled]="!IsEndDateRequired">
+              <span [owlDateTimeTrigger]="dt1" class="datetime-icon" [disabled]="IsEndDateDisable">
                 <i class="fa fa-calendar"></i>
               </span>
-              <owl-date-time #dt1 [pickerType]="'calendar'" [disabled]="!IsEndDateRequired"></owl-date-time>
+              <owl-date-time #dt1 [pickerType]="'calendar'" [disabled]="IsEndDateDisable"></owl-date-time>
             </div>
             <div class="text-danger" *ngIf="filterToDateError">
               {{filterToDateErrorMessage}}

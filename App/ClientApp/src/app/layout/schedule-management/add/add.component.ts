@@ -50,6 +50,8 @@ export class AddComponent implements OnInit {
   public TimeOfDayMinutesList: any = [];
   public isFirstimeLoad = false;
   public IsStartDateDisable = false;
+  public IsEndDateDisable = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private spinner: NgxUiLoaderService,
@@ -227,6 +229,9 @@ export class AddComponent implements OnInit {
     if (startDate.getTime() < currentDate.getTime()) {
       this.IsStartDateDisable = true;
     }
+    if (endDate.getTime() < currentDate.getTime()) {
+      this.IsEndDateDisable = true;
+    }
     if (this.schedule.EndDate.toString() == "0001-01-01T00:00:00") {
       this.IsEndDateRequired = false;
     }
@@ -385,10 +390,20 @@ export class AddComponent implements OnInit {
     }
     if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
       let toDate = this.scheduleForm.value.filtershiftenddate;
-      if (toDate.getTime() < currentDte.getTime()) {
-        this.filterToDateError = true;
-        this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
+      if (this.updateOperationMode) {
+        var date =new Date( this.schedule.EndDate);
+        if (toDate.getTime() < date.getTime()) {
+          this.filterToDateError = true;
+          this.filterToDateErrorMessage = "End date should not be less than previous end date";
+        }
       }
+      else {
+        if (toDate.getTime() < currentDte.getTime()) {
+          this.filterToDateError = true;
+          this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
+        }
+      }
+     
     }
     if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
       this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {

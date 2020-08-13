@@ -7,7 +7,7 @@ exports.environment = void 0;
 exports.environment = {
     production: false,
     baseURL: 'http://localhost/API/',
-    appVersion: '1.2.6'
+    appVersion: '1.2.9'
 };
 /*
  * For easier debugging in development mode, you can import the following file
