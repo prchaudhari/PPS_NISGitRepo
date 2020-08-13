@@ -5,6 +5,7 @@ namespace nIS
     {
         InProgress,
         Completed,
-        Failed
+        Failed,
+        BatchDataNotAvailable
     }
 }

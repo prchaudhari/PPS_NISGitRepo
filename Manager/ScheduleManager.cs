@@ -322,11 +322,36 @@ namespace nIS
             return scheduleCount;
         }
 
+        /// <summary>
+        /// This method helps to run the schedule
+        /// </summary>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if schedules runs successfully, false otherwise</returns>
         public bool RunSchedule(string baseURL, string tenantCode)
         {
             try
             {
                 return this.scheduleRepository.RunSchedule(baseURL, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to run the schedule now
+        /// </summary>
+        /// <param name="batchMaster">The batch object</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        public bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, tenantCode);
             }
             catch (Exception ex)
             {

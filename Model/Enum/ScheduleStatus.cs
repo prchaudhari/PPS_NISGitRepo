@@ -13,6 +13,7 @@ namespace nIS
     {
         New,
         InProgress,
-        Completed
+        Completed,
+        BatchDataNotAvailable
     }
 }

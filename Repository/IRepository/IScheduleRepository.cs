@@ -103,9 +103,24 @@ namespace nIS
         /// <returns>ScheduleRunHistory count</returns>
         int GetScheduleRunHistoryCount(ScheduleSearchParameter roleSearchParameter, string tenantCode);
 
+        /// <summary>
+        /// This method helps to run the schedule
+        /// </summary>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if schedules runs successfully, false otherwise</returns>
         bool RunSchedule(string baseURL, string tenantCode);
 
         IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method helps to run the schedule now
+        /// </summary>
+        /// <param name="batchMaster">The batch object</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string tenantCode);
 
     }
 }

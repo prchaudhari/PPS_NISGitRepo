@@ -250,6 +250,41 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method helps to run the schedule now
+        /// </summary>
+        /// <param name="batchMaster">The batch object</param>
+        /// <returns>True if schedule runs successfully false otherwise</returns>
+        [HttpPost]
+        public bool RunScheduleNow(BatchMaster batchMaster)
+        {
+            try
+            {
+                if (batchMaster == null)
+                {
+                    return false;
+                }
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                var baseURL = Url.Content("~/");
+                //string baseURL = string.Empty;
+                //TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                //tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                //if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                //{
+                //    baseURL = tenantConfiguration.AssetPath;
+                //}
+                //else
+                //{
+                //    baseURL = Url.Content("~/");
+                //}
+                return this.scheduleManager.RunScheduleNow(batchMaster, baseURL, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #region Batch master
 
         [HttpPost]
