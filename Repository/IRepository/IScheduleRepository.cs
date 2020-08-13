@@ -105,5 +105,7 @@ namespace nIS
 
         bool RunSchedule(string baseURL, string tenantCode);
 
+        IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
+
     }
 }

@@ -101,7 +101,7 @@ namespace nIS
         #region Download
 
         [HttpGet]
-        [Route("ScheduleHistory/Download")]
+        [Route("StatementSearch/Download")]
         public HttpResponseMessage Download(string identifier)
         {
             try

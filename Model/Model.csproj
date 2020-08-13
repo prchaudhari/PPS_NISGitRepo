@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AccountInformation.cs" />
     <Compile Include="AccountMaster.cs" />
+    <Compile Include="BatchMaster.cs" />
     <Compile Include="AccountSummary.cs" />
     <Compile Include="AccountTransaction.cs" />
     <Compile Include="Asset.cs" />

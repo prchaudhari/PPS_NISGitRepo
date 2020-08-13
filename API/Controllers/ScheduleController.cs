@@ -38,6 +38,12 @@ namespace nIS
         /// </summary>
         private readonly IUnityContainer unityContainer = null;
 
+        /// <summary>
+        /// The asset library manager object.
+        /// </summary>
+        private TenantConfigurationManager tenantConfigurationManager = null;
+
+
         #endregion
 
         #region Constructor
@@ -45,6 +51,7 @@ namespace nIS
         public ScheduleController(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
+            this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
             this.scheduleManager = new ScheduleManager(this.unityContainer);
         }
 
@@ -224,6 +231,17 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
+                //string baseURL = string.Empty;
+                //TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                //tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                //if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                //{
+                //    baseURL = tenantConfiguration.AssetPath;
+                //}
+                //else
+                //{
+                //    baseURL = Url.Content("~/");
+                //}
                 return this.scheduleManager.RunSchedule(baseURL, tenantCode);
             }
             catch (Exception ex)
@@ -231,6 +249,28 @@ namespace nIS
                 throw ex;
             }
         }
+
+        #region Batch master
+
+        [HttpPost]
+        public IList<BatchMaster> GetBatchMaster(long scheduleIdentifier)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                batchMasters = this.scheduleManager.GetBatchMasters(scheduleIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return batchMasters;
+        }
+
+        #endregion
+
         #endregion
 
         #region ScheduleRunHistory 
@@ -257,7 +297,7 @@ namespace nIS
             return result;
         }
 
-      
+
 
         /// <summary>
         /// This method helps to get schedules list based on the search parameters.
@@ -307,7 +347,7 @@ namespace nIS
 
                 string relativePath = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH;
                 string FileName = history.StatementFilePath.Split('\'').ToList().LastOrDefault();
-                path = history.StatementFilePath.Replace("\'","/");
+                path = history.StatementFilePath.Replace("\'", "/");
                 path = relativePath + ModelConstant.ASSETPATHSLASH + path;
 
                 if (!File.Exists(path))
@@ -346,6 +386,7 @@ namespace nIS
                 throw ex;
             }
         }
+
 
         #endregion
 

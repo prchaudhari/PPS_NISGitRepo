@@ -128,6 +128,12 @@ namespace nIS
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
+                if(result)
+                {
+                    scheduleRecords.ToList().ForEach(item => {
+                        this.AddBatchMaster(item, false,tenantCode);
+                    });
+                }
             }
 
             catch
@@ -191,9 +197,16 @@ namespace nIS
                     });
 
                     nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                    if (result)
+                    {
+                        scheduleRecords.ToList().ForEach(item => {
+                            this.AddBatchMaster(item, true, tenantCode);
+                        });
+                    }
                 }
 
-                result = true;
+
             }
 
             catch (Exception exception)
@@ -616,7 +629,7 @@ namespace nIS
                                 var successRecords = logDetailRecords.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
                                 if (successRecords != null && successRecords.Count > 0)
                                 {
-                                    string finalCommonStatementHtml =  this.statementRepository.BindPreviewDataToStatement(statement, statementPageContents, baseURL);
+                                    string finalCommonStatementHtml = this.statementRepository.BindPreviewDataToStatement(statement, statementPageContents, baseURL);
                                     string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                                     string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(finalCommonStatementHtml, fileName, batchMaster.Id);
                                     runHistory.FilePath = CommonStatementZipFilePath;
@@ -674,7 +687,6 @@ namespace nIS
         #endregion
 
         #endregion
-
 
         #region ScheduleRunHistory  Run History
         /// <summary>
@@ -860,6 +872,125 @@ namespace nIS
             return scheduleCount;
         }
 
+        #endregion
+
+        #region Batch master
+        public bool AddBatchMaster(ScheduleRecord schedule, bool isScheduleUpdate, string tenantCode)
+        {
+            bool result = false;
+            List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+            if (isScheduleUpdate)
+            {
+                int diff = ((schedule.EndDate.Value.Year - schedule.StartDate.Value.Year) * 12) + schedule.EndDate.Value.Month - schedule.StartDate.Value.Month;
+                List<BatchMasterRecord> existingBatchRecords = new List<BatchMasterRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    existingBatchRecords = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.TenantCode == tenantCode).ToList();
+
+                }
+                for (int index = 1; index >= diff + 1; index++)
+                {
+                    if (!existingBatchRecords.Any(item => item.BatchName == "Batch_" + index))
+                    {
+                        BatchMasterRecord record = new BatchMasterRecord();
+                        record.BatchName = "Batch_" + index;
+                        record.TenantCode = tenantCode;
+                        record.CreatedBy = schedule.UpdateBy;
+                        record.CreatedDate = DateTime.UtcNow;
+                        record.ScheduleId = schedule.Id;
+                        record.IsExecuted = false;
+                        record.IsDataReady = false;
+                        record.BatchExecutionDayOfMonth = (int)schedule.DayOfMonth;
+
+                        if (schedule.DayOfMonth == 29)
+                        {
+                            record.DataExtractionDay = 1;
+                        }
+                        else
+                        {
+                            record.DataExtractionDay = (int)schedule.DayOfMonth - 1;
+
+                        }
+                        batchMasterRecords.Add(record);
+                    }
+                }
+            }
+            else
+            {
+                int diff = ((schedule.EndDate.Value.Year - schedule.StartDate.Value.Year) * 12) + schedule.EndDate.Value.Month - schedule.StartDate.Value.Month;
+                for (int index = 1; index >= diff + 1; index++)
+                {
+                    BatchMasterRecord record = new BatchMasterRecord();
+                    record.BatchName = "Batch_" + index;
+                    record.TenantCode = tenantCode;
+                    record.CreatedBy = schedule.UpdateBy;
+                    record.CreatedDate = DateTime.UtcNow;
+                    record.ScheduleId = schedule.Id;
+                    record.IsExecuted = false;
+                    record.IsDataReady = false;
+                    record.BatchExecutionDayOfMonth = (int)schedule.DayOfMonth;
+
+                    if (schedule.DayOfMonth == 29)
+                    {
+                        record.DataExtractionDay = 1;
+                    }
+                    else
+                    {
+                        record.DataExtractionDay = (int)schedule.DayOfMonth - 1;
+
+                    }
+                    batchMasterRecords.Add(record);
+                }
+
+            }
+            if (batchMasterRecords.Count() > 0)
+            {
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        public IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            IList<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+
+            try
+            {
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schdeuleIdentifier && item.TenantCode == tenantCode).ToList();
+                    if(batchMasterRecords?.Count()>0)
+                    {
+                        batchMasterRecords.ToList().ForEach(item => {
+                            batchMasters.Add(new BatchMaster
+                            {
+                                Identifier = item.Id,
+                                BatchName = item.BatchName,
+                                TenantCode = tenantCode,
+                                CreatedBy = item.CreatedBy,
+                                CreatedDate = item.CreatedDate,
+                                ScheduleId = item.ScheduleId,
+                                IsExecuted = item.IsExecuted,
+                                IsDataReady = item.IsExecuted,
+                                BatchExecutionDayOfMonth = item.BatchExecutionDayOfMonth,
+                                DataExtractionDay=item.DataExtractionDay
+                            }); 
+                        });
+                    }
+
+                }
+            } catch (Exception ex) { 
+            
+            
+            }
+            return batchMasters;
+        }
         #endregion
 
         #endregion

@@ -324,7 +324,7 @@ namespace nIS
 
         public bool RunSchedule(string baseURL, string tenantCode)
         {
-            try 
+            try
             {
                 return this.scheduleRepository.RunSchedule(baseURL, tenantCode);
             }
@@ -335,6 +335,31 @@ namespace nIS
         }
 
         #endregion
+
+        #region Batch master
+        /// <summary>
+        /// This method will call get schedules method of repository.
+        /// </summary>
+        /// <param name="scheduleSearchParameter">The schedule search parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns schedules if found for given parameters, else return null
+        /// </returns>
+        public IList<BatchMaster> GetBatchMasters(long scheduleIdentifer, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                batchMasters = this.scheduleRepository.GetBatchMasters(scheduleIdentifer, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return batchMasters;
+        }
+        #endregion
+
         #endregion
 
         #region Private Methods
