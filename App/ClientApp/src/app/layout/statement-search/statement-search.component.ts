@@ -104,12 +104,17 @@ export class StatementSearchComponent implements OnInit {
   ngOnInit() {
     this.getStatementSearchs(null);
     //this.getPageTypes();
-    this.StatementSearchFilterForm = this.fb.group({
-      filterStatementCustomer: [null],
-      filterStatementAccountId: [null],
-      filterStatementDate: [null],
-      filterStatementPeriod: [null],
-    });
+    //this.StatementSearchFilterForm = this.fb.group({
+    //  filterStatementCustomer: [null],
+    //  filterStatementAccountId: [null],
+    //  filterStatementDate: [null],
+    //  filterStatementPeriod: [null],
+    //});
+    this.StatementSearchFilterForm.controls['filterStatementCustomer'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementAccountId'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementDate'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementPeriod'].setValue(null);
+
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
@@ -246,6 +251,10 @@ export class StatementSearchComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
 
+  }
+
+  ViewHTML(element) {
+   // window.location.href = "https://www.google.com"
   }
 }
 
