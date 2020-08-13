@@ -900,17 +900,17 @@ namespace nIS
                         record.ScheduleId = schedule.Id;
                         record.IsExecuted = false;
                         record.IsDataReady = false;
-                        record.BatchExecutionDayOfMonth = (int)schedule.DayOfMonth;
+                        //record.BatchExecutionDayOfMonth = (int)schedule.DayOfMonth;
 
-                        if (schedule.DayOfMonth == 29)
-                        {
-                            record.DataExtractionDay = 1;
-                        }
-                        else
-                        {
-                            record.DataExtractionDay = (int)schedule.DayOfMonth - 1;
+                        //if (schedule.DayOfMonth == 29)
+                        //{
+                        //    record.DataExtractionDay = 1;
+                        //}
+                        //else
+                        //{
+                        //    record.DataExtractionDay = (int)schedule.DayOfMonth - 1;
 
-                        }
+                        //}
                         batchMasterRecords.Add(record);
                     }
                 }
@@ -928,17 +928,17 @@ namespace nIS
                     record.ScheduleId = schedule.Id;
                     record.IsExecuted = false;
                     record.IsDataReady = false;
-                    record.BatchExecutionDayOfMonth = (int)schedule.DayOfMonth;
+                    //record.BatchExecutionDayOfMonth = (int)schedule.DayOfMonth;
 
-                    if (schedule.DayOfMonth == 29)
-                    {
-                        record.DataExtractionDay = 1;
-                    }
-                    else
-                    {
-                        record.DataExtractionDay = (int)schedule.DayOfMonth - 1;
+                    //if (schedule.DayOfMonth == 29)
+                    //{
+                    //    record.DataExtractionDay = 1;
+                    //}
+                    //else
+                    //{
+                    //    record.DataExtractionDay = (int)schedule.DayOfMonth - 1;
 
-                    }
+                    //}
                     batchMasterRecords.Add(record);
                 }
 
@@ -977,9 +977,9 @@ namespace nIS
                                 CreatedDate = item.CreatedDate,
                                 ScheduleId = item.ScheduleId,
                                 IsExecuted = item.IsExecuted,
-                                IsDataReady = item.IsExecuted,
-                                BatchExecutionDayOfMonth = item.BatchExecutionDayOfMonth,
-                                DataExtractionDay=item.DataExtractionDay
+                                IsDataReady = item.IsDataReady,
+                                BatchExecutionDate = item.BatchExecutionDate,
+                                DataExtractionDate=item.DataExtractionDate
                             }); 
                         });
                     }

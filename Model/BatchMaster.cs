@@ -19,10 +19,10 @@ namespace nIS
         public string BatchName { get; set; }
         public Nullable<long> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<long> ScheduleId { get; set; }
+        public long ScheduleId { get; set; }
         public Nullable<bool> IsExecuted { get; set; }
-        public Nullable<bool> IsDataReady { get; set; }
-        public Nullable<int> DataExtractionDay { get; set; }
-        public Nullable<int> BatchExecutionDayOfMonth { get; set; }
+        public bool IsDataReady { get; set; }
+        public DateTime DataExtractionDate { get; set; }
+        public DateTime BatchExecutionDate { get; set; }
     }
 }

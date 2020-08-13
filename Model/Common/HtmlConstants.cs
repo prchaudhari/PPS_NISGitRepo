@@ -52,28 +52,28 @@ namespace nIS
 
         public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div>" +
-            "<div class='card-body'><div class='row'><div class='col-sm-4'><h4 class='mb-4'>{{CustomerName}}</h4>" +"<h6>{{Address1}}<br /> {{Address2}}</h6></div>" +
+            "<div class='card-body'><div class='row'><div class='col-sm-4'><h4 class='mb-4'>{{CustomerName}}</h4>" +"<h6>{{Address1}}{{Address2}}</h6></div>" +
             "<div class='col-sm-8'> <video class='doc-video' controls><source src='{{VideoSource}}' type='video/mp4'></video>" +"</div></div></div></div>";
 
-        public const string ACCOUNT_INFORMATION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Account Information</h5>" +
-            "</div><div class='card-body'>" + "{{AccountInfoData}}" + "</div></div>";
+        public const string ACCOUNT_INFORMATION_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>" +
+            "Account Information</h5></div> <div class='card-body'>" + "{{AccountInfoData}}" + "</div></div>";
 
-        public const string SUMMARY_AT_GLANCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Summary at Glance</h5></div>" +
-            "<div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'>" +
+        public const string SUMMARY_AT_GLANCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>" +
+            "Summary at Glance</h5></div> <div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'>" +
             "<thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>" +"{{AccountSummary}}</tbody></table></div></div></div>";
 
-        public const string IMAGE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Image Information</h5></div>" +
-            "<div class='card-body text-center'><img src='{{ImageSource}}' class='img-fluid'/></div></div>";
+        public const string IMAGE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Image Information</h5>" +
+            "</div> <div class='card-body text-center'><img src='{{ImageSource}}' class='img-fluid'/></div></div>";
 
-        public const string VIDEO_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Video Information</h5> </div>" +
-            "<div class='card-body text-center'><video class='video-widget' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
+        public const string VIDEO_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Video Information</h5> " +
+            "</div> <div class='card-body text-center'><video class='video-widget' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
 
         public const string NO_WIDGET_MESSAGE_HTML = "<div class='card border-0'><div class='card-header bg-light border-0'><h5 class='m-0'>No Configuration</h5> </div>" +
             "<div class='card-body text-center text-danger'><span>No configuration saved for this record.</span></div></div>";
 
         public const string SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML = "<div class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Available Balance</h5> </div>" +
-            "<div class='card-body'><div><h4 class='mb-4 text-right'>" +"<i class='{{AccountIndicatorClass}}' aria-hidden='true'></i>&nbsp;{{TotalValue}}</h4>" +
+            "<div class='card-body'><div class='fnt14'><h4 class='mb-4 text-right'><i class='{{AccountIndicatorClass}}' aria-hidden='true'></i>&nbsp;{{TotalValue}}</h4>" +
             "<span class='float-left'> Total Deposits</span><span class='float-right'>{{TotalDeposit}}</span><br/>" +
             "<span class='float-left'> Total Spend</span><span class='float-right'>{{TotalSpend}}</span><br/>" +
             "<span class='float-left'> Savings </span><span class='float-right'>{{Savings}}</span><br/></div></div></div>";
@@ -102,13 +102,13 @@ namespace nIS
             "Current Rate</th> <th class='width13 text-right'>LCY</th><th class='width12'>Action</th></tr>" +
         "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
-        public const string REMINDER_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-            "<h5 class='m-0'>Reminder and Recommendation</h5></div><div class='card-body'> <div class='table-responsive'>{{ReminderAndRecommdationDataList}}</div></div></div>";
+        public const string REMINDER_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>" +
+            "Reminder and Recommendation</h5></div><div class='card-body' style='font-size:12px;'> {{ReminderAndRecommdationDataList}} </div></div>";
 
         public const string TOP_4_INCOME_SOURCE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-            "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><div class='table-responsive'><table><thead class='border-bottom'><tr>" +
-            "<td class='width50'></td><td class='width17'>This Month</td><td class='width33'>Usually you spend</td></tr>" +
-            "</thead><tbody>{{IncomeSourceList}}</tbody></table></div></div></div>";
+            "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><table class='table-borderless width100'><thead class='border-bottom'><tr>" +
+            "<td class='width50'></td><td class='width20'>This Month</td><td class='width30'>Usually you spend</td></tr>" +
+            "</thead><tbody>{{IncomeSourceList}}</tbody></table></div></div>";
 
         public const string ANALYTIC_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'> " +
             "<h5 class='m-0'>Analytics</h5></div>" + "<div class='card-body'> <div id=\"analyticschartcontainer\"></div></div></div> ";

@@ -693,7 +693,7 @@ namespace nIS
                                                         pageHtmlContent.Append(HtmlConstants.START_ROW_DIV_TAG);
                                                         isRowComplete = false;
                                                     }
-                                                    int divLength = ((mergedlst[x].Width * 12) % 20) > 10 ? (((mergedlst[x].Width * 12) / 20) + 1) : ((mergedlst[x].Width * 12) / 20);
+                                                    int divLength = mergedlst[x].Width; // ((mergedlst[x].Width * 12) % 20) > 10 ? (((mergedlst[x].Width * 12) / 20) + 1) : ((mergedlst[x].Width * 12) / 20);
                                                     tempRowWidth = tempRowWidth + divLength;
 
                                                     // If current col-lg class length is greater than 12, 
@@ -901,10 +901,10 @@ namespace nIS
                                 string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
                                 pageContent.Replace("{{CustomerName}}", customerName);
 
-                                string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ",";
+                                string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ";
                                 pageContent.Replace("{{Address1}}", address1);
 
-                                string address2 = (customerInfo.City != "" ? customerInfo.City + "," : "") + (customerInfo.State != "" ? customerInfo.State + "," : "") + (customerInfo.Country != "" ? customerInfo.Country + "," : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
+                                string address2 = (customerInfo.City != "" ? customerInfo.City + ", " : "") + (customerInfo.State != "" ? customerInfo.State + ", " : "") + (customerInfo.Country != "" ? customerInfo.Country + ", " : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
                                 pageContent.Replace("{{Address2}}", address2);
                             }
                         }
@@ -919,8 +919,7 @@ namespace nIS
                             {
                                 AccountInformation accountInfo = JsonConvert.DeserializeObject<AccountInformation>(accountInfoJson);
                                 AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" +
-                                    "Statement Date</div><label class='list-value mb-0'>" + accountInfo.StatementDate + "</label>" +
-                                    "</div></div>");
+                                    "Statement Date</div><label class='list-value mb-0'>" + accountInfo.StatementDate + "</label>" + "</div></div>");
 
                                 AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" +
                                     "Statement Period</div><label class='list-value mb-0'>" + accountInfo.StatementPeriod + "</label></div></div>");
@@ -932,8 +931,7 @@ namespace nIS
                                     "RM Name</div><label class='list-value mb-0'>" + accountInfo.RmName + "</label></div></div>");
 
                                 AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" +
-                                    "RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber +
-                                    "</label></div></div>");
+                                    "RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber + "</label></div></div>");
                             }
                             pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
                         }
@@ -984,8 +982,7 @@ namespace nIS
                                     StringBuilder accSummary = new StringBuilder();
                                     lstAccountSummary.ToList().ForEach(acc =>
                                     {
-                                        accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>"
-                                            + acc.Amount + "</td></tr>");
+                                        accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>" + acc.Amount + "</td></tr>");
                                     });
                                     pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
                                 }
@@ -993,7 +990,7 @@ namespace nIS
                         }
                         else if (widget.WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
                         {
-                            string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'R', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
+                            string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'$', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
                             if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
                             {
                                 AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(currentAvailBalanceJson);
@@ -1007,7 +1004,7 @@ namespace nIS
                         }
                         else if (widget.WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
                         {
-                            string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'R', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
+                            string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'$', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
                             if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
                             {
                                 AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(savingAvailBalanceJson);
@@ -1081,9 +1078,16 @@ namespace nIS
                                 StringBuilder incomestr = new StringBuilder();
                                 incomeSources.ToList().ForEach(item =>
                                 {
-                                    incomestr.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend +
-                                      "" + "</td><td class='align-text-top'>" + "<span class='fa fa-sort-asc fa-2x text-danger align-text-top' " +
-                                      "aria-hidden='true'>" + "</span>&nbsp;" + item.AverageSpend + " " + "</td></tr>");
+                                    var tdstring = string.Empty;
+                                    if (Int32.Parse(item.CurrentSpend) > Int32.Parse(item.AverageSpend))
+                                    {
+                                        tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
+                                    }
+                                    else
+                                    {
+                                        tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " + "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
+                                    }
+                                    incomestr.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend + "</td><td>" + tdstring + "</td></tr>");
                                 });
                                 pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomestr.ToString());
                             }
@@ -1108,19 +1112,18 @@ namespace nIS
                         }
                         else if (widget.WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
                         {
-                            string reminderJson = "[{'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }]";
+                            string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
                             if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))
                             {
                                 IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(reminderJson);
                                 StringBuilder reminderstr = new StringBuilder();
-                                reminderstr.Append("<table class='width100'><thead><tr> <td class='width75 text-left'></td><td style='color:red;float: right;'><i class='fa fa-caret-left fa-2x float-left' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></td></tr></thead><tbody>");
+                                reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
                                 reminderAndRecommendations.ToList().ForEach(item =>
                                 {
-                                    reminderstr.Append("<tr><td class='width75 text-left' style='background-color: #dce3dc;'><label>" +
-                                        item.Title + "</label></td><td><a>" + "<i class='fa fa-caret-left fa-2x' style='color:red' aria-hidden='true'>" +
-                                        "</i>" + item.Action + "</a></td></tr>");
+                                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + 
+                                        item.Title + " </p></div><div class='col-lg-3 text-left'> <a><i class='fa fa-caret-left fa-3x float-left " +
+                                        "text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
                                 });
-                                reminderstr.Append("</tbody></table>");
                                 pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
                             }
                         }
@@ -1139,7 +1142,8 @@ namespace nIS
                     //newStatementPageContents.Add(statementPageContent);
                 }
 
-                newStatementPageContents.ToList().ForEach(page => {
+                newStatementPageContents.ToList().ForEach(page =>
+                {
                     htmlbody.Append(page.PageHeaderContent);
                     htmlbody.Append(page.HtmlContent);
                     htmlbody.Append(page.PageFooterContent);
@@ -1198,14 +1202,12 @@ namespace nIS
                     }
                     else
                     {
-                        for (int i = 0; i < accountrecords.Count; i++)
+                        var records = accountrecords.Where(item => item.AccountType.Equals(string.Empty)).ToList();
+                        if (records.Count > 0)
                         {
-                            if (accountrecords[i].AccountType.Equals(string.Empty))
-                            {
-                                logDetailRecord.LogMessage = "Invalid account master data for this customer..!!";
-                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                return logDetailRecord;
-                            }
+                            logDetailRecord.LogMessage = "Invalid account master data for this customer..!!";
+                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                            return logDetailRecord;
                         }
                     }
 
@@ -1335,7 +1337,7 @@ namespace nIS
                                     pageContent.Replace("{{Address1}}", customer.AddressLine1);
                                     string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
                                     pageContent.Replace("{{Address2}}", address2);
-                                    
+
                                     var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
                                     if (custMedia != null && custMedia.VideoURL != string.Empty)
                                     {
@@ -1684,15 +1686,25 @@ namespace nIS
                                     {
                                         top4IncomeSources.ToList().ForEach(src =>
                                         {
-                                            var spendIndicatorClass = src.CurrentSpend > src.AverageSpend ? "fa-sort-asc text-danger align-text-top" : "fa-sort-desc text-success";
-                                            incomeSources.Append("<tr><td class='float-left'>" + src.Source + "</td>" + "<td> " + src.CurrentSpend +
-                                                "" + "</td><td class='align-text-top'>" + "<span class='fa fa-2x " + spendIndicatorClass + "' " +
-                                                "aria-hidden='true'>" + "</span>&nbsp;" + src.AverageSpend + " " + "</td></tr>");
+                                            var tdstring = string.Empty;
+                                            if (src.CurrentSpend > src.AverageSpend)
+                                            {
+                                                tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + 
+                                                src.AverageSpend + "</span>";
+                                            }
+                                            else
+                                            {
+                                                tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " +
+                                                "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + src.AverageSpend + "</span>";
+                                            }
+                                            incomeSources.Append("<tr><td class='float-left'>" + src.Source + "</td>" + "<td> " + src.CurrentSpend + "</td><td>" +
+                                                tdstring + "</td></tr>");
                                         });
                                     }
                                     else
                                     {
-                                        incomeSources.Append("<tr><td colspan='3' class='text-danger text-center'><div style='margin-top: 20px;'>No data available</div></td></tr>");
+                                        incomeSources.Append("<tr><td colspan='3' class='text-danger text-center'><div style='margin-top: 20px;'>No data available</div>" +
+                                            "</td></tr>");
                                     }
                                     pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomeSources.ToString());
                                 }
@@ -1855,20 +1867,19 @@ namespace nIS
                                     StringBuilder reminderstr = new StringBuilder();
                                     if (reminderAndRecommendations != null && reminderAndRecommendations.Count > 0)
                                     {
-                                        reminderstr.Append("<table class='width100'><thead><tr> <td class='width75 text-left'></td><td style='color:red;float: right;'><i class='fa fa-caret-left fa-2x float-left' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></td></tr></thead><tbody>");
+                                        reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
                                         reminderAndRecommendations.ToList().ForEach(item =>
                                         {
                                             string targetlink = item.TargetURL != null && item.TargetURL != string.Empty ? item.TargetURL : "javascript:void(0)";
-                                            reminderstr.Append("<tr><td class='width75 text-left' style='background-color: #dce3dc;'><label>" +
-                                                item.Description + "</label></td><td class='width25'><a href='" + targetlink + "'>" +
-                                                "<i class='fa fa-caret-left fa-2x' style='color:red' aria-hidden='true'>" +
-                                                "</i><span class='mt-2 d-inline-block ml-2'>" + item.LabelText + "</span></a></td></tr>");
+                                            reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" +
+                                                item.Description + " </p></div><div class='col-lg-3 text-left'><a href='" + targetlink +
+                                                "'><i class='fa fa-caret-left fa-3x float-left text-danger'></i><span class='mt-2 d-inline-block ml-2'>" +
+                                                item.LabelText + "</span></a></div></div>");
                                         });
-                                        reminderstr.Append("</tbody></table>");
                                     }
                                     else
                                     {
-                                        reminderstr.Append("<table class='width100'><tr><td class='text-danger text-center'><div style='margin-top: 20px;'>No data available</div></td></tr></table>");
+                                        reminderstr.Append("<div class='row text-danger text-center' style='margin-top: 20px;'>No data available</div>");
                                     }
                                     pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
                                 }
@@ -1904,7 +1915,8 @@ namespace nIS
                         //newStatementPageContents.Add(statementPageContent);
                     }
 
-                    newStatementPageContents.ToList().ForEach(page => {
+                    newStatementPageContents.ToList().ForEach(page =>
+                    {
                         htmlbody.Append(page.PageHeaderContent);
                         htmlbody.Append(page.HtmlContent);
                         htmlbody.Append(page.PageFooterContent);

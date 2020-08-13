@@ -31,6 +31,11 @@ export class SafeHtmlPip implements PipeTransform {
 export class PagePreviewComponent extends DialogComponent<PagePreviewModel, boolean> implements PagePreviewModel, DialogOptions {
   htmlContent: string;
   backdropColor: string = "red";
+
+  analyticschart;
+  savingchart;
+  spendingchart;
+
   constructor(dialogService: DialogService,
     private sanitizer: DomSanitizer) {
     super(dialogService);
@@ -45,7 +50,8 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       plotBackgroundColor: null,
       plotBorderWidth: null,
       plotShadow: false,
-      type: 'pie'
+      type: 'pie',
+      height: (9 / 16 * 100) + '%'
     },
     title: {
       text: ''
@@ -64,9 +70,9 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
         cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: '{point.percentage:.1f} %'
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
         },
-        showInLegend: true
+        showInLegend: false
       }
     },
     series: [{
@@ -93,6 +99,9 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
   }
 
   public SpendingTrendsChartOptions: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%'
+    },
     title: {
       text: ''
     },
@@ -101,10 +110,11 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
     },
     labels: {
       items: [{
+        //html: 'How you have been spending',
         style: {
           left: '50px',
           top: '18px',
-          color: (
+          color: ( // theme
             Highcharts.defaultOptions.title.style &&
             Highcharts.defaultOptions.title.style.color
           ) || 'black'
@@ -132,6 +142,9 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
   }
 
   public SavingTrendChartOptions: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%'
+    },
     title: {
       text: ''
     },
@@ -140,10 +153,11 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
     },
     labels: {
       items: [{
+        //html: 'How you have been spending',
         style: {
           left: '50px',
           top: '18px',
-          color: (
+          color: ( // theme
             Highcharts.defaultOptions.title.style &&
             Highcharts.defaultOptions.title.style.color
           ) || 'black'
@@ -151,6 +165,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       }]
     },
     series: [{
+      // type: 'spline',
       name: '',
       data: [1.5, 2.5, 3, 1.5, 3, 2, 4],
       marker: {
@@ -409,6 +424,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
         }
       });
 
+
     });
 
   }
@@ -416,16 +432,17 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
   ngAfterViewInit() {
 
     if (document.getElementById('analyticschartcontainer') != null) {
-      Highcharts.chart('analyticschartcontainer', this.AnalyticsChartOptions);
+      this.analyticschart = Highcharts.chart('analyticschartcontainer', this.AnalyticsChartOptions);
     }
 
     if (document.getElementById('spendingTrendscontainer') != null) {
-      Highcharts.chart('spendingTrendscontainer', this.SpendingTrendsChartOptions);
+      this.spendingchart = Highcharts.chart('spendingTrendscontainer', this.SpendingTrendsChartOptions);
     }
 
     if (document.getElementById('savingTrendscontainer') != null) {
-      Highcharts.chart('savingTrendscontainer', this.SavingTrendChartOptions);
+      this.savingchart = Highcharts.chart('savingTrendscontainer', this.SavingTrendChartOptions);
     }
+    
     var data = this.SavingTransactionAllData.reduce(function (groups, item) {
       const val = item["TransactionDate"]
       groups[val] = groups[val] || []

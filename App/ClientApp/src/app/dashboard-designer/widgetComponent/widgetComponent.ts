@@ -90,7 +90,7 @@ export class AccountInformationComponent {
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center">
-        <img [src]="ImageSrc" class="img-fluid" style='height:220px;'/>
+        <img [src]="ImageSrc" class="img-fluid" />
       </div>
     </div>
   </div>`
@@ -138,7 +138,7 @@ export class ImageComponent {
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center">
-        <video class="doc-video" controls style='height:240px;width:75%;margin-right:15%;'>
+        <video class="doc-video" controls style='width:75%;margin-right:15%;'>
             <source [src]="videoSrc" type="video/mp4">
           </video>
       </div>
@@ -260,19 +260,14 @@ const List_Data_Summary: ListSummary[] = [
 @Component({
   selector: 'savingAvailableBalance',
   template: `<div class="widget">
-    <div class="widget">
     <div class="widget-header">
         <span class="widget-header-title"> Saving : Available Balance </span>
-
     </div>
     <div class="widget-area">
-        <div>
-            <h4 style="text-align:right" class='mb-4'><i style="color: limegreen" class="fa fa-sort-asc"
-                    aria-hidden="true"></i>3245323</h4>
-            <span style="float:left;">Total Deposits</span><span style="float:right;">16750,00</span><br />
-            <span style="float:left;">Total Spend</span><span style="float:right;">16750,00</span><br />
-            <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br />
-</div>
+          <h4 style="text-align:right" class='mb-4'><i style="color: limegreen" class="fa fa-sort-asc" aria-hidden="true"></i>3245323</h4>
+          <span style="float:left;">Total Deposits</span><span style="float:right;">16750,00</span><br />
+          <span style="float:left;">Total Spend</span><span style="float:right;">16750,00</span><br />
+          <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br />
     </div>
 </div>`
 })
@@ -285,17 +280,14 @@ export class SavingAvailableBalanceComponent {
 @Component({
   selector: 'currentAvailableBalance',
   template: `<div class="widget">
-    <div class="widget">
-    <div class="widget-header">
-        <span class="widget-header-title"> Current : Available Balance </span>
-    </div>
-    <div class="widget-area  position-relative width100">
-          <h4 style="text-align:right" class='mb-4'><i style="color: limegreen" class="fa fa-sort-asc"
-                    aria-hidden="true"></i> 3245323</h4>
-            <span style="float:left;">Total Deposits</span><span style="float:right;">1675000</span><br />
-            <span style="float:left;">Total Spend</span><span style="float:right;">1675000</span><br />
-            <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br />
-          
+      <div class="widget-header">
+          <span class="widget-header-title"> Current : Available Balance </span>
+      </div>
+      <div class="widget-area  position-relative width100">
+        <h4 style="text-align:right" class='mb-4'><i style="color: limegreen" class="fa fa-sort-asc" aria-hidden="true"></i> 3245323</h4>
+          <span style="float:left;">Total Deposits</span><span style="float:right;">1675000</span><br />
+          <span style="float:left;">Total Spend</span><span style="float:right;">1675000</span><br />
+          <span style="float:left;">Savings</span><span style="float:right;">3250.00</span><br />
     </div>
 </div>`
 })
@@ -310,8 +302,8 @@ export class CurrentAvailableBalanceComponent {
   template: `<div class="widget">
   <div class="widget-header">
     <span class="widget-header-title"> Transaction Details
-<span class="float-right mr-4"><i class="fa fa-caret-left mr-2" style="color:red;font-size: 20px;"></i>Chat Now</span>
-</span>
+      <span class="float-right mr-4"><i class="fa fa-caret-left mr-2" style="color:red;font-size: 20px;"></i>Chat Now</span>
+    </span>
   </div>
   <div class="widget-area-grid padding-0">
       <div class='float-left'>
@@ -320,18 +312,16 @@ export class CurrentAvailableBalanceComponent {
       </div>
       
       <form [formGroup]="transactionForm">
-
       <div class='float-right'>
           <div class="float-left mr-2" *ngIf="isShowAll">
-         
-            <select  class="form-control float-left" formControlName="filterStatus" id="filterStatus">
+            <select class="form-control float-left" formControlName="filterStatus" id="filterStatus">
               <option value="0"> Search Item</option>
               <option value="Failed">Failed</option>
               <option value="Completed">Completed</option>
               <option value="In Progress">In Progress</option>
             </select>
           </div>
-          <button href='javascript:void(0)'  *ngIf="isShowAll" class='btn btn-light btn-sm'>Search</button>&nbsp;
+          <button href='javascript:void(0)' *ngIf="isShowAll" class='btn btn-light btn-sm'>Search</button>&nbsp;
           <button href='javascript:void(0)' class='btn btn-light btn-sm'>Reset</button>&nbsp;
           <button href='javascript:void(0)' class='btn btn-light btn-sm'>Print</button> 
       </div>
@@ -708,29 +698,28 @@ export class SavingTransactionDetailsComponent {
 @Component({
   selector: 'reminderAndRecommendation',
   template: `<div class="widget">
-   <div class="widget">
       <div class="widget-header">
          <span class="widget-header-title"> Reminder and Recommendations </span>
       </div>
-      <div class="widget-area-grid">
-         <table >
-            <thead>
-               <tr>
-                  <td></td>
-                  <td style="color:red;float: right;"><i class="fa fa-caret-left fa-3x float-left" aria-hidden="true"></i><span class="mt-2 d-inline-block ml-2">Click</span></td>
-               </tr>
-            </thead>
-            <tbody>
-               <tr *ngFor="let list of actionList">
-                  <td style="width:80%"><label style="background-color: #dce3dc;" class="p-1 width100">{{list.title}} </label></td>
-                  <td style="float: left;"><a><i class="fa fa-caret-left fa-3x float-left" style="color:red"></i>
-                     <span class="mt-2 d-inline-block ml-2">{{list.action}}</span></a>
-                  </td>
-               </tr>
-            </tbody>
-         </table>
+      <div class="widget-area-grid" style="overflow-x:hidden;">
+        <div class="row">
+          <div class="col-lg-9">
+          </div>
+          <div class="col-lg-3">
+            <i class="fa fa-caret-left fa-3x float-left text-danger" aria-hidden="true"></i>
+            <span class="mt-2 d-inline-block ml-2">Click</span>
+          </div>       
+        </div>
+        <div class="row" *ngFor="let list of actionList">
+          <div class="col-lg-9 text-left">
+            <p class="p-1" style="background-color: #dce3dc;">{{list.title}} </p>
+          </div>
+          <div class="col-lg-3">
+            <a><i class="fa fa-caret-left fa-3x float-left text-danger"></i>
+            <span class="mt-2 d-inline-block ml-2">{{list.action}}</span></a>
+          </div>
+        </div>
       </div>
-   </div>
 </div>`
 })
 export class ReminderAndRecommComponent {
@@ -739,7 +728,10 @@ export class ReminderAndRecommComponent {
   public actionList: any[] = [
     { title: "Update Missing Inofrmation", action: "Update" },
     { title: "Your Rewards Video ia available", action: "View" },
-    { title: "Payment Due for Home Loan", action: "Pay" }
+    { title: "Payment Due for Home Loan", action: "Pay" },
+    { title: "Need financial planning for savings.", action: "Call Me" },
+    { title: "Subscribe/Unsubscribe Alerts.", action: "Apply" },
+    { title: "Your credit card payment is due now.", action: "Pay" }
   ];
 }
 
@@ -752,7 +744,7 @@ export class ReminderAndRecommComponent {
         <span class="widget-header-title"> Analytics </span>
     </div>
     <div class="widget-area position-relative width100">       
-        <div id="chartWidgetPiecontainer"></div>
+        <div id="chartWidgetPiecontainer" class="p-3"></div>
     </div>
 </div>`
 })
@@ -765,7 +757,8 @@ export class AnalyticsWidgetComponent {
       plotBackgroundColor: null,
       plotBorderWidth: null,
       plotShadow: false,
-      type: 'pie'
+      type: 'pie',
+      height: (9 / 16 * 100) + '%'
     },
     title: {
       text: ''
@@ -784,10 +777,9 @@ export class AnalyticsWidgetComponent {
         cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: '{point.percentage:.1f} %'
-
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
         },
-        showInLegend: true
+        showInLegend: false
       }
     },
     series: [{
@@ -815,14 +807,16 @@ export class AnalyticsWidgetComponent {
 
   ngAfterViewInit() {
     Highcharts.chart('chartWidgetPiecontainer', this.options4);
-  }
 
-  ngOnInit() {
     $(document).ready(function () {
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
       }, 10);
     });
+  }
+
+  ngOnInit() {
+    
   }
 }
 
@@ -834,9 +828,8 @@ export class AnalyticsWidgetComponent {
         <span class="widget-header-title"> Your Saving Trends </span>
     </div>
     <div class="widget-area position-relative width100">
-<div class="text-right" style="font-size:20px"><span>+5.6%</span><span class="pl-3">+3.5%</span></div>
-          
-          <div id="savingTrendscontainer"></div>        
+      <div class="text-right" style="font-size:20px"><span>+5.6%</span><span class="pl-3">+3.5%</span></div>
+      <div id="savingTrendscontainer" class="p-3"></div>        
     </div>
 </div>`
 })
@@ -844,6 +837,9 @@ export class SavingTrendsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
   public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%'
+    },
     title: {
       text: ''
     },
@@ -895,12 +891,12 @@ export class SavingTrendsComponent {
          <span class="widget-header-title"> Top Four Income Sources </span>
       </div>
       <div class="widget-area">
-         <table>
+         <table class="table-borderless width100">
             <thead>
                <tr>
                   <td style="width:50%"></td>
-                  <td style="width:15%">This Month</td>
-                  <td style="width:35%;">Usually you spend</td>
+                  <td style="width:20%">This Month</td>
+                  <td style="width:30%;">Usually you spend</td>
                </tr>
             </thead>
             <tbody>
@@ -908,10 +904,10 @@ export class SavingTrendsComponent {
                   <td style="width:50%">
                      <label>{{list.name}}</label>
                   </td>
-                  <td style="width:15%">
+                  <td style="width:20%">
                      {{list.thisMonth}}
                   </td>
-                  <td style="width:35%;">
+                  <td style="width:30%;">
                      <span *ngIf="!list.isAscIcon" style="color: red" class="fa fa-sort-desc fa-2x" aria-hidden="true"></span>
                      <span *ngIf="!list.isAscIcon" class="ml-2">{{list.usuallySpend}}</span>
                       <span *ngIf="list.isAscIcon" class="fa fa-sort-asc fa-2x mt-1 float-left" aria-hidden="true" style="position:relative;top:6px;color:limegreen"></span>
@@ -942,8 +938,8 @@ export class TopIncomeSourcesComponent {
     <div class="widget-header">
         <span class="widget-header-title"> Spending Trends </span>
     </div>
-    <div class="widget-area  position-relative width100">
-          <div id="spendingTrendscontainer"></div>       
+    <div class="widget-area position-relative width100">
+          <div id="spendingTrendscontainer" class="p-3"></div>       
     </div>
 </div>`
 })
@@ -951,6 +947,9 @@ export class SpendindTrendsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
   public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%'
+    },
     title: {
       text: ''
     },

@@ -878,7 +878,7 @@
   }
 
   .doc-video {
-    height: 360px;
+    height: auto;
     float: right;
     width: 95%;
   }
@@ -1732,6 +1732,10 @@
 
   .disabled-cursor {
     cursor: not-allowed;
+  }
+
+  .table-borderless td, .table-borderless th {
+    border: 0;
   }
 
   @media only screen and (max-width:1024px) {

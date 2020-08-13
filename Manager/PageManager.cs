@@ -292,7 +292,7 @@ namespace nIS
                                             htmlString.Append("<div class='row'>");
                                             isRowComplete = false;
                                         }
-                                        int divLength = ((mergedlst[i].Width * 12) % 20) > 10 ? (((mergedlst[i].Width * 12) / 20) + 1) : ((mergedlst[i].Width * 12) / 20);
+                                        int divLength = mergedlst[i].Width; //((mergedlst[i].Width * 12) % 20) > 10 ? (((mergedlst[i].Width * 12) / 20) + 1) : ((mergedlst[i].Width * 12) / 20);
                                         tempRowWidth = tempRowWidth + divLength;
 
                                         // If current col-lg class length is greater than 12, 
@@ -316,7 +316,7 @@ namespace nIS
                                                 string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
                                                 customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", customerName);
 
-                                                string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ",";
+                                                string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ";
                                                 customerHtmlWidget = customerHtmlWidget.Replace("{{Address1}}", address1);
 
                                                 string address2 = (customerInfo.City != "" ? customerInfo.City + ", " : "") + (customerInfo.State != "" ?
@@ -416,7 +416,7 @@ namespace nIS
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
                                         {
-                                            string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'R', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
+                                            string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'$', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
                                             if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
                                             {
                                                 AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(currentAvailBalanceJson);
@@ -432,7 +432,7 @@ namespace nIS
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
                                         {
-                                            string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'R', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
+                                            string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'$', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
                                             if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
                                             {
                                                 AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(savingAvailBalanceJson);
@@ -508,9 +508,19 @@ namespace nIS
                                                 StringBuilder incomeSrc = new StringBuilder();
                                                 incomeSources.ToList().ForEach(item =>
                                                 {
+                                                    var tdstring = string.Empty; 
+                                                    if (Int32.Parse(item.CurrentSpend) > Int32.Parse(item.AverageSpend))
+                                                    {
+                                                        tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" 
+                                                        + item.AverageSpend + "</span>";
+                                                    }
+                                                    else
+                                                    {
+                                                        tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " +
+                                                        "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
+                                                    }
                                                     incomeSrc.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend +
-                                                      "" + "</td><td class='align-text-top'>" + "<span class='fa fa-sort-asc fa-2x text-danger align-text-top' " +
-                                                      "aria-hidden='true'>" + "</span>&nbsp;" + item.AverageSpend + " " + "</td></tr>");
+                                                      "" + "</td><td>" + tdstring + "</td></tr>");
                                                 });
                                                 string srcstring = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML.Replace("{{IncomeSourceList}}", incomeSrc.ToString());
                                                 htmlString.Append(srcstring);
@@ -530,20 +540,19 @@ namespace nIS
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
                                         {
-                                            string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video ia available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }]";
+                                            string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
                                             if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))
                                             {
                                                 IList<ReminderAndRecommendation> reminderAndRecommendations =
                                                     JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(reminderJson);
                                                 StringBuilder reminderstr = new StringBuilder();
-                                                reminderstr.Append("<table class='width100'><thead><tr> <td class='width75 text-left'></td><td style='color:red;float: right;'><i class='fa fa-caret-left fa-2x float-left' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></td></tr></thead><tbody>");
+                                                reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
                                                 reminderAndRecommendations.ToList().ForEach(item =>
                                                 {
-                                                    reminderstr.Append("<tr><td class='width75 text-left' style='background-color: #dce3dc;'><label>" +
-                                                        item.Title + "</label></td><td><a>" + "<i class='fa fa-caret-left fa-2x' style='color:red' aria-hidden='true'>" +
-                                                        "</i>" + item.Action + "</a></td></tr>");
+                                                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" +
+                                                        item.Title + " </p></div><div class='col-lg-3 text-left'><a><i class='fa fa-caret-left fa-3x float-left " +
+                                                        "text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
                                                 });
-                                                reminderstr.Append("</tbody></table>");
                                                 string widgetstr = HtmlConstants.REMINDER_WIDGET_HTML.Replace("{{ReminderAndRecommdationDataList}}", reminderstr.ToString());
                                                 htmlString.Append(widgetstr);
                                             }

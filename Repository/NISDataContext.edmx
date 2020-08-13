@@ -107,11 +107,11 @@
           <Property Name="BatchName" Type="varchar" MaxLength="100" />
           <Property Name="CreatedBy" Type="bigint" />
           <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="ScheduleId" Type="bigint" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
           <Property Name="IsExecuted" Type="bit" />
-          <Property Name="IsDataReady" Type="bit" />
-          <Property Name="DataExtractionDay" Type="int" />
-          <Property Name="BatchExecutionDayOfMonth" Type="int" />
+          <Property Name="IsDataReady" Type="bit" Nullable="false" />
+          <Property Name="DataExtractionDate" Type="datetime" Nullable="false" />
+          <Property Name="BatchExecutionDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -687,7 +687,6 @@
           <EntitySet Name="ScheduleRunHistoryRecords" EntityType="NISModel.ScheduleRunHistoryRecord" />
           <EntitySet Name="RenderEngineRecords" EntityType="NISModel.RenderEngineRecord" />
           <EntitySet Name="BatchDetailRecords" EntityType="NISModel.BatchDetailRecord" />
-          <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
           <EntitySet Name="CustomerInfoRecords" EntityType="NISModel.CustomerInfoRecord" />
           <EntitySet Name="CustomerMediaRecords" EntityType="NISModel.CustomerMediaRecord" />
           <EntitySet Name="NewsAlertRecords" EntityType="NISModel.NewsAlertRecord" />
@@ -705,6 +704,7 @@
           <EntitySet Name="TenantConfigurationRecords" EntityType="NISModel.TenantConfigurationRecord" />
           <EntitySet Name="StatementAnalyticRecords" EntityType="NISModel.StatementAnalyticRecord" />
           <EntitySet Name="StatementMetadataRecords" EntityType="NISModel.StatementMetadataRecord" />
+          <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1052,21 +1052,6 @@
           <Property Name="ImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="VideoURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="BatchMasterRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="TenantCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="BatchName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="CreatedBy" Type="Int64" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="ScheduleId" Type="Int64" />
-          <Property Name="IsExecuted" Type="Boolean" />
-          <Property Name="IsDataReady" Type="Boolean" />
-          <Property Name="DataExtractionDay" Type="Int32" />
-          <Property Name="BatchExecutionDayOfMonth" Type="Int32" />
-        </EntityType>
         <EntityType Name="CustomerInfoRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -1312,6 +1297,21 @@
           <Property Name="AccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StatementURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BatchMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenantCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BatchName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int64" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="IsExecuted" Type="Boolean" />
+          <Property Name="IsDataReady" Type="Boolean" Nullable="false" />
+          <Property Name="DataExtractionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="BatchExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1690,22 +1690,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BatchMasterRecords">
-            <EntityTypeMapping TypeName="NISModel.BatchMasterRecord">
-              <MappingFragment StoreEntitySet="BatchMaster">
-                <ScalarProperty Name="BatchExecutionDayOfMonth" ColumnName="BatchExecutionDayOfMonth" />
-                <ScalarProperty Name="DataExtractionDay" ColumnName="DataExtractionDay" />
-                <ScalarProperty Name="IsDataReady" ColumnName="IsDataReady" />
-                <ScalarProperty Name="IsExecuted" ColumnName="IsExecuted" />
-                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CustomerInfoRecords">
             <EntityTypeMapping TypeName="NISModel.CustomerInfoRecord">
               <MappingFragment StoreEntitySet="CustomerInfo">
@@ -1965,6 +1949,22 @@
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="ScheduleLogId" ColumnName="ScheduleLogId" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BatchMasterRecords">
+            <EntityTypeMapping TypeName="NISModel.BatchMasterRecord">
+              <MappingFragment StoreEntitySet="BatchMaster">
+                <ScalarProperty Name="BatchExecutionDate" ColumnName="BatchExecutionDate" />
+                <ScalarProperty Name="DataExtractionDate" ColumnName="DataExtractionDate" />
+                <ScalarProperty Name="IsDataReady" ColumnName="IsDataReady" />
+                <ScalarProperty Name="IsExecuted" ColumnName="IsExecuted" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

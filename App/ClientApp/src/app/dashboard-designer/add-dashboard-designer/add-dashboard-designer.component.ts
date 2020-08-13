@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, } from '@angular/core';
-import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
+import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType, GridsterItemComponentInterface, GridsterComponentInterface } from 'angular-gridster2';
 import { Location } from '@angular/common';
 import { Constants } from 'src/app/shared/constants/constants';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -403,9 +403,11 @@ export class AddDashboardDesignerComponent implements OnInit {
       outerMarginBottom: null,
       outerMarginLeft: null,
       useTransformPositioning: true,
+      gridSizeChangedCallback: AddDashboardDesignerComponent.gridSizeChanged,
+      itemResizeCallback: AddDashboardDesignerComponent.itemResize,
       mobileBreakpoint: 640,
-      minCols: 20,
-      maxCols: 20,
+      minCols: 12,
+      maxCols: 12,
       minRows: 20,
       maxRows: 100,
       maxItemCols: 100,
@@ -416,7 +418,7 @@ export class AddDashboardDesignerComponent implements OnInit {
       minItemArea: 1,
       defaultItemCols: 1,
       defaultItemRows: 1,
-      fixedColWidth: 105,
+      fixedColWidth: 175,
       fixedRowHeight: 105,
       keepFixedHeightInMobile: false,
       keepFixedWidthInMobile: false,
@@ -433,7 +435,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         enabled: true,
       },
       resizable: {
-        enabled: false,
+        enabled: true,
       },
       swap: false,
       pushItems: true,
@@ -453,6 +455,19 @@ export class AddDashboardDesignerComponent implements OnInit {
     if (this.options.api && this.options.api.optionsChanged) {
       this.options.api.optionsChanged();
     }
+  }
+
+  static itemResize(item: GridsterItem, itemComponent: GridsterItemComponentInterface): void {
+    // tslint:disable-next-line:no-console
+    console.info('itemResized', item, itemComponent);
+    setTimeout(function () {
+      window.dispatchEvent(new Event('resize'));
+    }, 10);
+  }
+
+  static gridSizeChanged(grid: GridsterComponentInterface): void {
+    // tslint:disable-next-line:no-console
+    console.info('gridSizeChanged', grid);
   }
 
   removeItem($event, item) {
@@ -569,8 +584,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.widgetItemCount++;
         if (widget.WidgetName == "CustomerInformation") {
           return this.widgetsGridsterItemArray.push({
-            cols: 15,
-            rows: 7,
+            cols: 8,
+            rows: 4,
             y: 0,
             x: 0,
             component: CustomerInformationComponent,
@@ -582,8 +597,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "AccountInformation") {
           return this.widgetsGridsterItemArray.push({
-            cols: 5,
-            rows: 7,
+            cols: 3,
+            rows: 4,
             y: 0,
             x: 0,
             component: AccountInformationComponent,
@@ -595,8 +610,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "Image") {
           return this.widgetsGridsterItemArray.push({
-            cols: 10,
-            rows: 5,
+            cols: 6,
+            rows: 3,
             y: 0,
             x: 0,
             component: ImageComponent,
@@ -608,8 +623,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "Video") {
           return this.widgetsGridsterItemArray.push({
-            cols: 10,
-            rows: 5,
+            cols: 6,
+            rows: 3,
             y: 0,
             x: 0,
             component: VideoComponent,
@@ -621,8 +636,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "Summary") {
           return this.widgetsGridsterItemArray.push({
-            cols: 15,
-            rows: 6,
+            cols: 9,
+            rows: 4,
             y: 0,
             x: 0,
             component: SummaryAtGlanceComponent,
@@ -634,8 +649,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "SavingAvailableBalance") {
           return this.widgetsGridsterItemArray.push({
-            cols: 5,
-            rows: 3,
+            cols: 3,
+            rows: 2,
             y: 0,
             x: 0,
             component: SavingAvailableBalanceComponent,
@@ -647,8 +662,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "CurrentAvailableBalance") {
           return this.widgetsGridsterItemArray.push({
-            cols: 5,
-            rows: 3,
+            cols: 3,
+            rows: 2,
             y: 0,
             x: 0,
             component: CurrentAvailableBalanceComponent,
@@ -660,8 +675,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "CurrentTransaction") {
           return this.widgetsGridsterItemArray.push({
-            cols: 20,
-            rows: 6,
+            cols: 12,
+            rows: 4,
             y: 0,
             x: 0,
             component: TransactionDetailsComponent,
@@ -673,8 +688,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "SavingTransaction") {
           return this.widgetsGridsterItemArray.push({
-            cols: 20,
-            rows: 6,
+            cols: 12,
+            rows: 4,
             y: 0,
             x: 0,
             component: SavingTransactionDetailsComponent,
@@ -686,8 +701,8 @@ export class AddDashboardDesignerComponent implements OnInit {
         }
         else if (widget.WidgetName == "SpendingTrend") {
           return this.widgetsGridsterItemArray.push({
-            cols: 7,
-            rows: 8,
+            cols: 4,
+            rows: 3,
             y: 0,
             x: 0,
             component: SpendindTrendsComponent,
@@ -700,8 +715,8 @@ export class AddDashboardDesignerComponent implements OnInit {
 
         else if (widget.WidgetName == "ReminderaAndRecommendation") {
           return this.widgetsGridsterItemArray.push({
-            cols: 6,
-            rows: 4,
+            cols: 4,
+            rows: 3,
             y: 0,
             x: 0,
             component: ReminderAndRecommComponent,
@@ -714,8 +729,8 @@ export class AddDashboardDesignerComponent implements OnInit {
 
         else if (widget.WidgetName == "Top4IncomeSources") {
           return this.widgetsGridsterItemArray.push({
-            cols: 6,
-            rows: 4,
+            cols: 4,
+            rows: 2,
             y: 0,
             x: 0,
             component: TopIncomeSourcesComponent,
@@ -728,8 +743,8 @@ export class AddDashboardDesignerComponent implements OnInit {
 
         else if (widget.WidgetName == "SavingTrend") {
           return this.widgetsGridsterItemArray.push({
-            cols: 6,
-            rows: 6,
+            cols: 4,
+            rows: 3,
             y: 0,
             x: 0,
             component: SavingTrendsComponent,
@@ -742,8 +757,8 @@ export class AddDashboardDesignerComponent implements OnInit {
 
         else if (widget.WidgetName == "Analytics") {
           return this.widgetsGridsterItemArray.push({
-            cols: 7,
-            rows: 8,
+            cols: 4,
+            rows: 3,
             y: 0,
             x: 0,
             component: AnalyticsWidgetComponent,
