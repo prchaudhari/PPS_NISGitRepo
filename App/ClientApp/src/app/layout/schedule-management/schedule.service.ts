@@ -184,4 +184,18 @@ export class ScheduleService {
       });
     return <boolean>this.isRecordDeleted;
   }
+
+  //method to call api of delete Schedule.
+  public RunScheduleNow(postData) {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.RunScheduleNow ;
+    httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
+    .then((httpEvent: HttpEvent<any>) => {
+
+    }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+        this.isRecordDeleted = false;
+      });     
+  }
+
 }

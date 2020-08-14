@@ -17,12 +17,13 @@ namespace nIS
         public long Id { get; set; }
         public string TenantCode { get; set; }
         public string BatchName { get; set; }
-        public Nullable<long> CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public long CreatedBy { get; set; }
+        public System.DateTime CreatedDate { get; set; }
         public long ScheduleId { get; set; }
-        public Nullable<bool> IsExecuted { get; set; }
+        public bool IsExecuted { get; set; }
         public bool IsDataReady { get; set; }
         public System.DateTime DataExtractionDate { get; set; }
         public System.DateTime BatchExecutionDate { get; set; }
+        public string Status { get; set; }
     }
 }

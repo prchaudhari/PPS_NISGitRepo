@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-4 col-lg-4">
           <label id="lblTemplate" for="inputRoleName">Statement Definition</label>
-          <div>{{schedule.Statement.Name}}</div>
+          <div *ngIf="schedule.Statement!=undefined">{{schedule.Statement.Name}}</div>
         </div>
       </div>
       <div class="row">
@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-4 col-lg-4 form-group">
           <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) </label>
-          <div>{{schedule.HourOfDay}}:{{schedule.MinuteOfDay}}</div>
+          <div>{{schedule.HourOfDay}} : {{schedule.MinuteOfDay}}</div>
 
         </div>
       </div>
@@ -47,8 +47,8 @@
         <div class="col-md-4 col-lg-4 form-group">
           <label>End Date</label>
           <div>
-            <span *ngIf='schedule.EndDate.toString()!="0001-01-01T00:00:00"'> {{schedule.EndDate  | date:"dd/MM/yyyy"}}</span>
-            <span *ngIf='schedule.EndDate.toString()=="0001-01-01T00:00:00"'> - </span>
+            <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()!="0001-01-01T00:00:00"'> {{schedule.EndDate  | date:"dd/MM/yyyy"}}</span>
+            <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()=="0001-01-01T00:00:00"'> - </span>
           </div>
         </div>
       </div>
@@ -83,17 +83,17 @@
 
           <!-- Position Column -->
           <ng-container matColumnDef="id">
-            <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-            <td mat-cell *matCellDef="let element">{{element.Identifier}}</td>
+            <th class="width5 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+            <td mat-cell *matCellDef="let element">{{element.Index}}</td>
           </ng-container>
           <!-- Position Column -->
           <ng-container matColumnDef="BatchName">
-            <th class="width20 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Batch Name </th>
+            <th class="width30 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Batch Name </th>
             <td mat-cell *matCellDef="let element">{{element.BatchName}}</td>
           </ng-container>
           <!-- Name Column -->
           <ng-container matColumnDef="IsExecuted">
-            <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Is Executed </th>
+            <th class="width13 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Is Executed </th>
             <td mat-cell *matCellDef="let element">
               <span *ngIf="element.IsExecuted">Yes</span>
               <span *ngIf="!element.IsExecuted">No</span>
@@ -103,7 +103,7 @@
 
           <!-- Weight Column -->
           <ng-container matColumnDef="IsDataReady">
-            <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Is Data Ready </th>
+            <th class="width12 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Is Data Ready </th>
             <td mat-cell *matCellDef="let element">
               <span *ngIf="element.IsDataReady">Yes</span>
               <span *ngIf="!element.IsDataReady">No</span>
@@ -114,21 +114,25 @@
           <!-- Symbol Column -->
           <ng-container matColumnDef="DataExtractionDate">
             <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Data Extraction Day </th>
-            <td mat-cell *matCellDef="let element"> {{element.DataExtractionDate  | date:"dd/MM/yyyy"}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.DataExtractionDate | date:"dd/MM/yyyy"}} </td>
           </ng-container>
 
           <!-- Weight Column -->
           <ng-container matColumnDef="BatchExecutionDate">
             <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Batch Execution Day </th>
-            <td mat-cell *matCellDef="let element"> {{element.BatchExecutionDate   | date:"dd/MM/yyyy"}}</td>
+            <td mat-cell *matCellDef="let element"> {{element.BatchExecutionDate | date:"dd/MM/yyyy"}}</td>
           </ng-container>
+          
           <ng-container matColumnDef="Actions">
             <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef> Action</th>
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
-                <button *ngIf="!element.IsExecuted" type="button" id="btnViewRole" title="Run Now">
-                  <span style="color:limegreen" class="fa fa-play"></span>
+                <button *ngIf="!element.IsExecuted && element.IsDataReady && element.Status=='New'" type="button" id="btnRunScheduleNow" title="Run Now" (click)="RunScheduleNow(element)">
+                  <span class="fa fa-play text-success"></span>
                 </button>
+                <i class="fa fa-circle-o-notch fa-spin text-success" *ngIf="element.Status=='Running'" [title]="element.Status"></i>
+                <i class="fa fa-check text-success" aria-hidden="true" *ngIf="element.Status=='Completed'" [title]="element.Status"></i>
+                <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true" *ngIf="element.Status=='Failed' || element.Status=='BatchDataNotAvailable'" [title]="element.Status"></i>
               </div>
             </td>
           </ng-container>

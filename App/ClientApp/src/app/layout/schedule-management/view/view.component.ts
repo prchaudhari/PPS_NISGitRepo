@@ -143,6 +143,7 @@ export class ViewComponent implements OnInit {
       }
     });
   }
+
   public batchmasterList: any = [];
   public baseURL: string = ConfigConstants.BaseURL;
   async getBatchMaster() {
@@ -154,7 +155,7 @@ export class ViewComponent implements OnInit {
           this.IsBatchDetailsGet = true;
           this.batchmasterList = data;
           for (var i = 0; i < this.batchmasterList.length; i++) {
-            this.batchmasterList[i].Identifier = i+1;
+            this.batchmasterList[i].Index = i+1;
           }
           
           this.dataSource = new MatTableDataSource<Schedule>(this.batchmasterList);
@@ -169,11 +170,17 @@ export class ViewComponent implements OnInit {
           this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
           this._spinnerService.stop();
         });
-
-
     }
+  }
 
-
+  RunScheduleNow(batch : any) {
+    let message = 'Are you sure, you want to run schedule now for this batch record?';
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+        batch.Status = 'Running';
+        this.scheduleService.RunScheduleNow(batch);
+      }
+    });
   }
 
   public handlePage(e: any) {

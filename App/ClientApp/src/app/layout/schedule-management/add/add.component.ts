@@ -229,7 +229,7 @@ export class AddComponent implements OnInit {
     if (startDate.getTime() < currentDate.getTime()) {
       this.IsStartDateDisable = true;
     }
-    if (endDate.getTime() < currentDate.getTime()) {
+    if (endDate.getTime() > currentDate.getTime()) {
       this.IsEndDateDisable = true;
     }
     if (this.schedule.EndDate.toString() == "0001-01-01T00:00:00") {
