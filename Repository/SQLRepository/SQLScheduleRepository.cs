@@ -534,7 +534,7 @@ namespace nIS
 
                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                         {
-                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.BatchExecutionDate.Day == schedule.DayOfMonth && item.BatchExecutionDate.Hour == schedule.HourOfDay && item.BatchExecutionDate.Minute == schedule.MinuteOfDay && !batchMaster.IsExecuted && batchMaster.Status == BatchStatus.New.ToString())?.ToList()?.FirstOrDefault();
+                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.BatchExecutionDate.Day == schedule.DayOfMonth && item.BatchExecutionDate.Hour == schedule.HourOfDay && item.BatchExecutionDate.Minute == schedule.MinuteOfDay && !item.IsExecuted && item.Status == BatchStatus.New.ToString())?.ToList()?.FirstOrDefault();
                         }
 
                         if (batchMaster != null)
