@@ -242,18 +242,15 @@ export class LogsDetailsComponent implements OnInit {
       let message = 'Are you sure, you want to retry this schedule log details?';
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-
-
-          let isDeleted = await this.scheduleLogService.reRunSchdeulLogDetail(logDetailList);
-          if (isDeleted) {
-            let messageString = Constants.recordDeletedMessage;
+          let resultflag = await this.scheduleLogService.reRunSchdeulLogDetail(logDetailList);
+          if (resultflag) {
+            let messageString = Constants.StatementGeneratedSuccessfullyForSelectedRecordMessage;
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
             this.getScheduleLogs(null);
           }
         }
       });
     }
-
   }
 
 
@@ -264,10 +261,8 @@ export class LogsDetailsComponent implements OnInit {
     logDetailList.push(log);
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-
-
-        let isDeleted = await this.scheduleLogService.reRunSchdeulLogDetail(logDetailList);
-        if (isDeleted) {
+        let resultflag = await this.scheduleLogService.reRunSchdeulLogDetail(logDetailList);
+        if (resultflag) {
           let messageString = Constants.StatementGeneratedSuccessfullyForSelectedRecordMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
           this.getScheduleLogs(null);
@@ -281,18 +276,14 @@ export class LogsDetailsComponent implements OnInit {
     if (value) {
       this.isCheckAll = true;
       for (let i = 0; i < this.scheduleLogList.length; i++) {
-
         this.scheduleLogList[i].IsChecked = true;
       }
       this.dataSource = new MatTableDataSource(this.scheduleLogList);
       this.disableMultipleDelete = false;
-
     }
     else {
-
       this.isCheckAll = false;
       for (let i = 0; i < this.scheduleLogList.length; i++) {
-
         this.scheduleLogList[i].IsChecked = false;
       }
       this.disableMultipleDelete = true;
@@ -331,7 +322,6 @@ export class LogsDetailsComponent implements OnInit {
         }
       });
       this.scheduleLogList[itemIndex].IsChecked = false;
-
       let isdisable = true;
       this.scheduleLogList.forEach((item, index) => {
         if (item.IsChecked) {
@@ -343,7 +333,6 @@ export class LogsDetailsComponent implements OnInit {
       }
       else {
         this.disableMultipleDelete = true;
-
       }
     }
   }
@@ -351,15 +340,12 @@ export class LogsDetailsComponent implements OnInit {
   viewLodMessage(log: ScheduleLogDetail) {
     if (log.Status == 'Failed') {
       this._messageDialogService.openDialogBox('Error', log.LogMessage, Constants.msgBoxSuccess);
-
     }
     else {
       this._messageDialogService.openDialogBox('Success', log.LogMessage, Constants.msgBoxSuccess);
-
     }
   }
 }
-
 
 function compare(a: number, b: number, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);

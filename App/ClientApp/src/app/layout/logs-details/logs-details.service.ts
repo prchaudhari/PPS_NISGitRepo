@@ -22,6 +22,7 @@ export class ScheduleLogServiceDetail {
   public isRecordFound;
   public isRecordSaved: boolean = false;
   public isRecordDeleted: boolean = false;
+  public resultflag: boolean = false;
   public countrycodeList = [];
   public ouList = [];
   public isDependencyPresent: boolean = false;
@@ -59,6 +60,7 @@ export class ScheduleLogServiceDetail {
       });
     return <ScheduleLogDetail[]>this.schedulesList;
   }
+  
   public async reRunSchdeulLogDetail(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.reRunScheduleLogDetailGetUrl ;
@@ -68,16 +70,16 @@ export class ScheduleLogServiceDetail {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
           if (httpEvent["status"] === 200) {
-            this.isRecordDeleted = true;
+            this.resultflag = true;
           }
           else {
-            this.isRecordDeleted = false;
+            this.resultflag = false;
           }
         }
       }, (error: HttpResponse<any>) => {
         this.uiLoader.stop();
-        this.isRecordDeleted = false;
+        this.resultflag = false;
       });
-    return <boolean>this.isRecordDeleted;
+    return <boolean>this.resultflag;
   }
 }

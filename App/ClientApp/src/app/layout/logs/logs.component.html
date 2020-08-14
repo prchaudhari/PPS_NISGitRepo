@@ -34,7 +34,7 @@
             <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
             <td mat-cell *matCellDef="let element">
               <span class="badge badge-success p-1" *ngIf="element.ScheduleStatus=='Completed'">{{element.ScheduleStatus}}</span>
-              <span class="badge badge-danger p-1" *ngIf="element.ScheduleStatus=='Failed'">{{element.ScheduleStatus}}</span>
+              <span class="badge badge-danger p-1" *ngIf="element.ScheduleStatus=='Failed' || element.ScheduleStatus=='BatchDataNotAvailable'">{{element.ScheduleStatus}}</span>
               <span class="badge badge-warning p-1 text-white" *ngIf="element.ScheduleStatus=='In Progress'">{{element.ScheduleStatus}}</span>
             </td>
           </ng-container>
