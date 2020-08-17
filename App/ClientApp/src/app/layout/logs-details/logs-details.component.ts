@@ -145,7 +145,6 @@ export class LogsDetailsComponent implements OnInit {
       switch (sort.active) {
         case 'UserID': return compareStr(a.CustomerName, b.CustomerName, isAsc);
         case 'renderEngineName': return compareStr(a.RenderEngineName, b.RenderEngineName, isAsc);
-
         case 'status': return compareStr(a.Status, b.Status, isAsc);
         case 'date': return compareDate(a.CreateDate, b.CreateDate, isAsc);
         default: return 0;
@@ -210,7 +209,7 @@ export class LogsDetailsComponent implements OnInit {
         searchParameter.CustomerName = this.ScheduleLogFilterForm.value.filterUserId.trim();
       }
       if (this.ScheduleLogFilterForm.value.filterStatus != null && this.ScheduleLogFilterForm.value.filterStatus != 0) {
-        searchParameter.ScheduleStatus = this.ScheduleLogFilterForm.value.filterStatus;
+        searchParameter.Status = this.ScheduleLogFilterForm.value.filterStatus;
       }
 
       console.log(searchParameter);
