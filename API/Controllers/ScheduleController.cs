@@ -370,7 +370,6 @@ namespace nIS
         {
             try
             {
-
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 string path = string.Empty;
                 ScheduleRunHistory history = this.scheduleManager.GetScheduleRunHistorys(new ScheduleSearchParameter()
@@ -379,11 +378,29 @@ namespace nIS
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
 
+                string relativePath = string.Empty;
+                //TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                //tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                //if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                //{
+                //    if (tenantConfiguration.OutputHTMLPath.EndsWith("\\"))
+                //    {
+                //        tenantConfiguration.OutputHTMLPath = tenantConfiguration.OutputHTMLPath.Remove(tenantConfiguration.OutputHTMLPath.Length - 1);
+                //    }
+                //    relativePath = tenantConfiguration.OutputHTMLPath;
+                //}
+                //else
+                //{
+                //    relativePath = HttpContext.Current.Server.MapPath("~");
+                //}
 
-                string relativePath = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH;
+
+            
                 string FileName = history.StatementFilePath.Split('\'').ToList().LastOrDefault();
-                path = history.StatementFilePath.Replace("\'", "/");
-                path = relativePath + ModelConstant.ASSETPATHSLASH + path;
+                //path = history.StatementFilePath.Replace("\'", "/");
+                path = history.StatementFilePath;
+
+                //path = relativePath + path;
 
                 if (!File.Exists(path))
                 {

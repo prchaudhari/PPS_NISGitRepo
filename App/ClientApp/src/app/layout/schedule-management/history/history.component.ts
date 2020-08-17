@@ -327,26 +327,6 @@ export class HistoryComponent implements OnInit {
           this._messageDialogService.openDialogBox('Error',"File Not Found", Constants.msgBoxError);
           this.uiLoader.stop();
         });
-
-    //var fileLocation = this.baseURL + item.StatementFilePath;
-    //var blob = this.http.get(fileLocation, {
-    //  responseType: 'blob'
-    //});
-    //let fileName = "";
-    ////const blob = new Blob([data.body], { type: contentType });
-    //if (window.navigator.msSaveOrOpenBlob) {
-    //  window.navigator.msSaveOrOpenBlob(blob, fileName);
-    //} else {
-    //  var link = document.createElement('a');
-    //  link.setAttribute("type", "hidden");
-    //  link.download = fileName;
-    //  link.href = window.URL.createObjectURL(blob);
-    //  document.body.appendChild(link);
-    //  link.click();
-    //}
-
-
-
   }
 
 }

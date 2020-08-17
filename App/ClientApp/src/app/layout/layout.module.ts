@@ -20,6 +20,8 @@ import { AssetSettingsComponent } from './asset-settings/asset-settings.componen
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { StatementSearchComponent } from './statement-search/statement-search.component';
 import { TenantConfigurationComponent } from './tenant-configuration/tenant-configuration.component';
+import { WindowRef } from '../core/services/window-ref.service';
+
 @NgModule({
   declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent],
   imports: [
@@ -32,10 +34,10 @@ import { TenantConfigurationComponent } from './tenant-configuration/tenant-conf
     NgbModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-     NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
-    BnNgIdleService, DynamicGlobalVariable,
+    BnNgIdleService, DynamicGlobalVariable,WindowRef
   ],
 })
 export class LayoutModule { }
