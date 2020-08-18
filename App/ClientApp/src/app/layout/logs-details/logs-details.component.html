@@ -4,12 +4,13 @@
       <span class="mr-2">{{scheduleName}} - {{executionDate  | date : "dd/MM/yyyy" }}</span>
       <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
     </div>
-    <div>
+
+    <div *ngIf='!isAllRecordSuccess'>
       <button class="btn-add btn-cust" (click)="reTryAllLog()">
         <span class="fa fa-repeat btn-icon-cust btn-icon-fill"></span> Retry
       </button>
-
     </div>
+
   </div>
   <!--desktop view start-->
   <div class="card border-0 mb-3 card-shadow">

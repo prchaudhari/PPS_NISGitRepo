@@ -969,8 +969,7 @@ namespace nIS
                         {
                             string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"}" +
                                 ",{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":" +
-                                "\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" +
-                                ":\"Dollor\",\"Amount\":\"4589\"}]";
+                                "\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" +":\"$\",\"Amount\":\"4589\"}]";
 
                             string accountSummary = string.Empty;
                             if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
@@ -1178,6 +1177,8 @@ namespace nIS
         public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL)
         {
             ScheduleLogDetailRecord logDetailRecord = new ScheduleLogDetailRecord();
+            StringBuilder ErrorMessages = new StringBuilder();
+            bool IsFailed = false;
             IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
             try
             {
@@ -1196,18 +1197,16 @@ namespace nIS
                     }
                     if (accountrecords == null && accountrecords.Count == 0)
                     {
-                        logDetailRecord.LogMessage = "Account master data is not available for this customer..!!";
-                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                        return logDetailRecord;
+                        ErrorMessages.Append("<br>Account master data is not available for this customer..!!");
+                        IsFailed = true;
                     }
                     else
                     {
                         var records = accountrecords.Where(item => item.AccountType.Equals(string.Empty)).ToList();
                         if (records.Count > 0)
                         {
-                            logDetailRecord.LogMessage = "Invalid account master data for this customer..!!";
-                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                            return logDetailRecord;
+                            ErrorMessages.Append("<br>Invalid account master data for this customer..!!");
+                            IsFailed = true;
                         }
                     }
 
@@ -1256,22 +1255,20 @@ namespace nIS
                         else if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
                         {
                             savingaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving"))?.ToList();
-                            if (savingaccountrecords == null && savingaccountrecords.Count == 0)
+                            if (savingaccountrecords == null || savingaccountrecords.Count == 0)
                             {
-                                logDetailRecord.LogMessage = "Saving account master data is not available for this customer..!!";
-                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                return logDetailRecord;
+                                ErrorMessages.Append("<br>Saving account master data is not available for this customer..!!");
+                                IsFailed = true;
                             }
                             accountCount = savingaccountrecords.Count;
                         }
                         else if (page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
                         {
                             curerntaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current"))?.ToList();
-                            if (curerntaccountrecords == null && curerntaccountrecords.Count == 0)
+                            if (curerntaccountrecords == null || curerntaccountrecords.Count == 0)
                             {
-                                logDetailRecord.LogMessage = "Current account master data is not available for this customer..!!";
-                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                return logDetailRecord;
+                                ErrorMessages.Append("<br>Current account master data is not available for this customer..!!");
+                                IsFailed = true;
                             }
                             accountCount = curerntaccountrecords.Count;
                         }
@@ -1392,9 +1389,8 @@ namespace nIS
                                                 }
                                                 else
                                                 {
-                                                    logDetailRecord.LogMessage = "Image not found for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for image widget..!!";
-                                                    logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                                    break;
+                                                    ErrorMessages.Append("<br>Image not found for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for image widget..!!");
+                                                    IsFailed = true;
                                                 }
                                             }
                                         }
@@ -1402,9 +1398,8 @@ namespace nIS
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "Image widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        ErrorMessages.Append("<br>Image widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!");
+                                        IsFailed = true;
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID) //Video widget
@@ -1437,9 +1432,8 @@ namespace nIS
                                                 }
                                                 else
                                                 {
-                                                    logDetailRecord.LogMessage = "Video not found for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for video widget..!!";
-                                                    logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                                    break;
+                                                    ErrorMessages.Append("<br>Video not found for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for video widget..!!");
+                                                    IsFailed = true;
                                                 }
                                             }
                                         }
@@ -1447,9 +1441,8 @@ namespace nIS
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "Video widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        ErrorMessages.Append("<br>Video widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!");
+                                        IsFailed = true;
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID) //Summary at Glance Widget
@@ -1466,9 +1459,8 @@ namespace nIS
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "Account master data is not available related to Summary at Glance widget..!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        ErrorMessages.Append("<br>Account master data is not available related to Summary at Glance widget..!!");
+                                        IsFailed = true;
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
@@ -1491,16 +1483,14 @@ namespace nIS
                                         }
                                         else
                                         {
-                                            logDetailRecord.LogMessage = "Current Account master data is not available related to Current Available Balance widget..!!";
-                                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                            break;
+                                            ErrorMessages.Append("<br>Current Account master data is not available related to Current Available Balance widget..!!");
+                                            IsFailed = true;
                                         }
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "Account master data is not available related to Current Available Balance widget..!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        ErrorMessages.Append("<br>Account master data is not available related to Current Available Balance widget..!!");
+                                        IsFailed = true;
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
@@ -1523,16 +1513,14 @@ namespace nIS
                                         }
                                         else
                                         {
-                                            logDetailRecord.LogMessage = "Saving Account master data is not available related to Saving Available Balance widget..!!";
-                                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                            break;
+                                            ErrorMessages.Append("<br>Saving Account master data is not available related to Saving Available Balance widget..!!");
+                                            IsFailed = true;
                                         }
                                     }
                                     else
                                     {
-                                        logDetailRecord.LogMessage = "Account master data is not available related to Saving Available Balance widget..!!";
-                                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                        break;
+                                        ErrorMessages.Append("<br>Account master data is not available related to Saving Available Balance widget..!!");
+                                        IsFailed = true;
                                     }
                                 }
                                 else if (widget.WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
@@ -1768,9 +1756,8 @@ namespace nIS
                                             }
                                             else
                                             {
-                                                logDetailRecord.LogMessage = "Invalid consecutive month data for Saving trend widget..!!";
-                                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                                break;
+                                                ErrorMessages.Append("<br>Invalid consecutive month data for Saving trend widget..!!");
+                                                IsFailed = true;
                                             }
                                             mnth = mnth - 1 == 0 ? 12 : mnth - 1;
                                         }
@@ -1826,9 +1813,8 @@ namespace nIS
                                             }
                                             else
                                             {
-                                                logDetailRecord.LogMessage = "Invalid consecutive month data for Spending trend widget..!!";
-                                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                                break;
+                                                ErrorMessages.Append("<br>Invalid consecutive month data for Spending trend widget..!!");
+                                                IsFailed = true;
                                             }
                                             mnth = mnth - 1 == 0 ? 12 : mnth - 1;
                                         }
@@ -1933,7 +1919,12 @@ namespace nIS
                     finalHtml.Append(HtmlConstants.HTML_FOOTER);
                     finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
 
-                    if (logDetailRecord.Status != ScheduleLogStatus.Failed.ToString())
+                    if (IsFailed)
+                    {
+                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                        logDetailRecord.LogMessage = ErrorMessages.ToString();
+                    }
+                    else
                     {
                         string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                         string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Id, customer.Id);

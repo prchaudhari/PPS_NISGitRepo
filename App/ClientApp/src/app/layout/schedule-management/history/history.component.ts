@@ -42,7 +42,7 @@ export class HistoryComponent implements OnInit {
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
-  displayedColumns: string[] = ['name', 'template', 'startDate', 'endDate', 'DayOfMonth', 'actions'];
+  displayedColumns: string[] = ['name', 'template', 'startDate', 'actions'];
   public params: any = [];
   dataSource = new MatTableDataSource<any>();
   public scheduleIdentifier;

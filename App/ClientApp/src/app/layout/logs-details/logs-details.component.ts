@@ -48,15 +48,17 @@ export class LogsDetailsComponent implements OnInit {
   public disableMultipleDelete = true;
   public scheduleName: string;
   public executionDate;
+  public isAllRecordSuccess = true;
+
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
+
   displayedColumns: string[] = ['UserID', 'renderEngineName', 'status', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
 
   ngOnInit() {
     this.getScheduleLogs(null);
@@ -77,14 +79,15 @@ export class LogsDetailsComponent implements OnInit {
     }
 
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-
   }
+
   navigateToListPage() {
     this.route.navigate(['/logs']);
-
   }
+
   constructor(private injector: Injector,
     private fb: FormBuilder,
     private uiLoader: NgxUiLoaderService,
@@ -93,7 +96,6 @@ export class LogsDetailsComponent implements OnInit {
     private localstorageservice: LocalStorageService,
     private scheduleLogService: ScheduleLogServiceDetail) {
     this.sortedScheduleLogList = this.scheduleLogList.slice();
-
 
     route.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
@@ -112,6 +114,7 @@ export class LogsDetailsComponent implements OnInit {
 
     });
   }
+
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
@@ -130,9 +133,11 @@ export class LogsDetailsComponent implements OnInit {
   get filterUserId() {
     return this.ScheduleLogFilterForm.get('filterUserId');
   }
+
   get filterStatus() {
     return this.ScheduleLogFilterForm.get('filterStatus');
   }
+
   sortData(sort: MatSort) {
     const data = this.scheduleLogList.slice();
     if (!sort.active || sort.direction === '') {
@@ -173,6 +178,13 @@ export class LogsDetailsComponent implements OnInit {
     }
     searchParameter.ScheduleLogId = this.scheduleLogIdentifier
     this.scheduleLogList = await scheduleLogService.getScheduleLogDetail(searchParameter);
+    if(this.scheduleLogList.length > 0){
+      var records = this.scheduleLogList.filter(x  => x.Status != 'Completed');
+      if(records.length > 0) {
+        this.isAllRecordSuccess = false;
+      }
+    }
+
     if (this.scheduleLogList.length == 0 && this.isFilterDone == true) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
@@ -227,6 +239,7 @@ export class LogsDetailsComponent implements OnInit {
     });
   }
 
+  //function written to retry failed customers log
   reTryAllLog() {
     var logDetailList = [];
     this.scheduleLogList.forEach((item, index) => {
@@ -254,7 +267,7 @@ export class LogsDetailsComponent implements OnInit {
   }
 
 
-  //function written to delete role
+  //function written to retry failed customer log
   reTryLog(log: ScheduleLogDetail) {
     let message = 'Are you sure, you want to run this schedule?';
     var logDetailList = [];

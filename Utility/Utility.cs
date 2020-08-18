@@ -721,8 +721,9 @@
             {
                 Directory.CreateDirectory(path);
             }
-            
-            string resourceFilePath = destPath + "\\" + batchId + "\\common";
+
+            string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+            //string resourceFilePath = destPath + "\\" + batchId + "\\common";
             string zipFileVirtualPath = "\\Statements" +"\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
             string zipfilepath = AppDomain.CurrentDomain.BaseDirectory + zipFileVirtualPath;
             string temppath = path + "\\temp\\";

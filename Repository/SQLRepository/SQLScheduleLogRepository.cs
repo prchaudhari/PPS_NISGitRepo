@@ -351,7 +351,6 @@ namespace nIS
                     if (scheduleRecord != null && batchMaster != null && customerMaster != null)
                     {
                         Statement statement = new Statement();
-                        IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
                         StatementSearchParameter statementSearchParameter = new StatementSearchParameter
                         {
                             Identifier = scheduleRecord.StatementId,
@@ -399,9 +398,11 @@ namespace nIS
                                         scheduleLogDetailRecord.Status = logDetailRecord.Status;
                                         scheduleLogDetailRecord.NumberOfRetry++;
                                         scheduleLogDetailRecord.StatementFilePath = logDetailRecord.StatementFilePath;
+                                        scheduleLogDetailRecord.CreationDate = DateTime.Now;
 
                                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.StatementMetadataRecords.Count > 0)
                                         {
+                                            IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
                                             logDetailRecord.StatementMetadataRecords.ToList().ForEach(metarec =>
                                             {
                                                 metarec.ScheduleLogId = logDetailRecord.ScheduleLogId;
@@ -412,8 +413,7 @@ namespace nIS
                                             });
                                         }
 
-                                        ScheduleLogRecord scheduleLog = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId).ToList().FirstOrDefault();
-                                        if (scheduleLog != null)
+                                        nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId)?.ToList().ForEach(scheduleLog =>
                                         {
                                             var _lstScheduleLogDetail = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId).ToList();
                                             var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
@@ -425,13 +425,14 @@ namespace nIS
                                             {
                                                 scheduleLog.Status = ScheduleLogStatus.Failed.ToString();
                                             }
-                                        }
+                                        });
+
+                                        //nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId)?.ToList().ForEach(runhistory => runhistory.EndDate = DateTime.Now);
 
                                         nISEntitiesDataContext.SaveChanges();
                                     }
                                 }
                             }
-
                         }
                     }
 
@@ -469,15 +470,15 @@ namespace nIS
                     }
                 }
 
-                IList<ScheduleLogDetail> scheduleLogDetails = new List<ScheduleLogDetail>();
-                failedScheduleLogDetailRecords.ToList().ForEach(item => scheduleLogDetails.Add(new ScheduleLogDetail()
+                var failedRecords = new List<ScheduleLogDetail>();
+                failedScheduleLogDetailRecords.ToList().ForEach(item => failedRecords.Add(new ScheduleLogDetail()
                 {
                     Identifier = item.Id
                 }));
 
-                if (scheduleLogDetails.Count != 0)
+                if (failedRecords.Count != 0)
                 {
-                    scheduleRunStatus = RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, tenantCode);
+                    scheduleRunStatus = RetryStatementForFailedCustomerReocrds(failedRecords, baseURL, tenantCode);
                 }
             }
             catch (Exception ex)
