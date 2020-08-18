@@ -35,6 +35,11 @@ namespace nIS
         /// </summary>
         private AssetLibraryManager assetLibraryManager = null;
 
+        /// <summary>
+        /// The asset library manager object.
+        /// </summary>
+        private TenantConfigurationManager tenantConfigurationManager = null;
+
         #endregion
 
         #region Constructor
@@ -42,6 +47,8 @@ namespace nIS
         public AssetLibraryController(IUnityContainer unityContainer)
         {
             this.assetLibraryManager = new AssetLibraryManager(unityContainer);
+            this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
+
         }
 
         #endregion
@@ -130,9 +137,27 @@ namespace nIS
 
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 assetlibraries = this.assetLibraryManager.GetAssetLibraries(assetLibrarySearchParameter, tenantCode);
+                string path = string.Empty;
+
+                TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                {
+                    path = tenantConfiguration.AssetPath;
+                }
+                else
+                {
+                    path = HttpContext.Current.Server.MapPath("~");
+                }
+
+                if (!path.EndsWith(ModelConstant.ASSETPATHSLASH))
+                {
+                    path = path + ModelConstant.ASSETPATHSLASH;
+                }
+                path = path + ModelConstant.ASSETS;
+
                 if (assetlibraries?.Count > 0 && assetLibrarySearchParameter.IsAssetDataRequired)
                 {
-                    string path = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH + ModelConstant.ASSETS;
                     assetlibraries.ToList().ForEach(library =>
                     {
                         if (library.Assets?.Count() > 0)
@@ -271,8 +296,24 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 assets = this.assetLibraryManager.GetAssets(assetSearchParameter, tenantCode);
-                string path = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH + ModelConstant.ASSETS;
+                string path = string.Empty;
 
+                TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                {
+                    path = tenantConfiguration.AssetPath;
+                }
+                else
+                {
+                    path = HttpContext.Current.Server.MapPath("~");
+                }
+              
+                if (!path.EndsWith(ModelConstant.ASSETPATHSLASH))
+                {
+                    path = path + ModelConstant.ASSETPATHSLASH;
+                }
+                path = path+ ModelConstant.ASSETS;
 
                 assets?.ToList().ForEach(asset =>
                 {
@@ -400,24 +441,33 @@ namespace nIS
 
                         var postedFile = httpRequest.Files[count];
 
-                        string imagePath = string.Empty;
-                        imagePath = HttpContext.Current.Server.MapPath("~");
+                        string basePath = string.Empty;
 
-                        //var assetPathSetting = assetLibraryManager.GetAssetPath(tenantCode);
-                        //if (assetPathSetting == null || string.IsNullOrWhiteSpace(assetPathSetting.AssetPath))
-                        //{
-                        //    throw new AssetPathNotFoundException(tenantCode);
-                        //}
-                        //imagePath = assetPathSetting.AssetPath;
-
-                        var customerPath = imagePath + ModelConstant.ASSETPATHSLASH;
-
-                        if (!Directory.Exists(customerPath))
+                        TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                        tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                        if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                        {
+                            basePath = tenantConfiguration.AssetPath;
+                        }
+                        else
+                        {
+                            basePath = HttpContext.Current.Server.MapPath("~");
+                        }
+                        string path = string.Empty;
+                        if(!basePath.EndsWith(ModelConstant.ASSETPATHSLASH))
+                        {
+                            path = basePath + ModelConstant.ASSETPATHSLASH;
+                        }
+                        else
+                        {
+                            path = basePath;
+                        }
+                        if (!Directory.Exists(path))
                         {
                             //If No any such directory then creates the new one based on tenant code
-                            Directory.CreateDirectory(customerPath);
+                            Directory.CreateDirectory(path);
                         }
-                        var assetPath = customerPath + ModelConstant.ASSETS + ModelConstant.ASSETPATHSLASH + assetLibraryIdentifier + ModelConstant.ASSETPATHSLASH;
+                        var assetPath = path + ModelConstant.ASSETS + ModelConstant.ASSETPATHSLASH + assetLibraryIdentifier + ModelConstant.ASSETPATHSLASH;
 
                         if (!Directory.Exists(assetPath))
                         {
@@ -432,24 +482,10 @@ namespace nIS
                         }
                         filePath = assetPath + fileName;
 
-                        //bool isAllowAssetLibraryReplace = this.assetLibraryManager.AllowAssetLibraryReplace(assetLibraryIdentifier.ToString(), tenantCode, fileName);
-                        //if (!isAllowAssetLibraryReplace)
-                        //{
-                        //    throw new AssetUsedInCapmaignException(tenantCode);
-                        //}
-
-                        //if (File.Exists(filePath) && !isAllowAssetLibraryReplace)
-                        //{
-                        //    //Disscussion pending
-                        //    throw new DuplicateAssetException(tenantCode);
-                        //}
-                        //bool isAllowAssetLibraryReplace = true;
-                        //if (isAllowAssetLibraryReplace)
-                        //{
                         var items = postedFile.FileName.Split('.');
 
                         string fileExtension = items[items.Length - 1];
-                        fileName=fileName.Replace(fileExtension, fileExtension.ToLower());
+                        fileName = fileName.Replace(fileExtension, fileExtension.ToLower());
                         assets.Add(new Asset()
                         {
                             Name = fileName,
@@ -668,9 +704,25 @@ namespace nIS
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
 
-                string relativePath = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH + ModelConstant.ASSETS;
 
-                asset.FilePath = relativePath + ModelConstant.ASSETPATHSLASH + asset.AssetLibraryIdentifier + ModelConstant.ASSETPATHSLASH + asset.Name;
+                //TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                //tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                //if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                //{
+                //    path = tenantConfiguration.AssetPath;
+                //}
+                //else
+                //{
+                //    path = HttpContext.Current.Server.MapPath("~");
+                //}
+
+                //if (!path.EndsWith(ModelConstant.ASSETPATHSLASH))
+                //{
+                //    path = path + ModelConstant.ASSETPATHSLASH;
+                //}
+                //path = path + ModelConstant.ASSETS;
+
+                //asset.FilePath = path + ModelConstant.ASSETPATHSLASH + asset.AssetLibraryIdentifier + ModelConstant.ASSETPATHSLASH + asset.Name;
 
 
                 if (asset == null)

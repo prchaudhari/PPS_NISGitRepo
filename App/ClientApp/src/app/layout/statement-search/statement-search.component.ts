@@ -2,15 +2,20 @@ import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router } from '@angular/router';
-import { Constants } from 'src/app/shared/constants/constants';
-import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
-import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { Constants } from '../../shared/constants/constants';
+import { ErrorMessageConstants } from '../../shared/constants/constants';
+import { MessageDialogService } from '../../shared/services/mesage-dialog.service';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { StatementSearchService } from './statementsearch.service';
 import { StatementSearch } from './statementsearch';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpRequest } from '@angular/common/http';
+import { WindowRef } from '../../core/services/window-ref.service';
+import { map } from 'rxjs/operators';
+import * as $ from 'jquery';
+import { ConfigConstants } from '../../shared/constants/configconstants';
 
 export interface ListElement {
   id: string;
@@ -48,7 +53,7 @@ export class StatementSearchComponent implements OnInit {
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
   public userClaimsRolePrivilegeOperations: any[] = [];
-
+  public baseURL = ConfigConstants.BaseURL;
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
@@ -66,8 +71,12 @@ export class StatementSearchComponent implements OnInit {
     private _messageDialogService: MessageDialogService,
     private route: Router,
     private localstorageservice: LocalStorageService,
-    private scheduleLogService: StatementSearchService) {
+    private scheduleLogService: StatementSearchService,
+    private _window: WindowRef, private http: HttpClient) {
     this.sortedStatementSearchList = this.scheduleLogList.slice();
+    this._window.nativeWindow.ViewHTML = function (element: any): void {
+      //me.DownloadAsset(id);
+    };
   }
 
   public handlePage(e: any) {
@@ -104,12 +113,12 @@ export class StatementSearchComponent implements OnInit {
   ngOnInit() {
     this.getStatementSearchs(null);
     //this.getPageTypes();
-    //this.StatementSearchFilterForm = this.fb.group({
-    //  filterStatementCustomer: [null],
-    //  filterStatementAccountId: [null],
-    //  filterStatementDate: [null],
-    //  filterStatementPeriod: [null],
-    //});
+    this.StatementSearchFilterForm = this.fb.group({
+      filterStatementCustomer: [null],
+      filterStatementAccountId: [null],
+      filterStatementDate: [null],
+      filterStatementPeriod: [null],
+    });
     this.StatementSearchFilterForm.controls['filterStatementCustomer'].setValue(null);
     this.StatementSearchFilterForm.controls['filterStatementAccountId'].setValue(null);
     this.StatementSearchFilterForm.controls['filterStatementDate'].setValue(null);
@@ -178,16 +187,31 @@ export class StatementSearchComponent implements OnInit {
     this.iterator();
   }
   validateFilterDate(): boolean {
-    //if (this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != '' &&
-    //  this.ScheduleLogFilterForm.value.filterPublishedOnToDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnToDate != '') {
-    //  let startDate = this.ScheduleLogFilterForm.value.filterPublishedOnFromDate;
-    //  let toDate = this.ScheduleLogFilterForm.value.filterPublishedOnToDate;
-    //  if (startDate.getTime() > toDate.getTime()) {
-    //    this.filterFromDateError = true;
-    //    return false;
-    //  }
-    //}
+    let currentDte = new Date();
+    if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
+      let toDate = this.StatementSearchFilterForm.value.filterStatementDate;
+      if (toDate.getTime() > currentDte.getTime()) {
+        this.filterToDateError = true;
+        this.filterToDateErrorMessage = "Statement date should not greater than current date";
+        return false;
+      }
+    }
     return true;
+  }
+  onPublishedFilterDateChange(event) {
+    this.filterFromDateError = false;
+    this.filterToDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateErrorMessage = "";
+    let currentDte = new Date();
+    
+    if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
+      let toDate = this.StatementSearchFilterForm.value.filterStatementDate;
+      if (toDate.getTime() > currentDte.getTime()) {
+        this.filterToDateError = true;
+        this.filterToDateErrorMessage = "Statement date should not greater than current date";
+      }
+    }
   }
   searchStatementSearchRecordFilter(searchType) {
     this.filterFromDateError = false;
@@ -254,10 +278,31 @@ export class StatementSearchComponent implements OnInit {
   }
 
   ViewHTML(element) {
-    //window.location.href = "C:/Users/tayyaba.shaikh/Downloads/statement8_3_2020_5_09_28_AM%20(1)/statement/Statement_5_8_3_2020_5_09_27_AM.html"
-    //window.location.href = "https://www.google.com/";
-    //window.open("file:///C:/Users/tayyaba.shaikh/Downloads/statement8_3_2020_5_09_28_AM%20(1)/statement/Statement_5_8_3_2020_5_09_27_AM.html", null);
-
+    this.uiLoader.start();
+    this.http.get(this.baseURL + 'StatementSearch/Download?identifier=' + element.Identifier, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this.uiLoader.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
+          const blob = new Blob([data.body], { type: contentType });
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, fileName);
+          } else {
+            var link = document.createElement('a');
+            link.setAttribute("type", "hidden");
+            link.download = fileName;
+            link.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+          }
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', "File Not Found", Constants.msgBoxError);
+          this.uiLoader.stop();
+        });
   }
 }
 

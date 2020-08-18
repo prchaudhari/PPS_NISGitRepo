@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="widget-area-grid padding-0">
-        <table mat-table [dataSource]="dataSource" matSort class="table-cust" *ngIf='array!=undefined && array.length>0'>
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)" *ngIf='array!=undefined && array.length>0'>
           <!-- Position Column -->
           <ng-container matColumnDef="UserID">
             <th class="width25" mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -78,9 +78,6 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <div *ngIf='array!=undefined && array.length==0' class="text-center text-danger">
-          No Data Available
-        </div>
       </div>
 
     </div>

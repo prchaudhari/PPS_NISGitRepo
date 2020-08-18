@@ -17,6 +17,7 @@ namespace nIS
     using System.Web;
     using System.Web.Http;
     using System.Web.Http.Cors;
+    using System.IO.Compression;
     using Unity;
 
     #endregion
@@ -39,6 +40,16 @@ namespace nIS
         /// </summary>
         private readonly IUnityContainer unityContainer = null;
 
+        /// <summary>
+        /// The utility object
+        /// </summary>
+        private IUtility utility = null;
+
+        /// <summary>
+        /// The asset library manager object.
+        /// </summary>
+        private TenantConfigurationManager tenantConfigurationManager = null;
+
         #endregion
 
         #region Constructor
@@ -46,7 +57,10 @@ namespace nIS
         public StatementSearchController(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
+            this.utility = new Utility();
             this.StatementSearchManager = new StatementSearchManager(this.unityContainer);
+            this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
+
         }
 
         #endregion
@@ -104,11 +118,11 @@ namespace nIS
         [Route("StatementSearch/Download")]
         public HttpResponseMessage Download(string identifier)
         {
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+
             try
             {
-
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                string path = string.Empty;
                 StatementSearch statement = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
                 {
                     Identifier = identifier,
@@ -116,46 +130,116 @@ namespace nIS
                 }, tenantCode).FirstOrDefault();
 
 
-                string relativePath = HttpContext.Current.Server.MapPath("~") + ModelConstant.ASSETPATHSLASH;
-                string FileName = statement.StatementURL.Split('\'').ToList().LastOrDefault();
-                path = statement.StatementURL.Replace("\'", "/");
-                path = relativePath + ModelConstant.ASSETPATHSLASH + path;
-
-                if (!File.Exists(path))
+                string relativePath = string.Empty;
+                int length = statement.StatementURL.Split('\\').Length;
+                string[] UrlParts = statement.StatementURL.Split('\\');
+                int count = 0;
+                for (int index = 0; index < length - 4; index++)
                 {
-                    throw new HttpResponseException(HttpStatusCode.NotFound);
-                }
-
-                try
-                {
-                    using (MemoryStream ms = new MemoryStream())
+                    count++;
+                    if(relativePath==string.Empty)
                     {
-                        using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
-                        {
-                            byte[] bytes = new byte[file.Length];
-                            file.Read(bytes, 0, (int)file.Length);
-                            ms.Write(bytes, 0, (int)file.Length);
-
-                            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-                            httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
-                            httpResponseMessage.Content.Headers.Add("x-filename", FileName);
-                            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                            httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                            httpResponseMessage.Content.Headers.ContentDisposition.FileName = FileName;
-                            httpResponseMessage.StatusCode = HttpStatusCode.OK;
-                            return httpResponseMessage;
-                        }
+                        relativePath =  UrlParts[index];
+                    }
+                    else
+                    {
+                        relativePath = relativePath + "\\" + UrlParts[index];
                     }
                 }
-                catch (IOException)
+                string statementURL = string.Empty;
+                for (int index = count; index < length ; index++)
                 {
-                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                    if (statementURL == string.Empty)
+                    {
+                        statementURL = UrlParts[index];
+                    }
+                    else
+                    {
+                        statementURL = statementURL + "\\" + UrlParts[index];
+                    }
+                }
+                statement.StatementURL = "\\"+statementURL;
+          
+                string FileName = statement.StatementURL.Split('\\').ToList().LastOrDefault();
+                if (File.Exists(relativePath + statement.StatementURL))
+                {
+                    DirectoryInfo di = new DirectoryInfo(relativePath + statement.StatementURL);
+                    var customerId = di.Parent.Name;
+                    var batchId = di.Parent.Parent.Name;
+                    var batchFolderPath = di.Parent.Parent.FullName;
+                    string batchURL = di.Parent.Parent.Parent.FullName + "\\" + batchId;
+                    if (Directory.Exists(batchURL + "\\" + "common"))
+                    {
+                        string tempStatement = "tempStatement" + identifier;
+                        var commonFolder = batchURL + "\\" + "common";
+                        var customerFolder = batchURL + "\\" + customerId;
+                        var destinationFolder = batchURL + "\\" + tempStatement;
+                        // If the destination directory doesn't exist, create it.
+                        if (!Directory.Exists(destinationFolder))
+                        {
+                            Directory.CreateDirectory(destinationFolder);
+                        }
+                        if (!Directory.Exists(destinationFolder + "\\" + "common"))
+                        {
+                            Directory.CreateDirectory(destinationFolder + "\\" + "common");
+                        }
+                        if (!Directory.Exists(destinationFolder + "\\" + customerId))
+                        {
+                            Directory.CreateDirectory(destinationFolder + "\\" + customerId);
+                        }
+                        this.utility.DirectoryCopy(commonFolder, (destinationFolder + "\\" + "common"), true);
+                        this.utility.DirectoryCopy(customerFolder, (destinationFolder + "\\" + customerId), true);
+                        string zipFile = batchURL + "\\" + "tempStatementZip" + identifier + ".zip";
+                        ZipFile.CreateFromDirectory(destinationFolder, zipFile);
+                        if (File.Exists(zipFile))
+                        {
+                            if (!File.Exists(zipFile))
+                            {
+                                throw new HttpResponseException(HttpStatusCode.NotFound);
+                            }
+                            try
+                            {
+
+                                using (MemoryStream ms = new MemoryStream())
+                                {
+                                    using (FileStream file = new FileStream(zipFile, FileMode.Open, FileAccess.Read))
+                                    {
+                                        byte[] bytes = new byte[file.Length];
+                                        file.Read(bytes, 0, (int)file.Length);
+                                        ms.Write(bytes, 0, (int)file.Length);
+                                        FileName = FileName.Replace(".html", ".zip");
+                                        httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
+                                        httpResponseMessage.Content.Headers.Add("x-filename", FileName);
+                                        httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                                        httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                                        httpResponseMessage.Content.Headers.ContentDisposition.FileName = FileName;
+                                        httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                                    }
+                                }
+                                if (File.Exists(zipFile))
+                                {
+                                    File.Delete(zipFile);
+                                }
+                                if (Directory.Exists(destinationFolder))
+                                {
+                                    Directory.Delete(destinationFolder, true);
+                                }
+                                return httpResponseMessage;
+                            }
+                            catch (IOException)
+                            {
+                                throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                            }
+                        }
+
+                    }
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            return httpResponseMessage;
         }
 
         #endregion

@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, AfterViewInit, OnDestroy, ElementRef, SecurityContext } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -205,7 +205,6 @@ export class ViewAssetLibraryComponent implements OnInit {
 
   }
   PreviewAsset(asset: Asset): void {
-    var assetId = asset.Identifier;
     var fileType = asset.Name.split('.').pop();
     if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
       this.isImage = true;
@@ -214,24 +213,72 @@ export class ViewAssetLibraryComponent implements OnInit {
       this.isImage = false;
 
     }
-    var url = this.baseURL + "assets/" + this.assetLibrary.Identifier + "/" + asset.Name;
-    this.image = url;
-    if (!this.isImage) {
-      document.getElementById('videoPreview').removeChild(document.getElementById('videoPreview').childNodes[0])
-      var sourceTag = document.createElement('source');
-      sourceTag.setAttribute('src', url);
-      sourceTag.setAttribute('type', 'video/mp4');
-      document.getElementById('videoPreview').appendChild(sourceTag);
-      
-      let vid = <HTMLVideoElement>document.getElementById("videoPreview");
-    
-      vid.load();
-      vid.currentTime = 0;
-      vid.play();
-      //this.videoSource.nativeElement.setAttribute('src', url);
-      //this.video.nativeElement.load();
-      
-    }
+    this._spinnerService.start();
+    this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + asset.Identifier, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this._spinnerService.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          const blob = new Blob([data.body], { type: contentType });
+          if (this.isImage) {
+            let objectURL = URL.createObjectURL(blob);
+            this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          }
+          else {
+            let objectURL = URL.createObjectURL(blob);
+            this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            document.getElementById('videoPreview').removeChild(document.getElementById('videoPreview').childNodes[0])
+            var sourceTag = document.createElement('source');
+            sourceTag.setAttribute('src', this.image);
+            sourceTag.setAttribute('type', 'video/mp4');
+            document.getElementById('videoPreview').appendChild(sourceTag);
+
+            let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+
+            vid.load();
+            vid.currentTime = 0;
+            vid.play();
+            //this.videoSource.nativeElement.setAttribute('src', url);
+            //this.video.nativeElement.load();
+          }
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this._spinnerService.stop();
+        });
+
+    // var assetId = asset.Identifier;
+    // var fileType = asset.Name.split('.').pop();
+    // if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
+    //   this.isImage = true;
+    // }
+    // else {
+    //   this.isImage = false;
+
+    // }
+
+    //// var url = asset.FilePath;
+    // var url = this.sanitizer.bypassSecurityTrustResourceUrl(asset.FilePath);
+    // //var url = this.sanitizer.bypassSecurityTrustHtml(asset.FilePath);
+    // this.image = url;
+    // if (!this.isImage) {
+    //   document.getElementById('videoPreview').removeChild(document.getElementById('videoPreview').childNodes[0])
+    //   var sourceTag = document.createElement('source');
+    //   sourceTag.setAttribute('src', url.toString());
+    //   sourceTag.setAttribute('type', 'video/mp4');
+    //   document.getElementById('videoPreview').appendChild(sourceTag);
+
+    //   let vid = <HTMLVideoElement>document.getElementById("videoPreview");
+
+    //   vid.load();
+    //   vid.currentTime = 0;
+    //   vid.play();
+    //   //this.videoSource.nativeElement.setAttribute('src', url);
+    //   //this.video.nativeElement.load();
+
+    // }
   }
 
   navigateToAssetLibraryEdit() {
