@@ -1195,7 +1195,7 @@ namespace nIS
                         accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id)?.ToList();
                         customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.BatchId == batchMaster.Id)?.ToList();
                     }
-                    if (accountrecords == null && accountrecords.Count == 0)
+                    if (accountrecords == null || accountrecords.Count == 0)
                     {
                         ErrorMessages.Append("<br>Account master data is not available for this customer..!!");
                         IsFailed = true;

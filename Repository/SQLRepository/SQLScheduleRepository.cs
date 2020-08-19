@@ -642,6 +642,9 @@ namespace nIS
             }
             catch (Exception ex)
             {
+                WriteToFile(ex.Message);
+                WriteToFile(ex.InnerException.Message);
+                WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
             return scheduleRunStatus;
@@ -768,12 +771,15 @@ namespace nIS
                             this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count);
                         });
                     }
-                    
+
                     isScheduleSuccess = true;
                 }
             }
             catch (Exception ex)
             {
+                WriteToFile(ex.Message);
+                WriteToFile(ex.InnerException.Message);
+                WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
             return isScheduleSuccess;
@@ -983,7 +989,7 @@ namespace nIS
                 for (int index = start; index <= end; index++)
                 {
                     BatchMasterRecord record = new BatchMasterRecord();
-                    record.BatchName = "Batch " + index + " of " +schedule.Name;
+                    record.BatchName = "Batch " + index + " of " + schedule.Name;
                     record.TenantCode = tenantCode;
                     record.CreatedBy = userId;
                     record.CreatedDate = DateTime.UtcNow;
@@ -1012,7 +1018,7 @@ namespace nIS
                         batchExecutionDate = new DateTime(tempDate.Year, tempDate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
                         ValueToAddInMonth++;
                     }
-                    
+
                     record.BatchExecutionDate = batchExecutionDate;
                     record.DataExtractionDate = batchExecutionDate.AddDays(-1);
                     record.Status = BatchStatus.New.ToString();
@@ -1309,7 +1315,7 @@ namespace nIS
                         }
                         nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).ToList().ForEach(item => item.Status = scheduleLogStatus);
                         nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id).ToList().ForEach(item => item.EndDate = DateTime.Now);
-                        
+
                         nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId).ToList().ForEach(item => item.Status = ScheduleStatus.Completed.ToString());
                         nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().ForEach(item =>
                         {
@@ -1324,8 +1330,34 @@ namespace nIS
             {
                 throw ex;
             }
-            
+
         }
+
+        private void WriteToFile(string Message)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ScheduleLog_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
+            if (!File.Exists(filepath))
+            {
+                // Create a file to write to.   
+                using (StreamWriter sw = File.CreateText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+        }
+
 
         #endregion
 

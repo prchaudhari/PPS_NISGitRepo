@@ -625,7 +625,7 @@
             }
 
             //To move js, css and other assets contents which are common to each statment file
-            DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
+            //DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
             return statementVirtualPath;
         }
 
@@ -748,6 +748,8 @@
             {
                 sw.WriteLine(htmlstr);
             }
+
+            DirectoryCopy(resourceFilePath, (path + "\\common"), true);
             DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
             ZipFile.CreateFromDirectory(temppath, zipfilepath);
 
