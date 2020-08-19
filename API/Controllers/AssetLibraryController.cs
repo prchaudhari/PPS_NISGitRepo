@@ -489,7 +489,7 @@ namespace nIS
                         assets.Add(new Asset()
                         {
                             Name = fileName,
-                            FilePath = fileName,
+                            FilePath = filePath,
                             AssetLibraryIdentifier = assetLibraryIdentifier,
                             LastUpdatedBy = new User { Identifier = lastUpdatedBy },
                             LastUpdatedDate = DateTime.UtcNow
