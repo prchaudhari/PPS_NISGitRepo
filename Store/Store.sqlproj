@@ -113,6 +113,7 @@
     <Build Include="StatementAnalytics.sql" />
     <Build Include="StatementMetadata.sql" />
     <Build Include="Top4IncomeSources.sql" />
+    <Build Include="AnalyticsData.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

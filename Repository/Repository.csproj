@@ -82,6 +82,9 @@
     <Compile Include="AccountTransactionRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="AnalyticsDataRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="AssetLibraryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

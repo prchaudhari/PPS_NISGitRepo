@@ -48,6 +48,7 @@
         <EntityTypeShape EntityType="NISModel.StatementAnalyticRecord" Width="1.5" PointX="4.875" PointY="6.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementMetadataRecord" Width="1.5" PointX="2.75" PointY="6.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.BatchMasterRecord" Width="1.5" PointX="8.625" PointY="4.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.AnalyticsDataRecord" Width="1.5" PointX="6.75" PointY="6.625" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

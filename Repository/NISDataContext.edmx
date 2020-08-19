@@ -40,6 +40,18 @@
           <Property Name="CurrentRate" Type="nvarchar" MaxLength="50" />
           <Property Name="LCY" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="AnalyticsData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatementId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="PageId" Type="bigint" />
+          <Property Name="WidgetId" Type="bigint" />
+          <Property Name="EventDate" Type="datetime" Nullable="false" />
+          <Property Name="EventType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Asset">
           <Key>
             <PropertyRef Name="Id" />
@@ -616,6 +628,7 @@
         <EntityContainer Name="NISModelStoreContainer">
           <EntitySet Name="AccountMaster" EntityType="Self.AccountMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AccountTransaction" EntityType="Self.AccountTransaction" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="AnalyticsData" EntityType="Self.AnalyticsData" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Asset" EntityType="Self.Asset" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AssetLibrary" EntityType="Self.AssetLibrary" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AssetPathSetting" EntityType="Self.AssetPathSetting" Schema="NIS" store:Type="Tables" />
@@ -706,6 +719,7 @@
           <EntitySet Name="StatementAnalyticRecords" EntityType="NISModel.StatementAnalyticRecord" />
           <EntitySet Name="StatementMetadataRecords" EntityType="NISModel.StatementMetadataRecord" />
           <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
+          <EntitySet Name="AnalyticsDataRecords" EntityType="NISModel.AnalyticsDataRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1314,6 +1328,18 @@
           <Property Name="DataExtractionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="BatchExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AnalyticsDataRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="PageId" Type="Int64" />
+          <Property Name="WidgetId" Type="Int64" />
+          <Property Name="EventDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EventType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1968,6 +1994,19 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="BatchName" ColumnName="BatchName" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnalyticsDataRecords">
+            <EntityTypeMapping TypeName="NISModel.AnalyticsDataRecord">
+              <MappingFragment StoreEntitySet="AnalyticsData">
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
