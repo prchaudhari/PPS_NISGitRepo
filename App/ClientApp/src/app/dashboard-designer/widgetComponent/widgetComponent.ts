@@ -1,6 +1,6 @@
-import { Component, ViewChild, Output, Input, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Output, Input, EventEmitter, SecurityContext } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-
+import { HttpClient } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,10 +8,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import * as Highcharts from 'highcharts';
 import * as $ from 'jquery';
+import { map } from 'rxjs/operators';
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
 let More = require('highcharts/highcharts-more');
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 
 Boost(Highcharts);
 noData(Highcharts);
@@ -102,11 +104,25 @@ export class ImageComponent {
   public ImageSrc: any;
   public baseURL = ConfigConstants.BaseURL;
 
+  constructor(private _http: HttpClient,
+    private sanitizer: DomSanitizer) {}
+
   ngOnInit() {
     if (this.imgItem != null && this.imgItem.WidgetSetting != null && this.imgItem.WidgetSetting != '' && this.testJSON(this.imgItem.WidgetSetting)) {
       let widgetSetting = JSON.parse(this.imgItem.WidgetSetting);
-      if (!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
-        this.ImageSrc = this.baseURL + "assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+      if (!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetId != 0) {
+        this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetSetting.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+        .subscribe(
+          data => {
+            let contentType = data.headers.get('Content-Type');
+            let fileName = data.headers.get('x-filename');
+            const blob = new Blob([data.body], { type: contentType });
+            let objectURL = URL.createObjectURL(blob);
+            this.ImageSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL); //this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+          },
+          error => {
+            //$('.overlay').show();
+          });
       } else {
         this.ImageSrc = 'assets/images/icon-image.png';
       }
@@ -137,10 +153,10 @@ export class ImageComponent {
       <span class="widget-header-title">Video </span>
     </div>
     <div class="widget-area position-relative width100">
-      <div class="widget-indicator-inner text-center">
-        <video class="doc-video" controls style='width:75%;margin-right:15%;'>
-            <source [src]="videoSrc" type="video/mp4">
-          </video>
+      <div class="widget-indicator-inner text-center" [id]="videoWidgetDivId">
+        <video controls style="height: 200px;width: 75%;" [id]="videoControlTagId">
+          <source src='{{videoSrc}}' type="video/mp4">
+        </video>
       </div>
     </div>
   </div>`
@@ -149,18 +165,56 @@ export class VideoComponent {
 
   @Input() vdoItem: any;
 
-  public videoSrc: any;
+  public videoSrc;
+  public videoWidgetDivId;
+  public videoControlTagId;
   public baseURL = ConfigConstants.BaseURL;
 
+  constructor(private _http: HttpClient,
+    private sanitizer: DomSanitizer) {}
+
   ngOnInit() {
+    if(this.vdoItem != null) {
+      this.videoWidgetDivId = "VideoWidgetDiv"+this.vdoItem.x+this.vdoItem.y;
+      this.videoControlTagId = 'videoConfigPreviewSrc'+this.vdoItem.x+this.vdoItem.y;
+    }
     if (this.vdoItem != null && this.vdoItem.WidgetSetting != null && this.vdoItem.WidgetSetting != '' && this.testJSON(this.vdoItem.WidgetSetting)) {
       let widgetSetting = JSON.parse(this.vdoItem.WidgetSetting);
       if(widgetSetting.isEmbedded) {
         this.videoSrc = widgetSetting.SourceUrl;
       }
-      else if (!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetName != '') {
-        this.videoSrc = this.baseURL + "assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
-      } else {
+      else if (!widgetSetting.isPersonalize && widgetSetting.AssetLibraryId != 0 && widgetSetting.AssetId != 0) {
+        this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetSetting.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+        .subscribe(
+          data => {
+            let contentType = data.headers.get('Content-Type');
+            const blob = new Blob([data.body], { type: contentType });
+            let objectURL = URL.createObjectURL(blob);
+            var url = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+            var videoDiv = document.getElementById(this.videoWidgetDivId);
+            if (videoDiv != undefined && videoDiv != null) {
+              if (videoDiv.hasChildNodes()) {
+                videoDiv.removeChild(document.getElementById(this.videoControlTagId));
+              }
+              
+              var video = document.createElement('video');
+              video.id = this.videoControlTagId;
+              video.style.height = "200px";
+              video.style.width = "75%";
+              video.controls = true;
+
+              var sourceTag = document.createElement('source');
+              sourceTag.setAttribute('src', url);
+              sourceTag.setAttribute('type', 'video/mp4');
+              video.appendChild(sourceTag);
+              videoDiv.appendChild(video);
+            }
+          },
+          error => {
+            //$('.overlay').show();
+          });
+      } 
+      else {
         this.videoSrc = 'assets/images/SampleVideo.mp4';
       }
     } else {

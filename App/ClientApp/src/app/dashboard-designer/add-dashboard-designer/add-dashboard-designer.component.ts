@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, } from '@angular/core';
+import { Component, OnInit, Injector, SecurityContext } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType, GridsterItemComponentInterface, GridsterComponentInterface } from 'angular-gridster2';
 import { Location } from '@angular/common';
 import { Constants } from 'src/app/shared/constants/constants';
@@ -23,6 +23,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { WidgetService } from '../../layout/widgets/widget.service';
 import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfiguration';
 import * as $ from 'jquery';
+import { map } from 'rxjs/operators';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-dashboard-designer',
@@ -77,6 +79,8 @@ export class AddDashboardDesignerComponent implements OnInit {
   public pageVersion: string;
   public ImagePreviewSrc;
   public videoPreviewSrc;
+  public videoBlobObjectUrl;
+  public imageBlobObjectUrl;
 
   constructor(private _location: Location,
     private injector: Injector,
@@ -87,6 +91,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     private localstorageservice: LocalStorageService,
     private assetLibraryService: AssetLibraryService,
     private _http: HttpClient,
+    private sanitizer: DomSanitizer,
     private router: Router) {
     router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
@@ -247,16 +252,25 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.imgAssetName = widgetConfigObj.AssetName;
         this.imgAssetLibraryId = widgetConfigObj.AssetLibraryId;
         this.imgAssetLibraryName = widgetConfigObj.AssetLibrayName;
-
+        if (widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
+          this.LoadAsset('image', widgetConfigObj.AssetLibraryId);
+        }
         if (widgetConfigObj.isPersonalize != null) {
           this.isPersonalizeImage = widgetConfigObj.isPersonalize;
           if (widgetConfigObj.isPersonalize == false) {
-            var url = this.baseURL + "assets/" + widgetConfigObj.AssetLibraryId + "/" + widgetConfigObj.AssetName;
-            this.ImagePreviewSrc = url;
+            this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetConfigObj.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+            .subscribe(
+              data => {
+                let contentType = data.headers.get('Content-Type');
+                let fileName = data.headers.get('x-filename');
+                const blob = new Blob([data.body], { type: contentType });
+                let objectURL = URL.createObjectURL(blob);
+                this.ImagePreviewSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+              },
+              error => {
+                //$('.overlay').show();
+              });
           }
-        }
-        if (widgetConfigObj.AssetLibraryId != null && widgetConfigObj.AssetLibraryId != 0) {
-          this.LoadAsset('image', widgetConfigObj.AssetLibraryId);
         }
       } else {
         this.ImageConfigForm.patchValue({
@@ -310,10 +324,6 @@ export class AddDashboardDesignerComponent implements OnInit {
 
         if (widgetConfigObj.isPersonalize != null) {
           this.isPersonalize = widgetConfigObj.isPersonalize;
-          if (widgetConfigObj.isPersonalize == false) {
-            var url = this.baseURL + "assets/" + widgetConfigObj.AssetLibraryId + "/" + widgetConfigObj.AssetName;
-            this.videoPreviewSrc = url;
-          }
         }
         if (widgetConfigObj.isEmbedded != null) {
           this.isEmbedded = widgetConfigObj.isEmbedded;
@@ -325,27 +335,39 @@ export class AddDashboardDesignerComponent implements OnInit {
         if ((widgetConfigObj.isPersonalize != null && widgetConfigObj.isPersonalize == false) ||
           (widgetConfigObj.isEmbedded != null && widgetConfigObj.isEmbedded == false)) {
 
-          var videoDiv = document.getElementById('videoPreviewDiv');
-          if (videoDiv != undefined && videoDiv != null) {
-            if (videoDiv.hasChildNodes()) {
-              videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
-            }
-            var video = document.createElement('video');
-            video.id = 'videoConfigPreviewSrc';
-            video.style.height = "200px";
-            video.style.width = "75%";
+          this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetConfigObj.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+          .subscribe(
+            data => {
+              let contentType = data.headers.get('Content-Type');
+              let fileName = data.headers.get('x-filename');
+              const blob = new Blob([data.body], { type: contentType });
+              let objectURL = URL.createObjectURL(blob);
+              this.videoPreviewSrc = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+              var videoDiv = document.getElementById('videoPreviewDiv');
+              if (videoDiv != undefined && videoDiv != null) {
+                if (videoDiv.hasChildNodes()) {
+                  videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                }
+                var video = document.createElement('video');
+                video.id = 'videoConfigPreviewSrc';
+                video.style.height = "200px";
+                video.style.width = "75%";
+                video.controls = true;
 
-            var sourceTag = document.createElement('source');
-            sourceTag.setAttribute('src', this.videoPreviewSrc);
-            sourceTag.setAttribute('type', 'video/mp4');
-            video.appendChild(sourceTag);
+                var sourceTag = document.createElement('source');
+                sourceTag.setAttribute('src', this.videoPreviewSrc);
+                sourceTag.setAttribute('type', 'video/mp4');
+                video.appendChild(sourceTag);
+                videoDiv.appendChild(video);
 
-            videoDiv.appendChild(video);
-
-            video.load();
-            video.currentTime = 0;
-            video.play();
-          }
+                video.load();
+                video.currentTime = 0;
+                video.play();
+              }
+            },
+            error => {
+              //$('.overlay').show();
+            });
         }
       } else {
         this.VideoConfigForm.patchValue({
@@ -403,7 +425,6 @@ export class AddDashboardDesignerComponent implements OnInit {
       outerMarginBottom: null,
       outerMarginLeft: null,
       useTransformPositioning: true,
-      gridSizeChangedCallback: AddDashboardDesignerComponent.gridSizeChanged,
       itemResizeCallback: AddDashboardDesignerComponent.itemResize,
       mobileBreakpoint: 640,
       minCols: 12,
@@ -458,16 +479,9 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   static itemResize(item: GridsterItem, itemComponent: GridsterItemComponentInterface): void {
-    // tslint:disable-next-line:no-console
-    console.info('itemResized', item, itemComponent);
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
     }, 10);
-  }
-
-  static gridSizeChanged(grid: GridsterComponentInterface): void {
-    // tslint:disable-next-line:no-console
-    console.info('gridSizeChanged', grid);
   }
 
   removeItem($event, item) {
@@ -980,41 +994,59 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
     }
     else {
-      if (type == 'image') {
-        this.imgAssetId = Number(value);
-        this.imgAssetName = this.assets.filter(x => x.Identifier == Number(event.target.value))[0].Name;
-        var url = this.baseURL + "assets/" + this.imgAssetLibraryId + "/" + this.imgAssetName;
-        this.ImagePreviewSrc = url;
-        this.imageFormErrorObject.showAssetError = false;
-      } else {
-        this.vdoAssetId = Number(value);
-        this.vdoAssetName = this.assets.filter(x => x.Identifier == Number(event.target.value))[0].Name;
-        var url = this.baseURL + "assets/" + this.vdoAssetLibraryId + "/" + this.vdoAssetName;
-        this.videoPreviewSrc = url;
-
-        var videoDiv = document.getElementById('videoPreviewDiv');
-        if (videoDiv != undefined && videoDiv != null) {
-          if (videoDiv.hasChildNodes()) {
-            videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+      var asset = this.assets.filter(x => x.Identifier == Number(event.target.value))[0];
+      this.uiLoader.start();
+      this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + asset.Identifier, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this.uiLoader.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          const blob = new Blob([data.body], { type: contentType });
+          
+          if (type == 'image') {
+            let objectURL = URL.createObjectURL(blob);
+            this.ImagePreviewSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+            this.imgAssetId = Number(value);
+            this.imgAssetName = asset.Name;
+            this.imageFormErrorObject.showAssetError = false;
           }
-          var video = document.createElement('video');
-          video.id = 'videoConfigPreviewSrc';
-          video.style.height = "200px";
-          video.style.width = "75%";
+          else {
+            let objectURL = URL.createObjectURL(blob);
+            this.videoPreviewSrc = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+            var videoDiv = document.getElementById('videoPreviewDiv');
+            if (videoDiv != undefined && videoDiv != null) {
+              if (videoDiv.hasChildNodes()) {
+                videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+              }
+              
+              var video = document.createElement('video');
+              video.id = 'videoConfigPreviewSrc';
+              video.style.height = "200px";
+              video.style.width = "75%";
 
-          var sourceTag = document.createElement('source');
-          sourceTag.setAttribute('src', this.videoPreviewSrc);
-          sourceTag.setAttribute('type', 'video/mp4');
-          video.appendChild(sourceTag);
+              var sourceTag = document.createElement('source');
+              sourceTag.setAttribute('src', this.videoPreviewSrc);
+              sourceTag.setAttribute('type', 'video/mp4');
+              video.appendChild(sourceTag);
+              videoDiv.appendChild(video);
 
-          videoDiv.appendChild(video);
-
-          video.load();
-          video.currentTime = 0;
-          video.play();
-        }
-        this.videoFormErrorObject.showAssetError = false;
-      }
+              video.load();
+              video.currentTime = 0;
+              video.play();
+              
+            }
+            this.vdoAssetId = Number(value);
+            this.vdoAssetName = asset.Name;
+            this.videoPreviewSrc = asset.FilePath;
+            this.videoFormErrorObject.showAssetError = false;
+          }
+        },
+        error => {
+          this.uiLoader.stop();
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        });
     }
   }
 
@@ -1070,6 +1102,7 @@ export class AddDashboardDesignerComponent implements OnInit {
       imageConfig.SourceUrl = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imageUrl;
       imageConfig.isPersonalize = this.isPersonalizeImage;
       imageConfig.WidgetId = this.imageWidgetId;
+      //imageConfig.BlobObjectUrl = this.isPersonalizeImage == true ? "" : this.imageBlobObjectUrl;
 
       let oldItem = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
       let newItem = Object.assign({}, oldItem)
@@ -1081,6 +1114,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.resetImageConfigForm();
     this.isImageConfig = !this.isImageConfig;
     this.imageWidgetId = 0;
+    //this.imageBlobObjectUrl = '';
     this.selectedWidgetItemCount = 0;
     this.isMasterSaveBtnDisabled = false;
   }
@@ -1107,6 +1141,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.resetVideoConfigForm();
     this.isVideoConfig = !this.isVideoConfig;
     this.videoWidgetId = 0;
+    this.videoBlobObjectUrl = '';
     this.selectedWidgetItemCount = 0;
     this.isMasterSaveBtnDisabled = false;
     let vid = <HTMLVideoElement>document.getElementById("videoConfigPreviewSrc");
