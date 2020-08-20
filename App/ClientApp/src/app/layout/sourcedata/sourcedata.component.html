@@ -16,36 +16,40 @@
       <div class="d-flex justify-content-center mb-4">
         <div class="pagination-mat position-relative">
           <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
-                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage">
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
           </mat-paginator>
         </div>
       </div>
       <div class="widget-area-grid padding-0">
-        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
           <!-- Position Column -->
           <ng-container matColumnDef="date">
             <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
-            <td mat-cell *matCellDef="let element">{{element.date}}</td>
+            <td mat-cell *matCellDef="let element">{{element.EventDate  | date:"dd/MM/yyyy"}}</td>
           </ng-container>
 
           <ng-container matColumnDef="time">
             <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Time</th>
-            <td mat-cell *matCellDef="let element">{{element.time}} </td>
+            <td mat-cell *matCellDef="let element">{{element.EventDate  | date:"h:mm a"}} </td>
           </ng-container>
 
           <ng-container matColumnDef="page">
             <th class="width25" mat-header-cell *matHeaderCellDef mat-sort-header> Page </th>
-            <td mat-cell *matCellDef="let element">{{element.page}} </td>
+            <td mat-cell *matCellDef="let element">{{element.PageName}} </td>
           </ng-container>
 
           <ng-container matColumnDef="widget">
             <th class="width25" mat-header-cell *matHeaderCellDef mat-sort-header> Widget </th>
-            <td mat-cell *matCellDef="let element">{{element.widget}} </td>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.Widgetname==''">-</span>
+              <span  *ngIf="element.Widgetname!=''">{{element.Widgetname}}</span>
+           
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="userId">
-            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> User Id </th>
-            <td mat-cell *matCellDef="let element">{{element.userId}} </td>
+            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Customer </th>
+            <td mat-cell *matCellDef="let element">{{element.CustomerName}} </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -62,65 +66,75 @@
       <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
     </div>
   </div>
-  <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
-    <div class="filter-head">
-      <label class="m-0">Apply Filter</label>
-    </div>
-    <div class="filter-body-left d-flex flex-column stylescrollbar">
-      <div class="form-group">
-        <label>User Id</label>
-        <input type="text" class="form-control" />
+  <form [formGroup]="SourceDataFilterForm">
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
       </div>
-      <div class="form-group">
-        <label>Page</label>
-        <input type="text" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label>Widget</label>
-        <input type="text" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label>Start Date</label>
-        <div class="position-relative">
-          <input [owlDateTime]="dt" class="form-control" id="inputFromDate" >
-          <span [owlDateTimeTrigger]="dt" class="datetime-icon">
-            <i class="fa fa-calendar"></i>
-          </span>
-          <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>Customer</label>
+          <input type="text" class="form-control" formControlName="filterCustomer"/>
+        </div>
+        <div class="form-group">
+          <label>Page</label>
+          <input type="text" class="form-control" formControlName="filterPage"/>
+        </div>
+        <div class="form-group">
+          <label>Widget</label>
+          <input type="text" class="form-control" formControlName="filterWidget"/>
+        </div>
+        <div class="form-group">
+          <label>Start Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filterStartDate"
+                   placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)">
+            <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="text-danger" *ngIf="filterFromDateError">
+            {{filterFromDateErrorMessage}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filterEndDate"
+                   placeholder="Please select end date" readonly (ngModelChange)="onFilterDateChange($event)">
+            <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="text-danger" *ngIf="filterToDateError">
+            {{filterToDateErrorMessage}}
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>End Date</label>
-        <div class="position-relative">
-          <input [owlDateTime]="dt1" class="form-control" id="inputToDate" >
-          <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
-            <i class="fa fa-calendar"></i>
-          </span>
-          <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
-        </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" title="Search">
+            <button class="btn-footer-fill btn-block rounded-0 height100" [disabled]="filterToDateError || filterFromDateError" (click)="searchSourceDataRecordFilter('search')">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width33" title="Reset" (click)="searchSourceDataRecordFilter('reset')">
+            <a class="nav-link p-0">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Close" (click)="closeFilter()">
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-    <!--[ngClass]="filterClass"-->
-    <div class="filter-footer">
-      <ul class="nav">
-        <li class="nav-item width33" title="Search">
-          <a class="nav-link p-0">
-            <span class="fa fa-check"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Reset">
-          <a class="nav-link p-0">
-            <span class="fa fa-refresh"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Close" (click)="closeFilter()">
-          <a class="nav-link p-0">
-            <span class="fa fa-close"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+   </form>
 </div>
 
 <div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>

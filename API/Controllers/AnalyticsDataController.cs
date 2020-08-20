@@ -56,14 +56,14 @@ namespace nIS
         /// <param name="AnalyticsDataSearchParameter"></param>
         /// <returns>List of asset libraries</returns>
         [HttpPost]
-        public IList<AnalyticsData> List()
+        public IList<AnalyticsData> List(AnalyticsSearchParameter searchParameter)
         {
             IList<AnalyticsData> assetlibraries = new List<AnalyticsData>();
             try
             {
 
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                assetlibraries = this.AnalyticsDataManager.GetAnalyticsDatas(tenantCode);
+                assetlibraries = this.AnalyticsDataManager.GetAnalyticsData(searchParameter,tenantCode);
             }
             catch (Exception exception)
             {

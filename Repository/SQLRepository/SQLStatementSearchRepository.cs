@@ -226,7 +226,7 @@ namespace nIS
                             ScheduleId = statementRecord.ScheduleId,
                             ScheduleLogId = statementRecord.ScheduleLogId,
                             StatementId = statementRecord.StatementId,
-                            StatementDate = statementRecord.StatementDate,
+                            StatementDate = DateTime.SpecifyKind((DateTime)statementRecord.StatementDate, DateTimeKind.Utc),
                             StatementPeriod = statementRecord.StatementPeriod,
                             CustomerId = statementRecord.CustomerId,
                             CustomerName = statementRecord.CustomerName,

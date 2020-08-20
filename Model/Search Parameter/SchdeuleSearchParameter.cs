@@ -129,7 +129,7 @@ namespace nIS
                 this.isActive = value;
             }
         }
-
+        
         /// <summary>
         /// The start date
         /// </summary>

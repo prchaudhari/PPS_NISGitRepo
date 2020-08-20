@@ -30,7 +30,7 @@ namespace nIS
         /// <returns>
         /// It returns list of roles.
         /// </returns>
-        IList<AnalyticsData> GetAnalyticsData(string tenantCode);
+        IList<AnalyticsData> GetAnalyticsData(AnalyticsSearchParameter searchParameter, string tenantCode);
 
         /// <summary>
         /// This method reference to get roles based on serach parameter.

@@ -36,6 +36,7 @@
     <None Remove="ClientApp\src\app\layout\logs\scheduleLog.ts" />
     <None Remove="ClientApp\src\app\layout\schedule-management\schedule.ts" />
     <None Remove="ClientApp\src\app\layout\schedule-management\scheduleHitory.ts" />
+    <None Remove="ClientApp\src\app\layout\sourcedata\sourcedata.ts" />
     <None Remove="ClientApp\src\app\layout\statement-defination\statement.ts" />
     <None Remove="ClientApp\src\app\layout\statement-search\statementSearch.ts" />
     <None Remove="ClientApp\src\app\layout\tenant-configuration\tenantConfiguration.service.ts" />
@@ -59,6 +60,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\layout\logs\schedulelog.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\roles\role.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\schedule-management\schedule.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\sourcedata\sourcedata.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\statement-defination\statement.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\statement-search\statementSearch.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.spec.ts" />
@@ -99,6 +101,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\layout\schedule-management\scheduleHitory.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\layout\sourcedata\sourcedata.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\layout\statement-defination\statement.ts">

@@ -68,13 +68,13 @@ namespace nIS
         /// <returns>
         /// Returns roles if found for given parameters, else return null
         /// </returns>
-        public IList<AnalyticsData> GetAnalyticsDatas(string tenantCode)
+        public IList<AnalyticsData> GetAnalyticsData(AnalyticsSearchParameter searchParameter, string tenantCode)
         {
             IList<AnalyticsData> assetLibraries = new List<AnalyticsData>();
             try
             {
 
-                assetLibraries = this.AnalyticsDataRepository.GetAnalyticsData(tenantCode);
+                assetLibraries = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter,tenantCode);
             }
             catch (Exception exception)
             {

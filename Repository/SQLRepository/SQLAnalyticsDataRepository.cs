@@ -13,6 +13,7 @@ namespace nIS
     using System.IO;
     using System.Linq;
     using System.Linq.Dynamic;
+    using System.Net.NetworkInformation;
     using System.Text;
     using Unity;
 
@@ -77,30 +78,114 @@ namespace nIS
         /// <param name="AnalyticsDataSearchParameter"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
-        public IList<AnalyticsData> GetAnalyticsData(string tenantCode)
+        public IList<AnalyticsData> GetAnalyticsData(AnalyticsSearchParameter searchParameter, string tenantCode)
         {
             IList<AnalyticsData> AnalyticsDatas = new List<AnalyticsData>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                IList<AnalyticsDataRecord> AnalyticsDataRecords = new List<AnalyticsDataRecord>();
+                IList<PageRecord> pageRecords = new List<PageRecord>();
+                IList<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+                IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    IList<AnalyticsDataRecord> AnalyticsDataRecords = new List<AnalyticsDataRecord>();
-                    AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords.Where(item => item.TenantCode == tenantCode).ToList();
-                    AnalyticsDatas = AnalyticsDataRecords.Select(item => new AnalyticsData
+                    string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
+
+                    if (string.IsNullOrEmpty(whereClause))
                     {
-                        Identifier = item.Id,
-                        StatementId = item.StatementId,
-                        CustomerId = item.CustomerId,
-                        AccountId = item.AccountId,
-                        PageWidgetId = item.PageWidgetId == null ? 0 : (long)item.PageWidgetId,
-                        PageId = item.PageId == null ? 0 : (long)item.PageId,
-                        WidgetId = item.WidgetId == null ? 0 : (long)item.WidgetId,
-                        EventDate = item.EventDate,
-                        EventType = item.EventType,
-                    }).ToList();
+                        if (searchParameter.PagingParameter.PageIndex > 0 && searchParameter.PagingParameter.PageSize > 0)
+                        {
+                            AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
+                            .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString())
+                            .Skip((searchParameter.PagingParameter.PageIndex - 1) * searchParameter.PagingParameter.PageSize)
+                            .Take(searchParameter.PagingParameter.PageSize)
+                            .ToList();
+                        }
+                        else
+                        {
+                            AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
+                            .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString().ToLower())
+                            .ToList();
+                        }
+                    }
+                    else
+                    {
+                        if (searchParameter.PagingParameter.PageIndex > 0 && searchParameter.PagingParameter.PageSize > 0)
+                        {
+                            AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
+                            .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString())
+                            .Where(whereClause)
+                            .Skip((searchParameter.PagingParameter.PageIndex - 1) * searchParameter.PagingParameter.PageSize)
+                            .Take(searchParameter.PagingParameter.PageSize)
+                            .ToList();
+                        }
+                        else
+                        {
+                            AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
+                            .Where(whereClause)
+                            .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString().ToLower())
+                            .ToList();
+                        }
+                    }
+
+                    if (AnalyticsDataRecords?.Count() > 0)
+                    {
+                        StringBuilder pageIds = new StringBuilder();
+                        pageIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.PageId != null && item.PageId > 0)
+                            .Select(item => string.Format("Id.Equals({0})", item.PageId))) + ")");
+                        pageRecords = nISEntitiesDataContext.PageRecords.Where(pageIds.ToString()).ToList();
+
+                        StringBuilder customerIds = new StringBuilder();
+                        customerIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.CustomerId > 0)
+                            .Select(item => string.Format("Id.Equals({0})", item.CustomerId))) + ")");
+                        customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(customerIds.ToString()).ToList();
+
+                        StringBuilder widgetIds = new StringBuilder();
+                        widgetIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.WidgetId != null && item.WidgetId > 0)
+                            .Select(item => string.Format("Id.Equals({0})", item.WidgetId))) + ")");
+                        widgetRecords = nISEntitiesDataContext.WidgetRecords.Where(widgetIds.ToString()).ToList();
+                    }
+
                 }
+                AnalyticsDataRecords?.ToList().ForEach(item =>
+                {
+                    AnalyticsData data = new AnalyticsData();
+                    data.Identifier = item.Id;
+                    data.StatementId = item.StatementId;
+                    data.CustomerId = item.CustomerId;
+                    data.AccountId = item.AccountId;
+                    data.PageWidgetId = item.PageWidgetId == null ? 0 : (long)item.PageWidgetId;
+                    data.PageId = item.PageId == null ? 0 : (long)item.PageId;
+                    data.WidgetId = item.WidgetId == null ? 0 : (long)item.WidgetId;
+                    data.EventDate = DateTime.SpecifyKind((DateTime)item.EventDate, DateTimeKind.Utc);
+                    data.EventType = item.EventType;
+                    if (customerMasterRecords.Any(i => i.Id == data.CustomerId))
+                    {
+                        var customer = customerMasterRecords.Where(i => i.Id == data.CustomerId)?.FirstOrDefault();
+                        data.CustomerName = customer.FirstName + " " + customer.FirstName;
+                    }
+                    if (data.PageId > 0 && pageRecords.Any(i => i.Id == data.PageId))
+                    {
+                        var customer = pageRecords.Where(i => i.Id == data.PageId)?.FirstOrDefault();
+                        data.PageName = customer.DisplayName;
+                    }
+                    else
+                    {
+                        data.PageName = "";
+                    }
+                    if (data.WidgetId > 0 && widgetRecords.Any(i => i.Id == data.WidgetId))
+                    {
+                        var customer = widgetRecords.Where(i => i.Id == data.WidgetId)?.FirstOrDefault();
+                        data.Widgetname = customer.DisplayName;
+                    }
+                    else
+                    {
+                        data.Widgetname = "";
+                    }
+                    AnalyticsDatas.Add(data);
+                });
             }
 
             catch (Exception ex)
@@ -164,6 +249,7 @@ namespace nIS
         #endregion
 
         #region Private Methhod
+
         #region Get Connection String
 
         /// <summary>
@@ -188,7 +274,68 @@ namespace nIS
             }
         }
 
-        #endregion 
+        #endregion
+
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="searchParameter">Role search Parameters</param>
+        /// <returns>
+        /// Returns a string.
+        /// </returns>
+        private string WhereClauseGenerator(AnalyticsSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            //if (searchParameter.SearchMode == SearchMode.Equals)
+            //{
+            //    if (validationEngine.IsValidLong(searchParameter.Identifier))
+            //    {
+            //        queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            //    }
+            //    if (validationEngine.IsValidText(searchParameter.Name))
+            //    {
+            //        queryString.Append(string.Format("Name.Equals(\"{0}\") and ", searchParameter.Name));
+            //    }
+            //}
+            //if (searchParameter.SearchMode == SearchMode.Contains)
+            //{
+            //    if (validationEngine.IsValidText(searchParameter.Name))
+            //    {
+            //        queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
+            //    }
+            //}
+            //if (validationEngine.IsValidText(searchParameter.Status))
+            //{
+            //    queryString.Append(string.Format("Status.Equals(\"{0}\") and ", searchParameter.Status));
+            //}
+
+
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                queryString.Append("EventDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
+            {
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+                queryString.Append("EventDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+
+                queryString.Append("EventDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                               "and EventDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+
+
+            return queryString.ToString();
+        }
+
         #endregion
 
     }

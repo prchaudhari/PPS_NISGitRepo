@@ -64,16 +64,34 @@ namespace nIS
         public long CustomerId { get; set; }
 
         /// <summary>
+        /// Gets or sets CustomerId.
+        /// </summary>
+        [Description("CustomerName")]
+        public string CustomerName { get; set; }
+
+        /// <summary>
         /// Gets or sets PageId.
         /// </summary>
         [Description("PageId")]
         public long PageId { get; set; }
 
         /// <summary>
+        /// Gets or sets CustomerId.
+        /// </summary>
+        [Description("PageName")]
+        public string PageName { get; set; }
+
+        /// <summary>
         /// Gets or sets identifier.
         /// </summary>
         [Description("WidgetId")]
         public long WidgetId { get; set; }
+
+        /// <summary>
+        /// Gets or sets Widgetname.
+        /// </summary>
+        [Description("Widgetname")]
+        public string Widgetname { get; set; }
 
         /// <summary>
         /// Gets or sets EventDate.
