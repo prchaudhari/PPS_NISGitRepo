@@ -47,10 +47,13 @@
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StatementId" Type="bigint" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="AccountId" Type="nvarchar" MaxLength="100" />
+          <Property Name="PageWidgetId" Type="bigint" />
           <Property Name="PageId" Type="bigint" />
           <Property Name="WidgetId" Type="bigint" />
           <Property Name="EventDate" Type="datetime" Nullable="false" />
           <Property Name="EventType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Asset">
           <Key>
@@ -1340,6 +1343,9 @@
           <Property Name="WidgetId" Type="Int64" />
           <Property Name="EventDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EventType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PageWidgetId" Type="Int64" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2001,6 +2007,9 @@
           <EntitySetMapping Name="AnalyticsDataRecords">
             <EntityTypeMapping TypeName="NISModel.AnalyticsDataRecord">
               <MappingFragment StoreEntitySet="AnalyticsData">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="PageWidgetId" ColumnName="PageWidgetId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
                 <ScalarProperty Name="EventType" ColumnName="EventType" />
                 <ScalarProperty Name="EventDate" ColumnName="EventDate" />
                 <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />

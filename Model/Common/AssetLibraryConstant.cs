@@ -149,11 +149,44 @@ namespace nIS
         /// The invalid asset path
         /// </summary>
         public const string INVALID_TENANTCONFIGS_OUTPUTHTMLPATH= "OutputHTMLPath";
+
         /// <summary>
         /// The invalid asset path
         /// </summary>
         public const string INVALID_TENANTCONFIGS_OUTPUTPDFPATH = "OutputPDFPath";
-      
+
+        #endregion
+
+        #region Analytics Data
+
+        /// <summary>
+        /// The asset model section
+        /// </summary>
+        public const string ANALYTICSDATA_MODEL_SECTION = "AnalyticsDataModelSection";
+
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_ANALYTICS_DATA = "InvalidAnalyticsData";
+
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_ANALYTICS_STMTID = "StatementId";
+
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_ANALYTICS_CUSTID = "CustomerId";
+
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_ANALYTICS_EVENTTYPE = "EventType";
+        /// <summary>
+        /// The invalid asset path
+        /// </summary>
+        public const string INVALID_ANALYTICS_EVENTDATE = "EventDate";
 
         #endregion
     }

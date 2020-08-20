@@ -121,6 +121,7 @@
     <Compile Include="ImageRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\IAnalyticsDataRepository.cs" />
     <Compile Include="IRepository\IStatementSearchRepository.cs" />
     <Compile Include="IRepository\ITenantConfigurationRepository.cs" />
     <Compile Include="IRepository\IAssetSettingRepository.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="ScheduleRunHistoryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLRepository\SQLAnalyticsDataRepository.cs" />
     <Compile Include="SQLRepository\SQLStatementSearchRepository.cs" />
     <Compile Include="SQLRepository\SQLTenantConfigurationRepository.cs" />
     <Compile Include="SQLRepository\SQLAssetSettingRepository.cs" />

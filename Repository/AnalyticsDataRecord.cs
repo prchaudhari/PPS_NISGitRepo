@@ -21,5 +21,8 @@ namespace nIS
         public Nullable<long> WidgetId { get; set; }
         public System.DateTime EventDate { get; set; }
         public string EventType { get; set; }
+        public string AccountId { get; set; }
+        public Nullable<long> PageWidgetId { get; set; }
+        public string TenantCode { get; set; }
     }
 }
