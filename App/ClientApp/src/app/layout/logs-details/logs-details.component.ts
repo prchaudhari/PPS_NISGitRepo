@@ -351,10 +351,10 @@ export class LogsDetailsComponent implements OnInit {
 
   viewLodMessage(log: ScheduleLogDetail) {
     if (log.Status == 'Failed') {
-      this._messageDialogService.openDialogBox('Error', log.LogMessage, Constants.msgBoxSuccess);
+      this._messageDialogService.openMulipleMessageDialogBox('Error', log.LogMessage, Constants.msgBoxSuccess);
     }
     else {
-      this._messageDialogService.openDialogBox('Success', log.LogMessage, Constants.msgBoxSuccess);
+      this._messageDialogService.openMulipleMessageDialogBox('Success', log.LogMessage, Constants.msgBoxSuccess);
     }
   }
 }

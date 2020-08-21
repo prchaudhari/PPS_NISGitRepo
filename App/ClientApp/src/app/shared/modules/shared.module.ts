@@ -9,10 +9,11 @@ import { MatTableModule } from '@angular/material/table';
 import { PaginatePipe } from './pagination/paginate.pipe';
 import { SharedPipesModule } from '../pipes/shared-pipes.module';
 import { PaginationModule } from './pagination/pagination.module';
+
 @NgModule({
   declarations: [
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
   ],
   imports: [
     CommonModule,

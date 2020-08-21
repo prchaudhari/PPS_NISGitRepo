@@ -25,6 +25,8 @@ import { DynamicGlobalVariable } from './shared/constants/constants';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PagePreviewComponent } from './shared/pagepreview/pagepreview.component';
 import { SafeHtmlPip } from './shared/pagepreview/pagepreview.component';
+import { MultipleMessageboxComponent } from './shared/modules/multiple-messagebox/multiple-messagebox.component';
+import { SafeHtmlPipee } from './shared/modules/multiple-messagebox/multiple-messagebox.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { SafeHtmlPip } from './shared/pagepreview/pagepreview.component';
     MsgBoxComponent,
     ConfirmUserComponent,
     PagePreviewComponent,
-    SafeHtmlPip
+    MultipleMessageboxComponent,
+    SafeHtmlPip, 
+    SafeHtmlPipee
   ],
   imports: [
     BrowserModule,
@@ -62,7 +66,8 @@ import { SafeHtmlPip } from './shared/pagepreview/pagepreview.component';
   //Common component for alert message.
   entryComponents: [
     MsgBoxComponent,
-    PagePreviewComponent
+    PagePreviewComponent,
+    MultipleMessageboxComponent
   ]
 })
 export class AppModule { }
