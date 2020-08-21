@@ -56,6 +56,8 @@ export class ErrorMessageConstants {
 
   public static get getStartDateThanCurrentDateMessage(): string { return "Start Date should not be less than or equal to current date." };
   public static get getEndDateThanCurrentDateMessage(): string { return "End Date should not be less than or equal to current date." };
+  public static get getPreviousEndDateShouldNotBeLessThanEndDateMessage(): string { return "End date should not be less than previous end date." };
+  public static get getStartDateAndEndDateShouldhaveMonthDifferenceMessage(): string { return "Start date and end date should have minimum one month diffrenece." };
 
 }
 

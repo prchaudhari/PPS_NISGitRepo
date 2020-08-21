@@ -1005,6 +1005,14 @@ namespace nIS
             {
                 DateTime batchExecutionDate = DateTime.Now;
                 int ValueToAddInMonth = start;
+                DateTime scheduleEnddate = schedule.EndDate ?? DateTime.Now;
+
+                //If schedule day of month is greater than end date day of month, then batch record will generate for that month
+                if (scheduleEnddate.Day < Convert.ToInt32(schedule.DayOfMonth))
+                {
+                    end--;
+                }
+
                 for (int index = start; index <= end; index++)
                 {
                     BatchMasterRecord record = new BatchMasterRecord();

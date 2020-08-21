@@ -15,40 +15,36 @@
           </mat-paginator>
         </div>
       </div>
-      <div class="widget-area-grid padding-0">
+      <div class="widget-area-grid padding-0" *ngIf='scheduleLogList!=undefined && scheduleLogList.length>0'>
         <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
 
-          <!-- Position Column -->
-          <ng-container matColumnDef="id">
-            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-            <td mat-cell *matCellDef="let element">{{element.Identifier}}</td>
+          <ng-container matColumnDef="customer">
+            <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Customer </th>
+            <td mat-cell *matCellDef="let element"> {{element.CustomerName}} </td>
           </ng-container>
 
-          <!-- Name Column -->
+          <ng-container matColumnDef="accountId">
+            <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Account ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.AccountNumber}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="accounttype">
+            <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Account Type </th>
+            <td mat-cell *matCellDef="let element">{{element.AccountType}}</td>
+          </ng-container>
+
           <ng-container matColumnDef="date">
             <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Date </th>
             <td mat-cell *matCellDef="let element"> {{element.StatementDate  | date:"dd/MM/yyyy"}} </td>
           </ng-container>
 
-          <!-- Weight Column -->
           <ng-container matColumnDef="period">
             <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Period </th>
             <td mat-cell *matCellDef="let element"> {{element.StatementPeriod}} </td>
           </ng-container>
 
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="customer">
-            <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Customer </th>
-            <td mat-cell *matCellDef="let element"> {{element.CustomerName}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="accountId">
-            <th class="width10" mat-header-cell *matHeaderCellDef mat-sort-header> Account ID </th>
-            <td mat-cell *matCellDef="let element"> {{element.AccountNumber}} </td>
-          </ng-container>
-
           <ng-container matColumnDef="actions">
-            <th class="width10" mat-header-cell *matHeaderCellDef> Action </th>
+            <th class="width15" mat-header-cell *matHeaderCellDef> Action </th>
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
                 <button  (click)="ViewHTML(element)" type="button" title="View Html"><span class="fa fa-download"></span></button>
@@ -60,6 +56,9 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+      </div>
+      <div class="widget-area-grid padding-0 text-center text-danger" *ngIf='scheduleLogList!=undefined && scheduleLogList.length==0'>
+          <label>Please use the filter to see the statement records.</label>
       </div>
     </div>
   </div>

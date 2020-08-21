@@ -32,7 +32,7 @@ export interface ListElement {
 })
 export class StatementSearchComponent implements OnInit {
   //public variables
-  public isFilter: boolean = false;
+  public isFilter: boolean = true;
   public scheduleLogList: StatementSearch[] = [];
   public isLoaderActive: boolean = false;
   public isRecordFound: boolean = false;
@@ -57,8 +57,7 @@ export class StatementSearchComponent implements OnInit {
     this.isFilter = !this.isFilter;
   }
 
-  displayedColumns: string[] = ['id', 'date', 'period', 'customer', 'accountId',  'actions'];
-
+  displayedColumns: string[] = ['customer', 'accountId', 'accounttype', 'date', 'period', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -110,7 +109,7 @@ export class StatementSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getStatementSearchs(null);
+    //this.getStatementSearchs(null);
     //this.getPageTypes();
     this.StatementSearchFilterForm = this.fb.group({
       filterStatementCustomer: [null],
@@ -142,9 +141,9 @@ export class StatementSearchComponent implements OnInit {
     this.sortedStatementSearchList = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'id': return compare(a.Identifier, b.Identifier, isAsc);
         case 'accountId': return compareStr(a.AccountNumber, b.AccountNumber, isAsc);
         case 'customer': return compareStr(a.CustomerName, b.CustomerName, isAsc);
+        case 'accounttype': return compareStr(a.CustomerName, b.CustomerName, isAsc);
         case 'period': return compareStr(a.StatementPeriod, b.StatementPeriod, isAsc);
         case 'date': return compareDate(a.StatementDate, b.StatementDate, isAsc);
         default: return 0;
@@ -217,7 +216,12 @@ export class StatementSearchComponent implements OnInit {
     this.isFilterDone = true;
     if (searchType == 'reset') {
       this.resetSchdeuleLogFilterForm();
-      this.getStatementSearchs(null);
+      //this.getStatementSearchs(null);
+      this.scheduleLogList = [];
+      this.dataSource = new MatTableDataSource<StatementSearch>(this.scheduleLogList);
+      this.dataSource.sort = this.sort;
+      this.array = this.scheduleLogList;
+      this.totalSize = this.array.length;
       this.isFilter = !this.isFilter;
     }
     else {
@@ -249,7 +253,6 @@ export class StatementSearchComponent implements OnInit {
 
         }
 
-        console.log(searchParameter);
         this.currentPage = 0;
         this.getStatementSearchs(searchParameter);
         this.isFilter = !this.isFilter;

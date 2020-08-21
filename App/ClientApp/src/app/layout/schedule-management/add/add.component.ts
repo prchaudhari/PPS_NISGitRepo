@@ -17,12 +17,6 @@ import { User } from '../../users/user';
   styleUrls: ['./add.component.scss']
 })
 
-
-//export interface DropDonw {
-//  Identifier: string,
-//  Name:string
-//}
-
 export class AddComponent implements OnInit {
 
   public scheduleForm: FormGroup;
@@ -42,9 +36,7 @@ export class AddComponent implements OnInit {
   public filterDateDiffErrorMessage: string = "";
   public scheduleFormErrorObject: any = {
   };
-  //public DayOfMonthList: DropDonw[] = [];
-  //public TimeOfDayHoursList: DropDonw[] = [];
-  //public TimeOfDayMinutesList: DropDonw[] = [];
+
   public DayOfMonthList: any = [];
   public TimeOfDayHoursList: any = [];
   public TimeOfDayMinutesList: any = [];
@@ -57,11 +49,8 @@ export class AddComponent implements OnInit {
     private spinner: NgxUiLoaderService,
     private router: Router,
     private _messageDialogService: MessageDialogService,
-    private injector: Injector
-
-  ) {
-
-    router.events.subscribe(e => {
+    private injector: Injector) {
+      router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/schedulemanagement/Add')) {
           this.updateOperationMode = false;
@@ -89,7 +78,6 @@ export class AddComponent implements OnInit {
           localStorage.removeItem("scheduleparams");
         }
       }
-
     });
   }
 
@@ -98,13 +86,9 @@ export class AddComponent implements OnInit {
     this.st.Name = "Please Select";
     this.st.Identifier = 0;
     this.statementDefinitionList.push(this.st);
-
     var obj = { Identifier: "Please Select", Name: "Please Select" };
-
     this.DayOfMonthList.push(obj);
-
     this.TimeOfDayHoursList.push(obj);
-
     this.TimeOfDayMinutesList.push(obj);
 
     for (var i = 1; i <= 29; i++) {
@@ -157,7 +141,6 @@ export class AddComponent implements OnInit {
     this.scheduleForm.controls['DayOfMonth'].setValue(obj.Identifier);
     this.scheduleForm.controls['TimeOfDayHours'].setValue(obj.Identifier);
     this.scheduleForm.controls['TimeOfDayMinutes'].setValue(obj.Identifier);
-
     this.getStatements();
   }
 
@@ -184,21 +167,17 @@ export class AddComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Descending;
     searchParameter.SearchMode = Constants.Contains;
     searchParameter.Status = "Published";
-
     var list = await statementService.getStatements(searchParameter);
     for (var i = 0; i < list.length; i++) {
       this.statementDefinitionList.push(list[i]);
     }
     if (localStorage.getItem('scheduleparams')) {
-
       this.getSchedule();
     }
-
   }
 
   async getSchedule() {
     let statementService = this.injector.get(ScheduleService);
-
     var searchParameter: any = {};
     searchParameter.IsActive = true;
     searchParameter.PagingParameter = {};
@@ -210,9 +189,7 @@ export class AddComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.schedule.Identifier;
     searchParameter.IsSchedulePagesRequired = true;
-
     var statementList = await statementService.getSchedule(searchParameter);
-
     if (statementList.length == 0) {
       this._messageDialogService.openDialogBox('Error', "Schedule Not Found", Constants.msgBoxError);
     }
@@ -237,16 +214,13 @@ export class AddComponent implements OnInit {
     }
     else {
       this.scheduleForm.controls['filtershiftenddate'].setValue(this.schedule.EndDate);
-
     }
     if (this.schedule.IsExportToPDF) {
       this.IsExportToPDF = true;
     }
     else {
       this.IsExportToPDF = false;
-
     }
-
   }
 
   get ScheduleName() {
@@ -286,30 +260,23 @@ export class AddComponent implements OnInit {
   //}
 
   public onStateDefinitionSelected(event) {
-
     const value = event.target.value;
     if (value == "0") {
       this.scheduleFormErrorObject.statementShowError = true;
       this.schedule.Statement.Identifier = 0;
-
     }
     else {
       this.scheduleFormErrorObject.statementShowError = false;
-
       this.schedule.Statement.Identifier = Number(value);
-
     }
   }
 
   public IsExportToPDFClicked(event) {
-
     const value = event.checked;
     this.IsExportToPDF = value;
-
   }
 
   public NoEndDateClicked(event) {
-
     const value = event.checked;
     this.IsEndDateRequired = !value;
     if (!this.IsEndDateRequired) {
@@ -322,55 +289,42 @@ export class AddComponent implements OnInit {
   }
 
   public onDayOfMonthSelected(event) {
-
     const value = event.target.value;
     if (value == "Please Select") {
       this.scheduleFormErrorObject.dayOfmonthShowError = true;
       this.schedule.DayOfMonth = 0;
-
     }
     else {
       this.scheduleFormErrorObject.dayOfmonthShowError = false;
-
       this.schedule.DayOfMonth = Number(value);
-
     }
   }
 
   public onTimeOfDayHoursSelected(event) {
-
     const value = event.target.value;
     if (value == "Please Select") {
       this.scheduleFormErrorObject.hourOfDayShowError = true;
       this.schedule.HourOfDay = 0;
-
     }
     else {
       this.scheduleFormErrorObject.hourOfDayShowError = false;
-
       this.schedule.HourOfDay = Number(value);
-
     }
   }
 
   public onTimeOfDayMinutesSelected(event) {
-
     const value = event.target.value;
     if (value == "Please Select") {
       this.scheduleFormErrorObject.minuteOfHourShowError = true;
       this.schedule.MinuteOfDay = 0;
-
     }
     else {
       this.scheduleFormErrorObject.minuteOfHourShowError = false;
-
       this.schedule.MinuteOfDay = Number(value);
-
     }
   }
 
   onFilterDateChange(event) {
-
     this.filterFromDateError = false;
     this.filterToDateError = false;
     this.filterFromDateErrorMessage = "";
@@ -381,7 +335,6 @@ export class AddComponent implements OnInit {
     if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '') {
       if (this.IsStartDateDisable == false) {
         let startDate = this.scheduleForm.value.filtershiftfromdate;
-
         if (startDate.getTime() < currentDte.getTime()) {
           this.filterFromDateError = true;
           this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateThanCurrentDateMessage;
@@ -391,10 +344,10 @@ export class AddComponent implements OnInit {
     if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
       let toDate = this.scheduleForm.value.filtershiftenddate;
       if (this.updateOperationMode) {
-        var date =new Date( this.schedule.EndDate);
-        if (toDate.getDate() < date.getDate()) {
+        var date =new Date(this.schedule.EndDate);
+        if (toDate.getTime() < date.getTime()) {
           this.filterToDateError = true;
-          this.filterToDateErrorMessage = "End date should not be less than previous end date";
+          this.filterToDateErrorMessage = ErrorMessageConstants.getPreviousEndDateShouldNotBeLessThanEndDateMessage;
         }
       }
       else {
@@ -403,7 +356,6 @@ export class AddComponent implements OnInit {
           this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
         }
       }
-     
     }
     if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
       this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
@@ -412,43 +364,35 @@ export class AddComponent implements OnInit {
       if (this.IsEndDateRequired) {
         if (startDate.getTime() >= toDate.getTime()) {
           this.filterToDateError = true;
-          this.filterToDateErrorMessage = "Start date should be less than end date.";
+          this.filterToDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
         }
         else {
           if (this.monthDiff(startDate, toDate) < 30) {
-            
-              this.filterDateDifferenecError = true;
-              this.filterDateDiffErrorMessage = "Start date and end date should have minimum one month diffrenece";
+            this.filterDateDifferenecError = true;
+            this.filterDateDiffErrorMessage = ErrorMessageConstants.getStartDateAndEndDateShouldhaveMonthDifferenceMessage;
             this.filterToDateError = false;
             this.filterToDateErrorMessage = "";
           }
         }
       }
-
-
     }
   }
 
   monthDiff(d1, d2) {
-
     return Math.floor((Date.UTC(d2.getFullYear(), d2.getMonth(), d2.getDate())
       - Date.UTC(d1.getFullYear(), d1.getMonth(), d1.getDate())) / (1000 * 60 * 60 * 24));
-
   }
 
   vaildateForm() {
     if (this.scheduleForm.invalid)
       return true;
     else if (this.scheduleForm.value.DayOfMonth == "Please Select") {
-
       return true;
     }
     else if (this.scheduleForm.value.TimeOfDayHours == "Please Select") {
-
       return true;
     }
     else if (this.scheduleForm.value.TimeOfDayMinutes == "Please Select") {
-
       return true;
     }
     else if (this.scheduleForm.value.StatementDefinition == "0") {
@@ -463,11 +407,9 @@ export class AddComponent implements OnInit {
       }
     }
     return false;
-
   }
 
   async SaveSchedule() {
-
     this.schedule.Name = this.scheduleForm.value.ScheduleName;
     this.schedule.Statement.Identifier = this.scheduleForm.value.StatementDefinition;
     this.schedule.StartDate = this.scheduleForm.value.filtershiftfromdate;

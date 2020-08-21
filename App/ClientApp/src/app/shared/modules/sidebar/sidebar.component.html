@@ -120,7 +120,7 @@
 
       <li [ngClass]="(URL=='/statemenetsearch')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToStatemenetSearch()"
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Search','Operation' : 'View'}))">
-        <a> <span class='nav-icon fa fa-search' title="Statemenet Search"> </span> <span class='nav-title'>Statement Search</span> </a>
+        <a> <span class='nav-icon fa fa-search' title="Statement Search"> </span> <span class='nav-title'>Statement Search</span> </a>
       </li>
     </ul>
 
