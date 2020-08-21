@@ -119,7 +119,6 @@ namespace nIS
         public HttpResponseMessage Download(string identifier)
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
@@ -128,42 +127,11 @@ namespace nIS
                     Identifier = identifier,
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
-
-
-                string relativePath = string.Empty;
-                int length = statement.StatementURL.Split('\\').Length;
-                string[] UrlParts = statement.StatementURL.Split('\\');
-                int count = 0;
-                for (int index = 0; index < length - 4; index++)
-                {
-                    count++;
-                    if(relativePath==string.Empty)
-                    {
-                        relativePath =  UrlParts[index];
-                    }
-                    else
-                    {
-                        relativePath = relativePath + "\\" + UrlParts[index];
-                    }
-                }
-                string statementURL = string.Empty;
-                for (int index = count; index < length ; index++)
-                {
-                    if (statementURL == string.Empty)
-                    {
-                        statementURL = UrlParts[index];
-                    }
-                    else
-                    {
-                        statementURL = statementURL + "\\" + UrlParts[index];
-                    }
-                }
-                statement.StatementURL = "\\"+statementURL;
           
                 string FileName = statement.StatementURL.Split('\\').ToList().LastOrDefault();
-                if (File.Exists(relativePath + statement.StatementURL))
+                if (File.Exists(statement.StatementURL))
                 {
-                    DirectoryInfo di = new DirectoryInfo(relativePath + statement.StatementURL);
+                    DirectoryInfo di = new DirectoryInfo(statement.StatementURL);
                     var customerId = di.Parent.Name;
                     var batchId = di.Parent.Parent.Name;
                     var batchFolderPath = di.Parent.Parent.FullName;
@@ -199,7 +167,6 @@ namespace nIS
                             }
                             try
                             {
-
                                 using (MemoryStream ms = new MemoryStream())
                                 {
                                     using (FileStream file = new FileStream(zipFile, FileMode.Open, FileAccess.Read))
@@ -231,7 +198,6 @@ namespace nIS
                                 throw new HttpResponseException(HttpStatusCode.InternalServerError);
                             }
                         }
-
                     }
                 }
             }

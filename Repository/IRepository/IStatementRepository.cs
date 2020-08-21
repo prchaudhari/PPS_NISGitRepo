@@ -102,7 +102,7 @@ namespace nIS
         /// <param name="statement"> the statement object </param>
         /// <param name="statementPageContents"> the statement page html content list</param>
         /// <param name="baseURL"> the base URL of API </param>
-        string BindPreviewDataToStatement(Statement statement, IList<StatementPageContent> statementPageContents, string baseURL);
+        string BindPreviewDataToStatement(Statement statement, IList<StatementPageContent> statementPageContents, string baseURL, string tenantCode);
 
         /// <summary>
         /// This method help to generate statement for customer
@@ -113,6 +113,14 @@ namespace nIS
         /// <param name="batchMaster"> the batch master object </param>
         /// <param name="batchDetails"> the list of batch details records </param>
         /// <param name="baseURL"> the base URL of API </param>
-        ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL);
+        ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode);
+
+        /// <summary>
+        /// This method help to bind data to common statement
+        /// </summary>
+        /// <param name="statement"> the statement object </param>
+        /// <param name="statementPageContents"> the statement page html content list</param>
+        /// <param name="tenantCode"> the tenant code </param>
+        StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, string tenantCode);
     }
 }

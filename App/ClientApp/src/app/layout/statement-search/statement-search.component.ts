@@ -2,8 +2,7 @@ import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router } from '@angular/router';
-import { Constants } from '../../shared/constants/constants';
-import { ErrorMessageConstants } from '../../shared/constants/constants';
+import { Constants, ErrorMessageConstants } from '../../shared/constants/constants';
 import { MessageDialogService } from '../../shared/services/mesage-dialog.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,7 +14,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpRequest }
 import { WindowRef } from '../../core/services/window-ref.service';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
-import { ConfigConstants } from '../../shared/constants/configconstants';
+import { ConfigConstants } from '../../shared/constants/configConstants';
 
 export interface ListElement {
   id: string;

@@ -4,6 +4,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.Drawing.Imaging;
     using System.Net.Http;
     using System.Net.Mail;
     using Websym.Core.ConfigurationManager;
@@ -147,7 +148,7 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        string WriteToFile(string Message, string fileName, long batchId, long customerId);
+        string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL);
 
         /// <summary>
         /// This method help to write json stringin to actual file
@@ -156,7 +157,7 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        void WriteToJsonFile(string Message, string fileName, long batchId, long customerId);
+        void WriteToJsonFile(string Message, string fileName, long batchId, long customerId, string baseURL);
 
         /// <summary>
         /// This method help to copy files from one directory to another directory
@@ -172,7 +173,7 @@
         /// <param name="htmlstr"> the html string </param>
         /// <param name="fileName"> the filename </param>
         /// <param name="batchId"> the batch id </param>
-        string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId);
+        string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, IDictionary<string, string> filesDictionary = null);
         #endregion
 
         /// <summary>
@@ -181,7 +182,7 @@
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
         /// <returns>true if deleted successfully, otherwise false.</returns>
-        bool DeleteUnwantedDirectory(long batchId, long customerId);
+        bool DeleteUnwantedDirectory(long batchId, long customerId, string baseURL);
 
         /// <summary>
         /// This method help to get string value of month
@@ -197,5 +198,14 @@
         /// <param name="startDate"> the start date value </param>
         /// <returns>difference between 2 dates in numeric</returns>
         int MonthDifference(DateTime endDate, DateTime startDate);
+
+        /// <summary>
+        /// This method help to save image file from url
+        /// </summary>
+        /// <param name="filePath"> the file path value </param>
+        /// <param name="format"> the image format </param>
+        /// <param name="imageUrl"> the image url </param>
+        /// <returns>return true if download successfully.</returns>
+        bool SaveImage(string filePath, ImageFormat format, string imageUrl);
     }
 }

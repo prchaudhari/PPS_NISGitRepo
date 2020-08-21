@@ -103,6 +103,7 @@
     <Compile Include="Search Parameter\WidgetSearchParameter.cs" />
     <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
+    <Compile Include="StatementPreviewData.cs" />
     <Compile Include="StatementSearch.cs" />
     <Compile Include="Statement.cs" />
     <Compile Include="StatementPage.cs" />

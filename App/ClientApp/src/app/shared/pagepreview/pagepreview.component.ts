@@ -449,7 +449,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       groups[val].push(item)
       return groups
     }, {});
-    console.log(data);
+    //console.log(data);
 
   }
 

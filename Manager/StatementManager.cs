@@ -36,6 +36,11 @@ namespace nIS
         /// </summary>
         IValidationEngine validationEngine = null;
 
+        /// <summary>
+        /// The Asset repository.
+        /// </summary>
+        private IAssetLibraryRepository assetLibraryRepository = null;
+
         #endregion
 
         #region Constructor
@@ -52,6 +57,7 @@ namespace nIS
                 this.unityContainer = unityContainer;
                 this.StatementRepository = this.unityContainer.Resolve<IStatementRepository>();
                 this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
+                this.assetLibraryRepository = this.unityContainer.Resolve<IAssetLibraryRepository>();
                 this.validationEngine = new ValidationEngine();
             }
             catch (Exception ex)
@@ -435,7 +441,8 @@ namespace nIS
                                                             dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
                                                             if (widgetSetting.isPersonalize == false)
                                                             {
-                                                                imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                                var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                                                imgAssetFilepath = asset.FilePath; //baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                                             }
                                                         }
                                                         var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
@@ -453,7 +460,8 @@ namespace nIS
                                                             }
                                                             else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
                                                             {
-                                                                vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                                var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                                                vdoAssetFilepath = asset.FilePath; //baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                                             }
                                                         }
                                                         var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", vdoAssetFilepath);

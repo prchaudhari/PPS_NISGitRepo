@@ -231,17 +231,12 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
-                //string baseURL = string.Empty;
-                //TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                //tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                //if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
-                //{
-                //    baseURL = tenantConfiguration.AssetPath;
-                //}
-                //else
-                //{
-                //    baseURL = Url.Content("~/");
-                //}
+                TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                {
+                    baseURL = tenantConfiguration.OutputHTMLPath;
+                }
                 return this.scheduleManager.RunSchedule(baseURL, tenantCode);
             }
             catch (Exception ex)
@@ -266,17 +261,12 @@ namespace nIS
                 }
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
-                //string baseURL = string.Empty;
-                //TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                //tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                //if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
-                //{
-                //    baseURL = tenantConfiguration.AssetPath;
-                //}
-                //else
-                //{
-                //    baseURL = Url.Content("~/");
-                //}
+                TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                {
+                    baseURL = tenantConfiguration.OutputHTMLPath;
+                }
                 return this.scheduleManager.RunScheduleNow(batchMaster, baseURL, tenantCode);
             }
             catch (Exception ex)
@@ -332,8 +322,6 @@ namespace nIS
             return result;
         }
 
-
-
         /// <summary>
         /// This method helps to get schedules list based on the search parameters.
         /// </summary>
@@ -356,9 +344,6 @@ namespace nIS
 
             return schedules;
         }
-
-
-
 
         #endregion
 
@@ -438,7 +423,6 @@ namespace nIS
                 throw ex;
             }
         }
-
 
         #endregion
 

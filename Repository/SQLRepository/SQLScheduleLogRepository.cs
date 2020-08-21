@@ -377,12 +377,12 @@ namespace nIS
                             {
                                 renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
                             }
-                            var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, statementPageContents, batchMaster, batchDetails, baseURL);
+                            var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode);
                             if (logDetailRecord != null)
                             {
                                 if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                                 {
-                                    this.utility.DeleteUnwantedDirectory(batchMaster.Id, customerMaster.Id);
+                                    this.utility.DeleteUnwantedDirectory(batchMaster.Id, customerMaster.Id, baseURL);
                                 }
                                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                 {
@@ -845,7 +845,7 @@ namespace nIS
                 if (logDetailRecord.Status != ScheduleLogStatus.Failed.ToString())
                 {
                     string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id);
+                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id, baseURL);
 
                     logDetailRecord.StatementFilePath = filePath;
                     logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();

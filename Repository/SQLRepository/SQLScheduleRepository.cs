@@ -575,9 +575,21 @@ namespace nIS
                                     {
                                         IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
 
-                                        string finalCommonStatementHtml = this.statementRepository.BindPreviewDataToStatement(statement, statementPageContents, baseURL);
+                                        var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantCode);
                                         string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                                        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(finalCommonStatementHtml, fileName, batchMaster.Id);
+
+                                        var filesDict = new Dictionary<string, string>();
+                                        if (statementPreviewData.SampleFiles != null && statementPreviewData.SampleFiles.Count > 0)
+                                        {
+                                            statementPreviewData.SampleFiles.ToList().ForEach(file =>
+                                            {
+                                                if (!filesDict.ContainsKey(file.FileName))
+                                                {
+                                                    filesDict.Add(file.FileName, file.FileUrl);
+                                                }
+                                            });
+                                        }
+                                        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, filesDict);
 
                                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                         {
@@ -735,13 +747,20 @@ namespace nIS
                     throw new StatementNotFoundException(tenantCode);
                 }
 
-                Statement statement = statements[0];
-                IList<StatementPageContent> statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
+                var statement = statements[0];
+                var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
                 if (statementPageContents.Count > 0)
                 {
-                    string finalCommonStatementHtml = this.statementRepository.BindPreviewDataToStatement(statement, statementPageContents, baseURL);
+                    var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantCode);
                     string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(finalCommonStatementHtml, fileName, batchMaster.Id);
+
+                    var filesDict = new Dictionary<string, string>();
+                    for (int i = 0; i < statementPreviewData.SampleFiles.Count; i++)
+                    {
+                        filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
+                    }
+                    var toDict = statementPreviewData.SampleFiles.Select((s, i) => new { s, i }).ToDictionary(x => x.i, x => x.s);
+                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, filesDict);
 
                     IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
                     IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
@@ -1072,8 +1091,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-
-
+                throw ex;
             }
             return batchMasters;
         }
@@ -1266,7 +1284,7 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     var renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
-                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL);
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode);
                     if (logDetailRecord != null)
                     {
                         logDetailRecord.ScheduleLogId = scheduleLog.Id;
@@ -1300,7 +1318,7 @@ namespace nIS
                         }
                         else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                         {
-                            this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id);
+                            this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, baseURL);
                         }
                     }
 

@@ -7,6 +7,8 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Drawing;
+    using System.Drawing.Imaging;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -593,16 +595,15 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, long batchId, long customerId)
+        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL)
         {
-            string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-            string statementDestPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements" + "\\" + batchId;
+            //string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+            string statementDestPath = baseURL + "\\Statements" + "\\" + batchId;
             if (!Directory.Exists(statementDestPath))
             {
                 Directory.CreateDirectory(statementDestPath);
             }
             string path = statementDestPath + "\\" + customerId + "\\";
-            string statementVirtualPath = "\\Statements" + "\\" + batchId + "\\" + customerId + "\\" + fileName;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -626,7 +627,7 @@
 
             //To move js, css and other assets contents which are common to each statment file
             //DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
-            return statementVirtualPath;
+            return filepath;
         }
 
         /// <summary>
@@ -636,9 +637,9 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public void WriteToJsonFile(string Message, string fileName, long batchId, long customerId)
+        public void WriteToJsonFile(string Message, string fileName, long batchId, long customerId, string baseURL)
         {
-            string jsonFileDestPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements" + "\\" + batchId;
+            string jsonFileDestPath = baseURL + "\\Statements" + "\\" + batchId;
             if (!Directory.Exists(jsonFileDestPath))
             {
                 Directory.CreateDirectory(jsonFileDestPath);
@@ -713,10 +714,10 @@
         /// <param name="htmlstr"> the html string </param>
         /// <param name="fileName"> the filename </param>
         /// <param name="batchId"> the batch id </param>
-        public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId)
+        public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, IDictionary<string, string> filesDictionary = null)
         {
-            string destPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements";
-            string path = destPath + "\\" + batchId + "\\";
+            //string destPath = baseURL + "\\Statements";
+            string path = baseURL + "\\Statements" + "\\" + batchId + "\\";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -724,8 +725,8 @@
 
             string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
             //string resourceFilePath = destPath + "\\" + batchId + "\\common";
-            string zipFileVirtualPath = "\\Statements" +"\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
-            string zipfilepath = AppDomain.CurrentDomain.BaseDirectory + zipFileVirtualPath;
+            string zipFileVirtualPath = "\\Statements" + "\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
+            string zipfilepath = baseURL + zipFileVirtualPath;
             string temppath = path + "\\temp\\";
             if (!Directory.Exists(temppath))
             {
@@ -749,6 +750,19 @@
                 sw.WriteLine(htmlstr);
             }
 
+            if (filesDictionary != null && filesDictionary?.Count > 0)
+            {
+                //WebClient webClient = new WebClient();
+                foreach (KeyValuePair<string, string> file in filesDictionary)
+                {
+                    if (File.Exists(file.Value))
+                    {
+                        File.Copy(file.Value, Path.Combine(spath, file.Key));
+                    }
+                    //webClient.DownloadFile(file.Value, (spath + file.Key));
+                }
+            }
+
             DirectoryCopy(resourceFilePath, (path + "\\common"), true);
             DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
             ZipFile.CreateFromDirectory(temppath, zipfilepath);
@@ -760,7 +774,7 @@
                 directoryInfo.Delete(true);
             }
 
-            return zipFileVirtualPath;
+            return zipfilepath;
         }
 
         /// <summary>
@@ -769,9 +783,9 @@
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
         /// <returns>true if deleted successfully, otherwise false.</returns>
-        public bool DeleteUnwantedDirectory(long batchId, long customerId)
+        public bool DeleteUnwantedDirectory(long batchId, long customerId, string baseURL)
         {
-            string deleteDirPath = AppDomain.CurrentDomain.BaseDirectory + "\\Statements" + "\\" + batchId + "\\" + customerId;
+            string deleteDirPath = baseURL + "\\Statements" + "\\" + batchId + "\\" + customerId;
             DirectoryInfo directoryInfo = new DirectoryInfo(deleteDirPath);
             if (directoryInfo.Exists)
             {
@@ -842,6 +856,38 @@
         public int MonthDifference(DateTime endDate, DateTime startDate)
         {
             return (endDate.Month - startDate.Month) + 12 * (endDate.Year - startDate.Year);
+        }
+
+        /// <summary>
+        /// This method help to save image file from url
+        /// </summary>
+        /// <param name="filePath"> the file path value </param>
+        /// <param name="format"> the image format </param>
+        /// <param name="imageUrl"> the image url </param>
+        /// <returns>return true if download successfully.</returns>
+        public bool SaveImage(string filePath, ImageFormat format, string imageUrl)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                Stream stream = client.OpenRead(imageUrl);
+                Bitmap bitmap;
+                bitmap = new Bitmap(stream);
+
+                if (bitmap != null)
+                {
+                    bitmap.Save(filePath, format);
+                }
+
+                stream.Flush();
+                stream.Close();
+                client.Dispose();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return true;
         }
 
         #endregion

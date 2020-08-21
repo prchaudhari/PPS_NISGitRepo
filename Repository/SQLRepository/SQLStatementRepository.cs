@@ -10,9 +10,11 @@ namespace nIS
     #region References
     using System;
     using System.Collections.Generic;
+    using System.Drawing.Imaging;
     using System.IO;
     using System.Linq;
     using System.Linq.Dynamic;
+    using System.Net;
     using System.Security.Claims;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -53,6 +55,11 @@ namespace nIS
         /// </summary>
         private IPageRepository pageRepository = null;
 
+        /// <summary>
+        /// The Asset repository.
+        /// </summary>
+        private IAssetLibraryRepository assetLibraryRepository = null;
+
         #endregion
 
         #region Constructor
@@ -64,6 +71,7 @@ namespace nIS
             this.utility = new Utility();
             this.configurationutility = new ConfigurationUtility(this.unityContainer);
             this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
+            this.assetLibraryRepository = this.unityContainer.Resolve<IAssetLibraryRepository>();
         }
 
         #endregion
@@ -297,7 +305,7 @@ namespace nIS
                         userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
                         statementOwnerUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
 
-                        var publisheByUserIds = statementRecords.Where(itm => itm.PublishedBy != null).ToList();
+                        var publisheByUserIds = statementRecords.Where(itm => itm.PublishedBy != 0).ToList();
                         if (publisheByUserIds.Count > 0)
                         {
                             userIdentifier = new StringBuilder();
@@ -602,7 +610,7 @@ namespace nIS
                 statement = statements.ToList().FirstOrDefault();
 
                 var statementPageContents = this.GenerateHtmlFormatOfStatement(statement, tenantCode);
-                finalHtml = this.BindPreviewDataToStatement(statement, statementPageContents, baseURL);
+                finalHtml = this.BindPreviewDataToStatement(statement, statementPageContents, baseURL, tenantCode);
             }
 
             return finalHtml;
@@ -829,10 +837,12 @@ namespace nIS
         /// <param name="statement"> the statement object </param>
         /// <param name="statementPageContents"> the statement page html content list</param>
         /// <param name="baseURL"> the base URL of API </param>
-        public string BindPreviewDataToStatement(Statement statement, IList<StatementPageContent> statementPageContents, string baseURL)
+        public string BindPreviewDataToStatement(Statement statement, IList<StatementPageContent> statementPageContents, string baseURL, string tenantCode)
         {
             try
             {
+                var AppBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
                 //start to render common html content data
                 StringBuilder htmlbody = new StringBuilder();
                 string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/absa-logo.png");
@@ -896,7 +906,7 @@ namespace nIS
                             if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
                             {
                                 CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
-                                pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", baseURL + "\\Resources\\sampledata\\SampleVideo.mp4");
+                                pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4");
 
                                 string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
                                 pageContent.Replace("{{CustomerName}}", customerName);
@@ -937,20 +947,21 @@ namespace nIS
                         }
                         else if (widget.WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                         {
-                            var imgAssetFilepath = baseURL + "\\Resources\\sampledata\\icon-image.png";
+                            var imgAssetFilepath = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
                             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                             {
                                 dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
                                 if (widgetSetting.isPersonalize == false)
                                 {
-                                    imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                    var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                    imgAssetFilepath = asset.FilePath; //baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                 }
                             }
                             pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgAssetFilepath);
                         }
                         else if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
                         {
-                            var vdoAssetFilepath = baseURL + "\\Resources\\sampledata\\SampleVideo.mp4";
+                            var vdoAssetFilepath = AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4";
                             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                             {
                                 dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
@@ -960,7 +971,8 @@ namespace nIS
                                 }
                                 else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
                                 {
-                                    vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                    var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                    vdoAssetFilepath = asset.FilePath; //baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                 }
                             }
                             pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", vdoAssetFilepath);
@@ -969,7 +981,7 @@ namespace nIS
                         {
                             string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"}" +
                                 ",{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":" +
-                                "\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" +":\"$\",\"Amount\":\"4589\"}]";
+                                "\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" + ":\"$\",\"Amount\":\"4589\"}]";
 
                             string accountSummary = string.Empty;
                             if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
@@ -1024,7 +1036,7 @@ namespace nIS
                                 selectOption.Append("<option value='" + item + "'> " + item + "</option>");
                             });
 
-                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + baseURL + "\\Resources\\sampledata\\savingtransactiondetail.json'></script>");
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\savingtransactiondetail.json'></script>");
                             StringBuilder scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
                             scriptval.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
                             scriptval.Replace("savingShowAll", "savingShowAll" + page.Identifier);
@@ -1050,7 +1062,7 @@ namespace nIS
                                 selectOption.Append("<option value='" + item + "'> " + item + "</option>");
                             });
 
-                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + baseURL + "\\Resources\\sampledata\\currenttransactiondetail.json'></script>");
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\currenttransactiondetail.json'></script>");
                             StringBuilder scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
                             scriptval.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
                             scriptval.Replace("currentShowAll", "currentShowAll" + page.Identifier);
@@ -1093,19 +1105,19 @@ namespace nIS
                         }
                         else if (widget.WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
                         {
-                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + baseURL + "\\Resources\\sampledata\\analyticschartdata.json'></script>");
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\analyticschartdata.json'></script>");
                             pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
                         }
                         else if (widget.WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
                         {
-                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + baseURL + "\\Resources\\sampledata\\savingtrenddata.json'></script>");
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\savingtrenddata.json'></script>");
                             pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier));
                         }
                         else if (widget.WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
                         {
-                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + baseURL + "\\Resources\\sampledata\\spendingtrenddata.json'></script>");
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\spendingtrenddata.json'></script>");
                             pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier));
                         }
@@ -1119,7 +1131,7 @@ namespace nIS
                                 reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
                                 reminderAndRecommendations.ToList().ForEach(item =>
                                 {
-                                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + 
+                                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" +
                                         item.Title + " </p></div><div class='col-lg-3 text-left'> <a><i class='fa fa-caret-left fa-3x float-left " +
                                         "text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
                                 });
@@ -1166,6 +1178,383 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method help to bind data to common statement
+        /// </summary>
+        /// <param name="statement"> the statement object </param>
+        /// <param name="statementPageContents"> the statement page html content list</param>
+        /// <param name="tenantCode"> the tenant code </param>
+        public StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, string tenantCode)
+        {
+            try
+            {
+                var AppBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                StatementPreviewData statementPreviewData = new StatementPreviewData();
+
+                //start to render common html content data
+                StringBuilder htmlbody = new StringBuilder();
+                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/absa-logo.png");
+                navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
+                navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
+                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+
+                //start to render actual html content data
+                StringBuilder scriptHtmlRenderer = new StringBuilder();
+                StringBuilder navbar = new StringBuilder();
+                var newStatementPageContents = new List<StatementPageContent>();
+                IList<FileData> SampleFiles = new List<FileData>();
+                statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
+                {
+                    Id = it.Id,
+                    PageId = it.PageId,
+                    PageTypeId = it.PageTypeId,
+                    HtmlContent = it.HtmlContent,
+                    PageHeaderContent = it.PageHeaderContent,
+                    PageFooterContent = it.PageFooterContent,
+                    DisplayName = it.DisplayName,
+                    TabClassName = it.TabClassName
+                }));
+                for (int i = 0; i < statement.Pages.Count; i++)
+                {
+                    var page = statement.Pages[i];
+                    StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
+                    StringBuilder pageContent = new StringBuilder(statementPageContent.HtmlContent);
+
+                    StringBuilder SubTabs = new StringBuilder();
+                    StringBuilder PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
+
+                    string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Version), @"\s+", "-");
+                    navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
+                    string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
+                    PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName);
+                    PageHeaderContent.Replace("{{DivId}}", tabClassName);
+
+                    StringBuilder newPageContent = new StringBuilder();
+                    newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
+
+                    if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                    {
+                        SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
+                        SubTabs.Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
+                        SubTabs.Append("</ul>");
+
+                        newPageContent.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-6789' class='tab-pane fade in active show'>");
+                    }
+
+                    var pagewidgets = page.PageWidgets;
+                    for (int j = 0; j < pagewidgets.Count; j++)
+                    {
+                        var widget = pagewidgets[j];
+                        if (widget.WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
+                        {
+                            string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'4000 Executive Parkway', 'AddressLine2':'Saint Globin Rd','City':'Canary Wharf', 'State':'London', 'Country':'England','Zip':'E14 9RZ'}";
+                            if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
+                            {
+                                CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
+                                pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4");
+
+                                string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
+                                pageContent.Replace("{{CustomerName}}", customerName);
+
+                                string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ";
+                                pageContent.Replace("{{Address1}}", address1);
+
+                                string address2 = (customerInfo.City != "" ? customerInfo.City + ", " : "") + (customerInfo.State != "" ? customerInfo.State + ", " : "") + (customerInfo.Country != "" ? customerInfo.Country + ", " : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
+                                pageContent.Replace("{{Address2}}", address2);
+                            }
+                        }
+                        else if (widget.WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
+                        {
+                            string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement', 'CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";
+
+                            string accountInfoData = string.Empty;
+                            StringBuilder AccDivData = new StringBuilder();
+                            if (accountInfoJson != string.Empty && validationEngine.IsValidJson(accountInfoJson))
+                            {
+                                AccountInformation accountInfo = JsonConvert.DeserializeObject<AccountInformation>(accountInfoJson);
+                                AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Statement Date</div><label class='list-value mb-0'>" + accountInfo.StatementDate + "</label>" + "</div></div>");
+
+                                AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Statement Period</div><label class='list-value mb-0'>" + accountInfo.StatementPeriod + "</label></div></div>");
+
+                                AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Cusomer ID</div><label class='list-value mb-0'>" + accountInfo.CustomerID + "</label></div></div>");
+
+                                AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "RM Name</div><label class='list-value mb-0'>" + accountInfo.RmName + "</label></div></div>");
+
+                                AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber + "</label></div></div>");
+                            }
+                            pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
+                        }
+                        else if (widget.WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
+                        {
+                            var imageAssetPath  = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
+                            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
+                            {
+                                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                                if (widgetSetting.isPersonalize == false)
+                                {
+                                    var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                    if (asset != null)
+                                    {
+                                        FileData fileData = new FileData();
+                                        fileData.FileName = "Image" + page.Identifier + widget.Identifier + ".jpg";
+                                        fileData.FileUrl = asset.FilePath; //baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                        SampleFiles.Add(fileData);
+                                        imageAssetPath = "./" + fileData.FileName;
+                                    }
+                                }
+                            }
+                            pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imageAssetPath);
+                        }
+                        else if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
+                        {
+                            var videoAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4";
+                            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
+                            {
+                                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                                if (widgetSetting.isEmbedded == true)
+                                {
+                                    videoAssetPath = widgetSetting.SourceUrl;
+                                }
+                                else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
+                                {
+                                    var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                    if (asset != null)
+                                    {
+                                        FileData fileData = new FileData();
+                                        fileData.FileName = "Video" + page.Identifier + widget.Identifier + ".jpg";
+                                        fileData.FileUrl = asset.FilePath;
+                                        SampleFiles.Add(fileData);
+                                        videoAssetPath = "./" + fileData.FileName;
+                                    }
+                                }
+                            }
+                            pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", videoAssetPath);
+                        }
+                        else if (widget.WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
+                        {
+                            string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"}" +
+                                ",{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":" +
+                                "\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" + ":\"$\",\"Amount\":\"4589\"}]";
+
+                            string accountSummary = string.Empty;
+                            if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
+                            {
+                                IList<AccountSummary> lstAccountSummary = JsonConvert.DeserializeObject<List
+                                    <AccountSummary>>(accountBalanceDataJson);
+                                if (lstAccountSummary.Count > 0)
+                                {
+                                    StringBuilder accSummary = new StringBuilder();
+                                    lstAccountSummary.ToList().ForEach(acc =>
+                                    {
+                                        accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>" + acc.Amount + "</td></tr>");
+                                    });
+                                    pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
+                                }
+                            }
+                        }
+                        else if (widget.WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
+                        {
+                            string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'$', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
+                            if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
+                            {
+                                AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(currentAvailBalanceJson);
+                                var accountIndicatorClass = accountMaster.Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
+                                pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
+                                pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.GrandTotal));
+                                pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalDeposit));
+                                pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalSpend));
+                                pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                            }
+                        }
+                        else if (widget.WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
+                        {
+                            string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'$', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
+                            if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
+                            {
+                                AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(savingAvailBalanceJson);
+                                var accountIndicatorClass = accountMaster.Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
+                                pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
+                                pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.GrandTotal));
+                                pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalDeposit));
+                                pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalSpend));
+                                pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                            }
+                        }
+                        else if (widget.WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
+                        {
+                            StringBuilder selectOption = new StringBuilder();
+                            var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
+                            distinctNaration.ToList().ForEach(item =>
+                            {
+                                selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                            });
+
+                            FileData fileData = new FileData();
+                            fileData.FileName = "savingtransactiondetail.json";
+                            fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\savingtransactiondetail.json";
+                            SampleFiles.Add(fileData);
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
+                            //scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\savingtransactiondetail.json'></script>");
+                            StringBuilder scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
+                            scriptval.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
+                            scriptval.Replace("savingShowAll", "savingShowAll" + page.Identifier);
+                            scriptval.Replace("filterStatus", "filterStatus" + page.Identifier);
+                            scriptval.Replace("ResetGrid", "ResetGrid" + page.Identifier);
+                            scriptval.Replace("PrintGrid", "PrintGrid" + page.Identifier);
+                            scriptHtmlRenderer.Append(scriptval);
+
+                            pageContent.Replace("savingShowAll", "savingShowAll" + page.Identifier);
+                            pageContent.Replace("filterStatus", "filterStatus" + page.Identifier);
+                            pageContent.Replace("ResetGrid", "ResetGrid" + page.Identifier);
+                            pageContent.Replace("PrintGrid", "PrintGrid" + page.Identifier);
+                            pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+                            pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
+                            pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                        }
+                        else if (widget.WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
+                        {
+                            StringBuilder selectOption = new StringBuilder();
+                            var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
+                            distinctNaration.ToList().ForEach(item =>
+                            {
+                                selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                            });
+
+                            FileData fileData = new FileData();
+                            fileData.FileName = "currenttransactiondetail.json";
+                            fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\currenttransactiondetail.json";
+                            SampleFiles.Add(fileData);
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
+                            //scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\currenttransactiondetail.json'></script>");
+                            StringBuilder scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
+                            scriptval.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
+                            scriptval.Replace("currentShowAll", "currentShowAll" + page.Identifier);
+                            scriptval.Replace("filterStatus", "filterStatus" + page.Identifier);
+                            scriptval.Replace("ResetGrid", "ResetGrid" + page.Identifier);
+                            scriptval.Replace("PrintGrid", "PrintGrid" + page.Identifier);
+                            scriptHtmlRenderer.Append(scriptval);
+
+                            pageContent.Replace("currentShowAll", "currentShowAll" + page.Identifier);
+                            pageContent.Replace("filterStatus", "filterStatus" + page.Identifier);
+                            pageContent.Replace("ResetGrid", "ResetGrid" + page.Identifier);
+                            pageContent.Replace("PrintGrid", "PrintGrid" + page.Identifier);
+                            pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+                            pageContent.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
+
+                            pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                        }
+                        else if (widget.WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
+                        {
+                            string incomeSourceListJson = "[{ 'Source': 'Salary Transfer', 'CurrentSpend': 3453, 'AverageSpend': 123},{ 'Source': 'Cash Deposit', 'CurrentSpend': 3453, 'AverageSpend': 6123},{ 'Source': 'Profit Earned', 'CurrentSpend': 3453, 'AverageSpend': 6123}, { 'Source': 'Rebete', 'CurrentSpend': 3453, 'AverageSpend': 123}]";
+                            if (incomeSourceListJson != string.Empty && validationEngine.IsValidJson(incomeSourceListJson))
+                            {
+                                IList<IncomeSources> incomeSources = JsonConvert.DeserializeObject<List<IncomeSources>>(incomeSourceListJson);
+                                StringBuilder incomestr = new StringBuilder();
+                                incomeSources.ToList().ForEach(item =>
+                                {
+                                    var tdstring = string.Empty;
+                                    if (Int32.Parse(item.CurrentSpend) > Int32.Parse(item.AverageSpend))
+                                    {
+                                        tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
+                                    }
+                                    else
+                                    {
+                                        tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " + "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
+                                    }
+                                    incomestr.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend + "</td><td>" + tdstring + "</td></tr>");
+                                });
+                                pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomestr.ToString());
+                            }
+                        }
+                        else if (widget.WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
+                        {
+                            FileData fileData = new FileData();
+                            fileData.FileName = "analyticschartdata.json";
+                            fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\analyticschartdata.json";
+                            SampleFiles.Add(fileData);
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
+                            pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
+                            scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
+                        }
+                        else if (widget.WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
+                        {
+                            FileData fileData = new FileData();
+                            fileData.FileName = "spendingtrenddata.json";
+                            fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\spendingtrenddata.json";
+                            SampleFiles.Add(fileData);
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + fileData.FileName + "'></script>");
+                            pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier);
+                            scriptHtmlRenderer.Append(HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier));
+                        }
+                        else if (widget.WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
+                        {
+                            FileData fileData = new FileData();
+                            fileData.FileName = "savingtrenddata.json";
+                            fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\savingtrenddata.json";
+                            SampleFiles.Add(fileData);
+                            scriptHtmlRenderer.Append("<script type='text/javascript' src='" + fileData.FileName + "'></script>");
+                            pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier);
+                            scriptHtmlRenderer.Append(HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier));
+                        }
+                        else if (widget.WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
+                        {
+                            string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
+                            if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))
+                            {
+                                IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(reminderJson);
+                                StringBuilder reminderstr = new StringBuilder();
+                                reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
+                                reminderAndRecommendations.ToList().ForEach(item =>
+                                {
+                                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" +
+                                        item.Title + " </p></div><div class='col-lg-3 text-left'> <a><i class='fa fa-caret-left fa-3x float-left " +
+                                        "text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
+                                });
+                                pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
+                            }
+                        }
+                    }
+
+                    newPageContent.Append(pageContent);
+                    if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                    {
+                        newPageContent.Append(HtmlConstants.END_DIV_TAG);
+                    }
+                    newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_FOOTER); //to end tab-content div
+
+                    PageHeaderContent.Replace("{{SubTabs}}", SubTabs.ToString());
+                    statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
+                    statementPageContent.HtmlContent = newPageContent.ToString();
+                    //newStatementPageContents.Add(statementPageContent);
+                }
+
+                newStatementPageContents.ToList().ForEach(page =>
+                {
+                    htmlbody.Append(page.PageHeaderContent);
+                    htmlbody.Append(page.HtmlContent);
+                    htmlbody.Append(page.PageFooterContent);
+                });
+                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+
+                navbarHtml = navbarHtml.Replace("{{NavItemList}}", navbar.ToString());
+
+                StringBuilder finalHtml = new StringBuilder();
+                finalHtml.Append(HtmlConstants.HTML_HEADER);
+                finalHtml.Append(navbarHtml);
+                finalHtml.Append(htmlbody.ToString());
+                finalHtml.Append(HtmlConstants.HTML_FOOTER);
+                finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
+
+                statementPreviewData.SampleFiles = SampleFiles;
+                statementPreviewData.FileContent = finalHtml.ToString();
+                return statementPreviewData;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method help to generate statement for customer
         /// </summary>
         /// <param name="customer"> the customer object </param>
@@ -1174,7 +1563,7 @@ namespace nIS
         /// <param name="batchMaster"> the batch master object </param>
         /// <param name="batchDetails"> the list of batch details records </param>
         /// <param name="baseURL"> the base URL of API </param>
-        public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL)
+        public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode)
         {
             ScheduleLogDetailRecord logDetailRecord = new ScheduleLogDetailRecord();
             StringBuilder ErrorMessages = new StringBuilder();
@@ -1229,6 +1618,7 @@ namespace nIS
                     string AnalyticsChartJson = string.Empty;
                     string SavingTransactionGridJson = string.Empty;
                     string CurrentTransactionGridJson = string.Empty;
+                    WebClient webClient = new WebClient();
 
                     var newStatementPageContents = new List<StatementPageContent>();
                     statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
@@ -1311,12 +1701,20 @@ namespace nIS
                                     SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
                                 }
 
-                                SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " +
-                                    "data-target='#" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "' " +
+                                SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "' " +
                                     " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
 
                                 newPageContent.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") +
                                     "-" + lastFourDigisOfAccountNumber + "' class='tab-pane fade in " + (x == 0 ? "active show" : "") + "'>");
+
+                                if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
+                                {
+                                    newPageContent.Append("<input type='hidden' id='SavingAccountId' name='SavingAccountId' value='" + accountId + "'>");
+                                }
+                                else
+                                {
+                                    newPageContent.Append("<input type='hidden' id='CurrentAccountId' name='CurrentAccountId' value='" + accountId + "'>");
+                                }
 
                                 if (x == accountCount - 1)
                                 {
@@ -1330,6 +1728,12 @@ namespace nIS
                                 var widget = pagewidgets[j];
                                 if (widget.WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID) //Customer Information Widget
                                 {
+                                    //var fileName = "CustomerVideo" + customer.Id + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".mp4";
+                                    //var videoPath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+                                    //if (!Directory.Exists(videoPath))
+                                    //{
+                                    //    Directory.CreateDirectory(videoPath);
+                                    //}
                                     pageContent.Replace("{{CustomerName}}", (customer.FirstName.Trim() + " " + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim()));
                                     pageContent.Replace("{{Address1}}", customer.AddressLine1);
                                     string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
@@ -1338,6 +1742,7 @@ namespace nIS
                                     var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
                                     if (custMedia != null && custMedia.VideoURL != string.Empty)
                                     {
+                                        //webClient.DownloadFile(custMedia.VideoURL, (videoPath + "\\" + fileName));
                                         pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", custMedia.VideoURL);
                                     }
                                     else
@@ -1345,6 +1750,7 @@ namespace nIS
                                         var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
                                         if (batchDetail != null && batchDetail.VideoURL != string.Empty)
                                         {
+                                            //webClient.DownloadFile(batchDetail.VideoURL, (videoPath + "\\" + fileName));
                                             pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
                                         }
                                     }
@@ -1366,12 +1772,45 @@ namespace nIS
                                 else if (widget.WidgetId == HtmlConstants.IMAGE_WIDGET_ID) //Image Widget
                                 {
                                     var imgAssetFilepath = string.Empty;
+                                    //var imagePath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+                                    //var fileName = "Image" + customer.Id + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".jpeg";
+
                                     if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                                     {
+                                        //if (!Directory.Exists(imagePath))
+                                        //{
+                                        //    Directory.CreateDirectory(imagePath);
+                                        //}
                                         dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
                                         if (widgetSetting.isPersonalize == false) //Is not dynamic image, then assign selected image from asset library
                                         {
-                                            imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                            var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                            if (asset != null)
+                                            {
+                                                var path = asset.FilePath.ToString();
+                                                var fileName = asset.Name;
+                                                var imagePath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+                                                if (File.Exists(path))
+                                                {
+                                                    File.Copy(path, Path.Combine(imagePath, fileName));
+                                                }
+                                                imgAssetFilepath = "./" + fileName;
+                                                //using (MemoryStream ms = new MemoryStream())
+                                                //{
+                                                //    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+                                                //    {
+                                                //        byte[] bytes = new byte[file.Length];
+                                                //        file.Read(bytes, 0, (int)file.Length);
+                                                //        ms.Write(bytes, 0, (int)file.Length);
+                                                //        File.WriteAllBytes((imagePath + "\\" + fileName), bytes.ToArray());
+                                                //    }
+                                                //}
+                                            }
+                                            else
+                                            {
+                                                ErrorMessages.Append("<br>Image asset file not found in asset library for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for image widget..!!");
+                                                IsFailed = true;
+                                            }
                                         }
                                         else //Is dynamic image, then assign it from database 
                                         {
@@ -1405,16 +1844,50 @@ namespace nIS
                                 else if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID) //Video widget
                                 {
                                     var vdoAssetFilepath = string.Empty;
+                                    //var fileName = "Video" + customer.Id + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".mp4";
+                                    //var videoPath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+
                                     if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                                     {
+                                        //if (!Directory.Exists(videoPath))
+                                        //{
+                                        //    Directory.CreateDirectory(videoPath);
+                                        //}
                                         dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
                                         if (widgetSetting.isEmbedded == true)//If embedded then assigned it it from widget config json source url
                                         {
                                             vdoAssetFilepath = widgetSetting.SourceUrl;
+                                            //webClient.DownloadFile(vdoAssetFilepath, (videoPath + "\\" + fileName));
                                         }
                                         else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false) //If not dynamic video, then assign selected video from asset library
                                         {
-                                            vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                            var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                            if (asset != null)
+                                            {
+                                                var path = asset.FilePath.ToString();
+                                                var fileName = asset.Name;
+                                                var videoPath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+                                                if (File.Exists(path))
+                                                {
+                                                    File.Copy(path, Path.Combine(videoPath, fileName));
+                                                }
+                                                vdoAssetFilepath = "./" + fileName;
+                                                //using (MemoryStream ms = new MemoryStream())
+                                                //{
+                                                //    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
+                                                //    {
+                                                //        byte[] bytes = new byte[file.Length];
+                                                //        file.Read(bytes, 0, (int)file.Length);
+                                                //        ms.Write(bytes, 0, (int)file.Length);
+                                                //        File.WriteAllBytes((videoPath + "\\" + fileName), bytes.ToArray());
+                                                //    }
+                                                //}
+                                            }
+                                            else
+                                            {
+                                                ErrorMessages.Append("<br>Video asset file not found in asset library for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for video widget..!!");
+                                                IsFailed = true;
+                                            }
                                         }
                                         else //If dynamic video, then assign it from database 
                                         {
@@ -1422,6 +1895,7 @@ namespace nIS
                                             if (custMedia != null && custMedia.VideoURL != string.Empty)
                                             {
                                                 vdoAssetFilepath = custMedia.VideoURL;
+                                                //webClient.DownloadFile(custMedia.VideoURL, (videoPath + "\\" + fileName));
                                             }
                                             else
                                             {
@@ -1429,6 +1903,7 @@ namespace nIS
                                                 if (batchDetail != null && batchDetail.VideoURL != string.Empty)
                                                 {
                                                     vdoAssetFilepath = batchDetail.VideoURL;
+                                                    //webClient.DownloadFile(batchDetail.VideoURL, (videoPath + "\\" + fileName));
                                                 }
                                                 else
                                                 {
@@ -1558,7 +2033,7 @@ namespace nIS
                                                 });
 
                                                 SavingTransactionGridJson = "savingtransactiondata" + accountId + page.Identifier + "=" + savingtransactionjson;
-                                                this.utility.WriteToJsonFile(SavingTransactionGridJson, "savingtransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id);
+                                                this.utility.WriteToJsonFile(SavingTransactionGridJson, "savingtransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, baseURL);
                                                 scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtransactiondetail" + accountId + page.Identifier + ".json'></script>");
 
                                                 StringBuilder scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
@@ -1628,7 +2103,7 @@ namespace nIS
                                                 });
 
                                                 CurrentTransactionGridJson = "currenttransactiondata" + accountId + page.Identifier + "=" + currenttransactionjson;
-                                                this.utility.WriteToJsonFile(CurrentTransactionGridJson, "currenttransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id);
+                                                this.utility.WriteToJsonFile(CurrentTransactionGridJson, "currenttransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, baseURL);
                                                 scriptHtmlRenderer.Append("<script type='text/javascript' src='./currenttransactiondetail" + accountId + page.Identifier + ".json'></script>");
 
                                                 StringBuilder scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
@@ -1677,7 +2152,7 @@ namespace nIS
                                             var tdstring = string.Empty;
                                             if (src.CurrentSpend > src.AverageSpend)
                                             {
-                                                tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + 
+                                                tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" +
                                                 src.AverageSpend + "</span>";
                                             }
                                             else
@@ -1723,7 +2198,7 @@ namespace nIS
                                         AnalyticsChartJson = "analyticsdata=[]";
                                     }
 
-                                    this.utility.WriteToJsonFile(AnalyticsChartJson, "analyticschartdata.json", batchMaster.Id, customer.Id);
+                                    this.utility.WriteToJsonFile(AnalyticsChartJson, "analyticschartdata.json", batchMaster.Id, customer.Id, baseURL);
                                     scriptHtmlRenderer.Append("<script type='text/javascript' src='./analyticschartdata.json'></script>");
                                     pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
                                     scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
@@ -1778,7 +2253,7 @@ namespace nIS
                                         SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=[]";
                                     }
 
-                                    this.utility.WriteToJsonFile(SavingTrendChartJson, "savingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id);
+                                    this.utility.WriteToJsonFile(SavingTrendChartJson, "savingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, baseURL);
                                     scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtrenddata" + accountId + page.Identifier + ".json'></script>");
 
                                     pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + accountId + page.Identifier);
@@ -1835,7 +2310,7 @@ namespace nIS
                                         SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=[]";
                                     }
 
-                                    this.utility.WriteToJsonFile(SpendingTrendChartJson, "spendingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id);
+                                    this.utility.WriteToJsonFile(SpendingTrendChartJson, "spendingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, baseURL);
                                     scriptHtmlRenderer.Append("<script type='text/javascript' src='./spendingtrenddata" + accountId + page.Identifier + ".json'></script>");
 
                                     pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + accountId + page.Identifier);
@@ -1918,6 +2393,8 @@ namespace nIS
                     finalHtml.Append(htmlbody.ToString());
                     finalHtml.Append(HtmlConstants.HTML_FOOTER);
                     finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
+                    finalHtml.Replace("{{CustomerNumber}}", customer.Id.ToString());
+                    finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
 
                     if (IsFailed)
                     {
@@ -1927,7 +2404,7 @@ namespace nIS
                     else
                     {
                         string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Id, customer.Id);
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Id, customer.Id, baseURL);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
