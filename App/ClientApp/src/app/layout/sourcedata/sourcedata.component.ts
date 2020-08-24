@@ -182,7 +182,7 @@ export class SourcedataComponent implements OnInit {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
-          //this.resetRoleFilterForm();
+          this.resetSchdeuleLogFilterForm();
           this.getSourceDatas(null);
         }
       });

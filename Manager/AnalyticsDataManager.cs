@@ -96,6 +96,8 @@ namespace nIS
             try
             {
                 result = AnalyticsDataRepository.Save(settings, tenantCode);
+
+
                 return result;
             }
             catch (Exception ex)

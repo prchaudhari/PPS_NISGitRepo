@@ -88,46 +88,80 @@ namespace nIS
                 IList<PageRecord> pageRecords = new List<PageRecord>();
                 IList<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
                 IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
 
-                    if (string.IsNullOrEmpty(whereClause))
+                    if (searchParameter.Pagename != null && searchParameter.Pagename != string.Empty)
                     {
-                        if (searchParameter.PagingParameter.PageIndex > 0 && searchParameter.PagingParameter.PageSize > 0)
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.Pagename));
+
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.PageRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
                         {
-                            AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
-                            .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString())
-                            .Skip((searchParameter.PagingParameter.PageIndex - 1) * searchParameter.PagingParameter.PageSize)
-                            .Take(searchParameter.PagingParameter.PageSize)
-                            .ToList();
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("PageId={0} ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
                         }
                         else
                         {
-                            AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
-                            .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString().ToLower())
-                            .ToList();
+                            return AnalyticsDatas;
                         }
+                    }
+                    if (searchParameter.WidgetName != null && searchParameter.WidgetName != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.WidgetName));
+
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.WidgetRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("WidgetId={0} ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return AnalyticsDatas;
+                        }
+                    }
+                    if (searchParameter.CustomerName != null && searchParameter.CustomerName != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", searchParameter.CustomerName));
+
+                        var userRecordIds = nISEntitiesDataContext.CustomerMasterRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("CustomerId={0} ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return AnalyticsDatas;
+                        }
+                    }
+
+                    if (searchParameter.PagingParameter.PageIndex > 0 && searchParameter.PagingParameter.PageSize > 0)
+                    {
+                        AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
+                        .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((searchParameter.PagingParameter.PageIndex - 1) * searchParameter.PagingParameter.PageSize)
+                        .Take(searchParameter.PagingParameter.PageSize)
+                        .ToList();
                     }
                     else
                     {
-                        if (searchParameter.PagingParameter.PageIndex > 0 && searchParameter.PagingParameter.PageSize > 0)
-                        {
-                            AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
-                            .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString())
-                            .Where(whereClause)
-                            .Skip((searchParameter.PagingParameter.PageIndex - 1) * searchParameter.PagingParameter.PageSize)
-                            .Take(searchParameter.PagingParameter.PageSize)
-                            .ToList();
-                        }
-                        else
-                        {
-                            AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
-                            .Where(whereClause)
-                            .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString().ToLower())
-                            .ToList();
-                        }
+                        AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
+                        .Where(whereClause)
+                        .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
                     }
 
                     if (AnalyticsDataRecords?.Count() > 0)
@@ -164,7 +198,7 @@ namespace nIS
                     if (customerMasterRecords.Any(i => i.Id == data.CustomerId))
                     {
                         var customer = customerMasterRecords.Where(i => i.Id == data.CustomerId)?.FirstOrDefault();
-                        data.CustomerName = customer.FirstName + " " + customer.FirstName;
+                        data.CustomerName = customer.FirstName + " " + customer.LastName;
                     }
                     if (data.PageId > 0 && pageRecords.Any(i => i.Id == data.PageId))
                     {
@@ -332,7 +366,7 @@ namespace nIS
                                "and EventDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
 
-
+            queryString.Append(string.Format("TenantCode.Equals(\"{0}\")", tenantCode));
             return queryString.ToString();
         }
 

@@ -2,5 +2,5 @@ export const environment = {
   production: true,
   //baseURL: 'https://nis-api.azurewebsites.net/',
   baseURL: 'http://nisqa-api.azurewebsites.net/',
-  appVersion: '1.3.0'
+  appVersion: '1.2.10'
 };

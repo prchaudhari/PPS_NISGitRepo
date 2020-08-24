@@ -5,6 +5,6 @@ exports.environment = {
     production: true,
     //baseURL: 'https://nis-api.azurewebsites.net/',
     baseURL: 'http://nisqa-api.azurewebsites.net/',
-    appVersion: '1.2.9'
+    appVersion: '1.2.10'
 };
 //# sourceMappingURL=environment.prod.js.map

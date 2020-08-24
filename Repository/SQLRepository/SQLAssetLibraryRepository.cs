@@ -499,8 +499,14 @@ namespace nIS
                     {
                         throw new AssetNotFoundException(tenantCode);
                     }
+                    IList<PageRecord> pageRecords = new List<PageRecord>();
+                    pageRecords = nVidYoEntitiesDataContext.PageRecords.Where(item => item.IsDeleted == false).ToList();
 
-                    IList<PageWidgetMapRecord> pageWidgetMapRecords = nVidYoEntitiesDataContext.PageWidgetMapRecords.Where(item => item.WidgetSetting != string.Empty).ToList();
+                    StringBuilder pageId = new StringBuilder();
+                    pageId.Append("(" + string.Join(" or ", pageRecords.Select(item => string.Format("PageId.Equals({0})", item.Id))) + ")");
+
+                    IList<PageWidgetMapRecord> pageWidgetMapRecords = nVidYoEntitiesDataContext.PageWidgetMapRecords.Where(pageId.ToString()).ToList();
+                    pageWidgetMapRecords = pageWidgetMapRecords.Where(item => item.WidgetSetting != string.Empty).ToList();
                     if (pageWidgetMapRecords?.Count > 0)
                     {
                         List<string> widgetSettings = new List<string>();

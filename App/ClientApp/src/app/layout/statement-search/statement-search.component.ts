@@ -173,7 +173,7 @@ export class StatementSearchComponent implements OnInit {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
-          //this.resetRoleFilterForm();
+          this.resetSchdeuleLogFilterForm();
           this.getStatementSearchs(null);
         }
       });
@@ -267,6 +267,10 @@ export class StatementSearchComponent implements OnInit {
       filterStatementDate: [null],
       filterStatementPeriod: [null],
     });
+    this.StatementSearchFilterForm.controls['filterStatementCustomer'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementAccountId'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementDate'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementPeriod'].setValue(null);
 
     this.filterFromDateError = false;
     this.filterToDateError = false;

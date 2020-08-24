@@ -63,7 +63,7 @@
         <div class="row form-group">
           <div class="col-md-6 col-sm-6 col-lg-3">
             <label for="inputPriorityLevel">Asset Path</label>
-            <input title="{{AssetPathToolTip}}"type="text" class="form-control" id="inputTenantConfigurationAssetPath" [readonly]="!setting.IsAssetPathEditable" name="TenantConfigurationAssetPath"
+            <input type="text" class="form-control" id="inputTenantConfigurationAssetPath" name="TenantConfigurationAssetPath"
                    formControlName="TenantConfigurationAssetPath" />
             <!-- Error Masseges  -->
             <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationAssetPath.touched && TenantConfigurationAssetPath.errors">
