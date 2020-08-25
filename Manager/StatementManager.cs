@@ -41,6 +41,11 @@ namespace nIS
         /// </summary>
         private IAssetLibraryRepository assetLibraryRepository = null;
 
+        /// <summary>
+        /// The tenant configuration manager object.
+        /// </summary>
+        private TenantConfigurationManager tenantConfigurationManager = null;
+
         #endregion
 
         #region Constructor
@@ -58,6 +63,7 @@ namespace nIS
                 this.StatementRepository = this.unityContainer.Resolve<IStatementRepository>();
                 this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
                 this.assetLibraryRepository = this.unityContainer.Resolve<IAssetLibraryRepository>();
+                this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
                 this.validationEngine = new ValidationEngine();
             }
             catch (Exception ex)
@@ -259,6 +265,9 @@ namespace nIS
             string finalHtml = "";
             try
             {
+                TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+
                 StatementSearchParameter statementSearchParameter = new StatementSearchParameter
                 {
                     Identifier = statementIdentifier,
@@ -441,8 +450,15 @@ namespace nIS
                                                             dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
                                                             if (widgetSetting.isPersonalize == false)
                                                             {
-                                                                var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
-                                                                imgAssetFilepath = asset.FilePath; //baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                                if (tenantConfiguration.AssetPath == string.Empty)
+                                                                {
+                                                                    imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                                }
+                                                                else
+                                                                {
+                                                                    var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                                                    imgAssetFilepath = asset.FilePath;
+                                                                }
                                                             }
                                                         }
                                                         var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
@@ -460,8 +476,15 @@ namespace nIS
                                                             }
                                                             else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
                                                             {
-                                                                var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
-                                                                vdoAssetFilepath = asset.FilePath; //baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                                if (tenantConfiguration.AssetPath == string.Empty)
+                                                                {
+                                                                    vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                                }
+                                                                else
+                                                                {
+                                                                    var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                                                    vdoAssetFilepath = asset.FilePath;
+                                                                }
                                                             }
                                                         }
                                                         var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", vdoAssetFilepath);

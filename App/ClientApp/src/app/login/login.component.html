@@ -1,19 +1,19 @@
 <div class="login-container">
-  <div class="login-left d-flex justify-content-center align-items-center">
-    <img src="././assets/images/logo.png" class="login-logo" />
+  <div class="login-left d-flex justify-content-center align-items-center" style="background: white;">
+    <img src="././assets/images/new_nis_logo.png" class="login-logo" />
   </div>
-  <div class="login-right box-shadow">
+  <div class="login-right box-shadow" style="background: #292828;">
     <div class="login-main">
       <div class="row d-lg-none d-md-block text-center">
         <div class="col-sm-12">
-          <img src="././assets/images/logo.png" class="login-logo" />
+          <img src="././assets/images/new_nis_logo.png" class="login-logo" />
         </div>
       </div>
       <!--login form-->
 
       <form [formGroup]="loginForm" name="loginForm" autocomplete="on" (submit)="OnSubmit()" novalidate>
         <div id="login-frm" *ngIf="isLoginFlag">
-          <div class="row mb-4">
+          <div class="row mb-4 text-white">
             <div class="col-sm-12 text-center">
               <h4 style="font-weight:normal"> Welcome </h4>
               <p  class="m-0" style="font-weight:normal"> Please login to dashboard admin </p>

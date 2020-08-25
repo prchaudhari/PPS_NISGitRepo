@@ -304,7 +304,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string tenantCode)
+        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string outputLocation, string tenantCode)
         {
             bool retryStatementStatus = false;
             IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
@@ -377,7 +377,7 @@ namespace nIS
                             {
                                 renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
                             }
-                            var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode);
+                            var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation);
                             if (logDetailRecord != null)
                             {
                                 if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
@@ -454,7 +454,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string tenantCode)
+        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string outputLocation, string tenantCode)
         {
             bool scheduleRunStatus = false;
             try
@@ -478,7 +478,7 @@ namespace nIS
 
                 if (failedRecords.Count != 0)
                 {
-                    scheduleRunStatus = RetryStatementForFailedCustomerReocrds(failedRecords, baseURL, tenantCode);
+                    scheduleRunStatus = RetryStatementForFailedCustomerReocrds(failedRecords, baseURL, outputLocation, tenantCode);
                 }
             }
             catch (Exception ex)
@@ -591,21 +591,21 @@ namespace nIS
                 if (this.validationEngine.IsValidDate(logSearchParameter.StartDate) && !this.validationEngine.IsValidDate(logSearchParameter.EndDate))
                 {
                     DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.StartDate), DateTimeKind.Utc);
-                    queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
+                    queryString.Append("CreationDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
                 }
-                if (this.validationEngine.IsValidDate(logSearchParameter.EndDate) && !this.validationEngine.IsValidDate(logSearchParameter.StartDate))
-                {
-                    DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.EndDate), DateTimeKind.Utc);
-                    queryString.Append("EndDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
-                }
-                if (this.validationEngine.IsValidDate(logSearchParameter.StartDate) && this.validationEngine.IsValidDate(logSearchParameter.EndDate))
-                {
-                    DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.StartDate), DateTimeKind.Utc);
-                    DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.EndDate), DateTimeKind.Utc);
+                //if (this.validationEngine.IsValidDate(logSearchParameter.EndDate) && !this.validationEngine.IsValidDate(logSearchParameter.StartDate))
+                //{
+                //    DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.EndDate), DateTimeKind.Utc);
+                //    queryString.Append("EndDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+                //}
+                //if (this.validationEngine.IsValidDate(logSearchParameter.StartDate) && this.validationEngine.IsValidDate(logSearchParameter.EndDate))
+                //{
+                //    DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.StartDate), DateTimeKind.Utc);
+                //    DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.EndDate), DateTimeKind.Utc);
 
-                    queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
-                                   "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
-                }
+                //    queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                //                   "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+                //}
 
                 queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
                 return queryString.ToString();
@@ -845,7 +845,7 @@ namespace nIS
                 if (logDetailRecord.Status != ScheduleLogStatus.Failed.ToString())
                 {
                     string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id, baseURL);
+                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id, baseURL, "");
 
                     logDetailRecord.StatementFilePath = filePath;
                     logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();

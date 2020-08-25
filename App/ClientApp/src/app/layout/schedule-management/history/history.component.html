@@ -84,10 +84,10 @@
           <input type="text" class="form-control" formControlName="filterStatementDefiniton">
         </div>
         <div class="form-group">
-          <label>Start Date</label>
+          <label>Execution Date</label>
           <div class="position-relative">
             <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filterStartDate"
-                   placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)">
+                   placeholder="Please select execution date" readonly (ngModelChange)="onFilterDateChange($event)">
             <span [owlDateTimeTrigger]="dt" class="datetime-icon">
               <i class="fa fa-calendar"></i>
             </span>
@@ -97,7 +97,7 @@
             {{filterFromDateErrorMessage}}
           </div>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>End Date</label>
           <div class="position-relative">
             <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filterEndDate"
@@ -110,7 +110,7 @@
           <div class="text-danger" *ngIf="filterToDateError">
             {{filterToDateErrorMessage}}
           </div>
-        </div>
+        </div> -->
       </div>
       <!--[ngClass]="filterClass"-->
       <div class="filter-footer">

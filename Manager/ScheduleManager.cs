@@ -328,11 +328,11 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunSchedule(string baseURL, string tenantCode)
+        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode)
         {
             try
             {
-                return this.scheduleRepository.RunSchedule(baseURL, tenantCode);
+                return this.scheduleRepository.RunSchedule(baseURL, outputLocation, tenantCode);
             }
             catch (Exception ex)
             {
@@ -347,11 +347,11 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string tenantCode)
+        public bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, string tenantCode)
         {
             try
             {
-                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, tenantCode);
+                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode);
             }
             catch (Exception ex)
             {

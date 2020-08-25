@@ -493,7 +493,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunSchedule(string baseURL, string tenantCode)
+        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode)
         {
             bool scheduleRunStatus = false;
             IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
@@ -589,7 +589,7 @@ namespace nIS
                                                 }
                                             });
                                         }
-                                        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, filesDict);
+                                        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, outputLocation, filesDict);
 
                                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                         {
@@ -614,11 +614,17 @@ namespace nIS
                                             parallelOptions.MaxDegreeOfParallelism = 10;
                                             Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                             {
-                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count);
+                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
                                             });
+                                            //customerMasters.ToList().ForEach(customer =>
+                                            //{
+                                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
+                                            //});
                                         }
+                                        
                                     }
                                 }
+                                
                             }
                             else
                             {
@@ -669,7 +675,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunScheduleNow(BatchMaster batch, string baseURL, string tenantCode)
+        public bool RunScheduleNow(BatchMaster batch, string baseURL, string outputLocation, string tenantCode)
         {
             bool isScheduleSuccess = false;
             try
@@ -759,8 +765,7 @@ namespace nIS
                     {
                         filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
                     }
-                    var toDict = statementPreviewData.SampleFiles.Select((s, i) => new { s, i }).ToDictionary(x => x.i, x => x.s);
-                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, filesDict);
+                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, outputLocation, filesDict);
 
                     IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
                     IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
@@ -787,7 +792,7 @@ namespace nIS
                         parallelOptions.MaxDegreeOfParallelism = 10;
                         Parallel.ForEach(customerMasters, parallelOptions, customer =>
                         {
-                            this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count);
+                            this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
                         });
                     }
 
@@ -1283,7 +1288,7 @@ namespace nIS
             }
         }
 
-        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount)
+        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation)
         {
             IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
 
@@ -1292,7 +1297,7 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     var renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
-                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode);
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation);
                     if (logDetailRecord != null)
                     {
                         logDetailRecord.ScheduleLogId = scheduleLog.Id;
@@ -1324,10 +1329,10 @@ namespace nIS
                                 nISEntitiesDataContext.SaveChanges();
                             }
                         }
-                        else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
-                        {
-                            this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, baseURL);
-                        }
+                        //else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+                        //{
+                        //    this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, outputLocation);
+                        //}
                     }
 
                     var logDetailsRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLog.Id)?.ToList();

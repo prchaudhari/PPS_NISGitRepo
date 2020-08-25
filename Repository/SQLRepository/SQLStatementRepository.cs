@@ -1563,7 +1563,7 @@ namespace nIS
         /// <param name="batchMaster"> the batch master object </param>
         /// <param name="batchDetails"> the list of batch details records </param>
         /// <param name="baseURL"> the base URL of API </param>
-        public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode)
+        public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation)
         {
             ScheduleLogDetailRecord logDetailRecord = new ScheduleLogDetailRecord();
             StringBuilder ErrorMessages = new StringBuilder();
@@ -1789,8 +1789,8 @@ namespace nIS
                                             {
                                                 var path = asset.FilePath.ToString();
                                                 var fileName = asset.Name;
-                                                var imagePath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
-                                                if (File.Exists(path))
+                                                var imagePath = outputLocation + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+                                                if (File.Exists(path) && !File.Exists(imagePath + "\\" + fileName))
                                                 {
                                                     File.Copy(path, Path.Combine(imagePath, fileName));
                                                 }
@@ -1866,8 +1866,8 @@ namespace nIS
                                             {
                                                 var path = asset.FilePath.ToString();
                                                 var fileName = asset.Name;
-                                                var videoPath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
-                                                if (File.Exists(path))
+                                                var videoPath = outputLocation + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+                                                if (File.Exists(path) && !File.Exists(videoPath + "\\" + fileName))
                                                 {
                                                     File.Copy(path, Path.Combine(videoPath, fileName));
                                                 }
@@ -2033,7 +2033,7 @@ namespace nIS
                                                 });
 
                                                 SavingTransactionGridJson = "savingtransactiondata" + accountId + page.Identifier + "=" + savingtransactionjson;
-                                                this.utility.WriteToJsonFile(SavingTransactionGridJson, "savingtransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, baseURL);
+                                                this.utility.WriteToJsonFile(SavingTransactionGridJson, "savingtransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
                                                 scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtransactiondetail" + accountId + page.Identifier + ".json'></script>");
 
                                                 StringBuilder scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
@@ -2103,7 +2103,7 @@ namespace nIS
                                                 });
 
                                                 CurrentTransactionGridJson = "currenttransactiondata" + accountId + page.Identifier + "=" + currenttransactionjson;
-                                                this.utility.WriteToJsonFile(CurrentTransactionGridJson, "currenttransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, baseURL);
+                                                this.utility.WriteToJsonFile(CurrentTransactionGridJson, "currenttransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
                                                 scriptHtmlRenderer.Append("<script type='text/javascript' src='./currenttransactiondetail" + accountId + page.Identifier + ".json'></script>");
 
                                                 StringBuilder scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
@@ -2198,7 +2198,7 @@ namespace nIS
                                         AnalyticsChartJson = "analyticsdata=[]";
                                     }
 
-                                    this.utility.WriteToJsonFile(AnalyticsChartJson, "analyticschartdata.json", batchMaster.Id, customer.Id, baseURL);
+                                    this.utility.WriteToJsonFile(AnalyticsChartJson, "analyticschartdata.json", batchMaster.Id, customer.Id, outputLocation);
                                     scriptHtmlRenderer.Append("<script type='text/javascript' src='./analyticschartdata.json'></script>");
                                     pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
                                     scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
@@ -2253,7 +2253,7 @@ namespace nIS
                                         SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=[]";
                                     }
 
-                                    this.utility.WriteToJsonFile(SavingTrendChartJson, "savingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, baseURL);
+                                    this.utility.WriteToJsonFile(SavingTrendChartJson, "savingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
                                     scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtrenddata" + accountId + page.Identifier + ".json'></script>");
 
                                     pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + accountId + page.Identifier);
@@ -2310,7 +2310,7 @@ namespace nIS
                                         SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=[]";
                                     }
 
-                                    this.utility.WriteToJsonFile(SpendingTrendChartJson, "spendingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, baseURL);
+                                    this.utility.WriteToJsonFile(SpendingTrendChartJson, "spendingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
                                     scriptHtmlRenderer.Append("<script type='text/javascript' src='./spendingtrenddata" + accountId + page.Identifier + ".json'></script>");
 
                                     pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + accountId + page.Identifier);
@@ -2404,7 +2404,7 @@ namespace nIS
                     else
                     {
                         string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Id, customer.Id, baseURL);
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Id, customer.Id, baseURL, outputLocation);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();

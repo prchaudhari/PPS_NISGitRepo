@@ -48,6 +48,11 @@ namespace nIS
         /// </summary>
         private IUtility utility = null;
 
+        /// <summary>
+        /// The tenant config manager object.
+        /// </summary>
+        private TenantConfigurationManager tenantConfigurationManager = null;
+
         #endregion
 
         #region Constructor
@@ -57,6 +62,7 @@ namespace nIS
             this.unityContainer = unityContainer;
             this.utility = new Utility();
             this.scheduleLogManager = new ScheduleLogManager(this.unityContainer);
+            this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
         }
 
         #endregion
@@ -100,7 +106,15 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
-                return this.scheduleLogManager.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, tenantCode);
+                var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
+                TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                {
+                    baseURL = tenantConfiguration.OutputHTMLPath;
+                    outputLocation = tenantConfiguration.OutputHTMLPath;
+                }
+                return this.scheduleLogManager.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, outputLocation, tenantCode);
             }
             catch (Exception ex)
             {
@@ -144,7 +158,15 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
-                return this.scheduleLogManager.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, tenantCode);
+                var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
+                TenantConfiguration tenantConfiguration = new TenantConfiguration();
+                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                {
+                    baseURL = tenantConfiguration.OutputHTMLPath;
+                    outputLocation = tenantConfiguration.OutputHTMLPath;
+                }
+                return this.scheduleLogManager.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, outputLocation, tenantCode);
             }
             catch (Exception ex)
             {
@@ -167,6 +189,13 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var scheduleLogErrors = this.scheduleLogManager.GetScheduleLogErrorDetails(ScheduleLogIndentifier, tenantCode);
+                int num = 1;
+                System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("<[^>]*>");
+                scheduleLogErrors.ForEach(logError => {
+                    logError.ErrorLogMessage = logError.ErrorLogMessage.Replace("<li>", num.ToString() + " - ").Replace("</li>", " ");
+                    logError.ErrorLogMessage = regex.Replace(logError.ErrorLogMessage, "");
+                    num++;
+                });
 
                 string fileName = "ErrorLogs_" + ScheduleLogIndentifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".xlsx";
                 string fileDirectoryPath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\sampledata\\";

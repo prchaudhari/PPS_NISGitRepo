@@ -39,7 +39,7 @@ namespace nIS
         private readonly IUnityContainer unityContainer = null;
 
         /// <summary>
-        /// The asset library manager object.
+        /// The tenant config manager object.
         /// </summary>
         private TenantConfigurationManager tenantConfigurationManager = null;
 
@@ -231,13 +231,15 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
+                var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
                 TenantConfiguration tenantConfiguration = new TenantConfiguration();
                 tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                 if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
                 {
                     baseURL = tenantConfiguration.OutputHTMLPath;
+                    outputLocation = tenantConfiguration.OutputHTMLPath;
                 }
-                return this.scheduleManager.RunSchedule(baseURL, tenantCode);
+                return this.scheduleManager.RunSchedule(baseURL, outputLocation, tenantCode);
             }
             catch (Exception ex)
             {
@@ -261,13 +263,15 @@ namespace nIS
                 }
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
+                var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
                 TenantConfiguration tenantConfiguration = new TenantConfiguration();
                 tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                 if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
                 {
                     baseURL = tenantConfiguration.OutputHTMLPath;
+                    outputLocation = tenantConfiguration.OutputHTMLPath;
                 }
-                return this.scheduleManager.RunScheduleNow(batchMaster, baseURL, tenantCode);
+                return this.scheduleManager.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode);
             }
             catch (Exception ex)
             {

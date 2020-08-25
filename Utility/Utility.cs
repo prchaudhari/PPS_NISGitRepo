@@ -595,10 +595,11 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL)
+        public string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation)
         {
             //string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-            string statementDestPath = baseURL + "\\Statements" + "\\" + batchId;
+            string statementDestPath = outputLocation + "\\Statements" + "\\" + batchId;
+            string statementPath = baseURL + "\\Statements" + "\\" + batchId + "\\" + customerId + "\\" + fileName;
             if (!Directory.Exists(statementDestPath))
             {
                 Directory.CreateDirectory(statementDestPath);
@@ -714,10 +715,10 @@
         /// <param name="htmlstr"> the html string </param>
         /// <param name="fileName"> the filename </param>
         /// <param name="batchId"> the batch id </param>
-        public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, IDictionary<string, string> filesDictionary = null)
+        public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null)
         {
             //string destPath = baseURL + "\\Statements";
-            string path = baseURL + "\\Statements" + "\\" + batchId + "\\";
+            string path = outputLocation + "\\Statements" + "\\" + batchId + "\\";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -727,6 +728,7 @@
             //string resourceFilePath = destPath + "\\" + batchId + "\\common";
             string zipFileVirtualPath = "\\Statements" + "\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
             string zipfilepath = baseURL + zipFileVirtualPath;
+            string zipPath = outputLocation + zipFileVirtualPath;
             string temppath = path + "\\temp\\";
             if (!Directory.Exists(temppath))
             {
@@ -765,7 +767,7 @@
 
             DirectoryCopy(resourceFilePath, (path + "\\common"), true);
             DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
-            ZipFile.CreateFromDirectory(temppath, zipfilepath);
+            ZipFile.CreateFromDirectory(temppath, zipPath);
 
             string deleteFile = path + "\\temp";
             DirectoryInfo directoryInfo = new DirectoryInfo(deleteFile);
@@ -774,7 +776,7 @@
                 directoryInfo.Delete(true);
             }
 
-            return zipfilepath;
+            return zipPath;
         }
 
         /// <summary>

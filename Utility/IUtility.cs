@@ -148,7 +148,7 @@
         /// <param name="fileName"> the file name </param>
         /// <param name="batchId"> the batch identifier </param>
         /// <param name="customerId"> the customer identifier </param>
-        string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL);
+        string WriteToFile(string Message, string fileName, long batchId, long customerId, string baseURL, string outputLocation);
 
         /// <summary>
         /// This method help to write json stringin to actual file
@@ -173,7 +173,7 @@
         /// <param name="htmlstr"> the html string </param>
         /// <param name="fileName"> the filename </param>
         /// <param name="batchId"> the batch id </param>
-        string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, IDictionary<string, string> filesDictionary = null);
+        string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null);
         #endregion
 
         /// <summary>

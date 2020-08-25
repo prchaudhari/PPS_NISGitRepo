@@ -227,7 +227,7 @@ export class ViewAssetLibraryComponent implements OnInit {
           }
           else {
             let objectURL = URL.createObjectURL(blob);
-            this.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            this.image = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL)); //this.sanitizer.bypassSecurityTrustUrl(objectURL);
             document.getElementById('videoPreview').removeChild(document.getElementById('videoPreview').childNodes[0])
             var sourceTag = document.createElement('source');
             sourceTag.setAttribute('src', this.image);

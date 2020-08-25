@@ -168,11 +168,11 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string tenantCode)
+        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string outputLocation, string tenantCode)
         {
             try
             {
-                return this.scheduleLogRepository.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, tenantCode);
+                return this.scheduleLogRepository.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, outputLocation, tenantCode);
             }
             catch (Exception ex)
             {
@@ -187,11 +187,11 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string tenantCode)
+        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string outputLocation, string tenantCode)
         {
             try
             {
-                return this.scheduleLogRepository.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, tenantCode);
+                return this.scheduleLogRepository.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, outputLocation, tenantCode);
             }
             catch (Exception ex)
             {

@@ -48,7 +48,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string tenantCode);
+        bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string outputLocation, string tenantCode);
 
         /// <summary>
         /// This method helps to re run the schedule for failed customer records
@@ -57,7 +57,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string tenantCode);
+        bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string outputLocation, string tenantCode);
 
         /// <summary>
         /// This method helps to get error log message of schedule for failed customer records
