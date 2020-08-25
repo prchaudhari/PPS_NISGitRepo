@@ -41,17 +41,7 @@
           <div>
             <label class="m-0"> Visitor for days</label>
           </div>
-          <div>
-            <div>
-              <div class="position-relative">
-                <input [owlDateTime]="dt3" class="form-control" id="inputToDate">
-                <span [owlDateTimeTrigger]="dt3" class="datetime-icon">
-                  <i class="fa fa-calendar"></i>
-                </span>
-                <owl-date-time #dt3 [pickerType]="'calendar'"></owl-date-time>
-              </div>
-            </div>
-          </div>
+       
         </div>
         <div class="card-body">
           <div id="chartDaywisecontainer"></div>
@@ -80,57 +70,67 @@
         </div>
       </div>
     </div>
- 
+
   </div>
   <!--desktop view end-->
 
-  <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
-    <div class="filter-head">
-      <label class="m-0">Apply Filter</label>
-    </div>
-    <div class="filter-body-left d-flex flex-column stylescrollbar">
-      <div class="form-group">
-        <label>Start Date</label>
-        <div class="position-relative">
-          <input [owlDateTime]="dt" class="form-control" id="inputFromDate">
-          <span [owlDateTimeTrigger]="dt" class="datetime-icon">
-            <i class="fa fa-calendar"></i>
-          </span>
-          <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+  <form [formGroup]="AnalyticFilterForm">
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
+      </div>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>Start Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filterFromDate"
+                   placeholder="Please select start date" readonly (ngModelChange)="onPublishedFilterDateChange($event)">
+            <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="text-danger" *ngIf="filterFromDateError">
+            {{filterFromDateErrorMessage}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filterToDate"
+                   placeholder="Please select end date" readonly (ngModelChange)="onPublishedFilterDateChange($event)">
+            <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="text-danger" *ngIf="filterToDateError">
+            {{filterToDateErrorMessage}}
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>End Date</label>
-        <div class="position-relative">
-          <input [owlDateTime]="dt1" class="form-control" id="inputToDate">
-          <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
-            <i class="fa fa-calendar"></i>
-          </span>
-          <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
-        </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" title="Search">
+            <a class="nav-link p-0">
+              <span class="fa fa-check"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Reset">
+            <a class="nav-link p-0">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Close" (click)="closeFilter()">
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-    <!--[ngClass]="filterClass"-->
-    <div class="filter-footer">
-      <ul class="nav">
-        <li class="nav-item width33" title="Search">
-          <a class="nav-link p-0">
-            <span class="fa fa-check"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Reset">
-          <a class="nav-link p-0">
-            <span class="fa fa-refresh"></span>
-          </a>
-        </li>
-        <li class="nav-item width33" title="Close" (click)="closeFilter()">
-          <a class="nav-link p-0">
-            <span class="fa fa-close"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+  </form>
 </div>
 
 <div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>

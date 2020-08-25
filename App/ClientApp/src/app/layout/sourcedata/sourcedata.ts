@@ -13,3 +13,19 @@ export class SourceData {
   "EventType": string;
   "AccountId": string;
 }
+
+export class WidgetVisitorPieChartData {
+  "name": string;
+  "y": number;
+}
+export class PageWidgetVistorData {
+  "values": string[];
+  "widgetNames": number[];
+}
+export class VisitorForDay {
+  "time": any[];
+  "values": number[];
+}
+
+
+
