@@ -79,6 +79,75 @@ namespace nIS
         /// <param name="AnalyticsDataSearchParameter"></param>
         /// <returns>List of asset libraries</returns>
         [HttpPost]
+        public IList<WidgetVisitorPieChartData>GetPieChartWidgeVisitor(AnalyticsSearchParameter searchParameter)
+        {
+            IList<WidgetVisitorPieChartData> widgetVisitorPieChartData = new List<WidgetVisitorPieChartData>();
+            try
+            {
+
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                widgetVisitorPieChartData = this.AnalyticsDataManager.GetPieChartWidgeVisitor(searchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return widgetVisitorPieChartData;
+        }
+
+        /// <summary>
+        /// This method helps to get asset libraries list based on the search parameters.
+        /// </summary>
+        /// <param name="AnalyticsDataSearchParameter"></param>
+        /// <returns>List of asset libraries</returns>
+        [HttpPost]
+        public PageWidgetVistorData GetPageWidgetVisitor(AnalyticsSearchParameter searchParameter)
+        {
+            PageWidgetVistorData data = new PageWidgetVistorData();
+            try
+            {
+
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                data = this.AnalyticsDataManager.GetPageWidgetVisitor(searchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return data;
+        }
+
+        /// <summary>
+        /// This method helps to get asset libraries list based on the search parameters.
+        /// </summary>
+        /// <param name="AnalyticsDataSearchParameter"></param>
+        /// <returns>List of asset libraries</returns>
+        [HttpPost]
+        public VisitorForDay GeVisitorForDay(AnalyticsSearchParameter searchParameter)
+        {
+            VisitorForDay data = new VisitorForDay();
+            try
+            {
+
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                data = this.AnalyticsDataManager.GeVisitorForDay(searchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return data;
+        }
+
+        /// <summary>
+        /// This method helps to get asset libraries list based on the search parameters.
+        /// </summary>
+        /// <param name="AnalyticsDataSearchParameter"></param>
+        /// <returns>List of asset libraries</returns>
+        [HttpPost]
         [AllowAnonymous]
         public bool Save(IList<AnalyticsData> setting)
         {

@@ -58,7 +58,7 @@ namespace nIS
 
         #region Public Methods
 
-        #region Asset Libraries Functions
+        #region Source data Functions
 
         /// <summary>
         /// This method will call get asset library method of repository.
@@ -74,7 +74,7 @@ namespace nIS
             try
             {
 
-                assetLibraries = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter,tenantCode);
+                assetLibraries = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter, tenantCode);
             }
             catch (Exception exception)
             {
@@ -108,7 +108,137 @@ namespace nIS
 
         #endregion
 
+        #region Charts
 
+        /// <summary>
+        /// This method will call get asset library method of repository.
+        /// </summary>
+        /// <param name="AnalyticsDataSearchParameter">The asset library search parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns roles if found for given parameters, else return null
+        /// </returns>
+        public IList<WidgetVisitorPieChartData> GetPieChartWidgeVisitor(AnalyticsSearchParameter searchParameter, string tenantCode)
+        {
+            IList<WidgetVisitorPieChartData> visitorPieChartDatas = new List<WidgetVisitorPieChartData>();
+            IList<AnalyticsData> AnalyticsData = new List<AnalyticsData>();
+            try
+            {
+                AnalyticsData = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter, tenantCode);
+                List<string> distinctwidgets;
+                decimal totalRecord = AnalyticsData.Count();
+                distinctwidgets = AnalyticsData.Where(item => item.Widgetname != string.Empty).Select(item => item.Widgetname).ToList().Distinct().ToList();
+                distinctwidgets.ToList().ForEach(item =>
+                {
+                    WidgetVisitorPieChartData widgetData = new WidgetVisitorPieChartData();
+                    decimal widgetCount = AnalyticsData.Where(data => data.Widgetname == item).Count();
+                    //var value = items.length / totalRecord * 100;
+                    widgetData.name = item;
+                    widgetData.y = widgetCount / totalRecord * 100;
+                    visitorPieChartDatas.Add(widgetData);
+                });
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return visitorPieChartDatas;
+        }
+
+        /// <summary>
+        /// This method will call get asset library method of repository.
+        /// </summary>
+        /// <param name="AnalyticsDataSearchParameter">The asset library search parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns roles if found for given parameters, else return null
+        /// </returns>
+        public PageWidgetVistorData GetPageWidgetVisitor(AnalyticsSearchParameter searchParameter, string tenantCode)
+        {
+            IList<WidgetVisitorPieChartData> visitorPieChartDatas = new List<WidgetVisitorPieChartData>();
+            IList<AnalyticsData> AnalyticsData = new List<AnalyticsData>();
+            IList<long> values = new List<long>();
+            PageWidgetVistorData data = new PageWidgetVistorData();
+
+            try
+            {
+                AnalyticsData = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter, tenantCode);
+                List<string> distinctwidgets;
+                List<long> distinctCustomers;
+                decimal totalRecord = AnalyticsData.Count();
+                distinctCustomers = AnalyticsData.Select(item => item.CustomerId).ToList().Distinct().ToList();
+                distinctwidgets = AnalyticsData.Where(item => item.Widgetname != string.Empty).Select(item => item.Widgetname).ToList().Distinct().ToList();
+
+                distinctwidgets.ToList().ForEach(Widget =>
+                {
+                    long value = 0;
+                    distinctCustomers.ToList().ForEach(customer =>
+                    {
+
+                        if (AnalyticsData.Any(item => item.Widgetname == Widget && item.CustomerId == customer))
+                        {
+                            value++;
+                        }
+                    });
+                    values.Add(value);
+                });
+                data.values = values;
+                data.widgetNames = distinctwidgets;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return data;
+        }
+        /// <summary>
+        /// This method will call get asset library method of repository.
+        /// </summary>
+        /// <param name="AnalyticsDataSearchParameter">The asset library search parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns roles if found for given parameters, else return null
+        /// </returns>
+        public VisitorForDay GeVisitorForDay(AnalyticsSearchParameter searchParameter, string tenantCode)
+        {
+            IList<WidgetVisitorPieChartData> visitorPieChartDatas = new List<WidgetVisitorPieChartData>();
+            IList<AnalyticsData> AnalyticsData = new List<AnalyticsData>();
+            IList<long> values = new List<long>();
+            VisitorForDay data = new VisitorForDay();
+
+            try
+            {
+                AnalyticsData = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter, tenantCode);
+                List<string> distinctwidgets;
+                List<long> distinctCustomers;
+                decimal totalRecord = AnalyticsData.Count();
+                distinctCustomers = AnalyticsData.Select(item => item.CustomerId).ToList().Distinct().ToList();
+                distinctwidgets = AnalyticsData.Where(item => item.Widgetname != string.Empty).Select(item => item.Widgetname).ToList().Distinct().ToList();
+
+                distinctwidgets.ToList().ForEach(Widget =>
+                {
+                    long value = 0;
+                    distinctCustomers.ToList().ForEach(customer =>
+                    {
+
+                        if (AnalyticsData.Any(item => item.Widgetname == Widget && item.CustomerId == customer))
+                        {
+                            value++;
+                        }
+                    });
+                    values.Add(value);
+                });
+                data.values = values;
+                data.widgetNames = distinctwidgets;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return data;
+        }
+
+        #endregion
         #endregion
 
         #region Private Methods
