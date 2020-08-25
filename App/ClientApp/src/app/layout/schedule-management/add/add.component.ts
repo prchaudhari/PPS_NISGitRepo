@@ -201,12 +201,12 @@ export class AddComponent implements OnInit {
     this.scheduleForm.controls['TimeOfDayMinutes'].setValue(this.schedule.MinuteOfDay);
     this.scheduleForm.controls['filtershiftfromdate'].setValue(new Date(this.schedule.StartDate));
     var startDate = new Date(this.schedule.StartDate);
-    var endDate = new Date(this.schedule.StartDate);
+    var endDate = new Date(this.schedule.EndDate);
     var currentDate = new Date();
     if (startDate.getTime() < currentDate.getTime()) {
       this.IsStartDateDisable = true;
     }
-    if (endDate.getTime() > currentDate.getTime()) {
+    if (endDate.getTime() < currentDate.getTime()) {
       this.IsEndDateDisable = true;
     }
     if (this.schedule.EndDate.toString() == "0001-01-01T00:00:00") {

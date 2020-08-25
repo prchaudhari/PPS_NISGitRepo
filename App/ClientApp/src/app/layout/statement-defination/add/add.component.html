@@ -84,7 +84,7 @@
               <div class="filter-head bg-transparent d-flex justify-content-between">
                 <label class="m-0">Available Pages</label>
                 <select formControlName="pageType" (change)='onPageTypeSelected($event)' class="form-control width30 mt-2 xs-w-100">
-                  <option *ngFor="let type of pageTypeList" [value]="type.Identifier">{{type.Name}}</option>
+                  <option *ngFor="let type of pageTypeList" [value]="type.Identifier">{{type.PageTypeName}}</option>
                 </select>
               </div>
               <div class="filter-body-left d-flex flex-column stylescrollbar">

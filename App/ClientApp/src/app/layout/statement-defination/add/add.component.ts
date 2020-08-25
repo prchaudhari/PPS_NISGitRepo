@@ -2,18 +2,16 @@ import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, ElementRef, 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { Statement, StatementPage } from '../statement';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Location } from '@angular/common';
 import { Constants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAccessor, FormArray, ValidatorFn } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { StatementService } from '../statement.service';
 import { TemplateService } from 'src/app/layout/template/template.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
 
 @Component({
   selector: 'app-add',
@@ -25,13 +23,8 @@ export class AddComponent implements OnInit {
   public isCollapsedDetails: boolean = false;
   public isCollapsedPermissions: boolean = true;
   public statementFormGroup: FormGroup;
-  public pageTypeList = [
-    { "Name": "Select Page Type", "Identifier": "0" },
-    { "Name": "Home", "Identifier": "1" },
-    { "Name": "Saving Account", "Identifier": "2" },
-    { "Name": "Current Account", "Identifier": "3" }
+  public pageTypeList = [];
 
-  ];
   public statement;
   public updateOperationMode: boolean;
   public params: any = [];
@@ -52,7 +45,6 @@ export class AddComponent implements OnInit {
     private injector: Injector,
   ) {
     this.statement = new Statement;
-
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/statementdefination/Add')) {
@@ -80,20 +72,15 @@ export class AddComponent implements OnInit {
           if (localStorage.getItem('statementparams')) {
             this.statement.Identifier = this.params.Routeparams.passingparams.StatementIdentifier;
             //this.getStatements();
-
           }
         } else {
           localStorage.removeItem("statementparams");
         }
       }
-
     });
-
-
   }
 
   ngOnInit() {
-
     this.statementFormGroup = this.formbuilder.group({
       statementName: ['', Validators.compose([Validators.required, Validators.minLength(2),
       Validators.maxLength(100)])],
@@ -104,25 +91,13 @@ export class AddComponent implements OnInit {
     this.selectedPages = [];
     this.getTemplates(null);
   }
-  //OnPageLoad() {
-  //  if (localStorage.getItem('statementparams')) {
-  //    this.statement.Identifier = this.params.Routeparams.passingparams.StatementIdentifier;
 
-  //    this.getTemplates(null);
-  //    this.getStatements();
-  //  }
-  //  else {
-  //    this.getTemplates(null);
-  //  }
-  //}
   navigateToListPage() {
     this._router.navigate(['/statementdefination']);
   }
 
-
   async getStatements() {
     let statementService = this.injector.get(StatementService);
-
     var searchParameter: any = {};
     searchParameter.IsActive = true;
     searchParameter.PagingParameter = {};
@@ -134,7 +109,6 @@ export class AddComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.statement.Identifier;
     searchParameter.IsStatementPagesRequired = true;
-
     var statementList = await statementService.getStatements(searchParameter);
     this.isStatementDetailsLoaded = true;
     if (statementList.length == 0) {
@@ -152,7 +126,6 @@ export class AddComponent implements OnInit {
       if (element != undefined && element != null) {
         this.selectedPages.push(element);
         this.pages = Array.prototype.filter.call(this.pages, (file: any) => file.Identifier != element.Identifier);
-
       }
     }
   }
@@ -172,27 +145,23 @@ export class AddComponent implements OnInit {
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
     searchParameter.SortParameter = {};
-    searchParameter.SortParameter.SortColumn = 'CreatedDate';
+    searchParameter.SortParameter.SortColumn = 'PublishedOn';
+    searchParameter.SortParameter.SortOrder = Constants.Descending
     searchParameter.Status = "Published";
     let templateService = this.injector.get(TemplateService);
     if (parameter !=null) {
       searchParameter.PageTypeId = parameter.PageTypeId;
     }
     this.pages = await templateService.getTemplates(searchParameter);
-
-    //if (this.pages.length == 0) {
-    //  this._messageDialogService.openDialogBox('Error', "Pages Not Founnd", Constants.msgBoxError)
-    //}
     if (localStorage.getItem('statementparams') && this.isStatementDetailsLoaded == false) {
-
       this.getStatements();
     }
     if (this.selectedPages.length > 0) {
       for (var i = 0; i < this.selectedPages.length; i++) {
         this.pages = Array.prototype.filter.call(this.pages, (file: any) => file.Identifier != this.selectedPages[i].Identifier);
-
       }
     }
+    this.getPageTypes();
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -204,9 +173,6 @@ export class AddComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
     }
-    console.log(this.pages);
-    console.log(this.selectedPages);
-
   }
 
   public onPageTypeSelected(event) {
@@ -217,24 +183,11 @@ export class AddComponent implements OnInit {
       var parameter: any = {};
       parameter.PageTypeId = this.statementFormGroup.value.pageType;
       this.getTemplates(parameter);
-
     }
   }
 
   bindPages(): void {
     this.isCollapsedPermissions = !this.isCollapsedPermissions;
-    //if (!this.isCollapsedPermissions) {
-    //  if (this.statementFormGroup.value.pageType != null && this.statementFormGroup.value.pageType > 0) {
-    //    this.getTemplates(null);
-    //  }
-    //  else {
-    //    var parameter: any = {};
-    //    parameter.PageTypeId = this.statementFormGroup.value.pageType;
-    //    this.getTemplates(parameter);
-
-    //  }
-    //}
-
   }
 
   async saveStatement() {
@@ -267,5 +220,21 @@ export class AddComponent implements OnInit {
       this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
       this.navigateToListPage()
     }
+  }
+
+  async getPageTypes() {
+    let templateService = this.injector.get(TemplateService);
+    this.pageTypeList = [{ "Identifier": 0, "PageTypeName": "Select Page Type"}];
+    let list = await templateService.getPageTypes();
+      if (this.pageTypeList.length == 0) {
+          let message = ErrorMessageConstants.getNoRecordFoundMessage;
+          this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+              if (data == true) {
+                  this.getPageTypes();
+              }
+          });
+      } else {
+        this.pageTypeList = [...this.pageTypeList, ...list];
+      }
   }
 }

@@ -138,6 +138,15 @@ namespace nIS
                     scheduleRecords.ToList().ForEach(item =>
                     {
                         int diff = this.utility.MonthDifference(item.EndDate ?? DateTime.Now, item.StartDate ?? DateTime.Now);
+                        //If schedule day of month is greater than end date day of month, then batch record will generate for that month
+                        if (item.StartDate?.Day > Convert.ToInt32(item.DayOfMonth) && item.EndDate?.Day < Convert.ToInt32(item.DayOfMonth))
+                        {
+                            diff--;
+                        }
+                        else if (item.StartDate?.Day < Convert.ToInt32(item.DayOfMonth) && item.EndDate?.Day >= Convert.ToInt32(item.DayOfMonth))
+                        {
+                            diff++;
+                        }
                         if (diff > 0)
                         {
                             this.AddBatchMaster(item, 1, diff, tenantCode, userId);
@@ -214,9 +223,41 @@ namespace nIS
                         scheduleRecord.LastUpdatedDate = DateTime.UtcNow;
                         nISEntitiesDataContext.SaveChanges();
 
-                        if (newDiff > 0)
+                        //If any batch is not executed or data ready for it, then delete all batches and re-insert it as per start date and end date, 
+                        //Else insert new batches as per new end date and previous end date logic
+                        var batches = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id && (batch.IsExecuted || batch.IsDataReady)).ToList();
+                        if (batches.Count == 0)
                         {
-                            this.AddBatchMaster(scheduleRecord, (prevDiff + 1), (prevDiff + newDiff), tenantCode, userId);
+                            var batchesToDelete = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id).ToList();
+                            nISEntitiesDataContext.BatchMasterRecords.RemoveRange(batchesToDelete);
+                            nISEntitiesDataContext.SaveChanges();
+
+                            int diff = this.utility.MonthDifference(item.EndDate ?? DateTime.Now, item.StartDate ?? DateTime.Now);
+                            //If schedule day of month is greater than end date day of month, then batch record will generate for that month
+                            if (item.StartDate?.Day > Convert.ToInt32(item.DayOfMonth) && item.EndDate?.Day < Convert.ToInt32(item.DayOfMonth))
+                            {
+                                diff--;
+                            }
+                            else if (item.StartDate?.Day < Convert.ToInt32(item.DayOfMonth) && item.EndDate?.Day >= Convert.ToInt32(item.DayOfMonth))
+                            {
+                                diff++;
+                            }
+                            if (diff > 0)
+                            {
+                                this.AddBatchMaster(scheduleRecord, 1, diff, tenantCode, userId);
+                            }
+                        }
+                        else
+                        {
+                            //If schedule day of month is greater than end date day of month, then batch record will generate for that month
+                            if (scheduleRecord.EndDate?.Day < Convert.ToInt32(item.DayOfMonth))
+                            {
+                                prevDiff--;
+                            }
+                            if (newDiff > 0)
+                            {
+                                this.AddBatchMaster(scheduleRecord, (prevDiff + 1), (prevDiff + newDiff), tenantCode, userId);
+                            }
                         }
                     });
 
@@ -1003,69 +1044,63 @@ namespace nIS
         public bool AddBatchMaster(ScheduleRecord schedule, int start, int end, string tenantCode, int userId)
         {
             bool result = false;
-            this.SetAndValidateConnectionString(tenantCode);
-
-            List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
-            if (end > 0)
+            try
             {
-                DateTime batchExecutionDate = DateTime.Now;
-                int ValueToAddInMonth = start;
-                DateTime scheduleEnddate = schedule.EndDate ?? DateTime.Now;
-
-                //If schedule day of month is greater than end date day of month, then batch record will generate for that month
-                if (scheduleEnddate.Day < Convert.ToInt32(schedule.DayOfMonth))
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+                if (end > 0)
                 {
-                    end--;
-                }
-
-                for (int index = start; index <= end; index++)
-                {
-                    BatchMasterRecord record = new BatchMasterRecord();
-                    record.BatchName = "Batch " + index + " of " + schedule.Name;
-                    record.TenantCode = tenantCode;
-                    record.CreatedBy = userId;
-                    record.CreatedDate = DateTime.UtcNow;
-                    record.ScheduleId = schedule.Id;
-                    record.IsExecuted = false;
-                    record.IsDataReady = false;
-
-                    DateTime scheduleStartDate = schedule.StartDate ?? DateTime.Now;
-                    if (index == 1)
+                    var batchExecutionDate = DateTime.Now;
+                    int ValueToAddInMonth = start;
+                    var scheduleStartDate = schedule.StartDate ?? DateTime.Now;
+                    for (int index = start; index <= end; index++)
                     {
-                        if (scheduleStartDate.Day < Convert.ToInt32(schedule.DayOfMonth))
+                        BatchMasterRecord record = new BatchMasterRecord();
+                        record.BatchName = "Batch " + index + " of " + schedule.Name;
+                        record.TenantCode = tenantCode;
+                        record.CreatedBy = userId;
+                        record.CreatedDate = DateTime.UtcNow;
+                        record.ScheduleId = schedule.Id;
+                        record.IsExecuted = false;
+                        record.IsDataReady = false;
+                        if (index == 1)
                         {
-                            batchExecutionDate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
-                            end++;
+                            if (scheduleStartDate.Day < Convert.ToInt32(schedule.DayOfMonth))
+                            {
+                                batchExecutionDate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                                end++;
+                            }
+                            else
+                            {
+                                var tempDate = scheduleStartDate.AddMonths(ValueToAddInMonth);
+                                batchExecutionDate = new DateTime(tempDate.Year, tempDate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                                ValueToAddInMonth++;
+                            }
                         }
                         else
                         {
-                            DateTime tempDate = scheduleStartDate.AddMonths(ValueToAddInMonth);
+                            var tempDate = scheduleStartDate.AddMonths(ValueToAddInMonth);
                             batchExecutionDate = new DateTime(tempDate.Year, tempDate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
                             ValueToAddInMonth++;
                         }
+                        record.BatchExecutionDate = batchExecutionDate;
+                        record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                        record.Status = BatchStatus.New.ToString();
+                        batchMasterRecords.Add(record);
                     }
-                    else
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        DateTime tempDate = scheduleStartDate.AddMonths(ValueToAddInMonth);
-                        batchExecutionDate = new DateTime(tempDate.Year, tempDate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
-                        ValueToAddInMonth++;
+                        nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                        result = true;
                     }
-
-                    record.BatchExecutionDate = batchExecutionDate;
-                    record.DataExtractionDate = batchExecutionDate.AddDays(-1);
-                    record.Status = BatchStatus.New.ToString();
-                    batchMasterRecords.Add(record);
                 }
-
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
-                    nISEntitiesDataContext.SaveChanges();
-                    result = true;
-                }
+                return result;
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode)
