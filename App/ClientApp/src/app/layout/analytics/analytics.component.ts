@@ -49,7 +49,7 @@ export class AnalyticsComponent implements OnInit {
 
   ngAfterViewInit() {
     Highcharts.chart('chartDatewisecontainer', this.options);
-    //Highcharts.chart('chartDaywisecontainer', this.options2);
+    Highcharts.chart('chartDaywisecontainer', this.options2);
     //Highcharts.chart('chartPageWidgetwisecontainer', this.options3);
     //Highcharts.chart('chartWidgetPiecontainer', this.options4);
   }
@@ -177,9 +177,60 @@ export class AnalyticsComponent implements OnInit {
   public pieChartData = [];
 
   //Visitor for days
-  public options2: any = {};
+  public options2: any = {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: ''
+    },
+    subtitle: {
+      text: ''
+    },
+    xAxis: {
+      title: {
+        text: 'Date'
+      },
+      categories: [
+        '09:00',
+        '10:00',
+        '11:00',
+        '12:00',
+        '13:00',
+        '14:00',
+      ],
+      crosshair: true
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Visitor Count'
+      }
+    },
+    tooltip: {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Count',
+      data: [14, 13, 21, 45, 28, 29]
+
+    }]
+  }
+
   //Visitor for Page Widget
   public options3: any = {};
+
   //Widget Visitors for day
   public pieChartOptions: any;
 
@@ -365,6 +416,6 @@ export class AnalyticsComponent implements OnInit {
 
       }]
     }
-    Highcharts.chart('chartDaywisecontainer', this.options2);
+   
   }
 }

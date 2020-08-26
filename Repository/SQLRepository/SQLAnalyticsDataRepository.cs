@@ -244,22 +244,36 @@ namespace nIS
             {
 
                 this.SetAndValidateConnectionString(tenantCode);
+                StringBuilder queryString = new StringBuilder();
+                queryString.Append(string.Join("or ", settings.Where(item => item.PageWidgetId > 0).Select(item => string.Format("Id.Equals({0}) ", item.PageWidgetId))));
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    IList<PageWidgetMapRecord> pageWidgeMap=new List<PageWidgetMapRecord>();
+                    if (!string.IsNullOrEmpty(queryString.ToString()))
+                    {
+                        pageWidgeMap = nISEntitiesDataContext.PageWidgetMapRecords.Where(queryString.ToString()).ToList();
+                    }
                     settings.ToList().ForEach(setting =>
                     {
                         AnalyticsDataRecord record = new AnalyticsDataRecord();
+                        PageWidgetMapRecord map = new PageWidgetMapRecord();
+                        if (setting.PageWidgetId > 0)
+                        {
+                            map = pageWidgeMap.Where(page => page.Id == setting.PageWidgetId)?.FirstOrDefault();
+                            setting.PageId = map.PageId;
+                            setting.WidgetId = map.ReferenceWidgetId;
 
+                        }
                         record.StatementId = setting.StatementId;
                         record.CustomerId = setting.CustomerId;
-                        record.AccountId = setting.AccountId;
+                        record.AccountId = setting.AccountId != null ? setting.AccountId : "";
                         record.PageWidgetId = setting.PageWidgetId;
                         record.PageId = setting.PageId;
                         record.WidgetId = setting.WidgetId;
                         record.EventDate = setting.EventDate;
                         record.EventType = setting.EventType;
-                        record.TenantCode = "";
+                        record.TenantCode = ModelConstant.DEFAULT_TENANT_CODE;
                         records.Add(record);
 
                     });

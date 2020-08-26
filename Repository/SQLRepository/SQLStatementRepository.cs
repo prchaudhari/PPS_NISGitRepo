@@ -635,6 +635,7 @@ namespace nIS
                     var statementPages = statement.StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                     if (statementPages.Count > 0)
                     {
+                        int counter = 0;
                         statement.Pages = new List<Page>();
                         for (int i = 0; i < statementPages.Count; i++)
                         {
@@ -717,63 +718,107 @@ namespace nIS
                                                     pageHtmlContent.Append("<div class='col-lg-" + divLength + "'>");
                                                     if (mergedlst[x].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
+
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}", "{{AccountInfoData_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML_FOR_STMT.Replace("{{AccountInfoData}}", "{{AccountInfoData_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.IMAGE_WIDGET_HTML_FOR_STMT.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.VIDEO_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML.Replace("{{AccountSummary}}", "{{AccountSummary_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML_FOR_STMT.Replace("{{AccountSummary}}", "{{AccountSummary_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
                                                     {
-                                                        string CurrentAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string CurrentAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        CurrentAvailBalanceWidget = CurrentAvailBalanceWidget.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(CurrentAvailBalanceWidget);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
                                                     {
-                                                        string SavingAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string SavingAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        SavingAvailBalanceWidget = SavingAvailBalanceWidget.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(SavingAvailBalanceWidget);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML_FOR_STMT.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
+                                                        //class='card border-0';
+                                                        //pageHtmlContent.Replace()
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML_FOR_STMT.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML.Replace("{{IncomeSourceList}}", "{{IncomeSourceList_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML_FOR_STMT.Replace("{{IncomeSourceList}}", "{{IncomeSourceList_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.ANALYTIC_WIDGET_HTML);
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.ANALYTIC_WIDGET_HTML_FOR_STMT;
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.SPENDING_TRENDS_WIDGET_HTML);
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.SPENDING_TRENDS_WIDGET_HTML_FOR_STMT;
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.SAVING_TRENDS_WIDGET_HTML);
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.SAVING_TRENDS_WIDGET_HTML_FOR_STMT;
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.REMINDER_WIDGET_HTML.Replace("{{ReminderAndRecommdationDataList}}", "{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}"));
+                                                        string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
+                                                        string widgetHTML = HtmlConstants.REMINDER_WIDGET_HTML_FOR_STMT.Replace("{{ReminderAndRecommdationDataList}}", "{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                        widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        pageHtmlContent.Append(widgetHTML);
                                                     }
-
+                                                    counter++;
                                                     // To end current col-lg class div
                                                     pageHtmlContent.Append(HtmlConstants.END_DIV_TAG);
 
@@ -798,6 +843,7 @@ namespace nIS
                                                     currentYPosition = completelst.Min(it => it.Yposition);
                                                 }
                                             }
+                                            //counter++;
                                         }
                                         //If row class div end before complete col-lg-12 class
                                         if (isRowComplete == false)
@@ -816,7 +862,7 @@ namespace nIS
                             {
                                 pageHtmlContent.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
                             }
-
+                            //counter++;
                             statementPageContent.HtmlContent = pageHtmlContent.ToString();
                             statementPageContents.Add(statementPageContent);
                         }
@@ -1285,7 +1331,7 @@ namespace nIS
                         }
                         else if (widget.WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                         {
-                            var imageAssetPath  = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
+                            var imageAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
                             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                             {
                                 dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
@@ -1633,6 +1679,7 @@ namespace nIS
                         TabClassName = it.TabClassName
                     }));
 
+                    long FirstPageId = statement.Pages[0].Identifier;
                     for (int i = 0; i < statement.Pages.Count; i++)
                     {
                         var page = statement.Pages[i];
@@ -1677,7 +1724,7 @@ namespace nIS
 
                         for (int x = 0; x < accountCount; x++)
                         {
-                            StringBuilder pageContent = new StringBuilder(statementPageContent.HtmlContent);
+
                             accountNumber = string.Empty;
                             accountType = string.Empty;
                             if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
@@ -1705,7 +1752,8 @@ namespace nIS
                                     " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
 
                                 newPageContent.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") +
-                                    "-" + lastFourDigisOfAccountNumber + "' class='tab-pane fade in " + (x == 0 ? "active show" : "") + "'>");
+                                    "-" + lastFourDigisOfAccountNumber +"-"+"AccountNumber-"+accountId+ "' class='tab-pane fade in " + (x == 0 ? "active show" : "") 
+                                    + "'>");
 
                                 if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
                                 {
@@ -1723,6 +1771,20 @@ namespace nIS
                             }
 
                             var pagewidgets = page.PageWidgets;
+                            //for (int j = 0; j < pagewidgets.Count; j++)
+                            //{
+                            //    string widgetId = "AccountId_0_PageWidgetId_" + pagewidgets[j].Identifier + "_Counter"+ counter;
+                            //    string widgetIdWithAccount = "AccountId_"+ accountId+"_PageWidgetId_" + pagewidgets[j].Identifier + "_Counter" + counter;
+                            //    //statementPageContent.HtmlContent=statementPageContent.HtmlContent.Replace(widgetId, widgetIdWithAccount);
+                            //    //var regex = new Regex(Regex.Escape(widgetId));
+                            //    //statementPageContent.HtmlContent = regex.Replace(statementPageContent.HtmlContent, widgetIdWithAccount, 1);
+                            //    int pos = statementPageContent.HtmlContent.IndexOf(widgetId);
+
+                            //    statementPageContent.HtmlContent= statementPageContent.HtmlContent.Substring(0, pos) + widgetIdWithAccount + statementPageContent.HtmlContent.Substring(pos + widgetId.Length);
+                            //    counter++;
+                            //}
+                            StringBuilder pageContent = new StringBuilder(statementPageContent.HtmlContent);
+
                             for (int j = 0; j < pagewidgets.Count; j++)
                             {
                                 var widget = pagewidgets[j];
@@ -2395,7 +2457,7 @@ namespace nIS
                     finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
                     finalHtml.Replace("{{CustomerNumber}}", customer.Id.ToString());
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
-
+                    finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
                     if (IsFailed)
                     {
                         logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
