@@ -56,12 +56,20 @@
           </div>
           <div>
             <div>
-              <select typeof="text" class="form-control">
+              <!--<select typeof="text" class="form-control">
                 <option selected>Select Page</option>
                 <option>Home</option>
                 <option>Saving Account</option>
                 <option>Current Account</option>
-              </select>
+              </select>-->
+
+              <form [formGroup]="PageWidgetVisitorForm" name="PageWidgetVisitor" autocomplete="on" novalidate>
+                <select formControlName="pageType" (change)='onPageTypeSelected($event)' class="form-control">
+                  <option *ngFor="let type of pageTypeList" [value]="type.Identifier">{{type.PageTypeName}}</option>
+                </select>
+              </form>
+              
+
             </div>
           </div>
         </div>
@@ -112,10 +120,10 @@
       <!--[ngClass]="filterClass"-->
       <div class="filter-footer">
         <ul class="nav">
-          <li class="nav-item width33" title="Search">
-            <a class="nav-link p-0">
+          <li class="nav-item width33" title="Search" >
+            <button class="btn-footer-fill btn-block rounded-0 height100" [disabled]="disableSeacrhButton()" (click)="searchSourceDataRecordFilter('search')">
               <span class="fa fa-check"></span>
-            </a>
+            </button>
           </li>
           <li class="nav-item width33" title="Reset">
             <a class="nav-link p-0">

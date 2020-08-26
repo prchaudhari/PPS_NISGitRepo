@@ -26,6 +26,7 @@ export class SourceDataService {
   public isRecordDeleted: boolean = false;
   public countrycodeList = [];
   public ouList = [];
+  public DateWiseVisitorData;
   public isDependencyPresent: boolean = false;
   constructor(private http: HttpClient,
     private injector: Injector,
@@ -131,7 +132,7 @@ export class SourceDataService {
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           if (httpEvent["status"] === 200) {
-            this.pieChartList = [];
+            this.VisitorForDay = [];
             this.uiLoader.stop();
             if (httpEvent['body'] != null) {
               //httpEvent['body'].forEach(scheduleObject => {
@@ -141,17 +142,47 @@ export class SourceDataService {
             }
           }
           else {
-            this.pieChartList = [];
+            this.VisitorForDay = [];
             this.isRecordFound = false;
             this.uiLoader.stop();
           }
         }
       }, (error: HttpResponse<any>) => {
-        this.pieChartList = [];
+          this.VisitorForDay = [];
         this.isRecordFound = false;
         this.uiLoader.stop();
       });
     return <VisitorForDay>this.VisitorForDay;
   }
 
+  public async getVisitorForDate(searchParameter): Promise<any> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = "AnalyticsData/GetDatewiseVisitor";
+    this.uiLoader.start();
+    await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          if (httpEvent["status"] === 200) {
+            this.DateWiseVisitorData = [];
+            this.uiLoader.stop();
+            if (httpEvent['body'] != null) {
+              //httpEvent['body'].forEach(scheduleObject => {
+              //  this.pieChartList = [...this.pieChartList, scheduleObject];
+              //});
+              this.DateWiseVisitorData = httpEvent['body'];
+            }
+          }
+          else {
+            this.DateWiseVisitorData = [];
+            this.isRecordFound = false;
+            this.uiLoader.stop();
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+          this.DateWiseVisitorData = [];
+        this.isRecordFound = false;
+        this.uiLoader.stop();
+      });
+    return <any>this.DateWiseVisitorData;
+  }
 }

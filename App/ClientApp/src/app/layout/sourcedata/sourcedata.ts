@@ -26,6 +26,12 @@ export class VisitorForDay {
   "time": any[];
   "values": number[];
 }
-
-
+export class DatewiseVisitorSeries {
+  "name":string;
+  "data": number[];
+}
+export class DatewiseVisitor {
+  "dates": string[];
+  "datewiseVisitorSeries": DatewiseVisitorSeries[];
+}
 

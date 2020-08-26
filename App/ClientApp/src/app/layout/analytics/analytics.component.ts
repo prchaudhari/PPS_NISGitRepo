@@ -1,12 +1,13 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { SourceDataService } from '../sourcedata/sourcedata.service';
-import { SourceData, VisitorForDay } from '../sourcedata/sourcedata';
+import { SourceData, VisitorForDay, DatewiseVisitor } from '../sourcedata/sourcedata';
 import { Constants } from '../../shared/constants/constants';
 import { ErrorMessageConstants } from '../../shared/constants/constants';
 import { MessageDialogService } from '../../shared/services/mesage-dialog.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { TemplateService } from '../template/template.service';
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
@@ -27,11 +28,13 @@ noData(Highcharts);
 export class AnalyticsComponent implements OnInit {
   public isFilter: boolean = false;
   public AnalyticFilterForm: FormGroup;
+  public PageWidgetVisitorForm: FormGroup;
+
   public filterFromDateError: boolean = false;
   public filterFromDateErrorMessage: string = "";
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
-
+  public pageTypeList = [];
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
@@ -42,23 +45,118 @@ export class AnalyticsComponent implements OnInit {
       filterFromDate: [null],
       filterToDate: [null],
     });
+    this.PageWidgetVisitorForm = this.fb.group({
+      pageType: [0]
 
+    });
     this.getSourceDatas(null);
 
   }
 
   ngAfterViewInit() {
-    Highcharts.chart('chartDatewisecontainer', this.options);
-    Highcharts.chart('chartDaywisecontainer', this.options2);
+    //Highcharts.chart('chartDatewisecontainer', this.options);
+    //Highcharts.chart('chartDaywisecontainer', this.options2);
     //Highcharts.chart('chartPageWidgetwisecontainer', this.options3);
     //Highcharts.chart('chartWidgetPiecontainer', this.options4);
+    this.getPageTypes();
   }
-
+  async getPageTypes() {
+    let templateService = this.injector.get(TemplateService);
+    this.pageTypeList = [{ "Identifier": 0, "PageTypeName": "Select Page Type" }];
+    let list = await templateService.getPageTypes();
+    if (this.pageTypeList.length == 0) {
+      let message = ErrorMessageConstants.getNoRecordFoundMessage;
+      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+        if (data == true) {
+          this.getPageTypes();
+        }
+      });
+    } else {
+      this.pageTypeList = [...this.pageTypeList, ...list];
+    }
+  }
   get filterFromDate() {
     return this.AnalyticFilterForm.get('filterFromDate');
   }
+  get pageType() {
+    return this.PageWidgetVisitorForm.get('pageType');
+  }
   get filterToDate() {
     return this.AnalyticFilterForm.get('filterToDate');
+  }
+
+  public onPageTypeSelected(event) {
+    var searchParameter : any= {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = 'Id';
+    searchParameter.SortParameter.SortOrder = Constants.Descending;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.AnalyticFilterForm.value.filterFromDate != null && this.AnalyticFilterForm.value.filterFromDate != '') {
+      //searchParameter.StartDate = this.ScheduleFilterForm.value.filterStartDate;
+      searchParameter.StartDate = new Date(this.AnalyticFilterForm.value.filterFromDate.setHours(0, 0, 0));
+    }
+    if (this.AnalyticFilterForm.value.filterToDate != null && this.AnalyticFilterForm.value.filterToDate != '') {
+      //searchParameter.EndDate = this.ScheduleFilterForm.value.filterEndDate;
+      searchParameter.EndDate = new Date(this.AnalyticFilterForm.value.filterToDate.setHours(23, 59, 59));
+    }
+    if (this.PageWidgetVisitorForm.value.pageType == "0") {
+      searchParameter.PageTypeName = "";
+    }
+    else {
+      var page=this.pageTypeList.filter(i => i.Identifier.toString() == this.PageWidgetVisitorForm.value.pageType);
+      searchParameter.PageTypeName = page[0].PageTypeName;
+
+    }
+    this.BindVisitorPageWidgetCount(searchParameter);
+  }
+  disableSeacrhButton() {
+    if (this.AnalyticFilterForm.value.filterFromDate === null || this.AnalyticFilterForm.value.filterFromDate == '') {
+      return true;
+    }
+    if (this.AnalyticFilterForm.value.filterToDate === null || this.AnalyticFilterForm.value.filterToDate == '') {
+      return true;
+    }
+    if (this.filterToDateError || this.filterFromDateError) {
+      return true;
+    }
+    return false;
+  }
+  searchSourceDataRecordFilter(searchType) {
+    this.filterFromDateError = false;
+    this.isFilterDone = true;
+    if (searchType == 'reset') {
+      this.resetPageFilterForm();
+      this.getSourceDatas(null);
+      this.isFilter = !this.isFilter;
+    }
+    else {
+      if (this.validateFilterDate()) {
+        let searchParameter: any = {};
+        searchParameter.PagingParameter = {};
+        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.SortParameter = {};
+        searchParameter.SortParameter.SortColumn = 'Id';
+        searchParameter.SortParameter.SortOrder = Constants.Descending;
+        searchParameter.SearchMode = Constants.Contains;
+      
+        if (this.AnalyticFilterForm.value.filterFromDate != null && this.AnalyticFilterForm.value.filterFromDate != '') {
+          //searchParameter.StartDate = this.ScheduleFilterForm.value.filterStartDate;
+          searchParameter.StartDate = new Date(this.AnalyticFilterForm.value.filterFromDate.setHours(0, 0, 0));
+        }
+        if (this.AnalyticFilterForm.value.filterToDate != null && this.AnalyticFilterForm.value.filterToDate != '') {
+          //searchParameter.EndDate = this.ScheduleFilterForm.value.filterEndDate;
+          searchParameter.EndDate = new Date(this.AnalyticFilterForm.value.filterToDate.setHours(23, 59, 59));
+        }
+
+        console.log(searchParameter);
+        this.getSourceDatas(searchParameter);
+        this.isFilter = !this.isFilter;
+      }
+    }
   }
   validateFilterDate(): boolean {
     if (this.AnalyticFilterForm.value.filterFromDate != null && this.AnalyticFilterForm.value.filterFromDate != '' &&
@@ -116,63 +214,9 @@ export class AnalyticsComponent implements OnInit {
   }
   public sourceDataList: SourceData[] = [];
   public visitorData: VisitorForDay;
+  public DateWiseVisitor: DatewiseVisitor;
   //Datewise Visitor for Pages
-  public options: any = {
-    chart: {
-      type: 'column'
-    },
-    title: {
-      text: ''
-    },
-    subtitle: {
-      text: ''
-    },
-    xAxis: {
-      title: {
-        text: 'Date'
-      },
-      categories: [
-        '06/08/2020',
-        '07/08/2020',
-        '08/08/2020',
-        '09/08/2020'
-      ],
-      crosshair: true
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Visitor Count'
-      }
-    },
-    tooltip: {
-      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-      footerFormat: '</table>',
-      shared: true,
-      useHTML: true
-    },
-    plotOptions: {
-      column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-      }
-    },
-    series: [{
-      name: 'Current Account',
-      data: [28, 29, 28, 29]
-
-    }, {
-      name: 'Home',
-      data: [37, 30, 37, 30]
-
-    }, {
-      name: 'Saving Account',
-      data: [35, 38, 35, 38]
-
-    }]
-  }
+  public options: any = {}
   public isFilterDone = false;
   public pieChartData = [];
 
@@ -265,6 +309,8 @@ export class AnalyticsComponent implements OnInit {
     this.BindPieChart(searchParameter);
     this.BindVisitorPageWidgetCount(searchParameter);
     this.BindVisitorForDay(searchParameter);
+    this.BindVisitorForDate(searchParameter);
+
     // }
   }
 
@@ -416,6 +462,66 @@ export class AnalyticsComponent implements OnInit {
 
       }]
     }
-   
+    Highcharts.chart('chartDaywisecontainer', this.options2);
+  }
+
+
+  async BindVisitorForDate(searchParameter) {
+    let scheduleLogService = this.injector.get(SourceDataService);
+    this.DateWiseVisitor = await scheduleLogService.getVisitorForDate(searchParameter);
+    this.options = {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: ''
+      },
+      subtitle: {
+        text: ''
+      },
+      xAxis: {
+        title: {
+          text: 'Date'
+        },
+        categories: this.DateWiseVisitor.dates,
+        crosshair: true
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Visitor Count'
+        }
+      },
+      tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+          '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      },
+      plotOptions: {
+        column: {
+          pointPadding: 0.2,
+          borderWidth: 0
+        }
+      },
+      series: this.DateWiseVisitor.datewiseVisitorSeries
+      //series: [{
+      //  name: 'Current Account',
+      //  data: [28, 29, 28, 29]
+
+      //}, {
+      //  name: 'Home',
+      //  data: [37, 30, 37, 30]
+
+      //}, {
+      //  name: 'Saving Account',
+      //  data: [35, 38, 35, 38]
+
+      //}]
+    }
+    Highcharts.chart('chartDatewisecontainer', this.options);
+
   }
 }

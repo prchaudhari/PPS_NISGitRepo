@@ -63,7 +63,7 @@ namespace nIS
             {
 
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                assetlibraries = this.AnalyticsDataManager.GetAnalyticsData(searchParameter,tenantCode);
+                assetlibraries = this.AnalyticsDataManager.GetAnalyticsData(searchParameter, tenantCode);
             }
             catch (Exception exception)
             {
@@ -79,7 +79,7 @@ namespace nIS
         /// <param name="AnalyticsDataSearchParameter"></param>
         /// <returns>List of asset libraries</returns>
         [HttpPost]
-        public IList<WidgetVisitorPieChartData>GetPieChartWidgeVisitor(AnalyticsSearchParameter searchParameter)
+        public IList<WidgetVisitorPieChartData> GetPieChartWidgeVisitor(AnalyticsSearchParameter searchParameter)
         {
             IList<WidgetVisitorPieChartData> widgetVisitorPieChartData = new List<WidgetVisitorPieChartData>();
             try
@@ -125,6 +125,29 @@ namespace nIS
         /// <param name="AnalyticsDataSearchParameter"></param>
         /// <returns>List of asset libraries</returns>
         [HttpPost]
+        public DatewiseVisitor GetDatewiseVisitor(AnalyticsSearchParameter searchParameter)
+        {
+            DatewiseVisitor data = new DatewiseVisitor();
+            try
+            {
+
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                data = this.AnalyticsDataManager.GetDatewiseVisitor(searchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return data;
+        }
+
+        /// <summary>
+        /// This method helps to get asset libraries list based on the search parameters.
+        /// </summary>
+        /// <param name="AnalyticsDataSearchParameter"></param>
+        /// <returns>List of asset libraries</returns>
+        [HttpPost]
         public VisitorForDay GeVisitorForDay(AnalyticsSearchParameter searchParameter)
         {
             VisitorForDay data = new VisitorForDay();
@@ -151,12 +174,12 @@ namespace nIS
         [AllowAnonymous]
         public bool Save(IList<AnalyticsData> setting)
         {
-            bool result;  
+            bool result;
             try
             {
 
-               // string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                result = this.AnalyticsDataManager.Save(setting,ModelConstant.DEFAULT_TENANT_CODE);
+                // string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.AnalyticsDataManager.Save(setting, ModelConstant.DEFAULT_TENANT_CODE);
             }
             catch (Exception exception)
             {

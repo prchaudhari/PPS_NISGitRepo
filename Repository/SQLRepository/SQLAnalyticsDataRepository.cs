@@ -180,6 +180,7 @@ namespace nIS
                         widgetIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.WidgetId != null && item.WidgetId > 0)
                             .Select(item => string.Format("Id.Equals({0})", item.WidgetId))) + ")");
                         widgetRecords = nISEntitiesDataContext.WidgetRecords.Where(widgetIds.ToString()).ToList();
+
                     }
 
                 }
@@ -204,10 +205,24 @@ namespace nIS
                     {
                         var customer = pageRecords.Where(i => i.Id == data.PageId)?.FirstOrDefault();
                         data.PageName = customer.DisplayName;
+                        data.PageTypeId = customer.PageTypeId;
+                        if(data.PageTypeId==1)
+                        {
+                            data.PageTypeName = "Home";
+                        }
+                        else  if (data.PageTypeId == 2)
+                        {
+                            data.PageTypeName = "Saving Account";
+                        }
+                        else if (data.PageTypeId == 3)
+                        {
+                            data.PageTypeName = "Current Account";
+                        }
                     }
                     else
                     {
                         data.PageName = "";
+                        data.PageTypeName = "";
                     }
                     if (data.WidgetId > 0 && widgetRecords.Any(i => i.Id == data.WidgetId))
                     {
@@ -220,6 +235,13 @@ namespace nIS
                     }
                     AnalyticsDatas.Add(data);
                 });
+                if(AnalyticsDatas?.Count()>0)
+                {
+                    if(searchParameter.PageTypeName!=string.Empty)
+                    {
+                        AnalyticsDatas=AnalyticsDatas.Where(item => item.PageTypeName != "" && item.PageTypeName != null && item.PageTypeName == searchParameter.PageTypeName).ToList();
+                    }
+                }
             }
 
             catch (Exception ex)

@@ -82,6 +82,18 @@ namespace nIS
         public string PageName { get; set; }
 
         /// <summary>
+        /// Gets or sets PageType.
+        /// </summary>
+        [Description("PageType")]
+        public long PageTypeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets PageType.
+        /// </summary>
+        [Description("PageTypeName")]
+        public string PageTypeName { get; set; }
+
+        /// <summary>
         /// Gets or sets identifier.
         /// </summary>
         [Description("WidgetId")]

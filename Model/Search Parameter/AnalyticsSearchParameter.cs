@@ -27,12 +27,16 @@ namespace nIS
         /// <summary>
         /// The Analytics library identifier
         /// </summary>
-        private string customerName = string.Empty;       
+        private string customerName = string.Empty;
 
         /// <summary>
         /// The tenant code.
         /// </summary>
         private string pagename = string.Empty;
+        /// <summary>
+        /// The tenant code.
+        /// </summary>
+        private string pageTypeName = string.Empty;
 
         /// <summary>
         /// The image extension
@@ -127,6 +131,20 @@ namespace nIS
             set
             {
                 pagename = value;
+            }
+        }
+        /// <summary>
+        /// Gets or sets image extension
+        /// </summary>
+        public string PageTypeName
+        {
+            get
+            {
+                return pageTypeName;
+            }
+            set
+            {
+                pageTypeName = value;
             }
         }
         /// <summary>

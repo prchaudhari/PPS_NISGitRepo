@@ -19,4 +19,17 @@ namespace nIS
 
         public IList<string> widgetNames = new List<string>();
     }
+
+    public class DatewiseVisitorSeries
+    {
+        public string name;
+        public IList<long> data = new List<long>();
+    }
+    public class DatewiseVisitor
+    {
+        public IList<string> dates = new List<string>();
+
+        public IList<DatewiseVisitorSeries> datewiseVisitorSeries=new List<DatewiseVisitorSeries>();
+
+    }
 }

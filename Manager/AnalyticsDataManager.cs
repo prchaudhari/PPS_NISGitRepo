@@ -191,6 +191,68 @@ namespace nIS
             }
             return data;
         }
+
+        /// <summary>
+        /// This method will call get asset library method of repository.
+        /// </summary>
+        /// <param name="AnalyticsDataSearchParameter">The asset library search parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns roles if found for given parameters, else return null
+        /// </returns>
+        public DatewiseVisitor GetDatewiseVisitor(AnalyticsSearchParameter searchParameter, string tenantCode)
+        {
+            IList<WidgetVisitorPieChartData> visitorPieChartDatas = new List<WidgetVisitorPieChartData>();
+            IList<AnalyticsData> AnalyticsData = new List<AnalyticsData>();
+            IList<long> values = new List<long>();
+            DatewiseVisitor data = new DatewiseVisitor();
+
+            try
+            {
+                AnalyticsData = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter, tenantCode);
+                List<string> distinctwidgets;
+                List<long> distinctCustomers;
+                decimal totalRecord = AnalyticsData.Count();
+                distinctCustomers = AnalyticsData.Select(item => item.CustomerId).ToList().Distinct().ToList();
+                distinctwidgets = AnalyticsData.Where(item => item.Widgetname != string.Empty).Select(item => item.Widgetname).ToList().Distinct().ToList();
+                var pageTypeGroup = AnalyticsData.Where(item => item.PageTypeName != null && item.PageTypeName != "").GroupBy(item => item.PageTypeName).ToList();
+                IList<DatewiseVisitorSeries> series = new List<DatewiseVisitorSeries>();
+
+                pageTypeGroup.ToList().ForEach(item =>
+                {
+                    series.Add(new DatewiseVisitorSeries { name = item.Key });
+                });
+                var dateGroup = AnalyticsData.GroupBy(item => item.EventDate.Date.ToShortDateString()).ToList();
+                dateGroup.ToList().ForEach(date =>
+                {
+                    data.dates.Add(date.Key.ToString());
+                });
+                data.datewiseVisitorSeries = series;
+
+                series.ToList().ForEach(s =>
+                {
+                    dateGroup.ToList().ForEach(date =>
+                    {
+                        long value = 0;
+                        distinctCustomers.ToList().ForEach(c =>
+                            {
+                                if (AnalyticsData.Any(item => item.EventDate.Date.ToShortDateString() == date.Key.ToString()
+                                && item.PageTypeName == s.name && item.CustomerId == c))
+                                {
+                                    value++;
+                                }
+                            });
+                        s.data.Add(value);
+                    });
+                });
+                data.datewiseVisitorSeries = series;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return data;
+        }
         /// <summary>
         /// This method will call get asset library method of repository.
         /// </summary>
