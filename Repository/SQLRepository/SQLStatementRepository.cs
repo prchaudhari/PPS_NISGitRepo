@@ -1268,7 +1268,7 @@ namespace nIS
                     StringBuilder SubTabs = new StringBuilder();
                     StringBuilder PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
 
-                    string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Version), @"\s+", "-");
+                    string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                     navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
                     string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
                     PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName);
@@ -1713,7 +1713,7 @@ namespace nIS
                         StringBuilder SubTabs = new StringBuilder();
                         StringBuilder PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
 
-                        string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Version), @"\s+", "-");
+                        string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                         navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
                         string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
                         PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName);
@@ -1752,7 +1752,7 @@ namespace nIS
                                     " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
 
                                 newPageContent.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") +
-                                    "-" + lastFourDigisOfAccountNumber +"-"+"AccountNumber-"+accountId+ "' class='tab-pane fade in " + (x == 0 ? "active show" : "") 
+                                    "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "")
                                     + "'>");
 
                                 if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
