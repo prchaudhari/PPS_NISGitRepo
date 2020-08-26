@@ -15,6 +15,7 @@
   <div class="row">
     <div class="col-sm-6 form-group">
       <div class="card border-0 mb-3 card-shadow">
+     
         <div class="card-header bg-white d-flex justify-content-between">
           <label class="m-0">Datewise Visitor for Pages</label>
         </div>
@@ -41,7 +42,24 @@
           <div>
             <label class="m-0"> Visitor for days</label>
           </div>
-       
+          <div>
+            <form [formGroup]="VisitorDayForm" name="PageWidgetVisitor" autocomplete="on" novalidate>
+              <div>
+                <div class="position-relative">
+                  <input [owlDateTime]="dt3" class="form-control" id="visitorDate" formControlName="visitorDate"
+                         placeholder="Please select date" readonly (ngModelChange)="onVisistorDateSelection($event)">
+                  <span [owlDateTimeTrigger]="dt3" class="datetime-icon">
+                    <i class="fa fa-calendar"></i>
+                  </span>
+                  <owl-date-time #dt3 [pickerType]="'calendar'"></owl-date-time>
+                </div>
+                <div class="text-danger" *ngIf="filterVisitorDateError">
+                  {{filterVisitorDateErrorMessage}}
+                </div>
+              </div>
+            </form>
+
+          </div>
         </div>
         <div class="card-body">
           <div id="chartDaywisecontainer"></div>
@@ -125,12 +143,12 @@
               <span class="fa fa-check"></span>
             </button>
           </li>
-          <li class="nav-item width33" title="Reset">
+          <li class="nav-item width33" title="Reset" (click)="searchSourceDataRecordFilter('reset')">
             <a class="nav-link p-0">
               <span class="fa fa-refresh"></span>
             </a>
           </li>
-          <li class="nav-item width33" title="Close" (click)="closeFilter()">
+          <li class="nav-item width33" title="Close" (click)="closeFilter()" >
             <a class="nav-link p-0">
               <span class="fa fa-close"></span>
             </a>

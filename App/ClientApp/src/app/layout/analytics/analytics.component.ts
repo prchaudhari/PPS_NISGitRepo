@@ -29,28 +29,62 @@ export class AnalyticsComponent implements OnInit {
   public isFilter: boolean = false;
   public AnalyticFilterForm: FormGroup;
   public PageWidgetVisitorForm: FormGroup;
+  public VisitorDayForm: FormGroup;
 
   public filterFromDateError: boolean = false;
   public filterFromDateErrorMessage: string = "";
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
+  public filterVisitorDateError: boolean = false;
+  public filterVisitorDateErrorMessage: string = "";
   public pageTypeList = [];
+
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
 
   ngOnInit() {
+    var fromDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) 
+    var toDate = new Date();
+  //  toDate=toDate.
+    var visitorDate = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) 
+    console.log(fromDate);
+    console.log(toDate);
+
     this.AnalyticFilterForm = this.fb.group({
 
-      filterFromDate: [null],
-      filterToDate: [null],
+      filterFromDate: [fromDate],
+      filterToDate: [toDate],
+    });
+    this.VisitorDayForm = this.fb.group({
+      visitorDate: [visitorDate],
     });
     this.PageWidgetVisitorForm = this.fb.group({
       pageType: [0]
-
     });
-    this.getSourceDatas(null);
+    var searchParameter :any= {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = 'Id';
+    searchParameter.SortParameter.SortOrder = Constants.Descending;
+    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.StartDate = new Date(fromDate.setHours(0, 0, 0));
+    searchParameter.EndDate = new Date(toDate.setHours(23, 59, 59));
 
+    this.getSourceDatas(searchParameter);
+    var visitorSearchParameter: any = {};
+    visitorSearchParameter.PagingParameter = {};
+    visitorSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    visitorSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    visitorSearchParameter.SortParameter = {};
+    visitorSearchParameter.SortParameter.SortColumn = 'Id';
+    visitorSearchParameter.SortParameter.SortOrder = Constants.Descending;
+    visitorSearchParameter.SearchMode = Constants.Contains;
+    visitorSearchParameter.StartDate = new Date(visitorDate.setHours(0, 0, 0));
+    visitorSearchParameter.EndDate = new Date(visitorDate.setHours(23, 59, 59));
+    this.BindVisitorForDay(visitorSearchParameter);
   }
 
   ngAfterViewInit() {
@@ -60,6 +94,7 @@ export class AnalyticsComponent implements OnInit {
     //Highcharts.chart('chartWidgetPiecontainer', this.options4);
     this.getPageTypes();
   }
+
   async getPageTypes() {
     let templateService = this.injector.get(TemplateService);
     this.pageTypeList = [{ "Identifier": 0, "PageTypeName": "Select Page Type" }];
@@ -75,18 +110,25 @@ export class AnalyticsComponent implements OnInit {
       this.pageTypeList = [...this.pageTypeList, ...list];
     }
   }
+
   get filterFromDate() {
     return this.AnalyticFilterForm.get('filterFromDate');
   }
+
   get pageType() {
     return this.PageWidgetVisitorForm.get('pageType');
   }
+
+  get visitorDate() {
+    return this.VisitorDayForm.get('visitorDate');
+  }
+
   get filterToDate() {
     return this.AnalyticFilterForm.get('filterToDate');
   }
 
   public onPageTypeSelected(event) {
-    var searchParameter : any= {};
+    var searchParameter: any = {};
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
@@ -106,12 +148,13 @@ export class AnalyticsComponent implements OnInit {
       searchParameter.PageTypeName = "";
     }
     else {
-      var page=this.pageTypeList.filter(i => i.Identifier.toString() == this.PageWidgetVisitorForm.value.pageType);
+      var page = this.pageTypeList.filter(i => i.Identifier.toString() == this.PageWidgetVisitorForm.value.pageType);
       searchParameter.PageTypeName = page[0].PageTypeName;
 
     }
     this.BindVisitorPageWidgetCount(searchParameter);
   }
+
   disableSeacrhButton() {
     if (this.AnalyticFilterForm.value.filterFromDate === null || this.AnalyticFilterForm.value.filterFromDate == '') {
       return true;
@@ -124,6 +167,7 @@ export class AnalyticsComponent implements OnInit {
     }
     return false;
   }
+
   searchSourceDataRecordFilter(searchType) {
     this.filterFromDateError = false;
     this.isFilterDone = true;
@@ -142,7 +186,7 @@ export class AnalyticsComponent implements OnInit {
         searchParameter.SortParameter.SortColumn = 'Id';
         searchParameter.SortParameter.SortOrder = Constants.Descending;
         searchParameter.SearchMode = Constants.Contains;
-      
+
         if (this.AnalyticFilterForm.value.filterFromDate != null && this.AnalyticFilterForm.value.filterFromDate != '') {
           //searchParameter.StartDate = this.ScheduleFilterForm.value.filterStartDate;
           searchParameter.StartDate = new Date(this.AnalyticFilterForm.value.filterFromDate.setHours(0, 0, 0));
@@ -158,6 +202,7 @@ export class AnalyticsComponent implements OnInit {
       }
     }
   }
+
   validateFilterDate(): boolean {
     if (this.AnalyticFilterForm.value.filterFromDate != null && this.AnalyticFilterForm.value.filterFromDate != '' &&
       this.AnalyticFilterForm.value.filterToDate != null && this.AnalyticFilterForm.value.filterToDate != '') {
@@ -170,6 +215,34 @@ export class AnalyticsComponent implements OnInit {
     }
     return true;
   }
+
+  onVisistorDateSelection(event) {
+    this.filterVisitorDateError = false;
+    this.filterVisitorDateErrorMessage = "";
+    if (this.VisitorDayForm.value.visitorDate != null && this.VisitorDayForm.value.visitorDate != '') {
+      let toDate = this.VisitorDayForm.value.visitorDate;
+      let currentDte = new Date();
+      if (toDate.getTime() > currentDte.getTime()) {
+        this.filterVisitorDateError = true;
+        this.filterVisitorDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
+      }
+      
+    }
+    if (!this.filterVisitorDateError) {
+      var visitorSearchParameter: any = {};
+      visitorSearchParameter.PagingParameter = {};
+      visitorSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+      visitorSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      visitorSearchParameter.SortParameter = {};
+      visitorSearchParameter.SortParameter.SortColumn = 'Id';
+      visitorSearchParameter.SortParameter.SortOrder = Constants.Descending;
+      visitorSearchParameter.SearchMode = Constants.Contains;
+      visitorSearchParameter.StartDate = new Date(this.VisitorDayForm.value.visitorDate.setHours(0, 0, 0));
+      visitorSearchParameter.EndDate = new Date(this.VisitorDayForm.value.visitorDate.setHours(23, 59, 59));
+      this.BindVisitorForDay(visitorSearchParameter);
+    }
+  }
+
   onPublishedFilterDateChange(event) {
     this.filterFromDateError = false;
     this.filterToDateError = false;
@@ -202,16 +275,56 @@ export class AnalyticsComponent implements OnInit {
   }
 
   resetPageFilterForm() {
-    this.AnalyticFilterForm.patchValue({
-      filterFromDate: null,
-      filterToDate: null
-    });
+    var fromDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    var toDate = new Date();
+    //  toDate=toDate.
+    var visitorDate = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
+    console.log(fromDate);
+    console.log(toDate);
 
+    this.AnalyticFilterForm = this.fb.group({
+
+      filterFromDate: [fromDate],
+      filterToDate: [toDate],
+    });
+    this.VisitorDayForm = this.fb.group({
+      visitorDate: [visitorDate],
+    });
+    this.PageWidgetVisitorForm = this.fb.group({
+      pageType: [0]
+    });
+    var searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = 'Id';
+    searchParameter.SortParameter.SortOrder = Constants.Descending;
+    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.StartDate = new Date(fromDate.setHours(0, 0, 0));
+    searchParameter.EndDate = new Date(toDate.setHours(23, 59, 59));
+
+    this.getSourceDatas(searchParameter);
+    var visitorSearchParameter: any = {};
+    visitorSearchParameter.PagingParameter = {};
+    visitorSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    visitorSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    visitorSearchParameter.SortParameter = {};
+    visitorSearchParameter.SortParameter.SortColumn = 'Id';
+    visitorSearchParameter.SortParameter.SortOrder = Constants.Descending;
+    visitorSearchParameter.SearchMode = Constants.Contains;
+    visitorSearchParameter.StartDate = new Date(visitorDate.setHours(0, 0, 0));
+    visitorSearchParameter.EndDate = new Date(visitorDate.setHours(23, 59, 59));
+    this.BindVisitorForDay(visitorSearchParameter);
+
+    this.filterVisitorDateError = false;
+    this.filterVisitorDateErrorMessage = "";
     this.filterFromDateError = false;
     this.filterToDateError = false;
     this.filterFromDateErrorMessage = "";
     this.filterToDateErrorMessage = "";
   }
+
   public sourceDataList: SourceData[] = [];
   public visitorData: VisitorForDay;
   public DateWiseVisitor: DatewiseVisitor;
@@ -308,7 +421,7 @@ export class AnalyticsComponent implements OnInit {
     //else {
     this.BindPieChart(searchParameter);
     this.BindVisitorPageWidgetCount(searchParameter);
-    this.BindVisitorForDay(searchParameter);
+    //this.BindVisitorForDay(searchParameter);
     this.BindVisitorForDate(searchParameter);
 
     // }
@@ -410,8 +523,9 @@ export class AnalyticsComponent implements OnInit {
   }
 
   async BindVisitorForDay(searchParameter) {
-    //let scheduleLogService = this.injector.get(SourceDataService);
-    //this.visitorData = await scheduleLogService.getVisitorForDay(searchParameter);
+    let scheduleLogService = this.injector.get(SourceDataService);
+    this.visitorData = await scheduleLogService.getVisitorForDay(searchParameter);
+    console.log(this.visitorData);
     this.options2 = {
       chart: {
         type: 'column'
@@ -426,15 +540,13 @@ export class AnalyticsComponent implements OnInit {
         title: {
           text: 'Date'
         },
-        categories: [
-          '09:00',
-          '10:00',
-          '11:00',
-          '12:00',
-          '13:00',
-          '14:00',
-        ],
-        crosshair: true
+        type: 'time',
+        dateTimeLabelFormats: {
+          day:  "%e-%b-%y",
+          month:  "%b-%y",
+        },
+        categories: this.visitorData.time,
+        crosshair: true,
       },
       yAxis: {
         min: 0,
@@ -454,17 +566,14 @@ export class AnalyticsComponent implements OnInit {
         column: {
           pointPadding: 0.2,
           borderWidth: 0
-        }
-      },
-      series: [{
-        name: 'Count',
-        data: [14, 13, 21, 45, 28, 29]
+        },
+       
 
-      }]
+      },
+      series: this.visitorData.series
     }
     Highcharts.chart('chartDaywisecontainer', this.options2);
   }
-
 
   async BindVisitorForDate(searchParameter) {
     let scheduleLogService = this.injector.get(SourceDataService);

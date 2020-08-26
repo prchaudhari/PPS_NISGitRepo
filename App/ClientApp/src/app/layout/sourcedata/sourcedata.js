@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DatewiseVisitor = exports.DatewiseVisitorSeries = exports.VisitorForDay = exports.PageWidgetVistorData = exports.WidgetVisitorPieChartData = exports.SourceData = void 0;
+exports.DatewiseVisitor = exports.DatewiseVisitorSeries = exports.VisitorForDaySeries = exports.VisitorForDay = exports.PageWidgetVistorData = exports.WidgetVisitorPieChartData = exports.SourceData = void 0;
 var SourceData = /** @class */ (function () {
     function SourceData() {
     }
@@ -25,6 +25,12 @@ var VisitorForDay = /** @class */ (function () {
     return VisitorForDay;
 }());
 exports.VisitorForDay = VisitorForDay;
+var VisitorForDaySeries = /** @class */ (function () {
+    function VisitorForDaySeries() {
+    }
+    return VisitorForDaySeries;
+}());
+exports.VisitorForDaySeries = VisitorForDaySeries;
 var DatewiseVisitorSeries = /** @class */ (function () {
     function DatewiseVisitorSeries() {
     }

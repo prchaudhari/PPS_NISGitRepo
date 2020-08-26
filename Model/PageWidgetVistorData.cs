@@ -15,11 +15,15 @@ namespace nIS
 
     public class VisitorForDay
     {
-        public IList<long> values = new List<long>();
-
-        public IList<string> widgetNames = new List<string>();
+        public IList<string> time = new List<string>();
+        public IList<DateTime> dateTime = new List<DateTime>();
+        public IList<VisitorForDaySeries> series = new List<VisitorForDaySeries>();
     }
-
+    public class VisitorForDaySeries
+    {
+        public string name;
+        public IList<long> data = new List<long>();
+    }
     public class DatewiseVisitorSeries
     {
         public string name;

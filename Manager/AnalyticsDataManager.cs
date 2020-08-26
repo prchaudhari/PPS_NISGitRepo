@@ -271,27 +271,48 @@ namespace nIS
             try
             {
                 AnalyticsData = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter, tenantCode);
-                List<string> distinctwidgets;
                 List<long> distinctCustomers;
                 decimal totalRecord = AnalyticsData.Count();
                 distinctCustomers = AnalyticsData.Select(item => item.CustomerId).ToList().Distinct().ToList();
-                distinctwidgets = AnalyticsData.Where(item => item.Widgetname != string.Empty).Select(item => item.Widgetname).ToList().Distinct().ToList();
+                IList<VisitorForDaySeries> series = new List<VisitorForDaySeries>();
+                var time = AnalyticsData.GroupBy(item => item.EventDate.Hour).ToList();
 
-                distinctwidgets.ToList().ForEach(Widget =>
+                DateTime dt = searchParameter.StartDate;
+                time.ToList().ForEach(date =>
+                {
+
+                    data.time.Add(date.Key.ToString());
+                    var hour = AnalyticsData.Where(i => i.EventDate.Hour.ToString() == date.Key.ToString()).FirstOrDefault().EventDate.Hour;
+
+                    data.dateTime.Add(new DateTime(dt.Year, dt.Month, dt.Day, hour, 0, 0));
+                });
+
+                data.time.ToList().ForEach(s =>
                 {
                     long value = 0;
                     distinctCustomers.ToList().ForEach(customer =>
                     {
 
-                        if (AnalyticsData.Any(item => item.Widgetname == Widget && item.CustomerId == customer))
+                        if (AnalyticsData.Any(item => item.EventDate.Hour.ToString() == s && item.CustomerId == customer))
                         {
                             value++;
                         }
                     });
                     values.Add(value);
                 });
-                data.values = values;
-                data.widgetNames = distinctwidgets;
+                series.Add(new VisitorForDaySeries { name = "Count", data = values });
+                data.series = series;
+                if (data.time.Count > 0)
+                {
+                    data.time.ToList().ForEach(item =>
+                    {
+                        item.Concat(":00");
+                    });
+                    for (int i = 0; i < data.time.Count; i++)
+                    {
+                        data.time[i] = data.time[i] + ":00";
+                    }
+                }
             }
             catch (Exception exception)
             {

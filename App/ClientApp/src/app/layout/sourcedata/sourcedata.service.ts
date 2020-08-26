@@ -126,7 +126,7 @@ export class SourceDataService {
 
   public async getVisitorForDay(searchParameter): Promise<VisitorForDay> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = "AnalyticsData/GetPageWidgetVisitor";
+    let requestUrl = "AnalyticsData/GeVisitorForDay";
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {

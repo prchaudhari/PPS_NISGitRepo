@@ -24,10 +24,17 @@ export class PageWidgetVistorData {
 }
 export class VisitorForDay {
   "time": any[];
-  "values": number[];
+  "dateTime": Date[];
+  "series": VisitorForDaySeries[];
 }
+
+export class VisitorForDaySeries {
+  "name": string[];
+  "data": number[];
+}
+
 export class DatewiseVisitorSeries {
-  "name":string;
+  "name": string;
   "data": number[];
 }
 export class DatewiseVisitor {
