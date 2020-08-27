@@ -733,10 +733,26 @@ namespace nIS
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                                                     {
+
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.IMAGE_WIDGET_HTML_FOR_STMT.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
 
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                        if (mergedlst[x].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[x].WidgetSetting))
+                                                        {
+                                                            var imageWidgetHtml = string.Empty;
+                                                            dynamic widgetSetting = JObject.Parse(mergedlst[x].WidgetSetting);
+                                                            if (widgetSetting.isPersonalize == false && widgetSetting.SourceUrl != null && widgetSetting.SourceUrl != string.Empty)
+                                                            {
+                                                                widgetHTML = widgetHTML.Replace("{{TargetLink}}", "<a href='" + widgetSetting.SourceUrl + "' target='_blank'>");
+                                                                widgetHTML = widgetHTML.Replace("{{EndTargetLink}}", "</a>");
+                                                            }
+                                                            else
+                                                            {
+                                                                widgetHTML = widgetHTML.Replace("{{TargetLink}}", "");
+                                                                widgetHTML = widgetHTML.Replace("{{EndTargetLink}}", "");
+                                                            }
+                                                        }
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
                                                     else if (mergedlst[x].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)

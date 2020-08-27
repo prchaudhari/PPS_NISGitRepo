@@ -147,9 +147,25 @@ namespace nIS
         }
 
 
-     
+        /// <summary>
+        /// This method reference to generate html statement for export to pdf
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>output location of html statmeent file</returns>
+        public string GenerateStatement(long identifier, string tenantCode)
+        {
+            try
+            {
+                return this.StatementSearchRepository.GenerateStatement(identifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #endregion
-      
+
     }
 }

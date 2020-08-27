@@ -140,8 +140,7 @@ namespace nIS
             "Summary at Glance</h5></div> <div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'>" +
             "<thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>" + "{{AccountSummary}}</tbody></table></div></div></div>";
 
-        public const string IMAGE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Image Information</h5>" +
-            "</div> <div class='card-body text-center'><img src='{{ImageSource}}' class='img-fluid'/></div></div>";
+        public const string IMAGE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Image Information</h5></div> <div class='card-body text-center'>{{TargetLink}}<img src='{{ImageSource}}' class='img-fluid'/>{{EndTargetLink}}</div></div>";
 
         public const string VIDEO_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Video Information</h5> " +
             "</div> <div class='card-body text-center'><video class='video-widget' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";

@@ -38,5 +38,13 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns>StatementSearch count</returns>
         int GetStatementSearchCount(StatementSearchSearchParameter statementSearchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method reference to generate html statement for export to pdf
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>output location of html statmeent file</returns>
+        string GenerateStatement(long identifier, string tenantCode);
     }
 }

@@ -48,7 +48,7 @@
             <td mat-cell *matCellDef="let element">
               <div class="action-btns btn-tbl-action">
                 <button  (click)="ViewHTML(element)" type="button" title="View Html"><span class="fa fa-download"></span></button>
-                <button type="button" title="Export PDF"><span class="fa fa-file-pdf-o"></span></button>
+                <button (click)="ExportToPDF(element)" type="button" title="Export to PDF"><span class="fa fa-file-pdf-o"></span></button>
               </div>
             </td>
           </ng-container>

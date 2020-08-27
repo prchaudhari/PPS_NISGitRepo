@@ -127,7 +127,7 @@ namespace nIS
                     Identifier = identifier,
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
-          
+
                 string FileName = statement.StatementURL.Split('\\').ToList().LastOrDefault();
                 if (File.Exists(statement.StatementURL))
                 {
@@ -206,6 +206,85 @@ namespace nIS
                 throw ex;
             }
             return httpResponseMessage;
+        }
+
+        [HttpGet]
+        [Route("StatementSearch/ExportToPDF")]
+        public HttpResponseMessage ExportHtmlToPDF(long identifier)
+        {
+            string zipFile = string.Empty;
+            string outputpath = string.Empty;
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                outputpath = this.StatementSearchManager.GenerateStatement(identifier, tenantCode);
+                zipFile = AppDomain.CurrentDomain.BaseDirectory + "\\Resources" + "\\" + "tempStatementZip" + identifier + ".zip";
+                ZipFile.CreateFromDirectory(outputpath, zipFile);
+                var pdfName = "Statement" + DateTime.Now.ToShortDateString().Replace(" - ", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
+                this.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (FileStream file = new FileStream((outputpath + "\\" + pdfName), FileMode.Open, FileAccess.Read))
+                    {
+                        byte[] bytes = new byte[file.Length];
+                        file.Read(bytes, 0, (int)file.Length);
+                        ms.Write(bytes, 0, (int)file.Length);
+                        httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
+                        httpResponseMessage.Content.Headers.Add("x-filename", pdfName);
+                        httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+                        httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                        httpResponseMessage.Content.Headers.ContentDisposition.FileName = pdfName;
+                        httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                    }
+                }
+                return httpResponseMessage;
+            }
+            catch (IOException)
+            {
+                throw new HttpResponseException(HttpStatusCode.InternalServerError);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (File.Exists(zipFile))
+                {
+                    File.Delete(zipFile);
+                }
+                if (Directory.Exists(outputpath))
+                {
+                    Directory.Delete(outputpath, true);
+                }
+            }
+        }
+
+        private bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath)
+        {
+            var isPdfSuccess = false;
+            try
+            {
+                var client = new pdfcrowd.HtmlToPdfClient("demo", "ce544b6ea52a5621fb9d55f8b542d14d");
+                client.setPageWidth("12in");
+                client.setPageHeight("10in");
+                client.setRenderingMode("viewport");
+                client.setSmartScalingMode("content-fit");
+                client.setJpegQuality(80);
+                client.setConvertImagesToJpeg("all");
+                client.setImageDpi(340);
+                client.convertFileToFile(htmlStatementPath, outPdfPath);
+            }
+            catch (pdfcrowd.Error why)
+            {
+                throw why;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return isPdfSuccess;
         }
 
         #endregion
