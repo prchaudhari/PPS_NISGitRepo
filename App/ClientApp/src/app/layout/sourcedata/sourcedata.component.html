@@ -5,7 +5,7 @@
       <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
     </div>
     <div>
-      <button class="btn-add btn-cust" id="btnAddUsers">
+      <button class="btn-add btn-cust" id="btnAddUsers" (click)="ExportData()">
         <span class="fa fa-file-excel-o btn-icon-cust btn-icon-fill"></span> Export
       </button>
     </div>
@@ -35,7 +35,10 @@
 
           <ng-container matColumnDef="page">
             <th class="width25" mat-header-cell *matHeaderCellDef mat-sort-header> Page </th>
-            <td mat-cell *matCellDef="let element">{{element.PageName}} </td>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.PageName==''">-</span>
+              <span *ngIf="element.PageName!=''">{{element.PageName}}</span>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="widget">

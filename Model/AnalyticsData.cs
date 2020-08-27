@@ -169,4 +169,37 @@ namespace nIS
 
         #endregion
     }
+    public class AnalyticExportData
+    {
+        /// <summary>
+        /// Gets or sets CustomerId.
+        /// </summary>
+        [Description("CustomerName")]
+        public string CustomerName { get; set; }
+
+        /// <summary>
+        /// Gets or sets CustomerId.
+        /// </summary>
+        [Description("PageName")]
+        public string PageName { get; set; }
+
+        /// <summary>
+        /// Gets or sets Widgetname.
+        /// </summary>
+        [Description("Widgetname")]
+        public string Widgetname { get; set; }
+
+        /// <summary>
+        /// Gets or sets EventDate.
+        /// </summary>
+        [Description("EventDate")]
+        public DateTime EventDate { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets EventType.
+        ///// </summary>
+        //[Description("EventType")]
+        //public string EventType { get; set; }
+
+    }
 }
