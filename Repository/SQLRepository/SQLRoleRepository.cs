@@ -546,7 +546,7 @@ namespace nIS
                 }
             }
 
-            if (searchParameter.IsActive == null || searchParameter.IsActive == true)
+            if (searchParameter.IsActive == true)
             {
                 queryString.Append(string.Format("IsDeleted.Equals(false) and "));
             }

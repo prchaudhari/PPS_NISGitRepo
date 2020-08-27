@@ -278,7 +278,7 @@ namespace nIS
                     {
                         StringBuilder stringBuilderObject = new StringBuilder();
                         //stringBuilderObject.Append("(" + string.Join("or ", userSearchParameter.RoleIdentifier.ToString().Split(',').Select(item => string.Format("Id.Equals(\"{0}\") ", item)).ToList()) + ") and IsDeleted.Equals(false)");
-                        string query = string.Format("Id= {0} and IsDeleted.Equals(false)", userSearchParameter.RoleIdentifier);
+                        string query = string.Format("Id= {0}", userSearchParameter.RoleIdentifier);
                         IList<RoleRecord> roleRecords = nISEntities.RoleRecords.Where(query).AsQueryable().ToList();
 
                         if (roleRecords?.Count > 0)

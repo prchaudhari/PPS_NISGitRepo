@@ -213,6 +213,7 @@ export class ListComponent implements OnInit {
       searchParameter.SortParameter.SortColumn = Constants.Name;
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
+      searchParameter.IsActive = true;
     }
     this.roleList = await roleService.getRoles(searchParameter);
     // if (this.roleList.length > 0) {
