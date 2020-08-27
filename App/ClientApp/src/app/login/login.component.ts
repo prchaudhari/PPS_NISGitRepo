@@ -37,9 +37,7 @@ export class LoginComponent implements OnInit {
   public loginErrorMsg: string = '';
   public status;
   public result;
-  public roleDetails;
-
-
+  public roleDetail;
 
   public statePrivilegeMap: any = [{
     "State": "dashboard",
