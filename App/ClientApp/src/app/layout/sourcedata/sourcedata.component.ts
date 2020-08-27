@@ -14,8 +14,9 @@ import { SourceData } from './sourcedata';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import { SourceDataService } from './sourcedata.service';
 import { WindowRef } from '../../core/services/window-ref.service';
-import { HttpClient } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import * as $ from 'jquery';
 export interface ListElement {
   time: string;
   date: string;
@@ -236,6 +237,59 @@ export class SourcedataComponent implements OnInit {
       }
     }
   }
+
+  ExportData(): void {
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = 'EventDate';
+    searchParameter.SortParameter.SortOrder = Constants.Descending;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.SourceDataFilterForm.value.filterCustomer != null && this.SourceDataFilterForm.value.filterCustomer != '') {
+      searchParameter.CustomerName = this.SourceDataFilterForm.value.filterCustomer.trim();
+    }
+    if (this.SourceDataFilterForm.value.filterPage != null && this.SourceDataFilterForm.value.filterPage != '') {
+      searchParameter.PageName = this.SourceDataFilterForm.value.filterPage.trim();
+    }
+    if (this.SourceDataFilterForm.value.filterWidget != null && this.SourceDataFilterForm.value.filterWidget != '') {
+      searchParameter.WidgetName = this.SourceDataFilterForm.value.filterWidget.trim();
+    }
+    if (this.SourceDataFilterForm.value.filterStartDate != null && this.SourceDataFilterForm.value.filterStartDate != '') {
+      //searchParameter.StartDate = this.ScheduleFilterForm.value.filterStartDate;
+      searchParameter.StartDate = new Date(this.SourceDataFilterForm.value.filterStartDate.setHours(0, 0, 0));
+    }
+    if (this.SourceDataFilterForm.value.filterEndDate != null && this.SourceDataFilterForm.value.filterEndDate != '') {
+      //searchParameter.EndDate = this.ScheduleFilterForm.value.filterEndDate;
+      searchParameter.EndDate = new Date(this.SourceDataFilterForm.value.filterEndDate.setHours(23, 59, 59));
+    }
+    this.uiLoader.start();
+    this.http.post(this.baseURL + 'AnalyticsData/ExportAnalyticsData', searchParameter, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this.uiLoader.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          const blob = new Blob([data.body], { type: contentType });
+          if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, fileName);
+          } else {
+            var link = document.createElement('a');
+            link.setAttribute("type", "hidden");
+            link.download = fileName;
+            link.href = window.URL.createObjectURL(blob);
+            document.body.appendChild(link);
+            link.click();
+          }
+        },
+        error => {
+          $('.overlay').show();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this.uiLoader.stop();
+        });
+  }
+
   searchSourceDataRecordFilter(searchType) {
     this.filterFromDateError = false;
     this.isFilterDone = true;
