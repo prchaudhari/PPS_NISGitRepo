@@ -28,13 +28,12 @@ $(document).ready(function () {
             "EventType": "PageLoad",
             "AccountId": ""
         };
-        console.log(object);
+        //console.log(object);
         var data = [];
         data.push(object);
-
-        console.log(object);
+        //console.log(object);
         $.ajax({
-            url: 'http://localhost/API/AnalyticsData/Save',
+            url: 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save',
             type: 'POST',
             dataType: 'json',
             contentType: "application/json",
@@ -48,6 +47,7 @@ $(document).ready(function () {
         });
     });
 });
+
 var customer = 10;
 var statementId = 15;
 var pageId = 0;
@@ -61,6 +61,7 @@ function click_event(event) {
 
     }
 }
+
 function checkElement(element) {
     if (element != null) {
         if (element.id != undefined) {
@@ -88,12 +89,12 @@ function checkElement(element) {
                     "EventType": "Click",
                     "TenantCode": ""
                 };
-                console.log(object);
+                //console.log(object);
                 var data = [];
                 data.push(object);
 
                 $.ajax({
-                    url: 'http://localhost/API/AnalyticsData/Save',
+                    url: 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save',
                     type: 'POST',
                     dataType: 'json',
                     contentType: "application/json",
@@ -119,15 +120,14 @@ function checkElement(element) {
                 return null;
             }
         }
-
     }
     else {
         return null;
     }
 }
-function onPageLoad() {
-    console.log("on onPageLoad");
 
+function onPageLoad() {
+    //console.log("on onPageLoad");
     pageId = document.getElementById("FirstPageId").value;
     customer = document.getElementById("CustomerId").value;
     statementId = document.getElementById("StatementId").value;
@@ -140,7 +140,7 @@ function onPageLoad() {
         "EventType": "StatementOpen",
         "AccountId": 0
     };
-    console.log(object);
+    //console.log(object);
     var data = [];
     data.push(object);
     object = {
@@ -153,10 +153,9 @@ function onPageLoad() {
         "AccountId": 0
     };
     data.push(object);
-
-    console.log(object);
+    //console.log(object);
     $.ajax({
-        url: 'http://localhost/API/AnalyticsData/Save',
+        url: 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save',
         type: 'POST',
         dataType: 'json',
         contentType: "application/json",
@@ -169,9 +168,9 @@ function onPageLoad() {
         }
     });
 }
+
 document.addEventListener('click', click_event, true);
 
 function setSubTab(event) {
     console.log(event);
-
 }

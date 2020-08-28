@@ -118,6 +118,8 @@ namespace nIS
         [Route("StatementSearch/Download")]
         public HttpResponseMessage Download(string identifier)
         {
+            string zipFile = string.Empty;
+            string destinationFolder = string.Empty;
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
             try
             {
@@ -141,7 +143,7 @@ namespace nIS
                         string tempStatement = "tempStatement" + identifier;
                         var commonFolder = batchURL + "\\" + "common";
                         var customerFolder = batchURL + "\\" + customerId;
-                        var destinationFolder = batchURL + "\\" + tempStatement;
+                        destinationFolder = batchURL + "\\" + tempStatement;
                         // If the destination directory doesn't exist, create it.
                         if (!Directory.Exists(destinationFolder))
                         {
@@ -157,7 +159,7 @@ namespace nIS
                         }
                         this.utility.DirectoryCopy(commonFolder, (destinationFolder + "\\" + "common"), true);
                         this.utility.DirectoryCopy(customerFolder, (destinationFolder + "\\" + customerId), true);
-                        string zipFile = batchURL + "\\" + "tempStatementZip" + identifier + ".zip";
+                        zipFile = batchURL + "\\" + "tempStatementZip" + identifier + ".zip";
                         ZipFile.CreateFromDirectory(destinationFolder, zipFile);
                         if (File.Exists(zipFile))
                         {
@@ -183,14 +185,6 @@ namespace nIS
                                         httpResponseMessage.StatusCode = HttpStatusCode.OK;
                                     }
                                 }
-                                if (File.Exists(zipFile))
-                                {
-                                    File.Delete(zipFile);
-                                }
-                                if (Directory.Exists(destinationFolder))
-                                {
-                                    Directory.Delete(destinationFolder, true);
-                                }
                                 return httpResponseMessage;
                             }
                             catch (IOException)
@@ -204,6 +198,17 @@ namespace nIS
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                if (File.Exists(zipFile))
+                {
+                    File.Delete(zipFile);
+                }
+                if (Directory.Exists(destinationFolder))
+                {
+                    Directory.Delete(destinationFolder, true);
+                }
             }
             return httpResponseMessage;
         }

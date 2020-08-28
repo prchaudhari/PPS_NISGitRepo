@@ -141,17 +141,17 @@ Insert into [TenantManager].[Tenant]
 ,[SecondaryContactName],[SecondaryContactNumber],[SecondaryEmailAddress],[AddressLine1],[AddressLine2],[TenantCity],[TenantState],[TenantCountry]
 ,[PinCode],[StartDate],[EndDate],[StorageAccount],[AccessToken],[IsActive],[IsDeleted],[ApplicationURL],[ApplicationModules],[ManageType],[IsPrimaryTenant])
 VALUES																																																																			 
-(@SuperTenantIdentifier, N'nIS SuperAdmin',N'',N'',N'',N'default.com',N'Super',N'Admin',N'+91-1234567890',N'superadmin@nIS.com',
+(@SuperTenantIdentifier, N'nIS SuperAdmin',N'',N'',N'',N'default.com',N'Super',N'Admin',N'+91-1234567890',N'superadmin@nis.com',
 N'',N'',N'',N'Mumbai',N'',@MumbaiCityIdentifier,@MaharashtraStateIdentifier,@IndiaCountryIdentifier,
 N'123456',N'2015-12-31 23:59:59.999',N'9999-12-31 23:59:59.999',@StorageAccount,N'',1,0,N'',N'','Self', 0),
-(@DefaultTenantIdentifier, N'Customer Admin',N'',N'',N'',N'nIS.com',N'Customr',N'Admin',N'+91-1234567891',N'customeradmin@nIS.com',
+(@DefaultTenantIdentifier, N'Customer Admin',N'',N'',N'',N'nIS.com',N'Customr',N'Admin',N'+91-1234567891',N'customeradmin@nis.com',
 N'',N'',N'',N'Mumbai',N'',@MumbaiCityIdentifier,@MaharashtraStateIdentifier,@IndiaCountryIdentifier,
 N'123456',N'2015-12-31 23:59:59.999',N'9999-12-31 23:59:59.999',@StorageAccount,N'',1,0,N'',N'','Self', 0)
 
-DECLARE @SuperTenantCode AS NVARCHAR(MAX) = (select tenantCode from TenantManager.Tenant where EmailAddress='nvsuperadmin@nIS.com');
+DECLARE @SuperTenantCode AS NVARCHAR(MAX) = (select tenantCode from TenantManager.Tenant where EmailAddress='superadmin@nis.com');
 
-INSERT INTO [NIS].[TenantConfiguration]([Description],[InputDataSourcePath],[OutputHTMLPath],[OutputPDFPath],[TenantCode])
-VALUES('','','','',@SuperTenantCode);
+INSERT INTO [NIS].[TenantConfiguration]([Name],[Description],[InputDataSourcePath],[OutputHTMLPath],[OutputPDFPath],[ArchivalPath],[AssetPath],[TenantCode])
+VALUES('Default Tenant Config','','','','','','',@SuperTenantCode);
 
 INSERT INTO [NIS].[PageType]([Name],[Description],[TenantCode],[IsDeleted],[IsActive])
 VALUES

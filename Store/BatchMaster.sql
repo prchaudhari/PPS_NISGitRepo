@@ -1,13 +1,13 @@
 ﻿CREATE TABLE [NIS].[BatchMaster](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Id] [bigint] IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[TenantCode] [varchar](100) NULL,
 	[BatchName] [varchar](100) NULL,
 	[CreatedBy] [bigint] NULL,
 	[CreatedDate] [datetime] NULL,
 	[ScheduleId] [bigint] NULL,
 	[IsExecuted] [bit] NULL,
- CONSTRAINT [PK_BatchMaster] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+	[IsDataReady] [bit] NOT NULL,
+	[DataExtractionDate] [datetime] NOT NULL,
+	[BatchExecutionDate] [datetime] NOT NULL,
+	[Status] [varchar](50) NOT NULL
 )
