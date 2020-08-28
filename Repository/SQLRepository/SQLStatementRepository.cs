@@ -2412,7 +2412,7 @@ namespace nIS
                                             string targetlink = item.TargetURL != null && item.TargetURL != string.Empty ? item.TargetURL : "javascript:void(0)";
                                             reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" +
                                                 item.Description + " </p></div><div class='col-lg-3 text-left'><a href='" + targetlink +
-                                                "'><i class='fa fa-caret-left fa-3x float-left text-danger'></i><span class='mt-2 d-inline-block ml-2'>" +
+                                                "' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-danger'></i><span class='mt-2 d-inline-block ml-2'>" +
                                                 item.LabelText + "</span></a></div></div>");
                                         });
                                     }
