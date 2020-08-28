@@ -284,7 +284,7 @@ DECLARE @DateTime as DateTime =(SELECT GETDATE());
 
 INSERT INTO [NIS].[Widget] ([PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable])
 VALUES
-('2,3', 'Customer Information Details', 'CustomerInformation', 'Customer Information', 0, @SuperTenantCode, 0,1, @DateTime, @SuperAdminUserIdentifier, 0),
+('1', 'Customer Information Details', 'CustomerInformation', 'Customer Information', 0, @SuperTenantCode, 0,1, @DateTime, @SuperAdminUserIdentifier, 0),
 ('1', 'Account Details', 'AccountInformation','Account Information',0,@SuperTenantCode,0,1,@DateTime,@SuperAdminUserIdentifier,0),
 ('1', 'Summary at Glance Details', 'Summary','Summary at Glance',0,@SuperTenantCode,0,1,@DateTime,@SuperAdminUserIdentifier,0),
 ('1,2,3', 'Marketing widget - Configuration for image and click through URL', 'Image','Image',0,@SuperTenantCode,0,1,@DateTime,@SuperAdminUserIdentifier,1),
