@@ -8,6 +8,7 @@ import { MessageDialogService } from '../../shared/services/mesage-dialog.servic
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TemplateService } from '../template/template.service';
+import { DatePipe } from '@angular/common';
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
@@ -392,7 +393,7 @@ export class AnalyticsComponent implements OnInit {
   public pieChartOptions: any;
 
   constructor(private injector: Injector,
-    private _messageDialogService: MessageDialogService,
+    private _messageDialogService: MessageDialogService, private datePipe: DatePipe,
     private fb: FormBuilder) {
   }
 
@@ -526,27 +527,32 @@ export class AnalyticsComponent implements OnInit {
     let scheduleLogService = this.injector.get(SourceDataService);
     this.visitorData = await scheduleLogService.getVisitorForDay(searchParameter);
     console.log(this.visitorData);
+    var listOfHour: any = [];
+    var seriesData: any = [];
+    if (this.visitorData != undefined) {
+      if (this.visitorData.dateTime) {
+        this.visitorData.dateTime.forEach(item => {
+          var d = new Date(item );
+          var newDate = this.datePipe.transform(d, 'h:mm a');
+          listOfHour.push(newDate);
+        })
+      }
+      seriesData =this.visitorData.series[0].data
+    }
+   
     this.options2 = {
       chart: {
         type: 'column'
       },
-      title: {
-        text: ''
-      },
-      subtitle: {
-        text: ''
-      },
       xAxis: {
         title: {
-          text: 'Date'
+          text: 'Time'
         },
-        type: 'time',
-        dateTimeLabelFormats: {
-          day:  "%e-%b-%y",
-          month:  "%b-%y",
-        },
-        categories: this.visitorData.time,
-        crosshair: true,
+        //type: 'datetime',
+        //dateTimeLabelFormats: {
+        // // day: '%H:%M'
+        //},
+        categories: listOfHour,
       },
       yAxis: {
         min: 0,
@@ -567,11 +573,19 @@ export class AnalyticsComponent implements OnInit {
           pointPadding: 0.2,
           borderWidth: 0
         },
-       
-
       },
-      series: this.visitorData.series
+      series: [{
+        data: seriesData,
+        //pointStart: Date.UTC(2010, 0, 1),
+        //pointInterval: 24 * 3600 * 1000 // one day
+    }]
     }
+
+    Highcharts.setOptions({
+      time: {
+        useUTC: true
+      }
+    });
     Highcharts.chart('chartDaywisecontainer', this.options2);
   }
 

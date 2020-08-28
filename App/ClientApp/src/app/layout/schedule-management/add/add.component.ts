@@ -50,7 +50,7 @@ export class AddComponent implements OnInit {
     private router: Router,
     private _messageDialogService: MessageDialogService,
     private injector: Injector) {
-      router.events.subscribe(e => {
+    router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/schedulemanagement/Add')) {
           this.updateOperationMode = false;
@@ -344,7 +344,7 @@ export class AddComponent implements OnInit {
     if (this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
       let toDate = this.scheduleForm.value.filtershiftenddate;
       if (this.updateOperationMode) {
-        var date =new Date(this.schedule.EndDate);
+        var date = new Date(this.schedule.EndDate);
         if (toDate.getTime() < date.getTime()) {
           this.filterToDateError = true;
           this.filterToDateErrorMessage = ErrorMessageConstants.getPreviousEndDateShouldNotBeLessThanEndDateMessage;
@@ -386,25 +386,28 @@ export class AddComponent implements OnInit {
   vaildateForm() {
     if (this.scheduleForm.invalid)
       return true;
-    else if (this.scheduleForm.value.DayOfMonth == "Please Select") {
+    if (this.scheduleForm.value.DayOfMonth == "Please Select") {
       return true;
     }
-    else if (this.scheduleForm.value.TimeOfDayHours == "Please Select") {
+    if (this.scheduleForm.value.TimeOfDayHours == "Please Select") {
       return true;
     }
-    else if (this.scheduleForm.value.TimeOfDayMinutes == "Please Select") {
+    if (this.scheduleForm.value.TimeOfDayMinutes == "Please Select") {
       return true;
     }
-    else if (this.scheduleForm.value.StatementDefinition == "0") {
+    if (this.scheduleForm.value.StatementDefinition == "0") {
       return true;
     }
-    else if (this.filterFromDateError || this.scheduleForm.value.filtershiftfromdate == "") {
+    if (this.filterFromDateError || this.scheduleForm.value.filtershiftfromdate == "") {
       return true;
     }
-    else if (this.IsEndDateRequired) {
-      if (this.filterToDateError || this.scheduleForm.value.filtershiftenddate == "" || this.scheduleForm.value.filtershiftenddate==null) {
+    if (this.IsEndDateRequired) {
+      if (this.filterToDateError || this.scheduleForm.value.filtershiftenddate == "" || this.scheduleForm.value.filtershiftenddate == null) {
         return true;
       }
+    }
+    if (this.filterDateDifferenecError) {
+      return true;
     }
     return false;
   }

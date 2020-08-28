@@ -277,14 +277,15 @@ namespace nIS
                 IList<VisitorForDaySeries> series = new List<VisitorForDaySeries>();
                 var time = AnalyticsData.GroupBy(item => item.EventDate.Hour).ToList();
 
-                DateTime dt = searchParameter.StartDate;
+                DateTime dt = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
                 time.ToList().ForEach(date =>
                 {
 
                     data.time.Add(date.Key.ToString());
                     var hour = AnalyticsData.Where(i => i.EventDate.Hour.ToString() == date.Key.ToString()).FirstOrDefault().EventDate.Hour;
 
-                    data.dateTime.Add(new DateTime(dt.Year, dt.Month, dt.Day, hour, 0, 0));
+                    var newDate = new DateTime(dt.Year, dt.Month, dt.Day, hour, 30, 0);
+                    data.dateTime.Add(DateTime.SpecifyKind((DateTime)newDate, DateTimeKind.Utc));
                 });
 
                 data.time.ToList().ForEach(s =>
