@@ -444,6 +444,8 @@ namespace nIS
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
                                                     {
+                                                        var isImageFromAsset = false;
+                                                        var assetId = 0;
                                                         var imgAssetFilepath = "assets/images/icon-image.png";
                                                         if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                                         {
@@ -453,19 +455,26 @@ namespace nIS
                                                                 if (tenantConfiguration.AssetPath == string.Empty)
                                                                 {
                                                                     imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                                    isImageFromAsset = true;
+                                                                    assetId = widgetSetting.AssetId;
                                                                 }
                                                                 else
                                                                 {
                                                                     var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
                                                                     imgAssetFilepath = asset.FilePath;
+                                                                    isImageFromAsset = true;
+                                                                    assetId = Convert.ToInt32(asset.Identifier);
                                                                 }
                                                             }
                                                         }
                                                         var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
+                                                        imgHtmlWidget = imgHtmlWidget.Replace("{{NewImageClass}}", isImageFromAsset ? " ImageAsset " + assetId : "");
                                                         htmlString.Append(imgHtmlWidget);
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
                                                     {
+                                                        var isVideoFromAsset = false;
+                                                        var assetId = 0;
                                                         var vdoAssetFilepath = "assets/images/SampleVideo.mp4";
                                                         if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                                         {
@@ -479,15 +488,20 @@ namespace nIS
                                                                 if (tenantConfiguration.AssetPath == string.Empty)
                                                                 {
                                                                     vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
+                                                                    isVideoFromAsset = true;
+                                                                    assetId = widgetSetting.AssetId;
                                                                 }
                                                                 else
                                                                 {
                                                                     var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
                                                                     vdoAssetFilepath = asset.FilePath;
+                                                                    isVideoFromAsset = true;
+                                                                    assetId = Convert.ToInt32(asset.Identifier);
                                                                 }
                                                             }
                                                         }
                                                         var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", vdoAssetFilepath);
+                                                        vdoHtmlWidget = vdoHtmlWidget.Replace("{{NewVideoClass}}", isVideoFromAsset ? " VideoAsset " + assetId : "");
                                                         htmlString.Append(vdoHtmlWidget);
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)

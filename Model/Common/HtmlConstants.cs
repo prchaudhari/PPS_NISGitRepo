@@ -63,10 +63,10 @@ namespace nIS
             "<thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>" + "{{AccountSummary}}</tbody></table></div></div></div>";
 
         public const string IMAGE_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Image Information</h5>" +
-            "</div> <div class='card-body text-center'><img src='{{ImageSource}}' class='img-fluid'/></div></div>";
+            "</div> <div class='card-body text-center'><img src='{{ImageSource}}' class='img-fluid {{NewImageClass}}'/></div></div>";
 
         public const string VIDEO_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Video Information</h5> " +
-            "</div> <div class='card-body text-center'><video class='video-widget' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
+            "</div> <div class='card-body text-center'><video class='video-widget {{NewVideoClass}}' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
 
         public const string NO_WIDGET_MESSAGE_HTML = "<div class='card border-0'><div class='card-header bg-light border-0'><h5 class='m-0'>No Configuration</h5> </div>" +
             "<div class='card-body text-center text-danger'><span>No configuration saved for this record.</span></div></div>";

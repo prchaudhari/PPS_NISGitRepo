@@ -1,8 +1,11 @@
-import { Component, Pipe, PipeTransform, ElementRef, } from '@angular/core';
+import { Component, Pipe, PipeTransform, ElementRef, SecurityContext } from '@angular/core';
 import { DialogComponent, DialogService } from '@tomblue/ng2-bootstrap-modal';
 import * as $ from 'jquery';
 import * as Highcharts from 'highcharts';
 import { BrowserModule, DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 
 @Pipe({
   name: 'safeHtml'
@@ -35,9 +38,11 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
   analyticschart;
   savingchart;
   spendingchart;
+  public baseURL: string = ConfigConstants.BaseURL;
 
   constructor(dialogService: DialogService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private _http: HttpClient,) {
     super(dialogService);
   }
 
@@ -178,7 +183,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
 
   ngOnInit() {
 
-    $(document).ready(function () {
+    $(document).ready(() => {
 
       $(".mainNav").on('click', function(e) {
         $('.tabDivClass').hide();
@@ -197,7 +202,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       $('input[type="radio"]').on('change', function (e) {
         if (e.currentTarget.id == "savingGrpDate") {
           $("#SavingTransactionTable tbody tr").remove();
-          console.log(e.type);
           var d =   [
             { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },
             { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574563', 'FCY': '1435.00', 'CurrentRate': '0.962', 'LCY': '1654.56' },
@@ -211,7 +215,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
             groups[val].push(item)
             return groups
           }, {});
-          console.log(savingAggregateDate);
 
           $.each(savingAggregateDate, function (index, data) {
             var sumOfFCY = 0;
@@ -266,7 +269,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
         }
         else if (e.currentTarget.id == "savingShowAll") {
           $("#SavingTransactionTable tbody tr").remove();
-          console.log(e.type);
           var data = [
             { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },
             { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574563', 'FCY': '1435.00', 'CurrentRate': '0.962', 'LCY': '1654.56' },
@@ -275,7 +277,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
             { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' },
             { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034213', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' }
           ];
-          console.log(data);
 
           $.each(data, function (index, data) {
             var tbody = $("#SavingTransactionTable> tbody");
@@ -309,7 +310,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
         }
         else if (e.currentTarget.id == "currentGrpDate") {
           $("#CurrentTransactionTable tbody tr").remove();
-          console.log(e.type);
           var currentData = [];
           currentData = [
             { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },
@@ -325,7 +325,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
             groups[val].push(item)
             return groups
           }, {});
-          console.log(currentAggregateDate);
 
           $.each(currentAggregateDate, function (index, data) {
             var sumOfFCY = 0;
@@ -390,8 +389,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
             { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034213', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' }
           ];
 
-          console.log(currentTranData);
-
           $.each(currentTranData, function (index, data) {
             var tbody = $("#CurrentTransactionTable> tbody");
             var tr = $("<tr>");
@@ -424,7 +421,56 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
         }
       });
 
+      $(".ImageAsset").each((index, element) => {
+        var classlst = element.classList;
+        var assetId = classlst[classlst.length - 1];
+        if(assetId!=undefined && assetId!=0) {
+          this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + assetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+          .subscribe(
+            data => {
+              let contentType = data.headers.get('Content-Type');
+              let fileName = data.headers.get('x-filename');
+              const blob = new Blob([data.body], { type: contentType });
+              let objectURL = URL.createObjectURL(blob);
+              element.src = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+            },
+            error => {
+              //$('.overlay').show();
+          });
+        }
+      })
 
+      $(".VideoAsset").each((index, element) => {
+        var classlst = element.classList;
+        var assetId = classlst[classlst.length - 1];
+        if(assetId!=undefined && assetId!=0) {
+          this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + assetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+          .subscribe(
+            data => {
+              let contentType = data.headers.get('Content-Type');
+              let fileName = data.headers.get('x-filename');
+              const blob = new Blob([data.body], { type: contentType });
+              let objectURL = URL.createObjectURL(blob);
+              var videourl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+              
+              var parentDiv = element.parentElement;
+              parentDiv.removeChild(parentDiv.children[0])
+              
+              var video = document.createElement('video');
+              video.className = 'video-widget';
+              video.controls = true;
+
+              var sourceTag = document.createElement('source');
+              sourceTag.setAttribute('src', videourl);
+              sourceTag.setAttribute('type', 'video/mp4');
+              video.appendChild(sourceTag);
+              parentDiv.appendChild(video);
+            },
+            error => {
+              //$('.overlay').show();
+          });
+        }
+      })
     });
 
   }
@@ -449,8 +495,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       groups[val].push(item)
       return groups
     }, {});
-    //console.log(data);
-
   }
 
   public SavingTransactionAllData = [
@@ -475,11 +519,9 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       groups[val].push(item)
       return groups
     }, {});
-    console.log(aggregateDate);
 
     $.each(aggregateDate, function (index, data) {
       var tbody = $("#SavingTransactionTable> tbody");
-      console.log(data);
       var tr = $("<tr>");
       tr.append($("<td>", {
         'text': ""
