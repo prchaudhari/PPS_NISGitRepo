@@ -147,7 +147,8 @@ namespace nIS
                         log.Identifier = scheduleLogRecords[i].Id;
                         log.ScheduleId = scheduleLogRecords[i].ScheduleId;
                         log.ScheduleName = scheduleLogRecords[i].ScheduleName;
-                        log.CreateDate = scheduleLogRecords[i].CreationDate;
+                        log.CreateDate = DateTime.SpecifyKind((DateTime)scheduleLogRecords[i].CreationDate, DateTimeKind.Utc);
+                        //log.CreateDate = scheduleLogRecords[i].CreationDate;
                         log.LogFilePath = scheduleLogRecords[i].LogFilePath;
                         log.NumberOfRetry = scheduleLogRecords[i].NumberOfRetry;
                         log.ScheduleStatus = scheduleLogRecords[i].Status;
@@ -260,7 +261,9 @@ namespace nIS
                         ScheduleId = logDetail.ScheduleId,
                         ScheduleLogId = logDetail.ScheduleLogId,
                         Status = logDetail.Status,
-                        CreateDate = logDetail.CreationDate
+                        //CreateDate = logDetail.CreationDate
+                        CreateDate = DateTime.SpecifyKind((DateTime)logDetail.CreationDate, DateTimeKind.Utc)
+
                     }));
                 }
             }
