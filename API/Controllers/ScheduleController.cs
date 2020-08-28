@@ -367,30 +367,8 @@ namespace nIS
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
 
-                string relativePath = string.Empty;
-                //TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                //tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                //if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
-                //{
-                //    if (tenantConfiguration.OutputHTMLPath.EndsWith("\\"))
-                //    {
-                //        tenantConfiguration.OutputHTMLPath = tenantConfiguration.OutputHTMLPath.Remove(tenantConfiguration.OutputHTMLPath.Length - 1);
-                //    }
-                //    relativePath = tenantConfiguration.OutputHTMLPath;
-                //}
-                //else
-                //{
-                //    relativePath = HttpContext.Current.Server.MapPath("~");
-                //}
-
-
-            
                 string FileName = history.StatementFilePath.Split('\'').ToList().LastOrDefault();
-                //path = history.StatementFilePath.Replace("\'", "/");
                 path = history.StatementFilePath;
-
-                //path = relativePath + path;
-
                 if (!File.Exists(path))
                 {
                     throw new HttpResponseException(HttpStatusCode.NotFound);

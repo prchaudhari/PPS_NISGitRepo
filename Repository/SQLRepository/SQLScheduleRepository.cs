@@ -653,14 +653,14 @@ namespace nIS
                                         {
                                             ParallelOptions parallelOptions = new ParallelOptions();
                                             parallelOptions.MaxDegreeOfParallelism = 10;
-                                            //Parallel.ForEach(customerMasters, parallelOptions, customer =>
-                                            //{
-                                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
-                                            //});
-                                            customerMasters.ToList().ForEach(customer =>
+                                            Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                             {
                                                 this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
                                             });
+                                            //customerMasters.ToList().ForEach(customer =>
+                                            //{
+                                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
+                                            //});
                                         }
                                         
                                     }
