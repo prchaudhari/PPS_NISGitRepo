@@ -355,3 +355,7 @@ SET IDENTITY_INSERT EntityManager.Operations OFF
 INSERT INTO [NIS].[AssetSetting]
 ([ImageHeight],[ImageWidth],[ImageSize],[ImageFileExtension],[VideoSize],[VideoFileExtension],[TenantCode])
 VALUES(300,400,1,'png,jpeg',2,'mp4',@SuperTenantCode);
+
+INSERT INTO [NIS].[RenderEngine] 
+(Name, URL, PriorityLevel, NumberOfThread, IsActive, IsDeleted, InUse) 
+VALUES ('Default Render Engine', 'http://127.0.0.1:8441', 1, 1, 1, 0, 0);
