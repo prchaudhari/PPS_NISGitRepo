@@ -105,7 +105,7 @@ namespace nIS
                     statementRecords.ToList().ForEach(item =>
                     {
                         item.PublishedBy = userId;
-                        item.PublishedOn = DateTime.Now;
+                        item.PublishedOn = DateTime.UtcNow;
                         item.Status = StatementStatus.Published.ToString();
                     });
 
@@ -365,7 +365,7 @@ namespace nIS
                             Version = statementRecord.Version,
                             PublishedBy = statementRecord.PublishedBy,
                             StatementPublishedByUserName = statementRecord.PublishedBy > 0 ? statementPublishedUserRecords.Where(usr => usr.Id == statementRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
-                            PublishedOn = statementRecord.PublishedOn == null ? DateTime.MinValue : statementRecord.PublishedOn,
+                            PublishedOn = statementRecord.PublishedOn != null ? DateTime.SpecifyKind((DateTime)statementRecord.PublishedOn, DateTimeKind.Utc) : DateTime.MinValue,
                             UpdateBy = statementRecord.UpdateBy,
                             Description = statementRecord.Description
                         });
@@ -2549,13 +2549,11 @@ namespace nIS
                 DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
                 queryString.Append("PublishedOn >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
             }
-
             if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
             {
                 DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
                 queryString.Append("PublishedOn <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
-
             if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
             {
                 DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);

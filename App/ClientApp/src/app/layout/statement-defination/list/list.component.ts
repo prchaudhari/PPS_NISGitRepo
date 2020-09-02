@@ -232,7 +232,7 @@ export class ListComponent implements OnInit {
     }
     if (this.StatementFilterForm.value.filterPublishedOnToDate != null && this.StatementFilterForm.value.filterPublishedOnToDate != '') {
       let toDate = this.StatementFilterForm.value.filterPublishedOnToDate;
-      if (toDate.getDate() > currentDte.getDate()) {
+      if (toDate.getTime() > currentDte.getTime()) {
         this.filterToDateError = true;
         this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
       }
@@ -282,11 +282,12 @@ export class ListComponent implements OnInit {
         if (this.StatementFilterForm.value.filterPublishedOnFromDate != null && this.StatementFilterForm.value.filterPublishedOnFromDate != '') {
           //  searchParameter.StartDate = this.StatementFilterForm.value.filterPublishedOnFromDate;
           searchParameter.StartDate = new Date(this.StatementFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
+          searchParameter.SortParameter.SortColumn = 'PublishedOn';
         }
         if (this.StatementFilterForm.value.filterPublishedOnToDate != null && this.StatementFilterForm.value.filterPublishedOnToDate != '') {
           //searchParameter.EndDate = this.StatementFilterForm.value.filterPublishedOnToDate;
           searchParameter.EndDate = new Date(this.StatementFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
-
+          searchParameter.SortParameter.SortColumn = 'PublishedOn';
         }
         this.currentPage = 0;
         this.getStatements(searchParameter);
