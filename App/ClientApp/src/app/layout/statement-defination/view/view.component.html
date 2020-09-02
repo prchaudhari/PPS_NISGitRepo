@@ -29,7 +29,7 @@
           <div class="row">
             <div class="col-md-12 col-lg-12 form-group">
               <label id="lblDescription">Description</label>
-              <div>{{statement.Description}}</div>
+              <div><span *ngIf="statement.Description==null">-</span><span *ngIf="statement.Description!=null">{{statement.Description}} </span></div>
             </div>
           </div>
         </div>

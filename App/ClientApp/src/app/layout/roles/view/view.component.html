@@ -27,7 +27,11 @@
       <div class="row">
         <div class="col-md-8 col-lg-6">
           <label id="lblDescription">Description</label>
-          <div>{{roleRecord.Description}}</div>
+          <div>
+            <!--{{roleRecord.Description}}-->
+            <span *ngIf="roleRecord.Description==null">-</span>
+            <span *ngIf="roleRecord.Description!=null">{{roleRecord.Description}} </span>
+          </div>
         </div>
       </div>
     </div>
