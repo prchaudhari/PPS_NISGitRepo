@@ -114,7 +114,7 @@ export class ListComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
   public previousPageLabel: string;
-
+  public totalRecordCount = 0;
   public loggedInUserIdentifier;
   public profileImage;
   public UserFilter: any = {
@@ -137,7 +137,30 @@ export class ListComponent implements OnInit {
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    //this.iterator();
+    this.getUserdetail(null);
+
+
+
+    //let searchParameter: any = {};
+    //searchParameter.PagingParameter = {};
+    //searchParameter.PagingParameter.PageIndex = this.currentPage+1;
+    //searchParameter.PagingParameter.PageSize = this.pageSize;
+    //searchParameter.SortParameter = {};
+    //searchParameter.SortParameter.SortColumn = Constants.UserName;
+    //searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    //searchParameter.SearchMode = Constants.Contains;
+    //if (this.userFormGroup.value.FirstName != null) {
+    //  searchParameter.FirstName = this.UserFilter.FirstName.trim();
+    //}
+    //if (this.userFormGroup.value.EmailAddress != null) {
+    //  searchParameter.EmailAddress = this.UserFilter.EmailAddress.trim();
+    //}
+    //if (this.UserFilter.RoleIdentifier != null) {
+    //  searchParameter.RoleIdentifier = this.UserFilter.RoleIdentifier;
+    //}
+    //searchParameter.LockStatus = this.UserFilter.LockStatus;
+    //searchParameter.ActivationStatus = this.UserFilter.ActivationStatus;
   }
 
   private iterator() {
@@ -145,6 +168,7 @@ export class ListComponent implements OnInit {
     const start = this.currentPage * this.pageSize;
     const part = this.array.slice(start, end);
     this.dataSource = part;
+    this.dataSource.sort = this.sort;
   }
 
   constructor(private http: HttpClient,
@@ -234,16 +258,22 @@ export class ListComponent implements OnInit {
   //Get api for fetching User details--
   async getUserdetail(searchParameter) {
     if (searchParameter == null) {
-      let searchParameter: any = {};
-      searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-      searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = Constants.UserName;
-      searchParameter.SortParameter.SortOrder = Constants.Ascending;
-      searchParameter.SearchMode = Constants.Contains;
+      let newsearchParameter: any = {};
+      newsearchParameter.PagingParameter = {};
+      newsearchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+      newsearchParameter.PagingParameter.PageSize = this.pageSize;
+      newsearchParameter.SortParameter = {};
+      newsearchParameter.SortParameter.SortColumn = Constants.UserName;
+      newsearchParameter.SortParameter.SortOrder = Constants.Ascending;
+      newsearchParameter.SearchMode = Constants.Contains;
+      newsearchParameter.ActivationStatus = true;
+      searchParameter = newsearchParameter;
     }
-    this.userLists = await this.service.getUser(searchParameter);
+
+    var response = await this.service.getUser(searchParameter);
+    this.userLists = response.usersList;
+    this.totalRecordCount = response.RecordCount;
+
     if (this.userLists.length == 0 && this.isFilterDone == true) {
       let message = "No record found";//this.roleListResources['lblNoRecord'] == undefined ? this.ResourceLoadingFailedMsg : this.roleListResources['lblNoRecord']
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
@@ -266,8 +296,7 @@ export class ListComponent implements OnInit {
     this.dataSource = new MatTableDataSource<User>(this.userLists);
     this.dataSource.sort = this.sort;
     this.array = this.userLists;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
 
     if (this.userLists.length > 0) {
     }
@@ -294,8 +323,8 @@ export class ListComponent implements OnInit {
     }
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
-    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
     searchParameter.SortParameter = {};
     searchParameter.SortParameter.SortColumn = Constants.UserName;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
@@ -584,8 +613,8 @@ export class ListComponent implements OnInit {
     else {
       let searchParameter: any = {};
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = Constants.UserName;
       searchParameter.SortParameter.SortOrder = Constants.Ascending;

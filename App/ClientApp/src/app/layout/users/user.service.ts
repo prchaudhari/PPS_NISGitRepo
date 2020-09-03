@@ -27,36 +27,42 @@ export class UserService {
   constructor(
     private injector: Injector,
     private uiLoader: NgxUiLoaderService,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private _messageDialogService: MessageDialogService) { }
 
-  public async getUser(searchParameter): Promise<User[]> {
+  public async getUser(searchParameter): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.userGetUrl;
     this.uiLoader.start();
+    var response: any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           if (httpEvent["status"] === 200) {
             this.usersList = [];
             this.uiLoader.stop();
-            if (httpEvent['body'] != null) {
-              httpEvent['body'].forEach(userObject => {
-                this.usersList = [...this.usersList, userObject];
-              });
-            }
+            httpEvent['body'].forEach(roleObject => {
+              this.usersList = [...this.usersList, roleObject];
+            });
+            response.usersList = this.usersList;
+            response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
           }
           else {
             this.usersList = [];
-            this.isRecordFound = false;
+            response.usersList = this.usersList;
+            response.RecordCount = 0;
             this.uiLoader.stop();
           }
         }
       }, (error: HttpResponse<any>) => {
-        this.usersList = [];
-        this.isRecordFound = false;
+          this.usersList = [];
         this.uiLoader.stop();
+        if (error["error"] != null) {
+          let errorMessage = error["error"].Error["Message"];
+          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+        }
       });
-    return <User[]>this.usersList;
+    return response
   }
 
 

@@ -526,7 +526,10 @@ export class UserAddEditComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //this.spinner.start();
-    this.usersList = await userService.getUser(searchParameter);
+
+    var response = await userService.getUser(searchParameter);
+    this.usersList = response.usersList;
+
     //this.spinner.stop();
     this.usersList.forEach(userObject => {
       this.resourceId = userObject.ResourceIdentifier
