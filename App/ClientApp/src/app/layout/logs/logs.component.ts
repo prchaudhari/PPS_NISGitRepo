@@ -1,4 +1,3 @@
-
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -17,19 +16,12 @@ import { ConfigConstants } from '../../shared/constants/configConstants';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 
-export interface ListElement {
-  schedule: string;
-  time: string;
-  status: string;
-  date: string;
-  record: string;
-}
-
 @Component({
   selector: 'app-logs',
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.scss']
 })
+
 export class LogsComponent implements OnInit {
 
   //public variables
@@ -55,12 +47,16 @@ export class LogsComponent implements OnInit {
   public userClaimsRolePrivilegeOperations: any[] = [];
   public baseURL = ConfigConstants.BaseURL;
 
+  public totalRecordCount = 0;
+  public filterScheduleNameValue = '';
+  public filterLogStatus = '';
+  public filterExecutionDate = null;
+
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
 
   displayedColumns: string[] = ['schedule', 'time', 'record', 'status', 'date', 'actions'];
-
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -86,7 +82,8 @@ export class LogsComponent implements OnInit {
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    //this.iterator();
+    this.getScheduleLogs(null);
   }
 
   private iterator() {
@@ -110,18 +107,12 @@ export class LogsComponent implements OnInit {
     return this.ScheduleLogFilterForm.get('filterPublishedOnFromDate');
   }
 
-  // get filterPublishedOnToDate() {
-  //   return this.ScheduleLogFilterForm.get('filterPublishedOnToDate');
-  // }
-
   ngOnInit() {
     this.getScheduleLogs(null);
-    //this.getPageTypes();
     this.ScheduleLogFilterForm = this.fb.group({
       filterScheduleName: [null],
       filterStatus: [0],
       filterPublishedOnFromDate: [null],
-      //filterPublishedOnToDate: [null],
     });
 
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
@@ -154,8 +145,8 @@ export class LogsComponent implements OnInit {
     this.dataSource = new MatTableDataSource<ScheduleLog>(this.sortedScheduleLogList);
     this.dataSource.sort = this.sort;
     this.array = this.sortedScheduleLogList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
 
   async getScheduleLogs(searchParameter) {
@@ -164,19 +155,30 @@ export class LogsComponent implements OnInit {
       searchParameter = {};
       searchParameter.IsActive = true;
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = 'CreationDate';
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
+      if (this.filterScheduleNameValue != null && this.filterScheduleNameValue != '') {
+        searchParameter.ScheduleName = this.filterScheduleNameValue.trim();
+      }
+      if (this.filterLogStatus != null && this.filterLogStatus != '') {
+        searchParameter.ScheduleStatus = this.filterLogStatus.trim();
+      }
+      if (this.filterExecutionDate != null && this.filterExecutionDate != '') {
+        searchParameter.StartDate = new Date(this.filterExecutionDate.setHours(0, 0, 0));
+      }
     }
-    this.scheduleLogList = await scheduleLogService.getScheduleLog(searchParameter);
+    var response = await scheduleLogService.getScheduleLog(searchParameter);
+    this.scheduleLogList = response.List;
+    this.totalRecordCount = response.RecordCount;
     if (this.scheduleLogList.length == 0 && this.isFilterDone == true) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
-          //this.resetRoleFilterForm();
+          this.resetSchdeuleLogFilterForm();
           this.getScheduleLogs(null);
         }
       });
@@ -184,19 +186,14 @@ export class LogsComponent implements OnInit {
     this.dataSource = new MatTableDataSource<ScheduleLog>(this.scheduleLogList);
     this.dataSource.sort = this.sort;
     this.array = this.scheduleLogList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
 
   validateFilterDate(): boolean {
     if (this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != '' &&
       this.ScheduleLogFilterForm.value.filterPublishedOnToDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnToDate != '') {
       let startDate = this.ScheduleLogFilterForm.value.filterPublishedOnFromDate;
-      // let toDate = this.ScheduleLogFilterForm.value.filterPublishedOnToDate;
-      // if (startDate.getTime() > toDate.getTime()) {
-      //   this.filterFromDateError = true;
-      //   return false;
-      // }
     }
     return true;
   }
@@ -214,22 +211,6 @@ export class LogsComponent implements OnInit {
         this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanCurrentDateMessage;
       }
     }
-    // if (this.ScheduleLogFilterForm.value.filterPublishedOnToDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnToDate != '') {
-    //   let toDate = this.ScheduleLogFilterForm.value.filterPublishedOnToDate;
-    //   if (toDate.getTime() > currentDte.getTime()) {
-    //     this.filterToDateError = true;
-    //     this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
-    //   }
-    // }
-    // if (this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != '' &&
-    //   this.ScheduleLogFilterForm.value.filterPublishedOnToDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnToDate != '') {
-    //   let startDate = this.ScheduleLogFilterForm.value.filterPublishedOnFromDate;
-    //   let toDate = this.ScheduleLogFilterForm.value.filterPublishedOnToDate;
-    //   if (startDate.getTime() > toDate.getTime()) {
-    //     this.filterFromDateError = true;
-    //     this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
-    //   }
-    // }
   }
 
   //This method has been used for fetching search records
@@ -245,36 +226,26 @@ export class LogsComponent implements OnInit {
       if (this.validateFilterDate()) {
         let searchParameter: any = {};
         searchParameter.PagingParameter = {};
-        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.PagingParameter.PageIndex = 1;
+        searchParameter.PagingParameter.PageSize = this.pageSize;
         searchParameter.SortParameter = {};
         searchParameter.SortParameter.SortColumn = 'CreationDate';
         searchParameter.SortParameter.SortOrder = Constants.Descending;
         searchParameter.SearchMode = Constants.Contains;
+
         if (this.ScheduleLogFilterForm.value.filterScheduleName != null && this.ScheduleLogFilterForm.value.filterScheduleName != '') {
+          this.filterScheduleNameValue = this.ScheduleLogFilterForm.value.filterScheduleName.trim();
           searchParameter.ScheduleName = this.ScheduleLogFilterForm.value.filterScheduleName.trim();
         }
-        if (this.ScheduleLogFilterForm.value.filterOwner != null && this.ScheduleLogFilterForm.value.filterOwner != '') {
-          searchParameter.PageOwner = this.ScheduleLogFilterForm.value.filterOwner.trim();
-        }
-        if (this.filterPageTypeId != 0) {
-          searchParameter.PageTypeId = this.filterPageTypeId;
-        }
         if (this.ScheduleLogFilterForm.value.filterStatus != null && this.ScheduleLogFilterForm.value.filterStatus != 0) {
+          this.filterLogStatus = this.ScheduleLogFilterForm.value.filterStatus;
           searchParameter.ScheduleStatus = this.ScheduleLogFilterForm.value.filterStatus;
         }
         if (this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != '') {
-          //searchParameter.StartDate = this.ScheduleLogFilterForm.value.filterPublishedOnFromDate;
+          this.filterExecutionDate = this.ScheduleLogFilterForm.value.filterPublishedOnFromDate;
           searchParameter.StartDate = new Date(this.ScheduleLogFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
-          searchParameter.SortParameter.SortColumn = 'CreationDate';
         }
-        // if (this.ScheduleLogFilterForm.value.filterPublishedOnToDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnToDate != '') {
-        //   //searchParameter.EndDate = this.ScheduleLogFilterForm.value.filterPublishedOnToDate;
-        //   searchParameter.EndDate = new Date(this.ScheduleLogFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
-        //   searchParameter.SortParameter.SortColumn = 'CreationDate';
-        // }
 
-        console.log(searchParameter);
         this.currentPage = 0;
         this.getScheduleLogs(searchParameter);
         this.isFilter = !this.isFilter;
@@ -289,13 +260,15 @@ export class LogsComponent implements OnInit {
       filterPageType: 0,
       filterStatus: 0,
       filterPublishedOnFromDate: null,
-      //filterPublishedOnToDate: null
     });
 
+    this.currentPage = 0;
+    this.filterScheduleNameValue = '';
+    this.filterLogStatus = '';
+    this.filterExecutionDate = null;
     this.filterFromDateError = false;
     this.filterToDateError = false;
     this.filterFromDateErrorMessage = "";
-    //this.filterToDateErrorMessage = "";
   }
 
   ngAfterViewInit() {

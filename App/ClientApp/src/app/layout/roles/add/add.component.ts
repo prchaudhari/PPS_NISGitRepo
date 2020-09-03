@@ -505,7 +505,8 @@ export class AddComponent implements OnInit {
     searchParameter.IsRequiredRolePrivileges = true;
     if (this.RoleIdentifier != null)
       searchParameter.Identifier = this.RoleIdentifier;
-    this.rolRecord = await roleService.getRoles(searchParameter);
+    var response = await roleService.getRoles(searchParameter);
+    this.rolRecord = response.roleList;
     this.Name = this.rolRecord[0].Name;
     this.rolRecord.forEach(roleObject => {
       this.roleFormGroup.patchValue({
@@ -529,16 +530,13 @@ export class AddComponent implements OnInit {
                 }
               }
             }
-            
           }
         }
       }
       this.entityList.forEach(entity => {
         entity.RolePrivilegeOperations.forEach(operation => {
-
           var entityMapping = this.dependentEntityMap.filter(x => x.EntityName == entity.EntityName && x.Operation == operation.Operation)[0];
           if (operation.IsEnabled) {
-
             if (entity.EntityName == entity.EntityName) {
               //check and disable entity related operations
               entity.RolePrivilegeOperations.forEach(opt => {
@@ -547,7 +545,6 @@ export class AddComponent implements OnInit {
                   if (filterOps != undefined && filterOps.length > 0) {
                     opt.IsDisabled = true;
                     opt.IsEnabled = true;
-
                   }
                 }
               });
@@ -567,24 +564,15 @@ export class AddComponent implements OnInit {
                       });
                       this.dependentEntityCount.forEach(en => {
                         if (en.EntityName == x.EntityName) {
-                          //if (operation.Operation == "Create") {
-                          //  en.Count = en.Count + 2;
-                          //}
-                          //else {
-                          //  en.Count = en.Count + 1;
-                          //}
                           en.Count = en.Count + 1;
                         }
                       })
                     }
                   })
                 })
-
               }
             }
-
           }
-         
         });
       });
 
@@ -651,10 +639,8 @@ export class AddComponent implements OnInit {
       });
 
       entity.RolePrivilegeOperations.forEach(operation => {
-        
         var entityMapping = this.dependentEntityMap.filter(x => x.EntityName == entity.EntityName && x.Operation == operation.Operation)[0];
         if (event.target.checked) {
-
           if (entity.EntityName == entity.EntityName) {
             //check and disable entity related operations
             entity.RolePrivilegeOperations.forEach(opt => {
@@ -663,7 +649,6 @@ export class AddComponent implements OnInit {
                 if (filterOps != undefined && filterOps.length > 0) {
                   opt.IsDisabled = true;
                   opt.IsEnabled = true;
-
                 }
               }
             });
@@ -683,25 +668,16 @@ export class AddComponent implements OnInit {
                     });
                     this.dependentEntityCount.forEach(en => {
                       if (en.EntityName == x.EntityName) {
-                        //if (operation.Operation == "Create") {
-                        //  en.Count = en.Count + 2;
-                        //}
-                        //else {
-                        //  en.Count = en.Count + 1;
-                        //}
                         en.Count = en.Count + 1;
                       }
                     })
                   }
                 })
               })
-            
             }
           }
-
         }
         else {
-
           if (entity.EntityName == entity.EntityName) {
             //check and disable entity related operations
             entity.RolePrivilegeOperations.forEach(opt => {
@@ -762,7 +738,6 @@ export class AddComponent implements OnInit {
     this.entityList.forEach(entity => {
       var enableList = entity.RolePrivilegeOperations.filter(item => item.IsEnabled == true);
       if (enableList.length == entity.RolePrivilegeOperations.length) {
-
         entity.IsAllRolePrevilegeSelected = true;
       }
       else {
@@ -806,7 +781,6 @@ export class AddComponent implements OnInit {
                     if (filterOps != undefined && filterOps.length > 0) {
                       opt.IsDisabled = true;
                       opt.IsEnabled = true;
-
                     }
                   }
                 });
@@ -825,12 +799,6 @@ export class AddComponent implements OnInit {
                       });
                       this.dependentEntityCount.forEach(en => {
                         if (en.EntityName == entity.EntityName) {
-                          //if (operation.Operation == "Create") {
-                          //  en.Count = en.Count + 2;
-                          //}
-                          //else {
-                          //  en.Count = en.Count + 1;
-                          //}
                           en.Count = en.Count + 1;
                         }
                       })
@@ -881,7 +849,6 @@ export class AddComponent implements OnInit {
 
               if (entityMapping.OtherDependentEntity != undefined) {
                 //check and other dependent entity view operations
-
                 var filterEntity = entityMapping.OtherDependentEntity.filter(en => en == entity.EntityName);
                 if (filterEntity != undefined && filterEntity.length > 0) {
                   var filterEntityCount = this.dependentEntityCount.filter(en => en.EntityName == entity.EntityName);
@@ -946,7 +913,6 @@ export class AddComponent implements OnInit {
   }
 
   rowWiseSelection(event, operation, entityName) {
-
     var entityMapping = this.dependentEntityMap.filter(x => x.EntityName == entityName && x.Operation == operation.Operation)[0];
     if (event.target.checked) {
       this.entityList.forEach(entity => {
@@ -958,7 +924,6 @@ export class AddComponent implements OnInit {
               if (filterOps != undefined && filterOps.length > 0) {
                 opt.IsDisabled = true;
                 opt.IsEnabled = true;
-
               }
             }
           });
@@ -1038,10 +1003,8 @@ export class AddComponent implements OnInit {
                 var entities = entity.RolePrivilegeOperations.filter(e => (e.Operation == "Edit" || e.Operation == "Create" || e.Operation == "Delete") && e.IsEnabled == true);
                 if (entities == undefined || entities.length == 0) {
                   entity.RolePrivilegeOperations.forEach(opt => {
-
                     if (opt.Operation == "View") {
                       opt.IsDisabled = false;
-
                     }
                     this.dependentEntityCount.forEach(en => {
                       if (en.EntityName == entity.EntityName) {
@@ -1075,7 +1038,6 @@ export class AddComponent implements OnInit {
     this.entityList.forEach(entity => {
       var enableList = entity.RolePrivilegeOperations.filter(item => item.IsEnabled == true);
       if (enableList.length == entity.RolePrivilegeOperations.length) {
-
         entity.IsAllRolePrevilegeSelected = true;
       }
       else {
@@ -1130,7 +1092,6 @@ export class AddComponent implements OnInit {
       searchParameter.ActivationStatus = true;
       //this.spinner.start();
       this.usersList = await userService.getUser(searchParameter);
-      
       this.IsUserDetailsGet = true;
     }
     

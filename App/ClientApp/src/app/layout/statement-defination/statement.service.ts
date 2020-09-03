@@ -26,10 +26,11 @@ export class StatementService {
     private _messageDialogService: MessageDialogService) { }
 
   //method to call api of get statements.
-  async getStatements(searchParameter): Promise<Statement[]> {
+  async getStatements(searchParameter): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.statementGetUrl;
     this.uiLoader.start();
+    var response : any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
@@ -39,21 +40,27 @@ export class StatementService {
             httpEvent['body'].forEach(statementObject => {
               this.statementList = [...this.statementList, statementObject];
             });
+            response.List = this.statementList;
+            response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
           }
           else {
             this.statementList = [];
+            response.List = this.statementList;
+            response.RecordCount = 0;
             this.uiLoader.stop();
           }
         }
       }, (error: HttpResponse<any>) => {
         this.statementList = [];
+        response.List = this.statementList;
+        response.RecordCount = 0;
         this.uiLoader.stop();
         if (error["error"] != null) {
           let errorMessage = error["error"].Error["Message"];
           this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       });
-    return <Statement[]>this.statementList
+    return response
   }
 
   //service method to save or update statement records

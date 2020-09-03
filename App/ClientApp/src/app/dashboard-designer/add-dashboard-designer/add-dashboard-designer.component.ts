@@ -805,7 +805,8 @@ export class AddDashboardDesignerComponent implements OnInit {
 
   async getPageRecords(searchParameter) {
     let templateService = this.injector.get(TemplateService);
-    this.templateList = await templateService.getTemplates(searchParameter);
+    var response = await templateService.getTemplates(searchParameter);
+    this.templateList = response.templateList;
     if (this.templateList.length == 0) {
       let message = "No record found";
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {

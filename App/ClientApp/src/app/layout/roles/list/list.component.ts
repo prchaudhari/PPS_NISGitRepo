@@ -49,6 +49,9 @@ export class ListComponent implements OnInit {
   public totalSize = 0;
   public previousPageLabel: string;
   public isFilterDone = false;
+  public filterRoleValue = '';
+  public filterActiveRole = true;
+  public totalRecordCount = 0;
 
   public RoleFilter: any = {
     Name: null,
@@ -63,7 +66,8 @@ export class ListComponent implements OnInit {
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    //this.iterator();
+    this.getRoleRecords(null);
   }
 
   private iterator() {
@@ -73,6 +77,7 @@ export class ListComponent implements OnInit {
     this.dataSource = part;
     this.dataSource.sort = this.sort;
   }
+  
   //Getters for Role Forms
   get filterRoleName() {
     return this.roleFilterForm.get('filterRoleName');
@@ -92,29 +97,6 @@ export class ListComponent implements OnInit {
     private localstorageservice: LocalStorageService,
     private roleService: RoleService
   ) {
-
-    // this.getResources();
-    // //remove localstorage item.
-    // router.events.subscribe(e => {
-    //     if (e instanceof NavigationEnd) {
-    //         if (e.url.includes('/roles')) {
-
-    //         } else {
-    //             localStorage.removeItem("roleparams")
-    //         }
-    //     }
-    // });
-
-    //getting localstorage item
-    // if (localStorage.getItem("roleparams")) {
-    //     this.params = JSON.parse(localStorage.getItem('roleparams'));
-    //     this.RoleIdentifier = this.params.Routeparams.passingparams.RoleIdentifier
-    //     this.RoleName = this.params.Routeparams.filteredparams.RoleName
-    // } else {
-    //     // this.getRoleRecords(null)
-    //     //this.backParamCheck()
-    // }
-
     this.sortedRoleList = this.roleList.slice();
   }
 
@@ -136,19 +118,17 @@ export class ListComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Role>(this.sortedRoleList);
     this.dataSource.sort = this.sort;
     this.array = this.sortedRoleList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
 
   //method called on initialization
   ngOnInit() {
     this.getRoleRecords(null)
-    this.roleFilterForm = this.fb.group(
-      {
+    this.roleFilterForm = this.fb.group({
         filterRoleName: [null],
         DeactivateRole: [null]
-      }
-    );
+      });
     //this.backParamCheck();
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
@@ -159,68 +139,26 @@ export class ListComponent implements OnInit {
     }
   }
 
-  //Function to call preferred language from the localstorage--
-  getResources() {
-    var ResourcesArr = this.localstorageservice.GetResource();
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      //this.Locale = userClaimsDetail.PreferedLanguageCode;
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      //this.Locale = 'enUS';
-      this.userClaimsRolePrivilegeOperations = [];
-    }
-    if (ResourcesArr != null) {
-      if (ResourcesArr.length > 0) {
-        var roleListSectionName = ResourcesArr[0].ResourceSections.filter(x => x.SectionName === ConfigConstants.RoleListUISection);
-        if (roleListSectionName.length > 0) {
-          roleListSectionName.forEach(resourceSection => {
-            let resourceItemArr = []
-            resourceItemArr = resourceSection.ResourceItems;
-            resourceItemArr.forEach(resource => {
-              this.roleListResources[resource.Key] = resource.Value;
-            })
-          })
-        }
-        else {
-          //fallbackcall for resource api if resource fetching failed from localstorage--
-          this.getResourcesIfLocalStorageFailed();
-        }
-      }
-    }
-    else {
-      //call for resource service from api--
-      this.getResourcesIfLocalStorageFailed();
-    }
-  }
-
-  async getResourcesIfLocalStorageFailed() {
-    var sectionStr = ConfigConstants.RoleListUISection;
-    let resourceService = this.injector.get(ResourceService);
-    this.roleListResources = await resourceService.getResources(sectionStr, this.Locale, false);
-  }
-
   //This method has been used for fetching role records
   async getRoleRecords(searchParameter) {
     let roleService = this.injector.get(RoleService);
     if (searchParameter == null) {
       searchParameter = {};
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = Constants.Name;
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
-      searchParameter.IsActive = true;
+      searchParameter.Name = this.filterRoleValue;
+      searchParameter.IsActive = this.filterActiveRole;
     }
-    this.roleList = await roleService.getRoles(searchParameter);
-    // if (this.roleList.length > 0) {
-    //     this.isRecordFound = true;
-    // }
+    var response = await roleService.getRoles(searchParameter);
+    this.roleList = response.roleList;
+    this.totalRecordCount = response.RecordCount;
     if (this.roleList.length == 0 && this.isFilterDone == true) {
-      let message = "NO record found";//this.roleListResources['lblNoRecord'] == undefined ? this.ResourceLoadingFailedMsg : this.roleListResources['lblNoRecord']
+      let message = "NO record found";
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
           this.resetRoleFilterForm();
@@ -229,17 +167,9 @@ export class ListComponent implements OnInit {
       });
     }
     this.dataSource = new MatTableDataSource<Role>(this.roleList);
-    //this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.array = this.roleList;
-    this.totalSize = this.array.length;
-    this.iterator();
-    //to hide tooltip
-    //const paginatorIntl = this.paginator._intl;
-    //paginatorIntl.nextPageLabel = '';
-    //paginatorIntl.previousPageLabel = '';
-    //paginatorIntl.firstPageLabel = '';
-    //paginatorIntl.lastPageLabel = '';
+    this.totalSize = this.totalRecordCount;
   }
 
   //This method has been used for fetching search records
@@ -253,14 +183,16 @@ export class ListComponent implements OnInit {
     else {
       let searchParameter: any = {};
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.PagingParameter.PageIndex = 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = Constants.Name;
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
-      searchParameter.Name = this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName.trim() : "";
-      searchParameter.IsActive = this.roleFilterForm.value.DeactivateRole != null ? !this.roleFilterForm.value.DeactivateRole : true;
+      this.filterRoleValue = this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName.trim() : "";
+      this.filterActiveRole = this.roleFilterForm.value.DeactivateRole != null ? !this.roleFilterForm.value.DeactivateRole : true;
+      searchParameter.Name = this.filterRoleValue;
+      searchParameter.IsActive = this.filterActiveRole;
       this.currentPage = 0;
       this.getRoleRecords(searchParameter);
       this.isFilter = !this.isFilter;
@@ -419,6 +351,9 @@ export class ListComponent implements OnInit {
       filterRoleName: null,
       DeactivateRole: null
     });
+    this.currentPage = 0;
+    this.filterRoleValue = '';
+    this.filterActiveRole = true;
   }
 
 }

@@ -14,49 +14,52 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 })
 export class StatementSearchService {
   //public variables
-  public schedulesList;
-  public profileList;
-  public designationList;
-  public languageList;
-  public isRecordFound;
-  public isRecordSaved: boolean = false;
-  public isRecordDeleted: boolean = false;
-  public countrycodeList = [];
-  public ouList = [];
-  public isDependencyPresent: boolean = false;
+  public searchlist;
+  public isRecordFound = false;
+
   constructor(private http: HttpClient,
     private injector: Injector,
     private uiLoader: NgxUiLoaderService,
     private _messageDialogService: MessageDialogService) { }
 
-  public async getStatementSearch(searchParameter): Promise<StatementSearch[]> {
+  public async getStatementSearch(searchParameter): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.statementSearchGetUrl;
     this.uiLoader.start();
+    var response : any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           if (httpEvent["status"] === 200) {
-            this.schedulesList = [];
+            this.searchlist = [];
             this.uiLoader.stop();
             if (httpEvent['body'] != null) {
               httpEvent['body'].forEach(scheduleObject => {
-                this.schedulesList = [...this.schedulesList, scheduleObject];
+                this.searchlist = [...this.searchlist, scheduleObject];
               });
+              response.List = this.searchlist;
+              response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
+            }else {
+              response.List = this.searchlist;
+              response.RecordCount = 0;
             }
           }
           else {
-            this.schedulesList = [];
+            this.searchlist = [];
+            response.List = this.searchlist;
+            response.RecordCount = 0;
             this.isRecordFound = false;
             this.uiLoader.stop();
           }
         }
       }, (error: HttpResponse<any>) => {
-        this.schedulesList = [];
+        this.searchlist = [];
+        response.List = this.searchlist;
+        response.RecordCount = 0;
         this.isRecordFound = false;
         this.uiLoader.stop();
       });
-    return <StatementSearch[]>this.schedulesList;
+    return response;
   }
 
 }

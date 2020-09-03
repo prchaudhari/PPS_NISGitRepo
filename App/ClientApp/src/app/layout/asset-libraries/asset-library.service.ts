@@ -28,10 +28,11 @@ export class AssetLibraryService {
     private _messageDialogService: MessageDialogService) { }
 
   //method to call api of get asset library.
-  async getAssetLibrary(searchParameter): Promise<AssetLibrary[]> {
+  async getAssetLibrary(searchParameter): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.assetLibraryGetUrl;
     this.uiLoader.start();
+    var response: any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
@@ -41,21 +42,27 @@ export class AssetLibraryService {
             httpEvent['body'].forEach(roleObject => {
               this.assestLibraryList = [...this.assestLibraryList, roleObject];
             });
+            response.assestLibraryList = this.assestLibraryList;
+            response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
           }
           else {
             this.assestLibraryList = [];
+            response.assestLibraryList = this.assestLibraryList;
+            response.RecordCount = 0;
             this.uiLoader.stop();
           }
         }
       }, (error: HttpResponse<any>) => {
         this.assestLibraryList = [];
+        response.assestLibraryList = this.assestLibraryList;
+        response.RecordCount = 0;
         this.uiLoader.stop();
         if (error["error"] != null) {
           let errorMessage = error["error"].Error["Message"];
           this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       });
-    return <AssetLibrary[]>this.assestLibraryList
+    return response
   }
 
   //service method to save or update asset library records

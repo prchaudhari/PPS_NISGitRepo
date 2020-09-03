@@ -167,7 +167,8 @@ export class AddComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Descending;
     searchParameter.SearchMode = Constants.Contains;
     searchParameter.Status = "Published";
-    var list = await statementService.getStatements(searchParameter);
+    var response = await statementService.getStatements(searchParameter);
+    var list = response.List;
     for (var i = 0; i < list.length; i++) {
       this.statementDefinitionList.push(list[i]);
     }
@@ -177,7 +178,7 @@ export class AddComponent implements OnInit {
   }
 
   async getSchedule() {
-    let statementService = this.injector.get(ScheduleService);
+    let scheduleService = this.injector.get(ScheduleService);
     var searchParameter: any = {};
     searchParameter.IsActive = true;
     searchParameter.PagingParameter = {};
@@ -189,11 +190,11 @@ export class AddComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.schedule.Identifier;
     searchParameter.IsSchedulePagesRequired = true;
-    var statementList = await statementService.getSchedule(searchParameter);
-    if (statementList.length == 0) {
+    var response = await scheduleService.getSchedule(searchParameter);
+    if (response.List.length == 0) {
       this._messageDialogService.openDialogBox('Error', "Schedule Not Found", Constants.msgBoxError);
     }
-    this.schedule = statementList[0];
+    this.schedule = response.List[0];
     this.scheduleForm.controls['ScheduleName'].setValue(this.schedule.Name);
     this.scheduleForm.controls['StatementDefinition'].setValue(this.schedule.Statement.Identifier);
     this.scheduleForm.controls['DayOfMonth'].setValue(this.schedule.DayOfMonth);

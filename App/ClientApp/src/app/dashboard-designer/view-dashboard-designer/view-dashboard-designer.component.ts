@@ -203,7 +203,6 @@ export class ViewDashboardDesignerComponent implements OnInit {
             disableWarnings: false,
             scrollToNewItems: true
         };
-
         this.getPageRecord();
     }
 
@@ -220,7 +219,8 @@ export class ViewDashboardDesignerComponent implements OnInit {
         searchParameter.SortParameter.SortColumn = 'DisplayName';
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
         searchParameter.SearchMode = Constants.Exact;
-        this.templateList = await templateService.getTemplates(searchParameter);
+        var response = await templateService.getTemplates(searchParameter);
+        this.templateList = response.templateList;
         if (this.templateList.length == 0) {
             let message = "NO record found";
             this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {

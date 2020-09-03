@@ -75,21 +75,20 @@ export class ViewAssetLibraryComponent implements OnInit {
     if (localStorage.getItem('assetLibraryparams')) {
       this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
       this.getAssetLibraryRecords();
-
     }
-
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-
   }
 
   public isCollapsedDetails: boolean = false;
   public isCollapsedAssets: boolean = true;
   public isNoRecord = false;
+
   navigateToListPage() {
     this._location.back();
   }
+
   constructor(
     private _location: Location,
     private _window: WindowRef,
@@ -107,14 +106,12 @@ export class ViewAssetLibraryComponent implements OnInit {
     this.assetLibrary = new AssetLibrary;
     this.asset = new Asset;
     let me = this;
-
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/assetlibrary/Add')) {
           localStorage.removeItem("assetLibraryparams");
         }
       }
-
     });
 
     _router.events.subscribe(e => {
@@ -125,19 +122,15 @@ export class ViewAssetLibraryComponent implements OnInit {
           if (localStorage.getItem('assetLibraryparams')) {
             this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
             //this.getAssetLibraryRecords();
-
           }
         } else {
           localStorage.removeItem("assetLibraryparams");
         }
       }
-
     });
-
     this._window.nativeWindow.DownloadAsset = function (assetId: number): void {
       me.DownloadAsset(assetId);
     };
-
   }
 
   async getAssetLibraryRecords() {
@@ -150,18 +143,15 @@ export class ViewAssetLibraryComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = Constants.Name;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Exact;
-
-
     searchParameter.Identifier = this.assetLibrary.Identifier;
     searchParameter.IsAssetDataRequired = true;
-    let assetLibrary = await assetLibraryService.getAssetLibrary(searchParameter);
-    this.assetLibrary = assetLibrary[0];
+    let response = await assetLibraryService.getAssetLibrary(searchParameter);
+    this.assetLibrary = response.assestLibraryList[0];
     if (this.assetLibrary.Assets == null || this.assetLibrary.Assets == undefined || this.assetLibrary.Assets.length == 0) {
       this.isNoRecord = true;
     }
     else {
       this.isNoRecord = false;
-
     }
     this.dataSource = new MatTableDataSource<Asset>(this.assetLibrary.Assets);
     //this.dataSource.paginator = this.paginator;
@@ -198,12 +188,11 @@ export class ViewAssetLibraryComponent implements OnInit {
         });
   }
   closePreview() {
-
     let vid = <HTMLVideoElement>document.getElementById("videoPreview");
     vid.pause();
     this.image = '';
-
   }
+
   PreviewAsset(asset: Asset): void {
     var fileType = asset.Name.split('.').pop();
     if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
@@ -211,7 +200,6 @@ export class ViewAssetLibraryComponent implements OnInit {
     }
     else {
       this.isImage = false;
-
     }
     this._spinnerService.start();
     this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + asset.Identifier, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
@@ -233,14 +221,10 @@ export class ViewAssetLibraryComponent implements OnInit {
             sourceTag.setAttribute('src', this.image);
             sourceTag.setAttribute('type', 'video/mp4');
             document.getElementById('videoPreview').appendChild(sourceTag);
-
             let vid = <HTMLVideoElement>document.getElementById("videoPreview");
-
             vid.load();
             vid.currentTime = 0;
             vid.play();
-            //this.videoSource.nativeElement.setAttribute('src', url);
-            //this.video.nativeElement.load();
           }
         },
         error => {
@@ -248,37 +232,6 @@ export class ViewAssetLibraryComponent implements OnInit {
           this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
           this._spinnerService.stop();
         });
-
-    // var assetId = asset.Identifier;
-    // var fileType = asset.Name.split('.').pop();
-    // if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
-    //   this.isImage = true;
-    // }
-    // else {
-    //   this.isImage = false;
-
-    // }
-
-    //// var url = asset.FilePath;
-    // var url = this.sanitizer.bypassSecurityTrustResourceUrl(asset.FilePath);
-    // //var url = this.sanitizer.bypassSecurityTrustHtml(asset.FilePath);
-    // this.image = url;
-    // if (!this.isImage) {
-    //   document.getElementById('videoPreview').removeChild(document.getElementById('videoPreview').childNodes[0])
-    //   var sourceTag = document.createElement('source');
-    //   sourceTag.setAttribute('src', url.toString());
-    //   sourceTag.setAttribute('type', 'video/mp4');
-    //   document.getElementById('videoPreview').appendChild(sourceTag);
-
-    //   let vid = <HTMLVideoElement>document.getElementById("videoPreview");
-
-    //   vid.load();
-    //   vid.currentTime = 0;
-    //   vid.play();
-    //   //this.videoSource.nativeElement.setAttribute('src', url);
-    //   //this.video.nativeElement.load();
-
-    // }
   }
 
   navigateToAssetLibraryEdit() {

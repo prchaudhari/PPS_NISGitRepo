@@ -109,7 +109,8 @@ export class AddComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.statement.Identifier;
     searchParameter.IsStatementPagesRequired = true;
-    var statementList = await statementService.getStatements(searchParameter);
+    var response = await statementService.getStatements(searchParameter);
+    var statementList = response.List;
     this.isStatementDetailsLoaded = true;
     if (statementList.length == 0) {
       this._messageDialogService.openDialogBox('Error', "Statement Not Found", Constants.msgBoxError);
@@ -152,7 +153,8 @@ export class AddComponent implements OnInit {
     if (parameter !=null) {
       searchParameter.PageTypeId = parameter.PageTypeId;
     }
-    this.pages = await templateService.getTemplates(searchParameter);
+    var response = await templateService.getTemplates(searchParameter);
+    this.pages = response.templateList;
     if (localStorage.getItem('statementparams') && this.isStatementDetailsLoaded == false) {
       this.getStatements();
     }

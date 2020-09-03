@@ -53,6 +53,14 @@ export class StatementSearchComponent implements OnInit {
   public filterToDateErrorMessage: string = "";
   public userClaimsRolePrivilegeOperations: any[] = [];
   public baseURL = ConfigConstants.BaseURL;
+  
+  public totalRecordCount = 0;
+  public filterCustomerName = '';
+  public filterCustomerAccountId = '';
+  public filterStatementPeriodValue = '';
+  public filterStatementDte = null;
+  public disablePagination = true;
+
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
@@ -80,7 +88,8 @@ export class StatementSearchComponent implements OnInit {
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    this.getStatementSearchs(null);
+    //this.iterator();
   }
 
   private iterator() {
@@ -110,7 +119,6 @@ export class StatementSearchComponent implements OnInit {
 
   ngOnInit() {
     //this.getStatementSearchs(null);
-    //this.getPageTypes();
     this.StatementSearchFilterForm = this.fb.group({
       filterStatementCustomer: [null],
       filterStatementAccountId: [null],
@@ -137,7 +145,6 @@ export class StatementSearchComponent implements OnInit {
       this.sortedStatementSearchList = data;
       return;
     }
-    //displayedColumns: string[] = ['id', 'date', 'period', 'customer', 'accountId', 'actions'];
     this.sortedStatementSearchList = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
@@ -152,8 +159,8 @@ export class StatementSearchComponent implements OnInit {
     this.dataSource = new MatTableDataSource<StatementSearch>(this.sortedStatementSearchList);
     this.dataSource.sort = this.sort;
     this.array = this.sortedStatementSearchList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
 
   async getStatementSearchs(searchParameter) {
@@ -161,29 +168,49 @@ export class StatementSearchComponent implements OnInit {
     if (searchParameter == null) {
       searchParameter = {};
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = 'Id';
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
+
+      if (this.filterCustomerName != null && this.filterCustomerName != '') {
+        searchParameter.StatementCustomer = this.filterCustomerName.trim();
+      }
+      if (this.filterCustomerAccountId != null && this.filterCustomerAccountId != '') {
+        searchParameter.StatementAccount = this.filterCustomerAccountId.trim();
+      }
+      if (this.filterStatementDte != null && this.filterStatementDte != '') {
+        searchParameter.StatementStartDate = new Date(this.filterStatementDte.setHours(0, 0, 0));
+        searchParameter.StatementEndDate = new Date(this.filterStatementDte.setHours(23, 59, 59));
+        searchParameter.SortParameter.SortColumn = 'StatementDate';
+      }
+      if (this.filterStatementPeriodValue != null && this.filterStatementPeriodValue != '') {
+        searchParameter.StatementPeriod = this.filterStatementPeriodValue.trim();
+      }
     }
-    this.scheduleLogList = await scheduleLogService.getStatementSearch(searchParameter);
+    var response = await scheduleLogService.getStatementSearch(searchParameter);
+    this.scheduleLogList = response.List;
+    this.totalRecordCount = response.RecordCount;
     if (this.scheduleLogList.length == 0 && this.isFilterDone == true) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
           this.resetSchdeuleLogFilterForm();
-          this.getStatementSearchs(null);
+          //this.getStatementSearchs(null);
         }
       });
+    }else {
+      this.disablePagination = false;
     }
     this.dataSource = new MatTableDataSource<StatementSearch>(this.scheduleLogList);
     this.dataSource.sort = this.sort;
     this.array = this.scheduleLogList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
+
   validateFilterDate(): boolean {
     let currentDte = new Date();
     if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
@@ -196,13 +223,13 @@ export class StatementSearchComponent implements OnInit {
     }
     return true;
   }
+
   onPublishedFilterDateChange(event) {
     this.filterFromDateError = false;
     this.filterToDateError = false;
     this.filterFromDateErrorMessage = "";
     this.filterToDateErrorMessage = "";
     let currentDte = new Date();
-    
     if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
       let toDate = this.StatementSearchFilterForm.value.filterStatementDate;
       if (toDate.getTime() > currentDte.getTime()) {
@@ -211,6 +238,7 @@ export class StatementSearchComponent implements OnInit {
       }
     }
   }
+
   searchStatementSearchRecordFilter(searchType) {
     this.filterFromDateError = false;
     this.isFilterDone = true;
@@ -228,29 +256,30 @@ export class StatementSearchComponent implements OnInit {
       if (this.validateFilterDate()) {
         let searchParameter: any = {};
         searchParameter.PagingParameter = {};
-        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.PagingParameter.PageIndex = 1;
+        searchParameter.PagingParameter.PageSize = this.pageSize;
         searchParameter.SortParameter = {};
         searchParameter.SortParameter.SortColumn = 'Id';
         searchParameter.SortParameter.SortOrder = Constants.Descending;
         searchParameter.SearchMode = Constants.Contains;
+
         if (this.StatementSearchFilterForm.value.filterStatementCustomer != null && this.StatementSearchFilterForm.value.filterStatementCustomer != '') {
+          this.filterCustomerName = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
           searchParameter.StatementCustomer = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
         }
         if (this.StatementSearchFilterForm.value.filterStatementAccountId != null && this.StatementSearchFilterForm.value.filterStatementAccountId != '') {
+          this.filterCustomerAccountId = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
           searchParameter.StatementAccount = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
         }
         if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
-          //searchParameter.StartDate = this.StatementSearchFilterForm.value.filterStatementDate;
+          this.filterStatementDte = this.StatementSearchFilterForm.value.filterStatementDate;
           searchParameter.StatementStartDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(0, 0, 0));
           searchParameter.StatementEndDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(23, 59, 59));
-
           searchParameter.SortParameter.SortColumn = 'StatementDate';
         }
         if (this.StatementSearchFilterForm.value.filterStatementPeriod != null && this.StatementSearchFilterForm.value.filterStatementPeriod != '') {
-          //searchParameter.EndDate = this.StatementSearchFilterForm.value.filterStatementPeriod;
+          this.filterStatementPeriodValue = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
           searchParameter.StatementPeriod = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
-
         }
 
         this.currentPage = 0;
@@ -272,6 +301,12 @@ export class StatementSearchComponent implements OnInit {
     this.StatementSearchFilterForm.controls['filterStatementDate'].setValue(null);
     this.StatementSearchFilterForm.controls['filterStatementPeriod'].setValue(null);
 
+    this.currentPage = 0;
+    this.disablePagination = true;
+    this.filterCustomerName = '';
+    this.filterCustomerAccountId = '';
+    this.filterStatementPeriodValue = '';
+    this.filterStatementDte = null;
     this.filterFromDateError = false;
     this.filterToDateError = false;
     this.filterFromDateErrorMessage = "";
@@ -280,7 +315,6 @@ export class StatementSearchComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-
   }
 
   ViewHTML(element) {

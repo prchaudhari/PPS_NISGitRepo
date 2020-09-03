@@ -102,7 +102,7 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 StatementSearchs = this.StatementSearchManager.GetStatementSearchs(StatementSearchSearchParameter, tenantCode);
-                //HttpContext.Current.Response.AppendHeader("recordCount", this.StatementSearchManager.GetStatementSearchCount(StatementSearchSearchParameter, tenantCode).ToString());
+                HttpContext.Current.Response.AppendHeader("recordCount", this.StatementSearchManager.GetStatementSearchCount(StatementSearchSearchParameter, tenantCode).ToString());
             }
             catch (Exception exception)
             {

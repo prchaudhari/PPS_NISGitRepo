@@ -12,16 +12,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { StatementService } from '../statement.service';
 import { Statement } from '../statement';
 
-export interface ListElement {
-  name: string;
-  version: string;
-  owner: string;
-  date: string;
-  status: string;
-
-}
-
-
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -49,27 +39,23 @@ export class ListComponent implements OnInit {
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
   public userClaimsRolePrivilegeOperations: any[] = [];
+  
+  public totalRecordCount = 0;
+  public filterDsplayName = '';
+  public filterStatementOwner = '';
+  public filterStatementStatus = '';
+  public filterStatementPublishedOnStartDate = null;
+  public filterStatementPublishedOnEndDate = null;
+
   closeFilter() {
     this.isFilter = !this.isFilter;
-    this.StatementFilterForm = this.fb.group({
-      filterDisplayName: [null],
-      filterOwner: [null],
-      filterStatus: [0],
-      filterPageType: [null],
-      filterPublishedOnFromDate: [null],
-      filterPublishedOnToDate: [null],
-    });
-    this.filterFromDateError = false;
-    this.filterToDateError = false;
-    this.filterFromDateErrorMessage = "";
-    this.filterToDateErrorMessage = "";
   }
+
   displayedColumns: string[] = ['name', 'owner', 'publishedBy', 'date', 'status', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
 
   ngOnInit() {
     this.getStatements(null);
@@ -89,10 +75,11 @@ export class ListComponent implements OnInit {
       this.userClaimsRolePrivilegeOperations = [];
     }
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-
   }
+
   constructor(private injector: Injector,
     private fb: FormBuilder,
     private uiLoader: NgxUiLoaderService,
@@ -106,7 +93,8 @@ export class ListComponent implements OnInit {
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    //this.iterator();
+    this.getStatements(null);
   }
 
   private iterator() {
@@ -136,6 +124,7 @@ export class ListComponent implements OnInit {
   get filterPublishedOnToDate() {
     return this.StatementFilterForm.get('filterPublishedOnToDate');
   }
+  
   sortData(sort: MatSort) {
     const data = this.statementList.slice();
     if (!sort.active || sort.direction === '') {
@@ -161,8 +150,8 @@ export class ListComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Statement>(this.sortedStatementList);
     this.dataSource.sort = this.sort;
     this.array = this.sortedStatementList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
 
   async getStatements(searchParameter) {
@@ -171,24 +160,37 @@ export class ListComponent implements OnInit {
       searchParameter = {};
       searchParameter.IsActive = true;
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = 'CreatedDate';
+      searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
-    }
-    this.statementList = await statementService.getStatements(searchParameter);
-    //for (var i = 0; i < this.statementList.length; i++) {
-    //  var date = new Date("0001-01-01T00:00:00");
-    //  if (this.statementList[i].PublishedOn == date) {
-    //    this.statementList[i].PublishedOnTick = 0;
-    //  }
-    //  else {
-    //    this.statementList[i].PublishedOnTick = this.statementList[i].PublishedOn.getTime();
 
-    //  }
-    //}
+      if (this.filterDsplayName != null && this.filterDsplayName != '') {
+        searchParameter.Name = this.filterDsplayName.trim();
+      }
+      if (this.filterStatementOwner != null && this.filterStatementOwner != '') {
+        searchParameter.StatementOwner = this.filterStatementOwner.trim();
+      }
+      if (this.filterPageTypeId != 0) {
+        searchParameter.PageTypeId = this.filterPageTypeId;
+      }
+      if (this.filterStatementStatus != null && this.filterStatementStatus != '') {
+        searchParameter.Status = this.filterStatementStatus;
+      }
+      if (this.filterStatementPublishedOnStartDate != null && this.filterStatementPublishedOnStartDate != '') {
+        searchParameter.StartDate = new Date(this.filterStatementPublishedOnStartDate.setHours(0, 0, 0));
+        searchParameter.SortParameter.SortColumn = 'PublishedOn';
+      }
+      if (this.filterStatementPublishedOnEndDate != null && this.filterStatementPublishedOnEndDate != '') {
+        searchParameter.EndDate = new Date(this.filterStatementPublishedOnEndDate.setHours(23, 59, 59));
+        searchParameter.SortParameter.SortColumn = 'PublishedOn';
+      }
+    }
+    var response = await statementService.getStatements(searchParameter);
+    this.statementList = response.List;
+    this.totalRecordCount = response.RecordCount;
     if (this.statementList.length == 0 && this.isFilterDone == true) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
@@ -201,9 +203,10 @@ export class ListComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Statement>(this.statementList);
     this.dataSource.sort = this.sort;
     this.array = this.statementList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
+
   validateFilterDate(): boolean {
     if (this.StatementFilterForm.value.filterPublishedOnFromDate != null && this.StatementFilterForm.value.filterPublishedOnFromDate != '' &&
       this.StatementFilterForm.value.filterPublishedOnToDate != null && this.StatementFilterForm.value.filterPublishedOnToDate != '') {
@@ -261,33 +264,39 @@ export class ListComponent implements OnInit {
       if (this.validateFilterDate()) {
         let searchParameter: any = {};
         searchParameter.PagingParameter = {};
-        searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-        searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+        searchParameter.PagingParameter.PageIndex = 1;
+        searchParameter.PagingParameter.PageSize = this.pageSize;
         searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'Name';
+        searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
         searchParameter.SortParameter.SortOrder = Constants.Ascending;
         searchParameter.SearchMode = Constants.Contains;
+
         if (this.StatementFilterForm.value.filterDisplayName != null && this.StatementFilterForm.value.filterDisplayName != '') {
+          this.filterDsplayName = this.StatementFilterForm.value.filterDisplayName.trim(); 
           searchParameter.Name = this.StatementFilterForm.value.filterDisplayName.trim();
         }
         if (this.StatementFilterForm.value.filterOwner != null && this.StatementFilterForm.value.filterOwner != '') {
+          this.filterStatementOwner = this.StatementFilterForm.value.filterOwner.trim();
           searchParameter.StatementOwner = this.StatementFilterForm.value.filterOwner.trim();
         }
         if (this.filterPageTypeId != 0) {
           searchParameter.PageTypeId = this.filterPageTypeId;
         }
         if (this.StatementFilterForm.value.filterStatus != null && this.StatementFilterForm.value.filterStatus != 0) {
+          this.filterStatementStatus = this.StatementFilterForm.value.filterStatus;
           searchParameter.Status = this.StatementFilterForm.value.filterStatus;
         }
         if (this.StatementFilterForm.value.filterPublishedOnFromDate != null && this.StatementFilterForm.value.filterPublishedOnFromDate != '') {
-          //  searchParameter.StartDate = this.StatementFilterForm.value.filterPublishedOnFromDate;
+          this.filterStatementPublishedOnStartDate = this.StatementFilterForm.value.filterPublishedOnFromDate;
           searchParameter.StartDate = new Date(this.StatementFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
+          searchParameter.SortParameter.SortColumn = 'PublishedOn';
         }
         if (this.StatementFilterForm.value.filterPublishedOnToDate != null && this.StatementFilterForm.value.filterPublishedOnToDate != '') {
-          //searchParameter.EndDate = this.StatementFilterForm.value.filterPublishedOnToDate;
+          this.filterStatementPublishedOnEndDate = this.StatementFilterForm.value.filterPublishedOnToDate;
           searchParameter.EndDate = new Date(this.StatementFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
-
+          searchParameter.SortParameter.SortColumn = 'PublishedOn';
         }
+
         this.currentPage = 0;
         this.getStatements(searchParameter);
         this.isFilter = !this.isFilter;
@@ -305,11 +314,18 @@ export class ListComponent implements OnInit {
       filterPublishedOnToDate: null
     });
 
+    this.currentPage = 0;
+    this.filterDsplayName = '';
+    this.filterStatementStatus = '';
+    this.filterStatementOwner = '';
+    this.filterStatementPublishedOnStartDate = null;
+    this.filterStatementPublishedOnEndDate = null;
     this.filterFromDateError = false;
     this.filterToDateError = false;
     this.filterFromDateErrorMessage = "";
     this.filterToDateErrorMessage = "";
   }
+
   //this method helps to navigate to view
   navigateToStatementView(statement: Statement) {
     let queryParams = {
@@ -333,6 +349,7 @@ export class ListComponent implements OnInit {
     const router = this.injector.get(Router);
     router.navigate(['statementdefination', 'Add']);
   }
+
   //this method helps to navigate edit
   navigateToStatementEdit(statement) {
     let queryParams = {
@@ -370,6 +387,7 @@ export class ListComponent implements OnInit {
       }
     });
   }
+
   async PublishStatement(statement: Statement) {
     let message = "Are you sure, you want to publish this record?";
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
@@ -398,7 +416,6 @@ export class ListComponent implements OnInit {
     }
   }
 }
-
 
 function compare(a: number, b: number, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);

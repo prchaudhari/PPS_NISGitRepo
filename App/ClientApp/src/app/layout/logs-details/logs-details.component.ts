@@ -50,6 +50,10 @@ export class LogsDetailsComponent implements OnInit {
   public executionDate;
   public isAllRecordSuccess = true;
 
+  public totalRecordCount = 0;
+  public filterUserIdValue = '';
+  public filterLogStatus = '';
+
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
@@ -77,7 +81,6 @@ export class LogsDetailsComponent implements OnInit {
     else {
       this.userClaimsRolePrivilegeOperations = [];
     }
-
   }
 
   ngAfterViewInit() {
@@ -118,7 +121,8 @@ export class LogsDetailsComponent implements OnInit {
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    //this.iterator();
+    this.getScheduleLogs(null);
   }
 
   private iterator() {
@@ -158,8 +162,8 @@ export class LogsDetailsComponent implements OnInit {
     this.dataSource = new MatTableDataSource<ScheduleLogDetail>(this.sortedScheduleLogList);
     this.dataSource.sort = this.sort;
     this.array = this.sortedScheduleLogList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
 
   async getScheduleLogs(searchParameter) {
@@ -168,15 +172,23 @@ export class LogsDetailsComponent implements OnInit {
       searchParameter = {};
       searchParameter.IsActive = true;
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = 'Id';
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
+      if (this.filterUserIdValue != null && this.filterUserIdValue != '') {
+        searchParameter.CustomerName = this.filterUserIdValue.trim();
+      }
+      if (this.filterLogStatus != null && this.filterLogStatus != '') {
+        searchParameter.Status = this.filterLogStatus;
+      }
     }
     searchParameter.ScheduleLogId = this.scheduleLogIdentifier
-    this.scheduleLogList = await scheduleLogService.getScheduleLogDetail(searchParameter);
+    var response = await scheduleLogService.getScheduleLogDetail(searchParameter);
+    this.scheduleLogList = response.List;
+    this.totalRecordCount = response.RecordCount;
     if(this.scheduleLogList.length > 0){
       var records = this.scheduleLogList.filter(x  => x.Status != 'Completed');
       if(records.length > 0) {
@@ -188,7 +200,7 @@ export class LogsDetailsComponent implements OnInit {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
-          //this.resetRoleFilterForm();
+          this.resetSchdeuleLogFilterForm();
           this.getScheduleLogs(null);
         }
       });
@@ -196,8 +208,8 @@ export class LogsDetailsComponent implements OnInit {
     this.dataSource = new MatTableDataSource<ScheduleLogDetail>(this.scheduleLogList);
     this.dataSource.sort = this.sort;
     this.array = this.scheduleLogList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.totalSize = this.totalRecordCount;
+    //this.iterator();
   }
 
   //This method has been used for fetching search records
@@ -211,20 +223,22 @@ export class LogsDetailsComponent implements OnInit {
     else {
       let searchParameter: any = {};
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.PagingParameter.PageIndex = 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = 'Id';
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
+      
       if (this.ScheduleLogFilterForm.value.filterUserId != null && this.ScheduleLogFilterForm.value.filterUserId != '') {
+        this.filterUserIdValue = this.ScheduleLogFilterForm.value.filterUserId.trim();
         searchParameter.CustomerName = this.ScheduleLogFilterForm.value.filterUserId.trim();
       }
       if (this.ScheduleLogFilterForm.value.filterStatus != null && this.ScheduleLogFilterForm.value.filterStatus != 0) {
+        this.filterLogStatus = this.ScheduleLogFilterForm.value.filterStatus;
         searchParameter.Status = this.ScheduleLogFilterForm.value.filterStatus;
       }
 
-      console.log(searchParameter);
       this.currentPage = 0;
       this.getScheduleLogs(searchParameter);
       this.isFilter = !this.isFilter;
@@ -236,6 +250,9 @@ export class LogsDetailsComponent implements OnInit {
       filterUserId: null,
       filterStatus: 0,
     });
+    this.currentPage = 0;
+    this.filterUserIdValue = '';
+    this.filterLogStatus = '';
   }
 
   //function written to retry failed customers log
@@ -264,7 +281,6 @@ export class LogsDetailsComponent implements OnInit {
       });
     }
   }
-
 
   //function written to retry failed customer log
   reTryLog(log: ScheduleLogDetail) {

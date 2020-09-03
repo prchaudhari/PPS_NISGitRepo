@@ -25,10 +25,11 @@ export class TemplateService {
     private _messageDialogService: MessageDialogService) { }
 
     //method to call api of get pages.
-    async getTemplates(searchParameter): Promise<Template[]> {
+    async getTemplates(searchParameter): Promise<any> {
         let httpClientService = this.injector.get(HttpClientService);
         let requestUrl = URLConfiguration.pageGetUrl;
         this.uiLoader.start();
+        var response : any = {};
         await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
             .then((httpEvent: HttpEvent<any>) => {
                 if (httpEvent.type == HttpEventType.Response) {
@@ -38,9 +39,13 @@ export class TemplateService {
                         httpEvent['body'].forEach(pageObject => {
                             this.templateList = [...this.templateList, pageObject];
                         });
+                        response.templateList = this.templateList;
+                        response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
                     }
                     else {
                         this.templateList = [];
+                        response.templateList = this.templateList;
+                        response.RecordCount = 0;
                         this.uiLoader.stop();
                     }
                 }
@@ -52,7 +57,7 @@ export class TemplateService {
                     this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
                 }
             });
-        return <Template[]>this.templateList
+        return response
     }
 
     //service method to save or update template records

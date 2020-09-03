@@ -5,17 +5,14 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Constants } from 'src/app/shared/constants/constants';
 import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { StatementService } from '../statement.service';
-import { Statement } from '../statement';
+
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
+
 export class ViewComponent implements OnInit {
 
   public isCollapsedDetails: boolean = false;
@@ -36,7 +33,6 @@ export class ViewComponent implements OnInit {
           localStorage.removeItem("statementparams");
         }
       }
-
     });
 
     _router.events.subscribe(e => {
@@ -47,13 +43,11 @@ export class ViewComponent implements OnInit {
           if (localStorage.getItem('statementparams')) {
             this.statement.Identifier = this.params.Routeparams.passingparams.StatementIdentifier;
             this.getStatementRecords();
-
           }
         } else {
           localStorage.removeItem("statementparams");
         }
       }
-
     });
 
   }
@@ -72,8 +66,8 @@ export class ViewComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.statement.Identifier;
     searchParameter.IsStatementPagesRequired = true;
-    var statements = await statementService.getStatements(searchParameter);
-    this.statement = statements[0];
+    var response = await statementService.getStatements(searchParameter);
+    this.statement = response.List[0];
   }
   ngOnInit() {
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
@@ -119,4 +113,3 @@ export class ViewComponent implements OnInit {
     });
   }
 }
-

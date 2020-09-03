@@ -29,10 +29,11 @@ export class RoleService {
     private _messageDialogService: MessageDialogService) { }
 
   //method to call api of get role.
-  async getRoles(searchParameter): Promise<Role[]> {
+  async getRoles(searchParameter): Promise<any> {
       let httpClientService = this.injector.get(HttpClientService);
       let requestUrl = URLConfiguration.roleGetUrl;
       this.uiLoader.start();
+      var response: any = {};
       await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
           .then((httpEvent: HttpEvent<any>) => {
               if (httpEvent.type == HttpEventType.Response) {
@@ -42,9 +43,13 @@ export class RoleService {
                       httpEvent['body'].forEach(roleObject => {
                           this.roleList = [...this.roleList, roleObject];
                       });
+                      response.roleList = this.roleList;
+                      response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
                   }
                   else {
                       this.roleList = [];
+                      response.roleList = this.roleList;
+                      response.RecordCount = 0;
                       this.uiLoader.stop();
                   }
               }
@@ -56,7 +61,7 @@ export class RoleService {
                   this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
               }
           });
-      return <Role[]>this.roleList
+      return response
   }
 
   //service method to fetch roleprivilege records

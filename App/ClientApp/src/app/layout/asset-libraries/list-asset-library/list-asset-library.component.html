@@ -78,13 +78,13 @@
     <!--[ngClass]="filterClass"-->
     <div class="filter-footer">
       <ul class="nav">
-        <li class="nav-item width33" title="Search">
-          <a class="nav-link p-0" (click)="searchFilter('search')">
+        <li class="nav-item width33" title="Search" (click)="searchFilter('search')">
+          <a class="nav-link p-0">
             <span class="fa fa-check"></span>
           </a>
         </li>
-        <li class="nav-item width33" title="Reset">
-          <a class="nav-link p-0" (click)="searchFilter('reset')">
+        <li class="nav-item width33" title="Reset" (click)="searchFilter('reset')">
+          <a class="nav-link p-0">
             <span class="fa fa-refresh"></span>
           </a>
         </li>

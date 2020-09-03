@@ -195,7 +195,6 @@ export class AddAssetLibraryComponent implements OnInit {
     if (localStorage.getItem('assetLibraryparams')) {
       this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
       this.getAssetLibraryRecords('', false);
-
     }
   }
 
@@ -284,12 +283,13 @@ export class AddAssetLibraryComponent implements OnInit {
           this._spinnerService.stop();
         });
   }
+
   closePreview() {
     let vid = <HTMLVideoElement>document.getElementById("videoPreview");
-
     vid.pause();
     this.image = '';
   }
+
   PreviewAsset(asset: Asset): void {
     var fileType = asset.Name.split('.').pop();
     if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
@@ -297,7 +297,6 @@ export class AddAssetLibraryComponent implements OnInit {
     }
     else {
       this.isImage = false;
-
     }
     this._spinnerService.start();
     this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + asset.Identifier, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
@@ -832,13 +831,14 @@ export class AddAssetLibraryComponent implements OnInit {
 
     if (byName) {
       searchParameter.Name = name;
-      let assetLibrary = await assetLibraryService.getAssetLibrary(searchParameter);
-      this.assetLibrary.Identifier = assetLibrary[0].Identifier;
+      let response = await assetLibraryService.getAssetLibrary(searchParameter);
+      this.assetLibrary.Identifier = response.assestLibraryList[0].Identifier;
     }
     else {
       searchParameter.Identifier = this.assetLibrary.Identifier;
       //searchParameter.IsAssetDataRequired = true;
-      let assetLibrary = await assetLibraryService.getAssetLibrary(searchParameter);
+      let response = await assetLibraryService.getAssetLibrary(searchParameter);
+      let assetLibrary = response.assestLibraryList;
       this.assetLibrary = assetLibrary[0];
       this.assetLibraryFormGroup.controls['assetLibraryName'].setValue(assetLibrary[0].Name);
       this.assetLibraryFormGroup.controls['assetLibraryDescription'].setValue(assetLibrary[0].Description);
@@ -847,7 +847,6 @@ export class AddAssetLibraryComponent implements OnInit {
       }
       else {
         this.isNoRecord = false;
-
       }
       if (this.assetLibrary.Assets != null) {
         for (let i = 0; i < this.assetLibrary.Assets.length; i++) {
@@ -861,7 +860,6 @@ export class AddAssetLibraryComponent implements OnInit {
         this.totalSize = this.array.length;
         this.iterator();
       }
-
     }
   }
 

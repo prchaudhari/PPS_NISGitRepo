@@ -104,9 +104,8 @@ export class ViewComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.schedule.Identifier;
     searchParameter.IsStatementDefinitionRequired = true;
-    let schedule = await scheduleService.getSchedule(searchParameter);
-    this.schedule = schedule[0];
-
+    var response = await scheduleService.getSchedule(searchParameter);
+    this.schedule = response.List[0];
   }
 
   navigateToScheduleEdit() {

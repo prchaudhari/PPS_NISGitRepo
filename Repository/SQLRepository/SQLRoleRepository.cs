@@ -389,6 +389,12 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     roleCount = nISEntitiesDataContext.RoleRecords.Where(whereClause.ToString()).Count();
+                    //To remove super admin role count
+                    if ((roleSearchParameter.Identifier == string.Empty || roleSearchParameter.Identifier == "0"))
+                    {
+                        roleCount--;
+                    }
+
                 }
             }
             catch (Exception)

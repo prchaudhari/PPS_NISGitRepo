@@ -6,8 +6,6 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { Entity } from 'src/app/shared/models/roleEntity';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
-import { ResourceService } from 'src/app/shared/services/resource.service';
 import { Role } from '../role';
 import { UserService } from '../../users/user.service';
 
@@ -81,48 +79,6 @@ export class ViewComponent implements OnInit {
     this.getRoleRecords();
   }
 
-  //Function to call preferred language from the localstorage--
-  getResources() {
-    var ResourcesArr = this.localstorageservice.GetResource();
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.Locale = userClaimsDetail.PreferedLanguageCode;
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.Locale = 'enUS';
-      this.userClaimsRolePrivilegeOperations = [];
-    }
-    if (ResourcesArr != null) {
-      if (ResourcesArr.length > 0) {
-        var roleViewSectionName = ResourcesArr[0].ResourceSections.filter(x => x.SectionName === ConfigConstants.RoleViewUISection);
-        if (roleViewSectionName.length > 0) {
-          roleViewSectionName.forEach(resourceSection => {
-            let resourceItemArr = []
-            resourceItemArr = resourceSection.ResourceItems;
-            resourceItemArr.forEach(resource => {
-              this.roleViewResources[resource.Key] = resource.Value;
-            })
-          })
-        }
-        else {
-          //fallbackcall for resource api if resource fetching failed from localstorage--
-          this.getResourcesIfLocalStorageFailed();
-        }
-      }
-    }
-    else {
-      //call for resource service from api--
-      this.getResourcesIfLocalStorageFailed();
-    }
-  }
-
-  async getResourcesIfLocalStorageFailed() {
-    var sectionStr = ConfigConstants.RoleViewUISection;
-    let resourceService = this.injector.get(ResourceService);
-    this.roleViewResources = await resourceService.getResources(sectionStr, this.Locale, false);
-  }
-
   //This method has been used for fetching role records
   async getRoleRecords() {
     let roleService = this.injector.get(RoleService);
@@ -142,7 +98,8 @@ export class ViewComponent implements OnInit {
       searchParameter.IsActive = this.roleStatus;
     }
 
-    this.roleView = await roleService.getRoles(searchParameter);
+    var response = await roleService.getRoles(searchParameter);
+    this.roleView = response.roleList;
     let rolePrivileges = [];
     for (let i = 0; i < this.roleView.length; i++) {
       this.Identifier = this.roleView[i].Identifier;
@@ -254,10 +211,7 @@ export class ViewComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
       searchParameter.ActivationStatus = true;
-
-      //this.spinner.start();
       this.usersList = await userService.getUser(searchParameter);
-
       this.IsUserDetailsGet = true;
     }
 
