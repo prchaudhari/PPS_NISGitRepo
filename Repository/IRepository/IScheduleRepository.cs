@@ -109,7 +109,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        bool RunSchedule(string baseURL, string outputLocation, string tenantCode);
+        bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount);
 
         IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
 
@@ -120,7 +120,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, string tenantCode);
+        bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount);
 
     }
 }

@@ -533,8 +533,9 @@ namespace nIS
         /// </summary>
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
+        /// <param name="parallelThreadCount">The parallel thread count</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode)
+        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
         {
             bool scheduleRunStatus = false;
             IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
@@ -652,7 +653,7 @@ namespace nIS
                                         if (customerMasters.Count > 0)
                                         {
                                             ParallelOptions parallelOptions = new ParallelOptions();
-                                            parallelOptions.MaxDegreeOfParallelism = 10;
+                                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                                             Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                             {
                                                 this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
@@ -715,8 +716,9 @@ namespace nIS
         /// <param name="batch">The batch object</param>
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
+        /// <param name="parallelThreadCount">The parallel thread count</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunScheduleNow(BatchMaster batch, string baseURL, string outputLocation, string tenantCode)
+        public bool RunScheduleNow(BatchMaster batch, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
         {
             bool isScheduleSuccess = false;
             try
@@ -830,7 +832,7 @@ namespace nIS
                     if (customerMasters.Count > 0)
                     {
                         ParallelOptions parallelOptions = new ParallelOptions();
-                        parallelOptions.MaxDegreeOfParallelism = 10;
+                        parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                         Parallel.ForEach(customerMasters, parallelOptions, customer =>
                         {
                             this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);

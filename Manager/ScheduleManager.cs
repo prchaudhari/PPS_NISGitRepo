@@ -9,6 +9,7 @@ namespace nIS
 
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
     using Unity;
 
@@ -332,7 +333,8 @@ namespace nIS
         {
             try
             {
-                return this.scheduleRepository.RunSchedule(baseURL, outputLocation, tenantCode);
+                var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
+                return this.scheduleRepository.RunSchedule(baseURL, outputLocation, tenantCode, parallelThreadCount);
             }
             catch (Exception ex)
             {
@@ -351,7 +353,8 @@ namespace nIS
         {
             try
             {
-                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode);
+                var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
+                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode, parallelThreadCount);
             }
             catch (Exception ex)
             {
