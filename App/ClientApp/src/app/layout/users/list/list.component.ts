@@ -168,6 +168,7 @@ export class ListComponent implements OnInit {
     const start = this.currentPage * this.pageSize;
     const part = this.array.slice(start, end);
     this.dataSource = part;
+    this.dataSource.sort = this.sort;
   }
 
   constructor(private http: HttpClient,
@@ -296,7 +297,6 @@ export class ListComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.array = this.userLists;
     this.totalSize = this.totalRecordCount;
-    this.iterator();
 
     if (this.userLists.length > 0) {
     }
