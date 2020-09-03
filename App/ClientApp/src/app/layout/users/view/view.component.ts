@@ -119,7 +119,8 @@ export class ViewComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //this.spinner.start();
-    this.userViewArray = await userService.getUser(searchParameter);
+    var response = await userService.getUser(searchParameter);
+    this.userViewArray = response.usersList;
     //this.spinner.stop();
     if (this.userViewArray.length > 0) {
       this.userRecord = this.userViewArray[0];

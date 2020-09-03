@@ -307,8 +307,21 @@ namespace nIS
                         }
 
                     }
+                    if (userSearchParameter.IsSkipSuperAdmin == true)
+                    {
+                        if(userSearchParameter.UserIdentifierToSkip!=string.Empty)
+                        {
+                            userSearchParameter.UserIdentifierToSkip = userSearchParameter.UserIdentifierToSkip + "," + "1";
+                        }
+                        else
+                        {
+                            userSearchParameter.UserIdentifierToSkip = "1";
+
+                        }
+                    }
                     string whereClause = this.WhereClauseGenerator(userSearchParameter, tenantCode);
                     userRecords = new List<UserRecord>();
+                   
                     if (userSearchParameter.PagingParameter.PageIndex > 0 && userSearchParameter.PagingParameter.PageSize > 0)
                     {
                         userRecords = nISEntities.UserRecords
@@ -352,11 +365,18 @@ namespace nIS
                     });
 
                 });
-
-                if (tempUsers.Count > 0)
-                {
-                    users = tempUsers.Where(item => item.Roles[0].Name != ModelConstant.SUPER_ADMIN_ROLE).ToList();
-                }
+                users = tempUsers;
+                //if (tempUsers.Count > 0)
+                //{
+                //    if(userSearchParameter.IsSkipSuperAdmin==true)
+                //    {
+                //        users = tempUsers.Where(item => item.Roles[0].Name != ModelConstant.SUPER_ADMIN_ROLE).ToList();
+                //    }
+                //    else
+                //    {
+                //        users = tempUsers;
+                //    }
+                //}
             }
             catch (SqlException)
             {

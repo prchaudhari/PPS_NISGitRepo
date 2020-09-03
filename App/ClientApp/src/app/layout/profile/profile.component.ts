@@ -187,8 +187,12 @@ export class ProfileComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Exact;
+    searchParameter.IsSkipSuperAdmin = false;
     this.uiLoader.start();
-    this.usersList = await service.getUser(searchParameter);
+
+    var response = await service.getUser(searchParameter);
+    this.usersList = response.usersList
+
     if (this.usersList.length > 0) {
       this.userRecord = this.usersList[0]
       this.userIdentifier = this.userRecord.Identifier;

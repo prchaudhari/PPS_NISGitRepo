@@ -66,6 +66,11 @@ namespace nIS
         private bool? lockStatus = null;
 
         /// <summary>
+        /// The isSkipSuperAdmin  
+        /// </summary>
+        private bool? isSkipSuperAdmin = true;
+
+        /// <summary>
         /// The skill status
         /// </summary>
         private bool? activationStatus = null;
@@ -189,6 +194,22 @@ namespace nIS
             set
             {
                 this.isRolePrivilegesRequired = value;
+            }
+        }
+
+        /// <summary>
+        /// Get or sets the value of user status
+        /// </summary>
+        [Description("IsSkipSuperAdmin")]
+        public bool? IsSkipSuperAdmin
+        {
+            get
+            {
+                return this.isSkipSuperAdmin;
+            }
+            set
+            {
+                this.isSkipSuperAdmin = value;
             }
         }
 
