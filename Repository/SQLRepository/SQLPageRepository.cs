@@ -87,7 +87,7 @@ namespace nIS
                     pageRecords.ToList().ForEach(item =>
                     {
                         item.PublishedBy = userId;
-                        item.PublishedOn = DateTime.Now;
+                        item.PublishedOn = DateTime.UtcNow;
                         item.Status = PageStatus.Published.ToString();
                     });
 
@@ -357,7 +357,7 @@ namespace nIS
                             PageTypeName = pageTypeRecords.FirstOrDefault(itm => itm.Id == pageRecord.PageTypeId)?.Name,
                             PublishedBy = pageRecord.PublishedBy ?? 0,
                             PagePublishedByUserName = pageRecord.PublishedBy != null ? pagePublishedUserRecords.Where(usr => usr.Id == pageRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
-                            PublishedOn = pageRecord.PublishedOn ?? DateTime.MinValue,
+                            PublishedOn = pageRecord.PublishedOn != null ? DateTime.SpecifyKind((DateTime)pageRecord.PublishedOn, DateTimeKind.Utc) : DateTime.MinValue,
                             UpdatedBy = pageRecord.UpdateBy ?? 0,
                         });
                     });

@@ -59,7 +59,7 @@ namespace nIS
         /// <summary>
         /// The publishedOn
         /// </summary>
-        private DateTime? publishedOn;
+        private DateTime? publishedOn = DateTime.MinValue;
 
         /// <summary>
         /// The isActive

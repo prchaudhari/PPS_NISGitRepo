@@ -235,7 +235,7 @@ export class ListComponent implements OnInit {
     }
     if (this.StatementFilterForm.value.filterPublishedOnToDate != null && this.StatementFilterForm.value.filterPublishedOnToDate != '') {
       let toDate = this.StatementFilterForm.value.filterPublishedOnToDate;
-      if (toDate.getDate() > currentDte.getDate()) {
+      if (toDate.getTime() > currentDte.getTime()) {
         this.filterToDateError = true;
         this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
       }
