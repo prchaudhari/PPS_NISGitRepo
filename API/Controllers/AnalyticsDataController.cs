@@ -53,10 +53,10 @@ namespace nIS
         #region Analytics Data
 
         /// <summary>
-        /// This method helps to get asset libraries list based on the search parameters.
+        /// This method helps to get analytics data based on the search parameters.
         /// </summary>
-        /// <param name="AnalyticsDataSearchParameter"></param>
-        /// <returns>List of asset libraries</returns>
+        /// <param name="searchParameter"></param>
+        /// <returns>List of analytics data</returns>
         [HttpPost]
         public IList<AnalyticsData> List(AnalyticsSearchParameter searchParameter)
         {
@@ -66,6 +66,7 @@ namespace nIS
 
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 assetlibraries = this.AnalyticsDataManager.GetAnalyticsData(searchParameter, tenantCode);
+                HttpContext.Current.Response.AppendHeader("recordCount", this.AnalyticsDataManager.GetAnalyticsDataCount(searchParameter, tenantCode).ToString());
             }
             catch (Exception exception)
             {

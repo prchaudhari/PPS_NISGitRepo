@@ -72,10 +72,11 @@ namespace nIS
         #region Public Functions
 
         #region Analytics Data function
+
         /// <summary>
-        /// This is responsible for get asset library
+        /// This is responsible for get analytics data
         /// </summary>
-        /// <param name="AnalyticsDataSearchParameter"></param>
+        /// <param name="searchParameter"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         public IList<AnalyticsData> GetAnalyticsData(AnalyticsSearchParameter searchParameter, string tenantCode)
@@ -97,7 +98,6 @@ namespace nIS
                     {
                         StringBuilder queryString = new StringBuilder();
                         queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.Pagename));
-
                         queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
                         var userRecordIds = nISEntitiesDataContext.PageRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
                         if (userRecordIds.Count > 0)
@@ -115,7 +115,6 @@ namespace nIS
                     {
                         StringBuilder queryString = new StringBuilder();
                         queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.WidgetName));
-
                         queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
                         var userRecordIds = nISEntitiesDataContext.WidgetRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
                         if (userRecordIds.Count > 0)
@@ -133,7 +132,6 @@ namespace nIS
                     {
                         StringBuilder queryString = new StringBuilder();
                         queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", searchParameter.CustomerName));
-
                         var userRecordIds = nISEntitiesDataContext.CustomerMasterRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
                         if (userRecordIds.Count > 0)
                         {
@@ -169,7 +167,10 @@ namespace nIS
                         StringBuilder pageIds = new StringBuilder();
                         pageIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.PageId != null && item.PageId > 0)
                             .Select(item => string.Format("Id.Equals({0})", item.PageId))) + ")");
-                        pageRecords = nISEntitiesDataContext.PageRecords.Where(pageIds.ToString()).ToList();
+                        if (!pageIds.ToString().Equals("()"))
+                        {
+                            pageRecords = nISEntitiesDataContext.PageRecords.Where(pageIds.ToString()).ToList();
+                        }
 
                         StringBuilder customerIds = new StringBuilder();
                         customerIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.CustomerId > 0)
@@ -179,11 +180,13 @@ namespace nIS
                         StringBuilder widgetIds = new StringBuilder();
                         widgetIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.WidgetId != null && item.WidgetId > 0)
                             .Select(item => string.Format("Id.Equals({0})", item.WidgetId))) + ")");
-                        widgetRecords = nISEntitiesDataContext.WidgetRecords.Where(widgetIds.ToString()).ToList();
-
+                        if (!widgetIds.ToString().Equals("()"))
+                        {
+                            widgetRecords = nISEntitiesDataContext.WidgetRecords.Where(widgetIds.ToString()).ToList();
+                        }
                     }
-
                 }
+
                 AnalyticsDataRecords?.ToList().ForEach(item =>
                 {
                     AnalyticsData data = new AnalyticsData();
@@ -206,11 +209,11 @@ namespace nIS
                         var customer = pageRecords.Where(i => i.Id == data.PageId)?.FirstOrDefault();
                         data.PageName = customer.DisplayName;
                         data.PageTypeId = customer.PageTypeId;
-                        if(data.PageTypeId==1)
+                        if (data.PageTypeId == 1)
                         {
                             data.PageTypeName = "Home";
                         }
-                        else  if (data.PageTypeId == 2)
+                        else if (data.PageTypeId == 2)
                         {
                             data.PageTypeName = "Saving Account";
                         }
@@ -235,11 +238,11 @@ namespace nIS
                     }
                     AnalyticsDatas.Add(data);
                 });
-                if(AnalyticsDatas?.Count()>0)
+                if (AnalyticsDatas?.Count() > 0)
                 {
-                    if(searchParameter.PageTypeName!=string.Empty)
+                    if (searchParameter.PageTypeName != string.Empty)
                     {
-                        AnalyticsDatas=AnalyticsDatas.Where(item => item.PageTypeName != "" && item.PageTypeName != null && item.PageTypeName == searchParameter.PageTypeName).ToList();
+                        AnalyticsDatas = AnalyticsDatas.Where(item => item.PageTypeName != "" && item.PageTypeName != null && item.PageTypeName == searchParameter.PageTypeName).ToList();
                     }
                 }
             }
@@ -253,9 +256,90 @@ namespace nIS
         }
 
         /// <summary>
-        /// This is responsible for get asset library
+        /// This method is responsible to get analytics data count
         /// </summary>
-        /// <param name="AnalyticsDataSearchParameter"></param>
+        /// <param name="searchParameter"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>analytics data count</returns>
+        public int GetAnalyticsDataCount(AnalyticsSearchParameter searchParameter, string tenantCode)
+        {
+            IList<AnalyticsData> AnalyticsDatas = new List<AnalyticsData>();
+            int count = 0;
+
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+
+                    if (searchParameter.Pagename != null && searchParameter.Pagename != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.Pagename));
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.PageRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("PageId={0} ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return AnalyticsDatas.Count;
+                        }
+                    }
+                    if (searchParameter.WidgetName != null && searchParameter.WidgetName != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.WidgetName));
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.WidgetRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("WidgetId={0} ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return AnalyticsDatas.Count;
+                        }
+                    }
+                    if (searchParameter.CustomerName != null && searchParameter.CustomerName != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", searchParameter.CustomerName));
+                        var userRecordIds = nISEntitiesDataContext.CustomerMasterRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("CustomerId={0} ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                        else
+                        {
+                            return AnalyticsDatas.Count;
+                        }
+                    }
+
+                    count = nISEntitiesDataContext.AnalyticsDataRecords.Where(whereClause).OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString().ToLower()).ToList().Count;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// This is responsible to save analytics data
+        /// </summary>
+        /// <param name="settings"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         public bool Save(IList<AnalyticsData> settings, string tenantCode)
@@ -271,7 +355,7 @@ namespace nIS
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    IList<PageWidgetMapRecord> pageWidgeMap=new List<PageWidgetMapRecord>();
+                    IList<PageWidgetMapRecord> pageWidgeMap = new List<PageWidgetMapRecord>();
                     if (!string.IsNullOrEmpty(queryString.ToString()))
                     {
                         pageWidgeMap = nISEntitiesDataContext.PageWidgetMapRecords.Where(queryString.ToString()).ToList();

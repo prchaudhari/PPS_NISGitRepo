@@ -61,27 +61,47 @@ namespace nIS
         #region Source data Functions
 
         /// <summary>
-        /// This method will call get asset library method of repository.
+        /// This method will call get analytics data method of repository.
         /// </summary>
-        /// <param name="AnalyticsDataSearchParameter">The asset library search parameters.</param>
+        /// <param name="searchParameter">The analytics search parameters.</param>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns>
-        /// Returns roles if found for given parameters, else return null
+        /// Returns list of analytics data
         /// </returns>
         public IList<AnalyticsData> GetAnalyticsData(AnalyticsSearchParameter searchParameter, string tenantCode)
         {
-            IList<AnalyticsData> assetLibraries = new List<AnalyticsData>();
+            IList<AnalyticsData> analytcsdata = new List<AnalyticsData>();
             try
             {
 
-                assetLibraries = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter, tenantCode);
+                analytcsdata = this.AnalyticsDataRepository.GetAnalyticsData(searchParameter, tenantCode);
             }
             catch (Exception exception)
             {
                 throw exception;
             }
-            return assetLibraries;
+            return analytcsdata;
         }
+
+        /// <summary>
+        /// This method is responsible to get analytics data count
+        /// </summary>
+        /// <param name="searchParameter"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>analytics data count</returns>
+        public int GetAnalyticsDataCount(AnalyticsSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+
+                return this.AnalyticsDataRepository.GetAnalyticsDataCount(searchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
         /// <summary>
         /// This method will call add asset library method of repository.
         /// </summary>

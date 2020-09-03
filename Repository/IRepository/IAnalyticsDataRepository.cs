@@ -33,6 +33,14 @@ namespace nIS
         IList<AnalyticsData> GetAnalyticsData(AnalyticsSearchParameter searchParameter, string tenantCode);
 
         /// <summary>
+        /// This method is responsible to get analytics data count
+        /// </summary>
+        /// <param name="searchParameter"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>analytics data count</returns>
+        int GetAnalyticsDataCount(AnalyticsSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
         /// This method reference to get roles based on serach parameter.
         /// </summary>
         /// <param name="assetLibrarySearchParameter">
@@ -44,7 +52,7 @@ namespace nIS
         /// <returns>
         /// It returns list of roles.
         /// </returns>
-       bool Save(IList<AnalyticsData> settings, string tenantCode);
+        bool Save(IList<AnalyticsData> settings, string tenantCode);
 
 
         #endregion

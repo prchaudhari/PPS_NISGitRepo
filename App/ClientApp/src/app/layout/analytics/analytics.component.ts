@@ -47,13 +47,9 @@ export class AnalyticsComponent implements OnInit {
   ngOnInit() {
     var fromDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) 
     var toDate = new Date();
-  //  toDate=toDate.
     var visitorDate = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) 
-    console.log(fromDate);
-    console.log(toDate);
 
     this.AnalyticFilterForm = this.fb.group({
-
       filterFromDate: [fromDate],
       filterToDate: [toDate],
     });
@@ -197,7 +193,6 @@ export class AnalyticsComponent implements OnInit {
           searchParameter.EndDate = new Date(this.AnalyticFilterForm.value.filterToDate.setHours(23, 59, 59));
         }
 
-        console.log(searchParameter);
         this.getSourceDatas(searchParameter);
         this.isFilter = !this.isFilter;
       }
@@ -278,13 +273,9 @@ export class AnalyticsComponent implements OnInit {
   resetPageFilterForm() {
     var fromDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
     var toDate = new Date();
-    //  toDate=toDate.
     var visitorDate = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
-    console.log(fromDate);
-    console.log(toDate);
 
     this.AnalyticFilterForm = this.fb.group({
-
       filterFromDate: [fromDate],
       filterToDate: [toDate],
     });

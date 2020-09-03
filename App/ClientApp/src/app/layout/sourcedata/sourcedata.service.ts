@@ -14,7 +14,7 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 })
 export class SourceDataService {
   //public variables
-  public schedulesList;
+  public sourceData;
   public pieChartList;
   public profileList;
   public PageWidgetVistorData;
@@ -33,34 +33,41 @@ export class SourceDataService {
     private uiLoader: NgxUiLoaderService,
     private _messageDialogService: MessageDialogService) { }
 
-  public async getSourceData(searchParameter): Promise<SourceData[]> {
+  public async getSourceData(searchParameter): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = "AnalyticsData/List";
     this.uiLoader.start();
+    var response : any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           if (httpEvent["status"] === 200) {
-            this.schedulesList = [];
+            this.sourceData = [];
             this.uiLoader.stop();
             if (httpEvent['body'] != null) {
               httpEvent['body'].forEach(scheduleObject => {
-                this.schedulesList = [...this.schedulesList, scheduleObject];
+                this.sourceData = [...this.sourceData, scheduleObject];
               });
+              response.List = this.sourceData;
+              response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
             }
           }
           else {
-            this.schedulesList = [];
+            this.sourceData = [];
+            response.List = this.sourceData;
+            response.RecordCount = 0;
             this.isRecordFound = false;
             this.uiLoader.stop();
           }
         }
       }, (error: HttpResponse<any>) => {
-        this.schedulesList = [];
+        this.sourceData = [];
+        response.List = this.sourceData;
+        response.RecordCount = 0;
         this.isRecordFound = false;
         this.uiLoader.stop();
       });
-    return <SourceData[]>this.schedulesList;
+    return response;
   }
 
   public async getWidgetVisitorPieChartData(searchParameter): Promise<WidgetVisitorPieChartData[]> {
