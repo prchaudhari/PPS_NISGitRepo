@@ -205,13 +205,10 @@ export class HistoryComponent implements OnInit {
           searchParameter.StatementDefinitionName = this.ScheduleFilterForm.value.filterStatementDefiniton.trim();
         }
         if (this.ScheduleFilterForm.value.filterStartDate != null && this.ScheduleFilterForm.value.filterStartDate != '') {
-          //searchParameter.StartDate = this.ScheduleFilterForm.value.filterStartDate;
           searchParameter.StartDate = new Date(this.ScheduleFilterForm.value.filterStartDate.setHours(0, 0, 0));
+          searchParameter.EndDate = new Date(this.ScheduleFilterForm.value.filterStartDate.setHours(23, 59, 59));
         }
-        if (this.ScheduleFilterForm.value.filterEndDate != null && this.ScheduleFilterForm.value.filterEndDate != '') {
-          //searchParameter.EndDate = this.ScheduleFilterForm.value.filterEndDate;
-          searchParameter.EndDate = new Date(this.ScheduleFilterForm.value.filterEndDate.setHours(23, 59, 59));
-        }
+        
         this.currentPage = 0;
         this.getSchedule(searchParameter);
         this.isFilter = !this.isFilter;
