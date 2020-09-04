@@ -53,11 +53,13 @@ export class ListComponent implements OnInit {
   public filterStatementNameValue = '';
   public filterScheduleStartDate = null;
   public filterScheduleEndDate = null;
+  public sortOrder = Constants.Descending;
+  public sortColumn = 'LastUpdatedDate';
 
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
-  displayedColumns: string[] = ['name', 'schedule', 'startDate', 'endDate', 'DayOfMonth', 'actions'];
+  displayedColumns: string[] = ['name', 'statement', 'startDate', 'endDate', 'DayOfMonth', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -100,15 +102,6 @@ export class ListComponent implements OnInit {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.getSchedule(null);
-    //this.iterator();
-  }
-
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const part = this.array.slice(start, end);
-    this.dataSource = part;
-    this.dataSource.sort = this.sort;
   }
 
   get filterDisplayName() {
@@ -192,8 +185,8 @@ export class ListComponent implements OnInit {
         searchParameter.PagingParameter.PageIndex = 1;
         searchParameter.PagingParameter.PageSize = this.pageSize;
         searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
-        searchParameter.SortParameter.SortOrder = Constants.Ascending;
+        searchParameter.SortParameter.SortColumn = this.sortColumn;
+        searchParameter.SortParameter.SortOrder = this.sortOrder;
         searchParameter.SearchMode = Constants.Contains;
 
         if (this.ScheduleFilterForm.value.filterDisplayName != null && this.ScheduleFilterForm.value.filterDisplayName != '') {
@@ -229,22 +222,21 @@ export class ListComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
-      searchParameter.SortParameter.SortOrder = Constants.Descending;
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
-
-      if (this.filterScheduleNameValue != null && this.filterScheduleNameValue != '') {
-        searchParameter.Name = this.filterScheduleNameValue.trim();
-      }
-      if (this.filterStatementNameValue != null && this.filterStatementNameValue != '') {
-        searchParameter.StatementDefinitionName = this.filterStatementNameValue.trim();
-      }
-      if (this.filterScheduleStartDate != null && this.filterScheduleStartDate != '') {
-        searchParameter.StartDate = new Date(this.filterScheduleStartDate.setHours(0, 0, 0));
-      }
-      if (this.filterScheduleEndDate != null && this.filterScheduleEndDate != '') {
-        searchParameter.EndDate = new Date(this.filterScheduleEndDate.setHours(23, 59, 59));
-      }
+    }
+    if (this.filterScheduleNameValue != null && this.filterScheduleNameValue != '') {
+      searchParameter.Name = this.filterScheduleNameValue.trim();
+    }
+    if (this.filterStatementNameValue != null && this.filterStatementNameValue != '') {
+      searchParameter.StatementDefinitionName = this.filterStatementNameValue.trim();
+    }
+    if (this.filterScheduleStartDate != null && this.filterScheduleStartDate != '') {
+      searchParameter.StartDate = new Date(this.filterScheduleStartDate.setHours(0, 0, 0));
+    }
+    if (this.filterScheduleEndDate != null && this.filterScheduleEndDate != '') {
+      searchParameter.EndDate = new Date(this.filterScheduleEndDate.setHours(23, 59, 59));
     }
 
     searchParameter.IsStatementDefinitionRequired = true;
@@ -273,22 +265,32 @@ export class ListComponent implements OnInit {
       this.sortedscheduleList = data;
       return;
     }
-    this.sortedscheduleList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compareStr(a.Name, b.Name, isAsc);
-        case 'schedule': return compareStr(a.Statement.Name, b.Statement.Name, isAsc);
-        case 'startDate': return compareDate(a.StartDate, b.StartDate, isAsc);
-        case 'endDate': return compareDate(a.EndDate, b.EndDate, isAsc);
-        case 'DayOfMonth': return compare(a.DayOfMonth, b.DayOfMonth, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<Schedule>(this.sortedscheduleList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedscheduleList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+    
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }else {
+      this.sortOrder = Constants.Descending;
+    }
+
+    switch (sort.active) {
+      case 'name': this.sortColumn = "Name"; break;
+      case 'statement': this.sortColumn = "StatementName"; break;
+      case 'startDate': this.sortColumn = "StartDate"; break;
+      case 'endDate': this.sortColumn = "EndDate"; break;
+      case 'DayOfMonth': this.sortColumn = "DayOfMonth"; break;
+      default: this.sortColumn = "LastUpdatedDate"; break;
+    }
+
+    let searchParameter: any = {};
+    searchParameter.IsActive = true;
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    this.getSchedule(searchParameter);
   }
 
   //this method helps to navigate to view
@@ -406,17 +408,4 @@ export class ListComponent implements OnInit {
   }
 }
 
-function compare(a: number, b: number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
 
-function compareStr(a: string, b: string, isAsc: boolean) {
-  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-
-function compareDate(a: Date, b: Date, isAsc: boolean) {
-  var a1 = new Date(a);
-  var b1 = new Date(b);
-  return (a1.getTime() < b1.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
-}

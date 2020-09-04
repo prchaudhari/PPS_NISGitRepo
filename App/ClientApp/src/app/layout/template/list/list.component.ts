@@ -49,6 +49,8 @@ export class ListComponent implements OnInit {
   public filterPublishStartDate = null;
   public filterPublishEndDate = null;
   public totalRecordCount = 0;
+  public sortOrder = Constants.Descending;
+  public sortColumn = 'LastUpdatedDate';
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -74,14 +76,6 @@ export class ListComponent implements OnInit {
     this.pageSize = e.pageSize;
     //this.iterator();
     this.getTemplates(null);
-  }
-
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const part = this.array.slice(start, end);
-    this.dataSource = part;
-    this.dataSource.sort = this.sort;
   }
 
   //Getters for Page Forms
@@ -133,24 +127,33 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    this.sortedTemplateList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compareStr(a.DisplayName, b.DisplayName, isAsc);
-        case 'status': return compareStr(a.Status, b.Status, isAsc);
-        case 'pagetype': return compareStr(a.PageTypeName, b.PageTypeName, isAsc);
-        case 'owner': return compareStr(a.PageOwnerName, b.PageOwnerName, isAsc);
-        case 'publishedBy': return compareStr(a.PagePublishedByUserName, b.PagePublishedByUserName, isAsc);
-        case 'version': return compare(Number(a.Version), Number(b.Version), isAsc);
-        case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<Template>(this.sortedTemplateList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedTemplateList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }else {
+      this.sortOrder = Constants.Descending;
+    }
+
+    switch (sort.active) {
+      case 'name': this.sortColumn = "DisplayName"; break;
+      case 'status': this.sortColumn = "Status"; break;
+      case 'pagetype': this.sortColumn = "Name"; break;
+      case 'owner': this.sortColumn = "PageOwnerName"; break;
+      case 'publishedBy': this.sortColumn = "PublishedByName"; break;
+      case 'version': this.sortColumn = "Version"; break;
+      case 'date': this.sortColumn = "PublishedOn"; break;
+      default: this.sortColumn = "LastUpdatedDate"; break;
+    }
+
+    let searchParameter: any = {};
+    searchParameter.IsActive = true;
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    this.getTemplates(searchParameter);
   }
 
   async getTemplates(searchParameter) {
@@ -162,30 +165,29 @@ export class ListComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
-      searchParameter.SortParameter.SortOrder = Constants.Descending;
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
-
-      if (this.filterDsplyName != null && this.filterDsplyName != '') {
-        searchParameter.DisplayName = this.filterDsplyName.trim();
-      }
-      if (this.filterPageOwner != null && this.filterPageOwner != '') {
-        searchParameter.PageOwner = this.filterPageOwner.trim();
-      }
-      if (this.filterPageTypeId != 0) {
-        searchParameter.PageTypeId = this.filterPageTypeId;
-      }
-      if (this.filterPageStatus != null && this.filterPageStatus != '') {
-        searchParameter.Status = this.filterPageStatus;
-      }
-      if (this.filterPublishStartDate != null && this.filterPublishStartDate != '') {
-        searchParameter.StartDate = new Date(this.filterPublishStartDate.setHours(0, 0, 0));
-        searchParameter.SortParameter.SortColumn = 'PublishedOn';
-      }
-      if (this.filterPublishEndDate != null && this.filterPublishEndDate != '') {
-        searchParameter.EndDate = new Date(this.filterPublishEndDate.setHours(23, 59, 59));
-        searchParameter.SortParameter.SortColumn = 'PublishedOn';
-      }
+    }
+    if (this.filterDsplyName != null && this.filterDsplyName != '') {
+      searchParameter.DisplayName = this.filterDsplyName.trim();
+    }
+    if (this.filterPageOwner != null && this.filterPageOwner != '') {
+      searchParameter.PageOwner = this.filterPageOwner.trim();
+    }
+    if (this.filterPageTypeId != 0) {
+      searchParameter.PageTypeId = this.filterPageTypeId;
+    }
+    if (this.filterPageStatus != null && this.filterPageStatus != '') {
+      searchParameter.Status = this.filterPageStatus;
+    }
+    if (this.filterPublishStartDate != null && this.filterPublishStartDate != '') {
+      searchParameter.StartDate = new Date(this.filterPublishStartDate.setHours(0, 0, 0));
+      //searchParameter.SortParameter.SortColumn = 'PublishedOn';
+    }
+    if (this.filterPublishEndDate != null && this.filterPublishEndDate != '') {
+      searchParameter.EndDate = new Date(this.filterPublishEndDate.setHours(23, 59, 59));
+      //searchParameter.SortParameter.SortColumn = 'PublishedOn';
     }
     var response = await templateService.getTemplates(searchParameter);
     this.templateList = response.templateList;
@@ -282,8 +284,8 @@ export class ListComponent implements OnInit {
         searchParameter.PagingParameter.PageIndex = 1;
         searchParameter.PagingParameter.PageSize = this.pageSize;
         searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
-        searchParameter.SortParameter.SortOrder = Constants.Descending;
+        searchParameter.SortParameter.SortColumn = this.sortColumn;
+        searchParameter.SortParameter.SortOrder = this.sortOrder;
         searchParameter.SearchMode = Constants.Contains;
 
         if (this.TemplateFilterForm.value.filterDisplayName != null && this.TemplateFilterForm.value.filterDisplayName != '') {
@@ -304,12 +306,12 @@ export class ListComponent implements OnInit {
         if (this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
           this.filterPublishStartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
           searchParameter.StartDate = new Date(this.TemplateFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
-          searchParameter.SortParameter.SortColumn = 'PublishedOn';
+          //searchParameter.SortParameter.SortColumn = 'PublishedOn';
         }
         if (this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
           this.filterPublishEndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
           searchParameter.EndDate = new Date(this.TemplateFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
-          searchParameter.SortParameter.SortColumn = 'PublishedOn';
+          //searchParameter.SortParameter.SortColumn = 'PublishedOn';
         }
 
         //console.log(searchParameter);
@@ -464,16 +466,4 @@ export class ListComponent implements OnInit {
     this.route.navigate(['../dashboardDesigner']);
   }
   
-}
-
-function compare(a: number, b: number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareStr(a: string, b: string, isAsc: boolean) {
-  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareDate(a: Date, b: Date, isAsc: boolean) {
-  return (Date.parse("" + a) < Date.parse("" + b) ? -1 : 1) * (isAsc ? 1 : -1);
 }

@@ -67,6 +67,8 @@ export class SourcedataComponent implements OnInit {
   public filterWidgetName = '';
   public filterSourceDataStartDate = null;
   public filterSourceDataEndDate = null;
+  public sortOrder = Constants.Descending;
+  public sortColumn = 'EventDate';
 
   closeFilter() {
     this.isFilter = !this.isFilter;
@@ -96,16 +98,7 @@ export class SourcedataComponent implements OnInit {
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    //this.iterator();
     this.getSourceDatas(null);
-  }
-
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const part = this.array.slice(start, end);
-    this.dataSource = part;
-    this.dataSource.sort = this.sort;
   }
 
   //Getters for Page Forms
@@ -152,22 +145,32 @@ export class SourcedataComponent implements OnInit {
       this.sortedSourceDataList = data;
       return;
     }
-    this.sortedSourceDataList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'date': return compareDate(a.EventDate, b.EventDate, isAsc);
-        case 'time': return compareDate(a.EventDate, b.EventDate, isAsc);
-        case 'page': return compareStr(a.PageName, b.PageName, isAsc);
-        case 'widget': return compareStr(a.Widgetname, b.Widgetname, isAsc);
-        case 'userId': return compareStr(a.CustomerName, b.CustomerName, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<SourceData>(this.sortedSourceDataList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedSourceDataList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+    
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }else {
+      this.sortOrder = Constants.Descending;
+    }
+
+    switch (sort.active) {
+      case 'date': this.sortColumn = "EventDate"; break;
+      case 'time': this.sortColumn = "EventDate"; break;
+      case 'page': this.sortColumn = "PageName"; break;
+      case 'widget': this.sortColumn = "WidgetName"; break;
+      case 'userId': this.sortColumn = "CustomerName"; break;
+      default: this.sortColumn = "EventDate"; break;
+    }
+
+    let searchParameter: any = {};
+    searchParameter.IsActive = true;
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    this.getSourceDatas(searchParameter);
   }
 
   async getSourceDatas(searchParameter) {
@@ -178,25 +181,24 @@ export class SourcedataComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = 'Id';
-      searchParameter.SortParameter.SortOrder = Constants.Descending;
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
-
-      if (this.filterCustomerName != null && this.filterCustomerName != '') {
-        searchParameter.CustomerName = this.filterCustomerName.trim();
-      }
-      if (this.filterPageName != null && this.filterPageName != '') {
-        searchParameter.PageName = this.filterPageName.trim();
-      }
-      if (this.filterWidgetName != null && this.filterWidgetName != '') {
-        searchParameter.WidgetName = this.filterWidgetName.trim();
-      }
-      if (this.filterSourceDataStartDate != null && this.filterSourceDataStartDate != '') {
-        searchParameter.StartDate = new Date(this.filterSourceDataStartDate.setHours(0, 0, 0));
-      }
-      if (this.filterSourceDataEndDate != null && this.filterSourceDataEndDate != '') {
-        searchParameter.EndDate = new Date(this.filterSourceDataEndDate.setHours(23, 59, 59));
-      }
+    }
+    if (this.filterCustomerName != null && this.filterCustomerName != '') {
+      searchParameter.CustomerName = this.filterCustomerName.trim();
+    }
+    if (this.filterPageName != null && this.filterPageName != '') {
+      searchParameter.PageName = this.filterPageName.trim();
+    }
+    if (this.filterWidgetName != null && this.filterWidgetName != '') {
+      searchParameter.WidgetName = this.filterWidgetName.trim();
+    }
+    if (this.filterSourceDataStartDate != null && this.filterSourceDataStartDate != '') {
+      searchParameter.StartDate = new Date(this.filterSourceDataStartDate.setHours(0, 0, 0));
+    }
+    if (this.filterSourceDataEndDate != null && this.filterSourceDataEndDate != '') {
+      searchParameter.EndDate = new Date(this.filterSourceDataEndDate.setHours(23, 59, 59));
     }
     var response = await scheduleLogService.getSourceData(searchParameter);
     this.scheduleLogList = response.List;
@@ -214,7 +216,6 @@ export class SourcedataComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.array = this.scheduleLogList;
     this.totalSize = this.totalRecordCount;
-    //this.iterator();
   }
 
   validateFilterDate(): boolean {
@@ -326,8 +327,8 @@ export class SourcedataComponent implements OnInit {
         searchParameter.PagingParameter.PageIndex = 1;
         searchParameter.PagingParameter.PageSize = this.pageSize;
         searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'EventDate';
-        searchParameter.SortParameter.SortOrder = Constants.Descending;
+        searchParameter.SortParameter.SortColumn = this.sortColumn;
+        searchParameter.SortParameter.SortOrder = this.sortOrder;
         searchParameter.SearchMode = Constants.Contains;
 
         if (this.SourceDataFilterForm.value.filterCustomer != null && this.SourceDataFilterForm.value.filterCustomer != '') {
@@ -393,15 +394,4 @@ export class SourcedataComponent implements OnInit {
   }
 }
 
-function compare(a: number, b: number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareStr(a: string, b: string, isAsc: boolean) {
-  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareDate(a: Date, b: Date, isAsc: boolean) {
-  return (Date.parse("" + a) < Date.parse("" + b) ? -1 : 1) * (isAsc ? 1 : -1);
-}
 

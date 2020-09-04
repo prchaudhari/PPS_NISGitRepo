@@ -535,14 +535,13 @@ export class AnalyticsComponent implements OnInit {
       chart: {
         type: 'column'
       },
+      title: {
+        text: ''
+      },
       xAxis: {
         title: {
           text: 'Time'
         },
-        //type: 'datetime',
-        //dateTimeLabelFormats: {
-        // // day: '%H:%M'
-        //},
         categories: listOfHour,
       },
       yAxis: {
@@ -567,8 +566,7 @@ export class AnalyticsComponent implements OnInit {
       },
       series: [{
         data: seriesData,
-        //pointStart: Date.UTC(2010, 0, 1),
-        //pointInterval: 24 * 3600 * 1000 // one day
+        name: 'Visitor Count',
     }]
     }
 

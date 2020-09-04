@@ -127,15 +127,7 @@ namespace nIS
                     data.PageTypeName = item.PageTypeName ?? "";
                     AnalyticsDatas.Add(data);
                 });
-                if (AnalyticsDatas?.Count() > 0)
-                {
-                    if (searchParameter.PageTypeName != string.Empty)
-                    {
-                        AnalyticsDatas = AnalyticsDatas.Where(item => item.PageTypeName != "" && item.PageTypeName != null && item.PageTypeName == searchParameter.PageTypeName).ToList();
-                    }
-                }
             }
-
             catch (Exception ex)
             {
                 throw ex;
@@ -289,6 +281,10 @@ namespace nIS
             if (validationEngine.IsValidText(searchParameter.CustomerName))
             {
                 queryString.Append(string.Format("CustomerName.Contains(\"{0}\") and ", searchParameter.CustomerName));
+            }
+            if (validationEngine.IsValidText(searchParameter.PageTypeName))
+            {
+                queryString.Append(string.Format("PageTypeName.Equals(\"{0}\") and ", searchParameter.PageTypeName));
             }
             if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
             {

@@ -46,6 +46,8 @@ export class ListComponent implements OnInit {
   public filterStatementStatus = '';
   public filterStatementPublishedOnStartDate = null;
   public filterStatementPublishedOnEndDate = null;
+  public sortOrder = Constants.Descending;
+  public sortColumn = 'LastUpdatedDate';
 
   closeFilter() {
     this.isFilter = !this.isFilter;
@@ -97,14 +99,6 @@ export class ListComponent implements OnInit {
     this.getStatements(null);
   }
 
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const part = this.array.slice(start, end);
-    this.dataSource = part;
-    this.dataSource.sort = this.sort;
-  }
-
   //Getters for Page Forms
   get filterDisplayName() {
     return this.StatementFilterForm.get('filterDisplayName');
@@ -132,26 +126,31 @@ export class ListComponent implements OnInit {
       return;
     }
 
-    //['name', 'version', 'owner', 'date', 'status', 'actions'];
-    this.sortedStatementList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compareStr(a.Name, b.Name, isAsc);
-        case 'status': return compareStr(a.Status, b.Status, isAsc);
-        //case 'pagetype': return compareStr(a.PageTypeName, b.PageTypeName, isAsc);
-        case 'owner': return compareStr(a.StatementOwnerName, b.StatementOwnerName, isAsc);
-        case 'publishedBy': return compareStr(a.StatementPublishedByUserName, b.StatementPublishedByUserName, isAsc);
-        case 'version': return compare(Number(a.Version), Number(b.Version), isAsc);
-        case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
-        default: return 0;
-      };
-    });
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }else {
+      this.sortOrder = Constants.Descending;
+    }
 
-    this.dataSource = new MatTableDataSource<Statement>(this.sortedStatementList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedStatementList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+    switch (sort.active) {
+      case 'name': this.sortColumn = "Name"; break;
+      case 'status': this.sortColumn = "Status"; break;
+      case 'owner': this.sortColumn = "OwnerName"; break;
+      case 'publishedBy': this.sortColumn = "PublishedByName"; break;
+      case 'date': this.sortColumn = "PublishedOn"; break;
+      default: this.sortColumn = "LastUpdatedDate"; break;
+    }
+
+    let searchParameter: any = {};
+    searchParameter.IsActive = true;
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    this.getStatements(searchParameter);
   }
 
   async getStatements(searchParameter) {
@@ -163,30 +162,29 @@ export class ListComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
-      searchParameter.SortParameter.SortOrder = Constants.Descending;
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
-
-      if (this.filterDsplayName != null && this.filterDsplayName != '') {
-        searchParameter.Name = this.filterDsplayName.trim();
-      }
-      if (this.filterStatementOwner != null && this.filterStatementOwner != '') {
-        searchParameter.StatementOwner = this.filterStatementOwner.trim();
-      }
-      if (this.filterPageTypeId != 0) {
-        searchParameter.PageTypeId = this.filterPageTypeId;
-      }
-      if (this.filterStatementStatus != null && this.filterStatementStatus != '') {
-        searchParameter.Status = this.filterStatementStatus;
-      }
-      if (this.filterStatementPublishedOnStartDate != null && this.filterStatementPublishedOnStartDate != '') {
-        searchParameter.StartDate = new Date(this.filterStatementPublishedOnStartDate.setHours(0, 0, 0));
-        searchParameter.SortParameter.SortColumn = 'PublishedOn';
-      }
-      if (this.filterStatementPublishedOnEndDate != null && this.filterStatementPublishedOnEndDate != '') {
-        searchParameter.EndDate = new Date(this.filterStatementPublishedOnEndDate.setHours(23, 59, 59));
-        searchParameter.SortParameter.SortColumn = 'PublishedOn';
-      }
+    }
+    if (this.filterDsplayName != null && this.filterDsplayName != '') {
+      searchParameter.Name = this.filterDsplayName.trim();
+    }
+    if (this.filterStatementOwner != null && this.filterStatementOwner != '') {
+      searchParameter.StatementOwner = this.filterStatementOwner.trim();
+    }
+    if (this.filterPageTypeId != 0) {
+      searchParameter.PageTypeId = this.filterPageTypeId;
+    }
+    if (this.filterStatementStatus != null && this.filterStatementStatus != '') {
+      searchParameter.Status = this.filterStatementStatus;
+    }
+    if (this.filterStatementPublishedOnStartDate != null && this.filterStatementPublishedOnStartDate != '') {
+      searchParameter.StartDate = new Date(this.filterStatementPublishedOnStartDate.setHours(0, 0, 0));
+      //searchParameter.SortParameter.SortColumn = 'PublishedOn';
+    }
+    if (this.filterStatementPublishedOnEndDate != null && this.filterStatementPublishedOnEndDate != '') {
+      searchParameter.EndDate = new Date(this.filterStatementPublishedOnEndDate.setHours(23, 59, 59));
+      //searchParameter.SortParameter.SortColumn = 'PublishedOn';
     }
     var response = await statementService.getStatements(searchParameter);
     this.statementList = response.List;
@@ -267,8 +265,8 @@ export class ListComponent implements OnInit {
         searchParameter.PagingParameter.PageIndex = 1;
         searchParameter.PagingParameter.PageSize = this.pageSize;
         searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'LastUpdatedDate';
-        searchParameter.SortParameter.SortOrder = Constants.Ascending;
+        searchParameter.SortParameter.SortColumn = this.sortColumn;
+        searchParameter.SortParameter.SortOrder = this.sortOrder;
         searchParameter.SearchMode = Constants.Contains;
 
         if (this.StatementFilterForm.value.filterDisplayName != null && this.StatementFilterForm.value.filterDisplayName != '') {
@@ -289,12 +287,12 @@ export class ListComponent implements OnInit {
         if (this.StatementFilterForm.value.filterPublishedOnFromDate != null && this.StatementFilterForm.value.filterPublishedOnFromDate != '') {
           this.filterStatementPublishedOnStartDate = this.StatementFilterForm.value.filterPublishedOnFromDate;
           searchParameter.StartDate = new Date(this.StatementFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
-          searchParameter.SortParameter.SortColumn = 'PublishedOn';
+          //searchParameter.SortParameter.SortColumn = 'PublishedOn';
         }
         if (this.StatementFilterForm.value.filterPublishedOnToDate != null && this.StatementFilterForm.value.filterPublishedOnToDate != '') {
           this.filterStatementPublishedOnEndDate = this.StatementFilterForm.value.filterPublishedOnToDate;
           searchParameter.EndDate = new Date(this.StatementFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
-          searchParameter.SortParameter.SortColumn = 'PublishedOn';
+          //searchParameter.SortParameter.SortColumn = 'PublishedOn';
         }
 
         this.currentPage = 0;
@@ -417,16 +415,3 @@ export class ListComponent implements OnInit {
   }
 }
 
-function compare(a: number, b: number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareStr(a: string, b: string, isAsc: boolean) {
-  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareDate(a: Date, b: Date, isAsc: boolean) {
-  var a1 = new Date(a);
-  var b1 = new Date(b);
-  return (a1.getTime() < b1.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
-}
