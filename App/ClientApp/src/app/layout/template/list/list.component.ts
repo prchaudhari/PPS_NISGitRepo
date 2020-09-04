@@ -41,7 +41,7 @@ export class ListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'pagetype', 'version', 'owner', 'publishedBy', 'date', 'status', 'actions'];
   dataSource = new MatTableDataSource<any>();
   public userClaimsRolePrivilegeOperations: any[] = [];
-  
+
   public filterDsplyName = '';
   public filterPageTypeId: number = 0;
   public filterPageStatus: string = '';
@@ -49,7 +49,8 @@ export class ListComponent implements OnInit {
   public filterPublishStartDate = null;
   public filterPublishEndDate = null;
   public totalRecordCount = 0;
-
+  public sortColumn = 'Name';
+  public sortOrder = Constants.Ascending;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -132,25 +133,65 @@ export class ListComponent implements OnInit {
       this.sortedTemplateList = data;
       return;
     }
-
-    this.sortedTemplateList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compareStr(a.DisplayName, b.DisplayName, isAsc);
-        case 'status': return compareStr(a.Status, b.Status, isAsc);
-        case 'pagetype': return compareStr(a.PageTypeName, b.PageTypeName, isAsc);
-        case 'owner': return compareStr(a.PageOwnerName, b.PageOwnerName, isAsc);
-        case 'publishedBy': return compareStr(a.PagePublishedByUserName, b.PagePublishedByUserName, isAsc);
-        case 'version': return compare(Number(a.Version), Number(b.Version), isAsc);
-        case 'date': return compareDate(a.PublishedOn, b.PublishedOn, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<Template>(this.sortedTemplateList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedTemplateList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }
+    else {
+      this.sortOrder = Constants.Descending;
+    }
+    if (sort.active == 'name') {
+      this.sortColumn = 'DisplayName';
+    }
+    else if (sort.active == 'pagetype') {
+      this.sortColumn = 'Name';
+    }
+    else if (sort.active == 'version') {
+      this.sortColumn = 'Verion';
+    }
+    else if (sort.active == 'owner') {
+      this.sortColumn = 'PageOwnerName';
+    }
+    else if (sort.active == 'publishedBy') {
+      this.sortColumn = 'PublishedByName';
+    }
+    else if (sort.active == 'date') {
+      this.sortColumn = 'PublishedOn';
+    }
+    else if (sort.active == 'status') {
+      this.sortColumn = 'Status';
+    }
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.TemplateFilterForm.value.filterDisplayName != null && this.TemplateFilterForm.value.filterDisplayName != '') {
+      this.filterDsplyName = this.TemplateFilterForm.value.filterDisplayName.trim();
+      searchParameter.DisplayName = this.TemplateFilterForm.value.filterDisplayName.trim();
+    }
+    if (this.TemplateFilterForm.value.filterOwner != null && this.TemplateFilterForm.value.filterOwner != '') {
+      this.filterPageOwner = this.TemplateFilterForm.value.filterOwner.trim();
+      searchParameter.PageOwner = this.TemplateFilterForm.value.filterOwner.trim();
+    }
+    if (this.filterPageTypeId != 0) {
+      searchParameter.PageTypeId = this.filterPageTypeId;
+    }
+    if (this.TemplateFilterForm.value.filterStatus != null && this.TemplateFilterForm.value.filterStatus != 0) {
+      this.filterPageStatus = this.TemplateFilterForm.value.filterStatus;
+      searchParameter.Status = this.TemplateFilterForm.value.filterStatus;
+    }
+    if (this.TemplateFilterForm.value.filterPublishedOnFromDate != null && this.TemplateFilterForm.value.filterPublishedOnFromDate != '') {
+      this.filterPublishStartDate = this.TemplateFilterForm.value.filterPublishedOnFromDate;
+      searchParameter.StartDate = new Date(this.TemplateFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
+    }
+    if (this.TemplateFilterForm.value.filterPublishedOnToDate != null && this.TemplateFilterForm.value.filterPublishedOnToDate != '') {
+      this.filterPublishEndDate = this.TemplateFilterForm.value.filterPublishedOnToDate;
+      searchParameter.EndDate = new Date(this.TemplateFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
+    }
+    this.getTemplates(searchParameter);
   }
 
   async getTemplates(searchParameter) {
@@ -187,7 +228,7 @@ export class ListComponent implements OnInit {
         searchParameter.SortParameter.SortColumn = 'PublishedOn';
       }
     }
-    var response = await templateService.getTemplates(searchParameter);
+    var response = await templateService.getTemplatesForlist(searchParameter);
     this.templateList = response.templateList;
     this.totalRecordCount = response.RecordCount;
     if (this.templateList.length == 0 && this.isFilterDone == true) {
@@ -463,7 +504,7 @@ export class ListComponent implements OnInit {
     localStorage.setItem("pageDesignEditRouteparams", JSON.stringify(queryParams))
     this.route.navigate(['../dashboardDesigner']);
   }
-  
+
 }
 
 function compare(a: number, b: number, isAsc: boolean) {

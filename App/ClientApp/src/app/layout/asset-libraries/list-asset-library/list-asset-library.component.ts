@@ -165,8 +165,6 @@ export class ListAssetLibraryComponent implements OnInit {
       this.sortedAssetLibraryList = data;
       return;
     }
-
-
     if (sort.direction == 'asc') {
       this.sortOrder = Constants.Ascending;
     }

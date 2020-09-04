@@ -182,6 +182,44 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method will call get pages method of repository.
+        /// </summary>
+        /// <param name="pageSearchParameter">The page search parameters.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns pages if found for given parameters, else return null
+        /// </returns>
+        public IList<Page> GetPagesForList(PageSearchParameter pageSearchParameter, string tenantCode)
+        {
+            try
+            {
+                InvalidSearchParameterException invalidSearchParameterException = new InvalidSearchParameterException(tenantCode);
+                try
+                {
+                    pageSearchParameter.IsValid();
+                }
+                catch (Exception exception)
+                {
+                    invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
+                }
+
+                if (invalidSearchParameterException.Data.Count > 0)
+                {
+                    throw invalidSearchParameterException;
+                }
+
+                pageSearchParameter.StartDate = this.validationEngine.IsValidDate(pageSearchParameter.StartDate) ? pageSearchParameter.StartDate.ToLocalTime() : pageSearchParameter.StartDate;
+                pageSearchParameter.EndDate = this.validationEngine.IsValidDate(pageSearchParameter.EndDate) ? pageSearchParameter.EndDate.ToLocalTime() : pageSearchParameter.EndDate;
+
+                return this.pageRepository.GetPagesForList(pageSearchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
         /// This method helps to get count of pages.
         /// </summary>
         /// <param name="pageSearchParameter">The page search parameters.</param>
