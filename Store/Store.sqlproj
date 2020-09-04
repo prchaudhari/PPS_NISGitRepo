@@ -62,6 +62,7 @@
     <Folder Include="Seed Data Scripts" />
     <Folder Include="Configuration Manager" />
     <Folder Include="Entity Manager" />
+    <Folder Include="Seed Data Scripts\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Asset.sql" />
@@ -114,6 +115,7 @@
     <Build Include="StatementMetadata.sql" />
     <Build Include="Top4IncomeSources.sql" />
     <Build Include="AnalyticsData.sql" />
+    <None Include="Seed Data Scripts\Views\GridViews.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

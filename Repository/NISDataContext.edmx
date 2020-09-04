@@ -628,6 +628,179 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_Page' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_Page">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="DisplayName" />
+            <PropertyRef Name="PageTypeId" />
+            <PropertyRef Name="Owner" />
+            <PropertyRef Name="Version" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PublishedByName" />
+            <PropertyRef Name="PageOwnerName" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PageTypeId" Type="bigint" Nullable="false" />
+          <Property Name="PublishedBy" Type="bigint" />
+          <Property Name="Owner" Type="bigint" Nullable="false" />
+          <Property Name="Version" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="PublishedOn" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" />
+          <Property Name="UpdateBy" Type="bigint" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PublishedByName" Type="nvarchar" MaxLength="201" Nullable="false" />
+          <Property Name="PageOwnerName" Type="nvarchar" MaxLength="201" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_Schedule">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="DayOfMonth" />
+            <PropertyRef Name="HourOfDay" />
+            <PropertyRef Name="MinuteOfDay" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="UpdateBy" />
+            <PropertyRef Name="IsExportToPDF" />
+            <PropertyRef Name="StatementName" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="StatementId" Type="bigint" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="DayOfMonth" Type="bigint" Nullable="false" />
+          <Property Name="HourOfDay" Type="bigint" Nullable="false" />
+          <Property Name="MinuteOfDay" Type="bigint" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" />
+          <Property Name="UpdateBy" Type="bigint" Nullable="false" />
+          <Property Name="IsExportToPDF" Type="bit" Nullable="false" />
+          <Property Name="StatementName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_SourceData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_SourceData">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="DayOfMonth" />
+            <PropertyRef Name="HourOfDay" />
+            <PropertyRef Name="MinuteOfDay" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="UpdateBy" />
+            <PropertyRef Name="IsExportToPDF" />
+            <PropertyRef Name="StatementName" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="StatementId" Type="bigint" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="DayOfMonth" Type="bigint" Nullable="false" />
+          <Property Name="HourOfDay" Type="bigint" Nullable="false" />
+          <Property Name="MinuteOfDay" Type="bigint" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" />
+          <Property Name="UpdateBy" Type="bigint" Nullable="false" />
+          <Property Name="IsExportToPDF" Type="bit" Nullable="false" />
+          <Property Name="StatementName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_StatementDefinition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_StatementDefinition">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="PublishedBy" />
+            <PropertyRef Name="Owner" />
+            <PropertyRef Name="Version" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="UpdateBy" />
+            <PropertyRef Name="PublishedByName" />
+            <PropertyRef Name="OwnerName" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="PublishedBy" Type="bigint" Nullable="false" />
+          <Property Name="Owner" Type="bigint" Nullable="false" />
+          <Property Name="Version" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="PublishedOn" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" />
+          <Property Name="UpdateBy" Type="bigint" Nullable="false" />
+          <Property Name="PublishedByName" Type="nvarchar" MaxLength="201" Nullable="false" />
+          <Property Name="OwnerName" Type="nvarchar" MaxLength="201" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_User">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="ContactNumber" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="IsLocked" />
+            <PropertyRef Name="NoofAttempts" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ContactNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Image" Type="nvarchar(max)" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+          <Property Name="NoofAttempts" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="NISModelStoreContainer">
           <EntitySet Name="AccountMaster" EntityType="Self.AccountMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AccountTransaction" EntityType="Self.AccountTransaction" Schema="NIS" store:Type="Tables" />
@@ -673,6 +846,105 @@
           <EntitySet Name="Video" EntityType="Self.Video" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
+          <EntitySet Name="View_Page" EntityType="Self.View_Page" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_Page].[Id] AS [Id], 
+    [View_Page].[DisplayName] AS [DisplayName], 
+    [View_Page].[PageTypeId] AS [PageTypeId], 
+    [View_Page].[PublishedBy] AS [PublishedBy], 
+    [View_Page].[Owner] AS [Owner], 
+    [View_Page].[Version] AS [Version], 
+    [View_Page].[Status] AS [Status], 
+    [View_Page].[CreatedDate] AS [CreatedDate], 
+    [View_Page].[PublishedOn] AS [PublishedOn], 
+    [View_Page].[IsActive] AS [IsActive], 
+    [View_Page].[IsDeleted] AS [IsDeleted], 
+    [View_Page].[TenantCode] AS [TenantCode], 
+    [View_Page].[LastUpdatedDate] AS [LastUpdatedDate], 
+    [View_Page].[UpdateBy] AS [UpdateBy], 
+    [View_Page].[Name] AS [Name], 
+    [View_Page].[PublishedByName] AS [PublishedByName], 
+    [View_Page].[PageOwnerName] AS [PageOwnerName]
+    FROM [NIS].[View_Page] AS [View_Page]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_Schedule" EntityType="Self.View_Schedule" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_Schedule].[Id] AS [Id], 
+    [View_Schedule].[Name] AS [Name], 
+    [View_Schedule].[StatementId] AS [StatementId], 
+    [View_Schedule].[Description] AS [Description], 
+    [View_Schedule].[DayOfMonth] AS [DayOfMonth], 
+    [View_Schedule].[HourOfDay] AS [HourOfDay], 
+    [View_Schedule].[MinuteOfDay] AS [MinuteOfDay], 
+    [View_Schedule].[StartDate] AS [StartDate], 
+    [View_Schedule].[EndDate] AS [EndDate], 
+    [View_Schedule].[Status] AS [Status], 
+    [View_Schedule].[IsActive] AS [IsActive], 
+    [View_Schedule].[IsDeleted] AS [IsDeleted], 
+    [View_Schedule].[TenantCode] AS [TenantCode], 
+    [View_Schedule].[LastUpdatedDate] AS [LastUpdatedDate], 
+    [View_Schedule].[UpdateBy] AS [UpdateBy], 
+    [View_Schedule].[IsExportToPDF] AS [IsExportToPDF], 
+    [View_Schedule].[StatementName] AS [StatementName]
+    FROM [NIS].[View_Schedule] AS [View_Schedule]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_SourceData" EntityType="Self.View_SourceData" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_SourceData].[Id] AS [Id], 
+    [View_SourceData].[Name] AS [Name], 
+    [View_SourceData].[StatementId] AS [StatementId], 
+    [View_SourceData].[Description] AS [Description], 
+    [View_SourceData].[DayOfMonth] AS [DayOfMonth], 
+    [View_SourceData].[HourOfDay] AS [HourOfDay], 
+    [View_SourceData].[MinuteOfDay] AS [MinuteOfDay], 
+    [View_SourceData].[StartDate] AS [StartDate], 
+    [View_SourceData].[EndDate] AS [EndDate], 
+    [View_SourceData].[Status] AS [Status], 
+    [View_SourceData].[IsActive] AS [IsActive], 
+    [View_SourceData].[IsDeleted] AS [IsDeleted], 
+    [View_SourceData].[TenantCode] AS [TenantCode], 
+    [View_SourceData].[LastUpdatedDate] AS [LastUpdatedDate], 
+    [View_SourceData].[UpdateBy] AS [UpdateBy], 
+    [View_SourceData].[IsExportToPDF] AS [IsExportToPDF], 
+    [View_SourceData].[StatementName] AS [StatementName]
+    FROM [NIS].[View_SourceData] AS [View_SourceData]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_StatementDefinition" EntityType="Self.View_StatementDefinition" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_StatementDefinition].[Id] AS [Id], 
+    [View_StatementDefinition].[Name] AS [Name], 
+    [View_StatementDefinition].[Description] AS [Description], 
+    [View_StatementDefinition].[PublishedBy] AS [PublishedBy], 
+    [View_StatementDefinition].[Owner] AS [Owner], 
+    [View_StatementDefinition].[Version] AS [Version], 
+    [View_StatementDefinition].[Status] AS [Status], 
+    [View_StatementDefinition].[CreatedDate] AS [CreatedDate], 
+    [View_StatementDefinition].[PublishedOn] AS [PublishedOn], 
+    [View_StatementDefinition].[IsActive] AS [IsActive], 
+    [View_StatementDefinition].[IsDeleted] AS [IsDeleted], 
+    [View_StatementDefinition].[TenantCode] AS [TenantCode], 
+    [View_StatementDefinition].[LastUpdatedDate] AS [LastUpdatedDate], 
+    [View_StatementDefinition].[UpdateBy] AS [UpdateBy], 
+    [View_StatementDefinition].[PublishedByName] AS [PublishedByName], 
+    [View_StatementDefinition].[OwnerName] AS [OwnerName]
+    FROM [NIS].[View_StatementDefinition] AS [View_StatementDefinition]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_User" EntityType="Self.View_User" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_User].[Id] AS [Id], 
+    [View_User].[FirstName] AS [FirstName], 
+    [View_User].[LastName] AS [LastName], 
+    [View_User].[ContactNumber] AS [ContactNumber], 
+    [View_User].[EmailAddress] AS [EmailAddress], 
+    [View_User].[Image] AS [Image], 
+    [View_User].[IsLocked] AS [IsLocked], 
+    [View_User].[NoofAttempts] AS [NoofAttempts], 
+    [View_User].[IsActive] AS [IsActive], 
+    [View_User].[IsDeleted] AS [IsDeleted], 
+    [View_User].[TenantCode] AS [TenantCode], 
+    [View_User].[Name] AS [Name]
+    FROM [NIS].[View_User] AS [View_User]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -723,6 +995,11 @@
           <EntitySet Name="StatementMetadataRecords" EntityType="NISModel.StatementMetadataRecord" />
           <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
           <EntitySet Name="AnalyticsDataRecords" EntityType="NISModel.AnalyticsDataRecord" />
+          <EntitySet Name="View_PageRecord" EntityType="NISModel.View_PageRecord" />
+          <EntitySet Name="View_ScheduleRecord" EntityType="NISModel.View_ScheduleRecord" />
+          <EntitySet Name="View_SourceDataRecord" EntityType="NISModel.View_SourceDataRecord" />
+          <EntitySet Name="View_StatementDefinitionRecord" EntityType="NISModel.View_StatementDefinitionRecord" />
+          <EntitySet Name="View_UserRecord" EntityType="NISModel.View_UserRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1346,6 +1623,169 @@
           <Property Name="AccountId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PageWidgetId" Type="Int64" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_PageRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="DisplayName" />
+            <PropertyRef Name="PageTypeId" />
+            <PropertyRef Name="Owner" />
+            <PropertyRef Name="Version" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="PublishedByName" />
+            <PropertyRef Name="PageOwnerName" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PageTypeId" Type="Int64" Nullable="false" />
+          <Property Name="PublishedBy" Type="Int64" />
+          <Property Name="Owner" Type="Int64" Nullable="false" />
+          <Property Name="Version" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="PublishedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateBy" Type="Int64" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PublishedByName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+          <Property Name="PageOwnerName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_ScheduleRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="DayOfMonth" />
+            <PropertyRef Name="HourOfDay" />
+            <PropertyRef Name="MinuteOfDay" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="UpdateBy" />
+            <PropertyRef Name="IsExportToPDF" />
+            <PropertyRef Name="StatementName" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DayOfMonth" Type="Int64" Nullable="false" />
+          <Property Name="HourOfDay" Type="Int64" Nullable="false" />
+          <Property Name="MinuteOfDay" Type="Int64" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateBy" Type="Int64" Nullable="false" />
+          <Property Name="IsExportToPDF" Type="Boolean" Nullable="false" />
+          <Property Name="StatementName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_SourceDataRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="DayOfMonth" />
+            <PropertyRef Name="HourOfDay" />
+            <PropertyRef Name="MinuteOfDay" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="UpdateBy" />
+            <PropertyRef Name="IsExportToPDF" />
+            <PropertyRef Name="StatementName" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DayOfMonth" Type="Int64" Nullable="false" />
+          <Property Name="HourOfDay" Type="Int64" Nullable="false" />
+          <Property Name="MinuteOfDay" Type="Int64" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateBy" Type="Int64" Nullable="false" />
+          <Property Name="IsExportToPDF" Type="Boolean" Nullable="false" />
+          <Property Name="StatementName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_StatementDefinitionRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Description" />
+            <PropertyRef Name="PublishedBy" />
+            <PropertyRef Name="Owner" />
+            <PropertyRef Name="Version" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="UpdateBy" />
+            <PropertyRef Name="PublishedByName" />
+            <PropertyRef Name="OwnerName" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PublishedBy" Type="Int64" Nullable="false" />
+          <Property Name="Owner" Type="Int64" Nullable="false" />
+          <Property Name="Version" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="PublishedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateBy" Type="Int64" Nullable="false" />
+          <Property Name="PublishedByName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_UserRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="ContactNumber" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="IsLocked" />
+            <PropertyRef Name="NoofAttempts" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+          <Property Name="NoofAttempts" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2016,6 +2456,115 @@
                 <ScalarProperty Name="PageId" ColumnName="PageId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_PageRecord">
+            <EntityTypeMapping TypeName="NISModel.View_PageRecord">
+              <MappingFragment StoreEntitySet="View_Page">
+                <ScalarProperty Name="PageOwnerName" ColumnName="PageOwnerName" />
+                <ScalarProperty Name="PublishedByName" ColumnName="PublishedByName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PublishedOn" ColumnName="PublishedOn" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
+                <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_ScheduleRecord">
+            <EntityTypeMapping TypeName="NISModel.View_ScheduleRecord">
+              <MappingFragment StoreEntitySet="View_Schedule">
+                <ScalarProperty Name="StatementName" ColumnName="StatementName" />
+                <ScalarProperty Name="IsExportToPDF" ColumnName="IsExportToPDF" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="MinuteOfDay" ColumnName="MinuteOfDay" />
+                <ScalarProperty Name="HourOfDay" ColumnName="HourOfDay" />
+                <ScalarProperty Name="DayOfMonth" ColumnName="DayOfMonth" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_SourceDataRecord">
+            <EntityTypeMapping TypeName="NISModel.View_SourceDataRecord">
+              <MappingFragment StoreEntitySet="View_SourceData">
+                <ScalarProperty Name="StatementName" ColumnName="StatementName" />
+                <ScalarProperty Name="IsExportToPDF" ColumnName="IsExportToPDF" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="MinuteOfDay" ColumnName="MinuteOfDay" />
+                <ScalarProperty Name="HourOfDay" ColumnName="HourOfDay" />
+                <ScalarProperty Name="DayOfMonth" ColumnName="DayOfMonth" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_StatementDefinitionRecord">
+            <EntityTypeMapping TypeName="NISModel.View_StatementDefinitionRecord">
+              <MappingFragment StoreEntitySet="View_StatementDefinition">
+                <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+                <ScalarProperty Name="PublishedByName" ColumnName="PublishedByName" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PublishedOn" ColumnName="PublishedOn" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_UserRecord">
+            <EntityTypeMapping TypeName="NISModel.View_UserRecord">
+              <MappingFragment StoreEntitySet="View_User">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NoofAttempts" ColumnName="NoofAttempts" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
