@@ -31,5 +31,6 @@ namespace nIS
         public string Name { get; set; }
         public string PublishedByName { get; set; }
         public string PageOwnerName { get; set; }
+        public IList<PageWidgetMapRecord> PageWidgetMapRecords { get; set; }
     }
 }

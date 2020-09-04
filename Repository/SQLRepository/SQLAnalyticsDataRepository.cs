@@ -85,69 +85,15 @@ namespace nIS
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                IList<AnalyticsDataRecord> AnalyticsDataRecords = new List<AnalyticsDataRecord>();
-                IList<PageRecord> pageRecords = new List<PageRecord>();
-                IList<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
-                IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
+                IList<View_SourceDataRecord> AnalyticsDataRecords = new List<View_SourceDataRecord>();
                 string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
 
-                    if (searchParameter.Pagename != null && searchParameter.Pagename != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.Pagename));
-                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        var userRecordIds = nISEntitiesDataContext.PageRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("PageId={0} ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                        else
-                        {
-                            return AnalyticsDatas;
-                        }
-                    }
-                    if (searchParameter.WidgetName != null && searchParameter.WidgetName != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.WidgetName));
-                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        var userRecordIds = nISEntitiesDataContext.WidgetRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("WidgetId={0} ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                        else
-                        {
-                            return AnalyticsDatas;
-                        }
-                    }
-                    if (searchParameter.CustomerName != null && searchParameter.CustomerName != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", searchParameter.CustomerName));
-                        var userRecordIds = nISEntitiesDataContext.CustomerMasterRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("CustomerId={0} ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                        else
-                        {
-                            return AnalyticsDatas;
-                        }
-                    }
-
                     if (searchParameter.PagingParameter.PageIndex > 0 && searchParameter.PagingParameter.PageSize > 0)
                     {
-                        AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
+                        AnalyticsDataRecords = nISEntitiesDataContext.View_SourceDataRecord
                         .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
                         .Skip((searchParameter.PagingParameter.PageIndex - 1) * searchParameter.PagingParameter.PageSize)
@@ -156,34 +102,10 @@ namespace nIS
                     }
                     else
                     {
-                        AnalyticsDataRecords = nISEntitiesDataContext.AnalyticsDataRecords
+                        AnalyticsDataRecords = nISEntitiesDataContext.View_SourceDataRecord
                         .Where(whereClause)
                         .OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-
-                    if (AnalyticsDataRecords?.Count() > 0)
-                    {
-                        StringBuilder pageIds = new StringBuilder();
-                        pageIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.PageId != null && item.PageId > 0)
-                            .Select(item => string.Format("Id.Equals({0})", item.PageId))) + ")");
-                        if (!pageIds.ToString().Equals("()"))
-                        {
-                            pageRecords = nISEntitiesDataContext.PageRecords.Where(pageIds.ToString()).ToList();
-                        }
-
-                        StringBuilder customerIds = new StringBuilder();
-                        customerIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.CustomerId > 0)
-                            .Select(item => string.Format("Id.Equals({0})", item.CustomerId))) + ")");
-                        customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(customerIds.ToString()).ToList();
-
-                        StringBuilder widgetIds = new StringBuilder();
-                        widgetIds.Append("(" + string.Join(" or ", AnalyticsDataRecords.Where(item => item.WidgetId != null && item.WidgetId > 0)
-                            .Select(item => string.Format("Id.Equals({0})", item.WidgetId))) + ")");
-                        if (!widgetIds.ToString().Equals("()"))
-                        {
-                            widgetRecords = nISEntitiesDataContext.WidgetRecords.Where(widgetIds.ToString()).ToList();
-                        }
                     }
                 }
 
@@ -199,43 +121,10 @@ namespace nIS
                     data.WidgetId = item.WidgetId == null ? 0 : (long)item.WidgetId;
                     data.EventDate = DateTime.SpecifyKind((DateTime)item.EventDate, DateTimeKind.Utc);
                     data.EventType = item.EventType;
-                    if (customerMasterRecords.Any(i => i.Id == data.CustomerId))
-                    {
-                        var customer = customerMasterRecords.Where(i => i.Id == data.CustomerId)?.FirstOrDefault();
-                        data.CustomerName = customer.FirstName + " " + customer.LastName;
-                    }
-                    if (data.PageId > 0 && pageRecords.Any(i => i.Id == data.PageId))
-                    {
-                        var customer = pageRecords.Where(i => i.Id == data.PageId)?.FirstOrDefault();
-                        data.PageName = customer.DisplayName;
-                        data.PageTypeId = customer.PageTypeId;
-                        if (data.PageTypeId == 1)
-                        {
-                            data.PageTypeName = "Home";
-                        }
-                        else if (data.PageTypeId == 2)
-                        {
-                            data.PageTypeName = "Saving Account";
-                        }
-                        else if (data.PageTypeId == 3)
-                        {
-                            data.PageTypeName = "Current Account";
-                        }
-                    }
-                    else
-                    {
-                        data.PageName = "";
-                        data.PageTypeName = "";
-                    }
-                    if (data.WidgetId > 0 && widgetRecords.Any(i => i.Id == data.WidgetId))
-                    {
-                        var customer = widgetRecords.Where(i => i.Id == data.WidgetId)?.FirstOrDefault();
-                        data.Widgetname = customer.DisplayName;
-                    }
-                    else
-                    {
-                        data.Widgetname = "";
-                    }
+                    data.CustomerName = item.CustomerName;
+                    data.PageName = item.PageName ?? "";
+                    data.Widgetname = item.WidgetName ?? "";
+                    data.PageTypeName = item.PageTypeName ?? "";
                     AnalyticsDatas.Add(data);
                 });
                 if (AnalyticsDatas?.Count() > 0)
@@ -272,60 +161,7 @@ namespace nIS
                 string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-
-                    if (searchParameter.Pagename != null && searchParameter.Pagename != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.Pagename));
-                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        var userRecordIds = nISEntitiesDataContext.PageRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("PageId={0} ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                        else
-                        {
-                            return AnalyticsDatas.Count;
-                        }
-                    }
-                    if (searchParameter.WidgetName != null && searchParameter.WidgetName != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("DisplayName.Contains(\"{0}\")", searchParameter.WidgetName));
-                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        var userRecordIds = nISEntitiesDataContext.WidgetRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("WidgetId={0} ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                        else
-                        {
-                            return AnalyticsDatas.Count;
-                        }
-                    }
-                    if (searchParameter.CustomerName != null && searchParameter.CustomerName != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", searchParameter.CustomerName));
-                        var userRecordIds = nISEntitiesDataContext.CustomerMasterRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("CustomerId={0} ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                        else
-                        {
-                            return AnalyticsDatas.Count;
-                        }
-                    }
-
-                    count = nISEntitiesDataContext.AnalyticsDataRecords.Where(whereClause).OrderBy(searchParameter.SortParameter.SortColumn + " " + searchParameter.SortParameter.SortOrder.ToString().ToLower()).ToList().Count;
-
+                    count = nISEntitiesDataContext.View_SourceDataRecord.Where(whereClause).ToList().Count;
                 }
             }
             catch (Exception ex)
@@ -434,6 +270,7 @@ namespace nIS
         /// Generate string for dynamic linq.
         /// </summary>
         /// <param name="searchParameter">Role search Parameters</param>
+        /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns a string.
         /// </returns>
@@ -441,30 +278,18 @@ namespace nIS
         {
             StringBuilder queryString = new StringBuilder();
 
-            //if (searchParameter.SearchMode == SearchMode.Equals)
-            //{
-            //    if (validationEngine.IsValidLong(searchParameter.Identifier))
-            //    {
-            //        queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-            //    }
-            //    if (validationEngine.IsValidText(searchParameter.Name))
-            //    {
-            //        queryString.Append(string.Format("Name.Equals(\"{0}\") and ", searchParameter.Name));
-            //    }
-            //}
-            //if (searchParameter.SearchMode == SearchMode.Contains)
-            //{
-            //    if (validationEngine.IsValidText(searchParameter.Name))
-            //    {
-            //        queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
-            //    }
-            //}
-            //if (validationEngine.IsValidText(searchParameter.Status))
-            //{
-            //    queryString.Append(string.Format("Status.Equals(\"{0}\") and ", searchParameter.Status));
-            //}
-
-
+            if (validationEngine.IsValidText(searchParameter.Pagename))
+            {
+                queryString.Append(string.Format("PageName.Contains(\"{0}\") and ", searchParameter.Pagename));
+            }
+            if (validationEngine.IsValidText(searchParameter.WidgetName))
+            {
+                queryString.Append(string.Format("WidgetName.Contains(\"{0}\") and ", searchParameter.WidgetName));
+            }
+            if (validationEngine.IsValidText(searchParameter.CustomerName))
+            {
+                queryString.Append(string.Format("CustomerName.Contains(\"{0}\") and ", searchParameter.CustomerName));
+            }
             if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
             {
                 DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);

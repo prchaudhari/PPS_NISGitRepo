@@ -15,21 +15,18 @@ namespace nIS
     public partial class View_SourceDataRecord
     {
         public long Id { get; set; }
-        public string Name { get; set; }
         public long StatementId { get; set; }
-        public string Description { get; set; }
-        public long DayOfMonth { get; set; }
-        public long HourOfDay { get; set; }
-        public long MinuteOfDay { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
-        public string Status { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
+        public long CustomerId { get; set; }
+        public string AccountId { get; set; }
+        public Nullable<long> PageWidgetId { get; set; }
+        public Nullable<long> PageId { get; set; }
+        public Nullable<long> WidgetId { get; set; }
+        public System.DateTime EventDate { get; set; }
+        public string EventType { get; set; }
         public string TenantCode { get; set; }
-        public Nullable<System.DateTime> LastUpdatedDate { get; set; }
-        public long UpdateBy { get; set; }
-        public bool IsExportToPDF { get; set; }
-        public string StatementName { get; set; }
+        public string PageName { get; set; }
+        public string WidgetName { get; set; }
+        public string CustomerName { get; set; }
+        public string PageTypeName { get; set; }
     }
 }

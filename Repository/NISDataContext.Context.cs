@@ -20,7 +20,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                                        : base(connectionString)
+                                               : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -72,10 +72,10 @@ namespace nIS
         public virtual DbSet<StatementMetadataRecord> StatementMetadataRecords { get; set; }
         public virtual DbSet<BatchMasterRecord> BatchMasterRecords { get; set; }
         public virtual DbSet<AnalyticsDataRecord> AnalyticsDataRecords { get; set; }
-        public virtual DbSet<View_PageRecord> View_PageRecord { get; set; }
         public virtual DbSet<View_ScheduleRecord> View_ScheduleRecord { get; set; }
-        public virtual DbSet<View_SourceDataRecord> View_SourceDataRecord { get; set; }
-        public virtual DbSet<View_StatementDefinitionRecord> View_StatementDefinitionRecord { get; set; }
         public virtual DbSet<View_UserRecord> View_UserRecord { get; set; }
+        public virtual DbSet<View_PageRecord> View_PageRecord { get; set; }
+        public virtual DbSet<View_StatementDefinitionRecord> View_StatementDefinitionRecord { get; set; }
+        public virtual DbSet<View_SourceDataRecord> View_SourceDataRecord { get; set; }
     }
 }

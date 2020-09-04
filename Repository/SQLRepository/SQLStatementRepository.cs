@@ -254,36 +254,14 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(statementSearchParameter, tenantCode);
-
-                IList<StatementRecord> statementRecords = new List<StatementRecord>();
-                IList<UserRecord> statementOwnerUserRecords = new List<UserRecord>();
-                IList<UserRecord> statementPublishedUserRecords = new List<UserRecord>();
+                IList<View_StatementDefinitionRecord> view_StatementDefinitions = new List<View_StatementDefinitionRecord>();
                 IList<StatementPage> statementPages = new List<StatementPage>();
+
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (statementSearchParameter.StatementOwner != null && statementSearchParameter.StatementOwner != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", statementSearchParameter.StatementOwner));
-
-                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        string query = queryString.ToString();
-                        var userRecordIds = nISEntitiesDataContext.UserRecords.Where(query).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("Owner.Equals({0}) ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                        else
-                        {
-                            return statements;
-                        }
-                    }
-
                     if (statementSearchParameter.PagingParameter.PageIndex > 0 && statementSearchParameter.PagingParameter.PageSize > 0)
                     {
-                        statementRecords = nISEntitiesDataContext.StatementRecords
+                        view_StatementDefinitions = nISEntitiesDataContext.View_StatementDefinitionRecord
                         .OrderBy(statementSearchParameter.SortParameter.SortColumn + " " + statementSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
                         .Skip((statementSearchParameter.PagingParameter.PageIndex - 1) * statementSearchParameter.PagingParameter.PageSize)
@@ -292,42 +270,25 @@ namespace nIS
                     }
                     else
                     {
-                        statementRecords = nISEntitiesDataContext.StatementRecords
+                        view_StatementDefinitions = nISEntitiesDataContext.View_StatementDefinitionRecord
                         .Where(whereClause)
                         .OrderBy(statementSearchParameter.SortParameter.SortColumn + " " + statementSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
                     }
 
-                    if (statementRecords != null && statementRecords.ToList().Count > 0)
+                    if (view_StatementDefinitions != null && view_StatementDefinitions.ToList().Count > 0)
                     {
-                        StringBuilder userIdentifier = new StringBuilder();
-                        userIdentifier.Append("(" + string.Join(" or ", statementRecords.Select(item => string.Format("Id.Equals({0})", item.Owner))) + ")");
-                        userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        statementOwnerUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
-
-                        var publisheByUserIds = statementRecords.Where(itm => itm.PublishedBy != 0).ToList();
-                        if (publisheByUserIds.Count > 0)
-                        {
-                            userIdentifier = new StringBuilder();
-                            userIdentifier.Append("(" + string.Join(" or ", publisheByUserIds.Select(item => string.Format("Id.Equals({0})", item.PublishedBy))) + ")");
-                            userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
-                            statementPublishedUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
-                        }
                         if (statementSearchParameter.IsStatementPagesRequired == true)
                         {
-
                             IList<StatementPageMapRecord> statementPageRecordMaps = new List<StatementPageMapRecord>();
                             StringBuilder mapRecordIdentifier = new StringBuilder();
-                            mapRecordIdentifier.Append("(" + string.Join(" or ", statementRecords.Select(item => string.Format("StatementId.Equals({0})", item.Id))) + ")");
+                            mapRecordIdentifier.Append("(" + string.Join(" or ", view_StatementDefinitions.Select(item => string.Format("StatementId.Equals({0})", item.Id))) + ")");
                             statementPageRecordMaps = nISEntitiesDataContext.StatementPageMapRecords.Where(mapRecordIdentifier.ToString()).OrderBy(item => item.SequenceNumber).ToList();
                             if (statementPageRecordMaps?.Count > 0)
                             {
-                                IList<PageRecord> pages = new List<PageRecord>();
-
                                 StringBuilder pageIdentifier = new StringBuilder();
                                 pageIdentifier.Append("(" + string.Join(" or ", statementPageRecordMaps.Select(item => string.Format("Id.Equals({0})", item.ReferencePageId))) + ")");
-                                pages = nISEntitiesDataContext.PageRecords.Where(pageIdentifier.ToString()).ToList();
-
+                                var pages = nISEntitiesDataContext.PageRecords.Where(pageIdentifier.ToString()).ToList();
                                 statementPageRecordMaps?.ToList().ForEach(statementWidgetRecord =>
                                 {
                                     statementPages.Add(new StatementPage
@@ -347,9 +308,9 @@ namespace nIS
                     }
                 }
 
-                if (statementRecords != null && statementRecords.ToList().Count > 0)
+                if (view_StatementDefinitions != null && view_StatementDefinitions.ToList().Count > 0)
                 {
-                    statementRecords?.ToList().ForEach(statementRecord =>
+                    view_StatementDefinitions?.ToList().ForEach(statementRecord =>
                     {
                         statements.Add(new Statement
                         {
@@ -359,19 +320,18 @@ namespace nIS
                             IsActive = statementRecord.IsActive,
                             LastUpdatedDate = statementRecord.LastUpdatedDate ?? (DateTime)statementRecord.LastUpdatedDate,
                             Owner = statementRecord.Owner,
-                            StatementOwnerName = statementOwnerUserRecords.Where(usr => usr.Id == statementRecord.Owner).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName,
+                            StatementOwnerName = statementRecord.OwnerName,
                             StatementPages = statementPages?.Where(item => item.StatementId == statementRecord.Id)?.ToList(),
                             Status = statementRecord.Status,
                             Version = statementRecord.Version,
                             PublishedBy = statementRecord.PublishedBy,
-                            StatementPublishedByUserName = statementRecord.PublishedBy > 0 ? statementPublishedUserRecords.Where(usr => usr.Id == statementRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
+                            StatementPublishedByUserName = statementRecord.PublishedByName,
                             PublishedOn = statementRecord.PublishedOn != null ? DateTime.SpecifyKind((DateTime)statementRecord.PublishedOn, DateTimeKind.Utc) : DateTime.MinValue,
                             UpdateBy = statementRecord.UpdateBy,
                             Description = statementRecord.Description
                         });
                     });
                 }
-
             }
             catch (Exception ex)
             {
@@ -395,25 +355,12 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (statementSearchParameter.StatementOwner != null && statementSearchParameter.StatementOwner != string.Empty)
-                    {
-                        StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Format("FirstName.Contains(\"{0}\") or LastName.Contains(\"{1}\") ", statementSearchParameter.StatementOwner, statementSearchParameter.StatementOwner));
-                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
-                        var userRecordIds = nISEntitiesDataContext.UserRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
-                        if (userRecordIds.Count > 0)
-                        {
-                            queryString = new StringBuilder();
-                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("Owner.Equals({0}) ", item))) + ") ");
-                            whereClause = whereClause + queryString.ToString();
-                        }
-                    }
-                    statementCount = nISEntitiesDataContext.StatementRecords.Where(whereClause.ToString()).Count();
+                    statementCount = nISEntitiesDataContext.View_StatementDefinitionRecord.Where(whereClause.ToString()).Count();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
             return statementCount;
@@ -2531,6 +2478,10 @@ namespace nIS
                 {
                     queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
                 }
+            }
+            if (validationEngine.IsValidText(searchParameter.StatementOwner))
+            {
+                queryString.Append(string.Format("OwnerName.Contains(\"{0}\") and ", searchParameter.StatementOwner));
             }
             if (validationEngine.IsValidText(searchParameter.Status))
             {
