@@ -390,10 +390,10 @@ namespace nIS
                 {
                     roleCount = nISEntitiesDataContext.RoleRecords.Where(whereClause.ToString()).Count();
                     //To remove super admin role count
-                    if ((roleSearchParameter.Identifier == string.Empty || roleSearchParameter.Identifier == "0"))
-                    {
-                        roleCount--;
-                    }
+                    //if ((roleSearchParameter.Identifier == string.Empty || roleSearchParameter.Identifier == "0"))
+                    //{
+                    //    roleCount--;
+                    //}
 
                 }
             }
@@ -560,7 +560,10 @@ namespace nIS
             {
                 queryString.Append(string.Format("IsDeleted.Equals(true) and "));
             }
-
+            if(searchParameter.IsCallFromListPage)
+            {
+                queryString.Append(string.Format("!Name.Equals(\"{0}\") and ", "Super Admin"));
+            }
             queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }

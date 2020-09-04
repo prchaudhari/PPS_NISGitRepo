@@ -134,43 +134,7 @@ export class ListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  public handlePage(e: any) {
-    this.currentPage = e.pageIndex;
-    this.pageSize = e.pageSize;
-    //this.iterator();
-    this.getUserdetail(null);
-
-
-
-    //let searchParameter: any = {};
-    //searchParameter.PagingParameter = {};
-    //searchParameter.PagingParameter.PageIndex = this.currentPage+1;
-    //searchParameter.PagingParameter.PageSize = this.pageSize;
-    //searchParameter.SortParameter = {};
-    //searchParameter.SortParameter.SortColumn = Constants.UserName;
-    //searchParameter.SortParameter.SortOrder = Constants.Ascending;
-    //searchParameter.SearchMode = Constants.Contains;
-    //if (this.userFormGroup.value.FirstName != null) {
-    //  searchParameter.FirstName = this.UserFilter.FirstName.trim();
-    //}
-    //if (this.userFormGroup.value.EmailAddress != null) {
-    //  searchParameter.EmailAddress = this.UserFilter.EmailAddress.trim();
-    //}
-    //if (this.UserFilter.RoleIdentifier != null) {
-    //  searchParameter.RoleIdentifier = this.UserFilter.RoleIdentifier;
-    //}
-    //searchParameter.LockStatus = this.UserFilter.LockStatus;
-    //searchParameter.ActivationStatus = this.UserFilter.ActivationStatus;
-  }
-
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const part = this.array.slice(start, end);
-    this.dataSource = part;
-    this.dataSource.sort = this.sort;
-  }
-
+ 
   constructor(private http: HttpClient,
     private formBuilder: FormBuilder,
     private service: UserService,
@@ -238,6 +202,40 @@ export class ListComponent implements OnInit {
     this.iterator();
   }
 
+  public handlePage(e: any) {
+    this.currentPage = e.pageIndex;
+    this.pageSize = e.pageSize;
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage+1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = Constants.UserName;
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.userFormGroup.value.FirstName != null) {
+      searchParameter.FirstName = this.UserFilter.FirstName.trim();
+    }
+    if (this.userFormGroup.value.EmailAddress != null) {
+      searchParameter.EmailAddress = this.UserFilter.EmailAddress.trim();
+    }
+    if (this.UserFilter.RoleIdentifier != null) {
+      searchParameter.RoleIdentifier = this.UserFilter.RoleIdentifier;
+    }
+    searchParameter.LockStatus = this.UserFilter.LockStatus;
+    searchParameter.ActivationStatus = this.UserFilter.ActivationStatus;
+    this.getUserdetail(searchParameter);
+  }
+
+  private iterator() {
+    const end = (this.currentPage + 1) * this.pageSize;
+    const start = this.currentPage * this.pageSize;
+    const part = this.array.slice(start, end);
+    this.dataSource = part;
+    this.dataSource.sort = this.sort;
+  }
+
+
   ngOnInit() {
     // this.getUserdetail();
     this.userFormGroup = this.formBuilder.group({
@@ -253,7 +251,6 @@ export class ListComponent implements OnInit {
     this.loggedInUserIdentifier = userClaimsDetail.UserIdentifier;
     this.fetchUserRecord();
   }
-
 
   //Get api for fetching User details--
   async getUserdetail(searchParameter) {
@@ -361,6 +358,7 @@ export class ListComponent implements OnInit {
     searchParameter.ActivationStatus = this.UserFilter.ActivationStatus;
     this.getUserdetail(searchParameter);
   }
+
   async getRoles() {
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
@@ -378,6 +376,7 @@ export class ListComponent implements OnInit {
       this.roleList.push(role);
     })
   }
+
   //Function to navigate to view page of perticular user detail--
   viewUser(user) {
     let queryParams = {
@@ -516,6 +515,7 @@ export class ListComponent implements OnInit {
   navigateToAddUser() {
     this.router.navigate(['user', 'userAdd']);
   }
+
   public onRoleSelected(event) {
     const value = event.target.value;
     if (value == "0") {
@@ -526,6 +526,7 @@ export class ListComponent implements OnInit {
 
     }
   }
+
   public onLockStatusSelected(event) {
     const value = event.target.value;
     if (value == "0") {
@@ -540,6 +541,7 @@ export class ListComponent implements OnInit {
 
     }
   }
+
   public onActiveStatusSelected(event) {
     const value = event.target.value;
     if (value == "0") {
@@ -562,8 +564,8 @@ export class ListComponent implements OnInit {
     this.isFilterDone = true;
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
-    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.PagingParameter.PageIndex = 1;
+    searchParameter.PagingParameter.PageSize = 5;
     searchParameter.SortParameter = {};
     searchParameter.SortParameter.SortColumn = Constants.UserName;
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
@@ -613,7 +615,7 @@ export class ListComponent implements OnInit {
     else {
       let searchParameter: any = {};
       searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+      searchParameter.PagingParameter.PageIndex = 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
       searchParameter.SortParameter.SortColumn = Constants.UserName;

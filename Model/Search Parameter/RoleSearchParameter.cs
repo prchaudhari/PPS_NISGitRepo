@@ -36,6 +36,11 @@ namespace nIS
         /// </summary>
         private bool isRequiredRolePrivileges = false;
 
+        /// <summary>
+        ///isCallFromListPage
+        /// </summary>
+        private bool isCallFromListPage = false;
+
         #endregion
 
         #region Public Members
@@ -97,6 +102,21 @@ namespace nIS
             set
             {
                 this.isRequiredRolePrivileges = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets IsCallFromListPage
+        /// </summary>
+        public bool IsCallFromListPage
+        {
+            get
+            {
+                return this.isCallFromListPage;
+            }
+            set
+            {
+                this.isCallFromListPage = value;
             }
         }
 
