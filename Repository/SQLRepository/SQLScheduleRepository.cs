@@ -1366,10 +1366,10 @@ namespace nIS
                                 nISEntitiesDataContext.SaveChanges();
                             }
                         }
-                        //else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
-                        //{
-                        //    this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, outputLocation);
-                        //}
+                        else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+                        {
+                            this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, outputLocation);
+                        }
                     }
 
                     var logDetailsRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLog.Id)?.ToList();
