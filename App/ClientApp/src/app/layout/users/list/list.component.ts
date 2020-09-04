@@ -179,27 +179,54 @@ export class ListComponent implements OnInit {
   }
 
   sortData(sort: MatSort) {
-    const data = this.userLists.slice();
+    const data = this.roleList.slice();
     if (!sort.active || sort.direction === '') {
       this.sortedUserList = data;
       return;
     }
-
-    this.sortedUserList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compareStr(a.FirstName, b.FirstName, isAsc);
-        case 'email': return compareStr(a.EmailAddress, b.EmailAddress, isAsc);
-        case 'mobileno': return compareNumber(a.ContactNumber, b.ContactNumber, isAsc);
-        case 'role': return compareStr(a.Roles[0].Name, b.Roles[0].Name, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<any>(this.sortedUserList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedUserList;
-    this.totalSize = this.array.length;
-    this.iterator();
+    var sortColumn = '';
+    var sortOrder;
+    if (sort.direction == 'asc') {
+      sortOrder = Constants.Ascending;
+    }
+    else {
+      sortOrder = Constants.Descending;
+    }
+    if (sort.active == 'name') {
+      sortColumn = 'FirstName';
+    }
+    else if (sort.active == 'email') {
+      sortColumn = 'EmailAddress';
+    }
+    else if (sort.active == 'mobileno') {
+      sortColumn = 'ContactNumber';
+    }
+    else if (sort.active == 'active') {
+      sortColumn = 'IsActive';
+    }
+    else if (sort.active == 'lock') {
+      sortColumn = 'IsLocked';
+    }
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = sortColumn;
+    searchParameter.SortParameter.SortOrder = sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.userFormGroup.value.FirstName != null) {
+      searchParameter.FirstName = this.UserFilter.FirstName.trim();
+    }
+    if (this.userFormGroup.value.EmailAddress != null) {
+      searchParameter.EmailAddress = this.UserFilter.EmailAddress.trim();
+    }
+    if (this.UserFilter.RoleIdentifier != null) {
+      searchParameter.RoleIdentifier = this.UserFilter.RoleIdentifier;
+    }
+    searchParameter.LockStatus = this.UserFilter.LockStatus;
+    searchParameter.ActivationStatus = this.UserFilter.ActivationStatus;
+    this.getUserdetail(searchParameter);
   }
 
   public handlePage(e: any) {

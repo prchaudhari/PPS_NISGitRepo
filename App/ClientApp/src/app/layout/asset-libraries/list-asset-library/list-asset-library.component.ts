@@ -41,7 +41,8 @@ export class ListAssetLibraryComponent implements OnInit {
   public isFilterDone = false;
   public totalRecordCount = 0;
   public filterAsstLibraryName = '';
-
+  public sortColumn = 'Name';
+  public sortOrder = Constants.Ascending;
   dataSource = new MatTableDataSource<any>();
   public sortedAssetLibraryList: AssetLibrary[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -57,7 +58,7 @@ export class ListAssetLibraryComponent implements OnInit {
   }
 
   resetAssetFilterForm() {
-    this.assetLibraryFilterForm.controls['filterAssetLibraryName'].setValue('');  
+    this.assetLibraryFilterForm.controls['filterAssetLibraryName'].setValue('');
     this.filterAsstLibraryName = '';
     this.currentPage = 0;
   }
@@ -89,8 +90,8 @@ export class ListAssetLibraryComponent implements OnInit {
   ngOnInit() {
     this.getAssetLibraryRecords(null)
     this.assetLibraryFilterForm = this.fb.group({
-        filterAssetLibraryName: [null],
-      });
+      filterAssetLibraryName: [null],
+    });
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
@@ -126,7 +127,7 @@ export class ListAssetLibraryComponent implements OnInit {
       });
     }
     this.dataSource = new MatTableDataSource<AssetLibrary>(this.assetLibraryList);
-    //this.dataSource.paginator = this.paginator;
+   
     this.dataSource.sort = this.sort;
     this.array = this.assetLibraryList;
     this.totalSize = this.totalRecordCount;
@@ -165,19 +166,34 @@ export class ListAssetLibraryComponent implements OnInit {
       return;
     }
 
-    this.sortedAssetLibraryList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compareStr(a.Name, b.Name, isAsc);
-        case 'description': return compareStr(a.Description == null ? '' : a.Description, b.Description == null ? '' : b.Description, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<AssetLibrary>(this.sortedAssetLibraryList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedAssetLibraryList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }
+    else {
+      this.sortOrder = Constants.Descending;
+    }
+    if (sort.active == 'name') {
+      this.sortColumn = 'Name';
+    }
+    else if (sort.active == 'description') {
+      this.sortColumn = 'Description';
+    }
+    else if (sort.active == 'active') {
+      this.sortColumn = 'IsActive';
+    }
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    this.filterAsstLibraryName = this.assetLibraryFilterForm.value.filterAssetLibraryName != null ? this.assetLibraryFilterForm.value.filterAssetLibraryName.trim() : "";
+    searchParameter.Name = this.filterAsstLibraryName;
+    this.getAssetLibraryRecords(searchParameter);
+
   }
 
   ngAfterViewInit() {
