@@ -50,6 +50,15 @@ namespace nIS
         /// Returns the list of pages
         /// </returns>
         IList<Page> GetPages(PageSearchParameter pageSearchParameter, string tenantCode);
+        /// <summary>
+        /// This method gets the specified list of pages from page repository.
+        /// </summary>
+        /// <param name="pageSearchParameter">The page search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of pages
+        /// </returns>
+        IList<Page> GetPagesForList(PageSearchParameter pageSearchParameter, string tenantCode);
 
         /// <summary>
         /// This method reference to get page count

@@ -58,7 +58,42 @@ export class TemplateService {
                 }
             });
         return response
-    }
+  }
+
+  async getTemplatesForlist(searchParameter): Promise<any> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.pageGetPagesForListUrl;
+    this.uiLoader.start();
+    var response: any = {};
+    await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          if (httpEvent["status"] === 200) {
+            this.templateList = [];
+            this.uiLoader.stop();
+            httpEvent['body'].forEach(pageObject => {
+              this.templateList = [...this.templateList, pageObject];
+            });
+            response.templateList = this.templateList;
+            response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
+          }
+          else {
+            this.templateList = [];
+            response.templateList = this.templateList;
+            response.RecordCount = 0;
+            this.uiLoader.stop();
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.templateList = [];
+        this.uiLoader.stop();
+        if (error["error"] != null) {
+          let errorMessage = error["error"].Error["Message"];
+          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+        }
+      });
+    return response
+  }
 
     //service method to save or update template records
     public async saveTemplate(postData, pageEditModeOn): Promise<boolean> {

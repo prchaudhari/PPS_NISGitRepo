@@ -135,6 +135,28 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method helps to get roles list based on the search parameters.
+        /// </summary>
+        /// <param name="roleSearchParameter"></param>
+        /// <returns>List of roles</returns>
+        [HttpPost]
+        public IList<Page> GetPagesForList(PageSearchParameter pageSearchParameter)
+        {
+            IList<Page> pages = new List<Page>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                pages = this.pageManager.GetPagesForList(pageSearchParameter, tenantCode);
+                HttpContext.Current.Response.AppendHeader("recordCount", this.pageManager.GetPageCount(pageSearchParameter, tenantCode).ToString());
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return pages;
+        }
+        /// <summary>
         /// This method helps to publish page.
         /// </summary>
         /// <param name="pageIdentifier"></param>

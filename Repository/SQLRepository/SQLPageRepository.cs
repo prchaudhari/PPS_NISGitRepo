@@ -335,6 +335,118 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method gets the specified list of pages from page repository.
+        /// </summary>
+        /// <param name="pageSearchParameter">The page search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of pages
+        /// </returns>
+        public IList<Page> GetPagesForList(PageSearchParameter pageSearchParameter, string tenantCode)
+        {
+            IList<Page> pages = new List<Page>();
+
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(pageSearchParameter, tenantCode);
+
+                IList<View_PageRecord> pageRecords = new List<View_PageRecord>();
+                IList<UserRecord> pageOwnerUserRecords = new List<UserRecord>();
+                IList<UserRecord> pagePublishedUserRecords = new List<UserRecord>();
+                IList<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    if (pageSearchParameter.PageOwner != null && pageSearchParameter.PageOwner != string.Empty)
+                    {
+                        StringBuilder queryString = new StringBuilder();
+                        queryString.Append(string.Format("(FirstName+\" \"+LastName).Contains(\"{0}\")", pageSearchParameter.PageOwner));
+
+                        queryString.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        var userRecordIds = nISEntitiesDataContext.UserRecords.Where(queryString.ToString()).ToList().Select(itm => itm.Id).ToList();
+                        if (userRecordIds.Count > 0)
+                        {
+                            queryString = new StringBuilder();
+                            queryString.Append(" and (" + string.Join("or ", userRecordIds.Select(item => string.Format("Owner.Equals({0}) ", item))) + ") ");
+                            whereClause = whereClause + queryString.ToString();
+                        }
+                    }
+
+                    if (pageSearchParameter.PagingParameter.PageIndex > 0 && pageSearchParameter.PagingParameter.PageSize > 0)
+                    {
+                        pageRecords = nISEntitiesDataContext.View_PageRecord
+                        .OrderBy(pageSearchParameter.SortParameter.SortColumn + " " + pageSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((pageSearchParameter.PagingParameter.PageIndex - 1) * pageSearchParameter.PagingParameter.PageSize)
+                        .Take(pageSearchParameter.PagingParameter.PageSize)
+                        .ToList();
+                    }
+                    else
+                    {
+                        pageRecords = nISEntitiesDataContext.View_PageRecord
+                        .Where(whereClause)
+                        .OrderBy(pageSearchParameter.SortParameter.SortColumn + " " + pageSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
+                    }
+
+                    if (pageRecords != null && pageRecords.ToList().Count > 0)
+                    {
+                        StringBuilder userIdentifier = new StringBuilder();
+                        userIdentifier.Append("(" + string.Join(" or ", pageRecords.Select(item => string.Format("Id.Equals({0})", item.Owner))) + ")");
+                        userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
+                        pageOwnerUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
+
+                        var publisheByUserIds = pageRecords.Where(itm => itm.PublishedBy != null).ToList();
+                        if (publisheByUserIds.Count > 0)
+                        {
+                            userIdentifier = new StringBuilder();
+                            userIdentifier.Append("(" + string.Join(" or ", publisheByUserIds.Select(item => string.Format("Id.Equals({0})", item.PublishedBy))) + ")");
+                            userIdentifier.Append(string.Format(" and IsDeleted.Equals(false)"));
+                            pagePublishedUserRecords = nISEntitiesDataContext.UserRecords.Where(userIdentifier.ToString()).ToList();
+                        }
+                        pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(itm => itm.IsActive == true && itm.IsDeleted == false).ToList();
+                    }
+                }
+
+                if (pageRecords != null && pageRecords.ToList().Count > 0)
+                {
+                    pageRecords?.ToList().ForEach(pageRecord =>
+                    {
+                        IList<PageWidget> pageWidgets = new List<PageWidget>();
+
+                        pages.Add(new Page
+                        {
+                            Identifier = pageRecord.Id,
+                            DisplayName = pageRecord.DisplayName,
+                            CreatedDate = pageRecord.CreatedDate ?? (DateTime)pageRecord.CreatedDate,
+                            IsActive = pageRecord.IsActive,
+                            IsDeleted = pageRecord.IsDeleted,
+                            LastUpdatedDate = pageRecord.LastUpdatedDate ?? (DateTime)pageRecord.LastUpdatedDate,
+                            PageOwner = pageRecord.Owner,
+                            PageOwnerName = pageOwnerUserRecords.Where(usr => usr.Id == pageRecord.Owner).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName,
+                            PageWidgets = pageWidgets,
+                            Status = pageRecord.Status,
+                            Version = pageRecord.Version,
+                            PageTypeId = pageRecord.PageTypeId,
+                            PageTypeName = pageTypeRecords.FirstOrDefault(itm => itm.Id == pageRecord.PageTypeId)?.Name,
+                            PublishedBy = pageRecord.PublishedBy ?? 0,
+                            PagePublishedByUserName = pageRecord.PublishedBy != null ? pagePublishedUserRecords.Where(usr => usr.Id == pageRecord.PublishedBy).ToList()?.Select(itm => new { FullName = itm.FirstName + " " + itm.LastName })?.FirstOrDefault().FullName : "",
+                            PublishedOn = pageRecord.PublishedOn != null ? DateTime.SpecifyKind((DateTime)pageRecord.PublishedOn, DateTimeKind.Utc) : DateTime.MinValue,
+                            UpdatedBy = pageRecord.UpdateBy ?? 0,
+                        });
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return pages;
+        }
+
+        /// <summary>
         /// This method reference to get page count
         /// </summary>
         /// <param name="pageSearchParameter"></param>

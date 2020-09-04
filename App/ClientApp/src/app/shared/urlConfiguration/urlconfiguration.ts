@@ -53,6 +53,7 @@ export class URLConfiguration {
 
   //Page Url Method
   public static get pageGetUrl(): string { return "Page/List" };
+  public static get pageGetPagesForListUrl(): string { return "Page/GetPagesForList" };
   public static get pageAddUrl(): string { return "Page/Add" };
   public static get pageUpdateUrl(): string { return "Page/Update" };
   public static get pageDeleteUrl(): string { return "Page/Delete" };

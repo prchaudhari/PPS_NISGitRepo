@@ -41,7 +41,7 @@ export class ListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'pagetype', 'version', 'owner', 'publishedBy', 'date', 'status', 'actions'];
   dataSource = new MatTableDataSource<any>();
   public userClaimsRolePrivilegeOperations: any[] = [];
-  
+
   public filterDsplyName = '';
   public filterPageTypeId: number = 0;
   public filterPageStatus: string = '';
@@ -189,7 +189,7 @@ export class ListComponent implements OnInit {
       searchParameter.EndDate = new Date(this.filterPublishEndDate.setHours(23, 59, 59));
       //searchParameter.SortParameter.SortColumn = 'PublishedOn';
     }
-    var response = await templateService.getTemplates(searchParameter);
+    var response = await templateService.getTemplatesForlist(searchParameter);
     this.templateList = response.templateList;
     this.totalRecordCount = response.RecordCount;
     if (this.templateList.length == 0 && this.isFilterDone == true) {

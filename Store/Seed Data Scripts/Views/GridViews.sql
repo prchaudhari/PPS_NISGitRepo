@@ -72,10 +72,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW NIS.View_SourceData
 AS
-SELECT sc.*, s.Name As StatementName
-FROM NIS.Schedule sc 
-INNER JOIN NIS.Statement s ON sc.StatementId = s.Id
-Go
 SELECT ad.*, p.DisplayName AS PageName, w.DisplayName AS WidgetName, cm.FirstName+' '+cm.MiddleName+' '+cm.LastName AS CustomerName  
 FROM NIS.AnalyticsData ad 
 INNER JOIN NIS.CustomerMaster cm ON ad.CustomerId = cm.Id
