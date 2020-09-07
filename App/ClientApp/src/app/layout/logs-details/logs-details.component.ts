@@ -53,7 +53,8 @@ export class LogsDetailsComponent implements OnInit {
   public totalRecordCount = 0;
   public filterUserIdValue = '';
   public filterLogStatus = '';
-
+  public sortColumn = 'Name';
+  public sortOrder = Constants.Ascending;
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
@@ -149,21 +150,42 @@ export class LogsDetailsComponent implements OnInit {
       return;
     }
 
-    this.sortedScheduleLogList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'UserID': return compareStr(a.CustomerName, b.CustomerName, isAsc);
-        case 'renderEngineName': return compareStr(a.RenderEngineName, b.RenderEngineName, isAsc);
-        case 'status': return compareStr(a.Status, b.Status, isAsc);
-        case 'date': return compareDate(a.CreateDate, b.CreateDate, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<ScheduleLogDetail>(this.sortedScheduleLogList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedScheduleLogList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }
+    else {
+      this.sortOrder = Constants.Descending;
+    }
+    
+    if (sort.active == 'UserID') {
+      this.sortColumn = 'CustomerName';
+    }
+    else if (sort.active == 'renderEngineName') {
+      this.sortColumn = 'RenderEngineName';
+    }
+    else if (sort.active == 'date') {
+      this.sortColumn = 'CreationDate';
+    }
+    else if (sort.active == 'status') {
+      this.sortColumn = 'Status';
+    }
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.ScheduleLogFilterForm.value.filterUserId != null && this.ScheduleLogFilterForm.value.filterUserId != '') {
+      this.filterUserIdValue = this.ScheduleLogFilterForm.value.filterUserId.trim();
+      searchParameter.CustomerName = this.ScheduleLogFilterForm.value.filterUserId.trim();
+    }
+    if (this.ScheduleLogFilterForm.value.filterStatus != null && this.ScheduleLogFilterForm.value.filterStatus != 0) {
+      this.filterLogStatus = this.ScheduleLogFilterForm.value.filterStatus;
+      searchParameter.Status = this.ScheduleLogFilterForm.value.filterStatus;
+    }
+    this.getScheduleLogs(searchParameter);
   }
 
   async getScheduleLogs(searchParameter) {
