@@ -51,7 +51,8 @@ export class LogsComponent implements OnInit {
   public filterScheduleNameValue = '';
   public filterLogStatus = '';
   public filterExecutionDate = null;
-
+  public sortColumn = 'Name';
+  public sortOrder = Constants.Ascending;
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
@@ -130,23 +131,49 @@ export class LogsComponent implements OnInit {
       this.sortedScheduleLogList = data;
       return;
     }
-
-    this.sortedScheduleLogList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'schedule': return compareStr(a.ScheduleName, b.ScheduleName, isAsc);
-        case 'time': return compareStr(a.ProcessingTime, b.ProcessingTime, isAsc);
-        case 'record': return compareStr(a.RecordProcessed, b.RecordProcessed, isAsc);
-        case 'status': return compareStr(a.ScheduleStatus, b.ScheduleStatus, isAsc);
-        case 'date': return compareDate(a.CreateDate, b.CreateDate, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<ScheduleLog>(this.sortedScheduleLogList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedScheduleLogList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+   // ['schedule', 'time', 'record', 'status', 'date', 'actions'];
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }
+    else {
+      this.sortOrder = Constants.Descending;
+    }
+    if (sort.active == 'schedule') {
+      this.sortColumn = 'ScheduleName';
+    }
+    else if (sort.active == 'time') {
+      this.sortColumn = 'ProcessingTime';
+    }
+    else if (sort.active == 'record') {
+      this.sortColumn = 'RecordProcessed';
+    }
+    else if (sort.active == 'status') {
+      this.sortColumn = 'ScheduleStatus';
+    }
+    else if (sort.active == 'date') {
+      this.sortColumn = 'CreateDate';
+    }
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.ScheduleLogFilterForm.value.filterScheduleName != null && this.ScheduleLogFilterForm.value.filterScheduleName != '') {
+      this.filterScheduleNameValue = this.ScheduleLogFilterForm.value.filterScheduleName.trim();
+      searchParameter.ScheduleName = this.ScheduleLogFilterForm.value.filterScheduleName.trim();
+    }
+    if (this.ScheduleLogFilterForm.value.filterStatus != null && this.ScheduleLogFilterForm.value.filterStatus != 0) {
+      this.filterLogStatus = this.ScheduleLogFilterForm.value.filterStatus;
+      searchParameter.ScheduleStatus = this.ScheduleLogFilterForm.value.filterStatus;
+    }
+    if (this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != null && this.ScheduleLogFilterForm.value.filterPublishedOnFromDate != '') {
+      this.filterExecutionDate = this.ScheduleLogFilterForm.value.filterPublishedOnFromDate;
+      searchParameter.StartDate = new Date(this.ScheduleLogFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
+    }
+    this.getScheduleLogs(searchParameter);
   }
 
   async getScheduleLogs(searchParameter) {

@@ -60,7 +60,8 @@ export class StatementSearchComponent implements OnInit {
   public filterStatementPeriodValue = '';
   public filterStatementDte = null;
   public disablePagination = true;
-
+  public sortColumn = 'Name';
+  public sortOrder = Constants.Ascending;
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
@@ -145,22 +146,54 @@ export class StatementSearchComponent implements OnInit {
       this.sortedStatementSearchList = data;
       return;
     }
-    this.sortedStatementSearchList = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'accountId': return compareStr(a.AccountNumber, b.AccountNumber, isAsc);
-        case 'customer': return compareStr(a.CustomerName, b.CustomerName, isAsc);
-        case 'accounttype': return compareStr(a.CustomerName, b.CustomerName, isAsc);
-        case 'period': return compareStr(a.StatementPeriod, b.StatementPeriod, isAsc);
-        case 'date': return compareDate(a.StatementDate, b.StatementDate, isAsc);
-        default: return 0;
-      }
-    });
-    this.dataSource = new MatTableDataSource<StatementSearch>(this.sortedStatementSearchList);
-    this.dataSource.sort = this.sort;
-    this.array = this.sortedStatementSearchList;
-    this.totalSize = this.totalRecordCount;
-    //this.iterator();
+    if (sort.direction == 'asc') {
+      this.sortOrder = Constants.Ascending;
+    }
+    else {
+      this.sortOrder = Constants.Descending;
+    }
+    ['customer', 'accountId', 'accounttype', 'date', 'period', 'actions'];
+    if (sort.active == 'customer') {
+      this.sortColumn = 'CustomerName';
+    }
+    else if (sort.active == 'accountId') {
+      this.sortColumn = 'AccountNumber';
+    }
+    else if (sort.active == 'date') {
+      this.sortColumn = 'StatementDate';
+    }
+    else if (sort.active == 'accounttype') {
+      this.sortColumn = 'AccountType';
+    }
+    else if (sort.active == 'period') {
+      this.sortColumn = 'StatementPeriod';
+    }
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.StatementSearchFilterForm.value.filterStatementCustomer != null && this.StatementSearchFilterForm.value.filterStatementCustomer != '') {
+      this.filterCustomerName = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
+      searchParameter.StatementCustomer = this.StatementSearchFilterForm.value.filterStatementCustomer.trim();
+    }
+    if (this.StatementSearchFilterForm.value.filterStatementAccountId != null && this.StatementSearchFilterForm.value.filterStatementAccountId != '') {
+      this.filterCustomerAccountId = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
+      searchParameter.StatementAccount = this.StatementSearchFilterForm.value.filterStatementAccountId.trim();
+    }
+    if (this.StatementSearchFilterForm.value.filterStatementDate != null && this.StatementSearchFilterForm.value.filterStatementDate != '') {
+      this.filterStatementDte = this.StatementSearchFilterForm.value.filterStatementDate;
+      searchParameter.StatementStartDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(0, 0, 0));
+      searchParameter.StatementEndDate = new Date(this.StatementSearchFilterForm.value.filterStatementDate.setHours(23, 59, 59));
+    }
+    if (this.StatementSearchFilterForm.value.filterStatementPeriod != null && this.StatementSearchFilterForm.value.filterStatementPeriod != '') {
+      this.filterStatementPeriodValue = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
+      searchParameter.StatementPeriod = this.StatementSearchFilterForm.value.filterStatementPeriod.trim();
+    }
+    this.getStatementSearchs(searchParameter);
   }
 
   async getStatementSearchs(searchParameter) {
