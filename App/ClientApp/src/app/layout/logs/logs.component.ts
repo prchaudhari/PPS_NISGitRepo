@@ -145,13 +145,13 @@ export class LogsComponent implements OnInit {
       this.sortColumn = 'ProcessingTime';
     }
     else if (sort.active == 'record') {
-      this.sortColumn = 'RecordProcessed';
+      this.sortColumn = 'RecordProccessed';
     }
     else if (sort.active == 'status') {
-      this.sortColumn = 'ScheduleStatus';
+      this.sortColumn = 'Status';
     }
     else if (sort.active == 'date') {
-      this.sortColumn = 'CreateDate';
+      this.sortColumn = 'ExecutionDate';
     }
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
@@ -185,7 +185,7 @@ export class LogsComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = 'CreationDate';
+      searchParameter.SortParameter.SortColumn = 'ExecutionDate';
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
       if (this.filterScheduleNameValue != null && this.filterScheduleNameValue != '') {
@@ -256,7 +256,7 @@ export class LogsComponent implements OnInit {
         searchParameter.PagingParameter.PageIndex = 1;
         searchParameter.PagingParameter.PageSize = this.pageSize;
         searchParameter.SortParameter = {};
-        searchParameter.SortParameter.SortColumn = 'CreationDate';
+        searchParameter.SortParameter.SortColumn = 'ExecutionDate';
         searchParameter.SortParameter.SortOrder = Constants.Descending;
         searchParameter.SearchMode = Constants.Contains;
 

@@ -54,6 +54,7 @@
         <EntityTypeShape EntityType="NISModel.View_PageRecord" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_StatementDefinitionRecord" Width="1.5" PointX="6.75" PointY="7.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_SourceDataRecord" Width="1.5" PointX="4.875" PointY="7.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

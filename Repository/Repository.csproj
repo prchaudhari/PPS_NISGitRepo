@@ -254,6 +254,9 @@
     <Compile Include="View_PageRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="View_ScheduleLog.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="View_ScheduleRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

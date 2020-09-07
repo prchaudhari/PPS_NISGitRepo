@@ -92,7 +92,7 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(scheduleLogSearchParameter, tenantCode);
-                IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
+                IList<View_ScheduleLog> scheduleLogRecords = new List<View_ScheduleLog>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     //if (scheduleLogSearchParameter.ScheduleName != null && scheduleLogSearchParameter.ScheduleName != string.Empty)
@@ -114,20 +114,42 @@ namespace nIS
                     //    }
                     //}
 
-                    if (scheduleLogSearchParameter.PagingParameter.PageIndex > 0 && scheduleLogSearchParameter.PagingParameter.PageSize > 0)
+                   
+
+                    if (!string.IsNullOrEmpty(whereClause))
                     {
-                        scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords
-                        .OrderBy(scheduleLogSearchParameter.SortParameter.SortColumn + " " + scheduleLogSearchParameter.SortParameter.SortOrder.ToString())
-                        .Where(whereClause)
-                        .Skip((scheduleLogSearchParameter.PagingParameter.PageIndex - 1) * scheduleLogSearchParameter.PagingParameter.PageSize)
-                        .Take(scheduleLogSearchParameter.PagingParameter.PageSize)
-                        .ToList();
+                        if (scheduleLogSearchParameter.PagingParameter.PageIndex > 0 && scheduleLogSearchParameter.PagingParameter.PageSize > 0)
+                        {
+                            scheduleLogRecords = nISEntitiesDataContext.View_ScheduleLog
+                            .OrderBy(scheduleLogSearchParameter.SortParameter.SortColumn + " " + scheduleLogSearchParameter.SortParameter.SortOrder.ToString())
+                            .Where(whereClause)
+                            .Skip((scheduleLogSearchParameter.PagingParameter.PageIndex - 1) * scheduleLogSearchParameter.PagingParameter.PageSize)
+                            .Take(scheduleLogSearchParameter.PagingParameter.PageSize)
+                            .ToList();
+                        }
+                        else
+                        {
+                            scheduleLogRecords = nISEntitiesDataContext.View_ScheduleLog.Where(whereClause)
+                            .OrderBy(scheduleLogSearchParameter.SortParameter.SortColumn + " " + scheduleLogSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                            .ToList();
+                        } 
                     }
                     else
                     {
-                        scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(whereClause)
-                        .OrderBy(scheduleLogSearchParameter.SortParameter.SortColumn + " " + scheduleLogSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
+                        if (scheduleLogSearchParameter.PagingParameter.PageIndex > 0 && scheduleLogSearchParameter.PagingParameter.PageSize > 0)
+                        {
+                            scheduleLogRecords = nISEntitiesDataContext.View_ScheduleLog
+                            .OrderBy(scheduleLogSearchParameter.SortParameter.SortColumn + " " + scheduleLogSearchParameter.SortParameter.SortOrder.ToString())
+                            .Skip((scheduleLogSearchParameter.PagingParameter.PageIndex - 1) * scheduleLogSearchParameter.PagingParameter.PageSize)
+                            .Take(scheduleLogSearchParameter.PagingParameter.PageSize)
+                            .ToList();
+                        }
+                        else
+                        {
+                            scheduleLogRecords = nISEntitiesDataContext.View_ScheduleLog
+                            .OrderBy(scheduleLogSearchParameter.SortParameter.SortColumn + " " + scheduleLogSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                            .ToList();
+                        }
                     }
                 }
 
@@ -145,35 +167,39 @@ namespace nIS
                     {
                         ScheduleLog log = new ScheduleLog();
                         log.Identifier = scheduleLogRecords[i].Id;
-                        log.ScheduleId = scheduleLogRecords[i].ScheduleId;
-                        log.ScheduleName = scheduleLogRecords[i].ScheduleName;
-                        log.CreateDate = DateTime.SpecifyKind((DateTime)scheduleLogRecords[i].CreationDate, DateTimeKind.Utc);
-                        //log.CreateDate = scheduleLogRecords[i].CreationDate;
-                        log.LogFilePath = scheduleLogRecords[i].LogFilePath;
-                        log.NumberOfRetry = scheduleLogRecords[i].NumberOfRetry;
+                        log.ProcessingTime = scheduleLogRecords[i].ProcessingTime;
+                        log.RecordProcessed = scheduleLogRecords[i].RecordProccessed;
                         log.ScheduleStatus = scheduleLogRecords[i].Status;
+                        log.ScheduleName = scheduleLogRecords[i].ScheduleName;
+                        log.CreateDate = DateTime.SpecifyKind((DateTime)scheduleLogRecords[i].ExecutionDate, DateTimeKind.Utc);
 
-                        var logdtails = logDetails.Where(item => item.ScheduleLogId == log.Identifier && item.ScheduleId == log.ScheduleId).ToList();
-                        var runHistryRecords = runHistoryRecords.Where(item => item.ScheduleLogId == log.Identifier && item.ScheduleId == log.ScheduleId).ToList();
+                        //log.CreateDate = DateTime.SpecifyKind((DateTime)scheduleLogRecords[i].CreationDate, DateTimeKind.Utc);
+                        //log.CreateDate = scheduleLogRecords[i].CreationDate;
+                        //log.LogFilePath = scheduleLogRecords[i].LogFilePath;
+                        //log.NumberOfRetry = scheduleLogRecords[i].NumberOfRetry;
 
-                        if (logdtails != null && logdtails.Count > 0)
-                        {
-                            var successRecordCount = logdtails.Where(it => it.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))?.ToList()?.Count;
-                            log.RecordProcessed = "" + (successRecordCount != null ? successRecordCount : 0) + " / " + logdtails.Count;
-                        }
-                        else
-                        {
-                            log.RecordProcessed = "--";
-                        }
-                        if (runHistryRecords != null && runHistryRecords.Count > 0)
-                        {
-                            var diff = Math.Round(runHistryRecords.FirstOrDefault().EndDate.Subtract(runHistryRecords.FirstOrDefault().StartDate).TotalMinutes, 2);
-                            log.ProcessingTime = diff + " minute" + (diff > 2 ? "" : "s");
-                        }
-                        else
-                        {
-                            log.ProcessingTime = "--";
-                        }
+
+                        //var logdtails = logDetails.Where(item => item.ScheduleLogId == log.Identifier && item.ScheduleId == log.ScheduleId).ToList();
+                        //var runHistryRecords = runHistoryRecords.Where(item => item.ScheduleLogId == log.Identifier && item.ScheduleId == log.ScheduleId).ToList();
+
+                        //if (logdtails != null && logdtails.Count > 0)
+                        //{
+                        //    var successRecordCount = logdtails.Where(it => it.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))?.ToList()?.Count;
+                        //    log.RecordProcessed = "" + (successRecordCount != null ? successRecordCount : 0) + " / " + logdtails.Count;
+                        //}
+                        //else
+                        //{
+                        //    log.RecordProcessed = "--";
+                        //}
+                        //if (runHistryRecords != null && runHistryRecords.Count > 0)
+                        //{
+                        //    var diff = Math.Round(runHistryRecords.FirstOrDefault().EndDate.Subtract(runHistryRecords.FirstOrDefault().StartDate).TotalMinutes, 2);
+                        //    log.ProcessingTime = diff + " minute" + (diff > 2 ? "" : "s");
+                        //}
+                        //else
+                        //{
+                        //    log.ProcessingTime = "--";
+                        //}
 
                         scheduleLogs.Add(log);
                     }
@@ -203,7 +229,16 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    scheduleLogCount = nISEntitiesDataContext.ScheduleLogRecords.Where(whereClause.ToString()).Count();
+                    if(!string.IsNullOrEmpty(whereClause))
+                    {
+                        scheduleLogCount = nISEntitiesDataContext.ScheduleLogRecords.Where(whereClause.ToString()).Count();
+
+                    }
+                    else
+                    {
+                        scheduleLogCount = nISEntitiesDataContext.ScheduleLogRecords.Count();
+
+                    }
                 }
             }
             catch (Exception)
@@ -596,8 +631,11 @@ namespace nIS
                     DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.StartDate), DateTimeKind.Utc);
                     queryString.Append("CreationDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
                 }
-                
-                queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+                if (queryString.ToString() != string.Empty)
+                {
+                    queryString.Remove(queryString.Length - 4, 4);
+                }
+                //queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
                 return queryString.ToString();
             }
             catch (Exception exception)

@@ -79,3 +79,25 @@ LEFT JOIN NIS.Page p ON ad.PageId = p.Id
 LEFT JOIN NIS.PageType pt ON p.PageTypeId = pt.Id
 LEFT JOIN NIS.Widget w ON w.Id = ad.WidgetId
 Go
+
+--For Source Data grid
+IF OBJECT_ID (N'NIS.View_ScheduleLog', N'V') IS NOT NULL  
+    DROP view NIS.View_ScheduleLog;  
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW NIS.View_ScheduleLog
+AS
+SELECT sl.Id,sl.ScheduleName,CONVERT(VARCHAR(5),DATEDIFF(s, srh.StartDate, srh.EndDate)/3600)+' Hr '+
+CONVERT(VARCHAR(5),DATEDIFF(s, srh.StartDate, srh.EndDate)%3600/60)+' Min '+
+CONVERT(VARCHAR(5),(DATEDIFF(s, srh.StartDate, srh.EndDate)%60)) + ' Sec' AS ProcessingTime,
+CONVERT(VARCHAR,(SELECT COUNT(Id) FROM nis.ScheduleLogDetail WHERE Status = 'Completed' AND ScheduleLogId = sl.Id))+ ' / '+CONVERT(VARCHAR, COUNT(sld.Id)) AS RecordProccessed,
+sl.Status, sl.CreationDate AS ExecutionDate
+FROM nis.ScheduleLog sl
+LEFT JOIN nis.ScheduleLogDetail sld ON sl.Id = sld.ScheduleLogId
+LEFT JOIN nis.ScheduleRunHistory srh ON sl.Id = srh.ScheduleLogId
+GROUP BY sl.ScheduleName, sl.CreationDate, sl.Status, srh.StartDate, srh.EndDate, sl.Id
+Go
+
