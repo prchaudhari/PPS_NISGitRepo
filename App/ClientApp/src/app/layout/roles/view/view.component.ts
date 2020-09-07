@@ -211,7 +211,8 @@ export class ViewComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
       searchParameter.ActivationStatus = true;
-      this.usersList = await userService.getUser(searchParameter);
+      var response = await userService.getUser(searchParameter);
+      this.usersList = response.usersList;
       this.IsUserDetailsGet = true;
     }
 
