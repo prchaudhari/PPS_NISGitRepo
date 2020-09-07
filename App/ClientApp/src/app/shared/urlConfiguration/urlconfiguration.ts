@@ -104,5 +104,8 @@ export class URLConfiguration {
 
   //Statement Search Method
   public static get statementSearchGetUrl(): string { return "StatementSearch/List" };
+
+  //Dashboard Data
+  public static get DashboardGetUrl(): string { return "ScheduleLog/Dashboard/Get" };
  
 }

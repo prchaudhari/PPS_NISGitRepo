@@ -255,6 +255,25 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method helps to get dashboard data
+        /// </summary>
+        /// <returns>dashboard data object</returns>
+        [HttpGet]
+        [Route("Dashboard/Get")]
+        public DashboardData GetDashboardData()
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.scheduleLogManager.GetDashboardData(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         #endregion
 

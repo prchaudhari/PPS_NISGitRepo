@@ -217,6 +217,23 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method helps to get dashboard data
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>dashboard data object</returns>
+        public DashboardData GetDashboardData(string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.GetDashboardData(tenantCode);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }

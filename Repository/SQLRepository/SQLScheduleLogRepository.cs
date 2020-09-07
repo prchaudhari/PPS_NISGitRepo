@@ -569,6 +569,34 @@ namespace nIS
             return scheduleLogErrors;
         }
 
+        /// <summary>
+        /// This method helps to get dashboard data
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>dashboard data object</returns>
+        public DashboardData GetDashboardData(string tenantCode)
+        {
+            DashboardData dashboardData = new DashboardData();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var schedulelog = nISEntitiesDataContext.ScheduleLogRecords.OrderByDescending(item => item.CreationDate).ToList().FirstOrDefault();
+                    dashboardData.LastSCheduleRunDate = schedulelog.CreationDate.ToShortDateString();
+                    var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == schedulelog.Id).ToList();
+                    dashboardData.GeneratedStatementsOfLastscheduleRun = schedulelogdetails.Where(item => item.Status == ScheduleLogStatus.Completed.ToString()).ToList().Count;
+                    dashboardData.ActiveExceptionsOfLastscheduleRun = schedulelogdetails.Where(item => item.Status == ScheduleLogStatus.Failed.ToString()).ToList().Count;
+                    dashboardData.TotalGeneratedStatements = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Status == ScheduleLogStatus.Completed.ToString()).ToList().Count;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dashboardData;
+        }
+
         #endregion
 
         #region Private Methods

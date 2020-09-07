@@ -64,6 +64,7 @@
     <Compile Include="Common\RenderEngineConstant.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="CustomerInformation.cs" />
+    <Compile Include="DashboardData.cs" />
     <Compile Include="Enum\Activity.cs" />
     <Compile Include="Enum\BatchStatus.cs" />
     <Compile Include="Enum\ClaimType.cs" />

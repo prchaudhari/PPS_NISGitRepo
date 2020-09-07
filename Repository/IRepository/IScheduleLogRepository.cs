@@ -66,5 +66,12 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>list of schedule log error detail object</returns>
         List<ScheduleLogErrorDetail> GetScheduleLogErrorDetails(long ScheduleLogIdentifier, string tenantCode);
+        
+        /// <summary>
+        /// This method helps to get dashboard data
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>dashboard data object</returns>
+        DashboardData GetDashboardData(string tenantCode);
     }
 }

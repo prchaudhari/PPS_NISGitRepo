@@ -1,13 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
 import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfiguration';
-import { Observable } from 'rxjs';
 import { HttpEvent, HttpEventType, HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
-import { Constants } from 'src/app/shared/constants/constants';
-import { ScheduleLog } from './schedulelog';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 
 @Injectable({
   providedIn: 'root'
@@ -87,5 +83,24 @@ export class ScheduleLogService {
         this.isRecordDeleted = false;
       });
     return <boolean>this.isRecordDeleted;
+  }
+
+  public async GetDashboardData(): Promise<any> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.DashboardGetUrl;
+    this.uiLoader.start();
+    var dashboardData : any = {};
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            dashboardData = httpEvent['body'];
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+      });
+    return dashboardData;
   }
 }
