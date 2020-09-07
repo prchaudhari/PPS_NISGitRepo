@@ -63,7 +63,9 @@ export class SidebarComponent implements OnInit {
       this.URL = '/tenantConfiguration';
       this.route.navigate(['/tenantConfiguration']);
     }
+    this.hideSidebar();
   }
+
   navigateToRoles() {
     this.URL = '/roles';
     this.hideSidebar();
@@ -91,12 +93,12 @@ export class SidebarComponent implements OnInit {
   }
   navigateToChangePassword() {
     this.URL = '/changepassword';
-    //this.hideSidebar();
+    this.hideSidebar();
     this.route.navigate(['/changepassword']);
   }
   navigateToProfile() {
     this.URL = '/profile';
-    //this.hideSidebar();
+    this.hideSidebar();
     this.route.navigate(['/profile']);
   }
   navigateToScheduleManagement() {
