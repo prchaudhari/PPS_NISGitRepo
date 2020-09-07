@@ -626,7 +626,14 @@ namespace nIS
                                             //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
                                             //});
                                         }
-                                        
+                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                        {
+                                            nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().ForEach(item => item.Status = BatchStatus.BatchDataNotAvailable.ToString());
+                                            nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).ToList().ForEach(item => item.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString());
+                                            nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id).ToList().ForEach(item => item.EndDate = DateTime.Now);
+                                            nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId).ToList().ForEach(item => item.Status = ScheduleStatus.BatchDataNotAvailable.ToString());
+                                            nISEntitiesDataContext.SaveChanges();
+                                        }
                                     }
                                 }
                                 
@@ -800,6 +807,17 @@ namespace nIS
                         {
                             this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
                         });
+                    }
+                    else
+                    {
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().ForEach(item => item.Status = BatchStatus.BatchDataNotAvailable.ToString());
+                            nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).ToList().ForEach(item => item.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString());
+                            nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id).ToList().ForEach(item => item.EndDate = DateTime.Now);
+                            nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId).ToList().ForEach(item => item.Status = ScheduleStatus.BatchDataNotAvailable.ToString());
+                            nISEntitiesDataContext.SaveChanges();
+                        }
                     }
 
                     isScheduleSuccess = true;
