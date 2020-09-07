@@ -26,9 +26,9 @@ CREATE VIEW NIS.View_Page
 AS
 SELECT p.*, pt.Name, usr1.FirstName+' '+usr1.LastName AS PublishedByName,  usr2.FirstName+' '+usr2.LastName AS PageOwnerName 
 FROM NIS.Page p 
-INNER JOIN NIS.PageType pt ON p.PageTypeId = pt.Id
-INNER JOIN NIS.[User] usr1 ON p.PublishedBy = usr1.Id
-INNER JOIN NIS.[User] usr2 ON p.Owner = usr2.Id
+left JOIN NIS.PageType pt ON p.PageTypeId = pt.Id
+left JOIN NIS.[User] usr1 ON p.PublishedBy = usr1.Id
+left JOIN NIS.[User] usr2 ON p.Owner = usr2.Id
 Go
 
 --For Statement Definition grid
@@ -43,7 +43,7 @@ CREATE VIEW NIS.View_StatementDefinition
 AS
 SELECT s.*, usr1.FirstName+' '+usr1.LastName AS PublishedByName,  usr2.FirstName+' '+usr2.LastName AS OwnerName 
 FROM NIS.Statement s 
-INNER JOIN NIS.[User] usr1 ON s.PublishedBy = usr1.Id
+LEFT JOIN NIS.[User] usr1 ON s.PublishedBy = usr1.Id
 INNER JOIN NIS.[User] usr2 ON s.Owner = usr2.Id
 Go
 
@@ -72,9 +72,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW NIS.View_SourceData
 AS
-SELECT ad.*, p.DisplayName AS PageName, w.DisplayName AS WidgetName, cm.FirstName+' '+cm.MiddleName+' '+cm.LastName AS CustomerName  
+SELECT ad.*, p.DisplayName AS PageName, w.DisplayName AS WidgetName, cm.FirstName+' '+cm.MiddleName+' '+cm.LastName AS CustomerName, pt.Name AS PageTypeName 
 FROM NIS.AnalyticsData ad 
 INNER JOIN NIS.CustomerMaster cm ON ad.CustomerId = cm.Id
 LEFT JOIN NIS.Page p ON ad.PageId = p.Id
+LEFT JOIN NIS.PageType pt ON p.PageTypeId = pt.Id
 LEFT JOIN NIS.Widget w ON w.Id = ad.WidgetId
 Go
