@@ -420,7 +420,7 @@ namespace nIS
                             {
                                 if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                                 {
-                                    this.utility.DeleteUnwantedDirectory(batchMaster.Id, customerMaster.Id, baseURL);
+                                    this.utility.DeleteUnwantedDirectory(batchMaster.Id, customerMaster.Id, outputLocation);
                                 }
                                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                 {
