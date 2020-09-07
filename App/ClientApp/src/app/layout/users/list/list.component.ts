@@ -73,6 +73,8 @@ export class ListComponent implements OnInit {
   public isFilterDone = false;
   displayedColumns: string[] = ['name', 'email', 'mobileno', 'role', 'active', 'lock', 'actions'];
   dataSource = new MatTableDataSource<any>();
+  public sortOrder = Constants.Ascending;
+  public sortColumn = 'FirstName';
 
   public sortedUserList = [];
 
@@ -184,36 +186,34 @@ export class ListComponent implements OnInit {
       this.sortedUserList = data;
       return;
     }
-    var sortColumn = '';
-    var sortOrder;
     if (sort.direction == 'asc') {
-      sortOrder = Constants.Ascending;
+      this.sortOrder = Constants.Ascending;
     }
     else {
-      sortOrder = Constants.Descending;
+      this.sortOrder = Constants.Descending;
     }
     if (sort.active == 'name') {
-      sortColumn = 'FirstName';
+      this.sortColumn = 'FirstName';
     }
     else if (sort.active == 'email') {
-      sortColumn = 'EmailAddress';
+      this.sortColumn = 'EmailAddress';
     }
     else if (sort.active == 'mobileno') {
-      sortColumn = 'ContactNumber';
+     this. sortColumn = 'ContactNumber';
     }
     else if (sort.active == 'active') {
-      sortColumn = 'IsActive';
+      this.sortColumn = 'IsActive';
     }
     else if (sort.active == 'lock') {
-      sortColumn = 'IsLocked';
+      this.sortColumn = 'IsLocked';
     }
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
     searchParameter.PagingParameter.PageSize = this.pageSize;
     searchParameter.SortParameter = {};
-    searchParameter.SortParameter.SortColumn = sortColumn;
-    searchParameter.SortParameter.SortOrder = sortOrder;
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
     searchParameter.SearchMode = Constants.Contains;
     if (this.userFormGroup.value.FirstName != null) {
       searchParameter.FirstName = this.UserFilter.FirstName.trim();
@@ -238,8 +238,8 @@ export class ListComponent implements OnInit {
     searchParameter.PagingParameter.PageSize = this.pageSize;
     searchParameter.SortParameter = {};
     searchParameter.SortParameter.SortColumn = Constants.UserName;
-    searchParameter.SortParameter.SortOrder = Constants.Ascending;
-    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
     if (this.userFormGroup.value.FirstName != null) {
       searchParameter.FirstName = this.UserFilter.FirstName.trim();
     }
@@ -350,8 +350,8 @@ export class ListComponent implements OnInit {
     searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
     searchParameter.PagingParameter.PageSize = this.pageSize;
     searchParameter.SortParameter = {};
-    searchParameter.SortParameter.SortColumn = Constants.UserName;
-    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
     searchParameter.SearchMode = Constants.Contains;
     searchParameter.GetResources = true;
     if (this.UserFilter.FirstName != null) {

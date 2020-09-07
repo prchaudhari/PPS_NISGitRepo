@@ -59,7 +59,8 @@ export class ListComponent implements OnInit {
   };
 
   public sortedRoleList: Role[] = [];
-
+  public sortOrder = Constants.Ascending;
+  public sortColumn = 'Name';
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -106,30 +107,29 @@ export class ListComponent implements OnInit {
       this.sortedRoleList = data;
       return;
     }
-    var sortColumn = '';
-    var sortOrder;
+   
     if (sort.direction == 'asc') {
-      sortOrder = Constants.Ascending;
+      this.sortOrder = Constants.Ascending;
     }
     else {
-      sortOrder = Constants.Descending;
+      this.sortOrder = Constants.Descending;
     }
     if (sort.active == 'name') {
-      sortColumn = 'Name';
+      this.sortColumn = 'Name';
     }
     else if (sort.active == 'description') {
-      sortColumn = 'Description';
+      this.sortColumn = 'Description';
     }
     else if (sort.active == 'active') {
-      sortColumn = 'IsActive';
+      this.sortColumn = 'IsActive';
     }
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = this.currentPage+1;
     searchParameter.PagingParameter.PageSize = this.pageSize;
     searchParameter.SortParameter = {};
-    searchParameter.SortParameter.SortColumn = sortColumn;
-    searchParameter.SortParameter.SortOrder = sortOrder;
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
     searchParameter.SearchMode = Constants.Contains;
     this.filterRoleValue = this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName.trim() : "";
     this.filterActiveRole = this.roleFilterForm.value.DeactivateRole != null ? !this.roleFilterForm.value.DeactivateRole : true;
@@ -164,13 +164,17 @@ export class ListComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = Constants.Name;
-      searchParameter.SortParameter.SortOrder = Constants.Ascending;
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
       searchParameter.Name = this.filterRoleValue;
       searchParameter.IsActive = this.filterActiveRole;
     }
     searchParameter.IsCallFromListPage = true;
+    searchParameter.IsActive = this.filterActiveRole;
+    if (this.filterRoleValue != "") {
+      searchParameter.Name = this.filterRoleValue;
+    }
     var response = await roleService.getRoles(searchParameter);
     this.roleList = response.roleList;
     this.totalRecordCount = response.RecordCount;
@@ -203,8 +207,8 @@ export class ListComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = Constants.Name;
-      searchParameter.SortParameter.SortOrder = Constants.Ascending;
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
       this.filterRoleValue = this.roleFilterForm.value.filterRoleName != null ? this.roleFilterForm.value.filterRoleName.trim() : "";
       this.filterActiveRole = this.roleFilterForm.value.DeactivateRole != null ? !this.roleFilterForm.value.DeactivateRole : true;

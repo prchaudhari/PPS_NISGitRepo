@@ -76,8 +76,8 @@ export class ListAssetLibraryComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = Constants.Name;
-      searchParameter.SortParameter.SortOrder = Constants.Ascending;
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
       this.filterAsstLibraryName = this.assetLibraryFilterForm.value.filterAssetLibraryName != null ? this.assetLibraryFilterForm.value.filterAssetLibraryName.trim() : "";
       searchParameter.Name = this.filterAsstLibraryName;
@@ -109,9 +109,13 @@ export class ListAssetLibraryComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = Constants.Name;
-      searchParameter.SortParameter.SortOrder = Constants.Ascending;
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
+      searchParameter.Name = this.filterAsstLibraryName;
+    }
+   
+    if (this.filterAsstLibraryName != "") {
       searchParameter.Name = this.filterAsstLibraryName;
     }
     var response = await assetLibraryService.getAssetLibrary(searchParameter);
