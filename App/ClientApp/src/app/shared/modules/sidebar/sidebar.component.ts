@@ -33,16 +33,24 @@ export class SidebarComponent implements OnInit {
 
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
-      this.sidebar_class = "show-sidebar"
-      this.collapse_class = "uncollapse-container"
-      this.collapse_toogleClass = "fa-arrow-left"
-      this.sidebar_footer = "show-side-bar-footer"
+      this.hideSidebar();
     } else {
-      this.sidebar_class = "hide-sidebar"
-      this.collapse_toogleClass = "fa-bars"
-      this.collapse_class = "collapse-container"
-      this.sidebar_footer = "hide-side-bar-footer"
+      this.showSidebar();
     }
+  }
+
+  hideSidebar(){
+    this.sidebar_class = "hide-sidebar";
+    this.collapse_toogleClass = "fa-bars";
+    this.collapse_class = "collapse-container";
+    this.sidebar_footer = "hide-side-bar-footer";
+  }
+
+  showSidebar(){
+    this.sidebar_class = "show-sidebar";
+    this.collapse_class = "uncollapse-container";
+    this.collapse_toogleClass = "fa-arrow-left";
+    this.sidebar_footer = "show-side-bar-footer";
   }
 
   ChangeSideBar() {
@@ -58,66 +66,82 @@ export class SidebarComponent implements OnInit {
   }
   navigateToRoles() {
     this.URL = '/roles';
+    this.hideSidebar();
     this.route.navigate(['/roles']);
   }
   navigateToUser() {
     this.URL = '/user';
+    this.hideSidebar();
     this.route.navigate(['/user']);
   }
   navigateToWidgets() {
-    this.URL = '/widgets'
+    this.URL = '/widgets';
+    this.hideSidebar();
     this.route.navigate(['/widgets']);
   }
   navigateToDashoard() {
     this.URL = '/dashboard';
+    this.hideSidebar();
     this.route.navigate(['/dashboard']);
   }
   navigateToTemplates() {
     this.URL = '/pages';
+    this.hideSidebar();
     this.route.navigate(['/pages']);
   }
   navigateToChangePassword() {
     this.URL = '/changepassword';
+    //this.hideSidebar();
     this.route.navigate(['/changepassword']);
   }
   navigateToProfile() {
     this.URL = '/profile';
+    //this.hideSidebar();
     this.route.navigate(['/profile']);
   }
   navigateToScheduleManagement() {
     this.URL = '/schedulemanagement';
+    this.hideSidebar();
     this.route.navigate(['/schedulemanagement']);
   }
   navigateToStatementDef() {
     this.URL = '/statementdefination';
+    this.hideSidebar();
     this.route.navigate(['/statementdefination']);
   }
   navigateToAssetLibraries() {
     this.URL = '/assetlibrary';
+    this.hideSidebar();
     this.route.navigate(['/assetlibrary']);
   }
   navigateToLogs() {
     this.URL = '/logs';
+    this.hideSidebar();
     this.route.navigate(['/logs']);
   }
   navigateToAnalytics() {
     this.URL = '/analytics';
+    this.hideSidebar();
     this.route.navigate(['/analytics']);
   }
   navigateToSettings() {
     this.URL = '/settings';
+    this.hideSidebar();
     this.route.navigate(['/settings']);
   }
   navigateToTenantConfig() {
     this.URL = '/tenantConfiguration';
+    this.hideSidebar();
     this.route.navigate(['/tenantConfiguration']);
   }
   navigateToStatemenetSearch() {
     this.URL = '/statemenetsearch';
+    this.hideSidebar();
     this.route.navigate(['/statemenetsearch']);
   }
   navigateToRenderEngine() {
     this.URL = '/renderengines';
+    this.hideSidebar();
     this.route.navigate(['/renderengines']);
   }
 

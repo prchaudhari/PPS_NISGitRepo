@@ -1,6 +1,6 @@
 <div class='top-bar fixed'>
-  <button class="fa float-left hamburger xs-hamburger fa" (click)="toggleNav()" [ngClass]="collapse_toogleClass"></button>
-  <div class="side-bar-logo text-center d-none d-md-block" (click)="navigateToDashoard()">
+  <button class="fa float-left hamburger xs-hamburger fa" (click)="toggleNav()" (mouseenter)="showSidebar()" [ngClass]="collapse_toogleClass"></button>
+  <div class="side-bar-logo text-center d-none d-md-block" (click)="navigateToDashoard()" style="cursor: pointer;">
     <img src="assets/images/new_nis_logo_white.png" width="250">
   </div>
   <!--mobile start-->
@@ -126,7 +126,7 @@
 
   </div>
 </div>
-<div class="content-wapper" [ngClass]="collapse_class">
+<div class="content-wapper" [ngClass]="collapse_class" (click)='hideSidebar()'>
   <router-outlet></router-outlet>
   <div class="ftr-vrsn">V{{AppVersion}}</div>
 </div>

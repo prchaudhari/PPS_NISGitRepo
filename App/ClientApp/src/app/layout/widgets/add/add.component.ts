@@ -58,86 +58,91 @@ export class AddComponent implements OnInit {
     }
     this.widgetList = await widgetService.getWidget(searchParameter);
 
-    for (var i = 0; i < this.widgetList.length; i++) {
-      if (this.widgetList[i].WidgetName == "CustomerInformation") {
-        this.widgetList[i].ImageSource = "assets/images/CustomerInfoWidget.PNG";
-        this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
-      }
-      else if (this.widgetList[i].WidgetName == "AccountInformation") {
-        this.widgetList[i].ImageSource = "assets/images/AccountInfoWidget.PNG"
-        this.widgetList[i].WidgetIcon = "fa fa-address-card-o";
-
-      }
-      else if (this.widgetList[i].WidgetName == "Summary") {
-        this.widgetList[i].ImageSource = "assets/images/SummaryWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
-
-      }
-      else if (this.widgetList[i].WidgetName == "Image") {
-        this.widgetList[i].ImageSource = "assets/images/ImageWidget.PNG"
-        this.widgetList[i].WidgetIcon = "fa fa-image";
-
-      }
-      else if (this.widgetList[i].WidgetName == "Video") {
-        this.widgetList[i].ImageSource = "assets/images/VideoWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-videoWidget";
-
-      }
-
-      else if (this.widgetList[i].WidgetName == "Video") {
-        this.widgetList[i].ImageSource = "assets/images/VideoWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-videoWidget";
-
-      }
-      else if (this.widgetList[i].WidgetName == "Analytics") {
-        this.widgetList[i].ImageSource = "assets/images/Analytics.png"
-        this.widgetList[i].WidgetIcon = "icon-AnalyticsWidget";
-
-      }
-      else if (this.widgetList[i].WidgetName == "SavingTransaction") {
-        this.widgetList[i].ImageSource = "assets/images/TranscationListWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
-
-      }
-      else if (this.widgetList[i].WidgetName == "CurrentTransaction") {
-        this.widgetList[i].ImageSource = "assets/images/TranscationListWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
-
-      }
-      else if (this.widgetList[i].WidgetName == "SavingTrend") {
-        this.widgetList[i].ImageSource = "assets/images/SavingTrendWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-widget-line-chart2";
-
-      }
-      else if (this.widgetList[i].WidgetName == "Top4IncomeSources") {
-        this.widgetList[i].ImageSource = "assets/images/Top4IncomeWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-rp-quality1";
-
-      }
-      else if (this.widgetList[i].WidgetName == "CurrentAvailableBalance") {
-        this.widgetList[i].ImageSource = "assets/images/AvailableBalanceWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
-
-      }
-      else if (this.widgetList[i].WidgetName == "SavingAvailableBalance") {
-        this.widgetList[i].ImageSource = "assets/images/AvailableBalanceWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
-
-      }
-      else if (this.widgetList[i].WidgetName == "SpendingTrend") {
-        this.widgetList[i].ImageSource = "assets/images/SpendingTrendWidget.PNG"
-        this.widgetList[i].WidgetIcon = "icon-rp-production1";
-
-      }
-      else if (this.widgetList[i].WidgetName == "ReminderaAndRecommendation") {
-        this.widgetList[i].ImageSource = "assets/images/ReminderWidget.PNG"
-        this.widgetList[i].WidgetIcon = "fa fa-bell-o";
-
-      }
+    if(this.widgetList.length != 0) {
       this.widgetList[0].Checked = true;
       this.selectedLink = this.widgetList[0];
 
+      for (var i = 0; i < this.widgetList.length; i++) {
+        if (this.widgetList[i].WidgetName == "CustomerInformation") {
+          this.widgetList[i].ImageSource = "assets/images/CustomerInfoWidget.PNG";
+          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+        }
+        else if (this.widgetList[i].WidgetName == "AccountInformation") {
+          this.widgetList[i].ImageSource = "assets/images/AccountInfoWidget.PNG"
+          this.widgetList[i].WidgetIcon = "fa fa-address-card-o";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "Summary") {
+          this.widgetList[i].ImageSource = "assets/images/SummaryWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "Image") {
+          this.widgetList[i].ImageSource = "assets/images/ImageWidget.PNG"
+          this.widgetList[i].WidgetIcon = "fa fa-image";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "Video") {
+          this.widgetList[i].ImageSource = "assets/images/VideoWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-videoWidget";
+  
+        }
+  
+        else if (this.widgetList[i].WidgetName == "Video") {
+          this.widgetList[i].ImageSource = "assets/images/VideoWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-videoWidget";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "Analytics") {
+          this.widgetList[i].ImageSource = "assets/images/Analytics.png"
+          this.widgetList[i].WidgetIcon = "icon-AnalyticsWidget";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "SavingTransaction") {
+          this.widgetList[i].ImageSource = "assets/images/TranscationListWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "CurrentTransaction") {
+          this.widgetList[i].ImageSource = "assets/images/TranscationListWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "SavingTrend") {
+          this.widgetList[i].ImageSource = "assets/images/SavingTrendWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-widget-line-chart2";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "Top4IncomeSources") {
+          this.widgetList[i].ImageSource = "assets/images/Top4IncomeWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-rp-quality1";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "CurrentAvailableBalance") {
+          this.widgetList[i].ImageSource = "assets/images/AvailableBalanceWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "SavingAvailableBalance") {
+          this.widgetList[i].ImageSource = "assets/images/AvailableBalanceWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "SpendingTrend") {
+          this.widgetList[i].ImageSource = "assets/images/SpendingTrendWidget.PNG"
+          this.widgetList[i].WidgetIcon = "icon-rp-production1";
+  
+        }
+        else if (this.widgetList[i].WidgetName == "ReminderaAndRecommendation") {
+          this.widgetList[i].ImageSource = "assets/images/ReminderWidget.PNG"
+          this.widgetList[i].WidgetIcon = "fa fa-bell-o";
+  
+        }
+      }
     }
+    
+
+    
    // this.spinner.stop();
   }
 
