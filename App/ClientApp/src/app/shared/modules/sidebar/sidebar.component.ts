@@ -30,27 +30,34 @@ export class SidebarComponent implements OnInit {
   public element: HTMLElement;
   public userClaimsRolePrivilegeOperations;
   public isSuperAdminUser: boolean = false;
+  public isByBtnClickEvent: boolean = false;
 
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
-      this.hideSidebar();
-    } else {
       this.showSidebar();
+      this.isByBtnClickEvent = true;
+    } else {
+      this.isByBtnClickEvent = false;
+      this.hideSidebar();
     }
   }
 
   hideSidebar(){
-    this.sidebar_class = "hide-sidebar";
-    this.collapse_toogleClass = "fa-bars";
-    this.collapse_class = "collapse-container";
-    this.sidebar_footer = "hide-side-bar-footer";
+    if(!this.isByBtnClickEvent) {
+      this.sidebar_class = "hide-sidebar";
+      this.collapse_toogleClass = "fa-bars";
+      this.collapse_class = "collapse-container";
+      this.sidebar_footer = "hide-side-bar-footer";
+    }
   }
 
   showSidebar(){
-    this.sidebar_class = "show-sidebar";
-    this.collapse_class = "uncollapse-container";
-    this.collapse_toogleClass = "fa-arrow-left";
-    this.sidebar_footer = "show-side-bar-footer";
+    if(!this.isByBtnClickEvent) {
+      this.sidebar_class = "show-sidebar";
+      this.collapse_class = "uncollapse-container";
+      this.collapse_toogleClass = "fa-arrow-left";
+      this.sidebar_footer = "show-side-bar-footer";
+    }
   }
 
   ChangeSideBar() {
