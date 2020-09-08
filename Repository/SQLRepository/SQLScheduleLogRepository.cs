@@ -342,7 +342,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string outputLocation, string tenantCode)
+        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
         {
             bool retryStatementStatus = false;
             IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
@@ -364,31 +364,29 @@ namespace nIS
                     }
                 }
 
-                scheduleLogDetailRecords.ToList().ForEach(scheduleLogDetail =>
+                if (scheduleLogDetailRecords.Count != 0)
                 {
-                    BatchMasterRecord batchMaster = new BatchMasterRecord();
-                    ScheduleRecord scheduleRecord = new ScheduleRecord();
-                    CustomerMasterRecord customerMaster = new CustomerMasterRecord();
-                    IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
-                    RenderEngineRecord renderEngine = new RenderEngineRecord();
+                    var firstScheduleLogDetailRecord = scheduleLogDetailRecords.ToList().FirstOrDefault();
+                    var batchMaster = new BatchMasterRecord();
+                    var scheduleRecord = new ScheduleRecord();
+                    var batchDetails = new List<BatchDetailRecord>();
+                    var renderEngine = new RenderEngineRecord();
 
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLogDetail.ScheduleId && item.TenantCode == tenantCode).FirstOrDefault();
+                        scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == firstScheduleLogDetailRecord.ScheduleId && item.TenantCode == tenantCode)?.FirstOrDefault();
                         if (scheduleRecord != null)
                         {
-                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == scheduleRecord.Id && item.TenantCode == tenantCode).FirstOrDefault();
+                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == scheduleRecord.Id && item.TenantCode == tenantCode)?.FirstOrDefault();
                             if (batchMaster != null)
                             {
-                                customerMaster = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == scheduleLogDetail.CustomerId && item.BatchId == batchMaster.Id).FirstOrDefault();
                                 batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id)?.ToList();
                             }
                         }
                     }
 
-                    if (scheduleRecord != null && batchMaster != null && customerMaster != null)
+                    if (batchMaster != null)
                     {
-                        Statement statement = new Statement();
                         StatementSearchParameter statementSearchParameter = new StatementSearchParameter
                         {
                             Identifier = scheduleRecord.StatementId,
@@ -409,72 +407,22 @@ namespace nIS
                         var statements = this.statementRepository.GetStatements(statementSearchParameter, tenantCode);
                         if (statements.Count > 0)
                         {
-                            statement = statements[0];
+                            var statement = statements.ToList().FirstOrDefault();
                             var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                             {
                                 renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
                             }
-                            var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation);
-                            if (logDetailRecord != null)
+
+                            ParallelOptions parallelOptions = new ParallelOptions();
+                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                            Parallel.ForEach(scheduleLogDetailRecords, parallelOptions, scheduleLogDetail =>
                             {
-                                if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
-                                {
-                                    this.utility.DeleteUnwantedDirectory(batchMaster.Id, customerMaster.Id, outputLocation);
-                                }
-                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                {
-                                    ScheduleLogDetailRecord scheduleLogDetailRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Id == scheduleLogDetail.Id).FirstOrDefault();
-                                    if (scheduleLogDetailRecord != null)
-                                    {
-                                        scheduleLogDetailRecord.CustomerId = customerMaster.Id;
-                                        scheduleLogDetailRecord.CustomerName = customerMaster.FirstName.Trim() + (customerMaster.MiddleName == string.Empty ? string.Empty : " " + customerMaster.MiddleName.Trim()) + " " + customerMaster.LastName.Trim();
-                                        scheduleLogDetailRecord.RenderEngineId = renderEngine.Id; //To be change once render engine implmentation start
-                                        scheduleLogDetailRecord.RenderEngineName = renderEngine.Name;
-                                        scheduleLogDetailRecord.RenderEngineURL = renderEngine.URL;
-                                        scheduleLogDetailRecord.LogMessage = logDetailRecord.LogMessage;
-                                        scheduleLogDetailRecord.Status = logDetailRecord.Status;
-                                        scheduleLogDetailRecord.NumberOfRetry++;
-                                        scheduleLogDetailRecord.StatementFilePath = logDetailRecord.StatementFilePath;
-                                        scheduleLogDetailRecord.CreationDate = DateTime.Now;
-
-                                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.StatementMetadataRecords.Count > 0)
-                                        {
-                                            IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
-                                            logDetailRecord.StatementMetadataRecords.ToList().ForEach(metarec =>
-                                            {
-                                                metarec.ScheduleLogId = logDetailRecord.ScheduleLogId;
-                                                metarec.ScheduleId = logDetailRecord.ScheduleLogId;
-                                                metarec.StatementDate = DateTime.Now;
-                                                metarec.StatementURL = logDetailRecord.StatementFilePath;
-                                                statementMetadataRecords.Add(metarec);
-                                            });
-                                        }
-
-                                        nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId)?.ToList().ForEach(scheduleLog =>
-                                        {
-                                            var _lstScheduleLogDetail = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId).ToList();
-                                            var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
-                                            if (successRecords != null && successRecords.Count == _lstScheduleLogDetail.Count)
-                                            {
-                                                scheduleLog.Status = ScheduleLogStatus.Completed.ToString();
-                                            }
-                                            else
-                                            {
-                                                scheduleLog.Status = ScheduleLogStatus.Failed.ToString();
-                                            }
-                                        });
-
-                                        //nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId)?.ToList().ForEach(runhistory => runhistory.EndDate = DateTime.Now);
-
-                                        nISEntitiesDataContext.SaveChanges();
-                                    }
-                                }
-                            }
+                                this.ReGenerateFailedCustomerStatements(scheduleLogDetail, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, renderEngine);
+                            });
                         }
                     }
-
-                });
+                }
 
                 retryStatementStatus = true;
             }
@@ -485,6 +433,7 @@ namespace nIS
             return retryStatementStatus;
         }
 
+
         /// <summary>
         /// This method helps to re run the schedule for failed customer records
         /// </summary>
@@ -492,7 +441,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string outputLocation, string tenantCode)
+        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
         {
             bool scheduleRunStatus = false;
             try
@@ -516,7 +465,7 @@ namespace nIS
 
                 if (failedRecords.Count != 0)
                 {
-                    scheduleRunStatus = RetryStatementForFailedCustomerReocrds(failedRecords, baseURL, outputLocation, tenantCode);
+                    scheduleRunStatus = RetryStatementForFailedCustomerReocrds(failedRecords, baseURL, outputLocation, tenantCode, parallelThreadCount);
                 }
             }
             catch (Exception ex)
@@ -730,191 +679,6 @@ namespace nIS
             }
         }
 
-        /// <summary>
-        /// This method help to generate statement for customer
-        /// </summary>
-        /// <param name="customer"> the customer object </param>
-        /// <param name="statement"> the statement object </param>
-        /// <param name="finalHtml"> the final html string for statement </param>
-        /// <param name="batchMaster"> the batch master object </param>
-        /// <param name="batchDetails"> the list of batch details records </param>
-        /// <param name="baseURL"> the base URL of API </param>
-        private ScheduleLogDetailRecord GenerateStatement(CustomerMasterRecord customer, Statement statement, StringBuilder finalHtml, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL)
-        {
-            ScheduleLogDetailRecord logDetailRecord = new ScheduleLogDetailRecord();
-            try
-            {
-                //start to render actual html content data
-                StringBuilder currentCustomerHtmlStatement = new StringBuilder(finalHtml.ToString());
-                for (int i = 0; i < statement.Pages.Count; i++)
-                {
-                    var page = statement.Pages[i];
-                    var pagewidgets = page.PageWidgets;
-                    for (int j = 0; j < pagewidgets.Count; j++)
-                    {
-                        var widget = pagewidgets[j];
-                        if (widget.WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID) //Customer Information Widget
-                        {
-                            IList<CustomerMediaRecord> customerMedias = new List<CustomerMediaRecord>();
-                            currentCustomerHtmlStatement.Replace("{{CustomerName}}", (customer.FirstName + " " + customer.MiddleName + " " + customer.LastName));
-                            currentCustomerHtmlStatement.Replace("{{Address1}}", customer.AddressLine1);
-                            string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
-                            currentCustomerHtmlStatement.Replace("{{Address2}}", address2);
-
-                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                            {
-                                customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)?.ToList();
-                            }
-                            var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.WidgetId)?.ToList()?.FirstOrDefault();
-                            if (custMedia != null && custMedia.VideoURL != string.Empty)
-                            {
-                                currentCustomerHtmlStatement.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.WidgetId + "}}", custMedia.VideoURL);
-                            }
-                            else
-                            {
-                                var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.WidgetId && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                                if (batchDetail != null && batchDetail.VideoURL != string.Empty)
-                                {
-                                    currentCustomerHtmlStatement.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.WidgetId + "}}", batchDetail.VideoURL);
-                                }
-                            }
-                        }
-                        if (widget.WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID) //Account Information Widget
-                        {
-                            StringBuilder AccDivData = new StringBuilder();
-                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Date" + "</div><label class='list-value mb-0'>" + Convert.ToDateTime(customer.StatementDate).ToShortDateString() + "</label></div></div>");
-
-                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Period" + "</div><label class='list-value mb-0'>" + customer.StatementPeriod + "</label></div></div>");
-
-                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Cusomer ID" + "</div><label class='list-value mb-0'>" + customer.CustomerCode + "</label></div></div>");
-
-                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Name" + "</div><label class='list-value mb-0'>" + customer.RmName + "</label></div></div>");
-
-                            AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number" + "</div><label class='list-value mb-0'>" + customer.RmContactNumber + "</label></div></div>");
-                            currentCustomerHtmlStatement.Replace("{{AccountInfoData}}", AccDivData.ToString());
-                        }
-                        if (widget.WidgetId == HtmlConstants.IMAGE_WIDGET_ID) //Image Widget
-                        {
-                            var imgAssetFilepath = string.Empty;
-                            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
-                            {
-                                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                                if (widgetSetting.isPersonalize == false) //Is not dynamic image, then assign selected image from asset library
-                                {
-                                    imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
-                                }
-                                else //Is dynamic image, then assign it from database 
-                                {
-                                    ImageRecord imageRecord = new ImageRecord();
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                    {
-                                        imageRecord = nISEntitiesDataContext.ImageRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.PageId == page.Identifier && item.WidgetId == widget.WidgetId)?.ToList()?.FirstOrDefault();
-                                    }
-                                    if (imageRecord != null && imageRecord.Image1 != string.Empty)
-                                    {
-                                        imgAssetFilepath = imageRecord.Image1;
-                                    }
-                                    else
-                                    {
-                                        var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.WidgetId && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                                        if (batchDetail != null && batchDetail.ImageURL != string.Empty)
-                                        {
-                                            imgAssetFilepath = batchDetail.ImageURL;
-                                        }
-                                        else
-                                        {
-                                            logDetailRecord.LogMessage = "Image not found for Page: " + page.Identifier + " and Widget: " + widget.WidgetId + " for image widget..!!";
-                                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                            break;
-                                        }
-                                    }
-                                }
-                                currentCustomerHtmlStatement.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.WidgetId + "}}", imgAssetFilepath);
-                            }
-                        }
-                        if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID) //Video widget
-                        {
-                            var vdoAssetFilepath = string.Empty;
-                            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
-                            {
-                                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                                if (widgetSetting.isPersonalize == false) //Is not dynamic video, then assign selected video from asset library
-                                {
-                                    vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
-                                }
-                                else //Is dynamic video, then assign it from database 
-                                {
-                                    VideoRecord videoRecord = new VideoRecord();
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                    {
-                                        videoRecord = nISEntitiesDataContext.VideoRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.PageId == page.Identifier && item.WidgetId == widget.WidgetId)?.ToList()?.FirstOrDefault();
-                                    }
-                                    if (videoRecord != null && videoRecord.Video1 != string.Empty)
-                                    {
-                                        vdoAssetFilepath = videoRecord.Video1;
-                                    }
-                                    else
-                                    {
-                                        var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.WidgetId && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                                        if (batchDetail != null && batchDetail.VideoURL != string.Empty)
-                                        {
-                                            vdoAssetFilepath = batchDetail.VideoURL;
-                                        }
-                                        else
-                                        {
-                                            logDetailRecord.LogMessage = "Video not found for Page: " + page.Identifier + " and Widget: " + widget.WidgetId + " for video widget..!!";
-                                            logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                            break;
-                                        }
-                                    }
-                                }
-                                currentCustomerHtmlStatement.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.WidgetId + "}}", vdoAssetFilepath);
-                            }
-                        }
-                        if (widget.WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID) //Summary at Glance Widget
-                        {
-                            IList<AccountMasterRecord> accountrecords = new List<AccountMasterRecord>();
-                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                            {
-                                accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id)?.ToList();
-                            }
-                            if (accountrecords.Count > 0)
-                            {
-                                StringBuilder accSummary = new StringBuilder();
-                                var accRecords = accountrecords.GroupBy(item => item.AccountType).ToList();
-                                accRecords.ToList().ForEach(acc =>
-                                {
-                                    accSummary.Append("<tr><td>" + acc.FirstOrDefault().AccountType + "</td><td>" + acc.FirstOrDefault().Currency + "</td><td>" + acc.Sum(it => it.Balance).ToString() + "</td></tr>");
-                                });
-                                currentCustomerHtmlStatement.Replace("{{AccountSummary}}", accSummary.ToString());
-                            }
-                            else
-                            {
-                                logDetailRecord.LogMessage = "Account master data is not available related to Summary at Glance widget..!!";
-                                logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (logDetailRecord.Status != ScheduleLogStatus.Failed.ToString())
-                {
-                    string fileName = "Statement_" + customer.Id + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                    string filePath = this.utility.WriteToFile(currentCustomerHtmlStatement.ToString(), fileName, batchMaster.Id, customer.Id, baseURL, "");
-
-                    logDetailRecord.StatementFilePath = filePath;
-                    logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
-                    logDetailRecord.LogMessage = "Statement generated successfully..!!";
-                }
-                return logDetailRecord;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         #region Get Connection String
 
         /// <summary>
@@ -937,6 +701,96 @@ namespace nIS
             {
                 throw ex;
             }
+        }
+
+        private bool ReGenerateFailedCustomerStatements(ScheduleLogDetailRecord scheduleLogDetail, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation, RenderEngineRecord renderEngine)
+        {
+            try
+            {
+                var customerMaster = new CustomerMasterRecord();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                { 
+                    customerMaster = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == scheduleLogDetail.CustomerId && item.BatchId == batchMaster.Id).FirstOrDefault();
+                }
+
+                if (customerMaster != null)
+                {
+                    var newStatementPageContents = new List<StatementPageContent>();
+                    statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
+                    {
+                        Id = it.Id,
+                        PageId = it.PageId,
+                        PageTypeId = it.PageTypeId,
+                        HtmlContent = it.HtmlContent,
+                        PageHeaderContent = it.PageHeaderContent,
+                        PageFooterContent = it.PageFooterContent,
+                        DisplayName = it.DisplayName,
+                        TabClassName = it.TabClassName
+                    }));
+
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, newStatementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation);
+                    if (logDetailRecord != null)
+                    {
+                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+                        {
+                            this.utility.DeleteUnwantedDirectory(batchMaster.Id, customerMaster.Id, outputLocation);
+                        }
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            var scheduleLogDetailRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Id == scheduleLogDetail.Id).FirstOrDefault();
+                            if (scheduleLogDetailRecord != null)
+                            {
+                                scheduleLogDetailRecord.CustomerId = customerMaster.Id;
+                                scheduleLogDetailRecord.CustomerName = customerMaster.FirstName.Trim() + (customerMaster.MiddleName == string.Empty ? string.Empty : " " + customerMaster.MiddleName.Trim()) + " " + customerMaster.LastName.Trim();
+                                scheduleLogDetailRecord.RenderEngineId = renderEngine.Id; //To be change once render engine implmentation start
+                                scheduleLogDetailRecord.RenderEngineName = renderEngine.Name;
+                                scheduleLogDetailRecord.RenderEngineURL = renderEngine.URL;
+                                scheduleLogDetailRecord.LogMessage = logDetailRecord.LogMessage;
+                                scheduleLogDetailRecord.Status = logDetailRecord.Status;
+                                scheduleLogDetailRecord.NumberOfRetry++;
+                                scheduleLogDetailRecord.StatementFilePath = logDetailRecord.StatementFilePath;
+                                scheduleLogDetailRecord.CreationDate = DateTime.UtcNow;
+
+                                if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.StatementMetadataRecords.Count > 0)
+                                {
+                                    IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+                                    logDetailRecord.StatementMetadataRecords.ToList().ForEach(metarec =>
+                                    {
+                                        metarec.ScheduleLogId = logDetailRecord.ScheduleLogId;
+                                        metarec.ScheduleId = logDetailRecord.ScheduleLogId;
+                                        metarec.StatementDate = DateTime.UtcNow;
+                                        metarec.StatementURL = logDetailRecord.StatementFilePath;
+                                        statementMetadataRecords.Add(metarec);
+                                    });
+                                }
+
+                                nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId)?.ToList().ForEach(scheduleLog =>
+                                {
+                                    var _lstScheduleLogDetail = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId).ToList();
+                                    var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
+                                    if (successRecords != null && successRecords.Count == _lstScheduleLogDetail.Count)
+                                    {
+                                        scheduleLog.Status = ScheduleLogStatus.Completed.ToString();
+                                    }
+                                    else
+                                    {
+                                        scheduleLog.Status = ScheduleLogStatus.Failed.ToString();
+                                    }
+                                });
+
+                                nISEntitiesDataContext.SaveChanges();
+                            }
+                        }
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return true;
         }
 
         #endregion

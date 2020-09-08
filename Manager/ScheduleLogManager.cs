@@ -9,6 +9,7 @@ namespace nIS
     #region References
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
     using Unity;
     #endregion
@@ -172,7 +173,8 @@ namespace nIS
         {
             try
             {
-                return this.scheduleLogRepository.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, outputLocation, tenantCode);
+                var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
+                return this.scheduleLogRepository.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, outputLocation, tenantCode, parallelThreadCount);
             }
             catch (Exception ex)
             {
@@ -191,7 +193,8 @@ namespace nIS
         {
             try
             {
-                return this.scheduleLogRepository.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, outputLocation, tenantCode);
+                var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
+                return this.scheduleLogRepository.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, outputLocation, tenantCode, parallelThreadCount);
             }
             catch (Exception ex)
             {
