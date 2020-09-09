@@ -100,7 +100,9 @@
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Log','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-reportGenerations2' title="Logs"> </span> <span class='nav-title'>Logs</span> </a>
       </li>
-
+      <li [ngClass]="(URL=='/tenants')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToTenants()">
+        <a> <span class='nav-icon icon-users-line2' title="Tenants"> </span> <span class='nav-title'>Tenants</span> </a>
+      </li>
       <li [ngClass]="(URL=='/analytics')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToAnalytics()"
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Analytics','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-rp-yield1' title="Analytics"> </span> <span class='nav-title'>Analytics</span> </a>
@@ -109,6 +111,8 @@
       <li [ngClass]="(URL=='/tenantConfiguration')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToTenantConfig()">
         <a> <span class='nav-icon fa fa-cogs' title="Tenant Configuration"> </span> <span class='nav-title'>Tenant Configuration</span> </a>
       </li>
+
+
 
       <li [ngClass]="(URL=='/settings')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToSettings()">
         <a> <span class='nav-icon icon-operations2' title="Configure Assets"> </span> <span class='nav-title'>Configure Assets</span> </a>

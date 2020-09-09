@@ -113,6 +113,11 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/schedulemanagement']);
   }
+  navigateToTenants() {
+    this.URL = '/tenants';
+    this.hideSidebar();
+    this.route.navigate(['/tenants']);
+  }
   navigateToStatementDef() {
     this.URL = '/statementdefination';
     this.hideSidebar();

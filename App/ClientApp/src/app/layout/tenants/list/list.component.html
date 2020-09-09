@@ -1,0 +1,123 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2">Tenants</span>
+      <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+    </div>
+    <div>
+      <button class="btn-add btn-cust" id="btnAddRoles" (click)="navigateToAdd()">
+        <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Tenant
+      </button>
+
+    </div>
+  </div>
+  <!--desktop view start-->
+  <div class="card border-0 mb-3 card-shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+          </mat-paginator>
+        </div>
+      </div>
+      <div class="widget-area-grid padding-0">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+          <!-- Position Column -->
+          <ng-container matColumnDef="name">
+            <th class="width30 ip-w-25" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let tenant">{{tenant.name}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="domainName">
+            <th class="width30 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Domain Name </th>
+            <td mat-cell *matCellDef="let tenant">
+              <span *ngIf="tenant.domainName==null">-</span>
+              <span *ngIf="tenant.domainName!=null">{{tenant.domainName}} </span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="country">
+            <th class="width25 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+            <td mat-cell *matCellDef="let tenant">
+              <span *ngIf="tenant.country==null">-</span>
+              <span *ngIf="tenant.country!=null">{{tenant.country}} </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let role">
+              <div class="action-btns btn-tbl-action">
+                <button type="button" id="btnViewRole" title="View Role" (click)="navigateToView()">
+                  <span class="fa fa-file-text-o"></span>
+                </button>
+                <button type="button" id="btnUpdateRole" title="Update Role">
+                  <span class="fa fa-pencil-square-o"></span>
+                </button>
+                <button type="button" id="btnUpdateRole" title="Update Role">
+                  <span class="fa fa-trash"></span>
+                </button>
+                <button type="button" title="Deactivate Role">
+                  <span class="fa fa-toggle-on text-success"></span>
+                </button>
+                <!--<button type="button" title="Activate Role">
+    <span class="fa fa-toggle-off text-success"></span>
+  </button>-->
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--desktop view end-->
+
+  <form >
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
+      </div>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" id="filterTenantName">
+        </div>
+        <div class="form-group">
+          <label>Domain Name</label>
+          <input type="text" class="form-control" id="filterDomainName">
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" class="form-control" id="filterCountry">
+        </div>
+      </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" id="liSearchFilter" title="Search">
+            <a class="nav-link p-0">
+              <span class="fa fa-check"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" id="liResetFilter" title="Reset">
+            <a class="nav-link p-0">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" id="liCloseFilter" title="Close" (click)="isFilter=!isFilter">
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+
+</div>
+
+<div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>
+

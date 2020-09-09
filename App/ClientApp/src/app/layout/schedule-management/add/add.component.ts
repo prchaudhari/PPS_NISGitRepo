@@ -43,7 +43,54 @@ export class AddComponent implements OnInit {
   public isFirstimeLoad = false;
   public IsStartDateDisable = false;
   public IsEndDateDisable = false;
+  public isDaily: boolean = true;
+  public isWeekly: boolean = false;
+  public isMonthly: boolean = false;
+  public isYearly: boolean = false;
+  public isEndDate: boolean = true;
+  public isEndAfter: boolean = false;
+  public isNoEndDate: boolean = false;
 
+  isEndDateClicked() {
+    this.isEndDate = true;
+    this.isEndAfter = false;
+    this.isNoEndDate = false;
+  }
+  isEndAfterClicked() {
+    this.isEndDate = false;
+    this.isEndAfter = true;
+    this.isNoEndDate = false;
+  }
+  isNoEndDateClicked() {
+    this.isEndDate = false;
+    this.isEndAfter = false;
+    this.isNoEndDate = true;
+  }
+  isDailyClicked() {
+    this.isDaily = true;
+    this.isWeekly = false;
+    this.isMonthly = false;
+    this.isYearly = false;
+  }
+  isWeeklyClicked() {
+    this.isDaily = false;
+    this.isWeekly = true;
+    this.isMonthly = false;
+    this.isYearly = false;
+  }
+  isMonthlyClicked() {
+    this.isDaily = false;
+    this.isWeekly = false;
+    this.isMonthly = true;
+    this.isYearly = false;
+
+  }
+  isYearlyClicked() {
+    this.isDaily = false;
+    this.isWeekly = false;
+    this.isMonthly = false;
+    this.isYearly = true;
+  }
   constructor(
     private formBuilder: FormBuilder,
     private spinner: NgxUiLoaderService,
