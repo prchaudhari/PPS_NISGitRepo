@@ -22,8 +22,9 @@ import { StatementSearchComponent } from './statement-search/statement-search.co
 import { TenantConfigurationComponent } from './tenant-configuration/tenant-configuration.component';
 import { WindowRef } from '../core/services/window-ref.service';
 import { DatePipe } from '@angular/common';
+import { CountryComponent } from './country/country.component';
 @NgModule({
-  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent],
+  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -158,7 +158,11 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/renderengines']);
   }
-
+  navigateToCountry() {
+    this.URL = '/country';
+    this.hideSidebar();
+    this.route.navigate(['/country']);
+  }
   async logout() {
     this.localstorageservice.removeLocalStorageData();
     this.route.navigate(['login']);

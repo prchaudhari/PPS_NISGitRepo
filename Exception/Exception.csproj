@@ -56,6 +56,7 @@
     <Compile Include="Asset\InvalidAssetSearchParameter.cs" />
     <Compile Include="ConnectionStringNotFoundException.cs" />
     <Compile Include="Constants\AssetLibrary.cs" />
+    <Compile Include="Constants\CountryConstant.cs" />
     <Compile Include="Constants\ExceptionConstant.cs" />
     <Compile Include="Constants\RenderEngineConstant.cs" />
     <Compile Include="Constants\ScheduleLogConstant.cs" />
@@ -64,6 +65,9 @@
     <Compile Include="Constants\ScheduleConstant.cs" />
     <Compile Include="Constants\RoleConstant.cs" />
     <Compile Include="Constants\UserConstant.cs" />
+    <Compile Include="Country\CountryNotFoundException.cs" />
+    <Compile Include="Country\DuplicateCountryFoundException.cs" />
+    <Compile Include="Country\InvalidCountryException.cs" />
     <Compile Include="InvalidEncryptedDataException.cs" />
     <Compile Include="InvalidSearchParameterException.cs" />
     <Compile Include="InvalidTenantException.cs" />

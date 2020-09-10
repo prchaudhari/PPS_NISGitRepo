@@ -11,6 +11,11 @@ export class URLConfiguration {
   public static get roleDeactivate(): string { return "Role/Deactivate" };
   public static get roleCheckIsDeactivateDependencyUrl(): string { return "Role/IsDeactivateDependency" };
 
+  //country method
+  public static get countryGetUrl(): string { return "Country/List" };
+  public static get countryAddUrl(): string { return "Country/Add" };
+  public static get countryUpdateUrl(): string { return "Country/Update" };
+  public static get countryDeleteUrl(): string { return "Country/Delete" };
 
   //User Url Method
   public static get userGetUrl(): string { return "User/List" };

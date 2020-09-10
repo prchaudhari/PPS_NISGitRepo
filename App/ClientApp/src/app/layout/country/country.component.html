@@ -1,0 +1,233 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2">Country</span>
+      <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+    </div>
+    <div>
+      <button class="btn-add btn-cust" id="btnAddUsers" (click)="navigateToCountryAdd()">
+        <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Country
+      </button>
+
+    </div>
+  </div>
+  <!--desktop view start-->
+  <div class="card border-0 mb-3 card-shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+          </mat-paginator>
+        </div>
+      </div>
+      <div class="widget-area-grid padding-0">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+          <!-- Position Column -->
+          <ng-container matColumnDef="name">
+            <th class="width30 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element">{{element.CountryName}}</td>
+          </ng-container>
+          <ng-container matColumnDef="code">
+            <th class="width25 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Code </th>
+            <td mat-cell *matCellDef="let element">{{element.Code}} </td>
+          </ng-container>
+          <ng-container matColumnDef="dialingcode">
+            <th class="width30 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Dialing Code </th>
+            <td mat-cell *matCellDef="let element"> {{element.DialingCode}}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="action-btns btn-tbl-action">
+
+                <button type="button" id="btnUpdateRole" title="Update" (click)="navigateToCountryEdit(element)">
+                  <span class="fa fa-pencil-square-o"></span>
+                </button>
+                <button type="button" id="btnDeleteRole" title="Delete" (click)="deleteCountry(element)">
+                  <span class="fa fa-trash-o"></span>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--desktop view end-->
+  <form [formGroup]="CountryFilterForm">
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
+      </div>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" id="filterDisplayName" formControlName="filterName">
+        </div>
+        <div class="form-group">
+          <label>Code</label>
+          <input type="text" class="form-control" id="filterOwner" formControlName="filterCode">
+        </div>
+
+      </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" title="Search">
+            <button class="btn-footer-fill btn-block rounded-0 height100" (click)="searchCountryFilter('search')">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width33" title="Reset" (click)="searchCountryFilter('reset')">
+            <a class="nav-link p-0">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Close" (click)="closeFilter()">
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="AddCountryFormGroup">
+    <div class="form-popup side-popup width340" [ngClass]="addCountryContainer? 'show' : 'hide'">
+      <div class="filter-head">
+        <label class="m-0">Add Country</label>
+      </div>
+
+      <div class="filter-body stylescrollbar">
+        <div class="row">
+          <div class="form-group col-sm-12 parent-rtl">
+            <label>Name</label>
+            <input type="text" class="form-control" id="filterDisplayName" formControlName="AddName">
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="AddName.touched && AddName.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="AddName.errors?.pattern">Invalid country name</li>
+                <li class="text-danger" *ngIf="AddName.errors?.required">Country name required</li>
+                <li class="text-danger" *ngIf="AddName.errors?.minlength">Country name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="AddName.errors?.maxlength">Country name length should not be greater than 50</li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group col-sm-12 parent-rtl">
+            <label>Code</label>
+            <input type="text" class="form-control" id="filterOwner" formControlName="AddCode">
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="AddCode.touched && AddCode.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="AddCode.errors?.pattern">Invalid country code</li>
+                <li class="text-danger" *ngIf="AddCode.errors?.required">Country code required</li>
+                <li class="text-danger" *ngIf="AddCode.errors?.minlength">Country code length should not be less than 2</li>
+                <li class="text-danger" *ngIf="AddCode.errors?.maxlength">Country code length should not be greater than 50</li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group col-sm-12 parent-rtl">
+            <label>Dailing Code</label>
+            <input type="text" class="form-control" id="filterOwner" formControlName="AddDialingCode">
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="AddDialingCode.touched && AddDialingCode.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="AddDialingCode.errors?.pattern">Invalid country dialing code</li>
+                <li class="text-danger" *ngIf="AddDialingCode.errors?.required">Country dialing code required</li>
+                <li class="text-danger" *ngIf="AddDialingCode.errors?.minlength">Country dialing code length should not be less than 2</li>
+                <li class="text-danger" *ngIf="AddDialingCode.errors?.maxlength">Country dialing code length should not be greater than 50</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-footer">
+        <ul class="nav nav-toolbar">
+          <li class="nav-item width50">
+            <button title="Save" id="btnCloseForm" (click)="AddUpdateCountry()" [disabled]="vaildateForm('Add')" 
+                    class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width50">
+            <button title="Close" id="btnCloseForm" (click)="CloseCountryForm('Add')"
+                    class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-close"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="EditCountryFormGroup">
+    <div class="form-popup side-popup width340" [ngClass]="editCountryContainer? 'show' : 'hide'">
+      <div class="filter-head">
+        <label class="m-0">Edit Country</label>
+      </div>
+      <div class="filter-body stylescrollbar">
+        <div class="row">
+          <div class="form-group col-sm-12 parent-rtl">
+            <label>Name</label>
+            <input type="text" class="form-control" id="filterDisplayName" formControlName="EditName">
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="EditName.touched && EditName.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="EditName.errors?.pattern">Invalid schedule name</li>
+                <li class="text-danger" *ngIf="EditName.errors?.required">Country name required</li>
+                <li class="text-danger" *ngIf="EditName.errors?.minlength">Country name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="EditName.errors?.maxlength">Country name length should not be greater than 50</li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group col-sm-12 parent-rtl">
+            <label>Code</label>
+            <input type="text" class="form-control" id="filterOwner" formControlName="EditCode">
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="EditCode.touched && EditCode.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="EditCode.errors?.pattern">Invalid country code</li>
+                <li class="text-danger" *ngIf="EditCode.errors?.required">Country code required</li>
+                <li class="text-danger" *ngIf="EditCode.errors?.minlength">Country code length should not be less than 2</li>
+                <li class="text-danger" *ngIf="EditCode.errors?.maxlength">Country code length should not be greater than 50</li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group col-sm-12 parent-rtl">
+            <label>Dailing Code</label>
+            <input type="text" class="form-control" id="filterOwner" formControlName="EditDialingCode">
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="EditDialingCode.touched && EditDialingCode.errors" style="list-style-type:none">
+                <li class="text-danger" *ngIf="EditDialingCode.errors?.pattern">Invalid country dialing code</li>
+                <li class="text-danger" *ngIf="EditDialingCode.errors?.required">Country dialing code required</li>
+                <li class="text-danger" *ngIf="EditDialingCode.errors?.minlength">Country dialing code length should not be less than 2</li>
+                <li class="text-danger" *ngIf="EditDialingCode.errors?.maxlength">Country dialing code length should not be greater than 50</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav nav-toolbar">
+          <li class="nav-item width50">
+            <button title="Save" id="btnCloseForm" (click)="AddUpdateCountry()" [disabled]="vaildateForm('Edit')" 
+                    class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width50">
+            <button title="Close" id="btnCloseForm" (click)="CloseCountryForm('Edit')"
+                    class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-close"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="overlay a" id="divOverlayAdd" [ngClass]="!addCountryContainer? 'hide':'show'"></div>
+<div class="overlay a" id="divOverlayEdit" [ngClass]="!editCountryContainer? 'hide':'show'"></div>
+<div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>
+

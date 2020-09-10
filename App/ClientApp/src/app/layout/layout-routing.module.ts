@@ -11,7 +11,7 @@ import { SourcedataComponent } from './sourcedata/sourcedata.component';
 import { AssetSettingsComponent } from './asset-settings/asset-settings.component';
 import { StatementSearchComponent } from './statement-search/statement-search.component';
 import { TenantConfigurationComponent } from './tenant-configuration/tenant-configuration.component';
-
+import { CountryComponent } from './country/country.component';
 const routes: Routes = [
   {
     path: '',
@@ -36,6 +36,7 @@ const routes: Routes = [
       { path: 'settings', component: AssetSettingsComponent },
       { path: 'statemenetsearch', component: StatementSearchComponent },
       { path: 'tenantConfiguration', component: TenantConfigurationComponent },
+      { path: 'country', component: CountryComponent },
     ]
   }
 

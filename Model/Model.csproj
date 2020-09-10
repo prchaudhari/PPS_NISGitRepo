@@ -96,6 +96,7 @@
     <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
     <Compile Include="Search Parameter\AnalyticsSearchParameter.cs" />
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
+    <Compile Include="Search Parameter\CountrySearchParameter.cs" />
     <Compile Include="Search Parameter\RenderEngineSearchParameter.cs" />
     <Compile Include="Search Parameter\ScheduleLogSearchParameter.cs" />
     <Compile Include="Search Parameter\StatementSearchSearchParameter.cs" />

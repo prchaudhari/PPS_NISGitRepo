@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalyticsDataManager.cs" />
+    <Compile Include="CountryManager.cs" />
     <Compile Include="StatementSearchManager.cs" />
     <Compile Include="TenantConfigurationManager.cs" />
     <Compile Include="AssetSettingManager.cs" />

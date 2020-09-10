@@ -32,6 +32,7 @@
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.service.ts" />
     <None Remove="ClientApp\src\app\layout\asset-libraries\asset-library.ts" />
     <None Remove="ClientApp\src\app\layout\asset-settings\asset-setting.ts" />
+    <None Remove="ClientApp\src\app\layout\country\country.ts" />
     <None Remove="ClientApp\src\app\layout\logs-details\log-details.ts" />
     <None Remove="ClientApp\src\app\layout\logs\scheduleLog.ts" />
     <None Remove="ClientApp\src\app\layout\schedule-management\schedule.ts" />
@@ -56,6 +57,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\core\core.module.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\core\services\window-ref.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\country\country.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\logs-details\logs-details.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\logs\schedulelog.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\roles\role.ts" />
@@ -94,6 +96,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Update="ClientApp\src\app\layout\country\country.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\layout\logs-details\log-details.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
