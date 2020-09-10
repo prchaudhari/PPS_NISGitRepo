@@ -18,6 +18,8 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { SortOrder } from 'src/app/shared/enums/sort-order.enum';
 import { SearchMode } from 'src/app/shared/enums/search-mode.enum';
 import { LoginService } from '../../../login/login.service';
+import { Country } from '../../country/country';
+import { CountryService } from '../../country/country.service';
 @Component({
   selector: 'app-user-add-edit',
   templateUrl: './add-edit.component.html',
@@ -37,20 +39,16 @@ export class UserAddEditComponent implements OnInit {
   public source: string[] = [];
   public countrycodeList = [];
   public countrycodeLists = [
-    { "CountryNameCode": "Please select", "DialingCode": "" },
-    { "CountryNameCode": "IND +91", "DialingCode": "+91" },
-    { "CountryNameCode": "USA +1", "DialingCode": "+1" },
-    { "CountryNameCode": "UAE +971", "DialingCode": "+971" },
-    { "CountryNameCode": "ZAF +27", "DialingCode": "+27" }
+    { "Identifier": 0, "Code": "Please Select", "DialingCode": "" }
   ];
   image: string;
   FirstChar: string;
-  SecondChar:string
+  SecondChar: string
   public countrycodesource = [];
   public selectedAll: any;
   public allRoles;
   public userId;
-  public User = { RoleIdentifier: 0, Image: '', CountryCode: '' }
+  public User = { RoleIdentifier: 0, Image: '', CountryCode: 0 }
   public addUser: boolean = true;
   public editUser: boolean;
   public roleName;
@@ -206,10 +204,10 @@ export class UserAddEditComponent implements OnInit {
     // User form validations.
     this.userFormGroup = this.formBuilder.group({
       firstName: [null, Validators.compose([Validators.required, Validators.minLength(2),
-        Validators.maxLength(50),
+      Validators.maxLength(50),
       Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       lastName: [null, Validators.compose([Validators.required, Validators.minLength(2),
-        Validators.maxLength(50),
+      Validators.maxLength(50),
       Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       email: ['', Validators.compose([Validators.required,
       Validators.pattern(this.emailRegex)])],
@@ -218,11 +216,12 @@ export class UserAddEditComponent implements OnInit {
       Validators.minLength(10),
       Validators.pattern(this.onlyNumbers)])],
       UserRole: [0, Validators.compose([Validators.required])],
-      CountryCode: ['', Validators.compose([Validators.required])],
+      CountryCode: [0, Validators.compose([Validators.required])],
       Image: [null]
     })
 
     this.getRole();
+
   }
 
   //Function to get role--
@@ -242,8 +241,33 @@ export class UserAddEditComponent implements OnInit {
     copy.forEach(role => {
       this.roleList.push(role);
     })
+    this.getCountries();
+  }
+  public countryList: Country;
+  async getCountries() {
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = Constants.Name;
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    let countryService = this.injector.get(CountryService);
+    var response = await countryService.getCountrys(searchParameter);
+    var copy = response.List;
+    copy.forEach(role => {
+      this.countrycodeLists.push(role);
+    })
+    //this.countryList.forEach(c => {
+    //  this.roleList.push({ "CountryNameCode": "Please select", "DialingCode": "" });
+    //})
+    //{ "CountryNameCode": "Please select", "DialingCode": "" ,"Identifier"},
+    //{ "CountryNameCode": "IND +91", "DialingCode": "+91" },
+    //{ "CountryNameCode": "USA +1", "DialingCode": "+1" },
+    //{ "CountryNameCode": "UAE +971", "DialingCode": "+971" },
+    //{ "CountryNameCode": "ZAF +27", "DialingCode": "+27" }
     if (this.userEditModeOn) {
-
       this.fillUserDetail();
 
     }
@@ -255,16 +279,16 @@ export class UserAddEditComponent implements OnInit {
       this.userFormErrorObject.showProfilePictureSizeError = true;
       return false;
     }
-   
+
     this.userFormErrorObject.showProfilePictureSizeError = false;
 
     var pattern = /image-*/;
 
     if (!file.type.match(pattern)) {
-      
+
       this.userFormErrorObject.showProfilePictureTypeError = true;
 
-      return false; 
+      return false;
     }
     this.userFormErrorObject.showProfilePictureTypeError = false;
 
@@ -339,7 +363,7 @@ export class UserAddEditComponent implements OnInit {
   }
 
   //custom validation check
-  userFormValidaton(){
+  userFormValidaton() {
     this.userFormErrorObject.showProfilePictureSizeError = false;
     this.userFormErrorObject.showUserFirstNameError = false;
     this.userFormErrorObject.showUserLastNameError = false;
@@ -373,7 +397,7 @@ export class UserAddEditComponent implements OnInit {
       this.userFormErrorObject.roleShowError = true;
       return false;
     }
-    if (this.User.CountryCode == '') {
+    if (this.User.CountryCode == 0) {
       this.userFormErrorObject.showCountryCodeError = true;
       return false;
     }
@@ -391,7 +415,7 @@ export class UserAddEditComponent implements OnInit {
     if (this.userFormErrorObject.showProfilePictureTypeError) {
       return true;
     }
-    
+
     if (this.userFormGroup.controls.firstName.invalid) {
       return true;
     }
@@ -410,7 +434,7 @@ export class UserAddEditComponent implements OnInit {
     if (this.User.RoleIdentifier == 0) {
       return true;
     }
-    if (this.User.CountryCode == "") {
+    if (this.User.CountryCode == 0) {
       return true;
     }
     return false;
@@ -436,7 +460,7 @@ export class UserAddEditComponent implements OnInit {
     const value = event.target.value;
     if (value == "") {
       this.userFormErrorObject.showCountryCodeError = true;
-      this.User.CountryCode = ''
+      this.User.CountryCode = 0
     }
     else {
       this.userFormErrorObject.showCountryCodeError = false;
@@ -464,7 +488,9 @@ export class UserAddEditComponent implements OnInit {
         "FirstName": this.userFormGroup.value.firstName.trim(),
         "LastName": this.userFormGroup.value.lastName.trim(),
         "EmailAddress": this.userFormGroup.value.email,
-        "ContactNumber": this.userFormGroup.value.CountryCode + "-" + this.userFormGroup.value.mobileNumber,
+        //"ContactNumber": this.userFormGroup.value.CountryCode + "-" + this.userFormGroup.value.mobileNumber,
+        "ContactNumber": this.userFormGroup.value.mobileNumber,
+        "CountryId": this.userFormGroup.value.CountryCode,
         "Roles": selectedroleArray,
         "Image": this.image,
       }
@@ -488,9 +514,9 @@ export class UserAddEditComponent implements OnInit {
     var UserArr = [];
     UserArr.push(userObject);
 
-   this.spinner.start();
+    this.spinner.start();
     this.service.saveUser(UserArr, this.userEditModeOn).subscribe(data => {
-     this.spinner.stop();
+      this.spinner.stop();
       if (data == true) {
         let message = "User added successfully.Please check your email to activate user and set password";
         if (this.userEditModeOn) {
@@ -500,7 +526,7 @@ export class UserAddEditComponent implements OnInit {
         this.navigateToListPage();
       }
     }, (error: any) => {
-        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+      this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
       this.spinner.stop();
     });
   }
@@ -555,18 +581,19 @@ export class UserAddEditComponent implements OnInit {
       else {
         mobileNo = userObject.MobileNumber;
       }
+      let country = this.countrycodeLists.filter(i => { return i.Identifier == userObject.CountryId });
       this.userFormGroup.patchValue({
         firstName: userObject.FirstName,
         lastName: userObject.LastName,
         email: userObject.EmailAddress,
         mobileNumber: mobileNo,
         UserRole: this.userRoleLists[0].Identifier,
-        CountryCode: mobileNoArr[0]
+        CountryCode: country[0].Identifier
       })
       this.userFormGroup.controls['UserRole'].setValue(this.userRoleLists[0].Identifier);
-      this.userFormGroup.controls['CountryCode'].setValue(mobileNoArr[0]);
+      this.userFormGroup.controls['CountryCode'].setValue(country[0].Identifier);
       this.User.RoleIdentifier = this.userRoleLists[0].Identifier;
-      this.User.CountryCode = mobileNoArr[0];
+      this.User.CountryCode = country[0].Identifier;
       this.activeSlider = userObject.IsActive;
       this.lockSlider = userObject.IsLocked;
       this.image = userObject.Image;

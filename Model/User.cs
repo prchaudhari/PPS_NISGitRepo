@@ -255,6 +255,11 @@ namespace nIS
         /// </summary>
         public string TenantType = string.Empty;
 
+        /// <summary>
+        /// The tenant type
+        /// </summary>
+        public long CountryId;
+
         #endregion
 
         #region Public Methods

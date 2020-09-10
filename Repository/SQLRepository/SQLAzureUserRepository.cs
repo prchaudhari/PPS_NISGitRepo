@@ -102,6 +102,7 @@ namespace nIS
                         IsDeleted = false,
                         IsLocked = false,
                         NoofAttempts = 0,
+                        CountryId = user.CountryId,
                         TenantCode = tenantCode
                     });
                 });
@@ -181,6 +182,7 @@ namespace nIS
                         //userRecord.IsLocked = false;
                         userRecord.NoofAttempts = 0;
                         userRecord.TenantCode = tenantCode;
+                        userRecord.CountryId = user.CountryId;
                     });
 
                     nVidYoEntitiesDataContext.SaveChanges();
@@ -268,7 +270,7 @@ namespace nIS
         {
             IList<User> users = new List<User>();
             IList<UserRecord> userRecords = null;
-
+            IList<CountryRecord> countires = new List<CountryRecord>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
@@ -309,7 +311,7 @@ namespace nIS
                     }
                     if (userSearchParameter.IsSkipSuperAdmin == true)
                     {
-                        if(userSearchParameter.UserIdentifierToSkip!=string.Empty)
+                        if (userSearchParameter.UserIdentifierToSkip != string.Empty)
                         {
                             userSearchParameter.UserIdentifierToSkip = userSearchParameter.UserIdentifierToSkip + "," + "1";
                         }
@@ -321,7 +323,7 @@ namespace nIS
                     }
                     string whereClause = this.WhereClauseGenerator(userSearchParameter, tenantCode);
                     userRecords = new List<UserRecord>();
-                   
+
                     if (userSearchParameter.PagingParameter.PageIndex > 0 && userSearchParameter.PagingParameter.PageSize > 0)
                     {
                         userRecords = nISEntities.UserRecords
@@ -338,6 +340,12 @@ namespace nIS
                         .OrderBy(userSearchParameter.SortParameter.SortColumn + " " + userSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
                     }
+                    if (userRecords?.Count() > 0)
+                    {
+                        StringBuilder countryIdQuery = new StringBuilder();
+                        countryIdQuery = countryIdQuery.Append("(" + string.Join("or ", userRecords.Select(item => string.Format("Id.Equals({0}) ", item.CountryId))) + ")");
+                        countires = nISEntities.CountryRecords.Where(countryIdQuery.ToString()).ToList();
+                    }
                 }
                 IList<User> tempUsers = new List<User>();
                 userRecords?.ToList().ForEach(userRecord =>
@@ -346,7 +354,7 @@ namespace nIS
 
                     ///Get roles
                     IList<Role> roles = this.GetRoles(userRecord.Id, userSearchParameter.IsRolePrivilegesRequired, userRecord.TenantCode);
-
+                    string contactnumber = countires.Where(i => i.Id == userRecord.CountryId).FirstOrDefault().DialingCode + "-" + userRecord.ContactNumber;
                     //Get country
                     //country = this.GetCountry(userRecord.CountryId, tenantCode);
                     tempUsers.Add(new User()
@@ -355,28 +363,20 @@ namespace nIS
                         FirstName = userRecord.FirstName,
                         LastName = userRecord.LastName,
                         EmailAddress = userRecord.EmailAddress,
-                        ContactNumber = userRecord.ContactNumber,
+                        ContactNumber = contactnumber,
+                        CountryId=(long)userRecord.CountryId,
                         Image = userRecord.Image,
                         IsActive = userRecord.IsActive,
                         IsLocked = userRecord.IsLocked,
                         NoofAttempts = userRecord.NoofAttempts,
                         TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? userRecord.TenantCode : tenantCode,
-                        Roles = roles
+                        Roles = roles,
+
                     });
 
                 });
                 users = tempUsers;
-                //if (tempUsers.Count > 0)
-                //{
-                //    if(userSearchParameter.IsSkipSuperAdmin==true)
-                //    {
-                //        users = tempUsers.Where(item => item.Roles[0].Name != ModelConstant.SUPER_ADMIN_ROLE).ToList();
-                //    }
-                //    else
-                //    {
-                //        users = tempUsers;
-                //    }
-                //}
+
             }
             catch (SqlException)
             {

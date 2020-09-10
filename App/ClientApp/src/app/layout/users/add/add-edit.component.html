@@ -109,7 +109,7 @@
                   <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
                     <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
                     <select formControlName="CountryCode" (change)='onCountrySelected($event)' class="form-control">
-                      <option *ngFor="let role of countrycodeLists" [value]="role.DialingCode">{{role.CountryNameCode}}</option>
+                      <option *ngFor="let role of countrycodeLists" [value]="role.Identifier">{{role.Code}} {{role.DialingCode}}</option>
                     </select>
                     <div class="validation-msg" style="color:red">
                       <ul *ngIf="userFormErrorObject.showCountryCodeError" style="list-style-type:none">
