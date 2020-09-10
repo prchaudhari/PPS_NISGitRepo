@@ -81,6 +81,11 @@
         <a> <span class='nav-icon icon-line-dashboard2' title="Widgets"></span><span class='nav-title'>Widgets</span>  </a>
       </li>
 
+      <li [ngClass]="(URL=='/dynamicwidget')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToDynamicWidgets()"
+          *ngIf="IsMainMenu">
+        <a> <span class='nav-icon icon-line-dashboard2' title="Dynamic Widgets"></span><span class='nav-title'>Dynamic Widgets</span>  </a>
+      </li>
+
       <li [ngClass]="(URL=='/pages')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToTemplates()"
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Page','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-templates2' title="Pages"></span><span class='nav-title'>Pages</span>  </a>

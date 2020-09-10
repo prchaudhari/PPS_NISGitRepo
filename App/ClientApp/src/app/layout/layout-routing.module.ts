@@ -22,6 +22,7 @@ const routes: Routes = [
       { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
       { path: 'pages', loadChildren: () => import('./template/template.module').then(m => m.TemplateModule) },
       { path: 'tenants', loadChildren: () => import('./tenants/tenants.module').then(m => m.TenantsModule) },
+      { path: 'dynamicwidget', loadChildren: () => import('./widget-dynamic/widget-dynamic.module').then(m => m.WidgetDynamicModule) },
       { path: 'schedulemanagement', loadChildren: () => import('./schedule-management/schedule-management.module').then(m => m.ScheduleManagementModule) },
       { path: 'statementdefination', loadChildren: () => import('./statement-defination/statement-defination.module').then(m => m.StatementDefinationModule) },
       { path: 'assetlibrary', loadChildren: () => import('./asset-libraries/asset-libraries.module').then(m => m.AssetLibrariesModule) },

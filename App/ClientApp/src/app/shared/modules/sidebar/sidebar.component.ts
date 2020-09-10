@@ -118,6 +118,11 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/tenants']);
   }
+  navigateToDynamicWidgets() {
+    this.URL = '/dynamicwidget';
+    this.hideSidebar();
+    this.route.navigate(['/dynamicwidget']);
+  }
   navigateToStatementDef() {
     this.URL = '/statementdefination';
     this.hideSidebar();
