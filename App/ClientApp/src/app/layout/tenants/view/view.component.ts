@@ -31,7 +31,7 @@ export class ViewComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
 
-  displayedColumns: string[] = ['contactType', 'firstName', 'lastName', 'email', 'no'];
+  displayedColumns: string[] = ['contactType', 'firstName', 'lastName', 'email', 'no', 'actions'];
   dataSource = new MatTableDataSource<ListElement>(List_Data);
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;

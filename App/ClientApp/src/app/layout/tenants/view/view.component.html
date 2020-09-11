@@ -123,20 +123,29 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="email">
-              <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+              <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
               <td mat-cell *matCellDef="let tenant">
                 <span *ngIf="tenant.email==null">-</span>
                 <span *ngIf="tenant.email!=null">{{tenant.email}} </span>
               </td>
             </ng-container>
             <ng-container matColumnDef="no">
-              <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
+              <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
               <td mat-cell *matCellDef="let tenant">
                 <span *ngIf="tenant.no==null">-</span>
                 <span *ngIf="tenant.no!=null">{{tenant.no}} </span>
               </td>
             </ng-container>
-
+            <ng-container matColumnDef="actions">
+              <th class="width10" mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let tenant">
+                <div class="action-btns btn-tbl-action">
+                  <button type="button" id="btnUpdateRole" title="Send Activation/Reset Password Link">
+                    <span class="fa fa-external-link"></span>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>

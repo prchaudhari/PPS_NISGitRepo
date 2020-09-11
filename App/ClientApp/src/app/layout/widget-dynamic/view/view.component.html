@@ -35,7 +35,7 @@
               </div>
               <!--repeat end-->
               <!--repeat start-->
-              <div class="widget-card-small widget-card">
+              <div class="widget-card-small widget-card" style="display:none">
                 <div class="hide-radio widget-icons">
                   <label>
                     <input type="radio" name="widgetType" id="inputWidgetTable" (click)="setWidgetType('Table')">
@@ -46,7 +46,7 @@
               </div>
               <!--repeat end-->
               <!--repeat start-->
-              <div class="widget-card-small widget-card">
+              <div class="widget-card-small widget-card" style="display:none">
                 <div class="hide-radio widget-icons">
                   <label>
                     <input type="radio" name="widgetType" id="inputWidgetLineGraph" (click)="setWidgetType('LineGraph')">
@@ -57,7 +57,7 @@
               </div>
               <!--repeat end-->
               <!--repeat start-->
-              <div class="widget-card-small widget-card">
+              <div class="widget-card-small widget-card" style="display:none">
                 <div class="hide-radio widget-icons">
                   <label>
                     <input type="radio" name="widgetType" id="inputWidgetBarGraph" (click)="setWidgetType('BarGraph')">
@@ -68,7 +68,7 @@
               </div>
               <!--repeat end-->
               <!--repeat start-->
-              <div class="widget-card-small widget-card">
+              <div class="widget-card-small widget-card" style="display:none">
                 <div class="hide-radio widget-icons">
                   <label>
                     <input type="radio" name="widgetType" id="inputWidgetPieChart" (click)="setWidgetType('PieChart')">
@@ -115,7 +115,7 @@
             </div>
           </div>
           <!--if pie-->
-          <div class="row" *ngIf="isSelected('PieChart')">
+          <div class="row" *ngIf="isSelected('PieChart')" style="display:none">
             <div class="col-sm-12 form-group">
               <div class="card bg-light border-card">
                 <div class="card-body">
@@ -135,7 +135,7 @@
             </div>
           </div>
           <!--if line and bar-->
-          <div class="row" *ngIf="isSelected('LineGraph') || isSelected('BarGraph')">
+          <div class="row" *ngIf="isSelected('LineGraph') || isSelected('BarGraph')" style="display:none">
             <div class="col-sm-12 form-group">
               <div class="card bg-light border-card">
                 <div class="card-body">
@@ -172,7 +172,7 @@
             </div>
           </div>
           <!--if table-->
-          <div class="row" *ngIf="isSelected('Table')">
+          <div class="row" *ngIf="isSelected('Table')" style="display:none">
             <div class="col-sm-12 form-group">
               <div class="card bg-light border-card">
                 <div class="card-body">
