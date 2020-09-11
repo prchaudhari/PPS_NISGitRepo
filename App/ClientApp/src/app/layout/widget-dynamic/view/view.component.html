@@ -1,0 +1,332 @@
+<div class="main-container">
+  <div class="page-title d-flex justify-content-between">
+    <span class="xs-title">Dynamic Widgets</span>
+  </div>
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-body position-relative">
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <label>Product Type</label>
+             <div>Common</div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <label>Entity Type</label>
+              <div>Customer</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>Widget Type</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 form-group">
+              <!--repeat start-->
+              <div class="widget-card-small widget-card">
+                <div class="hide-radio widget-icons">
+                  <label>
+                    <input type="radio" name="widgetType" id="inputWidgetForm" (click)="setWidgetType('Form')" [checked]="true">
+                    <span class="fa fa-list-alt"></span>
+                  </label>
+                </div>
+                <label class="text-center width100 pt-2 m-0 widget-name">Form</label>
+              </div>
+              <!--repeat end-->
+              <!--repeat start-->
+              <div class="widget-card-small widget-card">
+                <div class="hide-radio widget-icons">
+                  <label>
+                    <input type="radio" name="widgetType" id="inputWidgetTable" (click)="setWidgetType('Table')">
+                    <span class="fa fa-table"></span>
+                  </label>
+                </div>
+                <label class="text-center width100 pt-2 m-0 widget-name">Table</label>
+              </div>
+              <!--repeat end-->
+              <!--repeat start-->
+              <div class="widget-card-small widget-card">
+                <div class="hide-radio widget-icons">
+                  <label>
+                    <input type="radio" name="widgetType" id="inputWidgetLineGraph" (click)="setWidgetType('LineGraph')">
+                    <span class="fa fa-line-chart"></span>
+                  </label>
+                </div>
+                <label class="text-center width100 pt-2 m-0 widget-name">Line Graph</label>
+              </div>
+              <!--repeat end-->
+              <!--repeat start-->
+              <div class="widget-card-small widget-card">
+                <div class="hide-radio widget-icons">
+                  <label>
+                    <input type="radio" name="widgetType" id="inputWidgetBarGraph" (click)="setWidgetType('BarGraph')">
+                    <span class="fa fa-bar-chart"></span>
+                  </label>
+                </div>
+                <label class="text-center width100 pt-2 m-0 widget-name">Bar Graph</label>
+              </div>
+              <!--repeat end-->
+              <!--repeat start-->
+              <div class="widget-card-small widget-card">
+                <div class="hide-radio widget-icons">
+                  <label>
+                    <input type="radio" name="widgetType" id="inputWidgetPieChart" (click)="setWidgetType('PieChart')">
+                    <span class="fa fa-pie-chart"></span>
+                  </label>
+                </div>
+                <label class="text-center width100 pt-2 m-0 widget-name">Pie Chart</label>
+              </div>
+              <!--repeat end-->
+            </div>
+          </div>
+          <!--if form-->
+          <div class="row" *ngIf="isSelected('Form')">
+            <div class="col-sm-12 form-group">
+              <div class="card bg-light border-card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label class="mb-0">Field Name</label>
+                    </div>
+                    <div class="col-sm-6 pl-0">
+                      <label class="mb-0">Display Name</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 p-1">
+                      <div class="example-list" style="height:auto;background:transparent;">
+                        <div class="example-box p-2" *ngFor="let list of formList" style="cursor: default">
+                          <div class="row width100">
+                            <div class="col-sm-6">
+                              <span class="d-inline-block mt-1">{{list.fn}}</span>
+                            </div>
+                            <div class="col-sm-6">
+                              <span class="d-inline-block mt-1">{{list.dn}}</span>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--if pie-->
+          <div class="row" *ngIf="isSelected('PieChart')">
+            <div class="col-sm-12 form-group">
+              <div class="card bg-light border-card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                      <label>Series</label>
+                      <div>Series A</div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                      <label>Value</label>
+                      <div>Value A</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--if line and bar-->
+          <div class="row" *ngIf="isSelected('LineGraph') || isSelected('BarGraph')">
+            <div class="col-sm-12 form-group">
+              <div class="card bg-light border-card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-7 col-lg-7 col-sm-7">
+                      <label>X-Axis</label>
+                     <div>Month</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class=" col-sm-12 p-0">
+                      <div class="widget-area-grid p-0" style="height:auto">
+                        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+                          <!-- Position Column -->
+                          <ng-container matColumnDef="series">
+                            <th class="width50" mat-header-cell *matHeaderCellDef> Field Name </th>
+                            <td mat-cell *matCellDef="let list">{{list.series}}</td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="displayName">
+                            <th class="width50" mat-header-cell *matHeaderCellDef> Display Name </th>
+                            <td mat-cell *matCellDef="let list">{{list.displayName}}</td>
+                          </ng-container>
+
+
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--if table-->
+          <div class="row" *ngIf="isSelected('Table')">
+            <div class="col-sm-12 form-group">
+              <div class="card bg-light border-card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-5 col-lg-5 col-sm-5">
+                      <label>Field Name</label>
+                    </div>
+                    <div class="col-md-5 col-lg-5 col-sm-5 pl-0">
+                      <label>Header Name</label>
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-sm-2 p-0">
+                      <label>Sorting</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 p-0">
+                      <div
+                           class="example-list" style="height:auto;background:transparent;"
+                           (cdkDropListDropped)="drop($event)">
+                        <div class="example-box p-2" *ngFor="let list of tableHeader" style="cursor:default">
+                          <div class="row width100">
+                            <div class="col-sm-5">
+                              <span class="d-inline-block mt-1">{{list.fn}}</span>
+                            </div>
+                            <div class="col-sm-5">
+                              <span class="d-inline-block mt-1">{{list.name}}</span>
+                            </div>
+                            <div class="col-sm-2 text-center">
+                              <span *ngIf="list.sorting=='Yes'" class="fa fa-toggle-on text-success" title="Yes"></span>
+                              <span *ngIf="list.sorting=='No'" class="fa fa-toggle-off text-danger" title="No"></span>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 form-group">
+              <label>Filter</label>
+              <div class="card border-card bg-light">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <label>&nbsp;</label>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <label>Field</label>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <label>Operator</label>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <label>Value</label>
+                    </div>
+                  </div>
+                  <!--repeat start-->
+                  <div class="row form-group">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <input type="text" class="form-control" disabled value="Field 01" />
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control" disabled value="Less than" />
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control text-center" disabled value="12" />
+                    </div>
+                  
+                  </div>
+                  <!--repeat end-->
+                  <!--repeat start-->
+                  <div class="row form-group">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control text-center" disabled value="AND" />
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control" disabled value="Field 02" />
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control" disabled value="Equals" />
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control text-center" disabled value="12" />
+                    </div>
+                  </div>
+                  <!--repeat end-->
+                  <!--repeat start-->
+                  <div class="row form-group">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control text-center" disabled value="Or" />
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control" disabled value="Field 03" />
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <input type="text" class="form-control" disabled value="Between" />
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control text-center" disabled value="10" />
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control text-center" disabled value="14" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--repeat end-->
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-5">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="mb-3">
+                <h6 class="mb-1" *ngIf="isSelected('Form')">Widget Type : Form</h6>
+                <h6 class="mb-1" *ngIf="isSelected('Table')">Widget Type : Table</h6>
+                <h6 class="mb-1" *ngIf="isSelected('LineGraph')">Widget Type : Line Graph</h6>
+                <h6 class="mb-1" *ngIf="isSelected('BarGraph')">Widget Type : Bar Graph</h6>
+                <h6 class="mb-1" *ngIf="isSelected('PieChart')">Widget Type : Pie Chart</h6>
+              </div>
+              <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
+                <div class="card-body d-flex justify-content-center align-items-center" *ngIf='selectedLink!=undefined'>
+                  <img *ngIf="isSelected('Form')" src="assets/images/AccountInfoWidget.PNG" class="img-fluid" id="imgWidget" />
+                  <img *ngIf="isSelected('Table')" src="assets/images/SummaryWidget.PNG" class="img-fluid" id="imgWidget" />
+                  <img *ngIf="isSelected('LineGraph')" src="assets/images/SavingTrendWidget.PNG" class="img-fluid" id="imgWidget" />
+                  <img *ngIf="isSelected('BarGraph')" src="assets/images/SpendingTrendWidget.PNG" class="img-fluid" id="imgWidget" />
+                  <img *ngIf="isSelected('PieChart')" src="assets/images/Analytics.png" class="img-fluid" id="imgWidget" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-fill mr-2" id="btnSave">Update</button>
+      <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete">Delete</button>
+      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+    </div>
+  </div>
+</div>
