@@ -7,14 +7,18 @@ export interface ListElement {
   Product: string;
   Entity: string;
   Widget: string;
+  Owner: string;
+  PublishedBy: string;
+  PublishedDate: string;
+  Status: string;
 }
 
 const List_Data: ListElement[] = [
-  { Product: 'Common', Entity: 'Customer', Widget: 'Line Graph' },
-  { Product: 'Saving', Entity: 'Account', Widget: 'Bar Graph' },
-  { Product: 'Current', Entity: 'Transaction', Widget: 'Pie Chart' },
-  { Product: 'Current', Entity: 'Transaction', Widget: 'Table' },
-  { Product: 'Current', Entity: 'Transaction', Widget: 'Form' },
+  { Product: 'Common', Entity: 'Customer', Widget: 'Line Graph', Owner: 'NIS Super Admin', PublishedBy: 'NIS Super Admin', PublishedDate: '22/06/2020', Status:'Published'},
+  { Product: 'Saving', Entity: 'Account', Widget: 'Bar Graph', Owner: 'NIS Super Admin', PublishedBy: 'NIS Super Admin', PublishedDate: '22/06/2020', Status: 'New'},
+  { Product: 'Current', Entity: 'Transaction', Widget: 'Pie Chart', Owner: 'NIS Super Admin', PublishedBy: 'NIS Super Admin', PublishedDate: '22/06/2020', Status: 'Published' },
+  { Product: 'Current', Entity: 'Transaction', Widget: 'Table', Owner: 'NIS Super Admin', PublishedBy: 'NIS Super Admin', PublishedDate: '22/06/2020', Status: 'New'},
+  { Product: 'Current', Entity: 'Transaction', Widget: 'Form', Owner: 'NIS Super Admin', PublishedBy: 'NIS Super Admin', PublishedDate: '22/06/2020', Status: 'Published' },
 ];
 
 @Component({
@@ -29,7 +33,7 @@ export class ListComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
 
-  displayedColumns: string[] = ['Product', 'Entity', 'Widget', 'actions'];
+  displayedColumns: string[] = ['Product', 'Entity', 'Widget', 'Owner', 'PublishedBy', 'PublishedDate', 'Status',  'actions'];
   dataSource = new MatTableDataSource<ListElement>(List_Data);
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;

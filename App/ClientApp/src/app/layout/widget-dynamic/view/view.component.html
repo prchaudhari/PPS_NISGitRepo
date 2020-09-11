@@ -9,12 +9,36 @@
           <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
               <label>Product Type</label>
-             <div>Common</div>
+              <div>Common</div>
             </div>
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
               <label>Entity Type</label>
               <div>Customer</div>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <label>Owner</label>
+              <div>NIS Super Admin</div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <label>Status</label>
+              <div>
+                <!--<span class="badge badge-primary p-1">New</span>-->
+                <span class="badge badge-success p-1">Published</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <label>Published By</label>
+              <div>NIS Super Admin</div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <label>Published Date</label>
+              <div>22/06/2020</div>
+            </div>
+
           </div>
           <div class="row">
             <div class="col-sm-12">
@@ -142,7 +166,7 @@
                   <div class="row">
                     <div class="col-md-7 col-lg-7 col-sm-7">
                       <label>X-Axis</label>
-                     <div>Month</div>
+                      <div>Month</div>
                     </div>
                   </div>
                   <div class="row">
@@ -189,8 +213,7 @@
                   </div>
                   <div class="row">
                     <div class="col-sm-12 p-0">
-                      <div
-                           class="example-list" style="height:auto;background:transparent;"
+                      <div class="example-list" style="height:auto;background:transparent;"
                            (cdkDropListDropped)="drop($event)">
                         <div class="example-box p-2" *ngFor="let list of tableHeader" style="cursor:default">
                           <div class="row width100">
@@ -239,7 +262,7 @@
 
                     </div>
                     <div class="col-sm-3 col-md-3 col-lg-3">
-                    <input type="text" class="form-control" disabled value="Field 01" />
+                      <input type="text" class="form-control" disabled value="Field 01" />
                     </div>
                     <div class="col-sm-3 col-md-3 col-lg-3">
                       <input type="text" class="form-control" disabled value="Less than" />
@@ -247,7 +270,7 @@
                     <div class="col-sm-3 col-md-3 col-lg-3">
                       <input type="text" class="form-control text-center" disabled value="12" />
                     </div>
-                  
+
                   </div>
                   <!--repeat end-->
                   <!--repeat start-->
@@ -275,17 +298,10 @@
                       <input type="text" class="form-control" disabled value="Field 03" />
                     </div>
                     <div class="col-sm-3 col-md-3 col-lg-3">
-                      <input type="text" class="form-control" disabled value="Between" />
+                      <input type="text" class="form-control" disabled value="Greater than" />
                     </div>
                     <div class="col-sm-3 col-md-3 col-lg-3">
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <input type="text" class="form-control text-center" disabled value="10" />
-                        </div>
-                        <div class="col-sm-6">
-                          <input type="text" class="form-control text-center" disabled value="14" />
-                        </div>
-                      </div>
+                      <input type="text" class="form-control text-center" disabled value="12" />
                     </div>
                   </div>
                   <!--repeat end-->
