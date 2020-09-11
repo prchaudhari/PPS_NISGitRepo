@@ -127,7 +127,7 @@
         <a> <span class='nav-icon icon-reportGenerations2' title="Render Engines"> </span> <span class='nav-title'>Render Engines</span> </a>
       </li>
       <li [ngClass]="(URL=='/country')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToCountry()">
-        <a> <span class='nav-icon icon-reportGenerations2' title="Country"> </span> <span class='nav-title'>Country</span> </a>
+        <a> <span class='nav-icon fa fa-flag' title="Country"> </span> <span class='nav-title'>Country</span> </a>
       </li>
       <li [ngClass]="(URL=='/statemenetsearch')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToStatemenetSearch()"
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Search','Operation' : 'View'}))">

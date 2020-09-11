@@ -106,7 +106,7 @@
         <div class="row">
           <div class="form-group col-sm-12 parent-rtl">
             <label>Name</label>
-            <input type="text" class="form-control" id="filterDisplayName" formControlName="AddName">
+            <input type="text" class="form-control" id="AddName" formControlName="AddName">
             <div class="validation-msg" style="color:red">
               <ul *ngIf="AddName.touched && AddName.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="AddName.errors?.pattern">Invalid country name</li>
@@ -118,7 +118,7 @@
           </div>
           <div class="form-group col-sm-12 parent-rtl">
             <label>Code</label>
-            <input type="text" class="form-control" id="filterOwner" formControlName="AddCode">
+            <input type="text" class="form-control" id="AddCode" formControlName="AddCode">
             <div class="validation-msg" style="color:red">
               <ul *ngIf="AddCode.touched && AddCode.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="AddCode.errors?.pattern">Invalid country code</li>
@@ -130,7 +130,7 @@
           </div>
           <div class="form-group col-sm-12 parent-rtl">
             <label>Dailing Code</label>
-            <input type="text" class="form-control" id="filterOwner" formControlName="AddDialingCode">
+            <input type="text" class="form-control" id="AddDialingCode" formControlName="AddDialingCode">
             <div class="validation-msg" style="color:red">
               <ul *ngIf="AddDialingCode.touched && AddDialingCode.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="AddDialingCode.errors?.pattern">Invalid country dialing code</li>
@@ -171,7 +171,7 @@
         <div class="row">
           <div class="form-group col-sm-12 parent-rtl">
             <label>Name</label>
-            <input type="text" class="form-control" id="filterDisplayName" formControlName="EditName">
+            <input type="text" class="form-control" id="EditName" formControlName="EditName">
             <div class="validation-msg" style="color:red">
               <ul *ngIf="EditName.touched && EditName.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="EditName.errors?.pattern">Invalid schedule name</li>
@@ -183,7 +183,7 @@
           </div>
           <div class="form-group col-sm-12 parent-rtl">
             <label>Code</label>
-            <input type="text" class="form-control" id="filterOwner" formControlName="EditCode">
+            <input type="text" class="form-control" id="EditCode" formControlName="EditCode">
             <div class="validation-msg" style="color:red">
               <ul *ngIf="EditCode.touched && EditCode.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="EditCode.errors?.pattern">Invalid country code</li>
@@ -195,7 +195,7 @@
           </div>
           <div class="form-group col-sm-12 parent-rtl">
             <label>Dailing Code</label>
-            <input type="text" class="form-control" id="filterOwner" formControlName="EditDialingCode">
+            <input type="text" class="form-control" id="EditDialingCode" formControlName="EditDialingCode">
             <div class="validation-msg" style="color:red">
               <ul *ngIf="EditDialingCode.touched && EditDialingCode.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="EditDialingCode.errors?.pattern">Invalid country dialing code</li>
@@ -211,13 +211,13 @@
       <div class="filter-footer">
         <ul class="nav nav-toolbar">
           <li class="nav-item width50">
-            <button title="Save" id="btnCloseForm" (click)="AddUpdateCountry()" [disabled]="vaildateForm('Edit')" 
+            <button title="Save" id="btnCloseForm1" (click)="AddUpdateCountry()" [disabled]="vaildateForm('Edit')" 
                     class="btn-footer-fill btn-block rounded-0 height100">
               <span class="fa fa-check"></span>
             </button>
           </li>
           <li class="nav-item width50">
-            <button title="Close" id="btnCloseForm" (click)="CloseCountryForm('Edit')"
+            <button title="Close" id="btnCloseForm1" (click)="CloseCountryForm('Edit')"
                     class="btn-footer-fill btn-block rounded-0 height100">
               <span class="fa fa-close"></span>
             </button>

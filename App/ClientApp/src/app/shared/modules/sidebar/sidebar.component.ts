@@ -67,8 +67,8 @@ export class SidebarComponent implements OnInit {
       this.route.navigate(['/dashboard']);
     }
     else {
-      this.URL = '/tenantConfiguration';
-      this.route.navigate(['/tenantConfiguration']);
+      this.URL = '/tenants';
+      this.route.navigate(['/tenants']);
     }
     this.hideSidebar();
   }
@@ -230,15 +230,17 @@ export class SidebarComponent implements OnInit {
     
     this.URL = this.route.url;
     if(this.isSuperAdminUser == true) {
-      if (this.URL == '/tenantConfiguration' ||this.URL == '/settings' || this.URL == '/renderengines') {
+      if (this.URL == '/tenants' || this.URL == '/tenantConfiguration' ||this.URL == '/settings' || this.URL == '/renderengines') {
         this.IsMainMenu = false;
       }
       else {
         this.IsMainMenu = true;
       }
     }
-
-    if (this.URL.includes('/user')) {
+    if (this.URL.includes('/tenants')) {
+      this.URL = '/tenants'
+    }
+    else if (this.URL.includes('/user')) {
       this.URL ='/user'
     }
     else if (this.URL.includes('/widgets')) {

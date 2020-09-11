@@ -34,6 +34,7 @@ export class CountryComponent implements OnInit {
 
   public userClaimsRolePrivilegeOperations: any[] = [];
   public onlyAlphabetsWithSpace = '[a-zA-Z ]*';
+  public dialingCodeRegex = '^(\\+\\d{1,3})$';
   public onlyAlphabetswithInbetweenSpaceUpto50Characters = Constants.onlyAlphabetswithInbetweenSpaceUpto50Characters;
   public totalRecordCount = 0;
   public filterName1 = '';
@@ -61,31 +62,34 @@ export class CountryComponent implements OnInit {
     this.getCountrys(null);
     this.CountryFilterForm = this.fb.group({
       filterName: [null],
-      filterCode: [null],
-      filterDialingCode: [null],
-     
+      filterCode: [null]
     });
     this.AddCountryFormGroup = this.fb.group({
       AddName: [null, Validators.compose([Validators.required,
       Validators.minLength(Constants.inputMinLenth), Validators.maxLength(Constants.inputMaxLenth),
-      Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])
+        Validators.pattern(this.onlyAlphabetsWithSpace)])
       ],
       AddCode: [null, Validators.compose([Validators.required,
       Validators.minLength(Constants.inputMinLenth), Validators.maxLength(Constants.inputMaxLenth),
-      Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])
+        Validators.pattern(this.onlyAlphabetsWithSpace)])
       ],
       AddDialingCode: [null, Validators.compose([Validators.required,
-      Validators.minLength(Constants.inputMinLenth), Validators.maxLength(Constants.inputMaxLenth),
-      Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])
-      ],
+        Validators.pattern(this.dialingCodeRegex)
+      ])]
     });
+
     this.EditCountryFormGroup = this.fb.group({
       EditName: [null, Validators.compose([Validators.required,
       Validators.minLength(Constants.inputMinLenth), Validators.maxLength(Constants.inputMaxLenth),
-      Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])
+      Validators.pattern(this.onlyAlphabetsWithSpace)])
       ],
-      EditCode: [null, Validators.compose([Validators.maxLength(Constants.txtAreaMaxLenth)])],
-      EditDialingCode: [null, Validators.compose([Validators.maxLength(Constants.txtAreaMaxLenth)])]
+      EditCode: [null, Validators.compose([Validators.required,
+      Validators.minLength(Constants.inputMinLenth), Validators.maxLength(Constants.inputMaxLenth),
+      Validators.pattern(this.onlyAlphabetsWithSpace)])
+      ],
+      EditDialingCode: [null, Validators.compose([Validators.required,
+      Validators.pattern(this.dialingCodeRegex)
+      ])]
     });
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
@@ -94,21 +98,6 @@ export class CountryComponent implements OnInit {
     else {
       this.userClaimsRolePrivilegeOperations = [];
     }
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
-  constructor(private injector: Injector,
-    private fb: FormBuilder,
-    private uiLoader: NgxUiLoaderService,
-    private _messageDialogService: MessageDialogService,
-    private route: Router,
-    private localstorageservice: LocalStorageService,
-    private countryService: CountryService) {
-    this.addCountryContainer = false;
-    this.sortedCountryList = this.countryList.slice();
   }
   get AddName() {
     return this.AddCountryFormGroup.get('AddName');
@@ -131,6 +120,21 @@ export class CountryComponent implements OnInit {
   get EditDialingCode() {
     return this.EditCountryFormGroup.get('EditDialingCode');
   }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  constructor(private injector: Injector,
+    private fb: FormBuilder,
+    private uiLoader: NgxUiLoaderService,
+    private _messageDialogService: MessageDialogService,
+    private route: Router,
+    private localstorageservice: LocalStorageService,
+    private countryService: CountryService) {
+    this.addCountryContainer = false;
+    this.sortedCountryList = this.countryList.slice();
+  }
+
 
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
@@ -203,7 +207,7 @@ export class CountryComponent implements OnInit {
     if (this.filterCode1 != null && this.filterCode1 != '') {
       searchParameter.CountryCode = this.filterCode1.trim();
     }
-    
+
     var response = await countryService.getCountrys(searchParameter);
     this.countryList = response.List;
     this.totalRecordCount = response.RecordCount;
@@ -241,11 +245,11 @@ export class CountryComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
       if (this.CountryFilterForm.value.filterName != null && this.CountryFilterForm.value.filterName != '') {
-        this.filterName1= this.CountryFilterForm.value.filterName.trim();
+        this.filterName1 = this.CountryFilterForm.value.filterName.trim();
         searchParameter.Name = this.CountryFilterForm.value.filterName.trim();
       }
       if (this.CountryFilterForm.value.filterCode != null && this.CountryFilterForm.value.filterCode != '') {
-        this.filterCode1= this.CountryFilterForm.value.filterCode.trim();
+        this.filterCode1 = this.CountryFilterForm.value.filterCode.trim();
         searchParameter.CountryOwner = this.CountryFilterForm.value.filterCode.trim();
       }
       if (this.CountryFilterForm.value.filterDialingCode != null && this.CountryFilterForm.value.filterDialingCode != 0) {
@@ -335,8 +339,7 @@ export class CountryComponent implements OnInit {
     this.uiLoader.stop();
     if (isRecordSaved) {
       let message = Constants.recordAddedMessage;
-      if (isEditOperation)
-      {
+      if (isEditOperation) {
         this.CloseCountryForm('Edit');
         message = Constants.recordUpdatedMessage;
       }

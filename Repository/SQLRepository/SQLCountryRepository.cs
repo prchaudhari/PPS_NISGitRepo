@@ -198,6 +198,11 @@ namespace nIS
                         {
                             throw new CountryNotFoundException(tenantCode);
                         }
+                        UserRecord user= nISEntitiesDataContext.UserRecords.Where(item => item.CountryId == country.Identifier &&  item.IsDeleted==false).FirstOrDefault();
+                        if (user != null)
+                        {
+                            throw new CountryReferenceInUserException(tenantCode);
+                        }
                         countryRecords.IsDeleted = true;
                         nISEntitiesDataContext.SaveChanges();
                     }
@@ -368,12 +373,12 @@ namespace nIS
                 StringBuilder query = new StringBuilder();
                 if (operation.Equals(ModelConstant.ADD_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("Name.Equals(\"{0}\")", item.CountryName)).ToList()) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("Name.Equals(\"{0}\") or Code.Equals(\"{1}\") or DialingCode.Equals(\"{2}\")", item.CountryName,item.Code,item.DialingCode)).ToList()) + ") and IsDeleted.Equals(false)");
                 }
 
                 if (operation.Equals(ModelConstant.UPDATE_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("(Name.Equals(\"{0}\") and !Id.Equals({1}))", item.CountryName, item.Identifier))) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("((Name.Equals(\"{0}\") or Code.Equals(\"{1}\") or DialingCode.Equals(\"{2}\")) and !Id.Equals({3}))", item.CountryName, item.Code, item.DialingCode, item.Identifier))) + ") and IsDeleted.Equals(false)");
                 }
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))

@@ -29,6 +29,12 @@ namespace nIS
         //public const string COUNTRY_NOT_FOUND_EXCEPTION = "CountryNotFoundException";
         public const string COUNTRY_NOT_FOUND_EXCEPTION = "Country not found exception";
 
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        //public const string COUNTRY_NOT_FOUND_EXCEPTION = "CountryNotFoundException";
+        public const string COUNTRY_REFERENCEIN_USER_EXCEPTION = "Country is used in user";
+
 
         /// <summary>
         /// The invalid country exception key

@@ -65,6 +65,7 @@
     <Compile Include="Constants\ScheduleConstant.cs" />
     <Compile Include="Constants\RoleConstant.cs" />
     <Compile Include="Constants\UserConstant.cs" />
+    <Compile Include="Country\CountryReferenceInUserException.cs" />
     <Compile Include="Country\CountryNotFoundException.cs" />
     <Compile Include="Country\DuplicateCountryFoundException.cs" />
     <Compile Include="Country\InvalidCountryException.cs" />
