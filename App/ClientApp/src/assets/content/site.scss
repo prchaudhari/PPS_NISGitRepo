@@ -12,6 +12,39 @@
     line-height: 25px;
   }
 
+  .clr-box{
+      width:40px;
+      height:30px;
+  }
+  /*html editor start*/
+  .html {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5rem;
+    background-color: #f1f1f1;
+    min-height: 20px;
+    max-height: 10rem;
+    overflow: auto;
+  }
+
+  .quote {
+    color: #8cc540;
+    font-style: italic;
+  }
+
+  .redText {
+    color: Red;
+    font-size: 12px;
+    font-family: Arial;
+  }
+
+  h1.titleText {
+    color: #69a8cf;
+    text-align: left;
+    margin-top: 40px;
+    font-weight: normal;
+  }
+  /*html editor end*/
   .overflow-auto {
     overflow: auto;
   }
@@ -1521,7 +1554,7 @@
   }
 
   .widget-icons {
-    width: 100px;
+    width: 90px;
     height: 50px;
     text-align: center;
     font-size: 28px;
@@ -1531,7 +1564,7 @@
 
   .widget-card-small {
     margin-right: 5px;
-    width: 18%!important;
+    width: 15% !important;
     float: left;
     margin-bottom: 10px;
   }

@@ -23,8 +23,9 @@ import { TenantConfigurationComponent } from './tenant-configuration/tenant-conf
 import { WindowRef } from '../core/services/window-ref.service';
 import { DatePipe } from '@angular/common';
 import { CountryComponent } from './country/country.component';
+import { ThemeConfigurationComponent } from './theme-configuration/theme-configuration.component';
 @NgModule({
-  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent],
+  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent, ThemeConfigurationComponent],
   imports: [
     CommonModule,
     FormsModule,

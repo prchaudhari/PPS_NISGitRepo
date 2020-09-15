@@ -88,6 +88,17 @@
                 <label class="text-center width100 pt-2 m-0 widget-name">Pie Chart</label>
               </div>
               <!--repeat end-->
+              <!--repeat start-->
+              <div class="widget-card-small widget-card">
+                <div class="hide-radio widget-icons">
+                  <label>
+                    <input type="radio" name="widgetType" id="inputWidgetHtml" (click)="setWidgetType('Html')">
+                    <span class="fa fa-code"></span>
+                  </label>
+                </div>
+                <label class="text-center width100 pt-2 m-0 widget-name">HTML</label>
+              </div>
+              <!--repeat end-->
             </div>
           </div>
           <!--if form-->
@@ -95,6 +106,12 @@
             <div class="col-sm-12 form-group">
               <div class="card bg-light border-card">
                 <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-10 col-lg-10 col-sm-10 form-group">
+                      <label>Title</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-md-5 col-lg-5 col-sm-5">
                       <label>Field Name</label>
@@ -153,6 +170,12 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
+                      <label>Title</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-6 form-group">
                       <label>Series</label>
                       <select class="form-control">
                         <option> Select</option>
@@ -182,7 +205,11 @@
               <div class="card bg-light border-card">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-md-10 col-lg-10 col-sm-10 form-group">
+                    <div class="col-md-5 col-lg-5 col-sm-5 form-group">
+                      <label>Title</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-5 col-lg-5 col-sm-5 form-group">
                       <label>X-Axis</label>
                       <select class="form-control">
                         <option> Select</option>
@@ -195,7 +222,14 @@
                   <div class="row">
                     <div class="col-md-5 col-lg-5 col-sm-5">
                       <label>Field Name</label>
-                      <input type="text" class="form-control" />
+                      <select class="form-control">
+                        <option> Select</option>
+                        <option> Field Name 01</option>
+                        <option> Field Name 02</option>
+                        <option> Field Name 03</option>
+                        <option> Field Name 04</option>
+                        <option> Field Name 05</option>
+                      </select>
                     </div>
                     <div class="col-md-5 col-lg-5 col-sm-5">
                       <label>Display Name</label>
@@ -247,6 +281,12 @@
             <div class="col-sm-12 form-group">
               <div class="card bg-light border-card">
                 <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-8 col-lg-8 col-sm-8 form-group">
+                      <label>Title</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-md-4 col-lg-4 col-sm-4">
                       <label>Field Name</label>
@@ -308,6 +348,42 @@
               </div>
             </div>
           </div>
+          <div class="row" *ngIf="isSelected('Html')">
+            <div class="col-sm-12 form-group">
+              <div class="card bg-light border-card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-6 form-group">
+                      <label>Title</label>
+                      <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                      <label>Field Name</label>
+                      <select class="form-control">
+                        <option> Select</option>
+                        <option> Field Name 01</option>
+                        <option> Field Name 02</option>
+                        <option> Field Name 03</option>
+                        <option> Field Name 04</option>
+                        <option> Field Name 05</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 form-group">
+                      <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
+                      <!--<h5 class="html-header">html output</h5>
+              <div class="html">
+                {{ htmlContent }}
+              </div>-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
           <div class="row">
             <div class="col-sm-12 form-group">
               <label>Filter</label>
@@ -333,7 +409,7 @@
                   <!--repeat start-->
                   <div class="row form-group">
                     <div class="col-sm-2 col-md-2 col-lg-2">
-                     
+
                     </div>
                     <div class="col-sm-3 col-md-3 col-lg-3">
                       <select class="form-control">
@@ -451,33 +527,237 @@
 
             </div>
           </div>
-        </div>
 
-        <div class="col-sm-5">
           <div class="row">
             <div class="col-sm-12">
-              <div class="mb-3">
-                <h6 class="mb-1" *ngIf="isSelected('Form')">Widget Type : Form</h6>
-                <h6 class="mb-1" *ngIf="isSelected('Table')">Widget Type : Table</h6>
-                <h6 class="mb-1" *ngIf="isSelected('LineGraph')">Widget Type : Line Graph</h6>
-                <h6 class="mb-1" *ngIf="isSelected('BarGraph')">Widget Type : Bar Graph</h6>
-                <h6 class="mb-1" *ngIf="isSelected('PieChart')">Widget Type : Pie Chart</h6>
-              </div>
-              <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
-                <div class="card-body d-flex justify-content-center align-items-center" *ngIf='selectedLink!=undefined'>
-                  <img *ngIf="isSelected('Form')" src="assets/images/AccountInfoWidget.PNG" class="img-fluid" id="imgWidget" />
-                  <img *ngIf="isSelected('Table')" src="assets/images/SummaryWidget.PNG" class="img-fluid" id="imgWidget" />
-                  <img *ngIf="isSelected('LineGraph')" src="assets/images/SavingTrendWidget.PNG" class="img-fluid" id="imgWidget" />
-                  <img *ngIf="isSelected('BarGraph')" src="assets/images/SpendingTrendWidget.PNG" class="img-fluid" id="imgWidget" />
-                  <img *ngIf="isSelected('PieChart')" src="assets/images/Analytics.png" class="img-fluid" id="imgWidget" />
+              <label>Select Theme</label>
+              <div class="width100 form-group d-flex justify-content-start">
+                <div class="custom-control custom-radio mr-2">
+                  <input class="custom-control-input" type="radio"
+                         name="themeoption" id="Default" value="option1" checked (click)="isDefaultClicked()">
+                  <label class="custom-control-label dir-rtl" for="Default">
+                    Default
+                  </label>
+                </div>
+                <div class="custom-control custom-radio mr-2">
+                  <input class="custom-control-input" type="radio"
+                         name="themeoption" id="Custome" value="option1" (click)="isCustomeClicked()">
+                  <label class="custom-control-label dir-rtl" for="Custome">
+                    Custome
+                  </label>
                 </div>
               </div>
             </div>
           </div>
+          <div class="card bg-light border-card form-group" *ngIf="isCustome">
+            <!--<div class="card-header bg-white">
+      <label class="mb-0">Common Properties</label>
+    </div>-->
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-4">
+                  <label>Foreground Color</label>
+                  <input type="color" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                  <label>Background Color</label>
+                  <input type="color" class="form-control" />
+                </div>
+              </div>
+              <div class="row mt-2" *ngIf="isSelected('LineGraph') || isSelected('BarGraph') || isSelected('PieChart')">
+                <div class="col-sm-6">
+                  <label>Select Color Theme</label>
+                  <div class="custom-control custom-radio mr-2 mb-2">
+                    <input class="custom-control-input" type="radio" checked
+                           name="themeChartOption" id="Default" value="optionthemeChart">
+                    <label class="custom-control-label dir-rtl" for="themeChart1">
+                      <div class="d-flex justify-content-start">
+                        <div class="clr-box" style="background-color:#342ead"></div>
+                        <div class="clr-box" style="background-color:#EA6227"></div>
+                        <div class="clr-box" style="background-color:#f2a51a"></div>
+                        <div class="clr-box" style="background-color:#b9ebcc"></div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="custom-control custom-radio mr-2">
+                    <input class="custom-control-input" type="radio"
+                           name="themeChartOption" id="Default" value="optionthemeChart">
+                    <label class="custom-control-label dir-rtl" for="themeChart2">
+                      <div class="d-flex justify-content-start">
+                        <div class="clr-box" style="background-color:#45046a"></div>
+                        <div class="clr-box" style="background-color: #5c2a9d"></div>
+                        <div class="clr-box" style="background-color: #b5076b"></div>
+                        <div class="clr-box" style="background-color: #f1ebbb"></div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>&nbsp;</label>
+                  <div class="custom-control custom-radio mr-2 mb-2">
+                    <input class="custom-control-input" type="radio"
+                           name="themeChartOption" id="Default" value="optionthemeChart">
+                    <label class="custom-control-label dir-rtl" for="themeChart1">
+                      <div class="d-flex justify-content-start">
+                        <div class="clr-box" style="background-color:#5fdde5"></div>
+                        <div class="clr-box" style="background-color: #f4ea8e"></div>
+                        <div class="clr-box" style="background-color: #f37121"></div>
+                        <div class="clr-box" style="background-color: #d92027"></div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="custom-control custom-radio mr-2">
+                    <input class="custom-control-input" type="radio"
+                           name="themeChartOption" id="Default" value="optionthemeChart">
+                    <label class="custom-control-label dir-rtl" for="themeChart2">
+                      <div class="d-flex justify-content-start">
+                        <div class="clr-box" style="background-color: #805D93;"></div>
+                        <div class="clr-box" style="background-color: #F49FBC;"></div>
+                        <div class="clr-box" style="background-color: #9EBD6E;"></div>
+                        <div class="clr-box" style="background-color: #169873;"></div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-light border-card form-group" *ngIf="isCustome">
+            <div class="card-header bg-white">
+              <label class="mb-0">Title Font</label>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 col-sm-6">
+                  <label> Color</label>
+                  <input type="color" class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label> Size</label>
+                  <input type="number" class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label> Weight</label>
+                  <select class="form-control">
+                    <option>Select</option>
+                    <option>Normal</option>
+                    <option>Italic</option>
+                    <option>Bold</option>
+                  </select>
+                </div>
+                <div class="col-md-3 col-sm-6 form-group">
+                  <label> Type</label>
+                  <select class="form-control">
+                    <option>Select</option>
+                    <option>Type 01</option>
+                    <option>Type 02</option>
+                    <option>Type 03</option>
+                  </select>
+                </div>
+              </div>
 
+            </div>
+          </div>
+          <div class="card bg-light border-card form-group" *ngIf="isCustome">
+            <div class="card-header bg-white">
+              <label class="mb-0">Header/Label Font</label>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 col-sm-6">
+                  <label> Color</label>
+                  <input type="color" class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label> Size</label>
+                  <input type="number" class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label> Weight</label>
+                  <select class="form-control">
+                    <option>Select</option>
+                    <option>Normal</option>
+                    <option>Italic</option>
+                    <option>Bold</option>
+                  </select>
+                </div>
+                <div class="col-md-3 col-sm-6 form-group">
+                  <label> Type</label>
+                  <select class="form-control">
+                    <option>Select</option>
+                    <option>Type 01</option>
+                    <option>Type 02</option>
+                    <option>Type 03</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-light border-card form-group" *ngIf="isCustome">
+            <div class="card-header bg-white">
+              <label class="mb-0">Data Font</label>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 col-sm-6">
+                  <label> Color</label>
+                  <input type="color" class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label> Size</label>
+                  <input type="number" class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <label> Weight</label>
+                  <select class="form-control">
+                    <option>Select</option>
+                    <option>Normal</option>
+                    <option>Italic</option>
+                    <option>Bold</option>
+                  </select>
+                </div>
+                <div class="col-md-3 col-sm-6 form-group">
+                  <label> Type</label>
+                  <select class="form-control">
+                    <option>Select</option>
+                    <option>Type 01</option>
+                    <option>Type 02</option>
+                    <option>Type 03</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+
+            <div class="col-sm-5">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="mb-3">
+                    <h6 class="mb-1" *ngIf="isSelected('Form')">Widget Type : Form</h6>
+                    <h6 class="mb-1" *ngIf="isSelected('Table')">Widget Type : Table</h6>
+                    <h6 class="mb-1" *ngIf="isSelected('LineGraph')">Widget Type : Line Graph</h6>
+                    <h6 class="mb-1" *ngIf="isSelected('BarGraph')">Widget Type : Bar Graph</h6>
+                    <h6 class="mb-1" *ngIf="isSelected('PieChart')">Widget Type : Pie Chart</h6>
+                    <h6 class="mb-1" *ngIf="isSelected('Html')">Widget Type : Html</h6>
+                  </div>
+                  <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
+                    <div class="card-body d-flex justify-content-center align-items-center" *ngIf='selectedLink!=undefined'>
+                      <img *ngIf="isSelected('Form')" src="assets/images/AccountInfoWidget.PNG" class="img-fluid" id="imgWidget" />
+                      <img *ngIf="isSelected('Table')" src="assets/images/SummaryWidget.PNG" class="img-fluid" id="imgWidget" />
+                      <img *ngIf="isSelected('LineGraph')" src="assets/images/SavingTrendWidget.PNG" class="img-fluid" id="imgWidget" />
+                      <img *ngIf="isSelected('BarGraph')" src="assets/images/SpendingTrendWidget.PNG" class="img-fluid" id="imgWidget" />
+                      <img *ngIf="isSelected('PieChart')" src="assets/images/Analytics.png" class="img-fluid" id="imgWidget" />
+                      <!--<div *ngIf="isSelected('Html')" class="html"> {{ htmlContent }}</div>-->
+                      <img *ngIf="isSelected('Html')" src="assets/images/Analytics.png" class="img-fluid" id="imgWidget" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
   </div>
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
