@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 export interface ListElement {
   series: string;
   displayName: string;
@@ -22,7 +23,103 @@ const List_Data: ListElement[] = [
   styleUrls: ['./add.component.scss']
 })
 export class AddComponent implements OnInit {
+  //html editor code
+  //htmlContent = 'hi';
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '5rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      //['bold']
+    ],
+    customClasses: [
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ]
+  };
+  public isDefault: boolean = true;
+  public isCustome: boolean = false;
+  isDefaultClicked() {
+    this.isDefault = true;
+    this.isCustome = false;
+  }
+  isCustomeClicked() {
+    this.isDefault = false;
+    this.isCustome = true;
+  }
 
+  public isTheme1Active: boolean = false;
+  public isTheme2Active: boolean = false;
+  public isTheme3Active: boolean = false;
+  public isTheme4Active: boolean = false;
+  public isTheme5Active: boolean = false;
+  public isTheme0Active: boolean = true;
+  //Functions call to click the theme of the page--
+  theme1() {
+    this.isTheme1Active = true;
+    this.isTheme2Active = false;
+    this.isTheme3Active = false;
+    this.isTheme4Active = false;
+    this.isTheme5Active = false;
+    this.isTheme0Active = false;
+  }
+  theme2() {
+    this.isTheme1Active = false;
+    this.isTheme3Active = false;
+    this.isTheme2Active = true;
+    this.isTheme4Active = false;
+    this.isTheme5Active = false;
+    this.isTheme0Active = false;
+  }
+  theme3() {
+    this.isTheme1Active = false;
+    this.isTheme3Active = true;
+    this.isTheme2Active = false;
+    this.isTheme4Active = false;
+    this.isTheme5Active = false;
+    this.isTheme0Active = false;
+
+  }
+  theme4() {
+    this.isTheme1Active = false;
+    this.isTheme3Active = false;
+    this.isTheme2Active = false;
+    this.isTheme4Active = true;
+    this.isTheme5Active = false;
+    this.isTheme0Active = false;
+  }
+  theme5() {
+    this.isTheme1Active = false;
+    this.isTheme3Active = false;
+    this.isTheme2Active = false;
+    this.isTheme4Active = false;
+    this.isTheme5Active = true;
+    this.isTheme0Active = false;
+  }
+  theme0() {
+    this.isTheme1Active = false;
+    this.isTheme3Active = false;
+    this.isTheme2Active = false;
+    this.isTheme4Active = false;
+    this.isTheme5Active = false;
+    this.isTheme0Active = true;
+  }
   public pageSize = 5;
   public currentPage = 0;
   public totalSize = 0;
@@ -78,6 +175,8 @@ export class AddComponent implements OnInit {
     return (this.selectedLink === name); // if current radio button is selected, return true, else return false 
   }
 
+ 
+  
   navigateToListPage() {
     this.route.navigate(['dynamicwidget']);
   }

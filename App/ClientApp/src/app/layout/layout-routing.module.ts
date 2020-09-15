@@ -12,6 +12,7 @@ import { AssetSettingsComponent } from './asset-settings/asset-settings.componen
 import { StatementSearchComponent } from './statement-search/statement-search.component';
 import { TenantConfigurationComponent } from './tenant-configuration/tenant-configuration.component';
 import { CountryComponent } from './country/country.component';
+import { ThemeConfigurationComponent } from './theme-configuration/theme-configuration.component';
 const routes: Routes = [
   {
     path: '',
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path: 'statemenetsearch', component: StatementSearchComponent },
       { path: 'tenantConfiguration', component: TenantConfigurationComponent },
       { path: 'country', component: CountryComponent },
+      { path: 'themeConfiguration', component: ThemeConfigurationComponent },
     ]
   }
 

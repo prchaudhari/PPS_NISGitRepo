@@ -168,6 +168,11 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/country']);
   }
+  navigateTothemeConfiguration() {
+    this.URL = '/themeConfiguration';
+    this.hideSidebar();
+    this.route.navigate(['/themeConfiguration']);
+  }
   async logout() {
     this.localstorageservice.removeLocalStorageData();
     this.route.navigate(['login']);
