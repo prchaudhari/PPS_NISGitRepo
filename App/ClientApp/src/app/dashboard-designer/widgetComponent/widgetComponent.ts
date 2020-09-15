@@ -808,11 +808,11 @@ export class AnalyticsWidgetComponent {
 
   public options4: any = {
     chart: {
-      plotBackgroundColor: null,
+      backgroundColor: 'rgba(0,0,0,0)',
       plotBorderWidth: null,
       plotShadow: false,
       type: 'pie',
-      height: (9 / 16 * 100) + '%'
+      height: (9 / 16 * 100) + '%',
     },
     title: {
       text: ''
@@ -892,7 +892,8 @@ export class SavingTrendsComponent {
   widgetsGridsterItemArray: any[] = [];
   public options4: any = {
     chart: {
-      height: (9 / 16 * 100) + '%'
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
     },
     title: {
       text: ''
@@ -1002,7 +1003,8 @@ export class SpendindTrendsComponent {
   widgetsGridsterItemArray: any[] = [];
   public options4: any = {
     chart: {
-      height: (9 / 16 * 100) + '%'
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
     },
     title: {
       text: ''

@@ -16,4 +16,7 @@ export interface Template {
     "PageTypeName":string;
     "PageWidgets": TemplateWidget[];
     "CreatedDate":Date;
+    "BackgroundImageAssetLibraryId": number;
+    "BackgroundImageAssetId":number;
+    "BackgroundImageURL":string;
 }

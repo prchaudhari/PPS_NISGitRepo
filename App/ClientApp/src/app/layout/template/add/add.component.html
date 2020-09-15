@@ -24,8 +24,6 @@
               </ul>
           </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-md-4 col-lg-4">
             <label id="lblPageType" for="inputageType">Page Type</label> <span class="text-danger"> *</span>
             <select id="inputageType" formControlName="pageType" (change)="onPageTypeSelected($event)" class="form-control" [disableControl]="pageEditModeOn">
@@ -36,6 +34,31 @@
                 <li class="text-danger">Please select page type</li>
               </ul>
             </div>
+          </div>
+        </div>
+
+        <div class="row form-group mt-4">
+          <div class="col-md-12 col-lg-12">
+            <h6>Background Image</h6>
+          </div>
+          <div class="col-md-4 col-lg-4">
+            <label id="lblAssetLibrary" for="AssetLibraryId">Asset Library</label>
+            <select id="AssetLibraryId" formControlName="assetLibrary" (change)="onAssetLibrarySelected($event)" class="form-control" >
+              <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
+            </select>
+          </div>
+          <div class="col-md-4 col-lg-4">
+            <label id="lblAssets" for="AssetId">Assets</label>
+            <select id="AssetId" formControlName="asset" class="form-control">
+              <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
+            </select>
+          </div>
+          <div class="col-md-8 col-lg-8 text-center mt-3">
+            <label>OR</label>
+          </div>
+          <div class="col-md-8 col-lg-8">
+            <label id="lblBackgroundImageUrl" for="BackgroundImageUrl" >URL</label>
+            <input type="text" class="form-control" id="BackgroundImageUrl" formControlName="pageBackgroundImageUrl" (change)="OnBackgroundImageUrlChange()"/>
           </div>
         </div>
       </div>

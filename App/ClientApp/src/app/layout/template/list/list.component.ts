@@ -189,7 +189,7 @@ export class ListComponent implements OnInit {
       searchParameter.EndDate = new Date(this.filterPublishEndDate.setHours(23, 59, 59));
       //searchParameter.SortParameter.SortColumn = 'PublishedOn';
     }
-    var response = await templateService.getTemplatesForlist(searchParameter);
+    var response = await templateService.getTemplates(searchParameter);
     this.templateList = response.templateList;
     this.totalRecordCount = response.RecordCount;
     if (this.templateList.length == 0 && this.isFilterDone == true) {
@@ -444,6 +444,9 @@ export class ListComponent implements OnInit {
           "PageName": template.DisplayName,
           "PageIdentifier": template.Identifier,
           "PageTypeId": template.PageTypeId,
+          "BackgroundImageAssetLibraryId": template.BackgroundImageAssetLibraryId != null ? template.BackgroundImageAssetLibraryId : 0,
+          "BackgroundImageAssetId": template.BackgroundImageAssetId != null ? template.BackgroundImageAssetId : 0,
+          "BackgroundImageURL": template.BackgroundImageURL != null ? template.BackgroundImageURL : '',
           "pageEditModeOn": true
         }
       }

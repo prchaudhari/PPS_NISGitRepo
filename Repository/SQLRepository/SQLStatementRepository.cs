@@ -854,7 +854,7 @@ namespace nIS
 
                 //start to render common html content data
                 StringBuilder htmlbody = new StringBuilder();
-                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/absa-logo.png");
+                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/logo.png");
                 navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
                 navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
@@ -1201,7 +1201,7 @@ namespace nIS
 
                 //start to render common html content data
                 StringBuilder htmlbody = new StringBuilder();
-                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/absa-logo.png");
+                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/logo.png");
                 navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
                 navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
@@ -1610,7 +1610,7 @@ namespace nIS
 
                     StringBuilder htmlbody = new StringBuilder();
                     currency = accountrecords[0].Currency;
-                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/absa-logo.png");
+                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/logo.png");
                     navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);

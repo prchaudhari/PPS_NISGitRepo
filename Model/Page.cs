@@ -340,6 +340,9 @@ namespace nIS
         public string PageTypeName { get; set; }
 
         public string PageUpdatedByUserName { get; set; }
+        public long BackgroundImageAssetId { get; set; }
+        public long BackgroundImageAssetLibraryId { get; set; }
+        public string BackgroundImageURL { get; set; }
 
         #endregion
 

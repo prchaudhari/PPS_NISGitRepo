@@ -314,12 +314,31 @@ namespace nIS
                 IList<Page> pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
                 if (pages.Count != 0)
                 {
+                    var isBackgroundImage = false;
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
                     for (int y = 0; y < pages.Count; y++)
                     {
                         var page = pages[y];
                         string tabClassName = Regex.Replace(page.DisplayName, @"\s+", "-");
-                        htmlString.Append(HtmlConstants.WIDGET_HTML_HEADER.Replace("{{DivId}}", tabClassName));
+                        var pageHeaderHtml = HtmlConstants.PAGE_HEADER_HTML;
+                        var extraclass = string.Empty;
+                        if (page.BackgroundImageAssetId != 0)
+                        {
+                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "");
+                            extraclass = extraclass + "BackgroundImage " + page.BackgroundImageAssetId;
+                            isBackgroundImage = true;
+                        }
+                        else if (page.BackgroundImageURL != string.Empty)
+                        {
+                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "style='background: url(" + page.BackgroundImageURL + ")'");
+                            isBackgroundImage = true;
+                        }
+                        else
+                        {
+                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "");
+                        }
+
+                        htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
                         int tempRowWidth = 0;
                         int max = 0;
                         if (pages[y].PageWidgets.Count > 0)
@@ -659,6 +678,12 @@ namespace nIS
                         htmlString.Append(HtmlConstants.WIDGET_HTML_FOOTER);
                     }
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+
+                    if (isBackgroundImage)
+                    {
+                        htmlString.Replace("card border-0", "card border-0 bg-transparent");
+                        htmlString.Replace("bg-light", "bg-transparent");
+                    }
                 }
             }
             catch (Exception ex)

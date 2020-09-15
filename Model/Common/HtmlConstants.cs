@@ -44,8 +44,8 @@ namespace nIS
         public const string HTML_HEADER = "<html><head><title>NIS Statement</title><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel='stylesheet' href='../common/css/bootstrap.min.css'><link rel='stylesheet' href='../common/css/font-awesome.min.css'><script src='../common/js/jquery.min.js'></script><script src='../common/js/popper.min.js'></script><script src='../common/js/bootstrap.min.js'></script><script src='../common/js/highcharts.js'></script><script src='../common/js/series-label.js'></script><script src='../common/js/exporting.js'></script><script src='../common/js/export-data.js'></script><script src='../common/js/accessibility.js'></script><script src='../common/js/script.js'></script><link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'></head><body onload='onPageLoad()'> <input type='hidden' id='StatementId' name='StatementId' value='{{StatementNumber}}'> <input type='hidden' id='CustomerId' name='CustomerId' value='{{CustomerNumber}}'><input type='hidden' id='FirstPageId' name='FirstPageId' value='{{FirstPageId}}'>";
 
         public const string NAVBAR_HTML = "<nav class='navbar navbar-expand-sm bg-white navbar-light p-0'>" +
-            "<a href='javascript:void(0);' class='navbar-brand ml-3'> <img src='{{logo}}' height='60'></a>"+
-            "<a class='navbar-brand ml-auto' href='javascript:void(0);'> <img src='{{BrandLogo}}' height='60'></a> </nav> " +
+            "<a href='javascript:void(0);' class='navbar-brand ml-3'> <img src='{{logo}}' height='50'></a>"+
+            "<a class='navbar-brand ml-auto' href='javascript:void(0);'> <img src='{{BrandLogo}}' height='50'></a> </nav> " +
             "<nav class='navbar navbar-expand-sm bg-dark navbar-dark'><div class='collapse navbar-collapse' id='collapsibleNavbar'>" +
             "<ul class='navbar-nav nav'>" + "{{NavItemList}}" + "</ul>" +
             "<ul class='navbar-nav ml-auto'>" + "<li class='nav-item date'><a class='text-white'>{{Today}}</a></li>" + "</ul></div></nav>";
@@ -119,15 +119,6 @@ namespace nIS
         public const string SPENDING_TRENDS_WIDGET_HTML = "<div class='card border-0'><div class='card-header bg-light border-0 text-left'> " +
             "<h5 class='m-0'>Spending Trends</h5></div><div class='card-body'> <div id=\"spendingTrendscontainer\"></div></div></div> ";
 
-
-
-
-
-
-
-
-
-
         public const string CUSTOMER_INFORMATION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'>" +
             "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div>" +
             "<div class='card-body'><div class='row'><div class='col-sm-4'><h4 class='mb-4'>{{CustomerName}}</h4>" + "<h6>{{Address1}}{{Address2}}</h6></div>" +
@@ -197,6 +188,8 @@ namespace nIS
         public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3 bdy-scroll stylescrollbar'>";
 
         public const string WIDGET_HTML_HEADER = "<div id='{{DivId}}' class='card border-0 p-2 tabDivClass {{ExtraClass}}'>";
+
+        public const string PAGE_HEADER_HTML = "<div id='{{DivId}}' class='card border-0 p-2 tabDivClass {{ExtraClass}}' {{BackgroundImage}}>";
 
         public const string PAGE_TAB_CONTENT_HEADER = "<div class='tab-content'>";
 

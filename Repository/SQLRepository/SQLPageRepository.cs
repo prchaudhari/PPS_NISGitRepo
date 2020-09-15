@@ -139,7 +139,9 @@ namespace nIS
                         LastUpdatedDate = DateTime.Now,
                         Version = "1",
                         Owner = userId,
-                        TenantCode = tenantCode
+                        TenantCode = tenantCode,
+                        BackgroundImageAssetId = page.BackgroundImageAssetId,
+                        BackgroundImageURL = page.BackgroundImageURL
                     });
                 });
 
@@ -322,6 +324,9 @@ namespace nIS
                             PagePublishedByUserName = pageRecord.PublishedByName,
                             PublishedOn = pageRecord.PublishedOn != null ? DateTime.SpecifyKind((DateTime)pageRecord.PublishedOn, DateTimeKind.Utc) : DateTime.MinValue,
                             UpdatedBy = pageRecord.UpdateBy ?? 0,
+                            BackgroundImageAssetLibraryId = pageRecord.BackgroundImageAssetLibraryId ?? 0,
+                            BackgroundImageAssetId = pageRecord.BackgroundImageAssetId ?? 0,
+                            BackgroundImageURL = pageRecord.BackgroundImageURL
                         });
                     });
                 }
@@ -514,6 +519,8 @@ namespace nIS
                         pageRecord.LastUpdatedDate = DateTime.Now;
                         pageRecord.UpdateBy = userId;
                         pageRecord.TenantCode = tenantCode;
+                        pageRecord.BackgroundImageAssetId = item.BackgroundImageAssetId;
+                        pageRecord.BackgroundImageURL = item.BackgroundImageURL;
                     });
 
                     nISEntitiesDataContext.SaveChanges();
@@ -587,7 +594,9 @@ namespace nIS
                         LastUpdatedDate = DateTime.Now,
                         Version = Int64.Parse(lastPageRecord.Version) + 1 + "",
                         Owner = userId,
-                        TenantCode = tenantCode
+                        TenantCode = tenantCode,
+                        BackgroundImageAssetId = lastPageRecord.BackgroundImageAssetId,
+                        BackgroundImageURL = lastPageRecord.BackgroundImageURL
                     });
 
                     nISEntitiesDataContext.PageRecords.AddRange(pageRecordsForClone);

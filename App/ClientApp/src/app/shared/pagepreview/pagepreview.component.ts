@@ -52,7 +52,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
 
   public AnalyticsChartOptions: any = {
     chart: {
-      plotBackgroundColor: null,
+      backgroundColor: 'rgba(0,0,0,0)',
       plotBorderWidth: null,
       plotShadow: false,
       type: 'pie',
@@ -105,7 +105,8 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
 
   public SpendingTrendsChartOptions: any = {
     chart: {
-      height: (9 / 16 * 100) + '%'
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
     },
     title: {
       text: ''
@@ -148,7 +149,8 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
 
   public SavingTrendChartOptions: any = {
     chart: {
-      height: (9 / 16 * 100) + '%'
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
     },
     title: {
       text: ''
@@ -438,7 +440,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
               //$('.overlay').show();
           });
         }
-      })
+      });
 
       $(".VideoAsset").each((index, element) => {
         var classlst = element.classList;
@@ -470,7 +472,27 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
               //$('.overlay').show();
           });
         }
-      })
+      });
+
+      $(".BackgroundImage").each((index, element) => {
+        var classlst = element.classList;
+        var assetId = classlst[classlst.length - 1];
+        if(assetId!=undefined && assetId!=0) {
+          this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + assetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+          .subscribe(
+            data => {
+              let contentType = data.headers.get('Content-Type');
+              const blob = new Blob([data.body], { type: contentType });
+              let objectURL = URL.createObjectURL(blob);
+              let imgUrl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+              element.style.background = "url(" + imgUrl + ")";
+            },
+            error => {
+              //$('.overlay').show();
+          });
+        }
+      });
+
     });
 
   }

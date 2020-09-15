@@ -31,6 +31,9 @@ namespace nIS
         public string Name { get; set; }
         public string PublishedByName { get; set; }
         public string PageOwnerName { get; set; }
+        public Nullable<long> BackgroundImageAssetId { get; set; }
+        public string BackgroundImageURL { get; set; }
+        public Nullable<long> BackgroundImageAssetLibraryId { get; set; }
         public IList<PageWidgetMapRecord> PageWidgetMapRecords { get; set; }
     }
 }

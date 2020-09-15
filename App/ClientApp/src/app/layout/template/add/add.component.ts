@@ -9,6 +9,12 @@ import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { TemplateService } from '../template.service';
 import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
+import { HttpClient } from '@angular/common/http';
+import { ConfigConstants } from 'src/app/shared/constants/configConstants';
+import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfiguration';
+import { AssetSearchParameter } from '../../../layout/asset-libraries/asset-library';
+//import { $ } from 'protractor';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-add',
@@ -33,6 +39,13 @@ export class AddComponent implements OnInit {
   public PageTypeIdBeforeChange: number = 0;
   public PageWidgetArrayStringBeforePageTypeChange: string = "";
   public isPageTypeChangeActionByClickingPreviousButton: boolean = false;
+  public baseURL = ConfigConstants.BaseURL;
+  public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
+  public assets: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset' }];
+
+  public AssetLibraryIdOfBackgroundImage=0;
+  public AssetIdOfBackgroundImage=0;
+  public UrlOfBackgroundImage = '';
 
   public pageFormErrorObject: any = {
     showPageNameError: false,
@@ -45,6 +58,15 @@ export class AddComponent implements OnInit {
   }
   get pageType() {
     return this.pageFormGroup.get('pageType');
+  }
+  get assetLibrary() {
+    return this.pageFormGroup.get('assetLibrary');
+  }
+  get asset() {
+    return this.pageFormGroup.get('asset');
+  }
+  get pageBackgroundImageUrl() {
+    return this.pageFormGroup.get('pageBackgroundImageUrl');
   }
 
   get pf() {
@@ -70,6 +92,7 @@ export class AddComponent implements OnInit {
       private uiLoader: NgxUiLoaderService,
       private _messageDialogService: MessageDialogService,
       private router: Router,
+      private _http: HttpClient,
       private localstorageservice: LocalStorageService ) 
       {
 
@@ -96,6 +119,9 @@ export class AddComponent implements OnInit {
                     this.PageWidgetArrayString = this.params.Routeparams.passingparams.PageWidgetArray
                     this.PageWidgetArrayStringBeforePageTypeChange = this.params.Routeparams.passingparams.PageWidgetArray
                     this.isPageTypeChangeActionByClickingPreviousButton = true;
+                    this.AssetLibraryIdOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageAssetLibraryId
+                    this.AssetIdOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageAssetId
+                    this.UrlOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageURL
                 }
                 if (localStorage.getItem('pageEditRouteparams')) {
                   this.params = JSON.parse(localStorage.getItem('pageEditRouteparams'));
@@ -105,6 +131,9 @@ export class AddComponent implements OnInit {
                   this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
                   this.PageTypeIdBeforeChange = this.params.Routeparams.passingparams.PageTypeId
                   this.PageWidgetArrayString = this.params.Routeparams.passingparams.PageWidgetArray
+                  this.AssetLibraryIdOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageAssetLibraryId
+                  this.AssetIdOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageAssetId
+                  this.UrlOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageURL
                 }
               }
               else {
@@ -123,15 +152,33 @@ export class AddComponent implements OnInit {
           pageName: [null, Validators.compose([Validators.required, Validators.minLength(Constants.inputMinLenth),
             Validators.maxLength(Constants.inputMaxLenth), Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
           pageType: [0, Validators.compose([Validators.required])],
+          assetLibrary: [0],
+          asset: [0],
+          pageBackgroundImageUrl: [null]
       });
 
       if(this.PageName != null && this.PageTypeId != null) {
         this.pageFormGroup.patchValue({
           pageName: this.PageName,
-          pageType: this.PageTypeId
+          pageType: this.PageTypeId,
+          assetLibrary : this.AssetLibraryIdOfBackgroundImage,
+          asset : this.AssetIdOfBackgroundImage,
+          pageBackgroundImageUrl: this.UrlOfBackgroundImage
         });
       }
       this.getPageTypes();
+      
+      if(this.AssetLibraryIdOfBackgroundImage != null && this.AssetLibraryIdOfBackgroundImage != 0) {
+        this.pageFormGroup.get('pageBackgroundImageUrl').disable();
+        this.LoadAsset(this.AssetLibraryIdOfBackgroundImage);
+      }
+
+      if(this.UrlOfBackgroundImage != null && this.UrlOfBackgroundImage != '') {
+        this.pageFormGroup.get('assetLibrary').disable();
+        this.pageFormGroup.get('asset').disable();
+        this.pageFormGroup.patchValue({assetLibrary: [0], asset : [0],});
+      }
+
     }
 
     saveBtnValidation(): boolean {
@@ -148,6 +195,8 @@ export class AddComponent implements OnInit {
       let pageObject: any = {};
         pageObject.DisplayName = this.pageFormGroup.value.pageName;
         pageObject.PageTypeId = this.PageTypeId;
+        pageObject.BackgroundImageAssetId = this.pageFormGroup.value.asset;
+        pageObject.BackgroundImageURL = this.pageFormGroup.value.pageBackgroundImageUrl;
         if(this.pageEditModeOn) {
           pageObject.Identifier = this.PageIdentifier
         }
@@ -252,13 +301,16 @@ export class AddComponent implements OnInit {
             "PageName": this.pageFormGroup.value.pageName,
             "PageTypeId": this.PageTypeId,
             "PageTypeName": this.PageTypeName,
+            "BackgroundImageAssetLibraryId": this.pageFormGroup.value.assetLibrary,
+            "BackgroundImageAssetId": this.pageFormGroup.value.asset,
+            "BackgroundImageURL": this.pageFormGroup.value.pageBackgroundImageUrl,
             "pageEditModeOn": this.pageEditModeOn,
             "PageIdentifier": this.pageEditModeOn ? this.PageIdentifier : 0,
             "PageWidgetArrayString": this.PageWidgetArrayString
           }
         }
       }
-      localStorage.setItem(this.pageEditModeOn ? "pageDesignEditRouteparams" : "pageDesignRouteparams", JSON.stringify(queryParams));
+      localStorage.setItem("pageDesignRouteparams", JSON.stringify(queryParams));
       this.router.navigate(['../dashboardDesigner']);
     }
 
@@ -274,8 +326,84 @@ export class AddComponent implements OnInit {
                 }
             });
         } else {
+          this.getAssetLibraries();
           this.pageTypelist = [...this.pageTypelist, ...list];
         }
     }
 
+    async getAssetLibraries() {
+      let searchParameter: any = {};
+      searchParameter.IsActive = true;
+      searchParameter.PagingParameter = {};
+      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      searchParameter.SortParameter = {};
+      searchParameter.SortParameter.SortColumn = Constants.Name;
+      searchParameter.SortParameter.SortOrder = Constants.Ascending;
+      searchParameter.SearchMode = Constants.Contains;
+      this.uiLoader.start();
+      this._http.post(this.baseURL + URLConfiguration.assetLibraryGetUrl, searchParameter).subscribe(
+        data => {
+          this.uiLoader.stop();
+          let records = <any[]>data;
+          this.assetLibraryList.push(...records);
+        },
+        error => {
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        }
+      );
+    }
+
+    onAssetLibrarySelected(event) {
+      const value = event.target.value;
+      if(value!= '0') {
+        this.LoadAsset(value);
+        this.pageFormGroup.get('pageBackgroundImageUrl').disable();
+      }else {
+        this.assets = [];
+        this.assets.push({ 'Identifier': '0', 'Name': 'Select Asset' });
+        this.pageFormGroup.get('pageBackgroundImageUrl').enable();
+      }
+    }
+    
+    OnBackgroundImageUrlChange() {
+      if(this.pageFormGroup.value.pageBackgroundImageUrl == '') {
+        this.pageFormGroup.get('assetLibrary').enable();
+        this.pageFormGroup.get('asset').enable();
+      }else {
+        this.pageFormGroup.get('assetLibrary').disable();
+        this.pageFormGroup.get('asset').disable();
+      }
+    }
+
+    LoadAsset(value): void {
+      this.assets = [];
+      this.assets.push({ 'Identifier': '0', 'Name': 'Select Asset' });
+      let assetSearchParameter: AssetSearchParameter = new AssetSearchParameter();
+      assetSearchParameter.AssetLibraryIdentifier = String(value);
+      assetSearchParameter.IsDeleted = false;
+      assetSearchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+      assetSearchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+      assetSearchParameter.SortParameter.SortColumn = Constants.Name;
+      assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
+      assetSearchParameter.SearchMode = Constants.Contains;
+      let assets: any[];
+      this.uiLoader.start();
+      this._http.post(this.baseURL + URLConfiguration.assetGetUrl, assetSearchParameter).subscribe(
+        data => {
+          this.uiLoader.stop();
+          assets = <any[]>data;
+          this.assets.push(...assets);
+          if(this.AssetIdOfBackgroundImage == null || this.AssetIdOfBackgroundImage == 0) {
+            this.pageFormGroup.patchValue({asset : [0],});
+          }
+          
+        },
+        error => {
+          this.uiLoader.stop();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        }
+      );
+    }
+    
 }

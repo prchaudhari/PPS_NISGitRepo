@@ -239,6 +239,8 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastUpdatedDate" Type="datetime" />
           <Property Name="UpdateBy" Type="bigint" />
+          <Property Name="BackgroundImageAssetId" Type="bigint" />
+          <Property Name="BackgroundImageURL" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="PageType">
           <Key>
@@ -659,9 +661,12 @@ warning 6002: The table/view 'NIS.NIS.View_Page' does not have a primary key def
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastUpdatedDate" Type="datetime" />
           <Property Name="UpdateBy" Type="bigint" />
+          <Property Name="BackgroundImageAssetId" Type="bigint" />
+          <Property Name="BackgroundImageURL" Type="nvarchar(max)" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PublishedByName" Type="nvarchar" MaxLength="201" />
           <Property Name="PageOwnerName" Type="nvarchar" MaxLength="201" Nullable="false" />
+          <Property Name="BackgroundImageAssetLibraryId" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -866,9 +871,12 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_Page].[TenantCode] AS [TenantCode], 
     [View_Page].[LastUpdatedDate] AS [LastUpdatedDate], 
     [View_Page].[UpdateBy] AS [UpdateBy], 
+    [View_Page].[BackgroundImageAssetId] AS [BackgroundImageAssetId], 
+    [View_Page].[BackgroundImageURL] AS [BackgroundImageURL], 
     [View_Page].[Name] AS [Name], 
     [View_Page].[PublishedByName] AS [PublishedByName], 
-    [View_Page].[PageOwnerName] AS [PageOwnerName]
+    [View_Page].[PageOwnerName] AS [PageOwnerName], 
+    [View_Page].[BackgroundImageAssetLibraryId] AS [BackgroundImageAssetLibraryId]
     FROM [NIS].[View_Page] AS [View_Page]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_Schedule" EntityType="Self.View_Schedule" store:Type="Views" store:Schema="NIS">
@@ -1131,6 +1139,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateBy" Type="Int64" Nullable="true" />
+          <Property Name="BackgroundImageAssetId" Type="Int64" />
+          <Property Name="BackgroundImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PageTypeRecord">
           <Key>
@@ -1713,23 +1723,26 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             <PropertyRef Name="Name" />
             <PropertyRef Name="PageOwnerName" />
           </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PageTypeId" Type="Int64" Nullable="false" />
+          <Property Name="Id" Nullable="false" Type="Int64" />
+          <Property Name="DisplayName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="PageTypeId" Nullable="false" Type="Int64" />
           <Property Name="PublishedBy" Type="Int64" />
-          <Property Name="Owner" Type="Int64" Nullable="false" />
-          <Property Name="Version" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="PublishedOn" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Owner" Nullable="false" Type="Int64" />
+          <Property Name="Version" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Status" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="CreatedDate" Precision="3" Type="DateTime" />
+          <Property Name="PublishedOn" Precision="3" Type="DateTime" />
+          <Property Name="IsActive" Nullable="false" Type="Boolean" />
+          <Property Name="IsDeleted" Nullable="false" Type="Boolean" />
+          <Property Name="TenantCode" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="LastUpdatedDate" Precision="3" Type="DateTime" />
           <Property Name="UpdateBy" Type="Int64" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PublishedByName" Type="String" MaxLength="201" FixedLength="false" Unicode="true" />
-          <Property Name="PageOwnerName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="PublishedByName" MaxLength="201" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="PageOwnerName" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="BackgroundImageAssetId" Type="Int64" />
+          <Property Name="BackgroundImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BackgroundImageAssetLibraryId" Type="Int64" />
         </EntityType>
         <EntityType Name="View_StatementDefinitionRecord">
           <Key>
@@ -1919,6 +1932,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="PageRecords">
             <EntityTypeMapping TypeName="NISModel.PageRecord">
               <MappingFragment StoreEntitySet="Page">
+                <ScalarProperty Name="BackgroundImageURL" ColumnName="BackgroundImageURL" />
+                <ScalarProperty Name="BackgroundImageAssetId" ColumnName="BackgroundImageAssetId" />
                 <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
                 <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
@@ -2519,6 +2534,9 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="View_PageRecord">
             <EntityTypeMapping TypeName="NISModel.View_PageRecord">
               <MappingFragment StoreEntitySet="View_Page">
+                <ScalarProperty Name="BackgroundImageAssetLibraryId" ColumnName="BackgroundImageAssetLibraryId" />
+                <ScalarProperty Name="BackgroundImageURL" ColumnName="BackgroundImageURL" />
+                <ScalarProperty Name="BackgroundImageAssetId" ColumnName="BackgroundImageAssetId" />
                 <ScalarProperty Name="PageOwnerName" ColumnName="PageOwnerName" />
                 <ScalarProperty Name="PublishedByName" ColumnName="PublishedByName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

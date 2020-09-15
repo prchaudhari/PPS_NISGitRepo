@@ -261,7 +261,7 @@ namespace nIS
         /// </returns>
         public string PreviewStatement(long statementIdentifier, string baseURL, string tenantCode)
         {
-            StringBuilder htmlString = new StringBuilder();
+            StringBuilder tempHtml = new StringBuilder();
             string finalHtml = "";
             try
             {
@@ -292,12 +292,13 @@ namespace nIS
                     var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                     if (statementPages.Count != 0)
                     {
-                        string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/absa-logo.png").Replace("{{logo}}", "assets/images/nisLogo.png");
+                        string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/logo_black.png").Replace("{{logo}}", "assets/images/nisLogo.png");
                         navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                         StringBuilder navItemList = new StringBuilder();
-                        htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+                        tempHtml.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
                         for (int x = 0; x < statementPages.Count; x++)
                         {
+                            var htmlString = new StringBuilder();
                             PageSearchParameter pageSearchParameter = new PageSearchParameter
                             {
                                 Identifier = statementPages[x].ReferencePageId,
@@ -315,22 +316,43 @@ namespace nIS
                                 },
                                 SearchMode = SearchMode.Equals
                             };
-
+                            var isBackgroundImage = false;
                             IList<Page> pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
                             if (pages.Count != 0)
                             {
                                 for (int y = 0; y < pages.Count; y++)
                                 {
                                     var page = pages[y];
-                                    string tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
+                                    var tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
                                     navItemList.Append(" <li class='nav-item p-1 '><a class='nav-link pt-1 mainNav " + (x == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
-                                    string ExtraClassName = x > 0 ? "d-none " + tabClassName : tabClassName;
-                                    string widgetHtmlHeader = HtmlConstants.WIDGET_HTML_HEADER.Replace("{{ExtraClass}}", ExtraClassName);
-                                    widgetHtmlHeader = widgetHtmlHeader.Replace("{{DivId}}", tabClassName);
-                                    htmlString.Append(widgetHtmlHeader);
+
+                                    var extraclass = x > 0 ? "d-none " + tabClassName : tabClassName;
+                                    var pageHeaderHtml = HtmlConstants.PAGE_HEADER_HTML;
+                                    if (page.PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID)
+                                    {
+                                        if (page.BackgroundImageAssetId != 0)
+                                        {
+                                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "");
+                                            extraclass = extraclass + " BackgroundImage " + page.BackgroundImageAssetId;
+                                            isBackgroundImage = true;
+                                        }
+                                        else if (page.BackgroundImageURL != string.Empty)
+                                        {
+                                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "style='background: url(" + page.BackgroundImageURL + ")'");
+                                            isBackgroundImage = true;
+                                        }
+                                        else
+                                        {
+                                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "");
+                                    }
+                                    htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
 
                                     htmlString.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
-
                                     if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
                                     {
                                         htmlString.Append("<ul class='nav nav-tabs' style='margin-top:-5px;'>");
@@ -338,8 +360,21 @@ namespace nIS
                                             HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
                                         htmlString.Append("</ul>");
 
+                                        var divClass = string.Empty;
+                                        var styleTag = string.Empty;
+                                        if (page.BackgroundImageAssetId != 0)
+                                        {
+                                            divClass = divClass + " BackgroundImage " + page.BackgroundImageAssetId;
+                                            isBackgroundImage = true;
+                                        }
+                                        else if (page.BackgroundImageURL != string.Empty)
+                                        {
+                                            styleTag = styleTag + " style='background: url(" + page.BackgroundImageURL + ")'";
+                                            isBackgroundImage = true;
+                                        }
+
                                         htmlString.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-6789' " +
-                                            "class='tab-pane fade in active show'>");
+                                            "class='tab-pane fade in active show " + divClass + "' " + styleTag + ">");
                                     }
 
                                     int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
@@ -632,7 +667,7 @@ namespace nIS
                                                                 else
                                                                 {
                                                                     tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " +
-                                                                    "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend 
+                                                                    "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend
                                                                     + "</span>";
                                                                 }
                                                                 incomeSrc.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend +
@@ -725,11 +760,18 @@ namespace nIS
                             {
                                 htmlString.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
                             }
+
+                            if (isBackgroundImage)
+                            {
+                                htmlString.Replace("card border-0", "card border-0 bg-transparent");
+                                htmlString.Replace("bg-light", "bg-transparent");
+                            }
+                            tempHtml.Append(htmlString.ToString());
                         }
 
                         navbarHtml = navbarHtml.Replace("{{NavItemList}}", navItemList.ToString());
-                        htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
-                        finalHtml = navbarHtml + htmlString.ToString();
+                        tempHtml.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                        finalHtml = navbarHtml + tempHtml.ToString();
                     }
                 }
             }
@@ -741,7 +783,7 @@ namespace nIS
             return finalHtml;
         }
 
-       
+
         #endregion
 
         #region Private Methods

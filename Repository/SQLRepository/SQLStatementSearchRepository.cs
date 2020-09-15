@@ -477,7 +477,7 @@ namespace nIS
 
                     StringBuilder htmlbody = new StringBuilder();
                     currency = accountrecords[0].Currency;
-                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "./absa-logo.png");
+                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "./logo.png");
                     navbarHtml = navbarHtml.Replace("{{logo}}", "./nisLogo.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);

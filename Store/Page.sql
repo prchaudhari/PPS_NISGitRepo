@@ -13,5 +13,7 @@
     [IsDeleted] BIT NOT NULL, 
     [TenantCode] NVARCHAR(50) NOT NULL,
 	[LastUpdatedDate] DateTime  NULL,
-	[UpdateBy] BIGINT NULL,
+	[UpdateBy] BIGINT NULL, 
+    [BackgroundImageAssetId] BIGINT NULL, 
+    [BackgroundImageURL] NVARCHAR(MAX) NULL,
 )

@@ -82,6 +82,10 @@ export class AddDashboardDesignerComponent implements OnInit {
   public videoBlobObjectUrl;
   public imageBlobObjectUrl;
 
+  public BackgroundImageAssetId = 0;
+  public BackgroundImageURL = '';
+  public BackgroundImageAssetLibraryId = 0;
+
   constructor(private _location: Location,
     private injector: Injector,
     private fb: FormBuilder,
@@ -100,31 +104,15 @@ export class AddDashboardDesignerComponent implements OnInit {
           if (localStorage.getItem('pageDesignRouteparams')) {
             this.params = JSON.parse(localStorage.getItem('pageDesignRouteparams'));
             this.PageName = this.params.Routeparams.passingparams.PageName
-            this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
-            this.PageTypeName = this.params.Routeparams.passingparams.PageTypeName
-            this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
-
-            if (this.params.Routeparams.passingparams.PageWidgetArrayString != null && this.params.Routeparams.passingparams.PageWidgetArrayString != ""
-              && this.testJSON(this.params.Routeparams.passingparams.PageWidgetArrayString)) {
-
-              this.widgetsGridsterItemArray = JSON.parse(this.params.Routeparams.passingparams.PageWidgetArrayString)
-              for (let x = 0; x < this.widgetsGridsterItemArray.length; x++) {
-                let obj = this.bindComponent(this.widgetsGridsterItemArray[x].widgetId);
-                if (obj != null) {
-                  this.widgetsGridsterItemArray[x].component = obj.component;
-                  this.widgetsGridsterItemArray[x].value = obj.value;
-                }
-              }
-            }
-          }
-          else if (localStorage.getItem('pageDesignEditRouteparams')) {
-            this.params = JSON.parse(localStorage.getItem('pageDesignEditRouteparams'));
-            this.PageName = this.params.Routeparams.passingparams.PageName
             this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
-            this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
             this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
             this.PageTypeName = this.params.Routeparams.passingparams.PageTypeName
-
+            this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
+            this.BackgroundImageAssetLibraryId = this.params.Routeparams.passingparams.BackgroundImageAssetLibraryId
+            this.BackgroundImageAssetId = this.params.Routeparams.passingparams.BackgroundImageAssetId
+            this.BackgroundImageURL = this.params.Routeparams.passingparams.BackgroundImageURL
+            this.applyBackgroundImage(this.BackgroundImageAssetId, this.BackgroundImageURL);
+            
             if (this.params.Routeparams.passingparams.PageWidgetArrayString != null && this.params.Routeparams.passingparams.PageWidgetArrayString != ""
               && this.testJSON(this.params.Routeparams.passingparams.PageWidgetArrayString)) {
 
@@ -138,6 +126,30 @@ export class AddDashboardDesignerComponent implements OnInit {
               }
             }
           }
+          // else if (localStorage.getItem('pageDesignEditRouteparams')) {
+          //   this.params = JSON.parse(localStorage.getItem('pageDesignEditRouteparams'));
+          //   this.PageName = this.params.Routeparams.passingparams.PageName
+          //   this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
+          //   this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
+          //   this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
+          //   this.PageTypeName = this.params.Routeparams.passingparams.PageTypeName
+          //   this.BackgroundImageAssetLibraryId = this.params.Routeparams.passingparams.BackgroundImageAssetLibraryId
+          //   this.BackgroundImageAssetId = this.params.Routeparams.passingparams.BackgroundImageAssetId
+          //   this.BackgroundImageURL = this.params.Routeparams.passingparams.BackgroundImageURL
+
+          //   if (this.params.Routeparams.passingparams.PageWidgetArrayString != null && this.params.Routeparams.passingparams.PageWidgetArrayString != ""
+          //     && this.testJSON(this.params.Routeparams.passingparams.PageWidgetArrayString)) {
+
+          //     this.widgetsGridsterItemArray = JSON.parse(this.params.Routeparams.passingparams.PageWidgetArrayString)
+          //     for (let x = 0; x < this.widgetsGridsterItemArray.length; x++) {
+          //       let obj = this.bindComponent(this.widgetsGridsterItemArray[x].widgetId);
+          //       if (obj != null) {
+          //         this.widgetsGridsterItemArray[x].component = obj.component;
+          //         this.widgetsGridsterItemArray[x].value = obj.value;
+          //       }
+          //     }
+          //   }
+          // }
         } else {
           localStorage.removeItem("pageDesignRouteparams");
           localStorage.removeItem("pageDesignEditRouteparams");
@@ -186,6 +198,26 @@ export class AddDashboardDesignerComponent implements OnInit {
 
   get vdoForm() {
     return this.VideoConfigForm.controls;
+  }
+
+  applyBackgroundImage(AssetId, ImageURL) {
+    if(AssetId != null && AssetId != 0) {
+      this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+          .subscribe(
+            data => {
+              let contentType = data.headers.get('Content-Type');
+              const blob = new Blob([data.body], { type: contentType });
+              let objectURL = URL.createObjectURL(blob);
+              let imgUrl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+              $('gridster').css('background', 'url('+imgUrl+')');
+            },
+            error => {
+              //$('.overlay').show();
+          });
+    }else if(ImageURL != '') {
+      $('gridster').css('background', 'url('+ImageURL+')');
+    }
+    
   }
 
   saveImgFormValidation(): boolean {
@@ -525,6 +557,9 @@ export class AddDashboardDesignerComponent implements OnInit {
           "PageTypeId": this.PageTypeId,
           "PageWidgetArray": JSON.stringify(this.widgetsGridsterItemArray),
           "pageEditModeOn": this.pageEditModeOn,
+          "BackgroundImageAssetId": this.BackgroundImageAssetId,
+          "BackgroundImageURL": this.BackgroundImageURL,
+          "BackgroundImageAssetLibraryId": this.BackgroundImageAssetLibraryId,
           "PageIdentifier": this.PageIdentifier
         }
       }
@@ -543,6 +578,9 @@ export class AddDashboardDesignerComponent implements OnInit {
     pageObject.DisplayName = this.PageName;
     pageObject.PageTypeId = this.PageTypeId;
     pageObject.Identifier = this.PageIdentifier;
+    pageObject.BackgroundImageAssetId = this.BackgroundImageAssetId;
+    pageObject.BackgroundImageURL = this.BackgroundImageURL;
+
     if (this.pageEditModeOn) {
       pageObject.Version = this.pageVersion;
     }
