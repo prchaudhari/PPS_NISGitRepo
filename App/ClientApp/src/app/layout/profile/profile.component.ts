@@ -11,7 +11,8 @@ import { Constants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-
+import { Country } from '../country/country';
+import { CountryService } from '../country/country.service';
 
 @Component({
   selector: 'app-profile',
@@ -65,13 +66,7 @@ export class ProfileComponent implements OnInit {
   public languageLists = [];
   public userRecord: any = {};
   public User = { RoleIdentifier: 0, Image: '', CountryCode: '' }
-  public countrycodeLists = [
-    { "CountryNameCode": "Please select", "DialingCode": "" },
-    { "CountryNameCode": "India +91", "DialingCode": "+91" },
-    { "CountryNameCode": "USA +1", "DialingCode": "+1" },
-    { "CountryNameCode": "UAE +971", "DialingCode": "+971" },
-    { "CountryNameCode": "ZAF +27", "DialingCode": "+27" }
-  ];
+  public countrycodeLists = [{ "Identifier": 0, "Code": "Please Select", "DialingCode": "" }];
 
   constructor(private _location: Location,
     private formbulder: FormBuilder,
@@ -144,6 +139,24 @@ export class ProfileComponent implements OnInit {
       mobileNumber: [null, Validators.compose([Validators.required, Validators.maxLength(10),
       Validators.minLength(10), Validators.pattern(this.onlyNumbers)])]
     })
+    this.getCountries();
+  }
+
+  async getCountries() {
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = Constants.Name;
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    let countryService = this.injector.get(CountryService);
+    var response = await countryService.getCountrys(searchParameter);
+    var copy = response.List;
+    copy.forEach(c => {
+      this.countrycodeLists.push(c);
+    })
     this.getProfileRecord();
   }
 
@@ -207,13 +220,16 @@ export class ProfileComponent implements OnInit {
       else {
         mobileNo = this.userRecord.ContactNumber;
       }
+
+      let country = this.countrycodeLists.filter(i => { return i.Identifier == this.userRecord.CountryId });
       this.profileFormGroup.patchValue({
         firstName: this.userRecord.FirstName,
         lastName: this.userRecord.LastName,
         email: this.userRecord.EmailAddress,
         mobileNumber: mobileNo,
-        CountryCode: mobileNoArr[0],
+        CountryCode: country[0].Identifier//mobileNoArr[0],
       });
+      this.profileFormGroup.controls['CountryCode'].setValue(country[0].Identifier);
       this.image = this.userRecord.Image;
       localStorage.setItem("currentUserTheme", this.userRecord.Theme);
       if (this.userRecord.Theme == 1) {
@@ -345,9 +361,10 @@ export class ProfileComponent implements OnInit {
       this.userRecord.FirstName = this.profileFormGroup.value.firstName.trim();
       this.userRecord.LastName = this.profileFormGroup.value.lastName.trim();
       this.userRecord.EmailAddress = this.profileFormGroup.value.email;
-      this.userRecord.ContactNumber = this.profileFormGroup.value.CountryCode + "-" + this.profileFormGroup.value.mobileNumber,
-        this.userRecord.Image = this.image,
-        this.saveRecord(this.userRecord);
+      this.userRecord.ContactNumber = this.profileFormGroup.value.mobileNumber,
+      this.userRecord.CountryId = this.profileFormGroup.value.CountryCode,
+      this.userRecord.Image = this.image,
+      this.saveRecord(this.userRecord);
     }
   }
  
