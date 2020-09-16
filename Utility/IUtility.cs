@@ -207,5 +207,22 @@
         /// <param name="imageUrl"> the image url </param>
         /// <returns>return true if download successfully.</returns>
         bool SaveImage(string filePath, ImageFormat format, string imageUrl);
+
+
+        /// <summary>
+        /// This method executes the web request using the specified parameters.
+        /// </summary>
+        /// <param name="instanceURL">The instance URL.</param>
+        /// <param name="controller">The controller.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="objectData">The object data.</param>
+        /// <param name="tenantKey">The tenant key.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="toBeSerailzied">This property should be set to be true if passing object data as primitive data type.</param>
+        /// <returns>
+        /// Returns the response object
+        /// </returns>
+        string ExecuteWebTenantRequest(string instanceURL, string controller, string action, string objectData, string tenantKey, string tenantCode, bool isThirdPartyEnabled = false, bool toBeSerailzied = false);
+
     }
 }

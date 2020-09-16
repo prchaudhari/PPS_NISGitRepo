@@ -892,6 +892,77 @@
             return true;
         }
 
+        /// <summary>
+        /// This method executes the web request using the specified parameters.
+        /// </summary>
+        /// <param name="instanceURL">The instance URL.</param>
+        /// <param name="controller">The controller.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="objectData">The object data.</param>
+        /// <param name="tenantKey">The tenant key.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="toBeSerailzied">This property should be set to be true if passing object data as primitive data type.</param>
+        /// <returns>
+        /// Returns the response object
+        /// </returns>
+        public string ExecuteWebTenantRequest(string instanceURL, string controller, string action, string objectData, string tenantKey, string tenantCode, bool isThirdPartyEnabled = false, bool toBeSerailzied = false)
+        {
+            string responseFromServer = string.Empty;
+            try
+            {
+
+                WebRequest request = WebRequest.Create(instanceURL + "/" + controller + "/" + action + "?isThirdPartyEnabled=" + isThirdPartyEnabled);
+                HttpWebResponse response = null;
+                request.Headers.Add(tenantKey, tenantCode);
+                request.Method = "POST";
+                string postData = toBeSerailzied ? JsonConvert.SerializeObject(objectData) : objectData;
+                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                request.ContentType = "application/json";
+                request.ContentLength = byteArray.Length;
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                try
+                {
+                    response = (HttpWebResponse)request.GetResponse();
+                    dataStream = response.GetResponseStream();
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        if (dataStream != null)
+                        {
+                            StreamReader reader = new StreamReader(dataStream);
+                            responseFromServer = reader.ReadToEnd();
+                            reader.Close();
+                            dataStream.Close();
+                        }
+                    }
+                }
+                catch (WebException webException)
+                {
+                    response = (HttpWebResponse)webException.Response;
+                    dataStream = response.GetResponseStream();
+                    if (dataStream != null)
+                    {
+                        StreamReader reader = new StreamReader(dataStream);
+                        responseFromServer = reader.ReadToEnd();
+                        reader.Close();
+                        dataStream.Close();
+
+                        JObject jObject = JsonConvert.DeserializeObject<JObject>(responseFromServer);
+                        throw new Exception(jObject["Error"]["Message"].ToString());
+                    }
+                }
+
+                return responseFromServer;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+
         #endregion
 
     }

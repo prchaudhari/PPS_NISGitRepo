@@ -56,10 +56,17 @@
     <Reference Include="Websym.Core.EventManager.Model">
       <HintPath>..\References\Event Manager\Websym.Core.EventManager.Model.dll</HintPath>
     </Reference>
+    <Reference Include="Websym.Core.TenantManager.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Model.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalyticsDataManager.cs" />
+    <Compile Include="CityManager.cs" />
+    <Compile Include="ClientManager.cs" />
     <Compile Include="CountryManager.cs" />
+    <Compile Include="StateManager.cs" />
     <Compile Include="StatementSearchManager.cs" />
     <Compile Include="TenantConfigurationManager.cs" />
     <Compile Include="AssetSettingManager.cs" />

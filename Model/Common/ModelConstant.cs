@@ -67,6 +67,11 @@ namespace nIS
         public const string TENANT_BASE_URL = "TenantManagerAPIURL";
 
         /// <summary>
+        /// The entity base URL
+        /// </summary>
+        public const string ENTITY_BASE_URL = "EntityBaseURL";
+
+        /// <summary>
         /// The tenant base URL
         /// </summary>
         public const string SORT_COLUMN = "Id";
@@ -85,6 +90,7 @@ namespace nIS
         #endregion
 
         #region Operations
+
         /// <summary>
         /// Indicates add operation constant value.
         /// </summary>
@@ -99,6 +105,18 @@ namespace nIS
         /// Indicates delete operation constant value.
         /// </summary>
         public const string DELETE_OPERATION = "DeleteOperation";
+
+        /// <summary>
+        /// Indicates change activation status operation constant value.
+        /// </summary>
+        public const string CHANGE_ACTIVATION_STATUS = "ChangeActivationStatus";
+
+        /// <summary>
+        /// Separation by
+        /// </summary>
+        public const string SEPARATION_BY = ",";
+
+
         #endregion
 
         #region Widget

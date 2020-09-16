@@ -274,6 +274,7 @@
     <Compile Include="Container\IocContainer.cs" />
     <Compile Include="Container\UnityResolverService.cs" />
     <Compile Include="Controllers\AnalyticsDataController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\StatementSearchController.cs" />
     <Compile Include="Controllers\TenantConfigurationController.cs" />
