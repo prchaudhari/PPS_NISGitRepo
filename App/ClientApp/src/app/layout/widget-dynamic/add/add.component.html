@@ -353,11 +353,11 @@
               <div class="card bg-light border-card">
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-md-6 col-lg-6 col-sm-6 form-group">
+                    <div class="col-md-5 col-lg-5 col-sm-5 form-group">
                       <label>Title</label>
                       <input type="text" class="form-control" />
                     </div>
-                    <div class="col-md-6 col-lg-6 col-sm-6">
+                    <div class="col-md-5 col-lg-5 col-sm-5 form-group">
                       <label>Field Name</label>
                       <select class="form-control">
                         <option> Select</option>
@@ -368,18 +368,22 @@
                         <option> Field Name 05</option>
                       </select>
                     </div>
+                    <div class="col-md-2 col-lg-2 col-sm-4">
+                      <label class="d-block">&nbsp;</label>
+                      <button class="btn-footer-fill" id="btnAdd">Add</button>
+                    </div>
                   </div>
-                  <div class="row">
-                    <div class="col-sm-12 form-group">
-                      <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
-                      <!--<h5 class="html-header">html output</h5>
-              <div class="html">
-                {{ htmlContent }}
-              </div>-->
+                    <div class="row">
+                      <div class="col-sm-12 form-group">
+                        <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
+                        <!--<h5 class="html-header">html output</h5>
+        <div class="html">
+          {{ htmlContent }}
+        </div>-->
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
 
           </div>
@@ -549,185 +553,187 @@
               </div>
             </div>
           </div>
-          <div class="card bg-light border-card form-group" *ngIf="isCustome">
-            <!--<div class="card-header bg-white">
-      <label class="mb-0">Common Properties</label>
-    </div>-->
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-4">
-                  <label>Foreground Color</label>
-                  <input type="color" class="form-control" />
-                </div>
-                <div class="col-sm-4">
-                  <label>Background Color</label>
-                  <input type="color" class="form-control" />
-                </div>
+          <div *ngIf="isCustome">
+            <div class="card bg-light border-card form-group" *ngIf="isSelected('LineGraph') || isSelected('BarGraph') || isSelected('PieChart')">
+              <div class="card-header bg-white">
+                <label class="mb-0">Select Color Theme</label>
               </div>
-              <div class="row mt-2" *ngIf="isSelected('LineGraph') || isSelected('BarGraph') || isSelected('PieChart')">
-                <div class="col-sm-6">
-                  <label>Select Color Theme</label>
-                  <div class="custom-control custom-radio mr-2 mb-2">
-                    <input class="custom-control-input" type="radio" checked
-                           name="themeChartOption" id="Default" value="optionthemeChart">
-                    <label class="custom-control-label dir-rtl" for="themeChart1">
-                      <div class="d-flex justify-content-start">
-                        <div class="clr-box" style="background-color:#342ead"></div>
-                        <div class="clr-box" style="background-color:#EA6227"></div>
-                        <div class="clr-box" style="background-color:#f2a51a"></div>
-                        <div class="clr-box" style="background-color:#b9ebcc"></div>
-                      </div>
-                    </label>
+              <div class="card-body">
+                <!--<div class="row">
+        <div class="col-sm-4">
+          <label>Foreground Color</label>
+          <input type="color" class="form-control" />
+        </div>
+        <div class="col-sm-4">
+          <label>Background Color</label>
+          <input type="color" class="form-control" />
+        </div>
+      </div>-->
+                <div class="row">
+                  <div class="col-sm-6">
+                    <!--<label>Select Color Theme</label>-->
+                    <div class="custom-control custom-radio mr-2 mb-2">
+                      <input class="custom-control-input" type="radio" checked
+                             name="themeChartOption" id="Default" value="optionthemeChart">
+                      <label class="custom-control-label dir-rtl" for="themeChart1">
+                        <div class="d-flex justify-content-start">
+                          <div class="clr-box" style="background-color:#342ead"></div>
+                          <div class="clr-box" style="background-color:#EA6227"></div>
+                          <div class="clr-box" style="background-color:#f2a51a"></div>
+                          <div class="clr-box" style="background-color:#b9ebcc"></div>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="custom-control custom-radio mr-2">
+                      <input class="custom-control-input" type="radio"
+                             name="themeChartOption" id="Default" value="optionthemeChart">
+                      <label class="custom-control-label dir-rtl" for="themeChart2">
+                        <div class="d-flex justify-content-start">
+                          <div class="clr-box" style="background-color:#45046a"></div>
+                          <div class="clr-box" style="background-color: #5c2a9d"></div>
+                          <div class="clr-box" style="background-color: #b5076b"></div>
+                          <div class="clr-box" style="background-color: #f1ebbb"></div>
+                        </div>
+                      </label>
+                    </div>
                   </div>
-                  <div class="custom-control custom-radio mr-2">
-                    <input class="custom-control-input" type="radio"
-                           name="themeChartOption" id="Default" value="optionthemeChart">
-                    <label class="custom-control-label dir-rtl" for="themeChart2">
-                      <div class="d-flex justify-content-start">
-                        <div class="clr-box" style="background-color:#45046a"></div>
-                        <div class="clr-box" style="background-color: #5c2a9d"></div>
-                        <div class="clr-box" style="background-color: #b5076b"></div>
-                        <div class="clr-box" style="background-color: #f1ebbb"></div>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <label>&nbsp;</label>
-                  <div class="custom-control custom-radio mr-2 mb-2">
-                    <input class="custom-control-input" type="radio"
-                           name="themeChartOption" id="Default" value="optionthemeChart">
-                    <label class="custom-control-label dir-rtl" for="themeChart1">
-                      <div class="d-flex justify-content-start">
-                        <div class="clr-box" style="background-color:#5fdde5"></div>
-                        <div class="clr-box" style="background-color: #f4ea8e"></div>
-                        <div class="clr-box" style="background-color: #f37121"></div>
-                        <div class="clr-box" style="background-color: #d92027"></div>
-                      </div>
-                    </label>
-                  </div>
-                  <div class="custom-control custom-radio mr-2">
-                    <input class="custom-control-input" type="radio"
-                           name="themeChartOption" id="Default" value="optionthemeChart">
-                    <label class="custom-control-label dir-rtl" for="themeChart2">
-                      <div class="d-flex justify-content-start">
-                        <div class="clr-box" style="background-color: #805D93;"></div>
-                        <div class="clr-box" style="background-color: #F49FBC;"></div>
-                        <div class="clr-box" style="background-color: #9EBD6E;"></div>
-                        <div class="clr-box" style="background-color: #169873;"></div>
-                      </div>
-                    </label>
+                  <div class="col-sm-6">
+                    <div class="custom-control custom-radio mr-2 mb-2">
+                      <input class="custom-control-input" type="radio"
+                             name="themeChartOption" id="Default" value="optionthemeChart">
+                      <label class="custom-control-label dir-rtl" for="themeChart1">
+                        <div class="d-flex justify-content-start">
+                          <div class="clr-box" style="background-color:#5fdde5"></div>
+                          <div class="clr-box" style="background-color: #f4ea8e"></div>
+                          <div class="clr-box" style="background-color: #f37121"></div>
+                          <div class="clr-box" style="background-color: #d92027"></div>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="custom-control custom-radio mr-2">
+                      <input class="custom-control-input" type="radio"
+                             name="themeChartOption" id="Default" value="optionthemeChart">
+                      <label class="custom-control-label dir-rtl" for="themeChart2">
+                        <div class="d-flex justify-content-start">
+                          <div class="clr-box" style="background-color: #805D93;"></div>
+                          <div class="clr-box" style="background-color: #F49FBC;"></div>
+                          <div class="clr-box" style="background-color: #9EBD6E;"></div>
+                          <div class="clr-box" style="background-color: #169873;"></div>
+                        </div>
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="card bg-light border-card form-group" *ngIf="isCustome">
-            <div class="card-header bg-white">
-              <label class="mb-0">Title Font</label>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-6">
-                  <label> Color</label>
-                  <input type="color" class="form-control" />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Size</label>
-                  <input type="number" class="form-control" />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Weight</label>
-                  <select class="form-control">
-                    <option>Select</option>
-                    <option>Normal</option>
-                    <option>Italic</option>
-                    <option>Bold</option>
-                  </select>
-                </div>
-                <div class="col-md-3 col-sm-6 form-group">
-                  <label> Type</label>
-                  <select class="form-control">
-                    <option>Select</option>
-                    <option>Type 01</option>
-                    <option>Type 02</option>
-                    <option>Type 03</option>
-                  </select>
-                </div>
+            <div class="card bg-light border-card form-group">
+              <div class="card-header bg-white">
+                <label class="mb-0">Title Font</label>
               </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3 col-sm-6">
+                    <label> Color</label>
+                    <input type="color" class="form-control" />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Size</label>
+                    <input type="number" class="form-control" />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Weight</label>
+                    <select class="form-control">
+                      <option>Select</option>
+                      <option>Normal</option>
+                      <option>Italic</option>
+                      <option>Bold</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3 col-sm-6 form-group">
+                    <label> Type</label>
+                    <select class="form-control">
+                      <option>Select</option>
+                      <option>Type 01</option>
+                      <option>Type 02</option>
+                      <option>Type 03</option>
+                    </select>
+                  </div>
+                </div>
 
+              </div>
             </div>
-          </div>
-          <div class="card bg-light border-card form-group" *ngIf="isCustome">
-            <div class="card-header bg-white">
-              <label class="mb-0">Header/Label Font</label>
+            <div class="card bg-light border-card form-group">
+              <div class="card-header bg-white">
+                <label class="mb-0">Header/Label Font</label>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3 col-sm-6">
+                    <label> Color</label>
+                    <input type="color" class="form-control" />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Size</label>
+                    <input type="number" class="form-control" />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Weight</label>
+                    <select class="form-control">
+                      <option>Select</option>
+                      <option>Normal</option>
+                      <option>Italic</option>
+                      <option>Bold</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3 col-sm-6 form-group">
+                    <label> Type</label>
+                    <select class="form-control">
+                      <option>Select</option>
+                      <option>Type 01</option>
+                      <option>Type 02</option>
+                      <option>Type 03</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-6">
-                  <label> Color</label>
-                  <input type="color" class="form-control" />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Size</label>
-                  <input type="number" class="form-control" />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Weight</label>
-                  <select class="form-control">
-                    <option>Select</option>
-                    <option>Normal</option>
-                    <option>Italic</option>
-                    <option>Bold</option>
-                  </select>
-                </div>
-                <div class="col-md-3 col-sm-6 form-group">
-                  <label> Type</label>
-                  <select class="form-control">
-                    <option>Select</option>
-                    <option>Type 01</option>
-                    <option>Type 02</option>
-                    <option>Type 03</option>
-                  </select>
+            <div class="card bg-light border-card form-group">
+              <div class="card-header bg-white">
+                <label class="mb-0">Data Font</label>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3 col-sm-6">
+                    <label> Color</label>
+                    <input type="color" class="form-control" />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Size</label>
+                    <input type="number" class="form-control" />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Weight</label>
+                    <select class="form-control">
+                      <option>Select</option>
+                      <option>Normal</option>
+                      <option>Italic</option>
+                      <option>Bold</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3 col-sm-6 form-group">
+                    <label> Type</label>
+                    <select class="form-control">
+                      <option>Select</option>
+                      <option>Type 01</option>
+                      <option>Type 02</option>
+                      <option>Type 03</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="card bg-light border-card form-group" *ngIf="isCustome">
-            <div class="card-header bg-white">
-              <label class="mb-0">Data Font</label>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-6">
-                  <label> Color</label>
-                  <input type="color" class="form-control" />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Size</label>
-                  <input type="number" class="form-control" />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Weight</label>
-                  <select class="form-control">
-                    <option>Select</option>
-                    <option>Normal</option>
-                    <option>Italic</option>
-                    <option>Bold</option>
-                  </select>
-                </div>
-                <div class="col-md-3 col-sm-6 form-group">
-                  <label> Type</label>
-                  <select class="form-control">
-                    <option>Select</option>
-                    <option>Type 01</option>
-                    <option>Type 02</option>
-                    <option>Type 03</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
+    
         </div>
 
             <div class="col-sm-5">
