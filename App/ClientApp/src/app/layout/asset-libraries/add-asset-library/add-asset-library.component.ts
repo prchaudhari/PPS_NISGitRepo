@@ -6,7 +6,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { WindowRef } from '../../../core/services/window-ref.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { AssetLibrary, Asset, AssetLibrarySearchParameter, AssetSearchParameter } from '../asset-library';
-import { SortParameter, SearchMode } from '../../../shared/models/commonmodel';
+import { SortParameter, SearchMode, SortOrder } from '../../../shared/models/commonmodel';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Location } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
@@ -57,6 +57,7 @@ export class AddAssetLibraryComponent implements OnInit {
   public mode: string = "Add";
   public baseURL: string = ConfigConstants.BaseURL;
   public uploadAssetContainer: boolean;
+  public overrideAssetContainer: boolean;
   public isUploadAssets: boolean = false;
   public isCollapsedDetails: boolean = false;
   public isCollapsedAssets: boolean = true;
@@ -66,15 +67,18 @@ export class AddAssetLibraryComponent implements OnInit {
   isAssetLibraryDetailSaveButtonDisable: boolean = false;
   isMultipleFileUploadEnable: boolean = true;
   fileToUpload: FileList = null;
+  overrideFileToUpload: FileList = null;
   fileNameList: string[] = [];
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
   public image;
   public isImage = true;
   public supportedFiles = "";
+  public supportedFilesForOverride = "";
   public assetLibraryFormErrorObject: any = {
     showAssetLibraryNameError: false
   };
+  public assetIdentifier;
   public assetFileTypeError = false;
   public assetFileSizeError = false;
   public assetFileWidthError = false;
@@ -89,6 +93,7 @@ export class AddAssetLibraryComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatInput, { static: true }) multipleFileAssetUpload: ElementRef;
+  @ViewChild(MatInput, { static: true }) overrideFileAssetUpload: ElementRef;
   @ViewChild(MatInput, { static: true }) video: ElementRef;
 
   public isNoRecord = true;
@@ -101,6 +106,7 @@ export class AddAssetLibraryComponent implements OnInit {
     ImageSize: 0,
     VideoSize: 0
   };
+  public overrideFileType = "";
   public actualSetting: AssetSetting = {
     Identifier: 0,
     ImageHeight: 0,
@@ -110,7 +116,7 @@ export class AddAssetLibraryComponent implements OnInit {
     ImageSize: 0,
     VideoSize: 0
   };
-
+  public CopyfileExtension;
   constructor(
     private _location: Location,
     private _window: WindowRef,
@@ -153,7 +159,7 @@ export class AddAssetLibraryComponent implements OnInit {
           this.params = JSON.parse(localStorage.getItem('assetLibraryparams'));
           if (localStorage.getItem('assetLibraryparams')) {
             this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
-           // this.getAssetLibraryRecords('', false);
+            // this.getAssetLibraryRecords('', false);
 
           }
         } else {
@@ -242,11 +248,48 @@ export class AddAssetLibraryComponent implements OnInit {
           let message: string = "Asset uploaded successfully.";
           let assetSearchParameter: AssetSearchParameter;
           assetSearchParameter = new AssetSearchParameter();
-          assetSearchParameter.SortParameter.SortColumn = "Id";
+          assetSearchParameter.SortParameter.SortColumn = "LastUpdatedDate";
+          assetSearchParameter.SortParameter.SortOrder = 2;
           assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
           this.LoadAsset(assetSearchParameter);
           $('.overlay').show();
           this.CloseUploadAssetContainer();
+          this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
+        },
+        error => {
+          this._spinnerService.stop();
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+
+        });
+    }
+  }
+
+  OverrideAsset(): void {
+    const requestFormData: FormData = new FormData();
+    if (!this.assetLibrary.Identifier) {
+      return;
+    }
+
+    if (this.overrideFileToUpload && this.overrideFileToUpload.length > 0) {
+      this._spinnerService.start();
+      var userid = localStorage.getItem('UserId')
+      Array.prototype.forEach.call(this.overrideFileToUpload, (file: File) => requestFormData.append('File', file));
+      requestFormData.append('IsFolderUpload', this.isMultipleFileUploadEnable ? 'false' : 'true');
+      requestFormData.append('AssetLibraryIdentifier', this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null);
+      requestFormData.append('AssetIdentifier', this.assetIdentifier ? this.assetIdentifier.toString() : null);
+      requestFormData.append('LastUpdatedBy', userid);
+      this._http.post(this.baseURL + 'assetlibrary/asset/Override', requestFormData).subscribe(
+        data => {
+          this._spinnerService.stop();
+          let message: string = "Asset overrided successfully.";
+          let assetSearchParameter: AssetSearchParameter;
+          assetSearchParameter = new AssetSearchParameter();
+          assetSearchParameter.SortParameter.SortColumn = "LastUpdatedDate";
+          assetSearchParameter.SortParameter.SortOrder = 2;
+          assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
+          this.LoadAsset(assetSearchParameter);
+          $('.overlay').show();
+          this.CloseOverrideAssetContainer();
           this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
         },
         error => {
@@ -386,7 +429,8 @@ export class AddAssetLibraryComponent implements OnInit {
             message = "Asset deleted successfully.";
             let assetSearchParameter: AssetSearchParameter;
             assetSearchParameter = new AssetSearchParameter();
-            assetSearchParameter.SortParameter.SortColumn = "Id";
+            assetSearchParameter.SortParameter.SortColumn = "LastUpdatedDate";
+            assetSearchParameter.SortParameter.SortOrder = 2;
             assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
             this.LoadAsset(assetSearchParameter);
             this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
@@ -441,7 +485,8 @@ export class AddAssetLibraryComponent implements OnInit {
                 message = "Asset deleted successfully.";
                 let assetSearchParameter: AssetSearchParameter;
                 assetSearchParameter = new AssetSearchParameter();
-                assetSearchParameter.SortParameter.SortColumn = "Id";
+                assetSearchParameter.SortParameter.SortColumn = "LastUpdatedDate";
+                assetSearchParameter.SortParameter.SortOrder = 2;
                 assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
                 this.LoadAsset(assetSearchParameter);
                 this._messageDialogService.openDialogBox('Alert', message, Constants.msgBoxSuccess);
@@ -460,6 +505,7 @@ export class AddAssetLibraryComponent implements OnInit {
 
 
   }
+
   getAssetDetails(): void {
     this.isCollapsedAssets = !this.isCollapsedAssets;
     if (!this.isCollapsedAssets) {
@@ -467,7 +513,8 @@ export class AddAssetLibraryComponent implements OnInit {
         if (this.assetLibrary.Assets == null) {
           let assetSearchParameter: AssetSearchParameter;
           assetSearchParameter = new AssetSearchParameter();
-          assetSearchParameter.SortParameter.SortColumn = "Id";
+          assetSearchParameter.SortParameter.SortColumn = "LastUpdatedDate";
+          assetSearchParameter.SortParameter.SortOrder = 2;
           assetSearchParameter.AssetLibraryIdentifier = this.assetLibrary.Identifier ? this.assetLibrary.Identifier.toString() : null;
           this.LoadAsset(assetSearchParameter);
         }
@@ -593,6 +640,15 @@ export class AddAssetLibraryComponent implements OnInit {
     this.assetFileHeightError = false;
   }
 
+  CloseOverrideAssetContainer(): void {
+    this.overrideAssetContainer = false;
+    this.assetFileTypeError = false;
+    this.assetFileSizeError = false;
+    this.assetFileWidthHeightError = false;
+    this.assetFileWidthError = false;
+    this.assetFileHeightError = false;
+  }
+
   SetTab(tabNumber: number): void {
     this.tab = tabNumber;
   }
@@ -617,6 +673,35 @@ export class AddAssetLibraryComponent implements OnInit {
       this.uploadAssetContainer = true;
     }
 
+  }
+
+  ShowOverrideAssetContainer(asset: Asset): void {
+    this.supportedFilesForOverride = "";
+    this.overrideFileAssetUpload ? this.overrideFileAssetUpload.nativeElement.value = '' : null;
+    this.overrideFileToUpload = null;
+    this.fileNameList.length = 0;
+    this.overrideAssetContainer = true;
+    var items;
+    this.overrideFileType = asset.FilePath.split('.')[1];
+    if (this.overrideFileType == 'png' || this.overrideFileType == 'jpeg') {
+      items = this.CopyfileExtension.filter(x => x == 'image/png');
+      if (items.length > 0) {
+        this.supportedFilesForOverride = "png"
+      }
+      items = this.CopyfileExtension.filter(x => x == 'image/jpeg');
+      if (items.length > 0) {
+        this.supportedFilesForOverride = this.supportedFilesForOverride != "" ? this.supportedFilesForOverride+",jpeg" : "jpeg";
+      }
+
+    }
+    else {
+
+      items = this.FileExtension.filter(x => x == 'video/mp4');
+      if (items.length > 0) {
+        this.supportedFilesForOverride = "mp4"
+      }
+    }
+    this.assetIdentifier = asset.Identifier;
   }
 
   disableUploadAsset(): boolean {
@@ -729,14 +814,14 @@ export class AddAssetLibraryComponent implements OnInit {
             this.fileNameList = [];
           }
         }
-      
+
 
       }
       else if (file.type.match(vedioPattern)) {
         this.fileType = 'Video';
         if (file.size > this.actualSetting.VideoSize) {
           this.fileSize = this.setting.VideoSize;
-          
+
           this.assetFileSizeError = true;
           this.assetFileTypeError = false;
           this.fileNameList = [];
@@ -759,6 +844,131 @@ export class AddAssetLibraryComponent implements OnInit {
         else {
           this.fileNameList = [];
         }
+      }
+    }
+
+    else {
+      multipleFileAssetUpload.value = "";
+      this.assetFileTypeError = true;
+      this.assetFileSizeError = false;
+      this.fileNameList = [];
+
+    }
+  }
+
+  onOverrideHandleFileUpload(e, multipleFileAssetUpload): void {
+    this.assetFileTypeError = false;
+    this.assetFileSizeError = false;
+    this.assetFileWidthHeightError = false;
+    this.assetFileWidthError = false;
+    this.assetFileHeightError = false;
+    var files = e.target.files;
+    var file = files[0];
+
+    var isValidFileType = false;
+    for (var i = 0; i < this.FileExtension.length; i++) {
+      if (this.FileExtension[i] == file.type) {
+        isValidFileType = true;
+      }
+    }
+    if (isValidFileType) {
+      var imagePattern = /image-*/;
+      var vedioPattern = /video-*/;
+      if (file.type.match(imagePattern) && (this.overrideFileType == 'png' || this.overrideFileType == 'jpeg')) {
+        this.fileType = 'Image';
+        if (file.size > this.actualSetting.ImageSize) {
+          this.fileSize = this.setting.ImageSize
+          this.assetFileSizeError = true;
+          this.assetFileTypeError = false;
+          this.fileNameList = [];
+          multipleFileAssetUpload.value = "";
+        }
+        else {
+          this.assetFileSizeError = false;
+
+        }
+        let img = new Image()
+        img.src = window.URL.createObjectURL(e.target.files[0])
+        img.onload = () => {
+          console.log(img.width + "image " + img.height);
+          console.log(this.actualSetting.ImageWidth + "image " + this.actualSetting.ImageHeight);
+          var height = img.height;
+          var width = img.width;
+
+          if (height > this.actualSetting.ImageHeight && width > this.actualSetting.ImageWidth) {
+            this.assetFileWidthHeightError = true;
+            this.assetFileWidthError = false;
+            this.assetFileHeightError = false;
+            multipleFileAssetUpload.value = "";
+          }
+          else if (height > this.actualSetting.ImageHeight) {
+            this.assetFileWidthHeightError = false;
+            this.assetFileWidthError = false;
+            this.assetFileHeightError = true;
+            multipleFileAssetUpload.value = "";
+          }
+          else if (width > this.actualSetting.ImageWidth) {
+            this.assetFileWidthHeightError = false;
+            this.assetFileWidthError = true;
+            this.assetFileHeightError = false;
+            multipleFileAssetUpload.value = "";
+          }
+          else {
+            this.assetFileWidthHeightError = false;
+            this.assetFileWidthError = false;
+            this.assetFileHeightError = false;
+          }
+          if (this.assetFileTypeError == false && this.assetFileSizeError == false &&
+            this.assetFileWidthHeightError == false && this.assetFileHeightError == false && this.assetFileWidthError == false
+          ) {
+            this.assetFileTypeError = false;
+            this.assetFileSizeError = false;
+            this.assetFileWidthHeightError = false;
+            this.assetFileWidthError = false;
+            this.assetFileHeightError = false;
+            this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
+            this.overrideFileToUpload = files;
+          }
+          else {
+            this.fileNameList = [];
+          }
+        }
+
+
+      }
+      else if (file.type.match(vedioPattern) && (this.overrideFileType == 'mp4')) {
+        this.fileType = 'Video';
+        if (file.size > this.actualSetting.VideoSize) {
+          this.fileSize = this.setting.VideoSize;
+
+          this.assetFileSizeError = true;
+          this.assetFileTypeError = false;
+          this.fileNameList = [];
+          multipleFileAssetUpload.value = "";
+        }
+        else {
+          this.assetFileSizeError = false;
+        }
+        if (this.assetFileTypeError == false && this.assetFileSizeError == false &&
+          this.assetFileWidthHeightError == false && this.assetFileHeightError == false && this.assetFileWidthError == false
+        ) {
+          this.assetFileTypeError = false;
+          this.assetFileSizeError = false;
+          this.assetFileWidthHeightError = false;
+          this.assetFileWidthError = false;
+          this.assetFileHeightError = false;
+          this.fileNameList = Array.prototype.map.call(files, (file: File) => file.name);
+          this.overrideFileToUpload = files;
+        }
+        else {
+          this.fileNameList = [];
+        }
+      }
+      else {
+        multipleFileAssetUpload.value = "";
+        this.assetFileTypeError = true;
+        this.assetFileSizeError = false;
+        this.fileNameList = [];
       }
     }
 
@@ -943,6 +1153,7 @@ export class AddAssetLibraryComponent implements OnInit {
         }
         this.supportedFiles = this.FileExtension.join(", ");
         //image/jpeg,image/jpg,video/mp4
+        this.CopyfileExtension = this.FileExtension;
         for (var i = 0; i < this.FileExtension.length; i++) {
           if (this.FileExtension[i] == "png") {
             this.FileExtension[i] = "image/png";
@@ -957,7 +1168,7 @@ export class AddAssetLibraryComponent implements OnInit {
           }
         }
         this.actualSetting.VideoFileExtension = this.FileExtension.join(",");
-      
+
       },
       error => {
         $('.overlay').show();

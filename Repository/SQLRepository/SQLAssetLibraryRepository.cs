@@ -461,6 +461,8 @@ namespace nIS
                         assetRecord.Name = item.Name;
                         assetRecord.FilePath = item.FilePath;
                         assetRecord.AssetLibraryId = item.AssetLibraryIdentifier;
+                        assetRecord.LastUpdatedDate = item.LastUpdatedDate;
+                        assetRecord.LastUpdatedBy = item.LastUpdatedBy.Identifier;
                     });
 
                     nISEntitiesDataContext.SaveChanges();

@@ -139,6 +139,8 @@
                 <button type="button" title="Preview" id="btnView" data-toggle="modal" (click)="PreviewAsset(element)" data-target="#resourcePreview"><span class="fa fa-file-text-o"></span></button>
                 <button type="button" title="Download" (click)="DownloadAsset(element.Identifier)" id="btnUpdate"><span class="fa fa-download"></span></button>
                 <button type="button" title="Delete" (click)="DeleteAsset(element.Identifier)" id="btnDelete"><span class="fa fa-trash-o"></span></button>
+                <button type="button" title="Override" (click)="ShowOverrideAssetContainer(element)" id="btnOverride"><span class="fa fa-upload"></span></button>
+
               </div>
             </td>
           </ng-container>
@@ -247,5 +249,92 @@
       </ul>
     </div>
   </div>
+
+  <div class="form-popup side-popup width340" [ngClass]="overrideAssetContainer? 'show' : 'hide'">
+    <div class="filter-head">
+      <label class="m-0">Overrirde Asset</label>
+    </div>
+    <div class="filter-body stylescrollbar">
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label> Overrirde File </label>
+         
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-12 parent-rtl">
+          <div class="input-group">
+            <div class="custom-file z-index-0">
+              <input *ngIf="isMultipleFileUploadEnable" #overrideFileAssetUpload class="custom-file-input"
+                     accept="{{actualSetting.VideoFileExtension}}" type="file" (click)="overrideFileAssetUpload.value = null" (change)="onOverrideHandleFileUpload($event,overrideFileAssetUpload)">
+              <label class="custom-file-label"></label>
+            </div>
+
+          </div>
+          <div>
+            <label style="font-size: 11px;margin-top: 7px;">Supported file formats : {{supportedFilesForOverride}}</label>
+          </div>
+        </div>
+        <div class="form-group col-sm-12 parent-rtl">
+          <div class="input-group">
+
+            <div class="validation-msg" style="color: red;margin-left: 15px;">
+              <ul>
+                <li class="text-danger" *ngIf="assetFileSizeError">
+                  {{fileType}} file size should not be greater than {{fileSize}} MB
+                </li>
+                <li class="text-danger" *ngIf="assetFileWidthHeightError">
+                  {{fileType}} width should not be greater than {{setting.ImageWidth}}CM and height should not be greater than {{setting.ImageHeight}}CM
+                </li>
+                <li class="text-danger" *ngIf="assetFileWidthError">
+                  {{fileType}} width should not be greater than {{setting.ImageWidth}}CM
+
+                </li>
+                <li class="text-danger" *ngIf="assetFileHeightError">
+                  {{fileType}} height should not be greater than {{setting.ImageHeight}}CM
+
+                </li>
+                <li class="text-danger" *ngIf="assetFileTypeError">
+                  Invalid file type
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <!--<div class="rounded p-1 mr-1 mb-2 float-left bg-light">
+            resources1.png <span class="badge badge-light"><span class="fa fa-close"></span></span>
+          </div>-->
+          <div *ngIf="fileNameList.length > 0" class="file-list-container stylescrollbar-width">
+            <div *ngFor="let fileName of fileNameList" class="file-list">
+              <span class="fa fa-times" (click)="removeFileFromUpload(fileName)"></span>
+              {{fileName}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="filter-footer">
+      <ul class="nav nav-toolbar">
+        <li class="nav-item width50">
+          <button (click)="OverrideAsset()" [disabled]="fileNameList.length<=0 || assetFileSizeError || assetFileTypeError" title="Save" id="btnCloseForm"
+                  class="btn-footer-fill btn-block rounded-0 height100">
+            <span class="fa fa-check"></span>
+          </button>
+        </li>
+        <li class="nav-item width50">
+          <button (click)="CloseOverrideAssetContainer()" title="Close" id="btnCloseForm"
+                  class="btn-footer-fill btn-block rounded-0 height100">
+            <span class="fa fa-close"></span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
-<div class="overlay a" id="divOverlayFilter" [ngClass]="!isUploadAssets? 'hide':'show'"></div>
+<div class="overlay a" id="divOverlayFilter" [ngClass]="!uploadAssetContainer? 'hide':'show'"></div>
+<div class="overlay a" id="divOverlayFilter1" [ngClass]="!overrideAssetContainer? 'hide':'show'"></div>
+
