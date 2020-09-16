@@ -24,7 +24,7 @@ const List_Data: ListElement[] = [
 })
 export class AddComponent implements OnInit {
   //html editor code
-  //htmlContent = 'hi';
+  htmlContent = '';
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,

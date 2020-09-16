@@ -321,7 +321,7 @@
       <label class="mb-0">Common Properties</label>
     </div>-->
             <div class="card-body">
-              <div class="row">
+              <!--<div class="row">
                 <div class="col-sm-4">
                   <label>Foreground Color</label>
                   <input type="color" class="form-control" disabled />
@@ -330,8 +330,8 @@
                   <label>Background Color</label>
                   <input type="color" class="form-control" disabled />
                 </div>
-              </div>
-              <div class="row mt-2" *ngIf="isSelected('LineGraph') || isSelected('BarGraph') || isSelected('PieChart')">
+              </div>-->
+              <div class="row" *ngIf="isSelected('LineGraph') || isSelected('BarGraph') || isSelected('PieChart')">
                 <div class="col-sm-6">
                   <label>Selected Color Theme</label>
                   <div class="d-flex justify-content-start">
