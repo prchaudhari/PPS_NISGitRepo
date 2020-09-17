@@ -9,6 +9,7 @@ namespace nIS
     using System.Net.Mail;
     using Websym.Core.ConfigurationManager;
     using Websym.Core.EntityManager;
+    using Websym.Core.TenantManager;
 
     #endregion
 
@@ -48,5 +49,50 @@ namespace nIS
         /// Return list of roleprivileges if exist other wise return null
         /// </returns>
         IList<Entity> GetRolePrivileges(EntitySearchParameter entitySearchParameter, string tenantCode);
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        IList<Tenant> GetTenant(TenantSearchParameter tenantSearchParameter);
+
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool AddTenant(IList<Tenant> tenants);
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool UpdateTenant(IList<Tenant> tenants);
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool DeleteTenant(IList<Tenant> tenants);
+
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool ActivateTenant(IList<Tenant> tenants);
+
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool DeactivateTenant(IList<Tenant> tenants);
     }
 }

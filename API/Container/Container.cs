@@ -45,7 +45,6 @@ namespace nIS
             unityContainer.RegisterType<IStatementSearchRepository, SQLStatementSearchRepository>();
             unityContainer.RegisterType<IAnalyticsDataRepository, SQLAnalyticsDataRepository>();
             unityContainer.RegisterType<ICountryRepository, SQLCountryRepository>();
-
             return unityContainer;
         }
     }

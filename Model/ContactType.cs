@@ -16,18 +16,14 @@ namespace nIS
     /// <summary>
     /// This enum indicates the types of contacts.
     /// </summary>
-    public enum ContactType
+    public class ContactType
     {
-        [Description("None")]
-        None = 0,
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
+        public string TenantCode { get; set; }
 
-        [Description("Primary")]
-        Primary = 1,
-
-        [Description("Secondary")]
-        Secondary = 2,
-
-        [Description("Billing")]
-        Billing = 3
     }
 }

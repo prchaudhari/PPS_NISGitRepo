@@ -116,6 +116,8 @@
     <Build Include="Top4IncomeSources.sql" />
     <Build Include="AnalyticsData.sql" />
     <None Include="Seed Data Scripts\Views\GridViews.sql" />
+    <Build Include="TenantContact.sql" />
+    <Build Include="ContactType.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />
