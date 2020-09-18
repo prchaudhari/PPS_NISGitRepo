@@ -27,6 +27,7 @@ import { PagePreviewComponent } from './shared/pagepreview/pagepreview.component
 import { SafeHtmlPip } from './shared/pagepreview/pagepreview.component';
 import { MultipleMessageboxComponent } from './shared/modules/multiple-messagebox/multiple-messagebox.component';
 import { SafeHtmlPipee } from './shared/modules/multiple-messagebox/multiple-messagebox.component';
+import { ErrorLogsViewComponent } from './shared/error-logs-view/error-logs-view.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { SafeHtmlPipee } from './shared/modules/multiple-messagebox/multiple-mes
     PagePreviewComponent,
     MultipleMessageboxComponent,
     SafeHtmlPip, 
-    SafeHtmlPipee
+    SafeHtmlPipee, ErrorLogsViewComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +68,8 @@ import { SafeHtmlPipee } from './shared/modules/multiple-messagebox/multiple-mes
   entryComponents: [
     MsgBoxComponent,
     PagePreviewComponent,
-    MultipleMessageboxComponent
+    MultipleMessageboxComponent,
+    ErrorLogsViewComponent
   ]
 })
 export class AppModule { }

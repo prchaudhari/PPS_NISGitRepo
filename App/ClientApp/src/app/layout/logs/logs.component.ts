@@ -358,6 +358,10 @@ export class LogsComponent implements OnInit {
           this.uiLoader.stop();
         });
   }
+
+  ViewErrorLog(log: ScheduleLog) {
+    this._messageDialogService.openErrorLogDialogBox(log.Identifier, log.ScheduleName);
+  }
 }
 
 function compare(a: number, b: number, isAsc: boolean) {

@@ -1,14 +1,8 @@
-
 import { Injectable, Injector } from '@angular/core';
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
 import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfiguration';
-import { Observable } from 'rxjs';
 import { HttpEvent, HttpEventType, HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
-import { Constants } from 'src/app/shared/constants/constants';
-import { ScheduleLogDetail } from './log-details';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +22,7 @@ export class ScheduleLogServiceDetail {
   public isDependencyPresent: boolean = false;
   constructor(private http: HttpClient,
     private injector: Injector,
-    private uiLoader: NgxUiLoaderService,
-    private _messageDialogService: MessageDialogService) { }
+    private uiLoader: NgxUiLoaderService) { }
 
   public async getScheduleLogDetail(searchParameter): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);

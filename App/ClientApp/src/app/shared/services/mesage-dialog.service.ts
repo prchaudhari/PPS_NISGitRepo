@@ -4,6 +4,8 @@ import { MsgBoxComponent } from 'src/app/shared/modules/message/messagebox.compo
 import { PagePreviewComponent } from 'src/app/shared/pagepreview/pagepreview.component'
 import { Observable } from 'rxjs';
 import { MultipleMessageboxComponent } from '../modules/multiple-messagebox/multiple-messagebox.component';
+import { ErrorLogsViewComponent } from '../error-logs-view/error-logs-view.component'
+
 @Injectable({
     providedIn: 'root'
 })
@@ -25,6 +27,13 @@ export class MessageDialogService {
   openPreviewDialogBox(message): Observable<any> {
     return this._dialogService.addDialog(PagePreviewComponent, {
       htmlContent: message,
+    });
+  }
+
+  openErrorLogDialogBox(scheduleLogId, scheduleName): Observable<any> {
+    return this._dialogService.addDialog(ErrorLogsViewComponent, {
+      scheduleLogId: scheduleLogId,
+      scheduleName: scheduleName,
     });
   }
 

@@ -22,7 +22,7 @@ export class SafeHtmlPip implements PipeTransform {
   template: `<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div class="modal-content overflow-auto stylescrollbar">
                   <div class="modal-body p-1 text-center">
-                  <button type="button" class="close p-1" (click)="cancel()">
+                  <button type="button" class="close p-1 mt-n2" (click)="cancel()">
                     <span aria-hidden="true">&times;</span>
                   </button>
                   <div [innerHtml]="htmlContent | safeHtml">
