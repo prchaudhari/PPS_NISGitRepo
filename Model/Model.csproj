@@ -119,6 +119,7 @@
     <Compile Include="Search Parameter\PageSearchParameter.cs" />
     <Compile Include="Search Parameter\SchdeuleSearchParameter.cs" />
     <Compile Include="Search Parameter\StateSearchParameter.cs" />
+    <Compile Include="Search Parameter\TenantContactSearchParameter.cs" />
     <Compile Include="Search Parameter\WidgetSearchParameter.cs" />
     <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="StatementPage.cs" />
     <Compile Include="StatementPageContent.cs" />
     <Compile Include="TenantConfiguration.cs" />
+    <Compile Include="TenantContact.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserLogin.cs" />
     <Compile Include="UserLoginActivityHistory.cs" />

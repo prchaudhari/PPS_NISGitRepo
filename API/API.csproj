@@ -285,6 +285,7 @@
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\AssetLibraryController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\TenantContactController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />

@@ -110,6 +110,9 @@
     <Compile Include="CityRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ContactTypeRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="CountryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -125,6 +128,7 @@
     <Compile Include="ImageRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\ISQLTenantContactRepository.cs" />
     <Compile Include="IRepository\IAnalyticsDataRepository.cs" />
     <Compile Include="IRepository\ICityRepository.cs" />
     <Compile Include="IRepository\ICountryRepository.cs" />
@@ -200,6 +204,7 @@
     <Compile Include="SQLRepository\SQLAzureCityRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureStateRepository.cs" />
     <Compile Include="SQLRepository\SQLCountryRepository.cs" />
+    <Compile Include="SQLRepository\SQLTenantContactRepository.cs" />
     <Compile Include="SQLRepository\SQLStatementSearchRepository.cs" />
     <Compile Include="SQLRepository\SQLTenantConfigurationRepository.cs" />
     <Compile Include="SQLRepository\SQLAssetSettingRepository.cs" />
@@ -228,6 +233,9 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TenantConfigurationRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TenantContactRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TenantRecord.cs">

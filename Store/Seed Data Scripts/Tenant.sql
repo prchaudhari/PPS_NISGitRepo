@@ -16,7 +16,7 @@ Insert into [TenantManager].[Tenant]
 VALUES																																																																			 
 (@SuperTenantIdentifier, N'nIS SuperAdmin',N'',N'',N'',N'default.com',N'Super',N'Admin',N'+91-1234567890',N'nvsuperadmin@nIS.com',
 N'',N'',N'',N'Mumbai',N'',@MumbaiCityIdentifier,@MaharashtraStateIdentifier,@IndiaCountryIdentifier,
-N'123456',N'2015-12-31 23:59:59.999',N'9999-12-31 23:59:59.999',@StorageAccount,N'',1,0,N'',N'','Self', 0),
+N'123456',N'2015-12-31 23:59:59.999',N'9999-12-31 23:59:59.999',@StorageAccount,N'',1,0,N'',N'','Self', 1),
 (@DefaultTenantIdentifier, N'Customer Admin',N'',N'',N'',N'nIS.com',N'Customr',N'Admin',N'+91-1234567891',N'customeradmin@nIS.com',
 N'',N'',N'',N'Mumbai',N'',@MumbaiCityIdentifier,@MaharashtraStateIdentifier,@IndiaCountryIdentifier,
 N'123456',N'2015-12-31 23:59:59.999',N'9999-12-31 23:59:59.999',@StorageAccount,N'',1,0,N'',N'','Self', 0)

@@ -111,6 +111,11 @@
     <Compile Include="State\InvalidStateException.cs" />
     <Compile Include="State\StateNotFoundException.cs" />
     <Compile Include="TenantNotFoundException.cs" />
+    <Compile Include="TenantContact\DuplicateUserEmailAddressFoundException.cs" />
+    <Compile Include="TenantContact\DuplicateUserFoundException.cs" />
+    <Compile Include="TenantContact\DuplicateUserMobileNumberFoundException.cs" />
+    <Compile Include="TenantContact\InvalidUserException.cs" />
+    <Compile Include="TenantContact\UserNotFoundException.cs" />
     <Compile Include="User\AlreadyUsedPasswordException.cs" />
     <Compile Include="User\DeactivatedUserLoginException.cs" />
     <Compile Include="User\DuplicateUserEmailAddressFoundException.cs" />

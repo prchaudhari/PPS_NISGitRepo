@@ -23,7 +23,7 @@ namespace nIS
     using Unity;
     using Websym.Core.EventManager;
     using Websym.Core.EntityManager;
-
+    using Websym.Core.TenantManager;
     #endregion
 
     public class ConfigurationUtility : IConfigurationUtility
@@ -143,6 +143,117 @@ namespace nIS
             }
 
             return entities;
+        }
+
+        /// <summary>
+        /// THis method will call get method of entity manager.
+        /// </summary>
+        /// <param name="entitySearchParameter">The entity search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </returns>
+        public IList<Tenant> GetTenant(TenantSearchParameter tenantSearchParameter)
+        {
+            IList<Tenant> tenants = new List<Tenant>();
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                tenants = manager.GetTenants(tenantSearchParameter);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return tenants;
+        }
+
+        public bool ActivateTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.UpdateTenantStatus(tenants, true);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public bool AddTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.AddTenants(tenants, false);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public bool DeactivateTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.UpdateTenantStatus(tenants, false);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public bool DeleteTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.DeleteTenants(tenants);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public bool UpdateTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.UpdateTenants(tenants);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
         }
     }
 }

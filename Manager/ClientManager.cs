@@ -9,7 +9,7 @@ namespace nIS
 
     #region References
 
- 
+
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -42,10 +42,22 @@ namespace nIS
         /// </summary>
         private UserManager userManager = null;
 
+        private TenantContactManager tenantContactManager = null;
+
+        /// <summary>
+        /// The user manager object
+        /// </summary>
+        private CountryManager countryManager = null;
+
         /// <summary>
         /// The utility object
         /// </summary>
         private IUtility utility = null;
+
+        /// <summary>
+        /// The utility object
+        /// </summary>
+        private IConfigurationUtility configurationUtility = null;
 
         /// <summary>
         /// The subscription id
@@ -89,13 +101,15 @@ namespace nIS
         {
             this.unityContainer = unityContainer;
             this.userManager = new UserManager(this.unityContainer);
-
+            this.countryManager = new CountryManager(this.unityContainer);
             this.subscriptionId = ConfigurationManager.AppSettings["AzureSubscriptionID"]?.ToString();
             this.tenantId = ConfigurationManager.AppSettings["AzureTenantId"]?.ToString();
             this.clientId = ConfigurationManager.AppSettings["AzureAppClientId"]?.ToString();
             this.clientSecret = ConfigurationManager.AppSettings["AzureAppClientSecret"]?.ToString();
             this.resourceGroupName = ConfigurationManager.AppSettings["ResourceGroupName"]?.ToString();
             this.utility = new Utility();
+            this.configurationUtility = new ConfigurationUtility(this.unityContainer);
+            this.tenantContactManager = new TenantContactManager(this.unityContainer);
         }
 
         #endregion
@@ -120,34 +134,15 @@ namespace nIS
             bool result = false;
             string domainNamePattern = @"[^a-zA-Z0-9]";
             List<Client> clientsToBeDeleted = new List<Client>();
+            IList<TenantContact> tenantContacts = new List<TenantContact>();
             try
             {
                 string sourceConnectionString = string.Empty;
 
                 #region Get primary Client to get source connection string 
 
-                IList<Client> retrivedClients = this.GetClients(new ClientSearchParameter()
-                {
-                    SortParameter = new SortParameter()
-                    {
-                        SortColumn = ModelConstant.SORT_COLUMN
-                    },
-                    TenantCode = ModelConstant.DEFAULT_TENANT_CODE
-                    //IsPrimaryTenant = true
-                }, tenantCode);
 
-                if (retrivedClients == null || retrivedClients.Count == 0)
-                {
-                    throw new TenantNotFoundException(String.Empty);
-                }
 
-                if (retrivedClients?.Count > 0)
-                {
-                    if (retrivedClients.FirstOrDefault() != null)
-                    {
-                        sourceConnectionString = retrivedClients.FirstOrDefault().StorageAccount;
-                    }
-                }
 
                 #endregion
 
@@ -156,9 +151,9 @@ namespace nIS
                 clients.ToList().ForEach(client =>
                 {
                     Tenant tenant = new Tenant();
-                    client.Contacts.ToList().ForEach(item =>
+                    client.TenantContacts.ToList().ForEach(item =>
                     {
-                        if (item.ContactType.Equals(ContactType.Primary.ToString()))
+                        if (item.ContactType.Equals("1"))
                         {
                             client.PrimaryFirstName = item.FirstName;
                             client.PrimaryLastName = item.LastName;
@@ -170,20 +165,7 @@ namespace nIS
                             tenant.PrimaryEmailAddress = item.EmailAddress;
                             tenant.PrimaryContactNumber = item.ContactNumber; //item.CountryCode + "-" +
                         }
-                        else if (item.ContactType.Equals(ContactType.Secondary.ToString()))
-                        {
-                            tenant.SecondaryContactName = item.FirstName;
-                            tenant.SecondaryLastName = item.LastName;
-                            tenant.SecondaryEmailAddress = item.EmailAddress;
-                            tenant.SecondaryContactNumber = item.ContactNumber; //item.CountryCode + "-" + 
-                        }
-                        else if (item.ContactType.Equals(ContactType.Billing.ToString()))
-                        {
-                            tenant.BillingFirstName = item.FirstName;
-                            tenant.BillingLastName = item.LastName;
-                            tenant.BillingEmailAddress = item.EmailAddress;
-                            tenant.BillingContactNumber = item.ContactNumber; //item.CountryCode + "-" +
-                        }
+                        tenantContacts.Add(item);
                     });
 
                     //// Assign compulsary properties.
@@ -198,7 +180,7 @@ namespace nIS
                     tenant.AccessToken = client.AccessToken;
                     tenant.StartDate = client.StartDate;
                     tenant.EndDate = client.EndDate;
-                    tenant.ManageType = client.ManageType;
+                    tenant.ManageType = "Self";
                     tenant.PanNumber = client.PanNumber;
                     tenant.ServiceTax = client.ServiceTax;
                     tenant.TenantCity = client.TenantCity;
@@ -219,70 +201,30 @@ namespace nIS
                         SortColumn = "TenantCode"
                     },
                 };
-
-                clients.ToList().ForEach(client =>
-                {
-                    clientSearchParameter.TenantDomainName = client.TenantDomainName;
-
-                    retrivedClients = this.GetClients(clientSearchParameter, tenantCode);
-                    if (retrivedClients?.Count > 0)
-                    {
-                        throw new DuplicateClientException(tenantCode);
-                    }
-                });
-
                 this.IsValidClients(clients, ModelConstant.ADD_OPERATION, tenantCode, false, addRegisterFlag);
 
                 IList<User> users = null;
-                string tenantBaseURL = ConfigurationManager.AppSettings[ModelConstant.TENANT_BASE_URL];
+                this.configurationUtility.AddTenant(tenants);
 
-                result = JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebTenantRequest(tenantBaseURL, "Tenant", "Add", JsonConvert.SerializeObject(tenants), ModelConstant.TENANT_CODE_KEY, tenantCode, clients.FirstOrDefault().IsThirdPartyEnabled));
-                if (!result)
+                IList<Client> retrivedClients = this.GetClients(new ClientSearchParameter()
                 {
-                    throw new InvalidClientException(tenantCode);
+                    SortParameter = new SortParameter()
+                    {
+                        SortColumn = ModelConstant.SORT_COLUMN
+                    },
+                    TenantDomainName = clients[0].TenantDomainName
+                }, tenantCode);
+
+                if (retrivedClients == null || retrivedClients.Count == 0)
+                {
+                    throw new TenantNotFoundException(String.Empty);
                 }
+
 
                 try
                 {
-                    clients.ToList().ForEach(client =>
+                    retrivedClients.ToList().ForEach(client =>
                     {
-                        using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Suppress))
-                        {
-                            #region Assign Default entity
-
-                            IList<Entity> tenantEntities = new List<Entity>();
-
-                            var entitySearchParameter = new EntitySearchParameter();
-                            entitySearchParameter.SortParameter.SortColumn = "Id";
-                            entitySearchParameter.SortParameter.SortOrder = Websym.Core.EntityManager.SortOrder.Ascending;
-                            //   IList<Entity> entities = entitymanager.GetEntities(entitySearchParameter, ModelConstant.DEFAULT_TENANT_CODE);
-                            IList<Entity> entities = JsonConvert.DeserializeObject<List<Entity>>(this.utility.ExecuteWebRequest(ConfigurationManager.AppSettings[ModelConstant.ENTITY_BASE_URL], "Entity", "Get", JsonConvert.SerializeObject(entitySearchParameter), ModelConstant.TENANT_CODE_KEY, ModelConstant.DEFAULT_TENANT_CODE));
-
-                            entities.ToList().ForEach(data =>
-                            {
-                                Entity entity = new Entity()
-                                {
-                                    EntityName = data.EntityName,
-                                    ComponentCode = ModelConstant.COMPONENTCODE,
-                                   // Operations = ModelConstant.CLIENTOPERATION.ToList()
-                                };
-                                tenantEntities.Add(entity);
-                            });
-                            // Assign entities to client
-                            //client.Entities = tenantEntities;
-                            //// Call Add Entity method in Entity manager
-                            bool addEntityResult = JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(ConfigurationManager.AppSettings[ModelConstant.ENTITY_BASE_URL], "Entity", "Add", JsonConvert.SerializeObject(client.Entities), ModelConstant.TENANT_CODE_KEY, client.TenantCode));
-                            if (!addEntityResult)
-                            {
-                               // throw new InvalidEntityException(tenantCode);
-                            }
-
-                            #endregion
-
-
-                            transactionScope.Complete();
-                        };
-
                         #region Add Default User
 
                         IList<User> clientusers = new List<User>();
@@ -290,8 +232,8 @@ namespace nIS
                         clientRoles = new RoleManager(this.unityContainer).GetRoles(new RoleSearchParameter()
                         {
                             SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
-                            Name = "Administrator"
-                        }, client.TenantCode);
+                            Name = "Tenant Admin"
+                        }, tenantCode);
                         clientusers.Add(new User()
                         {
                             FirstName = client.PrimaryFirstName == "" ? client.TenantName : client.PrimaryFirstName,
@@ -306,118 +248,29 @@ namespace nIS
                         {
                             throw new InvalidUserException(tenantCode);
                         }
+                        this.tenantContactManager.AddTenantContacts(tenantContacts, client.TenantCode);
+                        tenantContacts = tenantContacts.Where(item => item.IsActivationLinkSent == true).ToList();
+                        if (tenantContacts.Count > 0) ;
+                        {
+                            this.tenantContactManager.SentActivationLink(tenantContacts, client.TenantCode);
 
+                        }
                         #endregion
+
 
                     });
                 }
                 catch (Exception ex)
                 {
                     //// This will rollback the role and user
-                    if (Transaction.Current != null)
-                    {
-                        Transaction.Current.Rollback();
-                    }
-
-                    clients.ToList().ForEach(client =>
-                    {
-                        if (client.TenantCode != string.Empty)
-                        {
-                            #region Rollback User
-
-                            try
-                            {
-                                //Get roles of particulat tenant
-                                UserSearchParameter userSearchParameter = new UserSearchParameter();
-                                userSearchParameter.SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN };
-                                IList<User> clientUser = new UserManager(unityContainer).GetUsers(userSearchParameter, client.TenantCode);
-                                if (clientUser?.Count > 0)
-                                {
-                                    new UserManager(unityContainer).DeleteUsers(clientUser, client.TenantCode);
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                throw;
-                            }
-
-                            #endregion
-
-                            #region Rollback Role
-
-                            try
-                            {
-                                //Get roles of particulat tenant
-                                RoleSearchParameter roleSearchParameter = new RoleSearchParameter();
-                                roleSearchParameter.SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN };
-                                IList<Role> clientRoles = new RoleManager(unityContainer).GetRoles(roleSearchParameter, client.TenantCode);
-                                if (clientRoles?.Count > 0)
-                                {
-                                    new RoleManager(unityContainer).DeleteRoles(clientRoles, client.TenantCode);
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                throw;
-                            }
-
-                            #endregion
-                        }
-
-                    });
-
-                    #region Rollback for Client and Entity
-
-                    IList<Entity> entities = null;
-                    IList<Client> retrievedClients = null;
-
-                    EntitySearchParameter entitySearchParameter = new EntitySearchParameter();
-                    entitySearchParameter.SortParameter.SortColumn = "Id";
-                    entitySearchParameter.SortParameter.SortOrder = Websym.Core.EntityManager.SortOrder.Ascending;
-                    entitySearchParameter.SearchMode = Websym.Core.EntityManager.SearchMode.Exact;
-
-                    clientSearchParameter = new ClientSearchParameter();
-                    clientSearchParameter.SortParameter.SortColumn = "Id";
-                    clientSearchParameter.SortParameter.SortOrder = SortOrder.Ascending;
-                    clientSearchParameter.SearchMode = SearchMode.Equals;
-
-                    clients.ToList().ForEach(client =>
-                    {
-                        //// Get the added entities
-                        entities = JsonConvert.DeserializeObject<IList<Entity>>(this.utility.ExecuteWebRequest(ConfigurationManager.AppSettings[ModelConstant.ENTITY_BASE_URL], "Entity", "Get", JsonConvert.SerializeObject(entitySearchParameter), ModelConstant.TENANT_CODE_KEY, client.TenantCode));
-                        if (entities != null && entities.Count > 0)
-                        {
-                            //// Hard delete the entities from backend
-                            JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(ConfigurationManager.AppSettings[ModelConstant.ENTITY_BASE_URL], "Entity", "Delete", JsonConvert.SerializeObject(entities), ModelConstant.TENANT_CODE_KEY, client.TenantCode));
-                        }
-
-                        //// Get the added clients
-                        clientSearchParameter.TenantCode = client.TenantCode;
-                        retrievedClients = this.GetClients(clientSearchParameter, tenantCode);
-                        if (retrievedClients != null && retrievedClients.Count == 1)
-                        {
-                            clientsToBeDeleted.AddRange(retrievedClients);
-                        }
-
-                        //// Get the added clients & delete it.  
-                        if (clientsToBeDeleted != null && clientsToBeDeleted.Count > 0)
-                        {
-                            //// Hard delete the clients from backend
-                            JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(ConfigurationManager.AppSettings[ModelConstant.TENANT_BASE_URL], "Tenant", "Delete", JsonConvert.SerializeObject(clientsToBeDeleted), ModelConstant.TENANT_CODE_KEY, client.TenantCode));
-                        }
-
-                    });
-
-                    #endregion
-
-                    throw;
+                    throw ex;
                 }
 
-               
+
             }
             catch (Exception ex)
             {
-               
+                throw ex;
             }
             return result;
         }
@@ -468,9 +321,9 @@ namespace nIS
                 clients.ToList().ForEach(client =>
                 {
                     Tenant tenant = new Tenant();
-                    client.Contacts.ToList().ForEach(item =>
+                    client.TenantContacts.ToList().ForEach(item =>
                     {
-                        if (item.ContactType.Equals(ContactType.Primary.ToString()))
+                        if (item.ContactType.Equals("Primary"))
                         {
                             client.PrimaryFirstName = item.FirstName;
                             client.PrimaryLastName = item.LastName;
@@ -482,14 +335,14 @@ namespace nIS
                             tenant.PrimaryEmailAddress = item.EmailAddress;
                             tenant.PrimaryContactNumber = item.ContactNumber; //item.CountryCode + "-" +
                         }
-                        else if (item.ContactType.Equals(ContactType.Secondary.ToString()))
+                        else if (item.ContactType.Equals("Secondary"))
                         {
                             tenant.SecondaryContactName = item.FirstName;
                             tenant.SecondaryLastName = item.LastName;
                             tenant.SecondaryEmailAddress = item.EmailAddress;
                             tenant.SecondaryContactNumber = item.ContactNumber; //item.CountryCode + "-" +
                         }
-                        else if (item.ContactType.Equals(ContactType.Billing.ToString()))
+                        else if (item.ContactType.Equals("Billing"))
                         {
                             tenant.BillingFirstName = item.FirstName;
                             tenant.BillingLastName = item.LastName;
@@ -591,80 +444,16 @@ namespace nIS
             bool result = false;
             try
             {
+                IList<Tenant> tenants = new List<Tenant>();
 
-                this.IsValidClients(clients, ModelConstant.DELETE_OPERATION, tenantCode, false);
-                //// Call Delete method of Tenant Manager
-                string tenantBaseURL = ConfigurationManager.AppSettings[ModelConstant.TENANT_BASE_URL];
-
-                IList<Entity> entities = null;
-
-                EntitySearchParameter entitySearchParameter = new EntitySearchParameter();
-                entitySearchParameter.SortParameter.SortColumn = "Id";
-                entitySearchParameter.SortParameter.SortOrder = Websym.Core.EntityManager.SortOrder.Ascending;
-                entitySearchParameter.SearchMode = Websym.Core.EntityManager.SearchMode.Exact;
-
-                IList<Websym.Core.EventManager.Event> events = null;
-
-                string eventManagerBaseURL = ConfigurationManager.AppSettings["EventManagerBaseURL"]?.ToString();
-                //  IList<Event> defaultevents = null;
-                Websym.Core.EventManager.EventSearchParameter eventSearchparameter = new Websym.Core.EventManager.EventSearchParameter()
+                clients.ToList().ForEach(item =>
                 {
-                    ComponentCode = ModelConstant.COMPONENTCODE,
-                    //EntityName = entityName,
-                    //EventName = eventName,
-                    SortParameter = new Websym.Core.EventManager.SortParameter()
+                    tenants.Add(new Tenant
                     {
-                        SortColumn = "EntityName"
-                    }
-                };
-
-                //Delete all dependant data of client
-                clients.ToList().ForEach(client =>
-                {
-                    #region Delete User
-
-                    try
-                    {
-                        //Get roles of particulat tenant
-                        UserSearchParameter userSearchParameter = new UserSearchParameter();
-                        userSearchParameter.SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN };
-                        IList<User> clientUser = new UserManager(unityContainer).GetUsers(userSearchParameter, client.TenantCode);
-                        if (clientUser?.Count > 0)
-                        {
-                            new UserManager(unityContainer).DeleteUsers(clientUser, client.TenantCode);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-
-                    #endregion
-
-                    #region Delete Role
-
-                    try
-                    {
-                        //Get roles of particulat tenant
-                        RoleSearchParameter roleSearchParameter = new RoleSearchParameter();
-                        roleSearchParameter.SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN };
-                        IList<Role> clientRoles = new RoleManager(unityContainer).GetRoles(roleSearchParameter, client.TenantCode);
-                        if (clientRoles?.Count > 0)
-                        {
-                            new RoleManager(unityContainer).DeleteRoles(clientRoles, client.TenantCode);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-
-                    #endregion
-
+                        TenantCode = item.TenantCode
+                    });
                 });
-
-                //delete client
-                result = JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(tenantBaseURL, "Tenant", "Delete", JsonConvert.SerializeObject(clients), ModelConstant.TENANT_CODE_KEY, tenantCode));
+                result = this.configurationUtility.DeleteTenant(tenants);
 
                 return result;
             }
@@ -679,37 +468,15 @@ namespace nIS
             bool result = false;
             try
             {
-                // this.IsValidClients(clients, ModelConstant.UPDATE_OPERATION, tenantCode, true);
+                IList<Tenant> tenants = new List<Tenant>();
 
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter();
-                clientSearchParameter.SortParameter.SortColumn = ModelConstant.SORT_COLUMN;
-                clientSearchParameter.SortParameter.SortOrder = SortOrder.Ascending;
-                clientSearchParameter.SearchMode = SearchMode.Equals;
 
-                clientSearchParameter = new ClientSearchParameter() { SortParameter = new SortParameter() { SortColumn = "TenantCode" }, SearchMode = SearchMode.Equals };
-                clientSearchParameter.TenantCode = tenantCode;
-
-                IList<Client> retrivedClients = this.GetClients(clientSearchParameter, tenantCode);
-                if (retrivedClients?.Count > 0)
+                tenants.Add(new Tenant
                 {
-                    IList<Tenant> tenants = new List<Tenant>();
-                    //// Assign primary contact.
-                    retrivedClients.ToList().ForEach(client =>
-                    {
-                        Tenant tenant = new Tenant(); //// Assign compulsary properties.
-                        tenant.IsActive = false;
-                        tenant.TenantCode = tenantCode;
-                        tenants.Add(tenant);
-                    });
+                    TenantCode = tenantCode
+                });
 
-                    //// Update the client using Tenant manger API
-                    string tenantBaseURL = ConfigurationManager.AppSettings[ModelConstant.TENANT_BASE_URL];
-                    result = JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(tenantBaseURL, "Tenant", "Activate", JsonConvert.SerializeObject(tenants), ModelConstant.TENANT_CODE_KEY, tenantCode));
-                    if (!result)
-                    {
-                        throw new InvalidClientException(tenantCode);
-                    }
-                }
+                result = this.configurationUtility.ActivateTenant(tenants);
 
 
                 return result;
@@ -725,37 +492,15 @@ namespace nIS
             bool result = false;
             try
             {
-                // this.IsValidClients(clients, ModelConstant.UPDATE_OPERATION, tenantCode, true);
+                IList<Tenant> tenants = new List<Tenant>();
 
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter();
-                clientSearchParameter.SortParameter.SortColumn = ModelConstant.SORT_COLUMN;
-                clientSearchParameter.SortParameter.SortOrder = SortOrder.Ascending;
-                clientSearchParameter.SearchMode = SearchMode.Equals;
 
-                clientSearchParameter = new ClientSearchParameter() { SortParameter = new SortParameter() { SortColumn = "TenantCode" }, SearchMode = SearchMode.Equals };
-                clientSearchParameter.TenantCode = tenantCode;
-
-                IList<Client> retrivedClients = this.GetClients(clientSearchParameter, tenantCode);
-                if (retrivedClients?.Count > 0)
+                tenants.Add(new Tenant
                 {
-                    IList<Tenant> tenants = new List<Tenant>();
-                    //// Assign primary contact.
-                    retrivedClients.ToList().ForEach(client =>
-                    {
-                        Tenant tenant = new Tenant(); //// Assign compulsary properties.
-                        tenant.IsActive = false;
-                        tenant.TenantCode = tenantCode;
-                        tenants.Add(tenant);
-                    });
+                    TenantCode = tenantCode
+                });
 
-                    //// Update the client using Tenant manger API
-                    string tenantBaseURL = ConfigurationManager.AppSettings[ModelConstant.TENANT_BASE_URL];
-                    result = JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(tenantBaseURL, "Tenant", "Deactivate", JsonConvert.SerializeObject(tenants), ModelConstant.TENANT_CODE_KEY, tenantCode));
-                    if (!result)
-                    {
-                        throw new InvalidClientException(tenantCode);
-                    }
-                }
+                result = this.configurationUtility.DeactivateTenant(tenants);
 
                 return result;
             }
@@ -798,12 +543,13 @@ namespace nIS
                 {
                     clientSearchParameter.TenantCode = "";
                 }
-                //if (clientSearchParameter.SearchMode == SearchMode.Contains)
-                //{
-                //    clientSearchParameter.SearchMode=
-                //}
+                TenantSearchParameter tenantSearchParameter = new TenantSearchParameter();
+                tenantSearchParameter.SortingParameter = new Websym.Core.TenantManager.SortParameter();
+                tenantSearchParameter.PagingParameter = new Websym.Core.TenantManager.PagingParameter();
+                tenantSearchParameter.SortingParameter.SortColumn = clientSearchParameter.SortParameter.SortColumn;
+                tenantSearchParameter.IsPrimaryTenant = clientSearchParameter.IsPrimaryTenant;
 
-                tenants = JsonConvert.DeserializeObject<List<Tenant>>(this.utility.ExecuteWebRequest(tenantBaseURL, "Tenant", "Get", JsonConvert.SerializeObject(clientSearchParameter), ModelConstant.TENANT_CODE_KEY, tenantCode));
+                tenants = this.configurationUtility.GetTenant(tenantSearchParameter);
                 if (tenants != null && tenants.Count > 0)
                 {
                     string[] array;
@@ -811,73 +557,18 @@ namespace nIS
                     tenants.ToList().ForEach(tenant =>
                     {
                         Client client = new Client();
-                        IList<Contact> contacts = new List<Contact>();
-                        Contact contact = null;
+                        IList<TenantContact> contacts = new List<TenantContact>();
+                        TenantContact contact = null;
                         if ((!(string.IsNullOrEmpty(tenant.PrimaryFirstName)) && (!string.IsNullOrEmpty(tenant.PrimaryLastName)) && (!string.IsNullOrEmpty(tenant.PrimaryEmailAddress))))
                         {
-                            contact = new Contact();
+                            contact = new TenantContact();
                             contact.FirstName = tenant.PrimaryFirstName;
                             contact.LastName = tenant.PrimaryLastName;
                             contact.EmailAddress = tenant.PrimaryEmailAddress;
-                            if (tenant.PrimaryContactNumber.Contains("-"))
-                            {
-                                array = tenant.PrimaryContactNumber.Split('-').ToArray();
-                                contact.ContactNumber = array[1];
-                                contact.CountryCode = array[0];
-                            }
-                            else
-                            {
-                                contact.ContactNumber = tenant.PrimaryContactNumber;
-                            }
+                            contact.ContactNumber = tenant.PrimaryContactNumber;
                             if ((!(string.IsNullOrEmpty(contact.FirstName)) && (!string.IsNullOrEmpty(contact.LastName)) && (!string.IsNullOrEmpty(contact.EmailAddress))))
                             {
-                                contact.ContactType = ContactType.Primary.ToString();
-                            }
-
-                            contacts.Add(contact);
-                        }
-                        if (((!string.IsNullOrEmpty(tenant.SecondaryContactName)) && (!string.IsNullOrEmpty(tenant.SecondaryLastName)) && (!string.IsNullOrEmpty(tenant.SecondaryEmailAddress))))
-                        {
-                            contact = new Contact();
-                            contact.FirstName = tenant.SecondaryContactName;
-                            contact.LastName = tenant.SecondaryLastName;
-                            contact.EmailAddress = tenant.SecondaryEmailAddress;
-                            if (tenant.SecondaryContactNumber.Contains("-"))
-                            {
-                                array = tenant.SecondaryContactNumber.Split('-').ToArray();
-                                contact.ContactNumber = array[1];
-                                contact.CountryCode = array[0];
-                            }
-                            else
-                            {
-                                contact.ContactNumber = tenant.SecondaryContactNumber;
-                            }
-
-                            if (!(string.IsNullOrEmpty(contact.FirstName) && string.IsNullOrEmpty(contact.LastName) && string.IsNullOrEmpty(contact.EmailAddress)))
-                            {
-                                contact.ContactType = ContactType.Secondary.ToString();
-                            }
-                            contacts.Add(contact);
-                        }
-                        if (!(string.IsNullOrEmpty(tenant.BillingFirstName) && string.IsNullOrEmpty(tenant.BillingLastName) && string.IsNullOrEmpty(tenant.BillingEmailAddress)))
-                        {
-                            contact = new Contact();
-                            contact.FirstName = tenant.BillingFirstName;
-                            contact.LastName = tenant.BillingLastName;
-                            contact.EmailAddress = tenant.BillingEmailAddress;
-                            if (tenant.BillingContactNumber.Contains("-"))
-                            {
-                                array = tenant.BillingContactNumber.Split('-').ToArray();
-                                contact.ContactNumber = array[1];
-                                contact.CountryCode = array[0];
-                            }
-                            else
-                            {
-                                contact.ContactNumber = tenant.BillingContactNumber;
-                            }
-                            if (!(string.IsNullOrEmpty(contact.FirstName) && string.IsNullOrEmpty(contact.LastName) && string.IsNullOrEmpty(contact.EmailAddress)))
-                            {
-                                contact.ContactType = ContactType.Billing.ToString();
+                                contact.ContactType = "Primary";
                             }
 
                             contacts.Add(contact);
@@ -899,38 +590,9 @@ namespace nIS
 
                         }
 
-                        if (clientSearchParameter.IsStateRequired == true)
-                        {
-                            State tenantstate = new StateManager(unityContainer).GetStates(new StateSearchParameter()
-                            {
-                                Identifier = tenant.TenantState,
-                                SortParameter = new SortParameter()
-                                {
-                                    SortColumn = ModelConstant.SORT_COLUMN
-                                }
-                            }, ModelConstant.DEFAULT_TENANT_CODE)?.FirstOrDefault();
-
-                            client.State = tenantstate;
-                        }
-
-                        if (clientSearchParameter.IsCityRequired == true)
-                        {
-                            City tenantcity = new CityManager(unityContainer).GetCities(new CitySearchParameter()
-                            {
-                                Identifier = tenant.TenantCity,
-                                SortParameter = new SortParameter()
-                                {
-                                    SortColumn = ModelConstant.SORT_COLUMN
-                                }
-                            }, ModelConstant.DEFAULT_TENANT_CODE)?.FirstOrDefault();
-
-                            client.City = tenantcity;
-                        }
-
                         #endregion
 
-
-                        client.Contacts = contacts;
+                        client.TenantContacts = contacts;
                         client.TenantCode = tenant.TenantCode;
                         client.TenantName = tenant.TenantName;
                         client.TenantDomainName = tenant.TenantDomainName;
@@ -956,7 +618,6 @@ namespace nIS
                         client.PrimaryLastName = tenant.PrimaryLastName;
                         client.PrimaryEmailAddress = tenant.PrimaryEmailAddress;
                         client.PrimaryContactNumber = tenant.PrimaryContactNumber;
-                       // client.AuthenticationMode = tenant.AuthenticationMode;
 
                         clients.Add(client);
 

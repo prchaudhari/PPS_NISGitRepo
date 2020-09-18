@@ -64,7 +64,6 @@ namespace nIS
         /// </summary>
         private bool isLocked = true;
 
-
         /// <summary>
         /// The role
         /// </summary>

@@ -169,9 +169,9 @@ namespace nIS
         private string serviceTax = string.Empty;
 
         /// <summary>
-        /// The contacts.
+        /// The TenantContacts.
         /// </summary>
-        IList<Contact> contacts = new List<Contact>();
+        IList<TenantContact> tenantContacts = new List<TenantContact>();
 
         /// <summary>
         /// The is primary tenant.
@@ -766,19 +766,19 @@ namespace nIS
         }
 
         /// <summary>
-        /// Gets or sets the contacts.
+        /// Gets or sets the TenantContacts.
         /// </summary>
-        [Description("Contacts")]
-        public IList<Contact> Contacts
+        [Description("TenantContacts")]
+        public IList<TenantContact> TenantContacts
         {
             get
             {
-                return this.contacts;
+                return this.tenantContacts;
             }
 
             set
             {
-                this.contacts = value;
+                this.tenantContacts = value;
             }
         }
 
