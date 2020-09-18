@@ -286,6 +286,10 @@ namespace nIS
                         TenantCode = tenantCode
                     }).ToList();
                     result= this.userManager.AddUsers(users, tenantCode);
+                    if(result)
+                    {
+                        this.tenantContactRepository.UpdateActivationLinkStatus(tenantContacts, tenantCode);
+                    }
                 }
 
                 return result;

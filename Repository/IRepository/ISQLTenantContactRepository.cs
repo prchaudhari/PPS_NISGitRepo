@@ -30,6 +30,16 @@ namespace nIS
         bool UpdateTenantContacts(IList<TenantContact> tenantContacts, string tenantCode);
 
         /// <summary>
+        /// This method updates the specified list of tenantContacts in tenantContact repository.
+        /// </summary>
+        /// <param name="tenantContacts">The list of tenantContacts</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if tenantContacts are updated successfully, else false.
+        /// </returns>
+        bool UpdateActivationLinkStatus(IList<TenantContact> tenantContacts, string tenantCode);
+
+        /// <summary>
         /// This method deletes the specified list of tenantContacts from tenantContact repository.
         /// </summary>
         /// <param name="tenantContacts">The list of tenantContacts</param>

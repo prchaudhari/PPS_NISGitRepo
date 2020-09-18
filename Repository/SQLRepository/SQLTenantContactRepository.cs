@@ -195,6 +195,58 @@ namespace nIS
 
         #endregion
 
+        #region Update Activation link Status
+
+        /// <summary>
+        /// This method helps to updates the specified list of tenantContacts in uaer entity.
+        /// </summary>
+        /// <param name="tenantContacts"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        public bool UpdateActivationLinkStatus(IList<TenantContact> tenantContacts, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+                using (NISEntities nVidYoEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    StringBuilder query = new StringBuilder();
+                    query.Append("(" + string.Join("or ", string.Join(",", tenantContacts.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+
+                    IList<TenantContactRecord> tenantContactRecords = nVidYoEntitiesDataContext.TenantContactRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+
+                    if (tenantContactRecords == null || tenantContactRecords.Count <= 0 || tenantContactRecords.Count() != string.Join(",", tenantContactRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
+                    {
+                        throw new TenantContactNotFoundException(tenantCode);
+                    }
+
+                    tenantContacts.ToList().ForEach(tenantContact =>
+                    {
+                        TenantContactRecord tenantContactRecord = nVidYoEntitiesDataContext.TenantContactRecords.FirstOrDefault(data => data.Id == tenantContact.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
+                        tenantContactRecord.IsActivationLinkSent = true;
+                    });
+
+                    nVidYoEntitiesDataContext.SaveChanges();
+                }
+
+                result = true;
+            }
+
+            catch (SqlException)
+            {
+                throw new RepositoryStoreNotAccessibleException(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        #endregion
         #region Delete
 
         /// <summary>
