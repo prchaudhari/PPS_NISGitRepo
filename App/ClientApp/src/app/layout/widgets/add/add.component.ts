@@ -78,20 +78,14 @@ export class AddComponent implements OnInit {
   
         }
         else if (this.widgetList[i].WidgetName == "Image") {
-          this.widgetList[i].ImageSource = "assets/images/ImageWidget.PNG"
+          this.widgetList[i].ImageSource = "assets/images/icon-image.png"
           this.widgetList[i].WidgetIcon = "fa fa-image";
-  
+
         }
         else if (this.widgetList[i].WidgetName == "Video") {
-          this.widgetList[i].ImageSource = "assets/images/VideoWidget.PNG"
+          this.widgetList[i].ImageSource = "assets/images/VideoPlaceholder.jpg"
           this.widgetList[i].WidgetIcon = "icon-videoWidget";
-  
-        }
-  
-        else if (this.widgetList[i].WidgetName == "Video") {
-          this.widgetList[i].ImageSource = "assets/images/VideoWidget.PNG"
-          this.widgetList[i].WidgetIcon = "icon-videoWidget";
-  
+
         }
         else if (this.widgetList[i].WidgetName == "Analytics") {
           this.widgetList[i].ImageSource = "assets/images/Analytics.png"
