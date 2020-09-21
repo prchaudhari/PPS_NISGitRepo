@@ -128,6 +128,7 @@
     <Compile Include="ImageRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\IContactTypeRepository.cs" />
     <Compile Include="IRepository\ISQLTenantContactRepository.cs" />
     <Compile Include="IRepository\IAnalyticsDataRepository.cs" />
     <Compile Include="IRepository\ICityRepository.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="SQLRepository\SQLAnalyticsDataRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureCityRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureStateRepository.cs" />
+    <Compile Include="SQLRepository\SQLContactTypeRepository.cs" />
     <Compile Include="SQLRepository\SQLCountryRepository.cs" />
     <Compile Include="SQLRepository\SQLTenantContactRepository.cs" />
     <Compile Include="SQLRepository\SQLStatementSearchRepository.cs" />

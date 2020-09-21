@@ -198,7 +198,20 @@ namespace nIS
                         {
                             throw new CountryNotFoundException(tenantCode);
                         }
-                        UserRecord user= nISEntitiesDataContext.UserRecords.Where(item => item.CountryId == country.Identifier &&  item.IsDeleted==false).FirstOrDefault();
+
+                        TenantRecord tenantRecord = nISEntitiesDataContext.TenantRecords.Where(item => item.TenantCountry == country.Identifier.ToString() && item.IsDeleted == false).FirstOrDefault();
+                        if (tenantRecord != null)
+                        {
+                            throw new CountryReferenceInTenantException(tenantCode);
+                        }
+
+                        TenantContactRecord tenantContactRecord = nISEntitiesDataContext.TenantContactRecords.Where(item => item.CountryId == country.Identifier && item.IsDeleted == false).FirstOrDefault();
+                        if (tenantRecord != null)
+                        {
+                            throw new CountryReferenceInTenantContactException(tenantCode);
+                        }
+
+                        UserRecord user = nISEntitiesDataContext.UserRecords.Where(item => item.CountryId == country.Identifier && item.IsDeleted == false).FirstOrDefault();
                         if (user != null)
                         {
                             throw new CountryReferenceInUserException(tenantCode);
@@ -373,7 +386,7 @@ namespace nIS
                 StringBuilder query = new StringBuilder();
                 if (operation.Equals(ModelConstant.ADD_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("Name.Equals(\"{0}\") or Code.Equals(\"{1}\") or DialingCode.Equals(\"{2}\")", item.CountryName,item.Code,item.DialingCode)).ToList()) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("Name.Equals(\"{0}\") or Code.Equals(\"{1}\") or DialingCode.Equals(\"{2}\")", item.CountryName, item.Code, item.DialingCode)).ToList()) + ") and IsDeleted.Equals(false)");
                 }
 
                 if (operation.Equals(ModelConstant.UPDATE_OPERATION))

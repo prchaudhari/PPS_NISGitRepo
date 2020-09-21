@@ -111,6 +111,7 @@
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
     <Compile Include="Search Parameter\CitySearchParameter.cs" />
     <Compile Include="Search Parameter\ClientSearchParameter.cs" />
+    <Compile Include="Search Parameter\ContactTypeSearchParameter.cs" />
     <Compile Include="Search Parameter\CountrySearchParameter.cs" />
     <Compile Include="Search Parameter\RenderEngineSearchParameter.cs" />
     <Compile Include="Search Parameter\ScheduleLogSearchParameter.cs" />

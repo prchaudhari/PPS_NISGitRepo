@@ -76,6 +76,12 @@
     <Compile Include="Constants\ScheduleConstant.cs" />
     <Compile Include="Constants\RoleConstant.cs" />
     <Compile Include="Constants\UserConstant.cs" />
+    <Compile Include="ContactType\ContactTypeNotFoundException.cs" />
+    <Compile Include="ContactType\ContactTypeReferenceInTenantContactException.cs" />
+    <Compile Include="ContactType\DuplicateContactTypeFoundException.cs" />
+    <Compile Include="ContactType\InvalidContactTypeException.cs" />
+    <Compile Include="Country\CountryReferenceInTenantContactException.cs" />
+    <Compile Include="Country\CountryReferenceInTenantException.cs" />
     <Compile Include="Country\CountryReferenceInUserException.cs" />
     <Compile Include="Country\CountryNotFoundException.cs" />
     <Compile Include="Country\DuplicateCountryFoundException.cs" />
