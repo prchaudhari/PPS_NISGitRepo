@@ -101,7 +101,8 @@ namespace nIS
                         IsActive = tenantContact.IsActive,
                         IsDeleted = false,
                         TenantCode = tenantCode,
-                        CountryId = tenantContact.CountryId
+                        CountryId = tenantContact.CountryId,
+                        ContactType=tenantContact.ContactTypeId
                     });
                 });
 
@@ -173,6 +174,7 @@ namespace nIS
                         tenantContactRecord.IsActive = tenantContact.IsActive;
                         tenantContactRecord.TenantCode = tenantCode;
                         tenantContactRecord.CountryId = tenantContact.CountryId;
+                        tenantContactRecord.ContactType = tenantContact.ContactTypeId;
                     });
 
                     nVidYoEntitiesDataContext.SaveChanges();
@@ -247,6 +249,7 @@ namespace nIS
         }
 
         #endregion
+
         #region Delete
 
         /// <summary>
@@ -308,6 +311,8 @@ namespace nIS
             IList<TenantContact> tenantContacts = new List<TenantContact>();
             IList<TenantContactRecord> tenantContactRecords = null;
             IList<CountryRecord> countires = new List<CountryRecord>();
+            IList<ContactTypeRecord> contactTypeRecords = new List<ContactTypeRecord>();
+
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
@@ -337,6 +342,10 @@ namespace nIS
                         StringBuilder countryIdQuery = new StringBuilder();
                         countryIdQuery = countryIdQuery.Append("(" + string.Join("or ", tenantContactRecords.Select(item => string.Format("Id.Equals({0}) ", item.CountryId))) + ")");
                         countires = nISEntities.CountryRecords.Where(countryIdQuery.ToString()).ToList();
+
+                        StringBuilder contactTypeQuery = new StringBuilder();
+                        contactTypeQuery = contactTypeQuery.Append("(" + string.Join("or ", tenantContactRecords.Select(item => string.Format("Id.Equals({0}) ", item.ContactType))) + ")");
+                        contactTypeRecords = nISEntities.ContactTypeRecords.Where(contactTypeQuery.ToString()).ToList();
                     }
                 }
                 IList<TenantContact> tempTenantContacts = new List<TenantContact>();
@@ -354,8 +363,11 @@ namespace nIS
                         FirstName = tenantContactRecord.FirstName,
                         LastName = tenantContactRecord.LastName,
                         EmailAddress = tenantContactRecord.EmailAddress,
-                        ContactNumber = contactnumber,
+                        ContactNumber = tenantContactRecord.ContactNumber,
+                        CountryCode= countires.Where(i => i.Id == tenantContactRecord.CountryId).FirstOrDefault().DialingCode,
                         CountryId = (long)tenantContactRecord.CountryId,
+                        ContactTypeId=tenantContactRecord.ContactType,
+                        ContactType= contactTypeRecords.Where(item=>item.Id.ToString()==tenantContactRecord.ContactType).FirstOrDefault().Name,
                         Image = tenantContactRecord.Image,
                         IsActive = tenantContactRecord.IsActive,
                         TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? tenantContactRecord.TenantCode : tenantCode,
@@ -426,8 +438,6 @@ namespace nIS
         }
 
         #endregion
-
-
 
         #region Get Count
 

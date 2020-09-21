@@ -100,6 +100,11 @@ namespace nIS
         private bool isSuperAdmin = false;
 
         /// <summary>
+        /// The  isContactRequired
+        /// </summary>
+        private bool isContactRequired = false;
+
+        /// <summary>
         /// The utility object
         /// </summary>
         private ModelUtility utility = new ModelUtility();
@@ -380,6 +385,23 @@ namespace nIS
             set
             {
                 this.isSuperAdmin = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets is super admin .
+        /// </summary>
+        [Description("Is super admin")]
+        public bool IsContactRequired
+        {
+            get
+            {
+                return this.isContactRequired;
+            }
+
+            set
+            {
+                this.isContactRequired = value;
             }
         }
 

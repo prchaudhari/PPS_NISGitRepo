@@ -12,6 +12,7 @@ namespace nIS
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string ContactNumber { get; set; }
+        public string ContactTypeId { get; set; }
         public string ContactType { get; set; }
         public string EmailAddress { get; set; }
         public string Image { get; set; }
@@ -20,6 +21,7 @@ namespace nIS
         public bool IsActivationLinkSent { get; set; }
         public string TenantCode { get; set; }
         public long CountryId { get; set; }
+        public string CountryCode { get; set; }
 
         /// <summary>
         /// The validation engine objecct

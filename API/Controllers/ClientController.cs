@@ -167,20 +167,6 @@ namespace nIS
                 this.tenantCode = ((IEnumerable<string>)Request.Headers.GetValues(ModelConstant.TENANT_CODE_KEY)).FirstOrDefault();
                 clients = this.clientManager.GetClients(clientSearchParameter, this.tenantCode);
 
-                //// Remove pagination parameter from search in order to get the total count of clients
-                clientSearchParameter.PagingParameter.PageIndex = 0;
-                clientSearchParameter.PagingParameter.PageSize = 0;
-
-                IList<Client> retrievedClients = this.clientManager.GetClients(clientSearchParameter, this.tenantCode);
-                if (retrievedClients != null && retrievedClients.Count > 0)
-                {
-                    HttpContext.Current.Response.AppendHeader("recordCount", retrievedClients.Count.ToString());
-                }
-                else
-                {
-                    HttpContext.Current.Response.AppendHeader("recordCount", "0");
-                }
-
                 return clients;
             }
             catch

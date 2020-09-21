@@ -138,10 +138,32 @@ namespace nIS
             try
             {
                 string sourceConnectionString = string.Empty;
+                string newTenantCode = Guid.NewGuid().ToString();
 
                 #region Get primary Client to get source connection string 
 
+                IList<Client> retrivedClients = this.GetClients(new ClientSearchParameter()
+                {
+                    SortParameter = new SortParameter()
+                    {
+                        SortColumn = ModelConstant.SORT_COLUMN
+                    },
+                    TenantCode = ModelConstant.DEFAULT_TENANT_CODE
+                    //IsPrimaryTenant = true
+                }, tenantCode);
 
+                if (retrivedClients == null || retrivedClients.Count == 0)
+                {
+                    throw new TenantNotFoundException(String.Empty);
+                }
+
+                if (retrivedClients?.Count > 0)
+                {
+                    if (retrivedClients.FirstOrDefault() != null)
+                    {
+                        sourceConnectionString = retrivedClients.FirstOrDefault().StorageAccount;
+                    }
+                }
 
 
                 #endregion
@@ -153,30 +175,30 @@ namespace nIS
                     Tenant tenant = new Tenant();
                     client.TenantContacts.ToList().ForEach(item =>
                     {
-                        if (item.ContactType.Equals("1"))
+                        if (item.ContactType.Equals(ModelConstant.TENANT_PRIMARY_CONTACT))
                         {
                             client.PrimaryFirstName = item.FirstName;
                             client.PrimaryLastName = item.LastName;
                             client.PrimaryEmailAddress = item.EmailAddress;
-                            client.PrimaryContactNumber = item.ContactNumber; //item.CountryCode + "-" +
+                            client.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
 
                             tenant.PrimaryFirstName = item.FirstName;
                             tenant.PrimaryLastName = item.LastName;
                             tenant.PrimaryEmailAddress = item.EmailAddress;
-                            tenant.PrimaryContactNumber = item.ContactNumber; //item.CountryCode + "-" +
+                            tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
                         }
                         tenantContacts.Add(item);
                     });
 
                     //// Assign compulsary properties.
-                    tenant.TenantCode = client.TenantCode;
+                    tenant.TenantCode = newTenantCode;
                     tenant.TenantName = client.TenantName;
                     tenant.TenantDomainName = client.TenantDomainName;
                     tenant.TenantType = client.TenantType;
                     tenant.PrimaryPinCode = client.PrimaryPinCode;
                     tenant.PrimaryAddressLine1 = client.PrimaryAddressLine1;
                     tenant.PrimaryAddressLine2 = client.PrimaryAddressLine2;
-                    tenant.StorageAccount = client.StorageAccount;
+                    tenant.StorageAccount = sourceConnectionString;
                     tenant.AccessToken = client.AccessToken;
                     tenant.StartDate = client.StartDate;
                     tenant.EndDate = client.EndDate;
@@ -189,7 +211,6 @@ namespace nIS
                     tenant.IsActive = client.IsActive;
                     tenant.TenantDescription = client.TenantDescription;
                     tenant.TenantLogo = client.TenantLogo;
-                    //tenant.AuthenticationMode = client.AuthenticationMode;
 
                     tenants.Add(tenant);
                 });
@@ -203,10 +224,9 @@ namespace nIS
                 };
                 this.IsValidClients(clients, ModelConstant.ADD_OPERATION, tenantCode, false, addRegisterFlag);
 
-                IList<User> users = null;
-                this.configurationUtility.AddTenant(tenants);
+                result = this.configurationUtility.AddTenant(tenants);
 
-                IList<Client> retrivedClients = this.GetClients(new ClientSearchParameter()
+                retrivedClients = this.GetClients(new ClientSearchParameter()
                 {
                     SortParameter = new SortParameter()
                     {
@@ -225,22 +245,34 @@ namespace nIS
                 {
                     retrivedClients.ToList().ForEach(client =>
                     {
-                        #region Add Default User
+                        #region Add Tenant Admin Role, User and Assign Role to User
 
                         IList<User> clientusers = new List<User>();
                         IList<Role> clientRoles = new List<Role>();
-                        clientRoles = new RoleManager(this.unityContainer).GetRoles(new RoleSearchParameter()
+                        RoleManager roleManager = new RoleManager(this.unityContainer);
+                        clientRoles = roleManager.GetRoles(new RoleSearchParameter()
                         {
                             SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
-                            Name = "Tenant Admin"
+                            Name = ModelConstant.TENANT_ADMIN_ROLE,
+                            IsRequiredRolePrivileges = true,
                         }, tenantCode);
+
+                        IList<Role> tenantRole = clientRoles;
+                        roleManager.AddRoles(tenantRole, newTenantCode);
+                        tenantRole = roleManager.GetRoles(new RoleSearchParameter()
+                        {
+                            SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
+                            Name = ModelConstant.TENANT_ADMIN_ROLE,
+                            IsRequiredRolePrivileges = true,
+                        }, newTenantCode);
+
                         clientusers.Add(new User()
                         {
                             FirstName = client.PrimaryFirstName == "" ? client.TenantName : client.PrimaryFirstName,
                             LastName = client.PrimaryLastName == "" ? client.TenantName : client.PrimaryLastName,
                             EmailAddress = client.PrimaryEmailAddress,
                             ContactNumber = client.PrimaryContactNumber,
-                            Roles = clientRoles
+                            Roles = tenantRole
                         });
 
                         bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode);
@@ -250,14 +282,12 @@ namespace nIS
                         }
                         this.tenantContactManager.AddTenantContacts(tenantContacts, client.TenantCode);
                         tenantContacts = tenantContacts.Where(item => item.IsActivationLinkSent == true).ToList();
-                        if (tenantContacts.Count > 0) ;
+                        if (tenantContacts.Count > 0)
                         {
                             this.tenantContactManager.SentActivationLink(tenantContacts, client.TenantCode);
 
                         }
                         #endregion
-
-
                     });
                 }
                 catch (Exception ex)
@@ -295,132 +325,52 @@ namespace nIS
             try
             {
                 this.IsValidClients(clients, ModelConstant.UPDATE_OPERATION, tenantCode, true);
-
-                IList<Client> nonUpdatedClients = new List<Client>();
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter();
-                clientSearchParameter.SortParameter.SortColumn = ModelConstant.SORT_COLUMN;
-                clientSearchParameter.SortParameter.SortOrder = SortOrder.Ascending;
-                clientSearchParameter.SearchMode = SearchMode.Equals;
-
-                //// This for loop helps to create a list of client which take the current snapshot of data in client and entity from backend
-                //// which will be used in the scenario when we want to rollback the changes when an exception is raised
-                clients.ToList().ForEach(client =>
-                {
-                    clientSearchParameter.TenantCode = client.TenantCode;
-                    Client nonUpdatedClient = this.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
-                    if (nonUpdatedClient == null)
-                    {
-                        throw new TenantNotFoundException(tenantCode);
-                    }
-
-                    nonUpdatedClients.Add(nonUpdatedClient);
-                });
-
                 IList<Tenant> tenants = new List<Tenant>();
-                //// Assign primary contact.
                 clients.ToList().ForEach(client =>
                 {
                     Tenant tenant = new Tenant();
                     client.TenantContacts.ToList().ForEach(item =>
                     {
-                        if (item.ContactType.Equals("Primary"))
+                        if (item.ContactType.Equals(ModelConstant.TENANT_PRIMARY_CONTACT))
                         {
                             client.PrimaryFirstName = item.FirstName;
                             client.PrimaryLastName = item.LastName;
                             client.PrimaryEmailAddress = item.EmailAddress;
-                            client.PrimaryContactNumber = item.ContactNumber; //item.CountryCode + "-" + 
+                            client.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
 
                             tenant.PrimaryFirstName = item.FirstName;
                             tenant.PrimaryLastName = item.LastName;
                             tenant.PrimaryEmailAddress = item.EmailAddress;
-                            tenant.PrimaryContactNumber = item.ContactNumber; //item.CountryCode + "-" +
+                            tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
                         }
-                        else if (item.ContactType.Equals("Secondary"))
-                        {
-                            tenant.SecondaryContactName = item.FirstName;
-                            tenant.SecondaryLastName = item.LastName;
-                            tenant.SecondaryEmailAddress = item.EmailAddress;
-                            tenant.SecondaryContactNumber = item.ContactNumber; //item.CountryCode + "-" +
-                        }
-                        else if (item.ContactType.Equals("Billing"))
-                        {
-                            tenant.BillingFirstName = item.FirstName;
-                            tenant.BillingLastName = item.LastName;
-                            tenant.BillingEmailAddress = item.EmailAddress;
-                            tenant.BillingContactNumber = item.ContactNumber; //item.CountryCode + "-" +
-                        }
-
                     });
 
                     //// Assign compulsary properties.
                     tenant.TenantCode = client.TenantCode;
                     tenant.TenantName = client.TenantName;
                     tenant.TenantDomainName = client.TenantDomainName;
-                    //tenant.TenantType = client.TenantType;
+                    tenant.TenantType = client.TenantType;
                     tenant.PrimaryPinCode = client.PrimaryPinCode;
                     tenant.PrimaryAddressLine1 = client.PrimaryAddressLine1;
-                    //tenant.PrimaryAddressLine2 = client.PrimaryAddressLine2;
+                    tenant.PrimaryAddressLine2 = client.PrimaryAddressLine2;
                     tenant.StorageAccount = client.StorageAccount;
-                    tenant.AccessToken = "Dummy";
+                    tenant.AccessToken = client.AccessToken;
                     tenant.StartDate = client.StartDate;
                     tenant.EndDate = client.EndDate;
-                    tenant.ManageType = client.ManageType;
+                    tenant.ManageType = "Self";
                     tenant.PanNumber = client.PanNumber;
                     tenant.ServiceTax = client.ServiceTax;
                     tenant.TenantCity = client.TenantCity;
                     tenant.TenantCountry = client.TenantCountry;
-                    //tenant.AuthenticationMode = client.AuthenticationMode;
-                    if (client.ManageType.Equals(1))
-                    {
-                        tenant.IsPrimaryTenant = true;
-                    }
-
                     tenant.TenantState = client.TenantState;
                     tenant.IsActive = client.IsActive;
                     tenant.TenantDescription = client.TenantDescription;
                     tenant.TenantLogo = client.TenantLogo;
+
                     tenants.Add(tenant);
                 });
 
-                clientSearchParameter = new ClientSearchParameter() { SortParameter = new SortParameter() { SortColumn = "TenantCode" }, SearchMode = SearchMode.Equals };
-                clients.ToList().ForEach(client =>
-                {
-                    clientSearchParameter.TenantDomainName = client.TenantDomainName;
-
-                    IList<Client> retrivedClients = this.GetClients(clientSearchParameter, tenantCode);
-                    if (retrivedClients?.Count > 0)
-                    {
-                        retrivedClients = retrivedClients.Where(item => item.TenantCode != client.TenantCode).ToList();
-                        if (retrivedClients?.Count > 0)
-                        {
-                            throw new DuplicateClientException(tenantCode);
-                        }
-                    }
-
-                    clientSearchParameter.TenantDomainName = string.Empty;
-
-                    //clientSearchParameter.PrimaryEmailAddress = client.PrimaryEmailAddress;
-                    //retrivedClients = this.GetClients(clientSearchParameter, tenantCode);
-                    //if (retrivedClients?.Count > 0)
-                    //{
-                    //    retrivedClients = retrivedClients.Where(item => item.TenantCode != client.TenantCode).ToList();
-                    //    if (retrivedClients?.Count > 0)
-                    //    {
-                    //        throw new DuplicateClientException(tenantCode);
-                    //    }
-                    //}
-
-                    //clientSearchParameter.PrimaryEmailAddress = string.Empty;
-                });
-
-                //// Update the client using Tenant manger API
-                string tenantBaseURL = ConfigurationManager.AppSettings[ModelConstant.TENANT_BASE_URL];
-                result = JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(tenantBaseURL, "Tenant", "Update", JsonConvert.SerializeObject(tenants), ModelConstant.TENANT_CODE_KEY, tenantCode));
-                if (!result)
-                {
-                    throw new InvalidClientException(tenantCode);
-                }
-
+                result = this.configurationUtility.UpdateTenant(tenants);
                 return result;
             }
             catch (Exception ex)
@@ -545,14 +495,20 @@ namespace nIS
                 }
                 TenantSearchParameter tenantSearchParameter = new TenantSearchParameter();
                 tenantSearchParameter.SortingParameter = new Websym.Core.TenantManager.SortParameter();
-                tenantSearchParameter.PagingParameter = new Websym.Core.TenantManager.PagingParameter();
                 tenantSearchParameter.SortingParameter.SortColumn = clientSearchParameter.SortParameter.SortColumn;
+
+                tenantSearchParameter.PagingParameter = new Websym.Core.TenantManager.PagingParameter();
+                tenantSearchParameter.PagingParameter.PageIndex = clientSearchParameter.PagingParameter.PageIndex;
+                tenantSearchParameter.PagingParameter.PageSize = clientSearchParameter.PagingParameter.PageSize;
+
                 tenantSearchParameter.IsPrimaryTenant = clientSearchParameter.IsPrimaryTenant;
+                tenantSearchParameter.TenantDomainName = clientSearchParameter.TenantDomainName;
+                tenantSearchParameter.TenantName = clientSearchParameter.TenantName;
+                tenantSearchParameter.TenantCode = clientSearchParameter.TenantCode;
 
                 tenants = this.configurationUtility.GetTenant(tenantSearchParameter);
                 if (tenants != null && tenants.Count > 0)
                 {
-                    string[] array;
                     clients = new List<Client>();
                     tenants.ToList().ForEach(tenant =>
                     {
@@ -589,10 +545,18 @@ namespace nIS
                             client.Country = tenantcountry;
 
                         }
-
+                        if (clientSearchParameter.IsContactRequired)
+                        {
+                            contacts = this.tenantContactManager.GetTenantContacts(new TenantContactSearchParameter()
+                            {
+                                SortParameter = new SortParameter()
+                                {
+                                    SortColumn = ModelConstant.SORT_COLUMN
+                                }
+                            }, tenant.TenantCode).ToList();
+                            client.TenantContacts = contacts;
+                        }
                         #endregion
-
-                        client.TenantContacts = contacts;
                         client.TenantCode = tenant.TenantCode;
                         client.TenantName = tenant.TenantName;
                         client.TenantDomainName = tenant.TenantDomainName;
@@ -618,7 +582,6 @@ namespace nIS
                         client.PrimaryLastName = tenant.PrimaryLastName;
                         client.PrimaryEmailAddress = tenant.PrimaryEmailAddress;
                         client.PrimaryContactNumber = tenant.PrimaryContactNumber;
-
                         clients.Add(client);
 
                     });
@@ -700,24 +663,37 @@ namespace nIS
                     throw invalidClientSearchParameter;
                 }
 
-                string tenantBaseURL = ConfigurationManager.AppSettings[ModelConstant.TENANT_BASE_URL];
                 IList<Tenant> tenants = null;
 
                 if (clientSearchParameter.IsSuperAdmin == true)
                 {
                     clientSearchParameter.TenantCode = "";
                 }
+                TenantSearchParameter tenantSearchParameter = new TenantSearchParameter();
+                tenantSearchParameter.SortingParameter = new Websym.Core.TenantManager.SortParameter();
+                tenantSearchParameter.SortingParameter.SortColumn = clientSearchParameter.SortParameter.SortColumn;
 
-                tenants = JsonConvert.DeserializeObject<List<Tenant>>(this.utility.ExecuteWebRequest(tenantBaseURL, "Tenant", "Get", JsonConvert.SerializeObject(clientSearchParameter), ModelConstant.TENANT_CODE_KEY, tenantCode));
+                tenantSearchParameter.PagingParameter = new Websym.Core.TenantManager.PagingParameter();
+                tenantSearchParameter.PagingParameter.PageIndex = clientSearchParameter.PagingParameter.PageIndex;
+                tenantSearchParameter.PagingParameter.PageSize = clientSearchParameter.PagingParameter.PageSize;
+
+                tenantSearchParameter.IsPrimaryTenant = clientSearchParameter.IsPrimaryTenant;
+                tenantSearchParameter.TenantDomainName = clientSearchParameter.TenantDomainName;
+                tenantSearchParameter.TenantName = clientSearchParameter.TenantName;
+
+
+                tenants = this.configurationUtility.GetTenant(tenantSearchParameter);
                 if (tenants != null && tenants.Count > 0)
                 {
-                    clientCount = (long)tenants?.Count();
+                    clientCount = tenants.Count;
                 }
+
             }
             catch
             {
                 throw;
             }
+
 
             return clientCount;
         }
@@ -792,6 +768,7 @@ namespace nIS
                         UserSearchParameter userSearchParameter = new UserSearchParameter();
                         userSearchParameter.Identifier = lastModifiedByUserIdentifiers;
                         userSearchParameter.SortParameter.SortColumn = "Id";
+                        userSearchParameter.IsSkipSuperAdmin = false;
                         if (this.userManager.GetUsers(userSearchParameter, tenantCode).Count() != lastModifiedByUserIdentifiers.Split(',').ToList().Count())
                         {
                             throw new UserNotFoundException(tenantCode);

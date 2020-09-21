@@ -68,7 +68,8 @@ namespace nIS
             bool result = false;
             try
             {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+
+                string tenantCode = tenantContacts.FirstOrDefault().TenantCode;
                 result = this.tenantContactManager.AddTenantContacts(tenantContacts, tenantCode);
             }
             catch (Exception exception)
@@ -96,7 +97,7 @@ namespace nIS
             bool result = false;
             try
             {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                string tenantCode = tenantContacts.FirstOrDefault().TenantCode;
                 result = this.tenantContactManager.UpdateTenantContacts(tenantContacts, tenantCode);
             }
             catch (Exception exception)
@@ -123,7 +124,7 @@ namespace nIS
             bool result = false;
             try
             {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                string tenantCode = tenantContacts.FirstOrDefault().TenantCode;
                 result = this.tenantContactManager.DeleteTenantContacts(tenantContacts, tenantCode);
             }
             catch (Exception exception)
@@ -153,7 +154,8 @@ namespace nIS
             IList<TenantContact> tenantContacts = new List<TenantContact>();
             try
             {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                ///string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                string tenantCode = tenantContactSearchParameter.TenantCode;
                 tenantContacts = this.tenantContactManager.GetTenantContacts(tenantContactSearchParameter, tenantCode);
                 HttpContext.Current.Response.AppendHeader("recordCount", this.tenantContactManager.GetTenantContactCount(tenantContactSearchParameter, tenantCode).ToString());
             }
