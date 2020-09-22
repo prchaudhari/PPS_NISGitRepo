@@ -13,6 +13,7 @@ import { StatementSearchComponent } from './statement-search/statement-search.co
 import { TenantConfigurationComponent } from './tenant-configuration/tenant-configuration.component';
 import { CountryComponent } from './country/country.component';
 import { ThemeConfigurationComponent } from './theme-configuration/theme-configuration.component';
+import { ContacttypeComponent} from './contacttype/contacttype.component'
 const routes: Routes = [
   {
     path: '',
@@ -40,6 +41,7 @@ const routes: Routes = [
       { path: 'tenantConfiguration', component: TenantConfigurationComponent },
       { path: 'country', component: CountryComponent },
       { path: 'themeConfiguration', component: ThemeConfigurationComponent },
+      { path: 'contacttype', component: ContacttypeComponent },
     ]
   }
 

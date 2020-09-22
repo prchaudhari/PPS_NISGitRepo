@@ -102,7 +102,9 @@ namespace nIS
                         IsDeleted = false,
                         TenantCode = tenantCode,
                         CountryId = tenantContact.CountryId,
-                        ContactType=tenantContact.ContactTypeId
+                        ContactType=tenantContact.ContactTypeId,
+                        IsActivationLinkSent=tenantContact.IsActivationLinkSent
+
                     });
                 });
 

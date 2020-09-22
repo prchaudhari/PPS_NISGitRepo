@@ -166,7 +166,7 @@ namespace nIS
 
                 this.tenantCode = ((IEnumerable<string>)Request.Headers.GetValues(ModelConstant.TENANT_CODE_KEY)).FirstOrDefault();
                 clients = this.clientManager.GetClients(clientSearchParameter, this.tenantCode);
-
+                HttpContext.Current.Response.AppendHeader("recordCount", this.clientManager.GetClientCount(clientSearchParameter, this.tenantCode).ToString());
                 return clients;
             }
             catch

@@ -5,7 +5,7 @@
       <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
     </div>
     <div>
-      <button class="btn-add btn-cust" id="btnAddRoles" (click)="navigateToAdd()">
+      <button class="btn-add btn-cust" id="btnAddRoles" (click)="navigateToTenantAdd()">
         <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Tenant
       </button>
 
@@ -22,25 +22,25 @@
         </div>
       </div>
       <div class="widget-area-grid padding-0">
-        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
           <!-- Position Column -->
           <ng-container matColumnDef="name">
             <th class="width30 ip-w-25" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let tenant">{{tenant.name}}</td>
+            <td mat-cell *matCellDef="let tenant">{{tenant.TenantName}}</td>
           </ng-container>
 
           <ng-container matColumnDef="domainName">
             <th class="width30 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Domain Name </th>
             <td mat-cell *matCellDef="let tenant">
-              <span *ngIf="tenant.domainName==null">-</span>
-              <span *ngIf="tenant.domainName!=null">{{tenant.domainName}} </span>
+              <span *ngIf="tenant.TenantDomainName==null">-</span>
+              <span *ngIf="tenant.TenantDomainName!=null">{{tenant.TenantDomainName}} </span>
             </td>
           </ng-container>
           <ng-container matColumnDef="country">
-            <th class="width25 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+            <th class="width25 ip-w-20" mat-header-cell *matHeaderCellDef> Country </th>
             <td mat-cell *matCellDef="let tenant">
-              <span *ngIf="tenant.country==null">-</span>
-              <span *ngIf="tenant.country!=null">{{tenant.country}} </span>
+              <span *ngIf="tenant.Country.CountryName==null">-</span>
+              <span *ngIf="tenant.Country.CountryName!=null">{{tenant.Country.CountryName}}</span>
             </td>
           </ng-container>
 
@@ -48,21 +48,20 @@
             <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let role">
               <div class="action-btns btn-tbl-action">
-                <button type="button" id="btnViewRole" title="View Role" (click)="navigateToView()">
+                <button type="button" id="btnViewRole" title="View" (click)="navigateToTenantView(role)">
                   <span class="fa fa-file-text-o"></span>
                 </button>
-                <button type="button" id="btnUpdateRole" title="Update Role">
+                <button type="button" id="btnUpdateRole" title="Update" (click)="navigateToTenantEdit(role)">
                   <span class="fa fa-pencil-square-o"></span>
                 </button>
-                <button type="button" id="btnUpdateRole" title="Update Role">
+                <button type="button" id="btnUpdateRole" title="Delete" (click)="deleteTenant(role)">
                   <span class="fa fa-trash"></span>
                 </button>
-                <button type="button" title="Deactivate Role">
-                  <span class="fa fa-toggle-on text-success"></span>
-                </button>
-                <!--<button type="button" title="Activate Role">
-    <span class="fa fa-toggle-off text-success"></span>
-  </button>-->
+
+                <button type="button" (click)="activeDeactiveTenant(role)" title="Deactivate" *ngIf="role.IsActive"><span class="fa fa-toggle-on text-success"></span></button>
+                <button type="button" (click)="activeDeactiveTenant(role)" title="Activate" *ngIf="!role.IsActive"><span class="fa fa-toggle-off text-success"></span></button>
+
+
               </div>
             </td>
           </ng-container>
@@ -75,7 +74,7 @@
   </div>
   <!--desktop view end-->
 
-  <form >
+  <form [formGroup]="TenantFilterForm" name="userForm" autocomplete="on" novalidate>
     <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
       <div class="filter-head">
         <label class="m-0">Apply Filter</label>
@@ -83,31 +82,28 @@
       <div class="filter-body-left d-flex flex-column stylescrollbar">
         <div class="form-group">
           <label>Name</label>
-          <input type="text" class="form-control" id="filterTenantName">
+          <input type="text" class="form-control" id="filterName" formControlName="filterName">
         </div>
         <div class="form-group">
           <label>Domain Name</label>
-          <input type="text" class="form-control" id="filterDomainName">
-        </div>
-        <div class="form-group">
-          <label>Country</label>
-          <input type="text" class="form-control" id="filterCountry">
+          <input type="text" class="form-control" id="filterDomainName" formControlName="filterDomainName">
         </div>
       </div>
+
       <!--[ngClass]="filterClass"-->
       <div class="filter-footer">
         <ul class="nav">
-          <li class="nav-item width33" id="liSearchFilter" title="Search">
+          <li class="nav-item width33" id="liSearchFilter" title="Search" (click)="searchTenantRecordFilter('search')">
             <a class="nav-link p-0">
               <span class="fa fa-check"></span>
             </a>
           </li>
-          <li class="nav-item width33" id="liResetFilter" title="Reset">
+          <li class="nav-item width33" id="liResetFilter" title="Reset" (click)="searchTenantRecordFilter('reset')">
             <a class="nav-link p-0">
               <span class="fa fa-refresh"></span>
             </a>
           </li>
-          <li class="nav-item width33" id="liCloseFilter" title="Close" (click)="isFilter=!isFilter">
+          <li class="nav-item width33" id="liCloseFilter" title="Close" (click)="closeFilter()">
             <a class="nav-link p-0">
               <span class="fa fa-close"></span>
             </a>

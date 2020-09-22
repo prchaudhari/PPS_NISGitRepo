@@ -186,6 +186,7 @@ namespace nIS
                             tenant.PrimaryLastName = item.LastName;
                             tenant.PrimaryEmailAddress = item.EmailAddress;
                             tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
+                            item.IsActivationLinkSent = true; 
                         }
                         tenantContacts.Add(item);
                     });
@@ -253,11 +254,12 @@ namespace nIS
                         clientRoles = roleManager.GetRoles(new RoleSearchParameter()
                         {
                             SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
-                            Name = ModelConstant.TENANT_ADMIN_ROLE,
+                            Identifier="1",
                             IsRequiredRolePrivileges = true,
                         }, tenantCode);
-
+                        clientRoles[0].Name = ModelConstant.TENANT_ADMIN_ROLE;
                         IList<Role> tenantRole = clientRoles;
+
                         roleManager.AddRoles(tenantRole, newTenantCode);
                         tenantRole = roleManager.GetRoles(new RoleSearchParameter()
                         {
@@ -266,14 +268,16 @@ namespace nIS
                             IsRequiredRolePrivileges = true,
                         }, newTenantCode);
 
-                        clientusers.Add(new User()
+                        var contactUser=tenantContacts.Where(item => item.IsActivationLinkSent == true);
+                        clientusers=contactUser.Select(item=>new User()
                         {
-                            FirstName = client.PrimaryFirstName == "" ? client.TenantName : client.PrimaryFirstName,
-                            LastName = client.PrimaryLastName == "" ? client.TenantName : client.PrimaryLastName,
-                            EmailAddress = client.PrimaryEmailAddress,
-                            ContactNumber = client.PrimaryContactNumber,
+                            FirstName = item.FirstName == "" ? item.FirstName : item.FirstName,
+                            LastName = item.LastName == "" ? item.LastName : item.LastName,
+                            EmailAddress = item.EmailAddress,
+                            ContactNumber = item.ContactNumber,
+                            CountryId=item.CountryId,
                             Roles = tenantRole
-                        });
+                        }).ToList();
 
                         bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode);
                         if (!addUserResult)
@@ -281,12 +285,12 @@ namespace nIS
                             throw new InvalidUserException(tenantCode);
                         }
                         this.tenantContactManager.AddTenantContacts(tenantContacts, client.TenantCode);
-                        tenantContacts = tenantContacts.Where(item => item.IsActivationLinkSent == true).ToList();
-                        if (tenantContacts.Count > 0)
-                        {
-                            this.tenantContactManager.SentActivationLink(tenantContacts, client.TenantCode);
+                        //tenantContacts = tenantContacts.Where(item => item.IsActivationLinkSent == true).ToList();
+                        //if (tenantContacts.Count > 0)
+                        //{
+                        //    this.tenantContactManager.SentActivationLink(tenantContacts, client.TenantCode);
 
-                        }
+                        //}
                         #endregion
                     });
                 }
@@ -757,26 +761,26 @@ namespace nIS
 
                 #endregion
 
-                if (!addRegisterFlag)
-                {
-                    #region Validate Last modified by  
+                //if (!addRegisterFlag)
+                //{
+                //    #region Validate Last modified by  
 
-                    /// Validate role last modified by user
-                    string lastModifiedByUserIdentifiers = string.Join(",", clients.Where(item => !string.IsNullOrWhiteSpace(item.LastModifiedBy.ToString())).Select(item => item.LastModifiedBy.ToString()).Distinct().ToList());
-                    if (!string.IsNullOrWhiteSpace(lastModifiedByUserIdentifiers))
-                    {
-                        UserSearchParameter userSearchParameter = new UserSearchParameter();
-                        userSearchParameter.Identifier = lastModifiedByUserIdentifiers;
-                        userSearchParameter.SortParameter.SortColumn = "Id";
-                        userSearchParameter.IsSkipSuperAdmin = false;
-                        if (this.userManager.GetUsers(userSearchParameter, tenantCode).Count() != lastModifiedByUserIdentifiers.Split(',').ToList().Count())
-                        {
-                            throw new UserNotFoundException(tenantCode);
-                        }
-                    }
+                //    /// Validate role last modified by user
+                //    string lastModifiedByUserIdentifiers = string.Join(",", clients.Where(item => !string.IsNullOrWhiteSpace(item.LastModifiedBy.ToString())).Select(item => item.LastModifiedBy.ToString()).Distinct().ToList());
+                //    if (!string.IsNullOrWhiteSpace(lastModifiedByUserIdentifiers))
+                //    {
+                //        UserSearchParameter userSearchParameter = new UserSearchParameter();
+                //        userSearchParameter.Identifier = lastModifiedByUserIdentifiers;
+                //        userSearchParameter.SortParameter.SortColumn = "Id";
+                //        userSearchParameter.IsSkipSuperAdmin = false;
+                //        if (this.userManager.GetUsers(userSearchParameter, tenantCode).Count() != lastModifiedByUserIdentifiers.Split(',').ToList().Count())
+                //        {
+                //            throw new UserNotFoundException(tenantCode);
+                //        }
+                //    }
 
-                    #endregion
-                }
+                //    #endregion
+                //}
 
             }
 

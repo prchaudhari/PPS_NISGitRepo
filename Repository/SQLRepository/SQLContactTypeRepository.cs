@@ -376,7 +376,7 @@ namespace nIS
 
                 if (operation.Equals(ModelConstant.UPDATE_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", contactTypes.Select(item => string.Format("(Name.Equals(\"{0}\") and !Id.Equals({3}))", item.Name, item.Identifier))) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", contactTypes.Select(item => string.Format("(Name.Equals(\"{0}\") and !Id.Equals({1}))", item.Name, item.Identifier))) + ") and IsDeleted.Equals(false)");
                 }
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))

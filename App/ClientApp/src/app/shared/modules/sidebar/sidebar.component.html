@@ -105,8 +105,12 @@
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Log','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-reportGenerations2' title="Logs"> </span> <span class='nav-title'>Logs</span> </a>
       </li>
+
       <li [ngClass]="(URL=='/tenants')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToTenants()">
         <a> <span class='nav-icon icon-users-line2' title="Tenants"> </span> <span class='nav-title'>Tenants</span> </a>
+      </li>
+      <li [ngClass]="(URL=='/contacttype')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToContactType()">
+        <a> <span class='nav-icon icon-users-line2' title="Contact Type"> </span> <span class='nav-title'>Contact Type</span> </a>
       </li>
       <li [ngClass]="(URL=='/analytics')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToAnalytics()"
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Analytics','Operation' : 'View'}))">
@@ -123,9 +127,9 @@
         <a> <span class='nav-icon icon-operations2' title="Configure Assets"> </span> <span class='nav-title'>Configure Assets</span> </a>
       </li>
 
-      <li [ngClass]="(URL=='/renderengines')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToRenderEngine()">
-        <a> <span class='nav-icon icon-reportGenerations2' title="Render Engines"> </span> <span class='nav-title'>Render Engines</span> </a>
-      </li>
+      <!--<li [ngClass]="(URL=='/renderengines')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToRenderEngine()">
+    <a> <span class='nav-icon icon-reportGenerations2' title="Render Engines"> </span> <span class='nav-title'>Render Engines</span> </a>
+  </li>-->
       <li [ngClass]="(URL=='/country')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToCountry()">
         <a> <span class='nav-icon fa fa-flag' title="Country"> </span> <span class='nav-title'>Country</span> </a>
       </li>
