@@ -47,6 +47,15 @@ namespace nIS
         [Description("IsAssetPathEditable")]
         public bool IsOutputHTMLPathEditable { get; set; }
 
+        [Description("ArchivalPeriodUnit")]
+        public ArchivalPeriod ArchivalPeriodUnit { get; set; }
+
+        [Description("ArchivalPeriod")]
+        public int? ArchivalPeriod { get; set; }
+
+        [Description("DateFormat")]
+        public string DateFormat { get; set; }
+
         /// <summary>
         /// The utility object
         /// </summary>

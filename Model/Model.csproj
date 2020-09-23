@@ -81,6 +81,7 @@
     <Compile Include="Enum\BatchStatus.cs" />
     <Compile Include="Enum\ClaimType.cs" />
     <Compile Include="Enum\ClientType.cs" />
+    <Compile Include="Enum\ArchivalPeriod.cs" />
     <Compile Include="Enum\ScheduleLogStatus.cs" />
     <Compile Include="Enum\ScheduleStatus.cs" />
     <Compile Include="Enum\StatemnetStatus.cs" />

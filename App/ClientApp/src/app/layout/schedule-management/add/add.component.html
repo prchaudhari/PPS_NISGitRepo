@@ -39,44 +39,44 @@
             <div class="width100 form-group d-flex justify-content-start">
               <div class="custom-control custom-radio mr-2">
                 <input class="custom-control-input" type="radio"
-                       name="recpat" id="Daily" value="option1" checked (click)="isDailyClicked()">
+                       name="recpat" id="Daily" value="option1" checked formControlName="RecurrancePattern" (click)="isDailyClicked()">
                 <label class="custom-control-label dir-rtl" for="Daily">
                   Daily
                 </label>
               </div>
               <div class="custom-control custom-radio mr-2">
                 <input class="custom-control-input" type="radio"
-                       name="recpat" id="Weekly" value="option1" (click)="isWeeklyClicked()">
+                       name="recpat" id="Weekly" value="option1" formControlName="RecurrancePattern" (click)="isWeeklyClicked()">
                 <label class="custom-control-label dir-rtl" for="Weekly">
                   Weekly
                 </label>
               </div>
               <div class="custom-control custom-radio mr-2">
                 <input class="custom-control-input" type="radio"
-                       name="recpat" id="Monthly" value="option1" (click)="isMonthlyClicked()">
+                       name="recpat" id="Monthly" value="option1" formControlName="RecurrancePattern" (click)="isMonthlyClicked()">
                 <label class="custom-control-label dir-rtl" for="Monthly">
                   Monthly
                 </label>
               </div>
               <div class="custom-control custom-radio">
                 <input class="custom-control-input" type="radio"
-                       name="recpat" id="Yearly" value="option1" (click)="isYearlyClicked()">
+                       name="recpat" id="Yearly" value="option1" formControlName="RecurrancePattern" (click)="isYearlyClicked()">
                 <label class="custom-control-label dir-rtl" for="Yearly">
                   Yearly
                 </label>
               </div>
             </div>
             <!--<label id="lblTemplate" for="inputRoleName">Day of Month<span class="text-danger">*</span></label>
-      <select formControlName="DayOfMonth" (change)="onDayOfMonthSelected($event)" class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
-        <option *ngFor="let sd of DayOfMonthList" [value]="sd.Identifier">{{sd.Name}}</option>
-      </select>
-      <div class="validation-msg" style="color:red">
-        <ul *ngIf="scheduleFormErrorObject.dayOfmonthShowError" style="list-style-type:none">
-          <li class="text-danger">
-            Please select day of month
-          </li>
-        </ul>
-      </div>-->
+            <select formControlName="DayOfMonth" (change)="onDayOfMonthSelected($event)" class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
+              <option *ngFor="let sd of DayOfMonthList" [value]="sd.Identifier">{{sd.Name}}</option>
+            </select>
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="scheduleFormErrorObject.dayOfmonthShowError" style="list-style-type:none">
+                <li class="text-danger">
+                  Please select day of month
+                </li>
+              </ul>
+            </div>-->
           </div>
           <div class="col-md-4 col-lg-4 form-group">
             <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) <span class="text-danger">*</span></label>
@@ -298,33 +298,33 @@
             <div *ngIf="isNoEndDate">
               NA
             </div>
-            </div>
-            <!--<div class="col-md-4 col-lg-4 form-group">
-    <div class="row">
-      <div class="col-sm-6">
-        <label>No End Date</label>
-        <div>
-          <label class="switch d-block">
-            <input type="checkbox" id="inputNoEndDate" formControlName="NoEndDate" [checked]="!IsEndDateRequired" value="" (change)="NoEndDateClicked($event.target)">
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <label>Export to PDF</label>
-        <div>
-          <label class="switch d-block">
-            <input type="checkbox" id="inputExportToPDF" formControlName="ExportToPDF" [checked]="IsExportToPDF" value="" (change)="IsExportToPDFClicked($event.target)">
-
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
-    </div>
-
-
-  </div>-->
           </div>
+          <!--<div class="col-md-4 col-lg-4 form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <label>No End Date</label>
+                <div>
+                  <label class="switch d-block">
+                    <input type="checkbox" id="inputNoEndDate" formControlName="NoEndDate" [checked]="!IsEndDateRequired" value="" (change)="NoEndDateClicked($event.target)">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label>Export to PDF</label>
+                <div>
+                  <label class="switch d-block">
+                    <input type="checkbox" id="inputExportToPDF" formControlName="ExportToPDF" [checked]="IsExportToPDF" value="" (change)="IsExportToPDFClicked($event.target)">
+
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+
+          </div>-->
+        </div>
         <div class="row">
 
         </div>

@@ -36,7 +36,7 @@
         <div class="row form-group">
           <div class="col-md-6 col-sm-6 col-lg-3">
             <label for="inputPriorityLevel">Output HTML Path</label>
-            <input  type="text" class="form-control" id="inputTenantConfigurationOutputHTMLPath"  name="TenantConfigurationOutputHTMLPath"
+            <input type="text" class="form-control" id="inputTenantConfigurationOutputHTMLPath" name="TenantConfigurationOutputHTMLPath"
                    formControlName="TenantConfigurationOutputHTMLPath" />
             <!-- Error Masseges  -->
             <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputHTMLPath.touched && TenantConfigurationOutputHTMLPath.errors">
@@ -46,10 +46,10 @@
               </ul>
             </div>
           </div>
-          
+
           <div class="col-md-6 col-sm-6 col-lg-3">
             <label for="inputConcurrencyCount">Output PDF Path</label>
-            <input  type="text" class="form-control"   id="inputTenantConfigurationOutputPDFPath" name="TenantConfigurationOutputPDFPath"
+            <input type="text" class="form-control" id="inputTenantConfigurationOutputPDFPath" name="TenantConfigurationOutputPDFPath"
                    formControlName="TenantConfigurationOutputPDFPath" />
             <!-- Error Masseges  -->
             <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationOutputPDFPath.touched && TenantConfigurationOutputPDFPath.errors">
@@ -73,20 +73,49 @@
               </ul>
             </div>
           </div>
-
           <div class="col-md-6 col-sm-6 col-lg-3">
-            <label for="inputConcurrencyCount">Archival Path</label>
-            <input type="text" class="form-control" id="inputTenantConfigurationArchivalPath" name="TenantConfigurationArchivalPath"
+            <label id="TenantConfigurationDateFormat" for="TenantConfigurationDateFormat">Date Format</label>
+            <input type="text" class="form-control" id="TenantConfigurationDateFormat" name="TenantConfigurationDateFormat"
+                   formControlName="TenantConfigurationDateFormat" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationDateFormat.touched && TenantConfigurationDateFormat.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationDateFormat.errors?.pattern">Invalid Input Data Source Path</li>
+                <li class="text-danger" *ngIf="TenantConfigurationDateFormat.errors?.required">Input data source path required</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-6 col-sm-6 col-lg-3">
+            <label for="inputConcurrencyCount">Archival Path</label><span class="text-danger" *ngIf="isArchivalPathRequired">*</span>
+            <input type="text" class="form-control" id="inputTenantConfigurationArchivalPath" (change)="OnArchivalChange()" name="TenantConfigurationArchivalPath"
                    formControlName="TenantConfigurationArchivalPath" />
             <!-- Error Masseges  -->
-            <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationArchivalPath.touched && TenantConfigurationArchivalPath.errors">
+            <div class="validation-msg" style="color:red">
               <ul style="list-style-type:none">
-                <li class="text-danger" *ngIf="TenantConfigurationArchivalPath.errors?.pattern">Invalid Output PDF Path</li>
-                <li class="text-danger" *ngIf="TenantConfigurationArchivalPath.errors?.required">Output PDF path required</li>
+                <li class="text-danger" *ngIf="TenantConfigurationArchivalPath.errors?.pattern">Invalid archival Path</li>
+                <li class="text-danger" *ngIf="archivalPathError">Archival path required</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-lg-3">
+            <label id="lblTenantArchivalPeriod" for="lblTenantArchivalPeriod">Archival Period(Days)</label><span class="text-danger" *ngIf="isArchivalPeriodRequired">*</span>
+            <input type="number" min="1" pattern="\d+" class="form-control" rows="3" id="lblTenantArchivalPeriod" (change)="OnArchivalChange()" name="lblTenantArchivalPeriod"
+                   formControlName="TenantConfigurationArchivalPeriod" />
+            <!-- Error Masseges  -->
+            <div class="validation-msg" style="color:red">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="TenantConfigurationArchivalPeriod.errors?.pattern">Invalid archival period</li>
+                <li class="text-danger" *ngIf="archivalPeriodError">archival period required</li>
               </ul>
             </div>
           </div>
         </div>
+
         <div class="row form-group">
           <div class="col-md-8 col-sm-6 col-lg-6">
             <label id="lblTenantConfigurationDescription" for="inputTenantConfigurationDescription">Description</label>
@@ -103,6 +132,8 @@
             </div>
           </div>
         </div>
+
+
       </div>
     </div>
     <div class="card border-0 mt-4 mb-3 bg-transparent">
