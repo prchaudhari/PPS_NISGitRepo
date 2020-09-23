@@ -266,7 +266,7 @@
           <div class="input-group">
             <div class="custom-file z-index-0">
               <input *ngIf="isMultipleFileUploadEnable" #overrideFileAssetUpload class="custom-file-input"
-                     accept="{{actualSetting.VideoFileExtension}}" type="file" (click)="overrideFileAssetUpload.value = null" (change)="onOverrideHandleFileUpload($event,overrideFileAssetUpload)">
+                     accept="{{supportedOverrideFileExtension}}" type="file" (click)="overrideFileAssetUpload.value = null" (change)="onOverrideHandleFileUpload($event,overrideFileAssetUpload)">
               <label class="custom-file-label"></label>
             </div>
 

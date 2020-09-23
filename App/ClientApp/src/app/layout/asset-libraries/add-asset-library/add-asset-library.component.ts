@@ -116,6 +116,7 @@ export class AddAssetLibraryComponent implements OnInit {
     ImageSize: 0,
     VideoSize: 0
   };
+  public supportedOverrideFileExtension = '';
   public CopyfileExtension;
   constructor(
     private _location: Location,
@@ -686,19 +687,20 @@ export class AddAssetLibraryComponent implements OnInit {
     if (this.overrideFileType == 'png' || this.overrideFileType == 'jpeg') {
       items = this.CopyfileExtension.filter(x => x == 'image/png');
       if (items.length > 0) {
-        this.supportedFilesForOverride = "png"
+        this.supportedFilesForOverride = "png";
+        this.supportedOverrideFileExtension = "image/png";
       }
       items = this.CopyfileExtension.filter(x => x == 'image/jpeg');
       if (items.length > 0) {
-        this.supportedFilesForOverride = this.supportedFilesForOverride != "" ? this.supportedFilesForOverride+",jpeg" : "jpeg";
+        this.supportedFilesForOverride = this.supportedFilesForOverride != "" ? this.supportedFilesForOverride + ",jpeg" : "jpeg";
+        this.supportedOverrideFileExtension = this.supportedOverrideFileExtension != "" ? this.supportedOverrideFileExtension + ",image/jpeg" : "image/jpeg";
       }
-
     }
     else {
-
       items = this.FileExtension.filter(x => x == 'video/mp4');
       if (items.length > 0) {
-        this.supportedFilesForOverride = "mp4"
+        this.supportedFilesForOverride = "mp4";
+        this.supportedOverrideFileExtension = "video/mp4";
       }
     }
     this.assetIdentifier = asset.Identifier;
