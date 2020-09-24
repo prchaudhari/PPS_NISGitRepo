@@ -17,7 +17,7 @@
         <EntityTypeShape EntityType="NISModel.PageRecord" Width="1.75" PointX="2.75" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.PageTypeRecord" Width="1.75" PointX="4.875" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.PageWidgetMapRecord" Width="1.75" PointX="4.875" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleRecord" Width="1.75" PointX="7" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="NISModel.ScheduleRecord" Width="1.75" PointX="7" PointY="2" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementRecord" Width="1.75" PointX="7" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementPageMapRecord" Width="1.75" PointX="7" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantRecord" Width="1.75" PointX="7" PointY="2.625" IsExpanded="false" />

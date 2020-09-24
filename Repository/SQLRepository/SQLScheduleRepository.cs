@@ -388,13 +388,13 @@ namespace nIS
                             IsExportToPDF = scheduleRecord.IsExportToPDF,
                             LastUpdatedDate = scheduleRecord.LastUpdatedDate,
                             Statement = new Statement { Identifier = scheduleRecord.StatementId, Name = scheduleRecord.StatementName },
-                            //RecurrancePattern = scheduleRecord.RecurrancePattern,
-                            //RepeatEveryDayMonWeekYear = scheduleRecord.RepeatEveryDayMonWeekYear,
-                            //WeekDays = scheduleRecord.WeekDays,
-                            //IsEveryWeekDay = scheduleRecord.IsEveryWeekDay,
-                            //MonthOfYear = scheduleRecord.MonthOfYear,
-                            //IsEndsAfterNoOfOccurrences = schescheduleRecorddule.IsEndsAfterNoOfOccurrences,
-                            //NoOfOccurrences = scheduleRecord.NoOfOccurrences,
+                            RecurrancePattern = scheduleRecord.RecurrancePattern,
+                            RepeatEveryDayMonWeekYear = scheduleRecord.RepeatEveryDayMonWeekYear,
+                            WeekDays = scheduleRecord.WeekDays,
+                            IsEveryWeekDay = scheduleRecord.IsEveryWeekDay,
+                            MonthOfYear = scheduleRecord.MonthOfYear,
+                            IsEndsAfterNoOfOccurrences = scheduleRecord.IsEndsAfterNoOfOccurrences,
+                            NoOfOccurrences = scheduleRecord.NoOfOccurrences,
 
 
                         }).ToList();

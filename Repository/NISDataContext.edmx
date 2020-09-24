@@ -741,6 +741,13 @@ warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key
           <Property Name="LastUpdatedDate" Type="datetime" />
           <Property Name="UpdateBy" Type="bigint" Nullable="false" />
           <Property Name="IsExportToPDF" Type="bit" Nullable="false" />
+          <Property Name="RecurrancePattern" Type="nvarchar" MaxLength="50" />
+          <Property Name="RepeatEveryDayMonWeekYear" Type="bigint" />
+          <Property Name="WeekDays" Type="nvarchar" MaxLength="200" />
+          <Property Name="IsEveryWeekDay" Type="bit" />
+          <Property Name="MonthOfYear" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsEndsAfterNoOfOccurrences" Type="bit" />
+          <Property Name="NoOfOccurrences" Type="bigint" />
           <Property Name="StatementName" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -937,6 +944,13 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_Schedule].[LastUpdatedDate] AS [LastUpdatedDate], 
     [View_Schedule].[UpdateBy] AS [UpdateBy], 
     [View_Schedule].[IsExportToPDF] AS [IsExportToPDF], 
+    [View_Schedule].[RecurrancePattern] AS [RecurrancePattern], 
+    [View_Schedule].[RepeatEveryDayMonWeekYear] AS [RepeatEveryDayMonWeekYear], 
+    [View_Schedule].[WeekDays] AS [WeekDays], 
+    [View_Schedule].[IsEveryWeekDay] AS [IsEveryWeekDay], 
+    [View_Schedule].[MonthOfYear] AS [MonthOfYear], 
+    [View_Schedule].[IsEndsAfterNoOfOccurrences] AS [IsEndsAfterNoOfOccurrences], 
+    [View_Schedule].[NoOfOccurrences] AS [NoOfOccurrences], 
     [View_Schedule].[StatementName] AS [StatementName]
     FROM [NIS].[View_Schedule] AS [View_Schedule]</DefiningQuery>
           </EntitySet>
@@ -1733,6 +1747,13 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="UpdateBy" Type="Int64" Nullable="false" />
           <Property Name="IsExportToPDF" Type="Boolean" Nullable="false" />
           <Property Name="StatementName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RecurrancePattern" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RepeatEveryDayMonWeekYear" Type="Int64" />
+          <Property Name="WeekDays" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsEveryWeekDay" Type="Boolean" />
+          <Property Name="MonthOfYear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsEndsAfterNoOfOccurrences" Type="Boolean" />
+          <Property Name="NoOfOccurrences" Type="Int64" />
         </EntityType>
         <EntityType Name="View_UserRecord">
           <Key>
@@ -2583,6 +2604,13 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="View_ScheduleRecord">
             <EntityTypeMapping TypeName="NISModel.View_ScheduleRecord">
               <MappingFragment StoreEntitySet="View_Schedule">
+                <ScalarProperty Name="NoOfOccurrences" ColumnName="NoOfOccurrences" />
+                <ScalarProperty Name="IsEndsAfterNoOfOccurrences" ColumnName="IsEndsAfterNoOfOccurrences" />
+                <ScalarProperty Name="MonthOfYear" ColumnName="MonthOfYear" />
+                <ScalarProperty Name="IsEveryWeekDay" ColumnName="IsEveryWeekDay" />
+                <ScalarProperty Name="WeekDays" ColumnName="WeekDays" />
+                <ScalarProperty Name="RepeatEveryDayMonWeekYear" ColumnName="RepeatEveryDayMonWeekYear" />
+                <ScalarProperty Name="RecurrancePattern" ColumnName="RecurrancePattern" />
                 <ScalarProperty Name="StatementName" ColumnName="StatementName" />
                 <ScalarProperty Name="IsExportToPDF" ColumnName="IsExportToPDF" />
                 <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
