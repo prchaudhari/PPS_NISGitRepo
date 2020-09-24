@@ -356,6 +356,13 @@
           <Property Name="LastUpdatedDate" Type="datetime" />
           <Property Name="UpdateBy" Type="bigint" Nullable="false" />
           <Property Name="IsExportToPDF" Type="bit" Nullable="false" />
+          <Property Name="RecurrancePattern" Type="nvarchar" MaxLength="50" />
+          <Property Name="RepeatEveryDayMonWeekYear" Type="bigint" />
+          <Property Name="WeekDays" Type="nvarchar" MaxLength="200" />
+          <Property Name="IsEveryWeekDay" Type="bit" />
+          <Property Name="MonthOfYear" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsEndsAfterNoOfOccurrences" Type="bit" />
+          <Property Name="NoOfOccurrences" Type="bigint" />
         </EntityType>
         <EntityType Name="ScheduleLog">
           <Key>
@@ -1222,6 +1229,13 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="UpdateBy" Type="Int64" Nullable="false" />
           <Property Name="IsExportToPDF" Type="Boolean" Nullable="false" />
           <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="RecurrancePattern" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RepeatEveryDayMonWeekYear" Type="Int64" />
+          <Property Name="WeekDays" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsEveryWeekDay" Type="Boolean" />
+          <Property Name="MonthOfYear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsEndsAfterNoOfOccurrences" Type="Boolean" />
+          <Property Name="NoOfOccurrences" Type="Int64" />
         </EntityType>
         <EntityType Name="StatementRecord">
           <Key>
@@ -2047,6 +2061,13 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="ScheduleRecords">
             <EntityTypeMapping TypeName="NISModel.ScheduleRecord">
               <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="NoOfOccurrences" ColumnName="NoOfOccurrences" />
+                <ScalarProperty Name="IsEndsAfterNoOfOccurrences" ColumnName="IsEndsAfterNoOfOccurrences" />
+                <ScalarProperty Name="MonthOfYear" ColumnName="MonthOfYear" />
+                <ScalarProperty Name="IsEveryWeekDay" ColumnName="IsEveryWeekDay" />
+                <ScalarProperty Name="WeekDays" ColumnName="WeekDays" />
+                <ScalarProperty Name="RepeatEveryDayMonWeekYear" ColumnName="RepeatEveryDayMonWeekYear" />
+                <ScalarProperty Name="RecurrancePattern" ColumnName="RecurrancePattern" />
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="IsExportToPDF" ColumnName="IsExportToPDF" />
                 <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />

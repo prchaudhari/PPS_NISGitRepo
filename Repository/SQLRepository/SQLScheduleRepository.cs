@@ -125,6 +125,14 @@ namespace nIS
                         IsExportToPDF = schedule.IsExportToPDF,
                         UpdateBy = userId,
                         LastUpdatedDate = DateTime.UtcNow,
+                        RecurrancePattern = schedule.RecurrancePattern,
+                        RepeatEveryDayMonWeekYear = schedule.RepeatEveryDayMonWeekYear,
+                        WeekDays = schedule.WeekDays,
+                        IsEveryWeekDay = schedule.IsEveryWeekDay,
+                        MonthOfYear = schedule.MonthOfYear,
+                        IsEndsAfterNoOfOccurrences = schedule.IsEndsAfterNoOfOccurrences,
+                        NoOfOccurrences = schedule.NoOfOccurrences,
+
                     });
                 });
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -221,6 +229,13 @@ namespace nIS
                         scheduleRecord.StatementId = item.Statement.Identifier;
                         scheduleRecord.UpdateBy = userId;
                         scheduleRecord.LastUpdatedDate = DateTime.UtcNow;
+                        scheduleRecord.RecurrancePattern = item.RecurrancePattern;
+                        scheduleRecord.RepeatEveryDayMonWeekYear = item.RepeatEveryDayMonWeekYear;
+                        scheduleRecord.WeekDays = item.WeekDays;
+                        scheduleRecord.IsEveryWeekDay = item.IsEveryWeekDay;
+                        scheduleRecord.MonthOfYear = item.MonthOfYear;
+                        scheduleRecord.IsEndsAfterNoOfOccurrences = item.IsEndsAfterNoOfOccurrences;
+                        scheduleRecord.NoOfOccurrences = item.NoOfOccurrences;
                         nISEntitiesDataContext.SaveChanges();
 
                         //If any batch is not executed or data ready for it, then delete all batches and re-insert it as per start date and end date, 
@@ -373,6 +388,15 @@ namespace nIS
                             IsExportToPDF = scheduleRecord.IsExportToPDF,
                             LastUpdatedDate = scheduleRecord.LastUpdatedDate,
                             Statement = new Statement { Identifier = scheduleRecord.StatementId, Name = scheduleRecord.StatementName },
+                            //RecurrancePattern = scheduleRecord.RecurrancePattern,
+                            //RepeatEveryDayMonWeekYear = scheduleRecord.RepeatEveryDayMonWeekYear,
+                            //WeekDays = scheduleRecord.WeekDays,
+                            //IsEveryWeekDay = scheduleRecord.IsEveryWeekDay,
+                            //MonthOfYear = scheduleRecord.MonthOfYear,
+                            //IsEndsAfterNoOfOccurrences = schescheduleRecorddule.IsEndsAfterNoOfOccurrences,
+                            //NoOfOccurrences = scheduleRecord.NoOfOccurrences,
+
+
                         }).ToList();
                     }
                 }
@@ -639,7 +663,7 @@ namespace nIS
                                         }
                                     }
                                 }
-                                
+
                             }
                             else
                             {

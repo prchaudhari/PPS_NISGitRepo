@@ -15,5 +15,12 @@
     [TenantCode] NVARCHAR(50) NOT NULL,
 	[LastUpdatedDate] DateTime  NULL,
 	[UpdateBy] BIGINT NOT NULL, 
-    [IsExportToPDF] BIT NOT NULL
+    [IsExportToPDF] BIT NOT NULL, 
+	[RecurrancePattern] NVARCHAR(50) NULL,
+    [RepeatEveryDayMonWeekYear] BIGINT NULL, 
+    [WeekDays] NVARCHAR(200) NULL, 
+    [IsEveryWeekDay] BIT NULL, 
+    [MonthOfYear] NVARCHAR(50) NULL, 
+    [IsEndsAfterNoOfOccurrences] BIT NULL, 
+    [NoOfOccurrences] BIGINT NULL, 
 )

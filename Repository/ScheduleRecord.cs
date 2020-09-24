@@ -30,5 +30,12 @@ namespace nIS
         public long UpdateBy { get; set; }
         public bool IsExportToPDF { get; set; }
         public long StatementId { get; set; }
+        public string RecurrancePattern { get; set; }
+        public Nullable<long> RepeatEveryDayMonWeekYear { get; set; }
+        public string WeekDays { get; set; }
+        public Nullable<bool> IsEveryWeekDay { get; set; }
+        public string MonthOfYear { get; set; }
+        public Nullable<bool> IsEndsAfterNoOfOccurrences { get; set; }
+        public Nullable<long> NoOfOccurrences { get; set; }
     }
 }
