@@ -295,7 +295,7 @@ namespace nIS
                         string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/logo_black.png").Replace("{{logo}}", "assets/images/nisLogo.png");
                         navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                         StringBuilder navItemList = new StringBuilder();
-                        tempHtml.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+                        tempHtml.Append("<div class='bdy-scroll stylescrollbar'>");
                         for (int x = 0; x < statementPages.Count; x++)
                         {
                             var htmlString = new StringBuilder();
@@ -327,7 +327,7 @@ namespace nIS
                                     navItemList.Append(" <li class='nav-item p-1 '><a class='nav-link pt-1 mainNav " + (x == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);'>" + page.DisplayName + "</a> </li> ");
 
                                     var extraclass = x > 0 ? "d-none " + tabClassName : tabClassName;
-                                    var pageHeaderHtml = HtmlConstants.PAGE_HEADER_HTML;
+                                    var pageHeaderHtml = "<div id='{{DivId}}' class='p-2 tabDivClass {{ExtraClass}}' {{BackgroundImage}}>";
                                     if (page.PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID)
                                     {
                                         if (page.BackgroundImageAssetId != 0)
@@ -397,10 +397,11 @@ namespace nIS
                                                 {
                                                     if (tempRowWidth == 0)
                                                     {
-                                                        htmlString.Append("<div class='row'>"); // to start new row class div 
+                                                        htmlString.Append("<div class='row pt-2'>"); // to start new row class div 
                                                         isRowComplete = false;
                                                     }
-                                                    int divLength = mergedlst[i].Width;//((mergedlst[i].Width * 12) % 20) > 10 ? (((mergedlst[i].Width * 12) / 20) + 1) : ((mergedlst[i].Width * 12) / 20);
+                                                    int divLength = mergedlst[i].Width;
+                                                    var divHeight = mergedlst[i].Height * 103 + "px";
                                                     tempRowWidth = tempRowWidth + divLength;
 
                                                     // If current col-lg class length is greater than 12, 
@@ -409,10 +410,12 @@ namespace nIS
                                                     {
                                                         tempRowWidth = divLength;
                                                         htmlString.Append("</div>"); // to end row class div
-                                                        htmlString.Append("<div class='row'>"); // to start new row class div
+                                                        htmlString.Append("<div class='row pt-2'>"); // to start new row class div
                                                         isRowComplete = false;
                                                     }
-                                                    htmlString.Append("<div class='col-lg-" + divLength + "'>");
+
+                                                    var leftPaddingClass = i != 0 ? " pl-0" : "";
+                                                    htmlString.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
                                                     if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
                                                     {
                                                         string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':" +
@@ -423,6 +426,7 @@ namespace nIS
                                                             CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
                                                             var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}",
                                                                 "assets/images/SampleVideo.mp4");
+                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
 
                                                             string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", customerName);
@@ -475,6 +479,7 @@ namespace nIS
                                                             accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}",
                                                                 AccDivData.ToString());
                                                         }
+                                                        accountInfoData = accountInfoData.Replace("{{WidgetDivHeight}}", divHeight);
                                                         htmlString.Append(accountInfoData);
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
@@ -504,6 +509,7 @@ namespace nIS
                                                         }
                                                         var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
                                                         imgHtmlWidget = imgHtmlWidget.Replace("{{NewImageClass}}", isImageFromAsset ? " ImageAsset " + assetId : "");
+                                                        imgHtmlWidget = imgHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                         htmlString.Append(imgHtmlWidget);
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
@@ -537,6 +543,7 @@ namespace nIS
                                                         }
                                                         var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", vdoAssetFilepath);
                                                         vdoHtmlWidget = vdoHtmlWidget.Replace("{{NewVideoClass}}", isVideoFromAsset ? " VideoAsset " + assetId : "");
+                                                        vdoHtmlWidget = vdoHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                         htmlString.Append(vdoHtmlWidget);
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
@@ -563,6 +570,7 @@ namespace nIS
                                                                     accSummary.ToString());
                                                             }
                                                         }
+                                                        accountSummary = accountSummary.Replace("{{WidgetDivHeight}}", divHeight);
                                                         htmlString.Append(accountSummary);
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
@@ -578,6 +586,7 @@ namespace nIS
                                                             CurrentAvailBalance = CurrentAvailBalance.Replace("{{TotalDeposit}}", (accountMaster.Currency + accountMaster.TotalDeposit));
                                                             CurrentAvailBalance = CurrentAvailBalance.Replace("{{TotalSpend}}", (accountMaster.Currency + accountMaster.TotalSpend));
                                                             CurrentAvailBalance = CurrentAvailBalance.Replace("{{Savings}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                                                            CurrentAvailBalance = CurrentAvailBalance.Replace("{{WidgetDivHeight}}", divHeight);
                                                             htmlString.Append(CurrentAvailBalance);
                                                         }
                                                     }
@@ -594,6 +603,7 @@ namespace nIS
                                                             SavingAvailBalance = SavingAvailBalance.Replace("{{TotalDeposit}}", (accountMaster.Currency + accountMaster.TotalDeposit));
                                                             SavingAvailBalance = SavingAvailBalance.Replace("{{TotalSpend}}", (accountMaster.Currency + accountMaster.TotalSpend));
                                                             SavingAvailBalance = SavingAvailBalance.Replace("{{Savings}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                                                            SavingAvailBalance = SavingAvailBalance.Replace("{{WidgetDivHeight}}", divHeight);
                                                             htmlString.Append(SavingAvailBalance);
                                                         }
                                                     }
@@ -619,6 +629,7 @@ namespace nIS
                                                             });
                                                             string accountTransactionstr = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                             accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
+                                                            accountTransactionstr = accountTransactionstr.Replace("{{WidgetDivHeight}}", divHeight);
                                                             htmlString.Append(accountTransactionstr);
                                                         }
                                                     }
@@ -644,6 +655,7 @@ namespace nIS
                                                             });
                                                             string accountTransactionstr = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                             accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
+                                                            accountTransactionstr = accountTransactionstr.Replace("{{WidgetDivHeight}}", divHeight);
                                                             htmlString.Append(accountTransactionstr);
                                                         }
                                                     }
@@ -675,20 +687,21 @@ namespace nIS
                                                             });
                                                             string srcstring = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML.Replace("{{IncomeSourceList}}",
                                                                 incomeSrc.ToString());
+                                                            srcstring = srcstring.Replace("{{WidgetDivHeight}}", divHeight);
                                                             htmlString.Append(srcstring);
                                                         }
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
                                                     {
-                                                        htmlString.Append(HtmlConstants.ANALYTIC_WIDGET_HTML);
+                                                        htmlString.Append(HtmlConstants.ANALYTIC_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
                                                     {
-                                                        htmlString.Append(HtmlConstants.SPENDING_TRENDS_WIDGET_HTML);
+                                                        htmlString.Append(HtmlConstants.SPENDING_TRENDS_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
                                                     {
-                                                        htmlString.Append(HtmlConstants.SAVING_TRENDS_WIDGET_HTML);
+                                                        htmlString.Append(HtmlConstants.SAVING_TRENDS_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                                     }
                                                     else if (mergedlst[i].WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
                                                     {
@@ -709,6 +722,7 @@ namespace nIS
                                                                     "text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
                                                             });
                                                             string widgetstr = HtmlConstants.REMINDER_WIDGET_HTML.Replace("{{ReminderAndRecommdationDataList}}", reminderstr.ToString());
+                                                            widgetstr = widgetstr.Replace("{{WidgetDivHeight}}", divHeight);
                                                             htmlString.Append(widgetstr);
                                                         }
                                                     }
@@ -761,11 +775,11 @@ namespace nIS
                                 htmlString.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
                             }
 
-                            if (isBackgroundImage)
-                            {
-                                htmlString.Replace("card border-0", "card border-0 bg-transparent");
-                                htmlString.Replace("bg-light", "bg-transparent");
-                            }
+                            //if (isBackgroundImage)
+                            //{
+                            //    htmlString.Replace("card border-0", "card border-0 bg-transparent");
+                            //    htmlString.Replace("bg-light", "bg-transparent");
+                            //}
                             tempHtml.Append(htmlString.ToString());
                         }
 

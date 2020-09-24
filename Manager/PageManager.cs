@@ -361,10 +361,11 @@ namespace nIS
                                     {
                                         if (tempRowWidth == 0)
                                         {
-                                            htmlString.Append("<div class='row'>");
+                                            htmlString.Append("<div class='row pt-2'>");
                                             isRowComplete = false;
                                         }
-                                        int divLength = mergedlst[i].Width; //((mergedlst[i].Width * 12) % 20) > 10 ? (((mergedlst[i].Width * 12) / 20) + 1) : ((mergedlst[i].Width * 12) / 20);
+                                        int divLength = mergedlst[i].Width;
+                                        var divHeight = mergedlst[i].Height * 103 + "px";
                                         tempRowWidth = tempRowWidth + divLength;
 
                                         // If current col-lg class length is greater than 12, 
@@ -373,10 +374,12 @@ namespace nIS
                                         {
                                             tempRowWidth = divLength;
                                             htmlString.Append("</div>");
-                                            htmlString.Append("<div class='row'>");
+                                            htmlString.Append("<div class='row pt-2'>");
                                             isRowComplete = false;
                                         }
-                                        htmlString.Append("<div class='col-lg-" + divLength + "'>");
+
+                                        var leftPaddingClass = i != 0 ? " pl-0" : "";
+                                        htmlString.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
                                         if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
                                         {
                                             string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'231 Exe Parkway','AddressLine2':'Saint Globin Rd','City':'Canary Wharf','State':'London','Country':'England','Zip':'E14 9RZ'}";
@@ -384,6 +387,7 @@ namespace nIS
                                             {
                                                 CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
                                                 var customerHtmlWidget = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML.Replace("{{VideoSource}}", "assets/images/SampleVideo.mp4");
+                                                customerHtmlWidget = customerHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
 
                                                 string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
                                                 customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerName}}", customerName);
@@ -426,6 +430,8 @@ namespace nIS
                                                 AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>No Record" + "</div><label class='list-value mb-0'>Found</label></div></div>");
                                                 accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}", AccDivData.ToString());
                                             }
+
+                                            accountInfoData = accountInfoData.Replace("{{WidgetDivHeight}}", divHeight);
                                             htmlString.Append(accountInfoData);
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
@@ -455,6 +461,7 @@ namespace nIS
                                             }
                                             var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
                                             imgHtmlWidget = imgHtmlWidget.Replace("{{NewImageClass}}", isImageFromAsset ? " ImageAsset " + assetId : "");
+                                            imgHtmlWidget = imgHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                             htmlString.Append(imgHtmlWidget);
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
@@ -488,6 +495,7 @@ namespace nIS
                                             }
                                             var vdoHtmlWidget = HtmlConstants.VIDEO_WIDGET_HTML.Replace("{{VideoSource}}", vdoAssetFilepath);
                                             vdoHtmlWidget = vdoHtmlWidget.Replace("{{NewVideoClass}}", isVideoFromAsset ? " VideoAsset " + assetId : "");
+                                            vdoHtmlWidget = vdoHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                             htmlString.Append(vdoHtmlWidget);
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
@@ -508,6 +516,7 @@ namespace nIS
                                                     accountSummary = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML.Replace("{{AccountSummary}}", accSummary.ToString());
                                                 }
                                             }
+                                            accountSummary = accountSummary.Replace("{{WidgetDivHeight}}", divHeight);
                                             htmlString.Append(accountSummary);
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
@@ -523,6 +532,7 @@ namespace nIS
                                                 CurrentAvailBalance = CurrentAvailBalance.Replace("{{TotalDeposit}}", (accountMaster.Currency + accountMaster.TotalDeposit));
                                                 CurrentAvailBalance = CurrentAvailBalance.Replace("{{TotalSpend}}", (accountMaster.Currency + accountMaster.TotalSpend));
                                                 CurrentAvailBalance = CurrentAvailBalance.Replace("{{Savings}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                                                CurrentAvailBalance = CurrentAvailBalance.Replace("{{WidgetDivHeight}}", divHeight);
                                                 htmlString.Append(CurrentAvailBalance);
                                             }
                                         }
@@ -539,6 +549,7 @@ namespace nIS
                                                 SavingAvailBalance = SavingAvailBalance.Replace("{{TotalDeposit}}", (accountMaster.Currency + accountMaster.TotalDeposit));
                                                 SavingAvailBalance = SavingAvailBalance.Replace("{{TotalSpend}}", (accountMaster.Currency + accountMaster.TotalSpend));
                                                 SavingAvailBalance = SavingAvailBalance.Replace("{{Savings}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                                                SavingAvailBalance = SavingAvailBalance.Replace("{{WidgetDivHeight}}", divHeight);
                                                 htmlString.Append(SavingAvailBalance);
                                             }
                                         }
@@ -561,6 +572,7 @@ namespace nIS
                                                 });
                                                 string accountTransactionstr = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                 accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
+                                                accountTransactionstr = accountTransactionstr.Replace("{{WidgetDivHeight}}", divHeight);
                                                 htmlString.Append(accountTransactionstr);
                                             }
                                         }
@@ -583,7 +595,7 @@ namespace nIS
                                                 });
                                                 string accountTransactionstr = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML.Replace("{{AccountTransactionDetails}}", transaction.ToString());
                                                 accountTransactionstr = accountTransactionstr.Replace("{{SelectOption}}", selectOption.ToString());
-
+                                                accountTransactionstr = accountTransactionstr.Replace("{{WidgetDivHeight}}", divHeight);
                                                 htmlString.Append(accountTransactionstr);
                                             }
                                         }
@@ -608,20 +620,21 @@ namespace nIS
                                                     incomeSrc.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend + "" + "</td><td>" + tdstring + "</td></tr>");
                                                 });
                                                 string srcstring = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML.Replace("{{IncomeSourceList}}", incomeSrc.ToString());
+                                                srcstring = srcstring.Replace("{{WidgetDivHeight}}", divHeight);
                                                 htmlString.Append(srcstring);
                                             }
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
                                         {
-                                            htmlString.Append(HtmlConstants.ANALYTIC_WIDGET_HTML);
+                                            htmlString.Append(HtmlConstants.ANALYTIC_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
                                         {
-                                            htmlString.Append(HtmlConstants.SPENDING_TRENDS_WIDGET_HTML);
+                                            htmlString.Append(HtmlConstants.SPENDING_TRENDS_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
                                         {
-                                            htmlString.Append(HtmlConstants.SAVING_TRENDS_WIDGET_HTML);
+                                            htmlString.Append(HtmlConstants.SAVING_TRENDS_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                         }
                                         else if (mergedlst[i].WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
                                         {
@@ -630,12 +643,13 @@ namespace nIS
                                             {
                                                 IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(reminderJson);
                                                 StringBuilder reminderstr = new StringBuilder();
-                                                reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
+                                                //reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left pl-0'><i class='fa fa-caret-left fa-2x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
                                                 reminderAndRecommendations.ToList().ForEach(item =>
                                                 {
-                                                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'><a><i class='fa fa-caret-left fa-3x float-left " + "text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
+                                                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left pl-0'><a><i class='fa fa-caret-left fa-2x float-left " + "text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
                                                 });
                                                 string widgetstr = HtmlConstants.REMINDER_WIDGET_HTML.Replace("{{ReminderAndRecommdationDataList}}", reminderstr.ToString());
+                                                widgetstr = widgetstr.Replace("{{WidgetDivHeight}}", divHeight);
                                                 htmlString.Append(widgetstr);
                                             }
                                         }
@@ -679,11 +693,11 @@ namespace nIS
                     }
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
 
-                    if (isBackgroundImage)
-                    {
-                        htmlString.Replace("card border-0", "card border-0 bg-transparent");
-                        htmlString.Replace("bg-light", "bg-transparent");
-                    }
+                    //if (isBackgroundImage)
+                    //{
+                    //    htmlString.Replace("card border-0", "card border-0 bg-transparent");
+                    //    htmlString.Replace("bg-light", "bg-transparent");
+                    //}
                 }
             }
             catch (Exception ex)
