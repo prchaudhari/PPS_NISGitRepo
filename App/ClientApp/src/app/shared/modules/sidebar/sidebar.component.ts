@@ -118,6 +118,11 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/tenants']);
   }
+  navigateToContactType() {
+    this.URL = '/contacttype';
+    this.hideSidebar();
+    this.route.navigate(['/contacttype']);
+  }
   navigateToDynamicWidgets() {
     this.URL = '/dynamicwidget';
     this.hideSidebar();

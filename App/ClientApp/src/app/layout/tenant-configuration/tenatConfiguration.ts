@@ -10,6 +10,9 @@ export class TenantConfiguration {
   ArchivalPath: string;
   IsAssetPathEditable: boolean;
   IsOutputHTMLPathEditable: boolean;
+  ArchivalPeriodUnit: string;
+  ArchivalPeriod: number;
+  DateFormat: string;
 
 }
 

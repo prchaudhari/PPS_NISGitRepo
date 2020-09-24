@@ -81,6 +81,7 @@
     <Compile Include="Enum\BatchStatus.cs" />
     <Compile Include="Enum\ClaimType.cs" />
     <Compile Include="Enum\ClientType.cs" />
+    <Compile Include="Enum\ArchivalPeriod.cs" />
     <Compile Include="Enum\ScheduleLogStatus.cs" />
     <Compile Include="Enum\ScheduleStatus.cs" />
     <Compile Include="Enum\StatemnetStatus.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Search Parameter\AssetSearchParameter.cs" />
     <Compile Include="Search Parameter\CitySearchParameter.cs" />
     <Compile Include="Search Parameter\ClientSearchParameter.cs" />
+    <Compile Include="Search Parameter\ContactTypeSearchParameter.cs" />
     <Compile Include="Search Parameter\CountrySearchParameter.cs" />
     <Compile Include="Search Parameter\RenderEngineSearchParameter.cs" />
     <Compile Include="Search Parameter\ScheduleLogSearchParameter.cs" />

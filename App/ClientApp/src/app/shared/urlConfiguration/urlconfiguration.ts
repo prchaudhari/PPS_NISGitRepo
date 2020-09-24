@@ -17,6 +17,25 @@ export class URLConfiguration {
   public static get countryUpdateUrl(): string { return "Country/Update" };
   public static get countryDeleteUrl(): string { return "Country/Delete" };
 
+  //contact type method
+  public static get contacttypeGetUrl(): string { return "ContactType/List" };
+  public static get contacttypeAddUrl(): string { return "ContactType/Add" };
+  public static get contacttypeUpdateUrl(): string { return "ContactType/Update" };
+  public static get contacttypeDeleteUrl(): string { return "ContactType/Delete" };
+
+  //tenant method
+  public static get tenantGetUrl(): string { return "Client/Get" };
+  public static get tenantAddUrl(): string { return "Client/Add" };
+  public static get tenantUpdateUrl(): string { return "Client/Update" };
+  public static get tenantDeleteUrl(): string { return "Client/Delete" };
+  public static get tenantActivate(): string { return "Client/Activate" };
+  public static get tenantDeactivate(): string { return "Client/DeActivate" };
+  public static get tenantContactGetUrl(): string { return "TenantContact/List" };
+  public static get tenantContactAdd(): string { return "TenantContact/Add" };
+  public static get tenantContactUpdate(): string { return "TenantContact/Update" };
+  public static get tenantContactDeleteUrl(): string { return "TenantContact/Delete" };
+  public static get tenantContactSendActivationUrl(): string { return "TenantContact/SendActivationLink" };
+
   //User Url Method
   public static get userGetUrl(): string { return "User/List" };
   public static get userAddUrl(): string { return "User/Add" };

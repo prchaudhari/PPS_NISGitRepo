@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="99e444fc-ac3c-4dc5-b5ab-af09c4e97683" ChangeDateTime="09/23/2020 14:42:29">
+    <Property Name="ElementName" Value="[NIS].[Schedule].[NoOf]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[NIS].[Schedule]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IsEndsAfter" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7c967fca-419c-4283-9b65-cf007655775a" ChangeDateTime="09/23/2020 14:42:40">
+    <Property Name="ElementName" Value="[NIS].[Schedule].[IsEndsAfter]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[NIS].[Schedule]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IsEndsAfterNoOfRecurrence" />
+  </Operation>
+</Operations>

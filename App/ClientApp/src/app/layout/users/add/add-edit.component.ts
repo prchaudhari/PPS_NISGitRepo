@@ -108,7 +108,6 @@ export class UserAddEditComponent implements OnInit {
   public userFormErrorObject: any = {
     showProfilePictureSizeError: false,
     showProfilePictureTypeError: false,
-
     showUserFirstNameError: false,
     showUserLastNameError: false,
     showUserCodeError: false,
@@ -471,6 +470,7 @@ export class UserAddEditComponent implements OnInit {
 
     console.log(value);
   }
+
   //Function to add user--
   onSubmit() {
     if (this.userFormValidaton()) {

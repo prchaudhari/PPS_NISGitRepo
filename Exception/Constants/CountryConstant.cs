@@ -35,11 +35,34 @@ namespace nIS
         //public const string COUNTRY_NOT_FOUND_EXCEPTION = "CountryNotFoundException";
         public const string COUNTRY_REFERENCEIN_USER_EXCEPTION = "Country is used in user";
 
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        //public const string COUNTRY_NOT_FOUND_EXCEPTION = "CountryNotFoundException";
+        public const string COUNTRY_REFERENCEIN_TENANT_EXCEPTION = "Country is used in tenant";
+
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        //public const string COUNTRY_NOT_FOUND_EXCEPTION = "CountryNotFoundException";
+        public const string COUNTRY_REFERENCEIN_TENANTCONTACT_EXCEPTION = "Country is used in tenant contact";
+
 
         /// <summary>
         /// The invalid country exception key
         /// </summary>
         //public const string INVALID_COUNTRY_EXCEPTION = "InvalidCountryLibraryException";
         public const string INVALID_COUNTRY_EXCEPTION = "Invalid country";
+
+        /// <summary>
+        /// The country exception section key
+        /// </summary>
+        public const string CONTACTTYPE_EXCEPTION_SECTION = "ContactType";
+
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        //public const string COUNTRY_NOT_FOUND_EXCEPTION = "CountryNotFoundException";
+        public const string CONTACTTYPE_REFERENCEIN_CONTACT_EXCEPTION = "Contact type is used in tenant contact";
     }
 }

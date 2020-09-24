@@ -98,7 +98,7 @@ namespace nIS
             {
                 this.IsValidtenantContacts(tenantContacts, tenantCode);
                 this.IsDuplicateEmailOrContactNumber(tenantContacts, tenantCode);
-                //{
+              
                 result = this.tenantContactRepository.AddTenantContacts(tenantContacts, tenantCode);
 
                 return result;

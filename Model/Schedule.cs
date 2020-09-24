@@ -94,6 +94,7 @@ namespace nIS
         /// The validation engine objecct
         /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
+
         #endregion
 
         #region public members
@@ -276,8 +277,6 @@ namespace nIS
             }
         }
 
-
-
         /// <summary>
         /// Gets or sets user Identifier.
         /// </summary>
@@ -308,6 +307,14 @@ namespace nIS
                 this.updateBy = value;
             }
         }
+
+        public string RecurrancePattern { get; set; }
+        public Nullable<long> RepeatEveryDayMonWeekYear { get; set; }
+        public string WeekDays { get; set; }
+        public Nullable<bool> IsEveryWeekDay { get; set; }
+        public string MonthOfYear { get; set; }
+        public Nullable<bool> IsEndsAfterNoOfOccurrences { get; set; }
+        public Nullable<long> NoOfOccurrences { get; set; }
         #endregion
 
         #region Public Methods
@@ -335,7 +342,7 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("DayOfMonth", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_DAYOFMONTH);
                 }
-                
+
                 if (this.StartDate == null)
                 {
                     exception.Data.Add(this.utility.GetDescription("StartDate", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_ENDDATE);

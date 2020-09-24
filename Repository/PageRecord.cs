@@ -30,6 +30,5 @@ namespace nIS
         public Nullable<long> UpdateBy { get; set; }
         public Nullable<long> BackgroundImageAssetId { get; set; }
         public string BackgroundImageURL { get; set; }
-        public IList<PageWidgetMapRecord> PageWidgetMapRecords { get; set; }
     }
 }

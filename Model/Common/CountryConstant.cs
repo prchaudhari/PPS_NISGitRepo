@@ -29,5 +29,16 @@ namespace nIS
         /// The invalid country dailing code key
         /// </summary>
         public const string INVALID_COUNTRY_DIALING_CODE = "InvalidCountryDailingCode";
+
+        /// <summary>
+        /// The country model section key
+        /// </summary>
+        public const string CONTACTTYPE_MODEL_SECTION = "ContactTypeModel";
+
+        /// <summary>
+        /// The invalid country name key
+        /// </summary>
+        public const string INVALID_CONTACTTYPE_NAME = "InvalidContactTypeName";
+
     }
 }

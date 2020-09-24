@@ -196,7 +196,7 @@ namespace nIS
 
                 TenantManager manager = new TenantManager(this.unityContainer);
 
-                result = manager.AddTenants(tenants, false);
+                result = manager.AddTenants(tenants, true);
             }
             catch (Exception ex)
             {

@@ -76,6 +76,16 @@ namespace nIS
         /// </summary>
         public const string SORT_COLUMN = "Id";
 
+        /// <summary>
+        /// The tenant base URL
+        /// </summary>
+        public const string TENANT_ADMIN_ROLE = "Tenant Admin";
+
+        /// <summary>
+        /// The tenant base URL
+        /// </summary>
+        public const string TENANT_PRIMARY_CONTACT = "Primary";
+
 
         /// <summary>
         /// The entity sort column

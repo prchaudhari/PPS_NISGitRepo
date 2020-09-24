@@ -24,8 +24,9 @@ import { WindowRef } from '../core/services/window-ref.service';
 import { DatePipe } from '@angular/common';
 import { CountryComponent } from './country/country.component';
 import { ThemeConfigurationComponent } from './theme-configuration/theme-configuration.component';
+import { ContacttypeComponent } from './contacttype/contacttype.component';
 @NgModule({
-  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent, ThemeConfigurationComponent],
+  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent, ThemeConfigurationComponent, ContacttypeComponent],
   imports: [
     CommonModule,
     FormsModule,

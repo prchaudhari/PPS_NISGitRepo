@@ -65,6 +65,7 @@
     <Compile Include="AnalyticsDataManager.cs" />
     <Compile Include="CityManager.cs" />
     <Compile Include="ClientManager.cs" />
+    <Compile Include="ContactTypeManager.cs" />
     <Compile Include="CountryManager.cs" />
     <Compile Include="StateManager.cs" />
     <Compile Include="StatementSearchManager.cs" />

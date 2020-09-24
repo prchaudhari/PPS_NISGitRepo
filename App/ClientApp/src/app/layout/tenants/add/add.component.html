@@ -1,9 +1,9 @@
 <div class="main-container">
   <div class="page-title">
-    <span class="xs-title"> Add Tenant </span>
-    <!--<span class="xs-title" *ngIf="updateOperationMode == true"> Update Tenant  </span>-->
+    <span class="xs-title" *ngIf="updateOperationMode == false"> Add Tenant  </span>
+    <span class="xs-title" *ngIf="updateOperationMode == true"> Update Tenant  </span>
   </div>
-  <form>
+  <form [formGroup]="tenantFormGroup" name="userForm" autocomplete="on" novalidate>
     <div class="card border-0 mb-2 card-shadow">
       <div class="card-header bg-white d-flex justify-content-between">
         <div>
@@ -23,39 +23,33 @@
         <div class="row">
           <div class="col-md-3 col-sm-4 col-12 form-group">
             <div class="profile-avtar-box">
-
-              <!--letter image-->
-              <div class="ltr-img">
-                <span>T</span>
-                <span>S</span>
-              </div>
-              <!--<div *ngIf="image!='' && image!=null; else imageIcon" class="image-preview">
+              <div *ngIf="image!='' && image!=null; else imageIcon" class="image-preview">
                 <img [src]="image" class="profile-avtar">
-              </div>-->
-              <!--<div *ngIf="(image=='' || image==null) && userEditModeOn">
+              </div>
+              <div *ngIf="(image=='' || image==null) && updateOperationMode">
                 <div class="ltr-img">
                   <span>{{FirstChar | titlecase}}</span>
                   <span>{{SecondChar | titlecase}}</span>
                 </div>
-              </div>-->
-              <!--<ng-template>
-                <div class="image-preview" *ngIf="!userEditModeOn">
+              </div>
+              <ng-template #imageIcon>
+                <div class="image-preview" *ngIf="!updateOperationMode">
                   <img src="assets/images/user.png" class="profile-avtar" />
                 </div>
-              </ng-template>-->
+              </ng-template>
               <div>
                 <label for="upload-photo" class="m-0 font-weight-normal"> Upload Logo</label>
-                <input type="file" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
-                <!--<div class="validation-msg" style="color:red">
+                <input type="file" (change)="onFileChanged($event)" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
+                <div class="validation-msg" style="color:red">
                   <ul style="list-style-type:none">
-                    <li class="text-danger" *ngIf="userFormErrorObject.showProfilePictureSizeError">
+                    <li class="text-danger" *ngIf="tenantFormErrorObject.showProfilePictureSizeError">
                       File size should not be greater the 200kb
                     </li>
-                    <li class="text-danger" *ngIf="userFormErrorObject.showProfilePictureTypeError">
+                    <li class="text-danger" *ngIf="contactFormErrorObject.showProfilePictureTypeError">
                       Invalid file type
                     </li>
                   </ul>
-                </div>-->
+                </div>
               </div>
             </div>
             <div style="clear:both"></div>
@@ -64,88 +58,83 @@
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Name</label><span class="text-danger ml-2">*</span>
-                <input type="text" class="form-control" id="inputtName">
-                <!--<div class="validation-msg" style="color:red" *ngIf="firstName.touched && firstName.errors">
+                <input type="text" class="form-control" id="inputtName" formControlName="tenantName">
+                <div class="validation-msg" style="color:red" *ngIf="tenantName.touched && tenantName.errors">
                   <ul style="list-style-type:none">
-                    <li class="text-danger" *ngIf="firstName.errors?.pattern">
-                      Invalid first name
+                    <li class="text-danger" *ngIf="tenantName.errors?.pattern">
+                      Invalid tenant name
                     </li>
-                    <li class="text-danger" *ngIf="firstName.errors?.minlength">
-                      First name length should not be less than 2
+                    <li class="text-danger" *ngIf="tenantName.errors?.minlength">
+                      Tenant name length should not be less than 2
                     </li>
-                    <li class="text-danger" *ngIf="firstName.errors?.required">
-                      First name required
+                    <li class="text-danger" *ngIf="tenantName.errors?.required">
+                      Tenant name required
                     </li>
-                    <li class="text-danger" *ngIf="firstName.errors?.maxlength">
-                      First name length should not be greater than 50
+                    <li class="text-danger" *ngIf="tenantName.errors?.maxlength">
+                      Tenant name length should not be greater than 50
                     </li>
                   </ul>
-                </div>-->
+                </div>
               </div>
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Domain Name</label><span class="text-danger ml-2">*</span>
-                <input type="text" class="form-control" id="inputDomainName">
-                <!--<div class="validation-msg" style="color:red" *ngIf="lastName.touched && lastName.errors">
+                <input type="text" class="form-control" id="inputDomainName" formControlName="tenantDomainName">
+                <div class="validation-msg" style="color:red" *ngIf="tenantDomainName.touched && tenantDomainName.errors">
                   <ul style="list-style-type:none">
-                    <li class="text-danger" *ngIf="lastName.errors?.pattern">
-                      Invalid last name
+                    <li class="text-danger" *ngIf="tenantDomainName.errors?.pattern">
+                      Invalid domain name
                     </li>
-                    <li class="text-danger" *ngIf="lastName.errors?.required">
-                      last name required
+                    <li class="text-danger" *ngIf="tenantDomainName.errors?.required">
+                      Domain name required
                     </li>
-                    <li class="text-danger" *ngIf="lastName.errors?.minlength">
-                      Last name length should not be less than 2
+                    <li class="text-danger" *ngIf="tenantDomainName.errors?.minlength">
+                      Domain name length should not be less than 2
                     </li>
-                    <li class="text-danger" *ngIf="lastName.errors?.maxlength">
-                      Last name length should not be greater than 50
+                    <li class="text-danger" *ngIf="tenantDomainName.errors?.maxlength">
+                      Domain name length should not be greater than 50
                     </li>
                   </ul>
-                </div>-->
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Description</label>
-                <textarea class="form-control" rows="4"></textarea>
+                <textarea class="form-control" rows="4" formControlName="tenantDescription"></textarea>
               </div>
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Address</label>
-                <textarea class="form-control" rows="4"></textarea>
+                <textarea class="form-control" rows="4" formControlName="tenantAddress"></textarea>
               </div>
             </div>
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Country</label><span class="text-danger ml-2">*</span>
-                <select class="form-control">
-                  <option>Select</option>
-                  <option>India</option>
-                  <option>Srilanka</option>
+                <select formControlName="tenantCountry" (change)='onTenantCountrySelected($event)' class="form-control">
+                  <option *ngFor="let role of countrycodeLists" [value]="role.Identifier">{{role.CountryName}}</option>
                 </select>
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="contactFormErrorObject.showCountryCodeError" style="list-style-type:none">
+                    <li class="text-danger">
+                      Please select country
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>State</label><span class="text-danger ml-2">*</span>
-                <select class="form-control">
-                  <option>Select</option>
-                  <option>State 1</option>
-                  <option>State 2</option>
-                  <option>State 3</option>
-                  <option>State 4</option>
-                </select>
+                <input type="text" class="form-control" id="inputState" formControlName="tenantState">
               </div>
             </div>
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>City</label><span class="text-danger ml-2">*</span>
-                <select class="form-control">
-                  <option>City 1</option>
-                  <option>City 2</option>
-                  <option>City 3</option>
-                  <option>City 4</option>
-                </select>
+                <input type="text" class="form-control" id="inputCity" formControlName="tenantCity">
+
               </div>
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Postal Code</label><span class="text-danger ml-2">*</span>
-                <input type="text" class="form-control" id="inputDomainName">
+                <input type="text" class="form-control" id="inputDomainName" formControlName="tenantPostalCode">
               </div>
             </div>
           </div>
@@ -170,7 +159,7 @@
 
         <div class="d-flex justify-content-between mb-4">
           <div>
-            <button type="button" class="btn-add-outline btn-tbl-action btn-cust" title="Add" (click)="ShowAddContactContainer()">
+            <button type="button" class="btn-add-outline btn-tbl-action btn-cust" title="Add" (click)="ShowAddContactContainer('Add',null)">
               <span class="fa fa-plus btn-icon-cust btn-icon-outline"></span> Add
             </button>
           </div>
@@ -183,51 +172,50 @@
         <div class="widget-area-grid padding-0">
           <table mat-table [dataSource]="dataSource" matSort class="table-cust">
             <!-- Position Column -->
-            <ng-container matColumnDef="contactType">
+            <ng-container matColumnDef="ContactType">
               <th class="width20 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Contact Type </th>
-              <td mat-cell *matCellDef="let tenant">{{tenant.contactType}}</td>
+              <td mat-cell *matCellDef="let contact">{{contact.ContactType}}</td>
             </ng-container>
 
-            <ng-container matColumnDef="firstName">
+            <ng-container matColumnDef="FirstName">
               <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
-              <td mat-cell *matCellDef="let tenant">
-                <span *ngIf="tenant.firstName==null">-</span>
-                <span *ngIf="tenant.firstName!=null">{{tenant.firstName}} </span>
+              <td mat-cell *matCellDef="let contact">
+                <span *ngIf="contact.FirstName==null">-</span>
+                <span *ngIf="contact.FirstName!=null">{{contact.FirstName}} </span>
               </td>
             </ng-container>
-            <ng-container matColumnDef="lastName">
+            <ng-container matColumnDef="LastName">
               <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
-              <td mat-cell *matCellDef="let tenant">
-                <span *ngIf="tenant.lastName==null">-</span>
-                <span *ngIf="tenant.lastName!=null">{{tenant.lastName}} </span>
+              <td mat-cell *matCellDef="let contact">
+                <span *ngIf="contact.LastName==null">-</span>
+                <span *ngIf="contact.LastName!=null">{{contact.LastName}} </span>
               </td>
             </ng-container>
-            <ng-container matColumnDef="email">
+            <ng-container matColumnDef="EmailAddress">
               <th class="width20 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-              <td mat-cell *matCellDef="let tenant">
-                <span *ngIf="tenant.email==null">-</span>
-                <span *ngIf="tenant.email!=null">{{tenant.email}} </span>
+              <td mat-cell *matCellDef="let contact">
+                <span *ngIf="contact.EmailAddress==null">-</span>
+                <span *ngIf="contact.EmailAddress!=null">{{contact.EmailAddress}} </span>
               </td>
             </ng-container>
-            <ng-container matColumnDef="no">
+            <ng-container matColumnDef="ContactNumber">
               <th class="width18 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
-              <td mat-cell *matCellDef="let tenant">
-                <span *ngIf="tenant.no==null">-</span>
-                <span *ngIf="tenant.no!=null">{{tenant.no}} </span>
+              <td mat-cell *matCellDef="let contact">
+                <span *ngIf="contact.ContactNumber==null">-</span>
+                <span *ngIf="contact.ContactNumber!=null">{{contact.CountryCode}}-{{contact.ContactNumber}} </span>
               </td>
             </ng-container>
-
             <ng-container matColumnDef="actions">
               <th class="width12 ip-w-20" mat-header-cell *matHeaderCellDef> Actions </th>
-              <td mat-cell *matCellDef="let role">
+              <td mat-cell *matCellDef="let contact">
                 <div class="action-btns btn-tbl-action">
                   <button type="button" id="btnUpdateRole" title="Send Activation/Reset Password Link">
                     <span class="fa fa-external-link"></span>
                   </button>
-                  <button type="button" id="btnUpdateRole" title="Update">
+                  <button type="button" id="btnUpdateRole" title="Update" (click)="ShowAddContactContainer('Edit',contact)">
                     <span class="fa fa-pencil-square-o"></span>
                   </button>
-                  <button type="button" id="btnUpdateRole" title="delete">
+                  <button type="button" id="btnUpdateRole" title="delete" (click)="DeleteContact(contact)">
                     <span class="fa fa-trash"></span>
                   </button>
                 </div>
@@ -244,112 +232,300 @@
       </div>
     </div>
   </form>
-
-  <div class="form-popup side-popup width340" [ngClass]="isContactContainer? 'show' : 'hide'">
-    <div class="filter-head">
-      <label class="m-0">Add Contact Information</label>
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="validateTenantForm()" (click)="saveTenant()">Save </button>
+      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
     </div>
-    <div class="filter-body stylescrollbar">
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label> Contact Type </label>
-          <select class="form-control">
-            <option>Select</option>
-            <option>Option 02</option>
-            <option>Option 02</option>
-            <option>Option 03</option>
-            <option>Option 04</option>
-          </select>
-        </div>
+  </div>
+  <form [formGroup]="contactFormGroup" name="contactFormGroup" autocomplete="on" novalidate>
+    <div class="form-popup side-popup width340" [ngClass]="isContactContainer? 'show' : 'hide'">
+      <div class="filter-head">
+        <label class="m-0">Add Contact Information</label>
       </div>
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label> First Name </label>
-          <input type="text" class="form-control" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label> Last Name </label>
-          <input type="text" class="form-control" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label> Email </label>
-          <input type="email" class="form-control" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <div class="row">
-            <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
-              <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
-              <!--<select formControlName="CountryCode" (change)='onCountrySelected($event)' class="form-control">
-                <option *ngFor="let role of countrycodeLists" [value]="role.DialingCode">{{role.CountryNameCode}}</option>
-              </select>-->
-              <select class="form-control">
-                <option>Select</option>
-                <option>Option 02</option>
-                <option>Option 02</option>
-                <option>Option 03</option>
-                <option>Option 04</option>
-              </select>
-              <!--<div class="validation-msg" style="color:red">
-                <ul *ngIf="userFormErrorObject.showCountryCodeError" style="list-style-type:none">
-                  <li class="text-danger">
-                    Please select country code
-                  </li>
-                </ul>
-              </div>-->
+      <div class="filter-body stylescrollbar">
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> Contact Type </label>
+            <select formControlName="ContactType" (change)='onContactTypeSelect($event)' class="form-control">
+              <option *ngFor="let role of contactTypeList" [value]="role.Identifier">{{role.Name}}</option>
+            </select>
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="contactFormErrorObject.showContactTypeError" style="list-style-type:none">
+                <li class="text-danger">
+                  Please select contact type
+                </li>
+              </ul>
             </div>
-            <div class="col-7 col-md-7 col-sm-6 col-xs-7 pl-1">
-              <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
-              <input type="text" class="form-control">
-              <!--<div class="validation-msg" style="color:red" *ngIf="mobileNumber.touched && mobileNumber.errors">
-                <ul style="list-style-type:none">
-                  <li class="text-danger" *ngIf="mobileNumber.errors?.minlength && !mobileNumber.errors?.pattern">
-                    Mobile number should not be less than 10 digits
-                  </li>
-                  <li class="text-danger" *ngIf="mobileNumber.errors?.maxlength && !mobileNumber.errors?.pattern">
-                    Mobile number should not be greater than 10 digits
-                  </li>
-                  <li class="text-danger" *ngIf="mobileNumber.errors?.pattern">
-                    Invalid mobile number
-                  </li>
-                  <li class="text-danger" *ngIf="mobileNumber.errors?.required">
-                    Mobile number required
-                  </li>
-                </ul>
-              </div>-->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> First Name </label>
+            <input type="text" class="form-control" id="inputFirstName" formControlName="firstName">
+            <div class="validation-msg" style="color:red" *ngIf="firstName.touched && firstName.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="firstName.errors?.pattern">
+                  Invalid first name
+                </li>
+                <li class="text-danger" *ngIf="firstName.errors?.minlength">
+                  First name length should not be less than 2
+                </li>
+                <li class="text-danger" *ngIf="firstName.errors?.required">
+                  First name required
+                </li>
+                <li class="text-danger" *ngIf="firstName.errors?.maxlength">
+                  First name length should not be greater than 50
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> Last Name </label>
+            <input type="text" class="form-control" id="inputLastName" formControlName="lastName">
+            <div class="validation-msg" style="color:red" *ngIf="lastName.touched && lastName.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="lastName.errors?.pattern">
+                  Invalid last name
+                </li>
+                <li class="text-danger" *ngIf="lastName.errors?.required">
+                  last name required
+                </li>
+                <li class="text-danger" *ngIf="lastName.errors?.minlength">
+                  Last name length should not be less than 2
+                </li>
+                <li class="text-danger" *ngIf="lastName.errors?.maxlength">
+                  Last name length should not be greater than 50
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> Email </label>
+            <input type="email" class="form-control" id="inputEmail" formControlName="email">
+            <div class="validation-msg" style="color:red" *ngIf="email.touched && email.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="email.errors?.pattern">
+                  Invalid email address
+                </li>
+                <li class="text-danger" *ngIf="email.errors?.required">
+                  Email address required
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <div class="row">
+              <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
+                <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
+                <select formControlName="CountryCode" (change)='onCountrySelected($event)' class="form-control">
+                  <option *ngFor="let role of countrycodeLists" [value]="role.Identifier">{{role.Code}}</option>
+                </select>
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="contactFormErrorObject.showCountryCodeError" style="list-style-type:none">
+                    <li class="text-danger">
+                      Please select country
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="col-7 col-md-7 col-sm-6 col-xs-7 pl-1">
+                <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
+                <input type="text" class="form-control" formControlName="mobileNumber">
+                <div class="validation-msg" style="color:red" *ngIf="mobileNumber.touched && mobileNumber.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="mobileNumber.errors?.minlength && !mobileNumber.errors?.pattern">
+                      Mobile number should not be less than 10 digits
+                    </li>
+                    <li class="text-danger" *ngIf="mobileNumber.errors?.maxlength && !mobileNumber.errors?.pattern">
+                      Mobile number should not be greater than 10 digits
+                    </li>
+                    <li class="text-danger" *ngIf="mobileNumber.errors?.pattern">
+                      Invalid mobile number
+                    </li>
+                    <li class="text-danger" *ngIf="mobileNumber.errors?.required">
+                      Mobile number required
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="filter-footer">
+        <ul class="nav nav-toolbar">
+          <li class="nav-item width50">
+            <button title="Save" id="btnCloseForm"
+                    class="btn-footer-fill btn-block rounded-0 height100" [disabled]="contactFormValidation('Add')" (click)="onSubmitAdd()">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width50">
+            <button (click)="CloseAddContactContainer('Add')" title="Close" id="btnCloseForm"
+                    class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-close"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="filter-footer">
-      <ul class="nav nav-toolbar">
-        <li class="nav-item width50">
-          <button title="Save" id="btnCloseForm"
-                  class="btn-footer-fill btn-block rounded-0 height100">
-            <span class="fa fa-check"></span>
-          </button>
-        </li>
-        <li class="nav-item width50">
-          <button (click)="CloseAddContactContainer()" title="Close" id="btnCloseForm"
-                  class="btn-footer-fill btn-block rounded-0 height100">
-            <span class="fa fa-close"></span>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
 
-  <div class="card border-0 mt-4 mb-3 bg-transparent">
-    <div class="card-body p-0">
-      <button class="btn-footer-fill mr-2"id="btnSave">Save</button>
-      <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+
+
+  </form>
+
+  <form [formGroup]="contactEditFormGroup" name="contactEditFormGroup" autocomplete="on" novalidate>
+    <div class="form-popup side-popup width340" [ngClass]="isEditContactContainer? 'show' : 'hide'">
+      <div class="filter-head">
+        <label class="m-0">Edit Contact Information</label>
+      </div>
+      <div class="filter-body stylescrollbar">
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> Contact Type </label>
+            <select formControlName="EditcontactType" (change)='onContactTypeSelect($event)' class="form-control">
+              <option *ngFor="let role of contactTypeList" [value]="role.Identifier">{{role.Name}}</option>
+            </select>
+            <div class="validation-msg" style="color:red">
+              <ul *ngIf="contactFormErrorObject.showContactTypeError" style="list-style-type:none">
+                <li class="text-danger">
+                  Please select contact type
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> First Name </label>
+            <input type="text" class="form-control" id="inputFirstNameEdit" formControlName="EditfirstName">
+            <div class="validation-msg" style="color:red" *ngIf="EditfirstName.touched && EditfirstName.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="EditfirstName.errors?.pattern">
+                  Invalid first name
+                </li>
+                <li class="text-danger" *ngIf="EditfirstName.errors?.minlength">
+                  First name length should not be less than 2
+                </li>
+                <li class="text-danger" *ngIf="EditfirstName.errors?.required">
+                  First name required
+                </li>
+                <li class="text-danger" *ngIf="EditfirstName.errors?.maxlength">
+                  First name length should not be greater than 50
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> Last Name </label>
+            <input type="text" class="form-control" id="inputLastNameEdit" formControlName="EditlastName">
+            <div class="validation-msg" style="color:red" *ngIf="EditlastName.touched && EditlastName.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="EditlastName.errors?.pattern">
+                  Invalid last name
+                </li>
+                <li class="text-danger" *ngIf="EditlastName.errors?.required">
+                  last name required
+                </li>
+                <li class="text-danger" *ngIf="EditlastName.errors?.minlength">
+                  Last name length should not be less than 2
+                </li>
+                <li class="text-danger" *ngIf="EditlastName.errors?.maxlength">
+                  Last name length should not be greater than 50
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> Email </label>
+            <input type="email" class="form-control" id="inputEmailEdit" formControlName="Editemail">
+            <div class="validation-msg" style="color:red" *ngIf="email.touched && email.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="Editemail.errors?.pattern">
+                  Invalid email address
+                </li>
+                <li class="text-danger" *ngIf="Editemail.errors?.required">
+                  Email address required
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <div class="row">
+              <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
+                <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
+                <select formControlName="EditCountryCode" (change)='onCountrySelected($event)' class="form-control">
+                  <option *ngFor="let role of countrycodeLists" [value]="role.Identifier">{{role.Code}}</option>
+                </select>
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="contactFormErrorObject.showCountryCodeError" style="list-style-type:none">
+                    <li class="text-danger">
+                      Please select country
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="col-7 col-md-7 col-sm-6 col-xs-7 pl-1">
+                <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
+                <input type="text" class="form-control" formControlName="EditmobileNumber">
+                <div class="validation-msg" style="color:red" *ngIf="EditmobileNumber.touched && EditmobileNumber.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="EditmobileNumber.errors?.minlength && !EditmobileNumber.errors?.pattern">
+                      Mobile number should not be less than 10 digits
+                    </li>
+                    <li class="text-danger" *ngIf="EditmobileNumber.errors?.maxlength && !EditmobileNumber.errors?.pattern">
+                      Mobile number should not be greater than 10 digits
+                    </li>
+                    <li class="text-danger" *ngIf="EditmobileNumber.errors?.pattern">
+                      Invalid mobile number
+                    </li>
+                    <li class="text-danger" *ngIf="EditmobileNumber.errors?.required">
+                      Mobile number required
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="filter-footer">
+        <ul class="nav nav-toolbar">
+          <li class="nav-item width50">
+            <button title="Save" id="btnCloseFormEdit"
+                    class="btn-footer-fill btn-block rounded-0 height100" [disabled]="contactFormValidation('Edit')" (click)="UpdateContact()">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width50">
+            <button (click)="CloseAddContactContainer('Edit')" title="Close" id="btnCloseFormEdit"
+                    class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-close"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
+
+  </form>
+
 </div>
 <div class="overlay a" id="divOverlayFilter" [ngClass]="!isContactContainer? 'hide':'show'"></div>
+
+<div class="overlay a" id="divOverlayFilter1" [ngClass]="!isEditContactContainer? 'hide':'show'"></div>
+

@@ -98,6 +98,9 @@ namespace nIS
                         Name = item.Name,
                         AssetPath = item.AssetPath,
                         ArchivalPath = item.ArchivalPath,
+                        ArchivalPeriod = item.ArchivalPeriod!=null?(int)item.ArchivalPeriod:0,
+                        ///ArchivalPeriodUnit = (ArchivalPeriod)(Enum.Parse(typeof(ArchivalPeriod), item.ArchivalPeriodUnit)),
+                        DateFormat = item.DateFormat
 
                     }).ToList();
                     if (tenantConfigurations?.Count > 0)
@@ -112,7 +115,7 @@ namespace nIS
                             tenantConfigurations[0].IsAssetPathEditable = true;
 
                         }
-                        ScheduleLogDetailRecord scheduleLogDetialsRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.TenantCode == tenantCode&& item.Status== "Completed")?.ToList()?.FirstOrDefault();
+                        ScheduleLogDetailRecord scheduleLogDetialsRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.TenantCode == tenantCode && item.Status == "Completed")?.ToList()?.FirstOrDefault();
                         if (scheduleLogDetialsRecord != null)
                         {
                             tenantConfigurations[0].IsOutputHTMLPathEditable = false;
@@ -159,6 +162,9 @@ namespace nIS
                     record.Name = setting.Name;
                     record.AssetPath = setting.AssetPath;
                     record.ArchivalPath = setting.ArchivalPath;
+                    record.ArchivalPeriod = (int)setting.ArchivalPeriod;
+                    //record.ArchivalPeriodUnit = setting.ArchivalPeriodUnit.ToString();
+                    record.DateFormat = setting.DateFormat;
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }

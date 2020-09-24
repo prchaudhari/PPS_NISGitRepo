@@ -8,5 +8,8 @@
     [OutputPDFPath] NVARCHAR(MAX) NULL,
     [ArchivalPath] NVARCHAR(MAX) NULL, 
     [AssetPath] NVARCHAR(MAX) NULL,
-    [TenantCode] [nvarchar](50) NOT NULL
+    [TenantCode] [nvarchar](50) NOT NULL,
+    [ArchivalPeriod] [int] NULL,
+	[ArchivalPeriodUnit] [nvarchar](50) NULL,
+	[DateFormat] [nvarchar](50) NULL,
 )

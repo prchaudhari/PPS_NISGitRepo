@@ -180,6 +180,7 @@ export class AddComponent implements OnInit {
       TimeOfDayMinutes: ["Please Select", Validators.compose([Validators.required])],
       filtershiftfromdate: [null, Validators.compose([Validators.required])],
       filtershiftenddate: [null,],
+      RecurrancePattern:[]
       //ExportToPDF: [false],
       //NoEndDate: [false],
     })

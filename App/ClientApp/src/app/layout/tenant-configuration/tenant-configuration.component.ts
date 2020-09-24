@@ -33,7 +33,10 @@ export class TenantConfigurationComponent implements OnInit {
   public baseURL: string = ConfigConstants.BaseURL;
   public AssetPathToolTip: string = '';
   public OutputPathToolTip: string = '';
-
+  public isArchivalPathRequired = false;
+  public archivalPathError = false;
+  public isArchivalPeriodRequired = false;
+  public archivalPeriodError = false;
   // Object created to initlialize the error boolean value.
   public tenantConfigurationFormErrorObject: any = {
     showPriorityLevelError: false,
@@ -63,6 +66,14 @@ export class TenantConfigurationComponent implements OnInit {
   get TenantConfigurationInputDataSourcePath() {
     return this.tenantConfigurationForm.get('TenantConfigurationInputDataSourcePath');
   }
+
+  get TenantConfigurationDateFormat() {
+    return this.tenantConfigurationForm.get('TenantConfigurationDateFormat');
+  }
+  get TenantConfigurationArchivalPeriod() {
+    return this.tenantConfigurationForm.get('TenantConfigurationArchivalPeriod');
+  }
+
 
   //function to validate all fields
   validateAllFormFields(formGroup: FormGroup) {
@@ -117,8 +128,11 @@ export class TenantConfigurationComponent implements OnInit {
       TenantConfigurationInputDataSourcePath: [null, Validators.compose([])],
       TenantConfigurationAssetPath: [null, Validators.compose([])],
       TenantConfigurationArchivalPath: [null, Validators.compose([])],
+      TenantConfigurationDateFormat: [null, Validators.compose([])],
+      TenantConfigurationArchivalPeriod: [null, Validators.compose([])],
     });
     this.getTenantConfigurationDetails();
+
   }
 
   async getTenantConfigurationDetails() {
@@ -128,6 +142,7 @@ export class TenantConfigurationComponent implements OnInit {
       data => {
         this.setting = <TenantConfiguration>data[0];
         this.spinner.stop();
+        
         this.tenantConfigurationForm.patchValue({
           TenantConfigurationName: this.setting.Name,
           TenantConfigurationDescription: this.setting.Description,
@@ -135,7 +150,9 @@ export class TenantConfigurationComponent implements OnInit {
           TenantConfigurationOutputHTMLPath: this.setting.OutputHTMLPath,
           TenantConfigurationInputDataSourcePath: this.setting.InputDataSourcePath,
           TenantConfigurationAssetPath: this.setting.AssetPath,
-          TenantConfigurationArchivalPath: this.setting.ArchivalPath
+          TenantConfigurationArchivalPath: this.setting.ArchivalPath,
+          TenantConfigurationArchivalPeriod: this.setting.ArchivalPeriod,
+          TenantConfigurationDateFormat: this.setting.DateFormat
         });
         if (this.setting.IsAssetPathEditable) {
           this.AssetPathToolTip = "";
@@ -162,21 +179,42 @@ export class TenantConfigurationComponent implements OnInit {
     if (this.tenantConfigurationForm.controls.TenantConfigurationName.invalid) {
       return true;
     }
-    //if (this.tenantConfigurationForm.controls.TenantConfigurationDescription.invalid) {
-    //  return true;
-    //}
-    //if (this.tenantConfigurationForm.controls.TenantConfigurationOutputPDFPath.invalid) {
-    //  return true;
-    //}
-    //if (this.tenantConfigurationForm.controls.TenantConfigurationOutputHTMLPath.invalid) {
-    //  return true;
-    //}
-    //if (this.tenantConfigurationForm.controls.TenantConfigurationInputDataSourcePath.invalid) {
-    //  return true;
-    //}
+    if (this.archivalPathError) {
+      return true;
+    }
+    if (this.archivalPeriodError) {
+      return true;
+    }
+
     return false;
   }
-
+  OnArchivalChange() {
+    if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod > 0) {
+      this.isArchivalPathRequired = true;
+      if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPath == null || this.tenantConfigurationForm.value.TenantConfigurationArchivalPath == '') {
+        this.archivalPathError = true;
+      }
+      else {
+        this.archivalPathError = false;
+      }
+    }
+    if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPath != null || this.tenantConfigurationForm.value.TenantConfigurationArchivalPath != '') {
+      this.isArchivalPeriodRequired = true;
+      if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == 0 || this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == null) {
+        this.archivalPeriodError = true;
+      }
+      else {
+        this.archivalPeriodError = false;
+      }
+    }
+    if ((this.tenantConfigurationForm.value.TenantConfigurationArchivalPath == null || this.tenantConfigurationForm.value.TenantConfigurationArchivalPath == '')
+      && (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == 0 || this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == null)) {
+      this.archivalPeriodError = false;
+      this.archivalPathError = false;
+      this.isArchivalPathRequired = false;
+      this.isArchivalPeriodRequired = false;
+    }
+  }
   onConcurrencyCountSelected(event) {
     const value = event.target.value;
     if (value == "0") {
@@ -214,7 +252,8 @@ export class TenantConfigurationComponent implements OnInit {
     this.setting.InputDataSourcePath = this.tenantConfigurationForm.value.TenantConfigurationInputDataSourcePath;
     this.setting.AssetPath = this.tenantConfigurationForm.value.TenantConfigurationAssetPath;
     this.setting.ArchivalPath = this.tenantConfigurationForm.value.TenantConfigurationArchivalPath;
-
+    this.setting.ArchivalPeriod = this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod;
+    this.setting.DateFormat = this.tenantConfigurationForm.value.TenantConfigurationDateFormat;
     this.saveTenantConfigurationRecord(this.setting);
   }
 

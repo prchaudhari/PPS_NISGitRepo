@@ -23,5 +23,8 @@ namespace nIS
         public string Name { get; set; }
         public string ArchivalPath { get; set; }
         public string AssetPath { get; set; }
+        public Nullable<int> ArchivalPeriod { get; set; }
+        public string ArchivalPeriodUnit { get; set; }
+        public string DateFormat { get; set; }
     }
 }

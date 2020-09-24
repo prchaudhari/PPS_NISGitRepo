@@ -309,7 +309,7 @@ namespace nIS
                         }
 
                     }
-                    if (userSearchParameter.IsSkipSuperAdmin == true)
+                   if (userSearchParameter.IsSkipSuperAdmin == true)
                     {
                         if (userSearchParameter.UserIdentifierToSkip != string.Empty)
                         {
