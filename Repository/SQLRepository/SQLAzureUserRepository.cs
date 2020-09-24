@@ -309,7 +309,7 @@ namespace nIS
                         }
 
                     }
-                   if (userSearchParameter.IsSkipSuperAdmin == true)
+                    if (userSearchParameter.IsSkipSuperAdmin == true)
                     {
                         if (userSearchParameter.UserIdentifierToSkip != string.Empty)
                         {
@@ -364,7 +364,7 @@ namespace nIS
                         LastName = userRecord.LastName,
                         EmailAddress = userRecord.EmailAddress,
                         ContactNumber = contactnumber,
-                        CountryId=(long)userRecord.CountryId,
+                        CountryId = (long)userRecord.CountryId,
                         Image = userRecord.Image,
                         IsActive = userRecord.IsActive,
                         IsLocked = userRecord.IsLocked,
@@ -404,9 +404,11 @@ namespace nIS
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                string dateFormat = string.Empty;
                 using (NISEntities nISEntities = new NISEntities(this.connectionString))
                 {
                     userRecords = nISEntities.UserRecords.Where(item => item.EmailAddress == userSearchParameter.EmailAddress).ToList();
+                    dateFormat = nISEntities.TenantConfigurationRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault().DateFormat;
                 }
                 users = new List<User>();
                 userRecords?.ToList().ForEach(userRecord =>
@@ -424,10 +426,12 @@ namespace nIS
                         IsLocked = userRecord.IsLocked,
                         NoofAttempts = userRecord.NoofAttempts,
                         TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? userRecord.TenantCode : tenantCode,
-                        Roles = roles
+                        Roles = roles,
+                        DateFormat = dateFormat
                     });
 
                 });
+
             }
             catch (SqlException)
             {

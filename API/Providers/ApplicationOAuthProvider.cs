@@ -101,7 +101,7 @@ namespace nIS
 
             //Add is asset connected value in claim
 
-            string[] propertyData = new string[7]
+            string[] propertyData = new string[8]
             {
                 user.Identifier.ToString(),
                 user.FirstName + " " + user.LastName,
@@ -109,7 +109,8 @@ namespace nIS
                 user.TenantCode,
                 (userCliams?.Count>0?JsonConvert.SerializeObject(userCliams):string.Empty),
                 (user.Roles.Count() > 0 ? user.Roles[0].Name : ""),
-                (user.Roles.Count() > 0 ? user.Roles[0].Identifier.ToString() : "")
+                (user.Roles.Count() > 0 ? user.Roles[0].Identifier.ToString() : ""),
+                (user.DateFormat)
             };
 
             AuthenticationTicket ticket = new AuthenticationTicket(claimIdentity, CreateProperties(propertyData));
@@ -201,7 +202,8 @@ namespace nIS
                 { "TenantCode", stringData[3] },
                 { "SerializedUserClaims", stringData[4] },
                 { "RoleName", stringData[5] },
-                { "RoleIdentifier", stringData[6] }
+                { "RoleIdentifier", stringData[6] },
+                { "DateFormat",stringData[7]}
             };
             return new AuthenticationProperties(data);
         }

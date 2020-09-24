@@ -50,7 +50,9 @@ export class HistoryComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   public isFirstCall = true;
   public scheduleName = '';
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.getSchedule(null);
     //this.getStatementDefinition(null);
     this.ScheduleFilterForm = this.fb.group({

@@ -65,7 +65,9 @@ export class ListComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.getSchedule(null);
     //this.getStatementDefinition(null);
     this.ScheduleFilterForm = this.fb.group({

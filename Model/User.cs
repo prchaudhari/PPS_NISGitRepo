@@ -70,6 +70,11 @@ namespace nIS
         private IList<Role> roles = new List<Role>();
 
         /// <summary>
+        /// dateFormat
+        /// </summary>
+        private string dateFormat=string.Empty;
+
+        /// <summary>
         /// The validation engine objecct
         /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
@@ -258,6 +263,8 @@ namespace nIS
         /// The tenant type
         /// </summary>
         public long CountryId;
+
+        public string DateFormat=string.Empty;
 
         #endregion
 
