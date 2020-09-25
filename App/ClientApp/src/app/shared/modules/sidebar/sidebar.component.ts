@@ -217,7 +217,6 @@ export class SidebarComponent implements OnInit {
             $('.xs-hamburger').addClass('fa-bars');
             $('.xs-hamburger').removeClass('fa-long-arrow-left');
             var mobileSidebar = false;
-
           } else {
             $('.side-bar-container').addClass('show-sidebar');
             $('.side-bar-container').removeClass('hide-sidebar');
@@ -227,26 +226,25 @@ export class SidebarComponent implements OnInit {
             $('.xs-hamburger').addClass('fa-long-arrow-left');
             var mobileSidebar = true;
           }
-        })
+        });
       }
 
       $('.side-bar-li').click(function () {
         $('.side-bar-li').removeClass('active-li');
         $(this).addClass('active-li');
-      })
+      });
 
       $('.submenu-li').click(function () {
         $('.submenu-li').removeClass('active-li-submenu');
         $(this).addClass('active-li-submenu');
-      })
-
+      });
 
     })
     
     this.URL = this.route.url;
     if(this.isSuperAdminUser == true) {
-      if (this.URL == '/tenants' || this.URL == '/tenantConfiguration' ||this.URL == '/settings' ||  this.URL == '/country' || 
-      this.URL == '/tenantgroups' || this.URL == '/themeConfiguration' || this.URL == '/contacttype') {
+      if (this.URL.includes('/tenants') || this.URL.includes('/tenantConfiguration') ||this.URL.includes('/settings') || this.URL.includes('/country') || 
+      this.URL.includes('/tenantgroups') || this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype')) {
         this.IsMainMenu = false;
       }
       else {
@@ -282,6 +280,9 @@ export class SidebarComponent implements OnInit {
     }
     else if (this.URL.includes('/statementdefination')) {
       this.URL = '/statementdefination';
+    }
+    else if (this.URL.includes('/pages')) {
+      this.URL = '/pages';
     }
     else if (this.URL.includes('/analytics')) {
       this.URL = '/analytics';
