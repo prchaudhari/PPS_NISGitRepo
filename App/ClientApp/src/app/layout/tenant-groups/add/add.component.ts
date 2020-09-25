@@ -408,6 +408,7 @@ export class AddComponent implements OnInit {
 
     this.TenantGroupUser.EmailAddress = '';
     this.TenantGroupUser.CountryCode = 0;
+    this.tenantGroupUserFormErrorObject.showCountryCodeError = false;
   }
 
   private markFormGroupUnTouched(formGroup: FormGroup) {

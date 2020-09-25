@@ -17,16 +17,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Country } from '../../country/country';
 import { CountryService } from '../../country/country.service';
 import { ContactTypeService } from '../../contacttype/contacttype.service';
-export interface ListElement {
-  ContactType: string;
-  FirstName: string;
-  LastName: string;
-  EmailAddress: string;
-  ContactNumber: string;
-  Identifier: number;
-}
-
-
 
 @Component({
   selector: 'app-add',
@@ -78,19 +68,96 @@ export class AddComponent implements OnInit {
   image: string;
   displayedColumns: string[] = ['ContactType', 'FirstName', 'LastName', 'EmailAddress', 'ContactNumber', 'actions'];
   public tenantContactIdentifier = 0;
-  public Contact = { RoleIdentifier: 0, Image: '', CountryCode: 0 }
+  public Contact = { RoleIdentifier: 0, Image: '', CountryCode: 0, ContactType: 0 }
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   public countrycodeList = [];
-  public countrycodeLists = [
-    { "Identifier": 0, "Code": "Please Select", "DialingCode": "" }
-  ];
+  public countrycodeLists = [{ "Identifier": 0, "CountryName": "Please Select", "Code": "Please Select", "DialingCode": "" }];
   dataSource = new MatTableDataSource<TenantContact>(this.contactlist);
+
+  get tenantName() {
+    return this.tenantFormGroup.get('tenantName');
+  }
+
+  get tenantCountry() {
+    return this.tenantFormGroup.get('tenantCountry');
+  }
+
+  get tenantDomainName() {
+    return this.tenantFormGroup.get('tenantDomainName');
+  }
+
+  get tenantAddress() {
+    return this.tenantFormGroup.get('tenantAddress');
+  }
+
+  get tenantCity() {
+    return this.tenantFormGroup.get('tenantCity');
+  }
+
+  get tenantState() {
+    return this.tenantFormGroup.get('tenantState');
+  }
+
+  get tenantPostalCode() {
+    return this.tenantFormGroup.get('tenantPostalCode');
+  }
+
+  get tenantDescription() {
+    return this.tenantFormGroup.get('tenantDescription');
+  }
+
+  get firstName() {
+    return this.contactFormGroup.get('firstName');
+  }
+
+  get lastName() {
+    return this.contactFormGroup.get('lastName');
+  }
+
+  get email() {
+    return this.contactFormGroup.get('email');
+  }
+
+  get countryCode() {
+    return this.contactFormGroup.get('countryCode');
+  }
+
+  get mobileNumber() {
+    return this.contactFormGroup.get('mobileNumber');
+  }
+
+  get ContactType() {
+    return this.contactFormGroup.get('ContactType');
+  }
+
+  get EditfirstName() {
+    return this.contactEditFormGroup.get('EditfirstName');
+  }
+
+  get EditlastName() {
+    return this.contactEditFormGroup.get('EditlastName');
+  }
+
+  get Editemail() {
+    return this.contactEditFormGroup.get('Editemail');
+  }
+
+  get EditcountryCode() {
+    return this.contactEditFormGroup.get('EditcountryCode');
+  }
+
+  get EditmobileNumber() {
+    return this.contactEditFormGroup.get('EditmobileNumber');
+  }
+
+  get EditcontactType() {
+    return this.contactEditFormGroup.get('EditcontactType');
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
 
   constructor(
@@ -102,7 +169,6 @@ export class AddComponent implements OnInit {
     private formbuilder: FormBuilder,
     private _messageDialogService: MessageDialogService,
     private tenantService: TenantService,
-
     private injector: Injector,
   ) {
     this.tenant = new Tenant;
@@ -138,20 +204,17 @@ export class AddComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactTypeList.push({ "Identifier": 0, "Name": "Select" });
-    //this.contactTypeList.push({ "Identifier": 1, "Name": "Primary" });
-    //this.contactTypeList.push({ "Identifier": 2, "Name": "Secondary" });
+    this.contactTypeList.push({ "Identifier": 0, "Name": "Select Contact Type" });
 
     this.tenantFormGroup = this.formbuilder.group({
       tenantName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(100)])],
       tenantDescription: ['', Validators.compose([Validators.maxLength(500)])],
       tenantDomainName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(100)])],
       tenantAddress: ['', Validators.compose([Validators.maxLength(500)])],
-      tenantCountry: ['', Validators.compose([Validators.required])],
+      tenantCountry: [0, Validators.compose([Validators.required])],
       tenantState: ['', Validators.compose([Validators.required])],
       tenantCity: ['', Validators.compose([Validators.required])],
       tenantPostalCode: ['', Validators.compose([Validators.required])],
-
     });
 
     this.contactFormGroup = this.formbuilder.group({
@@ -162,7 +225,8 @@ export class AddComponent implements OnInit {
       ContactType: [0, Validators.compose([Validators.required])],
       CountryCode: [0, Validators.compose([Validators.required])],
       Image: [null]
-    })
+    });
+
     this.contactEditFormGroup = this.formbuilder.group({
       EditfirstName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       EditlastName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
@@ -171,13 +235,11 @@ export class AddComponent implements OnInit {
       EditcontactType: [0, Validators.compose([Validators.required])],
       EditCountryCode: [0, Validators.compose([Validators.required])],
       EditImage: [null]
-    })
-
+    });
 
     this.getCountries();
     this.getContactTypes();
   }
-
 
   async getCountries() {
     let searchParameter: any = {};
@@ -196,7 +258,6 @@ export class AddComponent implements OnInit {
     })
     if (this.updateOperationMode) {
       this.getTenants();
-
     }
   }
 
@@ -215,7 +276,6 @@ export class AddComponent implements OnInit {
     copy.forEach(role => {
       this.contactTypeList.push(role);
     })
-   
   }
 
   async getTenants() {
@@ -242,7 +302,7 @@ export class AddComponent implements OnInit {
     this.tenantFormGroup.controls['tenantName'].setValue(tenantList[0].TenantName);
     this.tenantFormGroup.controls['tenantDescription'].setValue(tenantList[0].TenantDescription);
     this.tenantFormGroup.controls['tenantDomainName'].setValue(tenantList[0].TenantDomainName);
-    this.tenantFormGroup.controls['tenantAddress'].setValue(tenantList[0].NamePrimaryAddressLine1);
+    this.tenantFormGroup.controls['tenantAddress'].setValue(tenantList[0].PrimaryAddressLine1);
     this.tenantFormGroup.controls['tenantCountry'].setValue(tenantList[0].Country.Identifier);
     this.tenantFormGroup.controls['tenantState'].setValue(tenantList[0].TenantState);
     this.tenantFormGroup.controls['tenantCity'].setValue(tenantList[0].TenantState);
@@ -257,13 +317,8 @@ export class AddComponent implements OnInit {
   ShowAddContactContainer(form, contact): void {
     if (form == "Add") {
       this.isContactContainer = true;
-      this.contactFormGroup.controls['firstName'].setValue('');
-      this.contactFormGroup.controls['lastName'].setValue('');
-      this.contactFormGroup.controls['email'].setValue('');
-      this.contactFormGroup.controls['mobileNumber'].setValue('');
-      this.contactFormGroup.controls['ContactType'].setValue('');
-      this.contactFormGroup.controls['CountryCode'].setValue('');
-      this.contactFormGroup.reset();
+      this.contactFormGroup.patchValue({firstName : '', lastName: '', email: '', mobileNumber: '', ContactType: 0, CountryCode: 0});
+      this.markFormGroupUnTouched(this.contactFormGroup);
     }
     else {
       if (this.updateOperationMode) {
@@ -273,38 +328,33 @@ export class AddComponent implements OnInit {
         this.tenantContactIdentifier = 0;
       }
       this.isEditContactContainer = true;
-      this.contactEditFormGroup.reset();
-      this.contactEditFormGroup.controls['EditfirstName'].setValue(contact.FirstName);
-      this.contactEditFormGroup.controls['EditlastName'].setValue(contact.LastName);
-      this.contactEditFormGroup.controls['Editemail'].setValue(contact.EmailAddress);
-      this.contactEditFormGroup.controls['EditmobileNumber'].setValue(contact.ContactNumber);
-      this.contactEditFormGroup.controls['EditcontactType'].setValue(contact.ContactTypeId);
-      this.contactEditFormGroup.controls['EditCountryCode'].setValue(contact.CountryId);
+      this.contactEditFormGroup.patchValue({
+        EditfirstName : contact.FirstName, EditlastName: contact.LastName, Editemail: contact.EmailAddress, 
+        EditmobileNumber: contact.ContactNumber, EditCountryCode: contact.CountryId, EditcontactType : contact.ContactTypeId }
+      );
     }
   }
 
   CloseAddContactContainer(form): void {
     if (form == "Add") {
       this.isContactContainer = false;
-      this.contactFormGroup.controls['firstName'].setValue('');
-      this.contactFormGroup.controls['lastName'].setValue('');
-      this.contactFormGroup.controls['email'].setValue('');
-      this.contactFormGroup.controls['mobileNumber'].setValue('');
-      this.contactFormGroup.controls['ContactType'].setValue('');
-      this.contactFormGroup.controls['CountryCode'].setValue('');
-      this.contactFormGroup.reset();
     }
     else {
       this.isEditContactContainer = false;
-      this.contactEditFormGroup.controls['EditfirstName'].setValue('');
-      this.contactEditFormGroup.controls['EditlastName'].setValue('');
-      this.contactEditFormGroup.controls['Editemail'].setValue('');
-      this.contactEditFormGroup.controls['EditmobileNumber'].setValue('');
-      this.contactEditFormGroup.controls['EditcontactType'].setValue('');
-      this.contactEditFormGroup.controls['EditCountryCode'].setValue('');
-      this.contactEditFormGroup.reset();
     }
+    this.resetContactForm(form);
+  }
 
+  resetContactForm(action) {
+    if(action == 'Add') {
+      this.contactFormGroup.patchValue({firstName : null, lastName: null, email: null, mobileNumber: null, ContactType: null, CountryCode: null});
+    }else {
+      this.contactEditFormGroup.patchValue( {EditfirstName : null, EditlastName: null, Editemail: null, EditmobileNumber: null,EditcontactType: null, EditCountryCode: null} );
+    }
+    this.Contact.CountryCode = 0;
+    this.Contact.ContactType = 0;
+    this.contactFormErrorObject.showContactTypeError = false;
+    this.contactFormErrorObject.showCountryCodeError = false;
   }
 
   navigateToListPage() {
@@ -369,29 +419,30 @@ export class AddComponent implements OnInit {
 
   contactFormValidation(form): boolean {
     if (form == 'Edit') {
+      if (this.Contact.ContactType == 0) {
+        return true;
+      }
       if (this.contactEditFormGroup.controls.EditfirstName.invalid) {
         return true;
       }
       if (this.contactEditFormGroup.controls.EditlastName.invalid) {
         return true;
-
       }
       if (this.contactEditFormGroup.controls.Editemail.invalid) {
+        return true;
+      }
+      if (this.Contact.CountryCode == 0) {
         return true;
       }
       if (this.contactEditFormGroup.controls.EditmobileNumber.invalid) {
         return true;
       }
-      if (this.contactEditFormGroup.controls.EditcontactType.invalid) {
-        return true;
-      }
-      if (this.contactEditFormGroup.controls.EditCountryCode.invalid) {
-        return true;
-      }
       return false;
-
     }
     else {
+      if (this.Contact.ContactType == 0) {
+        return true;
+      }
       if (this.contactFormGroup.controls.firstName.invalid) {
         return true;
       }
@@ -401,60 +452,48 @@ export class AddComponent implements OnInit {
       if (this.contactFormGroup.controls.email.invalid) {
         return true;
       }
+      if (this.Contact.CountryCode == 0) {
+        return true;
+      }
       if (this.contactFormGroup.controls.mobileNumber.invalid) {
         return true;
       }
-      if (this.contactFormGroup.controls.ContactType.invalid) {
-        return true;
-      }
-      if (this.contactFormGroup.controls.CountryCode.invalid) {
-        return true;
-      }
       return false;
-
     }
   }
 
   public onContactTypeSelect(event) {
-
     const value = event.target.value;
-    if (value == "Select") {
+    if (value == "0") {
       this.contactFormErrorObject.showContactTypeError = true;
+      this.Contact.ContactType = 0;
     }
     else {
       this.contactFormErrorObject.showContactTypeError = false;
-
+      this.Contact.ContactType = value;
     }
   }
 
   public onCountrySelected(event) {
-
     const value = event.target.value;
-    if (value == "") {
+    if (value == "0") {
       this.contactFormErrorObject.showCountryCodeError = true;
-      this.Contact.CountryCode = 0
+      this.Contact.CountryCode = 0;
     }
     else {
       this.contactFormErrorObject.showCountryCodeError = false;
-
-      this.Contact.CountryCode = value
-
+      this.Contact.CountryCode = value;
     }
-
-    console.log(value);
   }
 
   public onTenantCountrySelected(event) {
-
     const value = event.target.value;
-    if (value == "") {
+    if (value == "0") {
       this.tenantFormErrorObject.showCountryError = true;
     }
     else {
       this.tenantFormErrorObject.showCountryError = false;
     }
-
-    console.log(value);
   }
 
   async UpdateContact() {
@@ -560,6 +599,7 @@ export class AddComponent implements OnInit {
     this.CloseAddContactContainer('Add');
 
   }
+
   private iterator() {
     const end = (this.currentPage + 1) * this.pageSize;
     const start = this.currentPage * this.pageSize;
@@ -567,18 +607,19 @@ export class AddComponent implements OnInit {
     this.dataSource = part;
     this.dataSource.sort = this.sort;
   }
+
   async DeleteContact(contact) {
     var index = this.contactlist.findIndex(s => contact.EmailAddress == s.EmailAddress);
     if (this.updateOperationMode) {
       let message = 'Are you sure, you want to delete this record?';
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-          let roleData = [{
+          let data = [{
             "Identifier": contact.Identifier,
             "TenantCode": this.tenant.TenantCode
           }];
 
-          let isDeleted = await this.tenantService.deleteTenant(roleData);
+          let isDeleted = await this.tenantService.deleteTenantContact(data);
           if (isDeleted) {
             let messageString = Constants.recordDeletedMessage;
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
@@ -652,88 +693,16 @@ export class AddComponent implements OnInit {
     }
     else {
       this._messageDialogService.openDialogBox('Error', "Please add primary contact", Constants.msgBoxSuccess);
-
     }
   }
 
-  get tenantName() {
-    return this.tenantFormGroup.get('tenantName');
-  }
-
-  get tenantCountry() {
-    return this.tenantFormGroup.get('tenantCountry');
-  }
-
-  get tenantDomainName() {
-    return this.tenantFormGroup.get('tenantDomainName');
-  }
-
-  get tenantAddress() {
-    return this.tenantFormGroup.get('tenantAddress');
-  }
-
-  get tenantCity() {
-    return this.tenantFormGroup.get('tenantCity');
-  }
-
-  get tenantState() {
-    return this.tenantFormGroup.get('tenantState');
-  }
-
-  get tenantPostalCode() {
-    return this.tenantFormGroup.get('tenantPostalCode');
-  }
-
-  get tenantDescription() {
-    return this.tenantFormGroup.get('tenantDescription');
-  }
-
-  get firstName() {
-    return this.contactFormGroup.get('firstName');
-  }
-
-  get lastName() {
-    return this.contactFormGroup.get('lastName');
-  }
-
-  get email() {
-    return this.contactFormGroup.get('email');
-  }
-
-  get countryCode() {
-    return this.contactFormGroup.get('countryCode');
-  }
-
-  get mobileNumber() {
-    return this.contactFormGroup.get('mobileNumber');
-  }
-
-  get ContactType() {
-    return this.contactFormGroup.get('ContactType');
-  }
-
-  get EditfirstName() {
-    return this.contactEditFormGroup.get('EditfirstName');
-  }
-
-  get EditlastName() {
-    return this.contactEditFormGroup.get('EditlastName');
-  }
-
-  get Editemail() {
-    return this.contactEditFormGroup.get('Editemail');
-  }
-
-  get EditcountryCode() {
-    return this.contactEditFormGroup.get('EditcountryCode');
-  }
-
-  get EditmobileNumber() {
-    return this.contactEditFormGroup.get('EditmobileNumber');
-  }
-
-  get EditcontactType() {
-    return this.contactEditFormGroup.get('EditcontactType');
+  private markFormGroupUnTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach(control => {
+      control.markAsUntouched();
+      if (control.controls) {
+        this.markFormGroupUnTouched(control);
+      }
+    });
   }
 
 }
