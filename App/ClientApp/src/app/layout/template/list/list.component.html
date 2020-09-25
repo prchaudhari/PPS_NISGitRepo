@@ -52,7 +52,7 @@
         <ng-container matColumnDef="date">
           <th class="width11 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Published Date </th>
           <td mat-cell *matCellDef="let element"> 
-            <span *ngIf='element.PublishedOn!="0001-01-01T00:00:00"'>{{element.PublishedOn | date : "dd/MM/yyyy" }} </span>
+            <span *ngIf='element.PublishedOn!="0001-01-01T00:00:00"'>{{element.PublishedOn | date : DataFormat}} </span>
             <span *ngIf='element.PublishedOn=="0001-01-01T00:00:00"'> - </span>
           </td>
         </ng-container>

@@ -128,7 +128,7 @@ export class TenantConfigurationComponent implements OnInit {
       TenantConfigurationInputDataSourcePath: [null, Validators.compose([])],
       TenantConfigurationAssetPath: [null, Validators.compose([])],
       TenantConfigurationArchivalPath: [null, Validators.compose([])],
-      TenantConfigurationDateFormat: [null, Validators.compose([])],
+      TenantConfigurationDateFormat: [0, Validators.compose([])],
       TenantConfigurationArchivalPeriod: [null, Validators.compose([])],
     });
     this.getTenantConfigurationDetails();

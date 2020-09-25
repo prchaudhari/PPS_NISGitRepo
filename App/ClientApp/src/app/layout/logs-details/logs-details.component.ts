@@ -65,7 +65,9 @@ export class LogsDetailsComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.getScheduleLogs(null);
     //this.getPageTypes();
     this.ScheduleLogFilterForm = this.fb.group({

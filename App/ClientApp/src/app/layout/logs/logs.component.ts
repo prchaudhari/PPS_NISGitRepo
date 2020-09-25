@@ -108,7 +108,9 @@ export class LogsComponent implements OnInit {
     return this.ScheduleLogFilterForm.get('filterPublishedOnFromDate');
   }
 
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.getScheduleLogs(null);
     this.ScheduleLogFilterForm = this.fb.group({
       filterScheduleName: [null],

@@ -275,6 +275,10 @@ namespace nIS
                 this.lockStatus = value;
             }
         }
+
+        public bool? IsDateFormatRequired;
+
+
         #endregion
 
         #region Public methods

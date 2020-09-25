@@ -43,7 +43,9 @@
           <ng-container matColumnDef="date">
             <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Published Date </th>
             <td mat-cell *matCellDef="let element">
-              <span *ngIf="element.Status=='Published'">{{element.PublishedOn | date:"dd/MM/yyyy"}}</span>
+              <span *ngIf="element.Status=='Published'">{{element.PublishedOn | date:DataFormat}}</span>
+          
+
               <span *ngIf="element.Status=='New'">-</span>
 
             </td>

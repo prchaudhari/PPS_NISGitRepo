@@ -98,8 +98,9 @@ export class ListComponent implements OnInit {
     return this.TemplateFilterForm.get('filterPublishedOnToDate');
   }
   //End getter methods
-
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.getTemplates(null);
     //this.getPageTypes();
     this.TemplateFilterForm = this.fb.group({

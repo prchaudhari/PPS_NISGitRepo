@@ -71,6 +71,8 @@ export class ViewAssetLibraryComponent implements OnInit {
     else {
       this.userClaimsRolePrivilegeOperations = [];
     }
+    this.DataFormat = localStorage.getItem('DateFormat');
+    
     this.params = JSON.parse(localStorage.getItem('assetLibraryparams'));
     if (localStorage.getItem('assetLibraryparams')) {
       this.assetLibrary.Identifier = this.params.Routeparams.passingparams.AssetLibraryIdentifier;
@@ -88,7 +90,7 @@ export class ViewAssetLibraryComponent implements OnInit {
   navigateToListPage() {
     this._location.back();
   }
-
+  public DataFormat;
   constructor(
     private _location: Location,
     private _window: WindowRef,
@@ -113,7 +115,7 @@ export class ViewAssetLibraryComponent implements OnInit {
         }
       }
     });
-
+   
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/assetlibrary')) {

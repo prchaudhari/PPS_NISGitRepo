@@ -75,8 +75,14 @@
           </div>
           <div class="col-md-6 col-sm-6 col-lg-3">
             <label id="TenantConfigurationDateFormat" for="TenantConfigurationDateFormat">Date Format</label>
-            <input type="text" class="form-control" id="TenantConfigurationDateFormat" name="TenantConfigurationDateFormat"
-                   formControlName="TenantConfigurationDateFormat" />
+            <!--<input type="text" class="form-control" id="TenantConfigurationDateFormat" name="TenantConfigurationDateFormat"
+                   formControlName="TenantConfigurationDateFormat" />-->
+            <select class="form-control" formControlName="TenantConfigurationDateFormat" id="TenantConfigurationDateFormat">
+              <option value="0"selected> Select Status</option>
+              <option value="dd/MM/yyyy">DD/MM/YYYY</option>
+              <option value="MM/dd/yyyy">MM/DD/YYYY</option>
+              <option value="yyyy/MM/dd">YYYY/MM/DD</option>
+            </select>
             <!-- Error Masseges  -->
             <div class="validation-msg" style="color:red" *ngIf="TenantConfigurationDateFormat.touched && TenantConfigurationDateFormat.errors">
               <ul style="list-style-type:none">

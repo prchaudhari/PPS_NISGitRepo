@@ -31,7 +31,7 @@
           <!-- Weight Column -->
           <ng-container matColumnDef="startDate">
             <th class="width25 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Execution Date & Time</th>
-            <td mat-cell *matCellDef="let element"> {{element.StartDate  | date:"dd/MM/yyyy h:mm a"}}</td>
+            <td mat-cell *matCellDef="let element"> <span>{{element.StartDate  | date:DataFormat}}</span> {{element.StartDate  | date:"h:mm a"}}</td>
           </ng-container>
 
           <!-- Symbol Column -->

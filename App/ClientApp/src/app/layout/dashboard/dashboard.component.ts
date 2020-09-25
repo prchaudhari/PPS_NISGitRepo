@@ -10,8 +10,10 @@ export class DashboardComponent implements OnInit {
 
   public DashboardData: any = {};
   constructor(private injector: Injector) { }
+  public DataFormat;
 
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.getDashboardData();
   }
 

@@ -118,7 +118,9 @@ export class StatementSearchComponent implements OnInit {
     return this.StatementSearchFilterForm.get('filterStatementPeriod');
   }
 
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     //this.getStatementSearchs(null);
     this.StatementSearchFilterForm = this.fb.group({
       filterStatementCustomer: [null],
