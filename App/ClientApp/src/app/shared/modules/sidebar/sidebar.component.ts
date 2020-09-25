@@ -61,7 +61,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ChangeSideBar() {
-    this.IsMainMenu = !this.IsMainMenu
+    this.IsMainMenu = !this.IsMainMenu;
     if (this.IsMainMenu) {
       this.URL = '/dashboard';
       this.route.navigate(['/dashboard']);
@@ -117,6 +117,11 @@ export class SidebarComponent implements OnInit {
     this.URL = '/tenants';
     this.hideSidebar();
     this.route.navigate(['/tenants']);
+  }
+  navigateToTenantGroups() {
+    this.URL = '/tenantgroups';
+    this.hideSidebar();
+    this.route.navigate(['/tenantgroups']);
   }
   navigateToContactType() {
     this.URL = '/contacttype';
@@ -240,7 +245,8 @@ export class SidebarComponent implements OnInit {
     
     this.URL = this.route.url;
     if(this.isSuperAdminUser == true) {
-      if (this.URL == '/tenants' || this.URL == '/tenantConfiguration' ||this.URL == '/settings' || this.URL == '/renderengines') {
+      if (this.URL == '/tenants' || this.URL == '/tenantConfiguration' ||this.URL == '/settings' ||  this.URL == '/country' || 
+      this.URL == '/tenantgroups' || this.URL == '/themeConfiguration' || this.URL == '/contacttype') {
         this.IsMainMenu = false;
       }
       else {
@@ -248,37 +254,49 @@ export class SidebarComponent implements OnInit {
       }
     }
     if (this.URL.includes('/tenants')) {
-      this.URL = '/tenants'
+      this.URL = '/tenants';
+    }
+    else if (this.URL.includes('/country')) {
+      this.URL = '/country';
+    }
+    else if (this.URL.includes('/contacttype')) {
+      this.URL = '/contacttype';
+    }
+    else if (this.URL.includes('/tenantgroups')) {
+      this.URL = '/tenantgroups';
+    }
+    else if (this.URL.includes('/themeConfiguration')) {
+      this.URL = '/themeConfiguration';
     }
     else if (this.URL.includes('/user')) {
-      this.URL ='/user'
+      this.URL ='/user';
     }
     else if (this.URL.includes('/widgets')) {
-      this.URL = '/widgets'
+      this.URL = '/widgets';
     }
     else if (this.URL.includes('/schedulemanagement')) {
-      this.URL = '/schedulemanagement'
+      this.URL = '/schedulemanagement';
     }
     else if (this.URL.includes('/assetlibrary')) {
-      this.URL = '/assetlibrary'
+      this.URL = '/assetlibrary';
     }
     else if (this.URL.includes('/statementdefination')) {
-      this.URL = '/statementdefination'
+      this.URL = '/statementdefination';
     }
     else if (this.URL.includes('/analytics')) {
-      this.URL = '/analytics'
+      this.URL = '/analytics';
     }
     else if (this.URL.includes('/logs')) {
-      this.URL = '/logs'
+      this.URL = '/logs';
     }
     else if (this.URL.includes('/settings')) {
-      this.URL = '/settings'
+      this.URL = '/settings';
     }
     else if(this.URL.includes('/renderengines')) {
       this.URL = '/renderengines';
     }
     else if (this.URL.includes('/tenantConfiguration')) {
-      this.URL = '/tenantConfiguration'
+      this.URL = '/tenantConfiguration';
     }
   }
 

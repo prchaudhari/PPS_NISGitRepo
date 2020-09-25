@@ -109,6 +109,11 @@
       <li [ngClass]="(URL=='/tenants')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToTenants()">
         <a> <span class='nav-icon icon-users-line2' title="Tenants"> </span> <span class='nav-title'>Tenants</span> </a>
       </li>
+
+      <li [ngClass]="(URL=='/tenantgroups')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToTenantGroups()">
+        <a> <span class='nav-icon icon-users-line2' title="Tenant Groups"> </span> <span class='nav-title'>Tenant Groups</span> </a>
+      </li>
+
       <li [ngClass]="(URL=='/contacttype')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToContactType()">
         <a> <span class='nav-icon fa fa-address-card' title="Contact Type"> </span> <span class='nav-title'>Contact Type</span> </a>
       </li>

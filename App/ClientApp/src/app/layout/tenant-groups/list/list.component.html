@@ -1,0 +1,103 @@
+<div class="main-container position-relative">
+    <div class="page-title d-flex justify-content-md-between justify-content-end">
+      <div class="xs-title">
+        <span class="mr-2">Tenant Groups</span>
+        <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+      </div>
+      <div>
+        <button class="btn-add btn-cust" id="btnAddTenantGroup" (click)="navigateToTenantGroupAdd()">
+          <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Tenant Group
+        </button>
+      </div>
+    </div>
+
+    <!--desktop view start-->
+    <div class="card border-0 mb-3 card-shadow">
+      <div class="card-body">
+        <div class="d-flex justify-content-center mb-4">
+          <div class="pagination-mat position-relative">
+            <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                           [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+            </mat-paginator>
+          </div>
+        </div>
+        <div class="widget-area-grid padding-0">
+          <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+              <th class="width30 ip-w-25" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+              <td mat-cell *matCellDef="let tenantgroup">{{tenantgroup.TenantName}}</td>
+            </ng-container>
+  
+            <ng-container matColumnDef="description">
+              <th class="width50 ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+              <td mat-cell *matCellDef="let tenantgroup">{{tenantgroup.TenantDescription}}</td>
+            </ng-container>
+  
+            <ng-container matColumnDef="actions">
+              <th class="width20 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let tenantgroup">
+                <div class="action-btns btn-tbl-action">
+                  <button type="button" id="btnViewTenantGroup" title="View" (click)="navigateToTenantGroupView(tenantgroup)">
+                    <span class="fa fa-file-text-o"></span>
+                  </button>
+                  <button type="button" id="btnUpdateTenantGroup" title="Update" (click)="navigateToTenantGroupEdit(tenantgroup)">
+                    <span class="fa fa-pencil-square-o"></span>
+                  </button>
+                  <button type="button" id="btnDeleteTenantGroup" title="Delete" (click)="deleteTenantGroup(tenantgroup)">
+                    <span class="fa fa-trash"></span>
+                  </button>
+                  <button type="button" (click)="activeDeactiveTenantGroup(tenantgroup)" title="Deactivate" *ngIf="tenantgroup.IsActive"><span class="fa fa-toggle-on text-success"></span></button>
+                  <button type="button" (click)="activeDeactiveTenantGroup(tenantgroup)" title="Activate" *ngIf="!tenantgroup.IsActive"><span class="fa fa-toggle-off text-success"></span></button>
+                </div>
+              </td>
+            </ng-container>
+  
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!--desktop view end-->
+  
+    <form [formGroup]="TenantGroupFilterForm" name="userForm" autocomplete="on" novalidate>
+      <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+        <div class="filter-head">
+          <label class="m-0">Apply Filter</label>
+        </div>
+        <div class="filter-body-left d-flex flex-column stylescrollbar">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" id="filterName" formControlName="filterName">
+          </div>
+        </div>
+  
+        <!--[ngClass]="filterClass"-->
+        <div class="filter-footer">
+          <ul class="nav">
+            <li class="nav-item width33" id="liSearchFilter" title="Search" (click)="searchTenantGroupRecordFilter('search')">
+              <a class="nav-link p-0">
+                <span class="fa fa-check"></span>
+              </a>
+            </li>
+            <li class="nav-item width33" id="liResetFilter" title="Reset" (click)="searchTenantGroupRecordFilter('reset')">
+              <a class="nav-link p-0">
+                <span class="fa fa-refresh"></span>
+              </a>
+            </li>
+            <li class="nav-item width33" id="liCloseFilter" title="Close" (click)="closeFilter()">
+              <a class="nav-link p-0">
+                <span class="fa fa-close"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  
+  </div>
+  
+  <div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>
+  
+  

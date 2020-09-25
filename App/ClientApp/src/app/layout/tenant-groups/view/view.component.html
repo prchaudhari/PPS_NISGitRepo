@@ -1,0 +1,102 @@
+<div class="main-container">
+    <div class="page-title"><span class="xs-title"> View Tenant Group</span></div>
+    <form>
+      <div class="card border-0 mb-2 card-shadow">
+        <div class="card-header bg-white d-flex justify-content-between">
+          <div><label class="m-0">Details</label></div>
+          <div>
+            <button type="button" id="btnCollapsedDetails"
+                    class="toggle-btn border-0 p-0 bg-transparent"
+                    (click)="isCollapsedDetails = !isCollapsedDetails"
+                    [attr.aria-expanded]="!isCollapsedDetails"
+                    aria-controls="collapseDetails">
+              <span class="fa" [ngClass]="!isCollapsedDetails? 'fa-angle-down' : 'fa-angle-right'"></span>
+            </button>
+          </div>
+        </div>
+        <div class="card-body" id="collapseDetails" [ngbCollapse]="isCollapsedDetails">
+          <div class="row">
+            <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
+                <label>Name</label>
+                <div>{{tenantgroup.TenantName}}</div>
+              </div>
+              <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
+                <label>Description</label>
+                <div>{{tenantgroup.TenantDescription}}</div>
+              </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="card border-0 mb-2 card-shadow">
+        <div class="card-header  bg-white d-flex justify-content-between">
+          <div><label class="m-0">Tenant Group User Information</label></div>
+          <div>
+            <button type="button" id="btnCollapsedPermissions"
+                    class="toggle-btn border-0 p-0 bg-transparent"
+                    (click)="isCollapsedTenantGroupUsers=!isCollapsedTenantGroupUsers"
+                    [attr.aria-expanded]="!isCollapsedTenantGroupUsers" aria-controls="collapsedTenantGroupUsers">
+              <span class="fa" [ngClass]="!isCollapsedTenantGroupUsers? 'fa-angle-down' : 'fa-angle-right'"></span>
+            </button>
+          </div>
+        </div>
+        <div class="card-body rtl-checkbox parent-rtl" id="collapsedTenantGroupUsers" [ngbCollapse]="isCollapsedTenantGroupUsers">
+  
+          <div class="d-flex justify-content-center mb-4">
+            <div class="pagination-mat position-relative">
+              <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                             [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+              </mat-paginator>
+            </div>
+          </div>
+          <div class="widget-area-grid padding-0">
+            <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+              <!-- Position Column -->
+              <ng-container matColumnDef="firstName">
+                <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+                <td mat-cell *matCellDef="let tenantgroupuser">
+                  <span *ngIf="tenantgroupuser.FirstName==null">-</span>
+                  <span *ngIf="tenantgroupuser.FirstName!=null">{{tenantgroupuser.FirstName}} </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="lastName">
+                <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+                <td mat-cell *matCellDef="let tenantgroupuser">
+                  <span *ngIf="tenantgroupuser.LastName==null">-</span>
+                  <span *ngIf="tenantgroupuser.LastName!=null">{{tenantgroupuser.LastName}} </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="email">
+                <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                <td mat-cell *matCellDef="let tenantgroupuser">
+                  <span *ngIf="tenantgroupuser.EmailAddress==null">-</span>
+                  <span *ngIf="tenantgroupuser.EmailAddress!=null">{{tenantgroupuser.EmailAddress}} </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="no">
+                <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
+                <td mat-cell *matCellDef="let tenantgroupuser">
+                  <span *ngIf="tenantgroupuser.ContactNumber==null">-</span>
+                  <span *ngIf="tenantgroupuser.ContactNumber!=null">{{tenantgroupuser.ContactNumber}} </span>
+                </td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+  
+        </div>
+      </div>
+    </form>
+  
+    <div class="card border-0 mt-4 mb-3 bg-transparent">
+      <div class="card-body p-0">
+        <button class="btn-footer-fill mr-2" id="btnSave" (click)="navigateToTenantGroupEdit()"> Update</button>
+        <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete"(click)="deleteTenantGroup()">Delete</button>
+        <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div class="overlay a" id="divOverlayFilter" [ngClass]="!isTenantGroupUserContainer? 'hide':'show'"></div>
+  
