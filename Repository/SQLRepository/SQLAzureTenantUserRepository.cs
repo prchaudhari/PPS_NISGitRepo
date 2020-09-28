@@ -102,7 +102,7 @@ namespace nIS
                         IsDeleted = false,
                         IsLocked = false,
                         NoofAttempts = 0,
-                        //CountryId = user.CountryId,
+                        CountryId = user.CountryId,
                         TenantCode = tenantCode
                     });
                 });
@@ -182,7 +182,7 @@ namespace nIS
                         //userRecord.IsLocked = false;
                         userRecord.NoofAttempts = 0;
                         userRecord.TenantCode = tenantCode;
-                        //userRecord.CountryId = user.CountryId;
+                        userRecord.CountryId = user.CountryId;
                     });
 
                     nVidYoEntitiesDataContext.SaveChanges();
@@ -276,18 +276,6 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntities = new NISEntities(this.connectionString))
                 {
-                    if (userSearchParameter.IsSkipSuperAdmin == true)
-                    {
-                        if (userSearchParameter.TenantUserIdentifierToSkip != string.Empty)
-                        {
-                            userSearchParameter.TenantUserIdentifierToSkip = userSearchParameter.TenantUserIdentifierToSkip + "," + "1";
-                        }
-                        else
-                        {
-                            userSearchParameter.TenantUserIdentifierToSkip = "1";
-
-                        }
-                    }
                     string whereClause = this.WhereClauseGenerator(userSearchParameter, tenantCode);
                     userRecords = new List<TenantUserRecord>();
 
@@ -307,19 +295,26 @@ namespace nIS
                         .OrderBy(userSearchParameter.SortParameter.SortColumn + " " + userSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
                     }
+                    if (userRecords?.Count() > 0)
+                    {
+                        StringBuilder countryIdQuery = new StringBuilder();
+                        countryIdQuery = countryIdQuery.Append("(" + string.Join("or ", userRecords.Select(item => string.Format("Id.Equals({0}) ", item.CountryId))) + ")");
+                        countires = nISEntities.CountryRecords.Where(countryIdQuery.ToString()).ToList();
+                    }
                 }
                 IList<TenantUser> tempTenantUsers = new List<TenantUser>();
                 userRecords?.ToList().ForEach(userRecord =>
                 {
-                  
+                    string contactnumber = countires.Where(i => i.Id == userRecord.CountryId).FirstOrDefault().DialingCode + "-" + userRecord.ContactNumber;
+
                     tempTenantUsers.Add(new TenantUser()
                     {
                         Identifier = userRecord.Id,
                         FirstName = userRecord.FirstName,
                         LastName = userRecord.LastName,
                         EmailAddress = userRecord.EmailAddress,
-                       // ContactNumber = contactnumber,
-                        //CountryId = (long)userRecord.CountryId,
+                        ContactNumber = contactnumber,
+                        CountryId = (long)userRecord.CountryId,
                         Image = userRecord.Image,
                         IsActive = userRecord.IsActive,
                         IsLocked = userRecord.IsLocked,

@@ -118,6 +118,13 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/tenants']);
   }
+
+  navigateToTenantUsers() {
+    this.URL = '/tenantusers';
+    this.hideSidebar();
+    this.route.navigate(['/tenantusers']);
+  }
+
   navigateToTenantGroups() {
     this.URL = '/tenantgroups';
     this.hideSidebar();

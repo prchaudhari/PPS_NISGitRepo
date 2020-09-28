@@ -532,7 +532,7 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     var schedulelog = nISEntitiesDataContext.ScheduleLogRecords.OrderByDescending(item => item.CreationDate).ToList().FirstOrDefault();
-                    dashboardData.LastSCheduleRunDate = schedulelog.CreationDate.ToShortDateString();
+                    dashboardData.LastSCheduleRunDate = schedulelog.CreationDate;
                     var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == schedulelog.Id).ToList();
                     dashboardData.GeneratedStatementsOfLastscheduleRun = schedulelogdetails.Where(item => item.Status == ScheduleLogStatus.Completed.ToString()).ToList().Count;
                     dashboardData.ActiveExceptionsOfLastscheduleRun = schedulelogdetails.Where(item => item.Status == ScheduleLogStatus.Failed.ToString()).ToList().Count;

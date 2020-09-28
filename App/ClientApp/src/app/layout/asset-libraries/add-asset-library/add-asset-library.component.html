@@ -128,7 +128,7 @@
               Last Updated Date
             </th>
             <td mat-cell *matCellDef="let element">
-              {{element.LastUpdatedDate | date:"dd/MM/yyyy h:mm a"}}
+              <span>{{element.LastUpdatedDate | date:DataFormat}} </span>{{element.LastUpdatedDate | date:"h:mm a"}}
             </td>
           </ng-container>
 

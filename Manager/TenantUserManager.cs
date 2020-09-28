@@ -207,7 +207,7 @@ namespace nIS
         }
 
         #endregion
-      
+
         #region Get Count
 
         /// <summary>
@@ -325,7 +325,6 @@ namespace nIS
                             {
                                 //string base64Image = "data:image/jpg;base64,";
                                 //string path1 = System.Web.HttpContext.Current.Server.MapPath("~/images/user-avatar.jpg");
-
                                 //byte[] imageArray = System.IO.File.ReadAllBytes(path1);
                                 //base64Image += Convert.ToBase64String(imageArray);
                                 //item.Image = base64Image;
@@ -454,7 +453,7 @@ namespace nIS
                 throw exception;
             }
         }
-     
+
         #endregion
     }
 }

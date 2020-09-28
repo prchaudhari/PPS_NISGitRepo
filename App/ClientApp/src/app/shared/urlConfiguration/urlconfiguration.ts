@@ -50,6 +50,18 @@ export class URLConfiguration {
   public static get getHierarchyOrganizationUnitUrl(): string { return "OrganisationUnit/GetOragnaisationUnitHierarchy" };
   public static get userActivate(): string { return "User/Activate" };
   public static get userDeactivate(): string { return "User/DeActivate" };
+
+  //TenantTenantUser Url Method
+  public static get tenantuserGetUrl(): string { return "TenantUser/List" };
+  public static get tenantuserAddUrl(): string { return "TenantUser/Add" };
+  public static get tenantuserUpdateUrl(): string { return "TenantUser/Update" };
+  public static get tenantuserDeleteUrl(): string { return "TenantUser/Delete" };
+  public static get tenantuserUnlockUrl(): string { return "TenantUser/Unlock" };
+  public static get tenantuserlockUrl(): string { return "TenantUser/Lock" };
+  public static get tenantuserCheckDeleteDependencyUrl(): string { return "TenantUser/IsDeleteDependency" };
+  public static get tenantuserActivate(): string { return "TenantUser/Activate" };
+  public static get tenantuserDeactivate(): string { return "TenantUser/DeActivate" };
+
   //Change password--
   public static get changePasswordUrl(): string { return "User/ChangePassword" };
 

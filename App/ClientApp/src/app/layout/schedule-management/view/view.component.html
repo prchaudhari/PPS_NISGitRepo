@@ -196,12 +196,12 @@
       <div class="row">
         <div class="col-md-4 col-lg-4 form-group">
           <label>Start Date</label>
-          <div>{{schedule.StartDate  | date:"dd/MM/yyyy"}}</div>
+          <div>{{schedule.StartDate  |  date:DataFormat}}</div>
         </div>
         <div class="col-md-4 col-lg-4 form-group">
           <label>End Date</label>
           <div>
-            <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()!="0001-01-01T00:00:00"'> {{schedule.EndDate  | date:"dd/MM/yyyy"}}</span>
+            <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()!="0001-01-01T00:00:00"'> {{schedule.EndDate  |  date:DataFormat}}</span>
             <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()=="0001-01-01T00:00:00"'> - </span>
           </div>
         </div>
@@ -268,13 +268,13 @@
           <!-- Symbol Column -->
           <ng-container matColumnDef="DataExtractionDate">
             <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Data Extraction Day </th>
-            <td mat-cell *matCellDef="let element"> {{element.DataExtractionDate | date:"dd/MM/yyyy"}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.DataExtractionDate   |  date:DataFormat}} </td>
           </ng-container>
 
           <!-- Weight Column -->
           <ng-container matColumnDef="BatchExecutionDate">
             <th class="width15 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Batch Execution Day </th>
-            <td mat-cell *matCellDef="let element"> {{element.BatchExecutionDate | date:"dd/MM/yyyy"}}</td>
+            <td mat-cell *matCellDef="let element"> {{element.BatchExecutionDate   |  date:DataFormat}}</td>
           </ng-container>
           
           <ng-container matColumnDef="Actions">

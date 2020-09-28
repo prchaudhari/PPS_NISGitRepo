@@ -131,13 +131,16 @@
       </li>
 
       <!--<li [ngClass]="(URL=='/renderengines')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToRenderEngine()">
-        <a> <span class='nav-icon icon-reportGenerations2' title="Render Engines"> </span> <span class='nav-title'>Render Engines</span> </a>
-      </li>-->
+    <a> <span class='nav-icon icon-reportGenerations2' title="Render Engines"> </span> <span class='nav-title'>Render Engines</span> </a>
+  </li>-->
       <li [ngClass]="(URL=='/country')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToCountry()">
         <a> <span class='nav-icon fa fa-flag' title="Country"> </span> <span class='nav-title'>Country</span> </a>
       </li>
       <li [ngClass]="(URL=='/themeConfiguration')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateTothemeConfiguration()">
         <a> <span class='nav-icon fa fa-gear' title="Theme ConfigurationComponent"> </span> <span class='nav-title'>Theme Configuration</span> </a>
+      </li>
+      <li [ngClass]="(URL=='/tenantuser')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isSuperAdminUser" (click)="navigateToTenantUsers()">
+        <a> <span class='nav-icon icon-users-line2' title="Users"> </span> <span class='nav-title'>Users</span> </a>
       </li>
       <li [ngClass]="(URL=='/statemenetsearch')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToStatemenetSearch()"
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Statement Search','Operation' : 'View'}))">

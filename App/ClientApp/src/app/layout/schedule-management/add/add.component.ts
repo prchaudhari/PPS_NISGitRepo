@@ -128,7 +128,9 @@ export class AddComponent implements OnInit {
     });
   }
 
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.st = new Statement;
     this.st.Name = "Please Select";
     this.st.Identifier = 0;

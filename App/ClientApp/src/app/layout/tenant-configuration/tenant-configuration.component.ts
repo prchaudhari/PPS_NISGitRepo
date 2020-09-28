@@ -271,6 +271,8 @@ export class TenantConfigurationComponent implements OnInit {
           this.spinner.stop();
           if (httpEvent["status"] === 200) {
             this._messageDialogService.openDialogBox('Message', "Asset configuration saved successfully", Constants.msgBoxSuccess);
+            localStorage.removeItem("DateFormat");
+            localStorage.setItem("DateFormat", tenantConfigurationObj.DateFormat);
           }
 
         }

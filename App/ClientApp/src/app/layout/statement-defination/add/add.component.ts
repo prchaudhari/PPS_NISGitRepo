@@ -80,7 +80,9 @@ export class AddComponent implements OnInit {
     });
   }
 
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.statementFormGroup = this.formbuilder.group({
       statementName: ['', Validators.compose([Validators.required, Validators.minLength(2),
       Validators.maxLength(100)])],

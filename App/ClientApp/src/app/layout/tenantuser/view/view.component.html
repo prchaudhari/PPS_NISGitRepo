@@ -1,0 +1,62 @@
+<div class="main-container">
+  <div class="page-title">
+    <span class="xs-title"> User Details </span>
+  </div>
+
+  <div class="card border-0 mb-2 card-shadow">
+    <div class="card-body" id="collapseDetails">
+      <div class="row">
+        <div class="col-md-4 col-sm-5 col-12 form-group">
+          <div class="profile-avtar-box">
+            <!--letter image-->
+            <!--<div class="ltr-img">
+              <span>T</span>
+              <span>S</span>
+            </div>-->
+            <!--jpg png...-->
+            <div *ngIf="tenantuserRecord.Image!='' && tenantuserRecord.Image!=null" class="image-preview">
+              <img [src]="tenantuserRecord.Image" class="profile-avtar">
+            </div>
+            <div *ngIf="tenantuserRecord.Image=='' || tenantuserRecord.Image==null">
+              <div class="ltr-img">
+                <span>{{tenantuserRecord.FirstName.charAt(0) | titlecase}}</span>
+                <span>{{tenantuserRecord.LastName.charAt(0) | titlecase}}</span>
+              </div>
+            </div>
+          </div>
+          <div style="clear:both"></div>
+        </div>
+        <div class="col-md-8 col-sm-7 col-xs-12">
+          <div class="row">
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <label>First Name</label>
+              <div>{{tenantuserRecord.FirstName}}</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <label>Last Name</label>
+              <div>{{tenantuserRecord.LastName}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <label>Email Id</label>
+              <div>{{tenantuserRecord.EmailAddress}}</div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
+              <label>Mobile No.</label>
+              <div>{{tenantuserRecord.ContactNumber}}</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+      <button class="btn-footer-fill mr-2" id="btnSave" (click)="editTenantUser()">Update</button>
+      <button class="btn-footer-fill-delete bg-danger mr-2" (click)="deleteTenantUser()" id="btnDelete">Delete</button>
+      <button class="btn-footer-outline" id="btnCancel" (click)="backClicked()">Cancel</button>
+    </div>
+  </div>
+</div>

@@ -181,8 +181,9 @@ export class AddAssetLibraryComponent implements OnInit {
       me.DeleteAsset(assetId);
     }
   }
-
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     this.dataSource = new MatTableDataSource(List_Data);
     this.dataSource.sort = this.sort;
     this.assetLibraryFormGroup = this.formbuilder.group({

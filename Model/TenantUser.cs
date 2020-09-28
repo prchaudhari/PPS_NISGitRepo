@@ -72,7 +72,7 @@ namespace nIS
         /// <summary>
         /// dateFormat
         /// </summary>
-        private string dateFormat=string.Empty;
+        private string dateFormat = string.Empty;
 
         /// <summary>
         /// The validation engine objecct
@@ -233,21 +233,6 @@ namespace nIS
             }
         }
 
-        /// <summary>
-        /// Gets or sets role field.
-        /// </summary>
-        [Description("Roles")]
-        public IList<Role> Roles
-        {
-            get
-            {
-                return this.roles;
-            }
-            set
-            {
-                this.roles = value;
-            }
-        }
 
         /// <summary>
         /// The tenant code
@@ -264,7 +249,10 @@ namespace nIS
         /// </summary>
         public long CountryId;
 
-        public string DateFormat=string.Empty;
+        /// <summary>
+        /// the date format
+        /// </summary>
+        public string DateFormat = string.Empty;
 
         #endregion
 
@@ -293,11 +281,6 @@ namespace nIS
                 if (!this.validationEngine.IsValidText(this.ContactNumber))
                 {
                     exception.Data.Add(this.utility.GetDescription("ContactNumber", typeof(TenantUser)), ModelConstant.USER_MODEL_SECTION + "~" + ModelConstant.INVALID_USER_CONTACT_NUMBER);
-                }
-
-                if (this.Roles?.Count == 0)
-                {
-                    exception.Data.Add(this.utility.GetDescription("Roles", typeof(TenantUser)), ModelConstant.USER_MODEL_SECTION + "~" + ModelConstant.INVALID_USER_NAME);
                 }
 
                 if (exception.Data.Count > 0)

@@ -51,7 +51,7 @@
             <div class="card border-0 mb-2 card-shadow">
               <div class="card-body">
                 <h6>{{statement.StatementOwnerName}}</h6>
-                <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:"dd/MM/yyyy"}}</span></div>
+                <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:DataFormat}}</span></div>
                 <div><label>Status : </label><span class="badge badge-primary p-1 ml-1">{{statement.Status}}</span></div>
                 <!--<div><label>Status : </label><span class="badge badge-warning p-1 ml-1">In Process</span></div>
                 <div><label>Status : </label><span class="badge badge-success pdanger1 ml-1">Published</span></div>-->
@@ -96,7 +96,7 @@
                      (cdkDropListDropped)="drop($event)">
                   <div class="example-box p-2" *ngFor="let item of pages" cdkDrag>
                     <span>{{item.DisplayName}} - V{{item.Version}}.0</span>
-                    <span class="pull-right">{{item.PublishedOn  | date:"dd/MM/yyyy"}}</span>
+                    <span class="pull-right">{{item.PublishedOn  |date:DataFormat}}</span>
                   </div>
                 </div>
               </div>
@@ -116,7 +116,7 @@
                      (cdkDropListDropped)="drop($event)">
                   <div class="example-box p-2" *ngFor="let item of selectedPages" cdkDrag>
                     <span>{{item.DisplayName}} - V{{item.Version}}.0</span>
-                    <span class="pull-right">{{item.PublishedOn  | date:"dd/MM/yyyy"}}</span>
+                    <span class="pull-right">{{item.PublishedOn  |date:DataFormat}}</span>
                   </div>
                 </div>
               </div>

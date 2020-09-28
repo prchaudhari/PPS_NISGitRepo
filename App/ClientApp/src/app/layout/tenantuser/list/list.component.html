@@ -1,0 +1,187 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2">Tenant Users</span>
+      <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+    </div>
+    <div>
+      <button class="btn-add btn-cust" title="Add TenantUser" (click)="navigateToAddTenantUser()" id="btnAddTenantUsers">
+        <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Tenan tUser
+      </button>
+      <!--<button class="btn-add btn-cust" id="btnAddTenantUsers" routerLink="Add">
+        <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> TenantUser
+      </button>-->
+    </div>
+  </div>
+  <!--desktop view start-->
+  <div class="card border-0 mb-3 card-shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="pagination-mat position-relative">
+          <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                         [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+          </mat-paginator>
+        </div>
+      </div>
+      <div class="widget-area-grid padding-0">
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+          <!-- Position Column -->
+          <ng-container matColumnDef="name">
+            <th class="width20  ip-w-20" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element">
+
+              <!--for jpg png etc-->
+              <div *ngIf="element.Image!='' && element.Image!=null">
+                <img class="user-img" [src]="element.Image">
+              </div>
+              <!--for letter image-->
+              <div *ngIf="element.Image=='' || element.Image==null"><span class="user-img-ltr"><span>{{element.FirstName.charAt(0) | titlecase}}</span><span>{{element.LastName.charAt(0) | titlecase}}</span></span></div>
+              <span class="user-name"> {{element.FirstName}} {{element.LastName}}</span>
+            </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="email">
+            <th class="width20 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.EmailAddress}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="mobileno">
+            <th class="width13 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.ContactNumber}} </td>
+          </ng-container>
+          <!-- Symbol Column -->
+
+          <ng-container matColumnDef="active">
+            <th class="width8 ip-w-5" mat-header-cell *matHeaderCellDef> Active </th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.IsActive">Yes</span>
+              <span *ngIf="!element.IsActive">No</span>
+
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="action-btns btn-tbl-action">
+                <button type="button" title="View TenantUser" (click)="viewTenantUser(element)" id="btnView" routerLink="View"><span class="fa fa-file-text-o"></span></button>
+                <button type="button" title="Update TenantUser"
+                        *ngIf="element.IsActive" (click)="editTenantUser(element)" id="btnUpdate">
+                  <span class="fa fa-pencil-square-o"></span>
+                </button>
+                <!--<button type="button" (click)="unLockTenantUser(element)" *ngIf="element.IsLocked" title="Unlock TenantUser"><span class="fa fa-lock"></span></button>
+                <button type="button" (click)="unLockTenantUser(element)" *ngIf="!element.IsLocked" title="Lock TenantUser"><span class="fa fa-unlock-alt"></span></button>-->
+
+                <button type="button" (click)="activeDeactiveTenantUser(element)" title="Deactivate TenantUser" *ngIf="element.IsActive"><span class="fa fa-toggle-on text-success"></span></button>
+                <button type="button" (click)="activeDeactiveTenantUser(element)" title="Activate TenantUser" *ngIf="!element.IsActive"><span class="fa fa-toggle-off text-success"></span></button>
+
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <!--desktop view end-->
+  <div class="modal fade cust-modal bd-example-modal-lg" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="mb-4">
+            <h6 class="font-weight-normal text-secondary">Are you sure, you want to delete this record?</h6>
+          </div>
+          <button class="btn-footer-fill mr-1 btn-sm" type="button" autofocus="" data-toggle="modal" data-target="#successModal" data-dismiss="modal" aria-label="Close">Yes</button>
+          <button class="btn-footer-outline btn-sm" type="button" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade cust-modal bd-example-modal-lg" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="mb-4">
+            <h6 class="font-weight-normal text-secondary">Record deleted successfully</h6>
+          </div>
+          <button class="btn-footer-fill mr-1 btn-sm" type="button" autofocus="" data-dismiss="modal" aria-label="Close">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+    <div class="filter-head">
+      <label class="m-0">Apply Filter</label>
+    </div>
+    <form [formGroup]="tenantuserFormGroup" name="userForm" class="filter-body-left d-flex flex-column stylescrollbar">
+      <div class="form-group">
+        <label>Name</label>
+        <input [(ngModel)]="TenantUserFilter.FirstName" type="text" formControlName="FirstName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Email Id</label>
+        <input [(ngModel)]="TenantUserFilter.EmailAddress" type="text" formControlName="EmailAddress" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Lock Status</label>
+        <select formControlName="TenantUserLockStatus" (change)="onLockStatusSelected($event)" class="form-control">
+          <option *ngFor="let item of lockStatusArray" [value]="item.Identifier">{{item.Name}}</option>
+        </select>
+        <!--<div>
+          <label class="switch d-block">
+            <input type="checkbox" (change)="lockEventCheck($event.target)" formControlName="LockStatus" [(ngModel)]="TenantUserFilter.LockStatus">
+            <span class="slider round"></span>
+          </label>
+        </div>-->
+      </div>
+
+      <div class="form-group">
+        <label>Activation Status</label>
+        <select formControlName="TenantUserActiveStatus" (change)="onActiveStatusSelected($event)" class="form-control">
+          <option *ngFor="let item of activeStatusArray" [value]="item.Identifier">{{item.Name}}</option>
+        </select>
+        <!--<div>
+          <label class="switch d-block">
+            <input type="checkbox" (change)="activationEventCheck($event.target)" formControlName="ActivationStatus"  [(ngModel)]="TenantUserFilter.ActivationStatus">
+            <span class="slider round"></span>
+          </label>
+        </div>-->
+      </div>
+    </form>
+    <!--[ngClass]="filterClass"-->
+    <div class="filter-footer">
+      <ul class="nav">
+        <li class="nav-item width33" title="Search" (click)="filterSetUp('Search')">
+          <a class="nav-link p-0">
+            <span class="fa fa-check"></span>
+          </a>
+        </li>
+        <li class="nav-item width33" title="Reset" (click)="filterSetUp('Reset')">
+          <a class="nav-link p-0">
+            <span class="fa fa-refresh"></span>
+          </a>
+        </li>
+        <li class="nav-item width33" title="Close" (click)="closeFilter()">
+          <a class="nav-link p-0">
+            <span class="fa fa-close"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>
