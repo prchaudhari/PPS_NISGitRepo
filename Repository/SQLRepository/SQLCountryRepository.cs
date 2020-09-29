@@ -216,6 +216,11 @@ namespace nIS
                         {
                             throw new CountryReferenceInUserException(tenantCode);
                         }
+                        TenantUserRecord tenantUserRecord = nISEntitiesDataContext.TenantUserRecords.Where(item => item.CountryId == country.Identifier && item.IsDeleted == false).FirstOrDefault();
+                        if (user != null)
+                        {
+                            throw new CountryReferenceInUserException(tenantCode);
+                        }
                         countryRecords.IsDeleted = true;
                         nISEntitiesDataContext.SaveChanges();
                     }

@@ -12,21 +12,16 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class UserRecord
+    public partial class MultiTenantUserAccessMapRecord
     {
         public long Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string ContactNumber { get; set; }
-        public string EmailAddress { get; set; }
-        public string Image { get; set; }
-        public bool IsLocked { get; set; }
-        public int NoofAttempts { get; set; }
+        public long UserId { get; set; }
+        public long AssociatedTenantId { get; set; }
+        public long OtherTenantId { get; set; }
+        public long OtherTenantAccessRoleId { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public string TenantCode { get; set; }
-        public Nullable<long> CountryId { get; set; }
-        public bool IsInstanceManager { get; set; }
-        public bool IsGroupManager { get; set; }
+        public long LastUpdatedBy { get; set; }
+        public System.DateTime LastUpdatedDate { get; set; }
     }
 }

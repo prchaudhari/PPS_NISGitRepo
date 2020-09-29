@@ -147,6 +147,9 @@
     <Compile Include="IRepository\IWidgetRepository.cs" />
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
+    <Compile Include="MultiTenantUserAccessMapRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="NewsAlertRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -270,6 +273,9 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VideoRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="View_MultiTenantUserAccessMapRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="View_PageRecord.cs">

@@ -81,5 +81,7 @@ namespace nIS
         public virtual DbSet<ContactTypeRecord> ContactTypeRecords { get; set; }
         public virtual DbSet<TenantContactRecord> TenantContactRecords { get; set; }
         public virtual DbSet<TenantUserRecord> TenantUserRecords { get; set; }
+        public virtual DbSet<MultiTenantUserAccessMapRecord> MultiTenantUserAccessMapRecords { get; set; }
+        public virtual DbSet<View_MultiTenantUserAccessMapRecord> View_MultiTenantUserAccessMapRecord { get; set; }
     }
 }

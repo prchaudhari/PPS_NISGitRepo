@@ -65,6 +65,16 @@ namespace nIS
         private bool isLocked = true;
 
         /// <summary>
+        /// The user isInstanceManager status
+        /// </summary>
+        private bool isInstanceManager = false;
+
+        /// <summary>
+        /// The user isGroupManager status
+        /// </summary>
+        private bool isGroupManager = false;
+
+        /// <summary>
         /// The role
         /// </summary>
         private IList<Role> roles = new List<Role>();
@@ -72,7 +82,7 @@ namespace nIS
         /// <summary>
         /// dateFormat
         /// </summary>
-        private string dateFormat=string.Empty;
+        private string dateFormat = string.Empty;
 
         /// <summary>
         /// The validation engine objecct
@@ -218,6 +228,39 @@ namespace nIS
         }
 
         /// <summary>
+        /// Gets or sets isGroupManager field.
+        /// </summary>
+        [Description("IsGroupManager")]
+        public bool IsGroupManager
+        {
+            get
+            {
+                return this.isGroupManager;
+            }
+            set
+            {
+                this.isGroupManager = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets isInstanceManager field.
+        /// </summary>
+        [Description("isInstanceManager")]
+        public bool IsInstanceManager
+        {
+            get
+            {
+                return this.isInstanceManager;
+            }
+            set
+            {
+                this.isInstanceManager = value;
+            }
+        }
+
+
+        /// <summary>
         /// Gets or sets no of attempt field.
         /// </summary>
         [Description("No of attempt")]
@@ -264,7 +307,8 @@ namespace nIS
         /// </summary>
         public long CountryId;
 
-        public string DateFormat=string.Empty;
+        public string DateFormat = string.Empty;
+
 
         #endregion
 
