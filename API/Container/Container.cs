@@ -48,6 +48,7 @@ namespace nIS
             unityContainer.RegisterType<ITenantContactRepository, SQLTenantContactRepository>();
             unityContainer.RegisterType<IContactTypeRepository, SQLContactTypeRepository>();
             unityContainer.RegisterType<ITenantUserRepository, SQLTenantUserRepository>();
+            unityContainer.RegisterType<IMultiTenantUserRoleAccessRepository, SQLMultiTenantUserRoleAccessRepository>();
 
             return unityContainer;
         }

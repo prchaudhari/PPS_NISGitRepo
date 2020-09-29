@@ -283,6 +283,7 @@
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\ContactTypeController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\MultiTenantUserRoleAccessController.cs" />
     <Compile Include="Controllers\StatementSearchController.cs" />
     <Compile Include="Controllers\TenantConfigurationController.cs" />
     <Compile Include="Controllers\AssetSettingController.cs" />

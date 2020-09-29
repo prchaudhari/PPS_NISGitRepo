@@ -68,6 +68,7 @@
     <Compile Include="Constants\ClientConstant.cs" />
     <Compile Include="Constants\CountryConstant.cs" />
     <Compile Include="Constants\ExceptionConstant.cs" />
+    <Compile Include="Constants\MultiTenantUserRoleAccessException.cs" />
     <Compile Include="Constants\RenderEngineConstant.cs" />
     <Compile Include="Constants\ScheduleLogConstant.cs" />
     <Compile Include="Constants\StateConstant.cs" />
@@ -89,6 +90,8 @@
     <Compile Include="InvalidEncryptedDataException.cs" />
     <Compile Include="InvalidSearchParameterException.cs" />
     <Compile Include="InvalidTenantException.cs" />
+    <Compile Include="MultiTenantUserRoleAccess\InvalidMultiTenantUserRoleAccessException.cs" />
+    <Compile Include="MultiTenantUserRoleAccess\MultiTenantUserRoleAccessNotFoundException.cs" />
     <Compile Include="NullArgumentException.cs" />
     <Compile Include="Render Engine\DuplicateRenderEngineFoundException.cs" />
     <Compile Include="Render Engine\InvalidRenderEngineException.cs" />

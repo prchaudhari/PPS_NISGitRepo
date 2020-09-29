@@ -706,6 +706,8 @@
 warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_MultiTenantUserAccessMap">
           <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
             <PropertyRef Name="UserName" />
             <PropertyRef Name="EmailAddress" />
             <PropertyRef Name="AssociatedTenantId" />
@@ -714,6 +716,7 @@ warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not ha
             <PropertyRef Name="OtherTenantId" />
             <PropertyRef Name="OtherTenantCode" />
             <PropertyRef Name="OtherTenantName" />
+            <PropertyRef Name="RoleId" />
             <PropertyRef Name="RoleName" />
             <PropertyRef Name="IsActive" />
             <PropertyRef Name="IsDeleted" />
@@ -721,6 +724,8 @@ warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not ha
             <PropertyRef Name="LastUpdatedByUserName" />
             <PropertyRef Name="LastUpdatedDate" />
           </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="201" Nullable="false" />
           <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AssociatedTenantId" Type="bigint" Nullable="false" />
@@ -731,6 +736,7 @@ warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not ha
           <Property Name="OtherTenantCode" Type="nvarchar(max)" Nullable="false" />
           <Property Name="OtherTenantName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="OtherTenantType" Type="nvarchar(max)" />
+          <Property Name="RoleId" Type="bigint" Nullable="false" />
           <Property Name="RoleName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
@@ -975,6 +981,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
           <EntitySet Name="View_MultiTenantUserAccessMap" EntityType="Self.View_MultiTenantUserAccessMap" store:Type="Views" store:Schema="NIS">
             <DefiningQuery>SELECT 
+    [View_MultiTenantUserAccessMap].[Id] AS [Id], 
+    [View_MultiTenantUserAccessMap].[UserId] AS [UserId], 
     [View_MultiTenantUserAccessMap].[UserName] AS [UserName], 
     [View_MultiTenantUserAccessMap].[EmailAddress] AS [EmailAddress], 
     [View_MultiTenantUserAccessMap].[AssociatedTenantId] AS [AssociatedTenantId], 
@@ -985,6 +993,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_MultiTenantUserAccessMap].[OtherTenantCode] AS [OtherTenantCode], 
     [View_MultiTenantUserAccessMap].[OtherTenantName] AS [OtherTenantName], 
     [View_MultiTenantUserAccessMap].[OtherTenantType] AS [OtherTenantType], 
+    [View_MultiTenantUserAccessMap].[RoleId] AS [RoleId], 
     [View_MultiTenantUserAccessMap].[RoleName] AS [RoleName], 
     [View_MultiTenantUserAccessMap].[IsActive] AS [IsActive], 
     [View_MultiTenantUserAccessMap].[IsDeleted] AS [IsDeleted], 
@@ -2058,6 +2067,9 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             <PropertyRef Name="LastUpdatedBy" />
             <PropertyRef Name="LastUpdatedByUserName" />
             <PropertyRef Name="LastUpdatedDate" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
           </Key>
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
           <Property Name="EmailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2075,6 +2087,9 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
           <Property Name="LastUpdatedByUserName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="RoleId" Type="Int64" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2958,6 +2973,9 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="View_MultiTenantUserAccessMapRecord">
             <EntityTypeMapping TypeName="NISModel.View_MultiTenantUserAccessMapRecord">
               <MappingFragment StoreEntitySet="View_MultiTenantUserAccessMap">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
                 <ScalarProperty Name="LastUpdatedByUserName" ColumnName="LastUpdatedByUserName" />
                 <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />

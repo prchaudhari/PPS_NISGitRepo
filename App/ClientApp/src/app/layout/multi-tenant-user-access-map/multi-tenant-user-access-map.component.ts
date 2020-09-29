@@ -14,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-multi-tenant-user-access-map',
   templateUrl: './multi-tenant-user-access-map.component.html',
-  styleUrls: ['./multi-tenant-user-access-map.component.scss']
+ // styleUrls: ['./multi-tenant-user-access-map.component.scss']
 })
 export class MultiTenantUserAccessMapComponent implements OnInit {
 
