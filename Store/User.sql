@@ -10,5 +10,6 @@
 	[NoofAttempts] INT NOT NULL,
 	[IsActive] BIT NOT NULL,
 	[IsDeleted] BIT NOT NULL,
-	[TenantCode] NVARCHAR(50) NOT NULL
+	[TenantCode] NVARCHAR(50) NOT NULL,
+	[CountryId] [bigint] NULL,
 )

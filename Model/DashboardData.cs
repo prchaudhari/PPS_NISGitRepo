@@ -8,7 +8,7 @@ namespace nIS
 {
     public class DashboardData
     {
-        public string LastSCheduleRunDate { get; set; }
+        public DateTime LastSCheduleRunDate { get; set; }
         public int GeneratedStatementsOfLastscheduleRun { get; set; }
         public int ActiveExceptionsOfLastscheduleRun { get; set; }
         public int TotalGeneratedStatements { get; set; }

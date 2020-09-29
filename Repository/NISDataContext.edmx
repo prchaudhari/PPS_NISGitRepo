@@ -513,6 +513,23 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CountryId" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="TenantUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ContactNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="Image" Type="nvarchar(max)" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+          <Property Name="NoofAttempts" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CountryId" Type="bigint" />
+        </EntityType>
         <EntityType Name="Top4IncomeSources">
           <Key>
             <PropertyRef Name="Id" />
@@ -892,6 +909,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="StatementPageMap" EntityType="Self.StatementPageMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantConfiguration" EntityType="Self.TenantConfiguration" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantContact" EntityType="Self.TenantContact" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="TenantUser" EntityType="Self.TenantUser" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Top4IncomeSources" EntityType="Self.Top4IncomeSources" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="NIS" store:Type="Tables" />
@@ -1076,6 +1094,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
           <EntitySet Name="ContactTypeRecords" EntityType="NISModel.ContactTypeRecord" />
           <EntitySet Name="TenantContactRecords" EntityType="NISModel.TenantContactRecord" />
+          <EntitySet Name="TenantUserRecords" EntityType="NISModel.TenantUserRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1915,6 +1934,23 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CountryId" Type="Int64" Nullable="false" />
         </EntityType>
+        <EntityType Name="TenantUserRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+          <Property Name="NoofAttempts" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CountryId" Type="Int64" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2752,6 +2788,24 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TenantUserRecords">
+            <EntityTypeMapping TypeName="NISModel.TenantUserRecord">
+              <MappingFragment StoreEntitySet="TenantUser">
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NoofAttempts" ColumnName="NoofAttempts" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
                 <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />

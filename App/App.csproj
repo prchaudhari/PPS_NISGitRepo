@@ -44,6 +44,7 @@
     <None Remove="ClientApp\src\app\layout\tenant-configuration\tenantConfiguration.service.ts" />
     <None Remove="ClientApp\src\app\layout\tenant-configuration\tenatConfiguration.ts" />
     <None Remove="ClientApp\src\app\layout\tenants\tenant.ts" />
+    <None Remove="ClientApp\src\app\layout\tenantuser\tenantuser.ts" />
     <None Remove="ClientApp\src\app\layout\users\user.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\widget.service.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\Widget.ts" />
@@ -69,6 +70,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\layout\statement-defination\statement.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\statement-search\statementSearch.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\tenants\tenant.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\tenantuser\tenantuser.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.spec.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\login\login.service.ts" />

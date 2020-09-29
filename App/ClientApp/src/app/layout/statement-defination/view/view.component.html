@@ -37,7 +37,7 @@
           <div class="card border-0 mb-2 card-shadow">
             <div class="card-body">
               <h6>{{statement.StatementOwnerName}}</h6>
-              <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:"dd/MM/yyyy"}}</span></div>
+              <div><label class="mb-0">Date : </label><span class="ml-1">{{statement.CreatedDate | date:DataFormat}}</span></div>
               <div>
                 <label *ngIf="statement.Status=='New'">Status : <span class="badge badge-primary p-1">{{statement.Status}} </span></label>
                 <label *ngIf="statement.Status=='Published'">Status : <span class="badge badge-success p-1" >{{statement.Status}} </span></label>
@@ -70,7 +70,7 @@
           <div class="example-list">
             <div class="example-box p-2" style="cursor:initial" *ngFor="let item of statement.StatementPages">
               <span>{{item.PageName}} - V{{item.PageVersion}}.0</span>
-              <span class="pull-right">{{item.PagePublishDate | date:"dd/MM/yyyy"}}</span>
+              <span class="pull-right">{{item.PagePublishDate |date:DataFormat}}</span>
             </div>
           </div>
         </div>

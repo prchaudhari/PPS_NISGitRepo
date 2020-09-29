@@ -122,6 +122,11 @@
     <Compile Include="TenantContact\DuplicateUserMobileNumberFoundException.cs" />
     <Compile Include="TenantContact\InvalidUserException.cs" />
     <Compile Include="TenantContact\UserNotFoundException.cs" />
+    <Compile Include="TenantUser\DuplicateUserEmailAddressFoundException.cs" />
+    <Compile Include="TenantUser\DuplicateUserFoundException.cs" />
+    <Compile Include="TenantUser\DuplicateUserMobileNumberFoundException.cs" />
+    <Compile Include="TenantUser\InvalidUserException.cs" />
+    <Compile Include="TenantUser\UserNotFoundException.cs" />
     <Compile Include="User\AlreadyUsedPasswordException.cs" />
     <Compile Include="User\DeactivatedUserLoginException.cs" />
     <Compile Include="User\DuplicateUserEmailAddressFoundException.cs" />

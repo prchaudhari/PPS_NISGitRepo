@@ -282,6 +282,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("currentUserTheme", userData.UserTheme);
         userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);
         localStorage.setItem("DateFormat", data.DateFormat);
+
         if (this.roleDetail.IsActive == false) {
           this._messageDialogService.openDialogBox('Error', "User role is deactivated.", Constants.msgBoxError);
           this.localstorageservice.removeLocalStorageData();

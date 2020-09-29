@@ -143,6 +143,7 @@
     <Compile Include="IRepository\IStatementRepository.cs" />
     <Compile Include="IRepository\IPageRepository.cs" />
     <Compile Include="IRepository\IScheduleRepository.cs" />
+    <Compile Include="IRepository\ITenantUserRepository.cs" />
     <Compile Include="IRepository\IWidgetRepository.cs" />
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="SQLRepository\SQLAnalyticsDataRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureCityRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureStateRepository.cs" />
+    <Compile Include="SQLRepository\SQLAzureTenantUserRepository.cs" />
     <Compile Include="SQLRepository\SQLContactTypeRepository.cs" />
     <Compile Include="SQLRepository\SQLCountryRepository.cs" />
     <Compile Include="SQLRepository\SQLTenantContactRepository.cs" />
@@ -241,6 +243,9 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TenantRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TenantUserRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Top4IncomeSourcesRecord.cs">

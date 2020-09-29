@@ -118,6 +118,7 @@
     <None Include="Seed Data Scripts\Views\GridViews.sql" />
     <Build Include="TenantContact.sql" />
     <Build Include="ContactType.sql" />
+    <Build Include="TenantUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

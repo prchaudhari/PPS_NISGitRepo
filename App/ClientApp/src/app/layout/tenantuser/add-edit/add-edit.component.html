@@ -1,0 +1,159 @@
+<div class="main-container">
+  <div class="page-title">
+    <span class="xs-title" *ngIf="tenantuserEditModeOn == false"> Add User  </span>
+    <span class="xs-title" *ngIf="tenantuserEditModeOn == true"> Update User  </span>
+  </div>
+  <form [formGroup]="tenantuserFormGroup" name="tenantuserForm" autocomplete="on" novalidate>
+    <div class="card border-0 mb-2 card-shadow">
+      <div class="card-body" id="collapseDetails">
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-12 form-group">
+            <div class="profile-avtar-box">
+
+              <!--letter image-->
+              <!--<div class="ltr-img">
+                <span>T</span>
+                <span>S</span>
+              </div>-->
+              <div *ngIf="image!='' && image!=null; else imageIcon" class="image-preview">
+                <img [src]="image" class="profile-avtar">
+              </div>
+              <div *ngIf="(image=='' || image==null) && tenantuserEditModeOn">
+                <div class="ltr-img">
+                  <span>{{FirstChar | titlecase}}</span>
+                  <span>{{SecondChar | titlecase}}</span>
+                </div>
+              </div>
+              <ng-template #imageIcon>
+                <div class="image-preview" *ngIf="!tenantuserEditModeOn">
+                  <img src="assets/images/user.png" class="profile-avtar" />
+                </div>
+              </ng-template>
+              <div>
+                <label for="upload-photo" class="m-0 font-weight-normal"> Upload Avatar</label>
+                <input type="file" (change)="onFileChanged($event)" id="upload-photo" accept="image/x-png,image/jpeg,image/jpg" />
+                <div class="validation-msg" style="color:red">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="tenantuserFormErrorObject.showProfilePictureSizeError">
+                      File size should not be greater the 200kb
+                    </li>
+                    <li class="text-danger" *ngIf="tenantuserFormErrorObject.showProfilePictureTypeError">
+                      Invalid file type
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div style="clear:both"></div>
+          </div>
+          <div class="col-md-9 col-sm-8 col-xs-12">
+            <div class="row">
+              <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
+                <label for="inputFirstName">First Name</label><span class="text-danger ml-2">*</span>
+                <input type="text" class="form-control" id="inputFirstName" formControlName="firstName">
+                <div class="validation-msg" style="color:red" *ngIf="firstName.touched && firstName.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="firstName.errors?.pattern">
+                      Invalid first name
+                    </li>
+                    <li class="text-danger" *ngIf="firstName.errors?.minlength">
+                      First name length should not be less than 2
+                    </li>
+                    <li class="text-danger" *ngIf="firstName.errors?.required">
+                      First name required
+                    </li>
+                    <li class="text-danger" *ngIf="firstName.errors?.maxlength">
+                      First name length should not be greater than 50
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
+                <label for="inputLastName">Last Name</label><span class="text-danger ml-2">*</span>
+                <input type="text" class="form-control" id="inputLastName" formControlName="lastName">
+                <div class="validation-msg" style="color:red" *ngIf="lastName.touched && lastName.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="lastName.errors?.pattern">
+                      Invalid last name
+                    </li>
+                    <li class="text-danger" *ngIf="lastName.errors?.required">
+                      last name required
+                    </li>
+                    <li class="text-danger" *ngIf="lastName.errors?.minlength">
+                      Last name length should not be less than 2
+                    </li>
+                    <li class="text-danger" *ngIf="lastName.errors?.maxlength">
+                      Last name length should not be greater than 50
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
+                <label for="inputEmail">Email Id</label><span class="text-danger ml-2">*</span>
+                <input type="email" class="form-control" [readonly]="tenantuserEditModeOn" id="inputEmail" formControlName="email">
+                <div class="validation-msg" style="color:red" *ngIf="email.touched && email.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="email.errors?.pattern">
+                      Invalid email address
+                    </li>
+                    <li class="text-danger" *ngIf="email.errors?.required">
+                      Email address required
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
+                <div class="row">
+                  <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
+                    <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
+                    <select formControlName="CountryCode" (change)='onCountrySelected($event)' class="form-control">
+                      <option *ngFor="let role of countrycodeLists" [value]="role.Identifier">{{role.Code}} {{role.DialingCode}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="tenantuserFormErrorObject.showCountryCodeError" style="list-style-type:none">
+                        <li class="text-danger">
+                          Please select country code
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-7 col-sm-6 col-xs-7 pl-1">
+                    <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
+                    <input type="text" class="form-control" formControlName="mobileNumber">
+                    <div class="validation-msg" style="color:red" *ngIf="mobileNumber.touched && mobileNumber.errors">
+                      <ul style="list-style-type:none">
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.minlength && !mobileNumber.errors?.pattern">
+                          Mobile number should not be less than 10 digits
+                        </li>
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.maxlength && !mobileNumber.errors?.pattern">
+                          Mobile number should not be greater than 10 digits
+                        </li>
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.pattern">
+                          Invalid mobile number
+                        </li>
+                        <li class="text-danger" *ngIf="mobileNumber.errors?.required">
+                          Mobile number required
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card border-0 mt-4 mb-3 bg-transparent">
+      <div class="card-body p-0">
+        <!-- <button class="btn-footer-fill mr-2" style="background:#1c9c14;">Verify</button> -->
+        <button class="btn-footer-fill mr-2" [disabled]="saveButtonValidation()" (click)="onSubmit()">Save</button>
+        <button class="btn-footer-outline" (click)="navigateToListPage()">Cancel</button>
+
+      </div>
+    </div>
+  </form>
+</div>

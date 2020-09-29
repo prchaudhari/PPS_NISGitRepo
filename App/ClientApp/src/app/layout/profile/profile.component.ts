@@ -218,10 +218,17 @@ export class ProfileComponent implements OnInit {
         mobileNo = mobileNoArr[1];
       }
       else {
-        mobileNo = this.userRecord.ContactNumber;
+        mobileNo = this.userRecord.MobileNumber;
       }
-
       let country = this.countrycodeLists.filter(i => { return i.Identifier == this.userRecord.CountryId });
+      this.profileFormGroup.patchValue({
+        firstName: this.userRecord.FirstName,
+        lastName: this.userRecord.LastName,
+        email: this.userRecord.EmailAddress,
+        mobileNumber: mobileNo,
+        CountryCode: country[0].Identifier
+      })
+      this.profileFormGroup.controls['CountryCode'].setValue(country[0].Identifier);
       this.profileFormGroup.patchValue({
         firstName: this.userRecord.FirstName,
         lastName: this.userRecord.LastName,

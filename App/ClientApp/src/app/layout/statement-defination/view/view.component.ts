@@ -69,7 +69,9 @@ export class ViewComponent implements OnInit {
     var response = await statementService.getStatements(searchParameter);
     this.statement = response.List[0];
   }
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
