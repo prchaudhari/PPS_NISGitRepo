@@ -9,6 +9,8 @@ import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent } from '../widgetComponent/widgetComponent';
 
+//If you change dashboard-container class in below HTML template, 
+//then you can also need to change in applyBackgroundImage to replace new class name over there.
 @Component({
   selector: 'app-page-design-preview',
   template: `<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
