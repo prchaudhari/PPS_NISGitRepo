@@ -119,6 +119,7 @@
     <Build Include="TenantContact.sql" />
     <Build Include="ContactType.sql" />
     <Build Include="TenantUser.sql" />
+    <Build Include="MultiTenantUserAccessMap.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

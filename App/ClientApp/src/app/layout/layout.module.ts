@@ -25,8 +25,9 @@ import { DatePipe } from '@angular/common';
 import { CountryComponent } from './country/country.component';
 import { ThemeConfigurationComponent } from './theme-configuration/theme-configuration.component';
 import { ContacttypeComponent } from './contacttype/contacttype.component';
+import { MultiTenantUserAccessMapComponent } from './multi-tenant-user-access-map/multi-tenant-user-access-map.component';
 @NgModule({
-  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent, ThemeConfigurationComponent, ContacttypeComponent],
+  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent, ThemeConfigurationComponent, ContacttypeComponent, MultiTenantUserAccessMapComponent],
   imports: [
     CommonModule,
     FormsModule,

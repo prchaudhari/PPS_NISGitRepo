@@ -1,0 +1,116 @@
+<div class="main-container">
+    <div class="page-title">
+      <span class="xs-title"> Multi-Tenant User Access Mapping  </span>
+    </div>
+
+    <form [formGroup]="multiTenantUserAccessMapFormGroup" name="multiTenantUserAccessMapForm">
+        
+        <div class="card border-0 mb-2 card-shadow">
+          <div class="card-body">
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblSelectTenant" for="inpuPrimaryTenantId">Select Tenant</label> <span class="text-danger"> *</span>
+                    <select id="inpuPrimaryTenantId" formControlName="primaryTenantId" class="form-control">
+                      <option *ngFor="let pt of lstPrimaryTenant" [value]="pt.Identifier">{{pt.TenantName}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                      <ul style="list-style-type:none" *ngIf="tenantUserMappingFormErrorObject.showPrimaryTenantError">
+                        <li class="text-danger">Please select Tenant</li>
+                      </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblTenantUser" for="inputTenantUserId">Select User</label> <span class="text-danger"> *</span>
+                    <select id="inputTenantUserId" formControlName="tenantUserId" class="form-control">
+                    <option *ngFor="let tu of tenantusers" [value]="tu.Identifier">{{tu.UserName}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                    <ul style="list-style-type:none" *ngIf="tenantUserMappingFormErrorObject.showTenantUserError">
+                        <li class="text-danger">Please select User</li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row form-group mt-2">
+              <div class="col-md-4 col-lg-4">
+                <label id="lblOtherTenants" for="inputOtherTenantId">Select Tenant</label> <span class="text-danger"> *</span>
+                <select id="inputOtherTenantId" formControlName="otherTenantId" class="form-control" >
+                  <option *ngFor="let ot of lstOtherTenants" [value]="ot.Identifier">{{ot.TenantName}}</option>
+                </select>
+                <div class="validation-msg" style="color:red">
+                    <ul style="list-style-type:none" *ngIf="tenantUserMappingFormErrorObject.showOtherTenantError">
+                        <li class="text-danger">Please select Tenant</li>
+                    </ul>
+                </div>
+              </div>
+              <div class="col-md-4 col-lg-4">
+                <label id="lblRole" for="inputRoleId">Select Role</label> <span class="text-danger"> *</span>
+                <select id="inputRoleId" formControlName="roleId" class="form-control">
+                  <option *ngFor="let r of roles" [value]="r.Identifier">{{r.Name}}</option>
+                </select>
+                <div class="validation-msg" style="color:red">
+                    <ul style="list-style-type:none" *ngIf="tenantUserMappingFormErrorObject.showUserRoleError">
+                        <li class="text-danger">Please select Role</li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="card border-0 mt-4 mb-3 bg-transparent">
+          <div class="card-body p-0">
+            <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="saveBtnValidation()" (click)="OnSaveBtnClicked()">Save</button>
+            <button class="btn-footer-outline" id="btnCancel" (click)="ResetForm()">Cancel</button>
+          </div>
+        </div>
+    
+    </form>
+
+    <div class="card border-0 mb-3 card-shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-center mb-4">
+            <div class="pagination-mat position-relative">
+              <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                             [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+              </mat-paginator>
+            </div>
+          </div>
+          <div class="widget-area-grid padding-0">
+          <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+            <!-- Position Column -->
+            <ng-container matColumnDef="username">
+              <th class="width30 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
+              <td mat-cell *matCellDef="let element">{{element.UserName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="tenantname">
+              <th class="width35 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Tenant </th>
+              <td mat-cell *matCellDef="let element">{{element.TenantName}}</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="role">
+              <th class="width20 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+              <td mat-cell *matCellDef="let element">{{element.Role}} </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th class="width15 ip-w-25" mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="action-btns btn-tbl-action">
+                  <button type="button" title="Update" id="btnUpdate" (click)="updateTenantUserMapping(element)">
+                    <span class="fa fa-pencil-square-o"></span>
+                  </button>
+                  <button type="button" (click)="deactiveTenantUserMapping(element)" title="Deactivate" *ngIf="element.IsActive"><span class="fa fa-toggle-on text-success"></span></button>
+                <button type="button" (click)="activeTenantUserMapping(element)" title="Activate" *ngIf="!element.IsActive"><span class="fa fa-toggle-off text-success"></span></button>
+                </div>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+            </div>
+        </div>
+      </div>
+ </div>   
+  

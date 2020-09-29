@@ -14,6 +14,7 @@ import { TenantConfigurationComponent } from './tenant-configuration/tenant-conf
 import { CountryComponent } from './country/country.component';
 import { ThemeConfigurationComponent } from './theme-configuration/theme-configuration.component';
 import { ContacttypeComponent} from './contacttype/contacttype.component'
+import { MultiTenantUserAccessMapComponent } from './multi-tenant-user-access-map/multi-tenant-user-access-map.component';
 const routes: Routes = [
   {
     path: '',
@@ -44,6 +45,7 @@ const routes: Routes = [
       { path: 'country', component: CountryComponent },
       { path: 'themeConfiguration', component: ThemeConfigurationComponent },
       { path: 'contacttype', component: ContacttypeComponent },
+      { path: 'multiTenantUserAccess', component: MultiTenantUserAccessMapComponent },
     ]
   }
 

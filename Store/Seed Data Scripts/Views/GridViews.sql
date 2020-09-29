@@ -102,3 +102,28 @@ LEFT JOIN nis.ScheduleRunHistory srh ON sl.Id = srh.ScheduleLogId
 GROUP BY sl.ScheduleName, sl.CreationDate, sl.Status, srh.StartDate, srh.EndDate, sl.Id
 Go
 
+
+/****** Object:  View [NIS].[View_MultiTenantUserAccessMap]    Script Date: 2020-09-29 14:33:01 ******/
+IF OBJECT_ID (N'NIS.View_MultiTenantUserAccessMap', N'V') IS NOT NULL 
+DROP VIEW [NIS].[View_MultiTenantUserAccessMap]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [NIS].[View_MultiTenantUserAccessMap]
+AS
+SELECT usr.FirstName+' '+usr.LastName AS UserName, usr.EmailAddress, 
+tum.AssociatedTenantId, t.TenantCode AS AssociatedTenantCode, t.TenantName AS AssociatedTenantName, t.TenantType AS AssociatedTenantType,
+tum.OtherTenantId, t1.TenantCode AS OtherTenantCode, t1.TenantName AS OtherTenantName, t1.TenantType AS OtherTenantType, r.Name AS RoleName,tum.IsActive, tum.IsDeleted
+FROM [NIS].[MultiTenantUserAccessMap] tum 
+INNER JOIN [TenantManager].[Tenant] t ON tum.AssociatedTenantId = t.Id
+INNER JOIN [TenantManager].[Tenant] t1 ON tum.OtherTenantId = t1.Id
+INNER JOIN [NIS].[User] usr ON tum.UserId = usr.Id
+INNER JOIN [NIS].[Role] r ON tum.OtherTenantAccessRoleId = r.Id
+
+GO
+
+
+
+

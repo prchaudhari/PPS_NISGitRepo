@@ -190,6 +190,11 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/themeConfiguration']);
   }
+  navigateToMultiTenantUserAccess() {
+    this.URL = '/multiTenantUserAccess';
+    this.hideSidebar();
+    this.route.navigate(['/multiTenantUserAccess']);
+  }
   async logout() {
     this.localstorageservice.removeLocalStorageData();
     this.route.navigate(['login']);
@@ -251,7 +256,7 @@ export class SidebarComponent implements OnInit {
     this.URL = this.route.url;
     if(this.isSuperAdminUser == true) {
       if (this.URL.includes('/tenants') || this.URL.includes('/tenantConfiguration') ||this.URL.includes('/settings') || this.URL.includes('/country') || 
-      this.URL.includes('/tenantgroups') || this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype')) {
+      this.URL.includes('/tenantgroups') || this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype') || this.URL.includes('/multiTenantUserAccess')) {
         this.IsMainMenu = false;
       }
       else {
@@ -305,6 +310,9 @@ export class SidebarComponent implements OnInit {
     }
     else if (this.URL.includes('/tenantConfiguration')) {
       this.URL = '/tenantConfiguration';
+    }
+    else if (this.URL.includes('/multiTenantUserAccess')) {
+      this.URL = '/multiTenantUserAccess';
     }
   }
 
