@@ -5,6 +5,7 @@ import { PagePreviewComponent } from 'src/app/shared/pagepreview/pagepreview.com
 import { Observable } from 'rxjs';
 import { MultipleMessageboxComponent } from '../modules/multiple-messagebox/multiple-messagebox.component';
 import { ErrorLogsViewComponent } from '../error-logs-view/error-logs-view.component'
+import { PageDesignPreviewComponent } from '../../dashboard-designer/page-design-preview/page-design-preview.component';
 
 @Injectable({
     providedIn: 'root'
@@ -27,6 +28,14 @@ export class MessageDialogService {
   openPreviewDialogBox(message): Observable<any> {
     return this._dialogService.addDialog(PagePreviewComponent, {
       htmlContent: message,
+    });
+  }
+
+  openPageDesignPreviewDialogBox(array, AssetId, Url): Observable<any> {
+    return this._dialogService.addDialog(PageDesignPreviewComponent, {
+      widgetItemArray: array,
+      BackgroundImageAssetId: AssetId,
+      BackgroundImageURL: Url,
     });
   }
 

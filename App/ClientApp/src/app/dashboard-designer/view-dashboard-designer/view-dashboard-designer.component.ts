@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, Injector, } from '@angular/core';
+import { Component, OnInit, Injector, SecurityContext } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
 import { Location } from '@angular/common';
 import { Constants } from 'src/app/shared/constants/constants';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { TemplateService } from '../../layout/template/template.service';
 import { Template } from '../../layout/template/template';
@@ -13,7 +13,11 @@ import {
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent
   } from '../widgetComponent/widgetComponent';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import * as $ from 'jquery';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-view-dashboard-designer',
@@ -66,6 +70,8 @@ export class ViewDashboardDesignerComponent implements OnInit {
         private fb: FormBuilder,
         private injector: Injector,
         private _messageDialogService: MessageDialogService,
+        private _http: HttpClient,
+        private sanitizer: DomSanitizer,
         private router: Router) { 
           router.events.subscribe(e => {
               if (e instanceof NavigationEnd) {
@@ -198,7 +204,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
             disablePushOnResize: false,
             pushDirections: { north: false, east: false, south: false, west: false },
             pushResizeItems: false,
-            displayGrid: DisplayGrid.Always,
+            displayGrid: DisplayGrid.None,
             disableWindowResize: false,
             disableWarnings: false,
             scrollToNewItems: true
@@ -230,6 +236,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
             });
         }else {
             let template = this.templateList[0];
+            this.applyBackgroundImage(template.BackgroundImageAssetId, template.BackgroundImageURL);
             this.PageName = template.DisplayName;
             this.PageIdentifier = template.Identifier;
             this.pageVersion = template.Version;
@@ -309,6 +316,25 @@ export class ViewDashboardDesignerComponent implements OnInit {
             gridObj.value = "ReminderaAndRecommendation";
           }
         return gridObj;
+    }
+
+    applyBackgroundImage(AssetId, ImageURL) {
+        if(AssetId != null && AssetId != 0) {
+          this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+              .subscribe(
+                data => {
+                  let contentType = data.headers.get('Content-Type');
+                  const blob = new Blob([data.body], { type: contentType });
+                  let objectURL = URL.createObjectURL(blob);
+                  let imgUrl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+                  $('gridster').css('background', 'url('+imgUrl+')');
+                },
+                error => {
+                  //$('.overlay').show();
+              });
+        }else if(ImageURL != '') {
+          $('gridster').css('background', 'url('+ImageURL+')');
+        }    
     }
     
 }

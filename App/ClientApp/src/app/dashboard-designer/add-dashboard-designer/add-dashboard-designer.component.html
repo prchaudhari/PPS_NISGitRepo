@@ -9,6 +9,7 @@
     </div>
   </div>
   <div class="float-right pr-2 d-md-block d-none">
+    <button class="btn-footer-fill mt-2 mr-2" id="btnPreview" title="Preview" [disabled]="isMasterSaveBtnDisabled" (click)="pageDesignPreview()"> Preview</button>
     <button class="btn-footer-fill mt-2 mr-2" id="btnPrev" title="Previous" [disabled]="isMasterSaveBtnDisabled" (click)="prevBtnClicked()"> Prev</button>
     <button class="btn-footer-fill mt-2 mr-2" id="btnSave" title="Save" [disabled]="isMasterSaveBtnDisabled" (click)="OnSaveBtnClicked()"> Save</button>
     <button class="btn-footer-outline mt-2" id="btnCancel" title="Cancel" (click)="backClicked()"> Cancel </button>
@@ -137,12 +138,12 @@
       <div class="filter-footer">
         <ul class="nav nav-toolbar">
           <li class="nav-item width50">
-            <button title="Save" id="btnCloseForm" [disabled]="saveImgFormValidation()" (click)="OnImageConfigBtnClicked('submit')" class="btn-footer-fill btn-block rounded-0 height100">
+            <button title="Save" id="btnSubmitImageForm" [disabled]="saveImgFormValidation()" (click)="OnImageConfigBtnClicked('submit')" class="btn-footer-fill btn-block rounded-0 height100">
               <span class="fa fa-check"></span>
             </button>
           </li>
           <li class="nav-item width50" (click)="OnImageConfigBtnClicked('cancel')">
-            <button title="Close" id="btnCloseForm" class="btn-footer-fill btn-block rounded-0 height100">
+            <button title="Close" id="btnCloseImageForm" class="btn-footer-fill btn-block rounded-0 height100">
               <span class="fa fa-close"></span>
             </button>
           </li>
@@ -234,13 +235,13 @@
       <div class="filter-footer">
         <ul class="nav nav-toolbar">
           <li class="nav-item width50">
-            <button title="Save" id="btnCloseForm" class="btn-footer-fill btn-block rounded-0 height100" [disabled]="saveVideoFormValidation()"
+            <button title="Save" id="btnSubmitVideoForm" class="btn-footer-fill btn-block rounded-0 height100" [disabled]="saveVideoFormValidation()"
                     (click)="OnVideoConfigBtnClicked('submit')">
               <span class="fa fa-check"></span>
             </button>
           </li>
           <li class="nav-item width50" (click)="OnVideoConfigBtnClicked('cancel')">
-            <button title="Close" id="btnCloseForm" class="btn-footer-fill btn-block rounded-0 height100">
+            <button title="Close" id="btnCloseVideoForm" class="btn-footer-fill btn-block rounded-0 height100">
               <span class="fa fa-close"></span>
             </button>
           </li>

@@ -19,8 +19,10 @@ import {
   TopIncomeSourcesComponent,
   SavingTrendsComponent,
   AnalyticsWidgetComponent,
-  ReminderAndRecommComponent
+  ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
+  SpendindTrendsPreviewComponent
 } from './widgetComponent/widgetComponent';
+import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
 
 @NgModule({
   declarations: [AddDashboardDesignerComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, 
@@ -30,7 +32,9 @@ import {
     TopIncomeSourcesComponent,
     SavingTrendsComponent,
     AnalyticsWidgetComponent,
-    ReminderAndRecommComponent],
+    ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
+    SpendindTrendsPreviewComponent,
+    PageDesignPreviewComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
     GridsterModule, LayoutModule, MatSortModule, MatTableModule, MatPaginatorModule, DynamicModule
@@ -41,11 +45,14 @@ import {
     ImageComponent,
     VideoComponent,
     SummaryAtGlanceComponent,
-    TransactionDetailsComponent, SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
+    TransactionDetailsComponent, SavingAvailableBalanceComponent, 
+    CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent,
     TopIncomeSourcesComponent,
     SavingTrendsComponent,
     AnalyticsWidgetComponent,
-    ReminderAndRecommComponent],
+    ReminderAndRecommComponent, SavingTrendsPreviewComponent,
+    AnalyticsWidgetPreviewComponent, SpendindTrendsPreviewComponent,
+    PageDesignPreviewComponent],
 })
 export class DashboardDesignerModule { }

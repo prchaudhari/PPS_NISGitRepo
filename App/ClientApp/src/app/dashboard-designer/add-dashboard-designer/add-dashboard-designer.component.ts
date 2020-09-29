@@ -1204,4 +1204,8 @@ export class AddDashboardDesignerComponent implements OnInit {
       vdoUrl: null,
     });
   }
+
+  pageDesignPreview() {
+    this._messageDialogService.openPageDesignPreviewDialogBox(this.widgetsGridsterItemArray, this.BackgroundImageAssetId, this.BackgroundImageURL);
+  }
 }

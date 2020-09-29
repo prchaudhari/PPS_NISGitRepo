@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-// import { EventEmitter } from 'events';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import * as Highcharts from 'highcharts';
 import * as $ from 'jquery';
@@ -860,20 +859,21 @@ export class AnalyticsWidgetComponent {
   }
 
   ngAfterViewInit() {
-    Highcharts.chart('chartWidgetPiecontainer', this.options4);
+    setTimeout(() => {
+      Highcharts.chart('chartWidgetPiecontainer', this.options4);      
+    }, 100);
+  }
 
+  ngOnInit() {
     $(document).ready(function () {
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
       }, 10);
     });
   }
-
-  ngOnInit() {
-    
-  }
 }
 
+// Component Created for Saving Trends Widget--
 @Component({
   selector: 'savingTrends',
   template: `<div class="widget">
@@ -899,7 +899,7 @@ export class SavingTrendsComponent {
       text: ''
     },
     xAxis: {
-      categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
     },
     labels: {
       items: [{
@@ -926,7 +926,9 @@ export class SavingTrendsComponent {
     }]
   }
   ngAfterViewInit() {
-    Highcharts.chart('savingTrendscontainer', this.options4);
+    setTimeout(() => {
+      Highcharts.chart('savingTrendscontainer', this.options4);      
+    }, 100);
   }
 
   ngOnInit() {
@@ -938,6 +940,7 @@ export class SavingTrendsComponent {
   }
 }
 
+// Component Created for Top 4 Income sources Widget--
 @Component({
   selector: 'topFourIncomdeSources',
   template: `<div class="widget">
@@ -986,6 +989,7 @@ export class TopIncomeSourcesComponent {
   ]
 }
 
+// Component Created for Spending Trends Widget--
 @Component({
   selector: 'spendingTrends',
   template: `<div class="widget">
@@ -1010,7 +1014,7 @@ export class SpendindTrendsComponent {
       text: ''
     },
     xAxis: {
-      categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr']
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May']
     },
     labels: {
       items: [{
@@ -1045,14 +1049,16 @@ export class SpendindTrendsComponent {
     }]
   }
   ngAfterViewInit() {
-    Highcharts.chart('spendingTrendscontainer', this.options4);
+    setTimeout(() => {
+      Highcharts.chart('spendingTrendscontainer', this.options4);  
+    }, 10);
   }
 
   ngOnInit() {
     $(document).ready(function () {
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
-      }, 10);
+      }, 100);
     });
   }
 }
@@ -1066,4 +1072,231 @@ export interface TransactionDetail {
   lyc: string;
 }
 
+/* ---  below highcharts components are created for page preview while designing..
+    which are same as above highcharts widgets, but created due to facing issue in page preview in popup --- */
 
+// Component Created for Saving Trends Widget for page preview while designing--
+@Component({
+  selector: 'savingTrendPreview',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Your Saving Trends </span>
+    </div>
+    <div class="widget-area position-relative width100">
+      <div class="text-right" style="font-size:20px"><span>+5.6%</span><span class="pl-3">+3.5%</span></div>
+      <div id="savingTrendsPreviewContainer" class="p-3"></div>        
+    </div>
+</div>`
+})
+export class SavingTrendsPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+    },
+    labels: {
+      items: [{
+        //html: 'How you have been spending',
+        style: {
+          left: '50px',
+          top: '18px',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'black'
+        }
+      }]
+    },
+    series: [{
+      // type: 'spline',
+      name: '',
+      data: [1.5, 2.5, 3, 1.5, 3, 2, 4],
+      marker: {
+        lineWidth: 1,
+        lineColor: Highcharts.getOptions().colors[3],
+        fillColor: 'white'
+      }
+    }]
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('savingTrendsPreviewContainer', this.options4);      
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Spending Trends Widget for page preview while designing--
+@Component({
+  selector: 'spendingTrendsPreivew',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Spending Trends </span>
+    </div>
+    <div class="widget-area position-relative width100">
+          <div id="spendingTrendsPreviewcontainer" class="p-3"></div>       
+    </div>
+</div>`
+})
+export class SpendindTrendsPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May']
+    },
+    labels: {
+      items: [{
+        //html: 'How you have been spending',
+        style: {
+          left: '50px',
+          top: '18px',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'black'
+        }
+      }]
+    },
+    series: [{
+      type: 'column',
+      name: 'Your Income',
+      data: [1, 3, 4, 2, 5]
+    }, {
+      type: 'column',
+      name: 'Your Spending',
+      data: [2, 2, 1, 4, 1]
+    }, {
+      type: 'spline',
+      name: '',
+      data: [1.5, 2.5, 3, 1.5, 3],
+      marker: {
+        lineWidth: 2,
+        lineColor: Highcharts.getOptions().colors[3],
+        fillColor: 'white'
+      }
+    }]
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('spendingTrendsPreviewcontainer', this.options4);  
+    }, 10);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 100);
+    });
+  }
+}
+
+// Component Created for Analytics Widget for page preview while designing--
+@Component({
+  selector: 'analyticsPreview',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Analytics </span>
+    </div>
+    <div class="widget-area position-relative width100">       
+        <div id="chartWidgetPiePreviewcontainer" class="p-3"></div>
+    </div>
+</div>`
+})
+export class AnalyticsWidgetPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: 'pie',
+      height: (9 / 16 * 100) + '%',
+    },
+    title: {
+      text: ''
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+      point: {
+        valueSuffix: '%'
+      }
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+        },
+        showInLegend: false
+      }
+    },
+    series: [{
+      name: 'Percentage',
+      colorByPoint: true,
+      data: [
+        {
+          name: 'Cutomer Information',
+          y: 11.84
+        }, {
+          name: 'Account Information',
+          y: 10.85
+        }, {
+          name: 'Image',
+          y: 4.67
+        }, {
+          name: 'Video',
+          y: 4.18
+        }, {
+          name: 'News Alerts',
+          y: 7.05
+        }]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('chartWidgetPiePreviewcontainer', this.options4);      
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
