@@ -223,6 +223,20 @@
           <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Image" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="MultiTenantUserAccessMap">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="AssociatedTenantId" Type="bigint" Nullable="false" />
+          <Property Name="OtherTenantId" Type="bigint" Nullable="false" />
+          <Property Name="OtherTenantAccessRoleId" Type="bigint" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LastUpdatedBy" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="NewsAlert">
           <Key>
             <PropertyRef Name="Id" />
@@ -571,6 +585,8 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CountryId" Type="bigint" />
+          <Property Name="IsInstanceManager" Type="bit" Nullable="false" />
+          <Property Name="IsGroupManager" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserCredentialHistory">
           <Key>
@@ -685,6 +701,42 @@
           <Property Name="AutheticationMode" Type="nvarchar(max)" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_MultiTenantUserAccessMap">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="AssociatedTenantId" />
+            <PropertyRef Name="AssociatedTenantCode" />
+            <PropertyRef Name="AssociatedTenantName" />
+            <PropertyRef Name="OtherTenantId" />
+            <PropertyRef Name="OtherTenantCode" />
+            <PropertyRef Name="OtherTenantName" />
+            <PropertyRef Name="RoleName" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="LastUpdatedBy" />
+            <PropertyRef Name="LastUpdatedByUserName" />
+            <PropertyRef Name="LastUpdatedDate" />
+          </Key>
+          <Property Name="UserName" Type="nvarchar" MaxLength="201" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssociatedTenantId" Type="bigint" Nullable="false" />
+          <Property Name="AssociatedTenantCode" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AssociatedTenantName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AssociatedTenantType" Type="nvarchar(max)" />
+          <Property Name="OtherTenantId" Type="bigint" Nullable="false" />
+          <Property Name="OtherTenantCode" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OtherTenantName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OtherTenantType" Type="nvarchar(max)" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LastUpdatedBy" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdatedByUserName" Type="nvarchar" MaxLength="201" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_Page' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -889,6 +941,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="MultiTenantUserAccessMap" EntityType="Self.MultiTenantUserAccessMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NewsAlert" EntityType="Self.NewsAlert" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageType" EntityType="Self.PageType" Schema="NIS" store:Type="Tables" />
@@ -920,6 +973,26 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="Video" EntityType="Self.Video" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
+          <EntitySet Name="View_MultiTenantUserAccessMap" EntityType="Self.View_MultiTenantUserAccessMap" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_MultiTenantUserAccessMap].[UserName] AS [UserName], 
+    [View_MultiTenantUserAccessMap].[EmailAddress] AS [EmailAddress], 
+    [View_MultiTenantUserAccessMap].[AssociatedTenantId] AS [AssociatedTenantId], 
+    [View_MultiTenantUserAccessMap].[AssociatedTenantCode] AS [AssociatedTenantCode], 
+    [View_MultiTenantUserAccessMap].[AssociatedTenantName] AS [AssociatedTenantName], 
+    [View_MultiTenantUserAccessMap].[AssociatedTenantType] AS [AssociatedTenantType], 
+    [View_MultiTenantUserAccessMap].[OtherTenantId] AS [OtherTenantId], 
+    [View_MultiTenantUserAccessMap].[OtherTenantCode] AS [OtherTenantCode], 
+    [View_MultiTenantUserAccessMap].[OtherTenantName] AS [OtherTenantName], 
+    [View_MultiTenantUserAccessMap].[OtherTenantType] AS [OtherTenantType], 
+    [View_MultiTenantUserAccessMap].[RoleName] AS [RoleName], 
+    [View_MultiTenantUserAccessMap].[IsActive] AS [IsActive], 
+    [View_MultiTenantUserAccessMap].[IsDeleted] AS [IsDeleted], 
+    [View_MultiTenantUserAccessMap].[LastUpdatedBy] AS [LastUpdatedBy], 
+    [View_MultiTenantUserAccessMap].[LastUpdatedByUserName] AS [LastUpdatedByUserName], 
+    [View_MultiTenantUserAccessMap].[LastUpdatedDate] AS [LastUpdatedDate]
+    FROM [NIS].[View_MultiTenantUserAccessMap] AS [View_MultiTenantUserAccessMap]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="View_Page" EntityType="Self.View_Page" store:Type="Views" store:Schema="NIS">
             <DefiningQuery>SELECT 
     [View_Page].[Id] AS [Id], 
@@ -1095,6 +1168,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="ContactTypeRecords" EntityType="NISModel.ContactTypeRecord" />
           <EntitySet Name="TenantContactRecords" EntityType="NISModel.TenantContactRecord" />
           <EntitySet Name="TenantUserRecords" EntityType="NISModel.TenantUserRecord" />
+          <EntitySet Name="MultiTenantUserAccessMapRecords" EntityType="NISModel.MultiTenantUserAccessMapRecord" />
+          <EntitySet Name="View_MultiTenantUserAccessMapRecord" EntityType="NISModel.View_MultiTenantUserAccessMapRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1112,6 +1187,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CountryId" Type="Int64" />
+          <Property Name="IsInstanceManager" Type="Boolean" Nullable="false" />
+          <Property Name="IsGroupManager" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="UserCredentialHistoryRecord">
           <Key>
@@ -1951,6 +2028,54 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CountryId" Type="Int64" />
         </EntityType>
+        <EntityType Name="MultiTenantUserAccessMapRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="AssociatedTenantId" Type="Int64" Nullable="false" />
+          <Property Name="OtherTenantId" Type="Int64" Nullable="false" />
+          <Property Name="OtherTenantAccessRoleId" Type="Int64" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="View_MultiTenantUserAccessMapRecord">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="AssociatedTenantId" />
+            <PropertyRef Name="AssociatedTenantCode" />
+            <PropertyRef Name="AssociatedTenantName" />
+            <PropertyRef Name="OtherTenantId" />
+            <PropertyRef Name="OtherTenantCode" />
+            <PropertyRef Name="OtherTenantName" />
+            <PropertyRef Name="RoleName" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="LastUpdatedBy" />
+            <PropertyRef Name="LastUpdatedByUserName" />
+            <PropertyRef Name="LastUpdatedDate" />
+          </Key>
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssociatedTenantId" Type="Int64" Nullable="false" />
+          <Property Name="AssociatedTenantCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AssociatedTenantName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AssociatedTenantType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OtherTenantId" Type="Int64" Nullable="false" />
+          <Property Name="OtherTenantCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OtherTenantName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OtherTenantType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdatedByUserName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1960,6 +2085,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="UserRecords">
             <EntityTypeMapping TypeName="NISModel.UserRecord">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IsGroupManager" ColumnName="IsGroupManager" />
+                <ScalarProperty Name="IsInstanceManager" ColumnName="IsInstanceManager" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -2810,6 +2937,43 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MultiTenantUserAccessMapRecords">
+            <EntityTypeMapping TypeName="NISModel.MultiTenantUserAccessMapRecord">
+              <MappingFragment StoreEntitySet="MultiTenantUserAccessMap">
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="OtherTenantAccessRoleId" ColumnName="OtherTenantAccessRoleId" />
+                <ScalarProperty Name="OtherTenantId" ColumnName="OtherTenantId" />
+                <ScalarProperty Name="AssociatedTenantId" ColumnName="AssociatedTenantId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_MultiTenantUserAccessMapRecord">
+            <EntityTypeMapping TypeName="NISModel.View_MultiTenantUserAccessMapRecord">
+              <MappingFragment StoreEntitySet="View_MultiTenantUserAccessMap">
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="LastUpdatedByUserName" ColumnName="LastUpdatedByUserName" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="OtherTenantType" ColumnName="OtherTenantType" />
+                <ScalarProperty Name="OtherTenantName" ColumnName="OtherTenantName" />
+                <ScalarProperty Name="OtherTenantCode" ColumnName="OtherTenantCode" />
+                <ScalarProperty Name="OtherTenantId" ColumnName="OtherTenantId" />
+                <ScalarProperty Name="AssociatedTenantType" ColumnName="AssociatedTenantType" />
+                <ScalarProperty Name="AssociatedTenantName" ColumnName="AssociatedTenantName" />
+                <ScalarProperty Name="AssociatedTenantCode" ColumnName="AssociatedTenantCode" />
+                <ScalarProperty Name="AssociatedTenantId" ColumnName="AssociatedTenantId" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

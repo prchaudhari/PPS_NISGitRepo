@@ -103,7 +103,9 @@ namespace nIS
                         IsLocked = false,
                         NoofAttempts = 0,
                         CountryId = user.CountryId,
-                        TenantCode = tenantCode
+                        TenantCode = tenantCode,
+                        IsGroupManager=user.IsGroupManager,
+                        IsInstanceManager=user.IsInstanceManager
                     });
                 });
 
@@ -183,6 +185,8 @@ namespace nIS
                         userRecord.NoofAttempts = 0;
                         userRecord.TenantCode = tenantCode;
                         userRecord.CountryId = user.CountryId;
+                        //userRecord.IsGroupManager = user.IsGroupManager;
+                        //userRecord.IsInstanceManager = user.IsInstanceManager;
                     });
 
                     nVidYoEntitiesDataContext.SaveChanges();
@@ -371,9 +375,9 @@ namespace nIS
                         NoofAttempts = userRecord.NoofAttempts,
                         TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? userRecord.TenantCode : tenantCode,
                         Roles = roles,
-
+                        IsGroupManager = userRecord.IsGroupManager,
+                        IsInstanceManager = userRecord.IsInstanceManager
                     });
-
                 });
                 users = tempUsers;
 

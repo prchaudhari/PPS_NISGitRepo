@@ -58,6 +58,8 @@
         <EntityTypeShape EntityType="NISModel.ContactTypeRecord" Width="1.5" PointX="2.75" PointY="8.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantContactRecord" Width="1.5" PointX="4.875" PointY="8.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantUserRecord" Width="1.5" PointX="6.75" PointY="8.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.MultiTenantUserAccessMapRecord" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_MultiTenantUserAccessMapRecord" Width="1.5" PointX="2.75" PointY="8.875" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
