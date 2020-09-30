@@ -92,8 +92,8 @@ namespace nIS
                     multiTenantUserAccessMapRecords.Add(new MultiTenantUserAccessMapRecord()
                     {
                         UserId = record.UserId,
-                        AssociatedTenantId = record.AssociatedTenantId,
-                        OtherTenantId = record.OtherTenantId,
+                        AssociatedTenantCode = record.AssociatedTenantCode,
+                        OtherTenantCode = record.OtherTenantCode,
                         OtherTenantAccessRoleId = record.RoleId,
                         IsActive = true,
                         IsDeleted = false,
@@ -150,7 +150,7 @@ namespace nIS
                     {
                         MultiTenantUserAccessMapRecord multiTenantUserAccessMapRecord = multiTenantUserAccessMapRecords.FirstOrDefault(data => data.Id == record.Identifier);
                         multiTenantUserAccessMapRecord.OtherTenantAccessRoleId = record.RoleId;
-                        multiTenantUserAccessMapRecord.OtherTenantId = record.OtherTenantId;
+                        multiTenantUserAccessMapRecord.OtherTenantCode = record.OtherTenantCode;
                         multiTenantUserAccessMapRecord.LastUpdatedBy = loginUserId;
                         multiTenantUserAccessMapRecord.LastUpdatedDate = DateTime.Now;
                     });
@@ -212,11 +212,9 @@ namespace nIS
                                 UserId = record.UserId,
                                 UserName = record.UserName,
                                 EmailAddress = record.EmailAddress,
-                                AssociatedTenantId = record.AssociatedTenantId,
                                 AssociatedTenantCode = record.AssociatedTenantCode,
                                 AssociatedTenantName = record.AssociatedTenantName,
                                 AssociatedTenantType = record.AssociatedTenantType,
-                                OtherTenantId = record.OtherTenantId,
                                 OtherTenantCode = record.OtherTenantCode,
                                 OtherTenantName = record.OtherTenantName,
                                 OtherTenantType = record.OtherTenantType,

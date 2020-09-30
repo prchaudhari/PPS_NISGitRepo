@@ -16,8 +16,8 @@ namespace nIS
     {
         public long Id { get; set; }
         public long UserId { get; set; }
-        public long AssociatedTenantId { get; set; }
-        public long OtherTenantId { get; set; }
+        public string AssociatedTenantCode { get; set; }
+        public string OtherTenantCode { get; set; }
         public long OtherTenantAccessRoleId { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

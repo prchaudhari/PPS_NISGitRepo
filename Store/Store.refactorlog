@@ -14,4 +14,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="IsEndsAfterNoOfRecurrence" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="b85857a3-48e0-4573-8a24-8860d9916080" ChangeDateTime="09/30/2020 04:42:53">
+    <Property Name="ElementName" Value="[NIS].[MultiTenantUserAccessMap].[AssociatedTenantId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[NIS].[MultiTenantUserAccessMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AssociatedTenantCode" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="20094625-f246-43b4-aa93-d5ab504a81d6" ChangeDateTime="09/30/2020 04:43:02">
+    <Property Name="ElementName" Value="[NIS].[MultiTenantUserAccessMap].[OtherTenantId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[NIS].[MultiTenantUserAccessMap]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OtherTenantCode" />
+  </Operation>
 </Operations>

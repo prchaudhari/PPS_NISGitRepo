@@ -2,8 +2,8 @@
 (
 	[Id] BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
 	[UserId] BIGINT NOT NULL,
-	[AssociatedTenantId] BIGINT NOT NULL,
-	[OtherTenantId] BIGINT NOT NULL,
+	[AssociatedTenantCode] NVARCHAR(50) NOT NULL,
+	[OtherTenantCode] NVARCHAR(50) NOT NULL,
 	[OtherTenantAccessRoleId] BIGINT NOT NULL,
 	[IsActive] BIT NOT NULL,
 	[IsDeleted] BIT NOT NULL, 

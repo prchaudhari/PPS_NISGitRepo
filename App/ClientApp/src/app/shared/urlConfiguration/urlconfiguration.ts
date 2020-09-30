@@ -98,8 +98,7 @@ export class URLConfiguration {
   public static get pageCloneUrl(): string { return "Page/Clone" };
   public static get pageTypeGetUrl(): string { return "PageType/List" };
 
-//widget Url methhod
-
+  //widget Url methhod
   public static get widgetGetUrl(): string { return "Widget/List" };
 
   //Schedule Url Method
@@ -111,7 +110,6 @@ export class URLConfiguration {
   public static get scheduleDeactivate(): string { return "Schedule/Deactivate" };
   public static get scheduleHistoryGetUrl(): string { return "Schedule/GetScheduleRunHistories" };
   public static get RunScheduleNow(): string { return "Schedule/RunScheduleNow" };
-
 
   //Statement Url Method
   public static get statementGetUrl(): string { return "Statement/List" };
@@ -133,9 +131,7 @@ export class URLConfiguration {
   //Schedule Url Method
   public static get scheduleLogGetUrl(): string { return "ScheduleLogs/List" };
   public static get scheduleLogGetDetailUrl(): string { return "ScheduleLog/ScheduleLogDetail/List" };
-
   public static get reRunScheduleLogGetUrl(): string { return "ScheduleLogs/ReRunSchedule" };
-
   public static get reRunScheduleLogDetailGetUrl(): string { return "ScheduleLog/ScheduleLogDetail/Retry" };
 
   //Statement Search Method
@@ -143,5 +139,13 @@ export class URLConfiguration {
 
   //Dashboard Data
   public static get DashboardGetUrl(): string { return "ScheduleLog/Dashboard/Get" };
+
+    //Multi-tenant user role access mapping Url Method
+    public static get multiTenantUserRoleAccessGetUrl(): string { return "MultiTenantUserRoleAccess/List" };
+    public static get multiTenantUserRoleAccessAddUrl(): string { return "MultiTenantUserRoleAccess/Add" };
+    public static get multiTenantUserRoleAccessUpdateUrl(): string { return "MultiTenantUserRoleAccess/Update" };
+    public static get multiTenantUserRoleAccessDeleteUrl(): string { return "MultiTenantUserRoleAccess/Delete" };
+    public static get multiTenantUserRoleAccessActivate(): string { return "MultiTenantUserRoleAccess/Activate" };
+    public static get multiTenantUserRoleAccessDeactivate(): string { return "MultiTenantUserRoleAccess/Deactivate" };
  
 }
