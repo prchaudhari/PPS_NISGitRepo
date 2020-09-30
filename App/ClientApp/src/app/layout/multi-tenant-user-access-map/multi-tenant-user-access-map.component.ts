@@ -264,9 +264,6 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
       this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
       this.ResetForm();
       this.getTenantUserMappingData(null);
-    }else {
-      let message = ErrorMessageConstants.getSomethingWentWrongErrorMessage;
-      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxSuccess);
     }
   }
 

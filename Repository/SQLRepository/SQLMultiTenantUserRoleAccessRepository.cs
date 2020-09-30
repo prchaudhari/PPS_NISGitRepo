@@ -559,12 +559,12 @@ namespace nIS
                 StringBuilder query = new StringBuilder();
                 if (operation.Equals(ModelConstant.ADD_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", tenantUserRoleAccesses.Select(item => string.Format("AssociatedTenantCode.Equals(\"{0}\") and UserId.Equals(\"{1}\") and OtherTenantCode.Equals(\"{2}\")", item.AssociatedTenantCode, item.UserId, item.OtherTenantCode)).ToList()) + ") and IsDeleted.Equals(false) ");
+                    query.Append("(" + string.Join(" or ", tenantUserRoleAccesses.Select(item => string.Format("AssociatedTenantCode.Equals(\"{0}\") and UserId.Equals({1}) and OtherTenantCode.Equals(\"{2}\")", item.AssociatedTenantCode, item.UserId, item.OtherTenantCode)).ToList()) + ") and IsDeleted.Equals(false) ");
                 }
 
                 if (operation.Equals(ModelConstant.UPDATE_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", tenantUserRoleAccesses.Select(item => string.Format("AssociatedTenantCode.Equals(\"{0}\") and UserId.Equals(\"{1}\") and OtherTenantCode.Equals(\"{2}\") and !Id.Equals({3}) ", item.AssociatedTenantCode, item.UserId, item.OtherTenantCode, item.Identifier)).ToList()) + ") and IsDeleted.Equals(false) ");
+                    query.Append("(" + string.Join(" or ", tenantUserRoleAccesses.Select(item => string.Format("AssociatedTenantCode.Equals(\"{0}\") and UserId.Equals({1}) and OtherTenantCode.Equals(\"{2}\") and !Id.Equals({3}) ", item.AssociatedTenantCode, item.UserId, item.OtherTenantCode, item.Identifier)).ToList()) + ") and IsDeleted.Equals(false) ");
                 }
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
