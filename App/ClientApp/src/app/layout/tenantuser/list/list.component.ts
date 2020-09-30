@@ -291,8 +291,8 @@ export class ListComponent implements OnInit {
       newsearchParameter.ActivationStatus = true;
       searchParameter = newsearchParameter;
     }
-
-    var response = await this.service.getTenantUser(searchParameter);
+    searchParameter.IsInstanceManager = true;
+    var response = await this.service.getUser(searchParameter);
     this.tenantuserLists = response.usersList;
     this.totalRecordCount = response.RecordCount;
 
@@ -441,7 +441,7 @@ export class ListComponent implements OnInit {
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
 
-        let isDeleted = await this.service.deleteTenantUser(tenantuser.Identifier);
+        let isDeleted = await this.service.deleteUser(tenantuser.Identifier);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
@@ -458,7 +458,7 @@ export class ListComponent implements OnInit {
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
           this.isLoaderActive = true;
-          let isDeleted = await this.service.unlockTenantUser(tenantuser.Identifier);
+          let isDeleted = await this.service.unlockUser(tenantuser.Identifier);
           if (isDeleted) {
             let messageString = Constants.recordUnlockedMessage;
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
@@ -493,7 +493,7 @@ export class ListComponent implements OnInit {
           this.isLoaderActive = true;
           let isDeleted = await this.service.deactivate(tenantuser.Identifier);
           if (isDeleted) {
-            let messageString = "TenantUser deactivated successfully";
+            let messageString = "Record deactivated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
             this.fetchTenantUserRecord();
           }
@@ -508,7 +508,7 @@ export class ListComponent implements OnInit {
           this.isLoaderActive = true;
           let isDeleted = await this.service.activate(tenantuser.Identifier);
           if (isDeleted) {
-            let messageString = "TenantUser activated successfully";
+            let messageString = "Record activated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
             this.fetchTenantUserRecord();
           }

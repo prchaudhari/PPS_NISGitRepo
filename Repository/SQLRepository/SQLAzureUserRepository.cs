@@ -104,8 +104,8 @@ namespace nIS
                         NoofAttempts = 0,
                         CountryId = user.CountryId,
                         TenantCode = tenantCode,
-                        IsGroupManager=user.IsGroupManager,
-                        IsInstanceManager=user.IsInstanceManager
+                        IsGroupManager = user.IsGroupManager,
+                        IsInstanceManager = user.IsInstanceManager
                     });
                 });
 
@@ -1219,6 +1219,10 @@ namespace nIS
                 {
                     queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.IsActive));
                 }
+
+                queryString.Append(string.Format("IsInstanceManager.Equals({0}) and ", searchParameter.IsInstanceManager));
+
+                queryString.Append(string.Format("IsGroupManager.Equals({0}) and ", searchParameter.IsGroupManager));
                 if (searchParameter.ActivationStatus != null)
                 {
                     queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.ActivationStatus));

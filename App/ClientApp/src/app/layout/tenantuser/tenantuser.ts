@@ -9,4 +9,6 @@ export class TenantUser {
   "IsLocked": boolean;
   "IsActive": boolean;
   "Roles": [];
+  "IsInstanceUser": boolean;
+  "IsGroupManager": boolean;
 }
