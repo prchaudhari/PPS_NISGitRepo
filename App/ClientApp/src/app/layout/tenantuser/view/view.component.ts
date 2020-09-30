@@ -109,7 +109,7 @@ export class ViewComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
     //this.spinner.start();
-    var response = await tenantuserService.getTenantUser(searchParameter);
+    var response = await tenantuserService.getUser(searchParameter);
     this.tenantuserViewArray = response.usersList;
     //this.spinner.stop();
     if (this.tenantuserViewArray.length > 0) {
@@ -159,7 +159,7 @@ export class ViewComponent implements OnInit {
     let message = "Are you sure you want to delete this tenantuser?"
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        let isDeleted = await this.service.deleteTenantUser(this.TenantUserIdentifier);
+        let isDeleted = await this.service.deleteUser(this.TenantUserIdentifier);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);

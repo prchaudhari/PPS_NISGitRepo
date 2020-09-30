@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { HttpEvent, HttpEventType, HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Constants } from 'src/app/shared/constants/constants';
 import { TenantUser } from './tenantuser';
+import { User } from '../users/user';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
@@ -30,9 +31,9 @@ export class TenantUserService {
     private http: HttpClient,
     private _messageDialogService: MessageDialogService) { }
 
-  public async getTenantUser(searchParameter): Promise<any> {
+  public async getUser(searchParameter): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantuserGetUrl;
+    let requestUrl = URLConfiguration.userGetUrl;
     this.uiLoader.start();
     var response: any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
@@ -55,7 +56,7 @@ export class TenantUserService {
           }
         }
       }, (error: HttpResponse<any>) => {
-          this.usersList = [];
+        this.usersList = [];
         this.uiLoader.stop();
         if (error["error"] != null) {
           let errorMessage = error["error"].Error["Message"];
@@ -66,10 +67,10 @@ export class TenantUserService {
   }
 
 
-  //method to call api of delete TenantUser.
-  public async deleteTenantUser(postData): Promise<boolean> {
+  //method to call api of delete User.
+  public async deleteUser(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantuserDeleteUrl + "?" + "identifier=" + postData;
+    let requestUrl = URLConfiguration.userDeleteUrl + "?" + "identifier=" + postData;
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -90,20 +91,20 @@ export class TenantUserService {
   }
 
   //This api is save user data--
-  public saveTenantUser(postData, userEditModeOn): Observable<any> {
-    let requestUrl = URLConfiguration.tenantuserAddUrl;
+  public saveUser(postData, userEditModeOn): Observable<any> {
+    let requestUrl = URLConfiguration.userAddUrl;
     if (userEditModeOn) {
-      requestUrl = URLConfiguration.tenantuserUpdateUrl;
+      requestUrl = URLConfiguration.userUpdateUrl;
     }
     var baseUrl = ConfigConstants.BaseURL;
     var fullURL = baseUrl + requestUrl;
     return this.http.post(fullURL, postData);
   }
 
-  //method to call api of unlock TenantUser.
-  public async unlockTenantUser(postData): Promise<boolean> {
+  //method to call api of unlock User.
+  public async unlockUser(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantuserUnlockUrl + "?" + "userIdentifier=" + postData;
+    let requestUrl = URLConfiguration.userUnlockUrl + "?" + "userIdentifier=" + postData;
     this.uiLoader.start();
     await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -122,9 +123,10 @@ export class TenantUserService {
       });
     return <boolean>this.isRecordDeleted;
   }
+
   public async userlockUrl(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantuserlockUrl + "?" + "userIdentifier=" + postData;
+    let requestUrl = URLConfiguration.userlockUrl + "?" + "userIdentifier=" + postData;
     this.uiLoader.start();
     await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -146,7 +148,7 @@ export class TenantUserService {
 
   public async activate(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantuserActivate + "?" + "userIdentifier=" + postData;
+    let requestUrl = URLConfiguration.userActivate + "?" + "userIdentifier=" + postData;
     this.uiLoader.start();
     await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -168,7 +170,7 @@ export class TenantUserService {
 
   public async deactivate(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantuserDeactivate + "?" + "userIdentifier=" + postData;
+    let requestUrl = URLConfiguration.userDeactivate + "?" + "userIdentifier=" + postData;
     this.uiLoader.start();
     await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -212,7 +214,7 @@ export class TenantUserService {
   }
 
   //method to call api of get smtp.
-  public async getProfile(): Promise<TenantUser[]> {
+  public async getProfile(): Promise<User[]> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.profileGetUrl;
     this.uiLoader.start();
@@ -237,13 +239,13 @@ export class TenantUserService {
         this.isRecordFound = false;
         this.uiLoader.stop();
       });
-    return <TenantUser[]>this.profileList;
+    return <User[]>this.profileList;
   }
 
   //method to call api of dependency check downtime.
   public async checkDependency(identifier): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantuserCheckDeleteDependencyUrl + '?Identifier=' + identifier;
+    let requestUrl = URLConfiguration.userCheckDeleteDependencyUrl + '?Identifier=' + identifier;
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -262,5 +264,6 @@ export class TenantUserService {
       });
     return <boolean>this.isDependencyPresent;
   }
+
 
 }

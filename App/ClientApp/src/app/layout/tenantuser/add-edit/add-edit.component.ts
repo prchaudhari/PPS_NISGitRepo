@@ -440,7 +440,7 @@ export class AddEditComponent implements OnInit {
       this.roleList.forEach(role => {
         if (role.Identifier == this.TenantUser.RoleIdentifier) {
           selectedroleArray.push({
-            "Identifier": role.Identifier,
+            "Identifier": 1,
             "Name": role.Name,
           });
         }
@@ -473,10 +473,11 @@ export class AddEditComponent implements OnInit {
   saveRecord(tenantuserObject) {
     var formData = new FormData()
     var TenantUserArr = [];
+    tenantuserObject.IsInstanceManager = true;
     TenantUserArr.push(tenantuserObject);
 
     this.spinner.start();
-    this.service.saveTenantUser(TenantUserArr, this.tenantuserEditModeOn).subscribe(data => {
+    this.service.saveUser(TenantUserArr, this.tenantuserEditModeOn).subscribe(data => {
       this.spinner.stop();
       if (data == true) {
         let message = "User added successfully";
@@ -514,7 +515,7 @@ export class AddEditComponent implements OnInit {
     searchParameter.SearchMode = Constants.Contains;
     //this.spinner.start();
 
-    var response = await tenantuserService.getTenantUser(searchParameter);
+    var response = await tenantuserService.getUser(searchParameter);
     this.tenantusersList = response.usersList;
 
     //this.spinner.stop();

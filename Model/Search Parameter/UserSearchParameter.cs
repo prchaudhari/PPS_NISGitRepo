@@ -76,6 +76,16 @@ namespace nIS
         private bool? activationStatus = null;
 
         /// <summary>
+        /// The user isInstanceManager status
+        /// </summary>
+        private bool isInstanceManager = false;
+
+        /// <summary>
+        /// The user isGroupManager status
+        /// </summary>
+        private bool isGroupManager = false;
+
+        /// <summary>
         /// The utility object
         /// </summary>
         private IUtility utility = new Utility();
@@ -278,6 +288,37 @@ namespace nIS
 
         public bool? IsDateFormatRequired;
 
+        /// <summary>
+        /// Gets or sets isGroupManager field.
+        /// </summary>
+        [Description("IsGroupManager")]
+        public bool IsGroupManager
+        {
+            get
+            {
+                return this.isGroupManager;
+            }
+            set
+            {
+                this.isGroupManager = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets isInstanceManager field.
+        /// </summary>
+        [Description("isInstanceManager")]
+        public bool IsInstanceManager
+        {
+            get
+            {
+                return this.isInstanceManager;
+            }
+            set
+            {
+                this.isInstanceManager = value;
+            }
+        }
 
         #endregion
 

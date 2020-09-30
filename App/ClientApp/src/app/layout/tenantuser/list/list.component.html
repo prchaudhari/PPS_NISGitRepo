@@ -71,8 +71,8 @@
                         *ngIf="element.IsActive" (click)="editTenantUser(element)" id="btnUpdate">
                   <span class="fa fa-pencil-square-o"></span>
                 </button>
-                <!--<button type="button" (click)="unLockTenantUser(element)" *ngIf="element.IsLocked" title="Unlock TenantUser"><span class="fa fa-lock"></span></button>
-                <button type="button" (click)="unLockTenantUser(element)" *ngIf="!element.IsLocked" title="Lock TenantUser"><span class="fa fa-unlock-alt"></span></button>-->
+                <button type="button" (click)="unLockTenantUser(element)" *ngIf="element.IsLocked" title="Unlock TenantUser"><span class="fa fa-lock"></span></button>
+                <button type="button" (click)="unLockTenantUser(element)" *ngIf="!element.IsLocked" title="Lock TenantUser"><span class="fa fa-unlock-alt"></span></button>
 
                 <button type="button" (click)="activeDeactiveTenantUser(element)" title="Deactivate TenantUser" *ngIf="element.IsActive"><span class="fa fa-toggle-on text-success"></span></button>
                 <button type="button" (click)="activeDeactiveTenantUser(element)" title="Activate TenantUser" *ngIf="!element.IsActive"><span class="fa fa-toggle-off text-success"></span></button>
