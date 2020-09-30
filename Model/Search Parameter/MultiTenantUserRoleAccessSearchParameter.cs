@@ -29,9 +29,14 @@ namespace nIS
         public long Identifier { get; set; }
 
         /// <summary>
-        /// The tenant name
+        /// The parent tenant name
         /// </summary>
-        public string TenantName { get; set; }
+        public string AssociatedTenantName { get; set; }
+
+        /// <summary>
+        /// The target tenant name
+        /// </summary>
+        public string OtherTenantName { get; set; }
 
         /// <summary>
         /// The user name

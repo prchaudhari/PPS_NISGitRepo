@@ -1,5 +1,4 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { Location } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Constants, ErrorMessageConstants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
@@ -8,8 +7,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MultiTenantUserAccessMapService } from './multi-tenant-user-access-map.service';
 import { TenantService } from '../tenants/tenant.service';
-import { UserService } from '../users/user.service';
-import { RoleService } from '../roles/role.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 
 @Component({
   selector: 'app-multi-tenant-user-access-map',
@@ -18,6 +19,7 @@ import { RoleService } from '../roles/role.service';
 export class MultiTenantUserAccessMapComponent implements OnInit {
 
   public multiTenantUserAccessMapFormGroup: FormGroup;
+  public TenantUserRoleMappingFilterForm: FormGroup;
   public multiTenantUserMapingList: any[] = [];
   public sortedMultiTenantUserMapingList: any[] = [];
   public lstPrimaryTenant: any[] = [{ 'TenantCode': '0', 'TenantName': 'Select Tenant' }];
@@ -38,30 +40,45 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
   public pageSize = 5;
   public currentPage = 0;
   public totalSize = 0;
+  public isFilterDone = false;
   public array: any;
   public updateOperationMode: boolean = false;
   public multiTenantUserRoleAccessId: number = 0;
+  public baseURL: string = ConfigConstants.BaseURL;
 
   selectedPrimaryTenantCode: string = '';
   selectedTenantUserId: number = 0;
   selectedOtherTenantCode: string = '';
   selectedRoleId: number = 0;
 
-  displayedColumns: string[] = ['username', 'tenantname', 'role', 'status', 'actions'];
+  displayedColumns: string[] = ['parentname', 'username', 'tenantname', 'role', 'status', 'actions'];
   dataSource = new MatTableDataSource<any>();
   public userClaimsRolePrivilegeOperations: any[] = [];
 
   public totalRecordCount = 0;
   public sortOrder = Constants.Descending;
   public sortColumn = 'LastUpdatedDate';
+  public popupContainer: boolean;
+  public isFilter: boolean = false;
+
+  public filteredparenttenantname = '';
+  public filteredusername = '';
+  public filteredtargettenantname = '';
+  public filteredrole = '';
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(private formbuilder: FormBuilder,
     private injector: Injector,
-    private _messageDialogService: MessageDialogService) {
+    private _messageDialogService: MessageDialogService,
+    private _http: HttpClient,
+    private uiLoader: NgxUiLoaderService) {
     }
+
+  closeFilter() {
+    this.isFilter = !this.isFilter;
+  }
 
   //getters of muli-tenant user access mapping Form group
   get primaryTenantCode() {
@@ -75,6 +92,28 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
   }
   get roleId() {
     return this.multiTenantUserAccessMapFormGroup.get('roleId');
+  }
+
+  get filterParentTenantName() {
+    return this.TenantUserRoleMappingFilterForm.get('filterParentTenantName');
+  }
+
+  get filterUserName() {
+    return this.TenantUserRoleMappingFilterForm.get('filterUserName');
+  }
+
+  get filterTargetTenantName() {
+    return this.TenantUserRoleMappingFilterForm.get('filterTargetTenantName');
+  }
+
+  get filterRole() {
+    return this.TenantUserRoleMappingFilterForm.get('filterRole');
+  }
+
+  //this method helps to navigate to add
+  navigateToAddTenantUserRoleAccessMapping() {
+    this.multiTenantUserRoleAccessId = 0;
+    this.popupContainer = true;
   }
 
   //function to validate all fields
@@ -113,7 +152,7 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
           this.lstOtherTenants.push(rec);
         }
       }
-      this.getTenantUsers(null);
+      this.getTenantUsers();
     }
   }
 
@@ -131,7 +170,7 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
     else {
       this.tenantUserMappingFormErrorObject.showOtherTenantError = false;
       this.selectedOtherTenantCode = val;
-      this.getUserRoles(null);
+      this.getUserRoles();
     }
   }
 
@@ -167,6 +206,13 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
       tenantUserId: [0, Validators.compose([Validators.required])],
       otherTenantCode: [0, Validators.compose([Validators.required])],
       roleId: [0, Validators.compose([Validators.required])],
+    });
+
+    this.TenantUserRoleMappingFilterForm = this.formbuilder.group({
+      filterParentTenantName: [null],
+      filterUserName: [null],
+      filterTargetTenantName: [null],
+      filterRole: [null]
     });
 
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
@@ -239,6 +285,21 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
     this.tenantUserMappingFormErrorObject.showOtherTenantError = false;
     this.tenantUserMappingFormErrorObject.showUserRoleError = false;
     this.validateAllFormFields(this.multiTenantUserAccessMapFormGroup);
+    this.popupContainer = false;
+  }
+
+  ResetTenantUserRoleMappingFilterForm() {
+    this.TenantUserRoleMappingFilterForm.patchValue({
+      filterParentTenantName: null,
+      filterUserName: null,
+      filterTargetTenantName: null,
+      filterRole: null,
+    });
+    this.currentPage = 0;
+    this.filteredparenttenantname = '';
+    this.filteredusername = '';
+    this.filteredtargettenantname = '';
+    this.filteredrole = '';
   }
 
   public handlePage(e: any) {
@@ -261,6 +322,7 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
     }
 
     switch (sort.active) {
+      case 'parentname': this.sortColumn = "AssociatedTenantName"; break;
       case 'username': this.sortColumn = "UserName"; break;
       case 'tenantname': this.sortColumn = "OtherTenantName"; break;
       case 'role': this.sortColumn = "RoleName"; break;
@@ -293,7 +355,18 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
       searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
     }
-
+    if(this.filteredusername != '') {
+      searchParameter.UserName = this.filteredusername.trim();
+    }
+    if(this.filteredtargettenantname != '') {
+      searchParameter.OtherTenantName = this.filteredtargettenantname.trim();
+    }
+    if(this.filteredparenttenantname != '') {
+      searchParameter.AssociatedTenantName = this.filteredparenttenantname.trim();
+    }
+    if(this.filteredrole != '') {
+      searchParameter.RoleName = this.filteredrole.trim();
+    }
     var response = await multiTenantUserRoleAccessService.getMultiTenantUserRoleMappingList(searchParameter);
     this.multiTenantUserMapingList = response.List;
     this.totalRecordCount = response.RecordCount;
@@ -301,6 +374,45 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.array = this.multiTenantUserMapingList;
     this.totalSize = this.totalRecordCount;
+  }
+
+  //This method has been used for fetching search records
+  searchFilter(searchType) {
+    this.isFilterDone = true;
+    if (searchType == 'reset') {
+      this.ResetTenantUserRoleMappingFilterForm();
+      this.getTenantUserMappingData(null);
+      this.isFilter = !this.isFilter;
+    }
+    else {
+      let searchParameter: any = {};
+      searchParameter.PagingParameter = {};
+      searchParameter.PagingParameter.PageIndex = 1;
+      searchParameter.PagingParameter.PageSize = this.pageSize;
+      searchParameter.SortParameter = {};
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
+      searchParameter.SortParameter.SortOrder = this.sortOrder;
+      searchParameter.SearchMode = Constants.Contains;
+      if (this.TenantUserRoleMappingFilterForm.value.filterParentTenantName != null && this.TenantUserRoleMappingFilterForm.value.filterParentTenantName != '') {
+        this.filteredparenttenantname = this.TenantUserRoleMappingFilterForm.value.filterParentTenantName.trim();
+        searchParameter.AssociatedTenantName = this.TenantUserRoleMappingFilterForm.value.filterParentTenantName.trim();
+      }
+      if (this.TenantUserRoleMappingFilterForm.value.filterUserName != null && this.TenantUserRoleMappingFilterForm.value.filterUserName != '') {
+        this.filteredusername = this.TenantUserRoleMappingFilterForm.value.filterUserName.trim();
+        searchParameter.UserName = this.TenantUserRoleMappingFilterForm.value.filterUserName.trim();
+      }
+      if (this.TenantUserRoleMappingFilterForm.value.filterTargetTenantName != null && this.TenantUserRoleMappingFilterForm.value.filterTargetTenantName != '') {
+        this.filteredtargettenantname = this.TenantUserRoleMappingFilterForm.value.filterTargetTenantName.trim();
+        searchParameter.OtherTenantName = this.TenantUserRoleMappingFilterForm.value.filterTargetTenantName.trim();
+      }
+      if (this.TenantUserRoleMappingFilterForm.value.filterRole != null && this.TenantUserRoleMappingFilterForm.value.filterRole != '') {
+        this.filteredrole = this.TenantUserRoleMappingFilterForm.value.filterRole;
+        searchParameter.RoleName = this.TenantUserRoleMappingFilterForm.value.filterRole;
+      }
+      this.currentPage = 0;
+      this.getTenantUserMappingData(searchParameter);
+      this.isFilter = !this.isFilter;
+    }
   }
 
   //function written to get tenant list
@@ -352,42 +464,39 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
     }
   }
 
-  async getTenantUsers(searchParameter) {
-    let userService = this.injector.get(UserService);
-    if (searchParameter == null) {
-      searchParameter = {};
-      searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-      searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = Constants.UserName;
-      searchParameter.SortParameter.SortOrder = Constants.Ascending;
-      searchParameter.SearchMode = Constants.Contains;
-      searchParameter.ActivationStatus = true;
-    }
-    var response = await userService.getUser(searchParameter);
-    this.tenantusers.push(...response.usersList);
+  async getTenantUsers() {
+    this.uiLoader.start();
+    this._http.get(this.baseURL + 'MultiTenantUserRoleAccess/GetUsersByTenantCode?tenantCode=' + this.selectedPrimaryTenantCode).pipe(map(response => response))
+      .subscribe(
+        data => {
+          let records: any = data;
+          records.forEach(obj => {
+            this.tenantusers = [...this.tenantusers, obj];
+          });
+          this.uiLoader.stop();
+        },
+        error => {
+          //$('.overlay').show();
+      });
   }
 
-  async getUserRoles(searchParameter) {
-    let roleService = this.injector.get(RoleService);
-    if (searchParameter == null) {
-      searchParameter = {};
-      searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-      searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = Constants.Name;
-      searchParameter.SortParameter.SortOrder = Constants.Ascending;
-      searchParameter.SearchMode = Constants.Contains;
-      searchParameter.IsActive = true;
-    }
-    var response = await roleService.getRoles(searchParameter);
-    this.roles.push(...response.roleList);
+  async getUserRoles() {
+    this._http.get(this.baseURL + 'MultiTenantUserRoleAccess/GetRolesByTenantCode?tenantCode=' + this.selectedOtherTenantCode).pipe(map(response => response))
+      .subscribe(
+        data => {
+          let records: any = data;
+          records.forEach(obj => {
+            this.roles = [...this.roles, obj];
+          });
+          this.uiLoader.stop();
+        },
+        error => {
+          //$('.overlay').show();
+      });
   }
 
   async updateTenantUserMapping(element: any) {
-
+    this.popupContainer = true;
     this.updateOperationMode = true;
     this.multiTenantUserAccessMapFormGroup.patchValue({
       primaryTenantCode: element.AssociatedTenantCode,
@@ -408,8 +517,8 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
     this.tenantusers = [{ 'Identifier': '0', 'FirstName': 'Select ', 'LastName': 'User' }];
     this.roles = [{ 'Identifier': '0', 'Name': 'Select Role' }];
 
-    await this.getTenantUsers(null);
-    this.getUserRoles(null);
+    this.getTenantUsers();
+    this.getUserRoles();
 
     for(let i=0; i<this.lstPrimaryTenant.length; i++) {
       if(this.lstPrimaryTenant[i].TenantCode != '0' && this.lstPrimaryTenant[i].TenantCode != this.selectedPrimaryTenantCode) {

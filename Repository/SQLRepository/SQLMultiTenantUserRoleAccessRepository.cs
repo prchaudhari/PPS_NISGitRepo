@@ -82,10 +82,15 @@ namespace nIS
             try
             {
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-                int loginUserId = 1;
-                //int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
+                int loginUserId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
 
                 this.SetAndValidateConnectionString(tenantCode);
+                if (this.IsDuplicateTenantUserRoleMapping(lstMultiTenantUserRoleAccess, "AddOperation", tenantCode))
+                {
+                    throw new DuplicateTenantUserRoleAccessMappingFoundException(tenantCode);
+                }
+
                 IList<MultiTenantUserAccessMapRecord> multiTenantUserAccessMapRecords = new List<MultiTenantUserAccessMapRecord>();
                 lstMultiTenantUserRoleAccess.ToList().ForEach(record =>
                 {
@@ -130,10 +135,15 @@ namespace nIS
             try
             {
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-                int loginUserId = 1;
-                //int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
+                int loginUserId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
 
                 this.SetAndValidateConnectionString(tenantCode);
+                if (this.IsDuplicateTenantUserRoleMapping(lstMultiTenantUserRoleAccess, "UpdateOperation", tenantCode))
+                {
+                    throw new DuplicateTenantUserRoleAccessMappingFoundException(tenantCode);
+                }
+
                 IList<MultiTenantUserAccessMapRecord> multiTenantUserAccessMapRecords = new List<MultiTenantUserAccessMapRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
@@ -272,8 +282,8 @@ namespace nIS
             try
             {
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-                int loginUserId = 1;
-                //int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
+                int loginUserId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
 
                 this.SetAndValidateConnectionString(tenantCode);
 
@@ -315,8 +325,8 @@ namespace nIS
             try
             {
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-                int loginUserId = 1;
-                //int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
+                int loginUserId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
 
                 this.SetAndValidateConnectionString(tenantCode);
 
@@ -358,8 +368,8 @@ namespace nIS
             try
             {
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-                int loginUserId = 1;
-                //int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
+                int loginUserId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out loginUserId);
 
                 this.SetAndValidateConnectionString(tenantCode);
 
@@ -387,6 +397,75 @@ namespace nIS
                 throw exception;
             }
             return result;
+        }
+
+        /// <summary>
+        /// This method gets the specified list of users by tenant code from user repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of users of specific tenant code
+        /// </returns>
+        public IList<User> GetUsersByTenantCode(string tenantCode)
+        {
+            IList<User> users = new List<User>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var userrecords = nISEntitiesDataContext.UserRecords.Where(x => x.TenantCode == tenantCode && x.IsActive && !x.IsDeleted).ToList();
+                    userrecords.ForEach(usr =>
+                    {
+                        users.Add(new User()
+                        {
+                            Identifier = usr.Id,
+                            FirstName = usr.FirstName,
+                            LastName = usr.LastName,
+                            EmailAddress = usr.EmailAddress,
+                            TenantCode = usr.TenantCode,
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return users;
+        }
+
+        /// <summary>
+        /// This method gets the specified list of roles by tenant code from role repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of roles of specific tenant code
+        /// </returns>
+        public IList<Role> GetRolesByTenantCode(string tenantCode)
+        {
+            IList<Role> roles = new List<Role>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var rolerecords = nISEntitiesDataContext.RoleRecords.Where(x => x.TenantCode == tenantCode && !x.IsDeleted).ToList();
+                    rolerecords.ForEach(r =>
+                    {
+                        roles.Add(new Role()
+                        {
+                            Identifier = r.Id,
+                            Name = r.Name,
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return roles;
         }
 
         #endregion
@@ -417,9 +496,13 @@ namespace nIS
                 {
                     queryString.Append(string.Format("UserName.Contains(\"{0}\") and ", searchParameter.UserName));
                 }
-                if (validationEngine.IsValidText(searchParameter.TenantName))
+                if (validationEngine.IsValidText(searchParameter.AssociatedTenantName))
                 {
-                    queryString.Append(string.Format("OtherTenantName.Contains(\"{0}\") and ", searchParameter.TenantName));
+                    queryString.Append(string.Format("AssociatedTenantName.Contains(\"{0}\") and ", searchParameter.AssociatedTenantName));
+                }
+                if (validationEngine.IsValidText(searchParameter.OtherTenantName))
+                {
+                    queryString.Append(string.Format("OtherTenantName.Contains(\"{0}\") and ", searchParameter.OtherTenantName));
                 }
                 if (validationEngine.IsValidText(searchParameter.RoleName))
                 {
@@ -436,6 +519,7 @@ namespace nIS
             queryString.Append(string.Format(" IsDeleted.Equals(false)", tenantCode));
             return queryString.ToString();
         }
+
         /// <summary>
         /// This method help to set and validate connection string
         /// </summary>
@@ -456,6 +540,47 @@ namespace nIS
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// This method determines uniqueness of elements in repository.
+        /// </summary>
+        /// <param name="tenantUserRoleAccesses">The pages to save.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Returns true if all elements are not present in repository, false otherwise.
+        /// </returns>
+        private bool IsDuplicateTenantUserRoleMapping(IList<MultiTenantUserRoleAccess> tenantUserRoleAccesses, string operation, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                StringBuilder query = new StringBuilder();
+                if (operation.Equals(ModelConstant.ADD_OPERATION))
+                {
+                    query.Append("(" + string.Join(" or ", tenantUserRoleAccesses.Select(item => string.Format("AssociatedTenantCode.Equals(\"{0}\") and UserId.Equals(\"{1}\") and OtherTenantCode.Equals(\"{2}\")", item.AssociatedTenantCode, item.UserId, item.OtherTenantCode)).ToList()) + ") and IsDeleted.Equals(false) ");
+                }
+
+                if (operation.Equals(ModelConstant.UPDATE_OPERATION))
+                {
+                    query.Append("(" + string.Join(" or ", tenantUserRoleAccesses.Select(item => string.Format("AssociatedTenantCode.Equals(\"{0}\") and UserId.Equals(\"{1}\") and OtherTenantCode.Equals(\"{2}\") and !Id.Equals({3}) ", item.AssociatedTenantCode, item.UserId, item.OtherTenantCode, item.Identifier)).ToList()) + ") and IsDeleted.Equals(false) ");
+                }
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var records = nISEntitiesDataContext.MultiTenantUserAccessMapRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    if (records.Count > 0)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
 
         #endregion

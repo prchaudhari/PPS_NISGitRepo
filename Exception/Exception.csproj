@@ -90,6 +90,7 @@
     <Compile Include="InvalidEncryptedDataException.cs" />
     <Compile Include="InvalidSearchParameterException.cs" />
     <Compile Include="InvalidTenantException.cs" />
+    <Compile Include="MultiTenantUserRoleAccess\DuplicateTenantUserRoleAccessMappingFoundException.cs" />
     <Compile Include="MultiTenantUserRoleAccess\InvalidMultiTenantUserRoleAccessException.cs" />
     <Compile Include="MultiTenantUserRoleAccess\MultiTenantUserRoleAccessNotFoundException.cs" />
     <Compile Include="NullArgumentException.cs" />

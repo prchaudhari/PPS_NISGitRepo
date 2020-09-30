@@ -171,6 +171,50 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of users by tenant code from user repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of users of specific tenant code
+        /// </returns>
+        [HttpGet]
+        public IList<User> GetUsersByTenantCode(string tenantCode)
+        {
+            IList<User> users = new List<User>();
+            try
+            {
+                users = this.multiTenantUserRoleAccessManager.GetUsersByTenantCode(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return users;
+        }
+
+        /// <summary>
+        /// This method gets the specified list of roles by tenant code from role repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of users of specific tenant code
+        /// </returns>
+        [HttpGet]
+        public IList<Role> GetRolesByTenantCode(string tenantCode)
+        {
+            IList<Role> roles = new List<Role>();
+            try
+            {
+                roles = this.multiTenantUserRoleAccessManager.GetRolesByTenantCode(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return roles;
+        }
+
         #endregion
     }
 }

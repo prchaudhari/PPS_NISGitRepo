@@ -70,6 +70,24 @@ namespace nIS
         /// <returns>True if Multi-tenant user role access deleted successfully false otherwise</returns>
         bool DeletedMultiTenantUserRoleAccess(long multiTenantUserRoleAccessIdentifier, string tenantCode);
 
+        /// <summary>
+        /// This method gets the specified list of users by tenant code from user repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of users of specific tenant code
+        /// </returns>
+        IList<User> GetUsersByTenantCode(string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of roles by tenant code from role repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of roles of specific tenant code
+        /// </returns>
+        IList<Role> GetRolesByTenantCode(string tenantCode);
+
     }
 
 }
