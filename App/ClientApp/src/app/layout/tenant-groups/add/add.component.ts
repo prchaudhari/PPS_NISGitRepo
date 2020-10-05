@@ -12,7 +12,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CountryService } from '../../country/country.service';
 import { Tenant } from '../../tenants/tenant';
 import { TenantService } from '../../tenants/tenant.service';
-
+import { User } from '../../users/user';
+import { UserService } from '../../users/user.service';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -27,11 +28,13 @@ export class AddComponent implements OnInit {
   public pageSize = 5;
   public currentPage = 0;
   public totalSize = 0;
-  public tenantGroupUserList: any[] = [
-    { FirstName: 'Allan', LastName: 'Finch', EmailAddress: 'allan.finch@nis.com', ContactNumber: '9734667889', CountryCode: '+91', CountryId: 1 },
-    { FirstName: 'Glenn', LastName: 'Steyn', EmailAddress: 'glenn.styen@nis.com', ContactNumber: '5235674356', CountryCode: '+91', CountryId: 1 },
-    { FirstName: 'Dean', LastName: 'Jones', EmailAddress: 'dean.jones@nis.com', ContactNumber: '6756734567', CountryCode: '+91', CountryId: 1 },
-  ];
+  //public tenantGroupUserList: any[] = [
+  //  { FirstName: 'Allan', LastName: 'Finch', EmailAddress: 'allan.finch@nis.com', ContactNumber: '9734667889', CountryCode: '+91', CountryId: 1 },
+  //  { FirstName: 'Glenn', LastName: 'Steyn', EmailAddress: 'glenn.styen@nis.com', ContactNumber: '5235674356', CountryCode: '+91', CountryId: 1 },
+  //  { FirstName: 'Dean', LastName: 'Jones', EmailAddress: 'dean.jones@nis.com', ContactNumber: '6756734567', CountryCode: '+91', CountryId: 1 },
+  //];
+
+  public tenantGroupUserList: any[] = [];
   public tenant: Tenant;
   public array: any;
   FirstChar: string;
@@ -61,6 +64,7 @@ export class AddComponent implements OnInit {
 
   constructor(private _location: Location,
     private _router: Router,
+    private service: UserService,
     private _activatedRouter: ActivatedRoute,
     private _http: HttpClient,
     private _spinnerService: NgxUiLoaderService,
@@ -210,6 +214,7 @@ export class AddComponent implements OnInit {
     searchParameter.TenantCode = this.tenantgroup.TenantCode;
     var response = await tenantService.getTenant(searchParameter);
     var tenantList = response.List;
+    this.tenant = tenantList[0];
     this.isTenantDetailsLoaded = true;
     if (tenantList.length == 0) {
       this._messageDialogService.openDialogBox('Error', "Tenant Group Not Found", Constants.msgBoxError);
@@ -247,12 +252,15 @@ export class AddComponent implements OnInit {
       this.markFormGroupUnTouched(this.tenantGroupUserFormGroup);
     }
     else {
+      var number;
       if (this.updateOperationMode) {
+        number = tenantgroupuser.ContactNumber.split("-")[1];
         this.tenantGroupUserIdentifier = tenantgroupuser.Identifier;
         this.TenantGroupUser.EmailAddress = tenantgroupuser.EmailAddress;
       }
       else {
         this.tenantGroupUserIdentifier = 0;
+        number=tenantgroupuser.ContactNumber;
         this.TenantGroupUser.EmailAddress = '';
       }
       this.isEditTenantGroupUserContainer = true;
@@ -260,7 +268,7 @@ export class AddComponent implements OnInit {
         EditfirstName: tenantgroupuser.FirstName,
         EditlastName: tenantgroupuser.LastName,
         Editemail: tenantgroupuser.EmailAddress,
-        EditmobileNumber: tenantgroupuser.ContactNumber,
+        EditmobileNumber: number,
         EditCountryCode: tenantgroupuser.CountryId
       }
       );
@@ -333,6 +341,19 @@ export class AddComponent implements OnInit {
   }
 
   async BindTenantGroupUsers() {
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = Constants.UserName;
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.TenantCode = this.tenant.TenantCode;
+    searchParameter.IsGroupManager = true;
+    var response = await this.service.getUser(searchParameter);
+    var userList = response.usersList;
+    // this.totalRecordCount = response.RecordCount;
+    this.tenantGroupUserList = userList
     this.dataSource = new MatTableDataSource<any>(this.tenantGroupUserList);
     this.dataSource.sort = this.sort;
     this.array = this.tenantGroupUserList;
@@ -353,11 +374,43 @@ export class AddComponent implements OnInit {
       "IsActive": true,
       "IsActivationLinkSent": false
     };
-    this.tenantGroupUserList.push(tenantGroupUserObject);
-    let messageString = Constants.recordAddedMessage;
-    this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-    this.BindTenantGroupUsers();
+
+
+    if (this.updateOperationMode) {
+      var data = [];
+      data.push(tenantGroupUserObject)
+      tenantGroupUserObject.TenantCode=this.tenant.TenantCode;
+      let tenantService = this.injector.get(TenantService);
+      let isRecordSaved = await tenantService.saveGroupManager(data, false);
+      if (isRecordSaved) {
+        let message = Constants.recordAddedMessage;
+        if (this.updateOperationMode) {
+          message = Constants.recordUpdatedMessage;
+        }
+        this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+        this.BindTenantGroupUsers();
+      }
+    }
+    else {
+      var contacts = [];
+      contacts = this.tenantGroupUserList.filter(s => tenantGroupUserObject.EmailAddress == s.EmailAddress);
+      if (contacts.length > 0) {
+        this._messageDialogService.openDialogBox('Error', "Duplicate tenant contact found", Constants.msgBoxSuccess);
+      }
+      else {
+        this.tenantGroupUserList.push(tenantGroupUserObject);
+        let messageString = Constants.recordAddedMessage;
+        this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+        this.dataSource = new MatTableDataSource<any>(this.tenantGroupUserList);
+        this.dataSource.sort = this.sort;
+        this.array = this.tenantGroupUserList;
+        this.totalSize = this.array.length;
+        this.iterator();
+        this.CloseAddEditTenantGroupUserContainer('Add');
+      }
+    }
     this.CloseAddEditTenantGroupUserContainer('Add');
+
   }
 
   async UpdateTenantGroupUser() {
@@ -375,19 +428,68 @@ export class AddComponent implements OnInit {
       "IsActive": true,
       "IsActivationLinkSent": false
     };
-    this.tenantGroupUserList.push(tenantGroupUserObject);
-    let messageString = Constants.recordUpdatedMessage;
-    this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-    this.BindTenantGroupUsers();
+
+    if (this.updateOperationMode) {
+      var data = [];
+      data.push(tenantGroupUserObject);
+      let isRecordSaved = await this.service.saveUser(data, true);
+      if (isRecordSaved) {
+        let message = Constants.recordAddedMessage;
+        if (this.updateOperationMode) {
+          message = Constants.recordUpdatedMessage;
+        }
+        this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+        this.BindTenantGroupUsers();
+      }
+    }
+    else {
+      var contacts = [];
+      contacts = this.tenantGroupUserList.filter(s => tenantGroupUserObject.EmailAddress == s.EmailAddress);
+      if (contacts.length > 0) {
+        this._messageDialogService.openDialogBox('Error', "Duplicate tenant contact found", Constants.msgBoxSuccess);
+      }
+      else {
+        this.tenantGroupUserList.forEach(item => {
+          if (item.EmailAddress == tenantGroupUserObject.EmailAddress) {
+            item = tenantGroupUserObject;
+          }
+        });
+        this.dataSource = new MatTableDataSource<any>(this.tenantGroupUserList);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    }
     this.CloseAddEditTenantGroupUserContainer('Edit');
   }
 
   async DeleteTenantGroupUser(tenantgroup) {
-    var index = this.tenantGroupUserList.findIndex(s => tenantgroup.EmailAddress == s.EmailAddress);
-    this.tenantGroupUserList.splice(index, 1);
-    let messageString = Constants.recordDeletedMessage;
-    this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-    this.BindTenantGroupUsers();
+    if (this.updateOperationMode) {
+      let message = "Are you sure you want to delete this record?";
+      this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+        if (isConfirmed) {
+          let tenantGroupData = [{
+            "Identifier": tenantgroup.Identifier,
+          }];
+          let isDeleted = await this.service.deleteUser(tenantgroup.Identifier);
+          if (isDeleted) {
+            let messageString = Constants.recordDeletedMessage;
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.BindTenantGroupUsers();
+          }
+        }
+      });
+    }
+    else {
+      var index = this.tenantGroupUserList.findIndex(s => tenantgroup.EmailAddress == s.EmailAddress);
+      this.tenantGroupUserList.splice(index, 1);
+      let messageString = Constants.recordDeletedMessage;
+      this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+      this.dataSource = new MatTableDataSource<any>(this.tenantGroupUserList);
+      this.dataSource.sort = this.sort;
+      this.array = this.tenantGroupUserList;
+      this.totalSize = this.array.length;
+      this.iterator();
+    }
   }
 
   validateTenantGroupForm() {
@@ -428,23 +530,46 @@ export class AddComponent implements OnInit {
   }
 
   async saveTenant() {
-    this.tenant.TenantName = this.tenantGroupFormGroup.value.tenantGroupName;
-    this.tenant.TenantDescription = this.tenantGroupFormGroup.value.tenantGroupDescription;
-    this.tenant.TenantType = "Group";
-    var userid = localStorage.getItem('UserId');
-    this.tenant.User = {};
-    this.tenant.User.Identifier = userid;
-    let pageArray = [];
-    pageArray.push(this.tenant);
-    let tenantService = this.injector.get(TenantService);
-    let isRecordSaved = await tenantService.saveTenant(pageArray, this.updateOperationMode);
-    if (isRecordSaved) {
-      let message = Constants.recordAddedMessage;
-      if (this.updateOperationMode) {
-        message = Constants.recordUpdatedMessage;
-      }
-      this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-      this.navigateToListPage()
+    if (this.tenantGroupUserList.length <= 0) {
+      this._messageDialogService.openDialogBox('Error', "Please add tenant gourp user information", Constants.msgBoxSuccess);
     }
+    else {
+      this.tenant.TenantName = this.tenantGroupFormGroup.value.tenantGroupName;
+      this.tenant.TenantDescription = this.tenantGroupFormGroup.value.tenantGroupDescription;
+      this.tenant.TenantType = "Group";
+      var userid = localStorage.getItem('UserId');
+      this.tenant.TenantContacts = this.tenantGroupUserList;
+      this.tenant.User = {};
+      this.tenant.User.Identifier = userid;
+      let pageArray = [];
+      pageArray.push(this.tenant);
+      let tenantService = this.injector.get(TenantService);
+      let isRecordSaved = await tenantService.saveTenant(pageArray, this.updateOperationMode);
+      if (isRecordSaved) {
+        let message = Constants.recordAddedMessage;
+        if (this.updateOperationMode) {
+          message = Constants.recordUpdatedMessage;
+        }
+        this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+        this.navigateToListPage()
+
+      }
+    }
+
   }
+
+  getUserInformation(): void {
+    this.isCollapsedTenantGroupUsers = !this.isCollapsedTenantGroupUsers;
+    if (!this.isCollapsedTenantGroupUsers) {
+      if (this.tenant.TenantCode != null && this.tenant.TenantCode != '') {
+        if (this.tenant.TenantContacts == null || this.tenant.TenantContacts.length == 0) {
+          this.BindTenantGroupUsers();
+        }
+
+      }
+
+    }
+
+  }
+
 }

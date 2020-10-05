@@ -173,26 +173,43 @@ namespace nIS
                 clients.ToList().ForEach(client =>
                 {
                     Tenant tenant = new Tenant();
-                    client.TenantContacts.ToList().ForEach(item =>
+                    if (client.TenantType == "Tenant")
                     {
-                        if (item.ContactType.Equals(ModelConstant.TENANT_PRIMARY_CONTACT))
+                        client.TenantContacts.ToList().ForEach(item =>
                         {
-                            client.PrimaryFirstName = item.FirstName;
-                            client.PrimaryLastName = item.LastName;
-                            client.PrimaryEmailAddress = item.EmailAddress;
-                            client.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
+                            if (item.ContactType.Equals(ModelConstant.TENANT_PRIMARY_CONTACT))
+                            {
+                                client.PrimaryFirstName = item.FirstName;
+                                client.PrimaryLastName = item.LastName;
+                                client.PrimaryEmailAddress = item.EmailAddress;
+                                client.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
 
-                            tenant.PrimaryFirstName = item.FirstName;
-                            tenant.PrimaryLastName = item.LastName;
-                            tenant.PrimaryEmailAddress = item.EmailAddress;
-                            tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
-                            item.IsActivationLinkSent = true;
-                        }
-                        tenantContacts.Add(item);
-                    });
+                                tenant.PrimaryFirstName = item.FirstName;
+                                tenant.PrimaryLastName = item.LastName;
+                                tenant.PrimaryEmailAddress = item.EmailAddress;
+                                tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
+                                item.IsActivationLinkSent = true;
+                            }
+                            tenantContacts.Add(item);
+                        });
+                    }
+                    if (client.TenantType == "Group")
+                    {
+                        client.PrimaryFirstName = client.TenantContacts.FirstOrDefault().FirstName;
+                        client.PrimaryLastName = client.TenantContacts.FirstOrDefault().LastName;
+                        client.PrimaryEmailAddress = client.TenantContacts.FirstOrDefault().EmailAddress;
+                        client.PrimaryContactNumber = client.TenantContacts.FirstOrDefault().CountryCode + "-" + client.TenantContacts.FirstOrDefault().ContactNumber;
+
+                        tenant.PrimaryFirstName = client.TenantContacts.FirstOrDefault().FirstName;
+                        tenant.PrimaryLastName = client.TenantContacts.FirstOrDefault().LastName;
+                        tenant.PrimaryEmailAddress = client.TenantContacts.FirstOrDefault().EmailAddress;
+                        tenant.PrimaryContactNumber = client.TenantContacts.FirstOrDefault().CountryCode + "-" + client.TenantContacts.FirstOrDefault().ContactNumber;
+                    }
+
 
                     //// Assign compulsary properties.
                     tenant.TenantCode = newTenantCode;
+                    client.TenantCode = newTenantCode;
                     tenant.TenantName = client.TenantName;
                     tenant.TenantDomainName = client.TenantDomainName;
                     tenant.TenantType = client.TenantType;
@@ -262,12 +279,48 @@ namespace nIS
                                 IsGroupManager = false
                             }).ToList();
 
-                            bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode);
+                            bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode, false);
                             if (!addUserResult)
                             {
                                 throw new InvalidUserException(tenantCode);
                             }
                             this.tenantContactManager.AddTenantContacts(tenantContacts, client.TenantCode);
+
+                            #endregion
+                        }
+                        if (client.TenantType == "Group")
+                        {
+                            #region Get Group Admin Role, User and Assign Role to User
+
+                            IList<User> clientusers = new List<User>();
+                            IList<Role> clientRoles = new List<Role>();
+                            RoleManager roleManager = new RoleManager(this.unityContainer);
+                            clientRoles = roleManager.GetRoles(new RoleSearchParameter()
+                            {
+                                SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
+                                Name = ModelConstant.GROUP_MANAGER_ROLE,
+                                IsRequiredRolePrivileges = true,
+                            }, ModelConstant.DEFAULT_TENANT_CODE);
+
+                            IList<Role> tenantRole = clientRoles;
+
+                            clientusers = client.TenantContacts.Select(item => new User()
+                            {
+                                FirstName = item.FirstName == "" ? item.FirstName : item.FirstName,
+                                LastName = item.LastName == "" ? item.LastName : item.LastName,
+                                EmailAddress = item.EmailAddress,
+                                ContactNumber = item.ContactNumber,
+                                CountryId = item.CountryId,
+                                Roles = tenantRole,
+                                IsInstanceManager = false,
+                                IsGroupManager = true,
+                            }).ToList();
+
+                            bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode, true);
+                            if (!addUserResult)
+                            {
+                                throw new InvalidUserException(tenantCode);
+                            }
 
                             #endregion
                         }
@@ -705,12 +758,13 @@ namespace nIS
                 roles = roleManager.GetRoles(new RoleSearchParameter()
                 {
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
-                    Name = ModelConstant.TENANT_ADMIN_ROLE,
+                    Name = ModelConstant.GROUP_MANAGER_ROLE,
                     IsRequiredRolePrivileges = true,
                 }, ModelConstant.DEFAULT_TENANT_CODE);
                 users.ToList().ForEach(item =>
                 {
                     item.Roles = roles;
+                    item.IsGroupManager = true;
                 });
 
                 result = this.userManager.AddUsers(users, tenantCode, false);

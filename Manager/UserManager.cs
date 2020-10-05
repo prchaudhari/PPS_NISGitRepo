@@ -924,6 +924,23 @@ namespace nIS
             try
             {
                 string userIdentifiers = string.Join(",", users.Select(user => user.Identifier.ToString()).ToList());
+                users.ToList().ForEach(item =>
+                {
+                    if (item.IsGroupManager)
+                    {
+                        ClientSearchParameter clientSearchPaarmeter = new ClientSearchParameter();
+                        clientSearchPaarmeter.SortParameter = new SortParameter();
+                        clientSearchPaarmeter.SortParameter.SortColumn = "TenantCode";
+                        clientSearchPaarmeter.PrimaryEmailAddress = item.EmailAddress;
+                        var clients = new ClientManager(this.unityContainer).GetClients(clientSearchPaarmeter, ModelConstant.DEFAULT_TENANT_CODE);
+                        if (clients != null || clients?.Count > 0)
+                        {
+                            Exception ex = new Exception("This user is used in tenant group primary contact details");
+                            throw ex;
+
+                        }
+                    }
+                });
 
             }
             catch (Exception)

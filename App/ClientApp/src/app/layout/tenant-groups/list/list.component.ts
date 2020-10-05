@@ -243,15 +243,15 @@ export class ListComponent implements OnInit {
     let message = 'Are you sure, you want to delete this record?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        // let tenantGroupData = [{
-        //   "Id": tenantgroup.Id,
-        // }];
-        //let isDeleted = await this.tenantService.deleteTenantGroup(tenantGroupData);
-        //if (isDeleted) {
+         let tenantGroupData = [{
+           "TenantCode": tenantgroup.TenantCode,
+         }];
+        let isDeleted = await this.tenantService.deleteTenant(tenantGroupData);
+        if (isDeleted) {
         let messageString = Constants.recordDeletedMessage;
         this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-        //this.getTenantGroups();
-        //}
+        this.getTenantGroups(null);
+        }
       }
     });
   }

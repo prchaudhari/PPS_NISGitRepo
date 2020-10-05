@@ -154,6 +154,10 @@ namespace nIS
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                if(userSearchParameter.IsGroupManager)
+                {
+                    tenantCode = userSearchParameter.TenantCode;
+                }
                 users = this.userManager.GetUsers(userSearchParameter, tenantCode);
                 HttpContext.Current.Response.AppendHeader("recordCount", this.userManager.GetUserCount(userSearchParameter, tenantCode).ToString());
             }

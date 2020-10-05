@@ -207,6 +207,7 @@ export class TenantService {
       });
     return <boolean>this.isRecordSaved;
   }
+
   public async sendActivationLink(postData, tenantEditModeOn): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.tenantContactSendActivationUrl;
@@ -272,6 +273,32 @@ export class TenantService {
         this.isRecordDeleted = false;
       });
     return <boolean>this.isRecordDeleted;
+  }
+
+  public async saveGroupManager(postData, tenantEditModeOn): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = "Client/AddGroupManager";
+    if (tenantEditModeOn) {
+      requestUrl = URLConfiguration.userUpdateUrl;
+    }
+    this.uiLoader.start();
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            this.isRecordSaved = true;
+          }
+          else {
+            this.isRecordSaved = false;
+          }
+        }
+      }, (error) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this.isRecordSaved = false;
+        this.uiLoader.stop();
+      });
+    return <boolean>this.isRecordSaved;
   }
 
  

@@ -281,7 +281,7 @@ namespace nIS
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                result = this.clientManager.AddGroupManager(users, tenantCode);
+                result = this.clientManager.AddGroupManager(users, users.First().TenantCode);
             }
             catch (Exception exception)
             {

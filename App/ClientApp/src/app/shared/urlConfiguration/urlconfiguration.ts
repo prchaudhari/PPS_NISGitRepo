@@ -35,7 +35,7 @@ export class URLConfiguration {
   public static get tenantContactUpdate(): string { return "TenantContact/Update" };
   public static get tenantContactDeleteUrl(): string { return "TenantContact/Delete" };
   public static get tenantContactSendActivationUrl(): string { return "TenantContact/SendActivationLink" };
-
+  
   //User Url Method
   public static get userGetUrl(): string { return "User/List" };
   public static get userAddUrl(): string { return "User/Add" };
