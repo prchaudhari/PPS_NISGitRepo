@@ -1,11 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="MultiTenantUserRoleAccess.cs" company="Websym Solutions Pvt. Ltd.">
+////Copyright (c) 2020 Websym Solutions Pvt. Ltd..
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace nIS
 {
+    #region References
+
+    using System;
+    using System.ComponentModel;
+
+    #endregion
+
+    /// <summary>
+    /// This enum indicates the multi tenant user role access.
+    /// </summary>
     public class MultiTenantUserRoleAccess
     {
         public long Identifier { get; set; }

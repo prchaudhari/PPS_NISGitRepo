@@ -170,4 +170,33 @@ export class MultiTenantUserAccessMapService {
     return <boolean>this.resultFlag;
   }
 
+  //method to call api of activate multi-tenant user role access.
+  public async GetUserTenantRoleMap(UserId): Promise<any> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.getUserTenantRoleMap + '?userId=' + UserId;
+    this.uiLoader.start();
+    var response : any = {};
+    let userTenants = [];
+    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            httpEvent['body'].forEach(record => {
+              userTenants = [...userTenants, record];
+            });
+            response.List = userTenants;
+          }
+          else {
+            response.List = userTenants;
+          }
+        }
+      }, (error) => {
+        response.List = userTenants;
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this.uiLoader.stop();
+      });
+      return response
+  }
+
 }

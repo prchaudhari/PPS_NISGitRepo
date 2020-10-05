@@ -63,6 +63,7 @@
     <Folder Include="Configuration Manager" />
     <Folder Include="Entity Manager" />
     <Folder Include="Seed Data Scripts\Views" />
+    <Folder Include="Seed Data Scripts\Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Asset.sql" />
@@ -136,6 +137,7 @@
     <None Include="Seed Data Scripts\Tenant.sql" />
     <None Include="Seed Data Scripts\Configuration.sql" />
     <Build Include="Configuration Manager\ConfigurationManagerSchema.sql" />
+    <None Include="Seed Data Scripts\Functions\Functions.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment1.sql" />

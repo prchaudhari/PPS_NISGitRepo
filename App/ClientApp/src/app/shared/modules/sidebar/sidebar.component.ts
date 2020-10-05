@@ -29,7 +29,9 @@ export class SidebarComponent implements OnInit {
   iconTitle = "Asset Configuration Settings";
   public element: HTMLElement;
   public userClaimsRolePrivilegeOperations;
-  public isSuperAdminUser: boolean = false;
+  public isTenantAdminUser: boolean = false;
+  public isInstantTenantManager: boolean = false;
+  public isTenantGroupManager: boolean = false;
   public isByBtnClickEvent: boolean = false;
 
   toggleNav() {
@@ -67,8 +69,17 @@ export class SidebarComponent implements OnInit {
       this.route.navigate(['/dashboard']);
     }
     else {
-      this.URL = '/tenants';
-      this.route.navigate(['/tenants']);
+      if(this.isInstantTenantManager == true) {
+        this.URL = '/tenants';
+        this.route.navigate(['/tenants']);
+      }else if(this.isTenantGroupManager == true) {
+        this.URL = '/tenantgroups';
+        this.route.navigate(['/tenantgroups']);
+      }else if(this.isTenantAdminUser == true) {
+        this.URL = '/contacttype';
+        this.route.navigate(['/contacttype']);
+      }
+      
     }
     this.hideSidebar();
   }
@@ -118,13 +129,11 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/tenants']);
   }
-
   navigateToTenantUsers() {
     this.URL = '/tenantusers';
     this.hideSidebar();
     this.route.navigate(['/tenantusers']);
   }
-
   navigateToTenantGroups() {
     this.URL = '/tenantgroups';
     this.hideSidebar();
@@ -213,8 +222,11 @@ export class SidebarComponent implements OnInit {
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
 
+    this.isInstantTenantManager = userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() == 'true' ? true : false;
+    this.isTenantGroupManager = userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() == 'true' ? true : false;
+
     var loggedInUserDetails = JSON.parse(localStorage.getItem('user'));
-    this.isSuperAdminUser = loggedInUserDetails.RoleName == 'Super Admin' ? true : false;
+    this.isTenantAdminUser = loggedInUserDetails.RoleName == 'Super Admin' ? true : false;
 
     $(document).ready(function () {
       this.screenWidth = window.innerWidth;
@@ -254,9 +266,10 @@ export class SidebarComponent implements OnInit {
     })
     
     this.URL = this.route.url;
-    if(this.isSuperAdminUser == true) {
+    if(this.isInstantTenantManager == true || this.isTenantGroupManager == true || this.isTenantAdminUser) {
       if (this.URL.includes('/tenants') || this.URL.includes('/tenantConfiguration') ||this.URL.includes('/settings') || this.URL.includes('/country') || 
-      this.URL.includes('/tenantgroups') || this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype') || this.URL.includes('/multiTenantUserAccess')) {
+      this.URL.includes('/tenantgroups') || this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype') || this.URL.includes('/multiTenantUserAccess')
+      || this.URL.includes('/tenantusers')) {
         this.IsMainMenu = false;
       }
       else {
@@ -313,6 +326,9 @@ export class SidebarComponent implements OnInit {
     }
     else if (this.URL.includes('/multiTenantUserAccess')) {
       this.URL = '/multiTenantUserAccess';
+    }
+    else if(this.URL.includes('/tenantusers')) {
+      this.URL = '/tenantusers';
     }
   }
 

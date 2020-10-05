@@ -628,6 +628,8 @@
           <Property Name="UserId" Type="bigint" Nullable="false" />
           <Property Name="RoleId" Type="bigint" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.UserTenantRoleMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Video">
           <Key>
             <PropertyRef Name="Id" />
@@ -701,6 +703,7 @@
           <Property Name="AutheticationMode" Type="nvarchar(max)" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="ParentTenantCode" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -926,6 +929,20 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <Function Name="FnUserTenant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="NIS">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="UserId" Type="bigint" Nullable="false" />
+                <Property Name="UserName" Type="nvarchar" MaxLength="201" Nullable="false" />
+                <Property Name="TenantCode" Type="nvarchar(max)" Nullable="false" />
+                <Property Name="TenantName" Type="nvarchar(max)" Nullable="false" />
+                <Property Name="RoleId" Type="bigint" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <EntityContainer Name="NISModelStoreContainer">
           <EntitySet Name="AccountMaster" EntityType="Self.AccountMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="AccountTransaction" EntityType="Self.AccountTransaction" Schema="NIS" store:Type="Tables" />
@@ -1173,6 +1190,9 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TenantUserRecords" EntityType="NISModel.TenantUserRecord" />
           <EntitySet Name="MultiTenantUserAccessMapRecords" EntityType="NISModel.MultiTenantUserAccessMapRecord" />
           <EntitySet Name="View_MultiTenantUserAccessMapRecord" EntityType="NISModel.View_MultiTenantUserAccessMapRecord" />
+          <FunctionImport Name="FnUserTenant" IsComposable="true" ReturnType="Collection(NISModel.FnUserTenant_Result)">
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1422,6 +1442,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="AutheticationMode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="ParentTenantCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RoleRecord">
           <Key>
@@ -2081,6 +2102,13 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="LastUpdatedByUserName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <ComplexType Name="FnUserTenant_Result">
+          <Property Type="Int64" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="TenantCode" Nullable="false" />
+          <Property Type="String" Name="TenantName" Nullable="false" />
+          <Property Type="Int64" Name="RoleId" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2310,6 +2338,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="TenantRecords">
             <EntityTypeMapping TypeName="NISModel.TenantRecord">
               <MappingFragment StoreEntitySet="Tenant">
+                <ScalarProperty Name="ParentTenantCode" ColumnName="ParentTenantCode" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AutheticationMode" ColumnName="AutheticationMode" />
@@ -2983,6 +3012,17 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="FnUserTenant" FunctionName="NISModel.Store.FnUserTenant">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NISModel.FnUserTenant_Result">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="TenantName" ColumnName="TenantName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

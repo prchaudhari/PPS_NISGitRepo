@@ -88,6 +88,16 @@ namespace nIS
         /// </returns>
         IList<Role> GetRolesByTenantCode(string tenantCode);
 
+        /// <summary>
+        /// This method gets the specified list of mapped tenants to single user.
+        /// </summary>
+        /// <param name = "userId" > The User Identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of tenants which are mapped to user
+        /// </returns>
+        IList<UserTenant> GetUserTenants(long userId, string tenantCode);
+
     }
 
 }

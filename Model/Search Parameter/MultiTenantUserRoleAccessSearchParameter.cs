@@ -29,9 +29,20 @@ namespace nIS
         public long Identifier { get; set; }
 
         /// <summary>
+        /// The parent tenant code
+        /// </summary>
+        public string AssociatedTenantCode { get; set; }
+
+        /// <summary>
         /// The parent tenant name
         /// </summary>
         public string AssociatedTenantName { get; set; }
+
+
+        /// <summary>
+        /// The target tenant code
+        /// </summary>
+        public string OtherTenantCode { get; set; }
 
         /// <summary>
         /// The target tenant name
@@ -39,9 +50,19 @@ namespace nIS
         public string OtherTenantName { get; set; }
 
         /// <summary>
+        /// The user identifier
+        /// </summary>
+        public long UserId { get; set; }
+
+        /// <summary>
         /// The user name
         /// </summary>
         public string UserName { get; set; }
+
+        /// <summary>
+        /// The role Identifier
+        /// </summary>
+        public long RoleId { get; set; }
 
         /// <summary>
         /// The role name

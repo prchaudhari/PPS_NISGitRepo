@@ -140,6 +140,7 @@
     <Compile Include="User.cs" />
     <Compile Include="UserLogin.cs" />
     <Compile Include="UserLoginActivityHistory.cs" />
+    <Compile Include="UserTenant.cs" />
     <Compile Include="Widget.cs" />
     <Compile Include="WidgetVisitorPieChartData.cs" />
   </ItemGroup>

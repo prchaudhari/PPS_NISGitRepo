@@ -72,7 +72,7 @@ namespace nIS
                     throw new Exception(tenantCode);
                 }
 
-                user = new AuthenticationManager(Container.GetUnityContainer()).UserAuthenticate(context.UserName, context.Password, tenantCode);
+                user = new AuthenticationManager(Container.GetUnityContainer()).UserAuthenticate(context.UserName, context.Password, tenantCode);               
             }
             catch (Exception catchException)
             {
@@ -83,6 +83,68 @@ namespace nIS
                 }
                 context.SetError("invalid_grant", message);
                 return;
+            }
+
+            //to check login user is instant tenant manager or tenant group manager
+            var isInstanceTenantManager = false;
+            var isTenantGroupManager = false;
+            var isUserHaveMultiTenantAccess = false;
+
+            ClientSearchParameter clientSearchParameter = new ClientSearchParameter
+            {
+                TenantCode = user.TenantCode,
+                IsCountryRequired = false,
+                IsContactRequired = false,
+                PagingParameter = new PagingParameter
+                {
+                    PageIndex = 0,
+                    PageSize = 0,
+                },
+                SortParameter = new SortParameter()
+                {
+                    SortOrder = SortOrder.Ascending,
+                    SortColumn = "Id",
+                },
+                SearchMode = SearchMode.Equals
+            };
+            var lstTenants = new ClientManager(Container.GetUnityContainer()).GetClients(clientSearchParameter, tenantCode);
+            if (lstTenants.Count > 0)
+            {
+                var tenant = lstTenants.FirstOrDefault();
+                if (tenant.TenantType == "Instance" && user.IsInstanceManager)
+                {
+                    isInstanceTenantManager = true;
+                }
+                else if (tenant.TenantType == "Group" && user.IsGroupManager)
+                {
+                    isTenantGroupManager = true;
+                }
+            }
+
+            if (!isInstanceTenantManager)
+            {
+                //To check if user has more than one tenant access of tenant group under which he belongs
+                MultiTenantUserRoleAccessSearchParameter multiTenantUserRoleAccessSearchParameter = new MultiTenantUserRoleAccessSearchParameter
+                {
+                    IsActive = true,
+                    UserId = user.Identifier,
+                    PagingParameter = new PagingParameter
+                    {
+                        PageIndex = 0,
+                        PageSize = 0,
+                    },
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = "LastUpdatedDate",
+                    },
+                    SearchMode = SearchMode.Equals
+                };
+                var lstTenantUserRoleAccess = new MultiTenantUserRoleAccessManager(Container.GetUnityContainer()).GetMultiTenantUserRoleAccessList(multiTenantUserRoleAccessSearchParameter, tenantCode);
+                if (lstTenantUserRoleAccess.Count > 0)
+                {
+                    isUserHaveMultiTenantAccess = true;
+                }
             }
 
             // Adding claims
@@ -100,8 +162,7 @@ namespace nIS
             });
 
             //Add is asset connected value in claim
-
-            string[] propertyData = new string[8]
+            string[] propertyData = new string[11]
             {
                 user.Identifier.ToString(),
                 user.FirstName + " " + user.LastName,
@@ -110,7 +171,10 @@ namespace nIS
                 (userCliams?.Count>0?JsonConvert.SerializeObject(userCliams):string.Empty),
                 (user.Roles.Count() > 0 ? user.Roles[0].Name : ""),
                 (user.Roles.Count() > 0 ? user.Roles[0].Identifier.ToString() : ""),
-                (user.DateFormat)
+                (user.DateFormat),
+                isInstanceTenantManager.ToString(),
+                isTenantGroupManager.ToString(),
+                isUserHaveMultiTenantAccess.ToString(),
             };
 
             AuthenticationTicket ticket = new AuthenticationTicket(claimIdentity, CreateProperties(propertyData));
@@ -203,7 +267,10 @@ namespace nIS
                 { "SerializedUserClaims", stringData[4] },
                 { "RoleName", stringData[5] },
                 { "RoleIdentifier", stringData[6] },
-                { "DateFormat",stringData[7]}
+                { "DateFormat",stringData[7] },
+                { "IsInstanceTenantManager",stringData[8] },
+                { "IsTenantGroupManager",stringData[9] },
+                { "IsUserHaveMultiTenantAccess",stringData[10] },
             };
             return new AuthenticationProperties(data);
         }

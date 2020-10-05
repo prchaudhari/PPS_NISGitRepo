@@ -431,7 +431,9 @@ namespace nIS
                         NoofAttempts = userRecord.NoofAttempts,
                         TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? userRecord.TenantCode : tenantCode,
                         Roles = roles,
-                        DateFormat = dateFormat
+                        DateFormat = dateFormat,
+                        IsGroupManager = userRecord.IsGroupManager,
+                        IsInstanceManager = userRecord.IsInstanceManager
                     });
 
                 });

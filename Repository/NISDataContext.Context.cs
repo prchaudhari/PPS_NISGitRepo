@@ -12,6 +12,8 @@ namespace nIS
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class NISEntities : DbContext
     {
@@ -83,5 +85,15 @@ namespace nIS
         public virtual DbSet<TenantUserRecord> TenantUserRecords { get; set; }
         public virtual DbSet<MultiTenantUserAccessMapRecord> MultiTenantUserAccessMapRecords { get; set; }
         public virtual DbSet<View_MultiTenantUserAccessMapRecord> View_MultiTenantUserAccessMapRecord { get; set; }
+    
+        [DbFunction("NISEntities", "FnUserTenant")]
+        public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnUserTenant_Result>("[NISEntities].[FnUserTenant](@UserId)", userIdParameter);
+        }
     }
 }

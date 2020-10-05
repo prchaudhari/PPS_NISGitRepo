@@ -215,6 +215,28 @@ namespace nIS
             return roles;
         }
 
+        /// <summary>
+        /// This method gets the specified list of mapped tenants to single user.
+        /// </summary>
+        /// <param name = "userId" > The User Identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of tenants which are mapped to user
+        /// </returns>
+        [HttpGet]
+        public IList<UserTenant> GetUserTenants(long userId)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.multiTenantUserRoleAccessManager.GetUserTenants(userId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }

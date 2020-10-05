@@ -28,6 +28,7 @@ import { SafeHtmlPip } from './shared/pagepreview/pagepreview.component';
 import { MultipleMessageboxComponent } from './shared/modules/multiple-messagebox/multiple-messagebox.component';
 import { SafeHtmlPipee } from './shared/modules/multiple-messagebox/multiple-messagebox.component';
 import { ErrorLogsViewComponent } from './shared/error-logs-view/error-logs-view.component';
+import { SelectTenantComponent } from './select-tenant/select-tenant.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { ErrorLogsViewComponent } from './shared/error-logs-view/error-logs-view
     PagePreviewComponent,
     MultipleMessageboxComponent,
     SafeHtmlPip, 
-    SafeHtmlPipee, ErrorLogsViewComponent
+    SafeHtmlPipee, ErrorLogsViewComponent, SelectTenantComponent
   ],
   imports: [
     BrowserModule,

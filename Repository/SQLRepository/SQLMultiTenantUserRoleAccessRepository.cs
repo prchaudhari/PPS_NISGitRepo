@@ -468,6 +468,43 @@ namespace nIS
             return roles;
         }
 
+        /// <summary>
+        /// This method gets the specified list of mapped tenants to single user.
+        /// </summary>
+        /// <param name = "userId" > The User Identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of tenants which are mapped to user
+        /// </returns>
+        public IList<UserTenant> GetUserTenants(long userId, string tenantCode)
+        {
+            IList<UserTenant> userTenants = new List<UserTenant>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var usrTenants = nISEntitiesDataContext.FnUserTenant(Convert.ToInt32(userId));
+                    usrTenants.ToList().ForEach(record =>
+                    {
+                        userTenants.Add(new UserTenant()
+                        {
+                            UserId = record.UserId,
+                            UserName = record.UserName,
+                            TenantCode = record.TenantCode,
+                            TenantName = record.TenantName,
+                            RoleId = record.RoleId
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return userTenants;
+        }
+
         #endregion
 
         #region Private Methods
@@ -488,6 +525,22 @@ namespace nIS
                 if (validationEngine.IsValidLong(searchParameter.Identifier))
                 {
                     queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidLong(searchParameter.UserId))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.UserId.ToString().Split(',').Select(item => string.Format("UserId.Equals({0}) ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidLong(searchParameter.RoleId))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.RoleId.ToString().Split(',').Select(item => string.Format("RoleId.Equals({0}) ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidText(searchParameter.AssociatedTenantCode))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.AssociatedTenantCode.ToString().Split(',').Select(item => string.Format("AssociatedTenantCode.Equals(\"{0}\") ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidText(searchParameter.OtherTenantCode))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.OtherTenantCode.ToString().Split(',').Select(item => string.Format("OtherTenantCode.Equals(\"{0}\") ", item))) + ") and ");
                 }
             }
             if (searchParameter.SearchMode == SearchMode.Contains)

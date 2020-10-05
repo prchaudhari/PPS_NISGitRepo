@@ -147,5 +147,6 @@ export class URLConfiguration {
     public static get multiTenantUserRoleAccessDeleteUrl(): string { return "MultiTenantUserRoleAccess/Delete" };
     public static get multiTenantUserRoleAccessActivate(): string { return "MultiTenantUserRoleAccess/Activate" };
     public static get multiTenantUserRoleAccessDeactivate(): string { return "MultiTenantUserRoleAccess/Deactivate" };
+    public static get getUserTenantRoleMap(): string { return "MultiTenantUserRoleAccess/GetUserTenants" };
  
 }
