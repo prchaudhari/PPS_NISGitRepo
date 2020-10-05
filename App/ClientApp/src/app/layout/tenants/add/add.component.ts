@@ -547,7 +547,7 @@ export class AddComponent implements OnInit {
       }
     }
     this.CloseAddContactContainer('Edit');
-  }
+  } 
 
   async onSubmitAdd() {
     var contact = this.contactTypeList.filter(s => this.contactFormGroup.value.ContactType == s.Identifier);

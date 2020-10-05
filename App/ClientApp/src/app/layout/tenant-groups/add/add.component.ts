@@ -32,6 +32,7 @@ export class AddComponent implements OnInit {
     { FirstName: 'Glenn', LastName: 'Steyn', EmailAddress: 'glenn.styen@nis.com', ContactNumber: '5235674356', CountryCode: '+91', CountryId: 1 },
     { FirstName: 'Dean', LastName: 'Jones', EmailAddress: 'dean.jones@nis.com', ContactNumber: '6756734567', CountryCode: '+91', CountryId: 1 },
   ];
+  public tenant: Tenant;
   public array: any;
   FirstChar: string;
   SecondChar: string
@@ -40,7 +41,7 @@ export class AddComponent implements OnInit {
   public tenantGroupUserEditFormGroup: FormGroup;
   public updateOperationMode: boolean;
   public params: any = [];
-  public tenantgroup : Tenant;
+  public tenantgroup: Tenant;
   public isTenantDetailsLoaded = false;
   public emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]+[ ]{0,1}[a-zA-Z]*[ ]*$";
@@ -52,10 +53,10 @@ export class AddComponent implements OnInit {
 
   displayedColumns: string[] = ['FirstName', 'LastName', 'EmailAddress', 'ContactNumber', 'actions'];
   public tenantGroupUserIdentifier = 0;
-  public TenantGroupUser: any = {Identifier: 0, CountryCode : 0, EmailAddress : ''};
+  public TenantGroupUser: any = { Identifier: 0, CountryCode: 0, EmailAddress: '' };
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  public countryList = [ { "Identifier": 0, "Code": "Please Select", "DialingCode": "" } ];
+  public countryList = [{ "Identifier": 0, "Code": "Please Select", "DialingCode": "" }];
   dataSource = new MatTableDataSource<any>(this.tenantGroupUserList);
 
   constructor(private _location: Location,
@@ -66,8 +67,9 @@ export class AddComponent implements OnInit {
     private formbuilder: FormBuilder,
     private _messageDialogService: MessageDialogService,
     private tenantService: TenantService,
-    private injector: Injector) { 
-      this.tenantgroup = new Tenant;
+    private injector: Injector) {
+    this.tenant = new Tenant;
+    this.tenantgroup = new Tenant;
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/tenantgroups/Add')) {
@@ -188,7 +190,7 @@ export class AddComponent implements OnInit {
       EditCountryCode: [0, Validators.compose([Validators.required])],
     });
 
-    if(this.updateOperationMode) {
+    if (this.updateOperationMode) {
       this.getTenantGroups();
     }
     this.getCountries();
@@ -241,7 +243,7 @@ export class AddComponent implements OnInit {
   ShowAddEditTenantGroupUserContainer(action, tenantgroupuser): void {
     if (action == "Add") {
       this.isTenantGroupUserContainer = true;
-      this.tenantGroupUserFormGroup.patchValue({firstName : '', lastName: '', email: '', mobileNumber: '', CountryCode: 0});
+      this.tenantGroupUserFormGroup.patchValue({ firstName: '', lastName: '', email: '', mobileNumber: '', CountryCode: 0 });
       this.markFormGroupUnTouched(this.tenantGroupUserFormGroup);
     }
     else {
@@ -255,8 +257,12 @@ export class AddComponent implements OnInit {
       }
       this.isEditTenantGroupUserContainer = true;
       this.tenantGroupUserEditFormGroup.patchValue({
-        EditfirstName : tenantgroupuser.FirstName, EditlastName: tenantgroupuser.LastName, Editemail: tenantgroupuser.EmailAddress, 
-        EditmobileNumber: tenantgroupuser.ContactNumber, EditCountryCode: tenantgroupuser.CountryId}
+        EditfirstName: tenantgroupuser.FirstName,
+        EditlastName: tenantgroupuser.LastName,
+        Editemail: tenantgroupuser.EmailAddress,
+        EditmobileNumber: tenantgroupuser.ContactNumber,
+        EditCountryCode: tenantgroupuser.CountryId
+      }
       );
     }
   }
@@ -289,7 +295,7 @@ export class AddComponent implements OnInit {
       if (this.tenantGroupUserEditFormGroup.controls.EditmobileNumber.invalid) {
         return true;
       }
-      if (this.TenantGroupUser.CountryCode == 0) {
+      if (this.TenantGroupUser.EditCountryCode == 0) {
         return true;
       }
       return false;
@@ -400,10 +406,10 @@ export class AddComponent implements OnInit {
   }
 
   resetTenantGroupUserForm(action) {
-    if(action == 'Add') {
-      this.tenantGroupUserFormGroup.patchValue({firstName : null, lastName: null, email: null, mobileNumber: null, CountryCode: null});
-    }else {
-      this.tenantGroupUserEditFormGroup.patchValue( {EditfirstName : null, EditlastName: null, Editemail: null, EditmobileNumber: null, EditCountryCode: null} );
+    if (action == 'Add') {
+      this.tenantGroupUserFormGroup.patchValue({ firstName: null, lastName: null, email: null, mobileNumber: null, CountryCode: null });
+    } else {
+      this.tenantGroupUserEditFormGroup.patchValue({ EditfirstName: null, EditlastName: null, Editemail: null, EditmobileNumber: null, EditCountryCode: null });
     }
 
     this.TenantGroupUser.EmailAddress = '';
@@ -421,4 +427,24 @@ export class AddComponent implements OnInit {
     });
   }
 
+  async saveTenant() {
+    this.tenant.TenantName = this.tenantGroupFormGroup.value.tenantGroupName;
+    this.tenant.TenantDescription = this.tenantGroupFormGroup.value.tenantGroupDescription;
+    this.tenant.TenantType = "Group";
+    var userid = localStorage.getItem('UserId');
+    this.tenant.User = {};
+    this.tenant.User.Identifier = userid;
+    let pageArray = [];
+    pageArray.push(this.tenant);
+    let tenantService = this.injector.get(TenantService);
+    let isRecordSaved = await tenantService.saveTenant(pageArray, this.updateOperationMode);
+    if (isRecordSaved) {
+      let message = Constants.recordAddedMessage;
+      if (this.updateOperationMode) {
+        message = Constants.recordUpdatedMessage;
+      }
+      this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+      this.navigateToListPage()
+    }
+  }
 }

@@ -48,7 +48,7 @@
                 <textarea class="form-control" rows="4" formControlName="tenantGroupDescription" maxlength="500"></textarea>
             </div>
           </div>
-          <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="validateTenantGroupForm()" (click)="saveTenantGroupUser()">Save </button>
+          <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="validateTenantGroupForm()" (click)="saveTenant()">Save </button>
           <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
         </div>
       </div>
@@ -391,5 +391,4 @@
   
   <div class="overlay a" id="divOverlayFilter" [ngClass]="!isTenantGroupUserContainer? 'hide':'show'"></div>
   <div class="overlay a" id="divOverlayFilter1" [ngClass]="!isEditTenantGroupUserContainer? 'hide':'show'"></div>
-  
   
