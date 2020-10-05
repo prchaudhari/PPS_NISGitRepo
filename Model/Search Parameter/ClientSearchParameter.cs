@@ -40,6 +40,11 @@ namespace nIS
         private string manageType = string.Empty;
 
         /// <summary>
+        /// The tenant manage type.
+        /// </summary>
+        private string tenantType = string.Empty;
+
+        /// <summary>
         /// The Email Address.
         /// </summary>
         private string primaryEmailAddress = string.Empty;
@@ -181,6 +186,23 @@ namespace nIS
             set
             {
                 this.manageType = value;
+            }
+        }
+
+        /// <summary>
+        /// gets or sets the manage type.
+        /// </summary>
+        [Description("Tenant Type")]
+        public string  TenantType
+        {
+            get
+            {
+                return this.tenantType;
+            }
+
+            set
+            {
+                this.tenantType = value;
             }
         }
 

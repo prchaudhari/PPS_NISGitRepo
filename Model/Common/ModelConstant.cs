@@ -84,6 +84,11 @@ namespace nIS
         /// <summary>
         /// The tenant base URL
         /// </summary>
+        public const string GROUP_MANAGER_ROLE = "Group Manager";
+
+        /// <summary>
+        /// The tenant base URL
+        /// </summary>
         public const string TENANT_PRIMARY_CONTACT = "Primary";
 
 

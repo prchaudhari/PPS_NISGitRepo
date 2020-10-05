@@ -180,6 +180,7 @@ export class ListComponent implements OnInit {
 
     searchParameter.IsPrimaryTenant = false;
     searchParameter.IsCountryRequired = true;
+    searchParameter.TenantType = "Tenant";
     var response = await tenantService.getTenant(searchParameter);
     this.tenantList = response.List;
     this.totalRecordCount = response.RecordCount;

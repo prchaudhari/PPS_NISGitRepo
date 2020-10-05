@@ -186,7 +186,7 @@ namespace nIS
                             tenant.PrimaryLastName = item.LastName;
                             tenant.PrimaryEmailAddress = item.EmailAddress;
                             tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
-                            item.IsActivationLinkSent = true; 
+                            item.IsActivationLinkSent = true;
                         }
                         tenantContacts.Add(item);
                     });
@@ -212,7 +212,8 @@ namespace nIS
                     tenant.IsActive = client.IsActive;
                     tenant.TenantDescription = client.TenantDescription;
                     tenant.TenantLogo = client.TenantLogo;
-
+                    tenant.StartDate = DateTime.UtcNow;
+                    tenant.EndDate = DateTime.MaxValue;
                     tenants.Add(tenant);
                 });
 
@@ -227,71 +228,50 @@ namespace nIS
 
                 result = this.configurationUtility.AddTenant(tenants);
 
-                retrivedClients = this.GetClients(new ClientSearchParameter()
-                {
-                    SortParameter = new SortParameter()
-                    {
-                        SortColumn = ModelConstant.SORT_COLUMN
-                    },
-                    TenantDomainName = clients[0].TenantDomainName
-                }, tenantCode);
-
-                if (retrivedClients == null || retrivedClients.Count == 0)
-                {
-                    throw new TenantNotFoundException(String.Empty);
-                }
-
 
                 try
                 {
-                    retrivedClients.ToList().ForEach(client =>
+                    clients.ToList().ForEach(client =>
                     {
-                        #region Add Tenant Admin Role, User and Assign Role to User
-
-                        IList<User> clientusers = new List<User>();
-                        IList<Role> clientRoles = new List<Role>();
-                        RoleManager roleManager = new RoleManager(this.unityContainer);
-                        clientRoles = roleManager.GetRoles(new RoleSearchParameter()
+                        if (client.TenantType == "Tenant")
                         {
-                            SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
-                            Identifier="1",
-                            IsRequiredRolePrivileges = true,
-                        }, tenantCode);
-                        clientRoles[0].Name = ModelConstant.TENANT_ADMIN_ROLE;
-                        IList<Role> tenantRole = clientRoles;
+                            #region Add Tenant Admin Role, User and Assign Role to User
 
-                        roleManager.AddRoles(tenantRole, newTenantCode);
-                        tenantRole = roleManager.GetRoles(new RoleSearchParameter()
-                        {
-                            SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
-                            Name = ModelConstant.TENANT_ADMIN_ROLE,
-                            IsRequiredRolePrivileges = true,
-                        }, newTenantCode);
+                            IList<User> clientusers = new List<User>();
+                            IList<Role> clientRoles = new List<Role>();
+                            RoleManager roleManager = new RoleManager(this.unityContainer);
+                            clientRoles = roleManager.GetRoles(new RoleSearchParameter()
+                            {
+                                SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
+                                Name = ModelConstant.TENANT_ADMIN_ROLE,
+                                IsRequiredRolePrivileges = true,
+                            }, ModelConstant.DEFAULT_TENANT_CODE);
 
-                        var contactUser=tenantContacts.Where(item => item.IsActivationLinkSent == true);
-                        clientusers=contactUser.Select(item=>new User()
-                        {
-                            FirstName = item.FirstName == "" ? item.FirstName : item.FirstName,
-                            LastName = item.LastName == "" ? item.LastName : item.LastName,
-                            EmailAddress = item.EmailAddress,
-                            ContactNumber = item.ContactNumber,
-                            CountryId=item.CountryId,
-                            Roles = tenantRole
-                        }).ToList();
+                            IList<Role> tenantRole = clientRoles;
 
-                        bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode);
-                        if (!addUserResult)
-                        {
-                            throw new InvalidUserException(tenantCode);
+                            var contactUser = tenantContacts.Where(item => item.IsActivationLinkSent == true);
+                            clientusers = contactUser.Select(item => new User()
+                            {
+                                FirstName = item.FirstName == "" ? item.FirstName : item.FirstName,
+                                LastName = item.LastName == "" ? item.LastName : item.LastName,
+                                EmailAddress = item.EmailAddress,
+                                ContactNumber = item.ContactNumber,
+                                CountryId = item.CountryId,
+                                Roles = tenantRole,
+                                IsInstanceManager = true,
+                                IsGroupManager = false
+                            }).ToList();
+
+                            bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode);
+                            if (!addUserResult)
+                            {
+                                throw new InvalidUserException(tenantCode);
+                            }
+                            this.tenantContactManager.AddTenantContacts(tenantContacts, client.TenantCode);
+
+                            #endregion
                         }
-                        this.tenantContactManager.AddTenantContacts(tenantContacts, client.TenantCode);
-                        //tenantContacts = tenantContacts.Where(item => item.IsActivationLinkSent == true).ToList();
-                        //if (tenantContacts.Count > 0)
-                        //{
-                        //    this.tenantContactManager.SentActivationLink(tenantContacts, client.TenantCode);
 
-                        //}
-                        #endregion
                     });
                 }
                 catch (Exception ex)
@@ -509,6 +489,7 @@ namespace nIS
                 tenantSearchParameter.TenantDomainName = clientSearchParameter.TenantDomainName;
                 tenantSearchParameter.TenantName = clientSearchParameter.TenantName;
                 tenantSearchParameter.TenantCode = clientSearchParameter.TenantCode;
+                tenantSearchParameter.TenantType = clientSearchParameter.TenantType;
 
                 tenants = this.configurationUtility.GetTenant(tenantSearchParameter);
                 if (tenants != null && tenants.Count > 0)
@@ -684,6 +665,8 @@ namespace nIS
                 tenantSearchParameter.IsPrimaryTenant = clientSearchParameter.IsPrimaryTenant;
                 tenantSearchParameter.TenantDomainName = clientSearchParameter.TenantDomainName;
                 tenantSearchParameter.TenantName = clientSearchParameter.TenantName;
+                tenantSearchParameter.TenantCode = clientSearchParameter.TenantCode;
+                tenantSearchParameter.TenantType = clientSearchParameter.TenantType;
 
 
                 tenants = this.configurationUtility.GetTenant(tenantSearchParameter);
@@ -702,6 +685,119 @@ namespace nIS
             return clientCount;
         }
 
+        #region Add Group Manager
+
+        /// <summary>
+        /// This method helps to validate users and then add to database.
+        /// </summary>
+        /// <param name="users">List of user object</param>
+        /// <param name="tenantCode">The Tenant code</param>
+        /// <returns>
+        /// If successfully added, it will return true.
+        /// </returns>
+        public bool AddGroupManager(IList<User> users, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                IList<Role> roles = new List<Role>();
+                RoleManager roleManager = new RoleManager(this.unityContainer);
+                roles = roleManager.GetRoles(new RoleSearchParameter()
+                {
+                    SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
+                    Name = ModelConstant.TENANT_ADMIN_ROLE,
+                    IsRequiredRolePrivileges = true,
+                }, ModelConstant.DEFAULT_TENANT_CODE);
+                users.ToList().ForEach(item =>
+                {
+                    item.Roles = roles;
+                });
+
+                result = this.userManager.AddUsers(users, tenantCode, false);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region SendActivationLinkToGroupManager
+
+        /// <summary>
+        /// This method helps to validate users and then add to database.
+        /// </summary>
+        /// <param name="users">List of user object</param>
+        /// <param name="tenantCode">The Tenant code</param>
+        /// <returns>
+        /// If successfully added, it will return true.
+        /// </returns>
+        public bool SendActivationLinkToGroupManager(IList<User> users, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                result = this.userManager.SendActivationLinkToGroupManager(users, tenantCode);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region SendActivationLinkToGroupManager
+
+        /// <summary>
+        /// This method helps to validate users and then add to database.
+        /// </summary>
+        /// <param name="users">List of user object</param>
+        /// <param name="tenantCode">The Tenant code</param>
+        /// <returns>
+        /// If successfully added, it will return true.
+        /// </returns>
+        public bool SendActivationLinkToTenantUser(IList<TenantContact> tenantContacts, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                IList<Role> clientRoles = new List<Role>();
+                RoleManager roleManager = new RoleManager(this.unityContainer);
+                clientRoles = roleManager.GetRoles(new RoleSearchParameter()
+                {
+                    SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
+                    Name = ModelConstant.TENANT_ADMIN_ROLE,
+                    IsRequiredRolePrivileges = true,
+                }, ModelConstant.DEFAULT_TENANT_CODE);
+                IList<User> users = new List<User>();
+                var contactUser = tenantContacts.Where(item => item.IsActivationLinkSent == true);
+                users = contactUser.Select(item => new User()
+                {
+                    FirstName = item.FirstName == "" ? item.FirstName : item.FirstName,
+                    LastName = item.LastName == "" ? item.LastName : item.LastName,
+                    EmailAddress = item.EmailAddress,
+                    ContactNumber = item.ContactNumber,
+                    CountryId = item.CountryId,
+                    Roles = clientRoles,
+                    IsInstanceManager = true,
+                    IsGroupManager = false
+                }).ToList();
+
+                bool addUserResult = this.userManager.AddUsers(users, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
 
         #endregion
 

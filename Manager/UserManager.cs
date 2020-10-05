@@ -88,7 +88,7 @@ namespace nIS
         /// <returns>
         /// If successfully added, it will return true.
         /// </returns>
-        public bool AddUsers(IList<User> users, string tenantCode)
+        public bool AddUsers(IList<User> users, string tenantCode, bool isRegisterUser = true)
         {
             bool result = false;
             try
@@ -96,10 +96,71 @@ namespace nIS
                 this.IsValidusers(users, tenantCode);
                 this.IsDuplicateEmailOrContactNumber(users, tenantCode);
                 IList<UserLogin> userLoginDetails = null;
-                // using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.RequiresNew, TimeSpan.FromMinutes(20)))
-                // using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required, TimeSpan.FromMinutes(20)))
-                //{
+
                 result = this.userRepository.AddUsers(users, tenantCode);
+
+                if (isRegisterUser)
+                {
+                    userLoginDetails = new List<UserLogin>();
+                    userLoginDetails = users.Select(userItem => new UserLogin()
+                    {
+                        UserIdentifier = userItem.EmailAddress,
+                        UserPassword = this.cryptoManager.EncryptPassword(this.GeneratePassword()),
+                        UserEncryptedPassword = this.cryptoManager.EncryptPassword(this.GeneratePassword()),
+                        IsSystemGenerated = true
+                    })
+                    .ToList();
+
+                    // adding user password mapping
+                    this.userRepository.AddUsersCredential(userLoginDetails, tenantCode);
+
+                    // adding user password mapping in to history table
+                    this.userRepository.AddUsersCredentialHistory(userLoginDetails, tenantCode);
+
+                    // sending mail (Send grid api used)
+                    // this.UsersMailManager(users, userLoginDetails, tenantCode);
+                    //  transactionScope.Complete();
+                    //};
+
+
+                    try
+                    {
+                        //this.SendNotification(users, userLoginDetails, EntityType.User.ToString(), EventLabelType.UserAdd.ToString(), (int)NotificationEvents.UserAdd, true, tenantCode);
+
+                        foreach (User user in users)
+                        {
+                            string param = this.cryptoManager.Encrypt(string.Format("{0}:{1}", user.EmailAddress, userLoginDetails.First().UserEncryptedPassword));
+                            MailMessage mail = new MailMessage();
+                            mail.To.Add(user.EmailAddress);
+                            mail.Subject = ConfigurationManager.AppSettings[ModelConstant.NEWLYADDEDUSERMAILSUBJECT];
+                            mail.Body = string.Format(ConfigurationManager.AppSettings[ModelConstant.NEWLYADDEDUSERMAILMESSAGE], user.FirstName, "<a href='" + ConfigurationManager.AppSettings[ModelConstant.CHANGEPASSWORDLINK] + param + "'>click here</a>.");
+                            mail.IsBodyHtml = true;
+                            IUtility iUtility = new Utility();
+                            iUtility.SendMail(mail, string.Empty, 0, string.Empty, tenantCode);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool SendActivationLinkToGroupManager(IList<User> users, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                IList<UserLogin> userLoginDetails = null;
+
 
                 userLoginDetails = new List<UserLogin>();
                 userLoginDetails = users.Select(userItem => new UserLogin()
@@ -137,11 +198,12 @@ namespace nIS
                         mail.IsBodyHtml = true;
                         IUtility iUtility = new Utility();
                         iUtility.SendMail(mail, string.Empty, 0, string.Empty, tenantCode);
+                        result = true;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    throw ex;
                 }
 
                 return result;

@@ -149,6 +149,7 @@ export class ListComponent implements OnInit {
 
     searchParameter.IsPrimaryTenant = false;
     searchParameter.IsCountryRequired = true;
+    searchParameter.TenantType = "Group";
     var response = await tenantService.getTenant(searchParameter);
     this.tenantgroupList = response.List;
     this.totalRecordCount = response.RecordCount;
@@ -247,9 +248,9 @@ export class ListComponent implements OnInit {
         // }];
         //let isDeleted = await this.tenantService.deleteTenantGroup(tenantGroupData);
         //if (isDeleted) {
-          let messageString = Constants.recordDeletedMessage;
-          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-          //this.getTenantGroups();
+        let messageString = Constants.recordDeletedMessage;
+        this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+        //this.getTenantGroups();
         //}
       }
     });
@@ -264,9 +265,9 @@ export class ListComponent implements OnInit {
         if (isConfirmed) {
           //let isDeleted = await this.tenantService.deactivateTenantGroup(tenantgroup.Id);
           //if (isDeleted) {
-            let messageString = "Tenant group deactivated successfully";
-            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-            //this.getTenantGroups();
+          let messageString = "Tenant group deactivated successfully";
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          //this.getTenantGroups();
           //}
         }
       });
@@ -277,9 +278,9 @@ export class ListComponent implements OnInit {
         if (isConfirmed) {
           //let isDeleted = await this.tenantService.activateTeantGroup(tenantgroup.Id);
           //if (isDeleted) {
-            let messageString = "Tenant group activated successfully";
-            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-            //this.getTenantGroups();
+          let messageString = "Tenant group activated successfully";
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          //this.getTenantGroups();
           //}
         }
       });

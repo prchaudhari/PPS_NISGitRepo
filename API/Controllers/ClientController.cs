@@ -265,7 +265,61 @@ namespace nIS
         //    }
         //}
 
+        #region Add Group Manager
 
+        /// <summary>
+        /// This api call use to add single or list of user
+        /// </summary>
+        /// <param name="users">
+        /// List of users
+        /// </param>
+        /// <returns>Returns true if added succesfully otherwise false</returns>
+        [HttpPost]
+        public bool AddGroupManager(IList<User> users)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.clientManager.AddGroupManager(users, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Send Activation Link
+
+        /// <summary>
+        /// This api call use to add single or list of user
+        /// </summary>
+        /// <param name="users">
+        /// List of users
+        /// </param>
+        /// <returns>Returns true if added succesfully otherwise false</returns>
+        [HttpPost]
+        public bool SendActivationLinkToGroupManager(IList<User> users)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.clientManager.SendActivationLinkToGroupManager(users, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        #endregion
         #endregion
     }
 }

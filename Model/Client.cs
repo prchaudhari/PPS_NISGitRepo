@@ -903,20 +903,23 @@ namespace nIS
             {
                 exception.Data.Add(this.utility.GetDescription("TenantName", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDTENANTNAME);
             }
-
-            if (!this.validationEngine.IsValidText(this.TenantDomainName, true))
+            if (this.tenantType != "Group")
             {
-                exception.Data.Add(this.utility.GetDescription("TenantDomainName", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDDOMAINNAME);
-            }
+                if (!this.validationEngine.IsValidText(this.TenantDomainName, true))
+                {
+                    exception.Data.Add(this.utility.GetDescription("TenantDomainName", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDDOMAINNAME);
+                }
 
-            if (!this.validationEngine.IsValidText(this.PrimaryAddressLine1))
-            {
-                exception.Data.Add(this.utility.GetDescription("PrimaryAddressLine1", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDPRIMARYADDRESSLINE1);
-            }
+                if (!this.validationEngine.IsValidText(this.PrimaryAddressLine1))
+                {
+                    exception.Data.Add(this.utility.GetDescription("PrimaryAddressLine1", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDPRIMARYADDRESSLINE1);
+                }
 
-            if (!this.validationEngine.IsValidText(this.PrimaryPinCode, true))
-            {
-                exception.Data.Add(this.utility.GetDescription("PrimaryPinCode", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDPRIMARYPINCODE);
+                if (!this.validationEngine.IsValidText(this.PrimaryPinCode, true))
+                {
+                    exception.Data.Add(this.utility.GetDescription("PrimaryPinCode", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDPRIMARYPINCODE);
+                }
+
             }
 
             if (this.validationEngine.IsValidText(this.TenantDescription))
