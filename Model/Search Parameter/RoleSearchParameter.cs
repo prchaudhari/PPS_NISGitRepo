@@ -41,6 +41,11 @@ namespace nIS
         /// </summary>
         private bool isCallFromListPage = false;
 
+        /// <summary>
+        /// The tenant code
+        /// </summary>
+        public string tenantCode = string.Empty;
+
         #endregion
 
         #region Public Members
@@ -117,6 +122,21 @@ namespace nIS
             set
             {
                 this.isCallFromListPage = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets tenant code
+        /// </summary>
+        public string TenantCode
+        {
+            get
+            {
+                return this.tenantCode;
+            }
+            set
+            {
+                this.name = tenantCode;
             }
         }
 

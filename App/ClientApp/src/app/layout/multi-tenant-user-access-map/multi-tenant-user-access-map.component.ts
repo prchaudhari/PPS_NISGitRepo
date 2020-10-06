@@ -223,7 +223,7 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
       this.userClaimsRolePrivilegeOperations = [];
     }
 
-    this.getTenants(null);
+    this.getTenants();
     this.getTenantUserMappingData(null);
   }
 
@@ -413,52 +413,10 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
   }
 
   //function written to get tenant list
-  async getTenants(searchParameter) {
-    let tenantService = this.injector.get(TenantService);
-    if (searchParameter == null) {
-      searchParameter = {};
-      searchParameter.IsActive = true;
-      searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-      searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = "Id";
-      searchParameter.SortParameter.SortOrder = Constants.Descending;
-      searchParameter.SearchMode = Constants.Contains;
-    }
-    searchParameter.IsPrimaryTenant = false;
-    searchParameter.IsCountryRequired = false;
-    var response = await tenantService.getTenant(searchParameter);
-    this.lstPrimaryTenant.push(...response.List);
-    // for(let i=0; i< response.List.length; i++) {
-    //   let rec = Object.assign({}, response.List[i]);
-    //   this.lstOtherTenants.push(rec);
-    // }
-  }
-
-  //function written to get other tenant list
-  async getOtherTenants(searchParameter) {
-    let tenantService = this.injector.get(TenantService);
-    if (searchParameter == null) {
-      searchParameter = {};
-      searchParameter.IsActive = true;
-      searchParameter.PagingParameter = {};
-      searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-      searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-      searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = "Id";
-      searchParameter.SortParameter.SortOrder = Constants.Descending;
-      searchParameter.SearchMode = Constants.Contains;
-    }
-    searchParameter.IsPrimaryTenant = false;
-    searchParameter.IsCountryRequired = false;
-    var response = await tenantService.getTenant(searchParameter);
-    this.lstOtherTenants.push(...response.List);
-    let _lst = this.lstOtherTenants.filter(x => x.TenantCode == this.selectedPrimaryTenantCode);
-    if(_lst.length > 0) {
-      const index: number = this.lstOtherTenants.indexOf(_lst[0]);
-      this.lstOtherTenants.splice(index, 1);
-    }
+  async getTenants() {
+    let multiTenantUserRoleAccessService = this.injector.get(MultiTenantUserAccessMapService);
+    var response = await multiTenantUserRoleAccessService.GetParentAndChildtenants();
+    this.lstPrimaryTenant = response.List;
   }
 
   async getTenantUsers() {

@@ -122,9 +122,14 @@ namespace nIS
         public IList<Role> List(RoleSearchParameter roleSearchParameter)
         {
             IList<Role> roles = new List<Role>();
+            var tenantCode = string.Empty;
             try
             {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                tenantCode = Helper.CheckTenantCode(Request.Headers);
+                if (roleSearchParameter.TenantCode != null && roleSearchParameter.TenantCode != string.Empty)
+                {
+                    tenantCode = roleSearchParameter.TenantCode;
+                }
                 roles = this.roleManager.GetRoles(roleSearchParameter, tenantCode);
                 HttpContext.Current.Response.AppendHeader("recordCount", this.roleManager.GetRoleCount(roleSearchParameter, tenantCode).ToString());
             }
@@ -239,7 +244,7 @@ namespace nIS
             string resultContent = string.Empty;
             try
             {
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                string tenantCode = ModelConstant.DEFAULT_TENANT_CODE; //Helper.CheckTenantCode(Request.Headers);
                 rolePrivileges = this.roleManager.GetRolePrivileges(tenantCode);
             }
             catch (Exception ex)

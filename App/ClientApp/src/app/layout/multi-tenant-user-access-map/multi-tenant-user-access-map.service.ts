@@ -170,14 +170,14 @@ export class MultiTenantUserAccessMapService {
     return <boolean>this.resultFlag;
   }
 
-  //method to call api of activate multi-tenant user role access.
+  //method to call api of get user tenant role mapping.
   public async GetUserTenantRoleMap(UserId): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.getUserTenantRoleMap + '?userId=' + UserId;
     this.uiLoader.start();
     var response : any = {};
     let userTenants = [];
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -193,6 +193,35 @@ export class MultiTenantUserAccessMapService {
         }
       }, (error) => {
         response.List = userTenants;
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this.uiLoader.stop();
+      });
+      return response
+  }
+
+  //method to call api of get parent tenant as well as child tenants.
+  public async GetParentAndChildtenants(): Promise<any> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.getParentAndChildTenants;
+    this.uiLoader.start();
+    var response : any = {};
+    let tenants = [];
+    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            httpEvent['body'].forEach(record => {
+              tenants = [...tenants, record];
+            });
+            response.List = tenants;
+          }
+          else {
+            response.List = tenants;
+          }
+        }
+      }, (error) => {
+        response.List = tenants;
         this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
       });

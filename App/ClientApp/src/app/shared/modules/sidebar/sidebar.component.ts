@@ -226,7 +226,7 @@ export class SidebarComponent implements OnInit {
     this.isTenantGroupManager = userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() == 'true' ? true : false;
 
     var loggedInUserDetails = JSON.parse(localStorage.getItem('user'));
-    this.isTenantAdminUser = loggedInUserDetails.RoleName == 'Super Admin' ? true : false;
+    this.isTenantAdminUser = loggedInUserDetails.RoleName == 'Tenant Admin' ? true : false;
 
     $(document).ready(function () {
       this.screenWidth = window.innerWidth;

@@ -86,7 +86,8 @@ export class SelectTenantComponent implements OnInit {
   }
 
   async onTenantSelect(tenant: any) {
-    this.userData.Privileges = await this.getUserRoles(tenant.RoleId);
+    debugger
+    this.userData.Privileges = await this.getUserRoles(tenant.RoleId, tenant.TenantCode);
     if (this.roleDetail.IsActive == false) {
       this._messageDialogService.openDialogBox('Error', "User role is deactivated.", Constants.msgBoxError);
       this.localstorageservice.removeLocalStorageData();
@@ -117,7 +118,7 @@ export class SelectTenantComponent implements OnInit {
     }       
   }
 
-  async getUserRoles(roleIdentifier) {
+  async getUserRoles(roleIdentifier, TenantCode) {
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
@@ -128,6 +129,7 @@ export class SelectTenantComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.IsRequiredRolePrivileges = true;
     searchParameter.Identifier = roleIdentifier;
+    searchParameter.TenantCode = TenantCode;
     this.roleList = await this.loginService.getRoles(searchParameter);
     this.roleDetail = this.roleList[0];
     if (this.roleList.length > 0) {

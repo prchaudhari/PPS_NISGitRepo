@@ -269,6 +269,25 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the list of parent as well as child tenants.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of parent as well as child tenants
+        /// </returns>
+        public IList<Client> GetParentAndChildTenants(string tenantCode)
+        {
+            try
+            {
+                return this.multiTenantUserRoleAccessRepository.GetParentAndChildTenants(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region Private Methods

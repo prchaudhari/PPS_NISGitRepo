@@ -21,15 +21,15 @@ namespace nIS
             : base("name=NISEntities")
         {
         }
-    
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            throw new UnintentionalCodeFirstException();
-        }
         public NISEntities(string connectionString)
                                                : base(connectionString)
         {
         }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            throw new UnintentionalCodeFirstException();
+        }
+    
         public virtual DbSet<UserRecord> UserRecords { get; set; }
         public virtual DbSet<UserCredentialHistoryRecord> UserCredentialHistoryRecords { get; set; }
         public virtual DbSet<UserLoginRecord> UserLoginRecords { get; set; }
@@ -94,6 +94,16 @@ namespace nIS
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnUserTenant_Result>("[NISEntities].[FnUserTenant](@UserId)", userIdParameter);
+        }
+    
+        [DbFunction("NISEntities", "FnGetParentAndChildTenant")]
+        public virtual IQueryable<FnGetParentAndChildTenant_Result> FnGetParentAndChildTenant(string parentTenantCode)
+        {
+            var parentTenantCodeParameter = parentTenantCode != null ?
+                new ObjectParameter("ParentTenantCode", parentTenantCode) :
+                new ObjectParameter("ParentTenantCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnGetParentAndChildTenant_Result>("[NISEntities].[FnGetParentAndChildTenant](@ParentTenantCode)", parentTenantCodeParameter);
         }
     }
 }

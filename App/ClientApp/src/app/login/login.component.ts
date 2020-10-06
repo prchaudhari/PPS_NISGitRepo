@@ -135,12 +135,12 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit() {
     this.loginForm = this.fb.group({
-      userName: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      userName: ['', [Validators.required, Validators.pattern(this.emailPatternRegex)]],
       password: ['', [Validators.required]]
     });
 
     this.resetForm = this.fb.group({
-      resetUserName: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+      resetUserName: ['', [Validators.required, Validators.pattern(this.emailPatternRegex)]],
     });
     this.dynamicGlobalVariable.IsSessionExpireMessageDisplyed = false;
     if (localStorage.getItem('LastRequestTime') != null && localStorage.getItem('LastRequestTime') != '') {

@@ -237,6 +237,26 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the list of parent as well as child tenants.
+        /// </summary>
+        /// <returns>
+        /// Returns the list of parent as well as child tenants
+        /// </returns>
+        [HttpGet]
+        public IList<Client> GetParentAndChildTenants()
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.multiTenantUserRoleAccessManager.GetParentAndChildTenants(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }

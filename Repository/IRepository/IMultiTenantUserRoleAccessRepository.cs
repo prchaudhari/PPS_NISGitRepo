@@ -98,6 +98,15 @@ namespace nIS
         /// </returns>
         IList<UserTenant> GetUserTenants(long userId, string tenantCode);
 
+        /// <summary>
+        /// This method gets the list of parent as well as child tenants.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of parent as well as child tenants
+        /// </returns>
+        IList<Client> GetParentAndChildTenants(string tenantCode);
+
     }
 
 }

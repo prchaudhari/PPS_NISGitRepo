@@ -505,6 +505,42 @@ namespace nIS
             return userTenants;
         }
 
+        /// <summary>
+        /// This method gets the list of parent as well as child tenants.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of parent as well as child tenants
+        /// </returns>
+        public IList<Client> GetParentAndChildTenants(string tenantCode)
+        {
+            IList<Client> clients = new List<Client>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var tenants = nISEntitiesDataContext.FnGetParentAndChildTenant(tenantCode);
+                    tenants.ToList().ForEach(record =>
+                    {
+                        clients.Add(new Client()
+                        {
+                            TenantName = record.TenantName,
+                            TenantCode = record.TenantCode,
+                            TenantType = record.TenantType,
+                            PrimaryEmailAddress = record.EmailAddress,
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return clients;
+
+        }
+
         #endregion
 
         #region Private Methods
