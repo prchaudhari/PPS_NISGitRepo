@@ -683,7 +683,7 @@ export class AddComponent implements OnInit {
         this.tenant.PrimaryPinCode = this.tenantFormGroup.value.tenantPostalCode;
         this.tenant.PrimaryAddressLine1 = this.tenantFormGroup.value.tenantAddress;
         this.tenant.TenantCity = this.tenantFormGroup.value.tenantCity
-        this.tenant.Country = this.tenantFormGroup.value.tenantCountry;
+        this.tenant.TenantCountry = this.tenantFormGroup.value.tenantCountry;
         this.tenant.TenantState = this.tenantFormGroup.value.tenantState;
         this.tenant.TenantDescription = this.tenantFormGroup.value.tenantDescription;
         this.tenant.TenantLogo = this.image;

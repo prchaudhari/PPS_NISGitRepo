@@ -263,7 +263,7 @@ namespace nIS
                                 IsGroupManager = false
                             }).ToList();
 
-                            bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode, false);
+                            bool addUserResult = this.userManager.AddUsers(clientusers, client.TenantCode, true);
                             if (!addUserResult)
                             {
                                 throw new InvalidUserException(tenantCode);
@@ -563,7 +563,7 @@ namespace nIS
                                 {
                                     SortColumn = ModelConstant.SORT_COLUMN
                                 }
-                            }, ModelConstant.DEFAULT_TENANT_CODE)?.FirstOrDefault();
+                            }, tenantCode)?.FirstOrDefault();
                             client.Country = tenantcountry;
 
                         }
@@ -575,7 +575,7 @@ namespace nIS
                                 {
                                     SortColumn = ModelConstant.SORT_COLUMN
                                 }
-                            }, tenant.TenantCode).ToList();
+                            }, tenantCode).ToList();
                             client.TenantContacts = contacts;
                         }
                         #endregion
