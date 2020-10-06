@@ -177,8 +177,9 @@ export class ListComponent implements OnInit {
     if (this.filterTenantDomainName != null && this.filterTenantDomainName != '') {
       searchParameter.TenantDomainName = this.filterTenantDomainName.trim();
     }
-
+    var currentUser = this.localstorageservice.GetCurrentUser();
     searchParameter.IsPrimaryTenant = false;
+    searchParameter.ParentTenantCode = currentUser.TenantCode;
     searchParameter.IsCountryRequired = true;
     searchParameter.TenantType = "Tenant";
     var response = await tenantService.getTenant(searchParameter);

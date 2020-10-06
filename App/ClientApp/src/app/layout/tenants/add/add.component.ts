@@ -17,7 +17,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Country } from '../../country/country';
 import { CountryService } from '../../country/country.service';
 import { ContactTypeService } from '../../contacttype/contacttype.service';
-
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -169,6 +169,7 @@ export class AddComponent implements OnInit {
     private formbuilder: FormBuilder,
     private _messageDialogService: MessageDialogService,
     private tenantService: TenantService,
+    private localstorageservice: LocalStorageService,
     private injector: Injector,
   ) {
     this.tenant = new Tenant;
@@ -317,7 +318,7 @@ export class AddComponent implements OnInit {
   ShowAddContactContainer(form, contact): void {
     if (form == "Add") {
       this.isContactContainer = true;
-      this.contactFormGroup.patchValue({firstName : '', lastName: '', email: '', mobileNumber: '', ContactType: 0, CountryCode: 0});
+      this.contactFormGroup.patchValue({ firstName: '', lastName: '', email: '', mobileNumber: '', ContactType: 0, CountryCode: 0 });
       this.markFormGroupUnTouched(this.contactFormGroup);
     }
     else {
@@ -329,8 +330,9 @@ export class AddComponent implements OnInit {
       }
       this.isEditContactContainer = true;
       this.contactEditFormGroup.patchValue({
-        EditfirstName : contact.FirstName, EditlastName: contact.LastName, Editemail: contact.EmailAddress, 
-        EditmobileNumber: contact.ContactNumber, EditCountryCode: contact.CountryId, EditcontactType : contact.ContactTypeId }
+        EditfirstName: contact.FirstName, EditlastName: contact.LastName, Editemail: contact.EmailAddress,
+        EditmobileNumber: contact.ContactNumber, EditCountryCode: contact.CountryId, EditcontactType: contact.ContactTypeId
+      }
       );
     }
   }
@@ -346,10 +348,10 @@ export class AddComponent implements OnInit {
   }
 
   resetContactForm(action) {
-    if(action == 'Add') {
-      this.contactFormGroup.patchValue({firstName : null, lastName: null, email: null, mobileNumber: null, ContactType: null, CountryCode: null});
-    }else {
-      this.contactEditFormGroup.patchValue( {EditfirstName : null, EditlastName: null, Editemail: null, EditmobileNumber: null,EditcontactType: null, EditCountryCode: null} );
+    if (action == 'Add') {
+      this.contactFormGroup.patchValue({ firstName: null, lastName: null, email: null, mobileNumber: null, ContactType: null, CountryCode: null });
+    } else {
+      this.contactEditFormGroup.patchValue({ EditfirstName: null, EditlastName: null, Editemail: null, EditmobileNumber: null, EditcontactType: null, EditCountryCode: null });
     }
     this.Contact.CountryCode = 0;
     this.Contact.ContactType = 0;
@@ -547,7 +549,7 @@ export class AddComponent implements OnInit {
       }
     }
     this.CloseAddContactContainer('Edit');
-  } 
+  }
 
   async onSubmitAdd() {
     var contact = this.contactTypeList.filter(s => this.contactFormGroup.value.ContactType == s.Identifier);
@@ -583,6 +585,17 @@ export class AddComponent implements OnInit {
     }
     else {
       var contacts = [];
+      if (this.contactlist.length <= 0) {
+        if (contactObject.ContactType = "Primary") {
+          contactObject.IsActivationLinkSent = true;
+        }
+      }
+      else {
+        var primaryContact = this.contactlist.filter(s => s.ContactType == "Primary");
+        if (primaryContact == null || primaryContact.length == 0) {
+          contactObject.IsActivationLinkSent = true;
+        }
+      }
       contacts = this.contactlist.filter(s => contactObject.EmailAddress == s.EmailAddress);
       if (contacts.length > 0) {
         this._messageDialogService.openDialogBox('Error', "Duplicate tenant contact found", Constants.msgBoxSuccess);
@@ -664,38 +677,61 @@ export class AddComponent implements OnInit {
     if (this.contactlist.length > 0) {
       var primaryContact = this.contactlist.filter(s => s.ContactType == "Primary");
       if (primaryContact.length > 0) {
+
         this.tenant.TenantName = this.tenantFormGroup.value.tenantName;
         this.tenant.TenantDomainName = this.tenantFormGroup.value.tenantDomainName;
         this.tenant.PrimaryPinCode = this.tenantFormGroup.value.tenantPostalCode;
         this.tenant.PrimaryAddressLine1 = this.tenantFormGroup.value.tenantAddress;
         this.tenant.TenantCity = this.tenantFormGroup.value.tenantCity
-      };
-      this.tenant.Country = this.tenantFormGroup.value.tenantCountry;
-      this.tenant.TenantState = this.tenantFormGroup.value.tenantState;
-      this.tenant.TenantDescription = this.tenantFormGroup.value.tenantDescription;
-      this.tenant.TenantLogo = this.image;
-      this.tenant.TenantContacts = this.contactlist;
-      var userid = localStorage.getItem('UserId');
-      this.tenant.User = {};
-      this.tenant.User.Identifier = userid;
-      let pageArray = [];
-      pageArray.push(this.tenant);
-      let tenantService = this.injector.get(TenantService);
-      let isRecordSaved = await tenantService.saveTenant(pageArray, this.updateOperationMode);
-      if (isRecordSaved) {
-        let message = Constants.recordAddedMessage;
-        if (this.updateOperationMode) {
-          message = Constants.recordUpdatedMessage;
+        this.tenant.Country = this.tenantFormGroup.value.tenantCountry;
+        this.tenant.TenantState = this.tenantFormGroup.value.tenantState;
+        this.tenant.TenantDescription = this.tenantFormGroup.value.tenantDescription;
+        this.tenant.TenantLogo = this.image;
+        this.tenant.TenantContacts = this.contactlist;
+        this.tenant.TenantType = "Tenant";
+        var userid = localStorage.getItem('UserId');
+        this.tenant.User = {};
+        this.tenant.User.Identifier = userid;
+        var currentUser = this.localstorageservice.GetCurrentUser();
+        this.tenant.ParentTenantCode = currentUser.TenantCode;
+
+        let pageArray = [];
+        pageArray.push(this.tenant);
+        let tenantService = this.injector.get(TenantService);
+        let isRecordSaved = await tenantService.saveTenant(pageArray, this.updateOperationMode);
+        if (isRecordSaved) {
+          let message = Constants.recordAddedMessage;
+          if (this.updateOperationMode) {
+            message = Constants.recordUpdatedMessage;
+          }
+          this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+          this.navigateToListPage()
         }
-        this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-        this.navigateToListPage()
       }
+      else {
+        this._messageDialogService.openDialogBox('Error', "Please add primary contact", Constants.msgBoxSuccess);
+
+      }
+
     }
     else {
       this._messageDialogService.openDialogBox('Error', "Please add primary contact", Constants.msgBoxSuccess);
     }
   }
 
+  sentActivationLink(contact) {
+    this.contactlist.forEach(item => {
+      if (contact.EmailAddress == item.EmailAddress) {
+        item.IsActivationLinkSent = true;
+      }
+
+    });
+    this.dataSource = new MatTableDataSource(this.contactlist);
+    this.dataSource.sort = this.sort;
+    this.array = this.contactlist;
+    this.totalSize = this.array.length;
+    this.iterator();
+  }
   private markFormGroupUnTouched(formGroup: FormGroup) {
     (<any>Object).values(formGroup.controls).forEach(control => {
       control.markAsUntouched();

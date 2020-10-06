@@ -1,6 +1,7 @@
 export class Tenant {
   "Identifier": number;
   "TenantCode": string;
+  "ParentTenantCode": string;
   "TenantName": string;
   "TenantDomainName": string;
   "TenantType": string;
