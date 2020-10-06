@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { MultiTenantUserAccessMapService } from '../layout/multi-tenant-user-access-map/multi-tenant-user-access-map.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-select-tenant',
@@ -72,7 +73,8 @@ export class SelectTenantComponent implements OnInit {
     private loginService: LoginService,
     private route: Router,
     private _messageDialogService: MessageDialogService,
-    private localstorageservice: LocalStorageService) { }
+    private localstorageservice: LocalStorageService,
+    private uiLoader: NgxUiLoaderService) { }
 
   ngOnInit() {
     this.userData = JSON.parse(localStorage.getItem('userClaims'));
@@ -86,13 +88,16 @@ export class SelectTenantComponent implements OnInit {
   }
 
   async onTenantSelect(tenant: any) {
+    this.uiLoader.start();
     this.userData.Privileges = await this.getUserRoles(tenant.RoleId, tenant.TenantCode);
     if (this.roleDetail.IsActive == false) {
+      this.uiLoader.stop();
       this._messageDialogService.openDialogBox('Error', "User role is deactivated.", Constants.msgBoxError);
       this.localstorageservice.removeLocalStorageData();
     }
     else {
       if (this.userData.Privileges.length == 0 || this.userData.Privileges == null) {
+        this.uiLoader.stop();
         this._messageDialogService.openDialogBox('Error', "User role has no permission assigned", Constants.msgBoxError);
         this.localstorageservice.removeLocalStorageData();
       }
@@ -110,6 +115,7 @@ export class SelectTenantComponent implements OnInit {
             }
           }
         });
+        this.uiLoader.stop();
         if (isFound) {
           this.route.navigate([state]);
         }

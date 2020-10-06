@@ -59,10 +59,8 @@ export class AssetSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.imagedropdownList = [
-
       { id: 1, item_text: 'png' },
       { id: 2, item_text: 'jpeg' }
-
     ];
 
     this.imagedropdownSettings = {
@@ -87,7 +85,7 @@ export class AssetSettingsComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: false
     };
-    console.log(this.onlyNumbers);
+
     this.imageForm = this.fb.group({
       assetImageHeight: [null, Validators.compose([Validators.required,
       Validators.pattern(this.onlyNumbers)
@@ -103,7 +101,6 @@ export class AssetSettingsComponent implements OnInit {
       ])],
       assetImageFile: [null],
       assetVideoFile: [null]
-
     })
     this.LoadAsset();
   }
@@ -130,42 +127,43 @@ export class AssetSettingsComponent implements OnInit {
   get assetImageFile() {
     return this.imageForm.get('assetImageFile');
   }
+
   textBoxValueChanged(e): void {
     console.log(e);
   }
 
   LoadAsset(): void {
-
     this._spinnerService.start();
     var AssetSearchParameter;
     this._http.post(this.baseURL + 'AssetSetting/list', AssetSearchParameter).subscribe(
       data => {
-        this.setting = <AssetSetting>data[0];
         this._spinnerService.stop();
-        this.imageForm.controls['assetVideoSize'].setValue(this.setting.VideoSize);
-        this.imageForm.controls['assetImageSize'].setValue(this.setting.ImageSize);
-        this.imageForm.controls['assetImageWidth'].setValue(this.setting.ImageWidth);
-        this.imageForm.controls['assetImageHeight'].setValue(this.setting.ImageHeight);
-        var imageFile = this.setting.ImageFileExtension.split(",");
-        this.imageselectedItems = [];
-        this.videoselectedItems = [];
-        for (var i = 0; i < imageFile.length; i++) {
-          var item = this.imagedropdownList.filter(x => x.item_text == imageFile[i]);
-          if (item != null && item.length > 0) {
-            this.imageselectedItems.push(item[0]);
+        if(data != null && data[0] != undefined) {
+          this.setting = <AssetSetting>data[0];
+          this.imageForm.controls['assetVideoSize'].setValue(this.setting.VideoSize);
+          this.imageForm.controls['assetImageSize'].setValue(this.setting.ImageSize);
+          this.imageForm.controls['assetImageWidth'].setValue(this.setting.ImageWidth);
+          this.imageForm.controls['assetImageHeight'].setValue(this.setting.ImageHeight);
+          var imageFile = this.setting.ImageFileExtension.split(",");
+          this.imageselectedItems = [];
+          this.videoselectedItems = [];
+          for (var i = 0; i < imageFile.length; i++) {
+            var item = this.imagedropdownList.filter(x => x.item_text == imageFile[i]);
+            if (item != null && item.length > 0) {
+              this.imageselectedItems.push(item[0]);
+            }
           }
-        }
-        this.imageForm.controls['assetImageFile'].setValue(this.imageselectedItems);
+          this.imageForm.controls['assetImageFile'].setValue(this.imageselectedItems);
 
-        var videoFile = this.setting.VideoFileExtension.split(",");
-        for (var i = 0; i < videoFile.length; i++) {
-          var item = this.videodropdownList.filter(x => x.item_text == videoFile[i]);
-          if (item != null && item.length > 0) {
-            this.videoselectedItems.push(item[0]);
+          var videoFile = this.setting.VideoFileExtension.split(",");
+          for (var i = 0; i < videoFile.length; i++) {
+            var item = this.videodropdownList.filter(x => x.item_text == videoFile[i]);
+            if (item != null && item.length > 0) {
+              this.videoselectedItems.push(item[0]);
+            }
           }
+          this.imageForm.controls['assetVideoFile'].setValue(this.videoselectedItems);
         }
-        this.imageForm.controls['assetVideoFile'].setValue(this.videoselectedItems);
-
       },
       error => {
         $('.overlay').show();
@@ -180,10 +178,8 @@ export class AssetSettingsComponent implements OnInit {
     }
     else if (this.videoselectedItems.length == 0) {
       return true;
-
     }
     else if (this.imageselectedItems.length == 0) {
-
       return true;
     }
     return false;
@@ -191,8 +187,6 @@ export class AssetSettingsComponent implements OnInit {
 
   SaveAssetSettings(): void {
     this._spinnerService.start();
-
-
     this.setting.VideoSize = this.imageForm.value.assetVideoSize;
     this.setting.ImageSize = this.imageForm.value.assetImageSize;
     this.setting.ImageWidth = this.imageForm.value.assetImageWidth;
@@ -200,7 +194,6 @@ export class AssetSettingsComponent implements OnInit {
     this.setting.ImageFileExtension = Array.prototype.map.call(this.imageselectedItems, (file: any) => file.item_text).join();
     this.setting.VideoFileExtension = Array.prototype.map.call(this.videoselectedItems, (file: any) => file.item_text).join();
     this.save(this.setting);
-
   }
 
   public async save(postData): Promise<void> {
@@ -216,15 +209,11 @@ export class AssetSettingsComponent implements OnInit {
           if (httpEvent["status"] === 200) {
             this._messageDialogService.openDialogBox('Message', "Asset configuration saved successfully", Constants.msgBoxSuccess);
           }
-
         }
       }, (error) => {
         this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
-
         this._spinnerService.stop();
-
       });
-
   }
 
   onItemSelectImage(item: any) {
@@ -248,9 +237,7 @@ export class AssetSettingsComponent implements OnInit {
     this.imageselectedItems = this.imageselectedItems.filter(x => x.item_text != item.item_text);
     if (this.imageselectedItems.length == 0) {
       this.isImageFileDropdownError = true;
-
     }
-
   }
 
   onItemDeSelectAllImage(item: any) {
@@ -274,14 +261,12 @@ export class AssetSettingsComponent implements OnInit {
       this.videoselectedItems.push(items[i]);
     }
     this.isVideoFileDropdownError = false;
-
   }
 
   onItemDeSelectVideo(item: any) {
     this.videoselectedItems = this.videoselectedItems.filter(x => x.item_text != item.item_text);
     if (this.videoselectedItems.length == 0) {
       this.isVideoFileDropdownError = true;
-
     }
   }
 
@@ -293,6 +278,5 @@ export class AssetSettingsComponent implements OnInit {
   navigateToListPage() {
     this._location.back();
   }
-
 
 }

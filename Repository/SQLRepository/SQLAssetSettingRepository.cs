@@ -124,26 +124,32 @@ namespace nIS
             {
                 
                 this.SetAndValidateConnectionString(tenantCode);
-
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     record = nISEntitiesDataContext.AssetSettingRecords.Where(item => item.Id == setting.Identifier && item.TenantCode == tenantCode).FirstOrDefault();
+                    if (record == null) 
+                    {
+                        record = new AssetSettingRecord();
+                    }
                     record.ImageFileExtension = setting.ImageFileExtension;
                     record.VideoFileExtension = setting.VideoFileExtension;
                     record.ImageHeight = setting.ImageHeight;
                     record.ImageSize = setting.ImageSize;
                     record.ImageWidth = setting.ImageWidth;
                     record.VideoSize = setting.VideoSize;
+                    record.TenantCode = tenantCode;
+                    if (record.Id == 0) 
+                    {
+                        nISEntitiesDataContext.AssetSettingRecords.Add(record);
+                    }
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
             }
-
             catch (Exception ex)
             {
                 throw ex;
             }
-
             return result;
         }
         #endregion
