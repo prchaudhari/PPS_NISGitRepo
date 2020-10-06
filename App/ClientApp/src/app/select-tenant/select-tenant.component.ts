@@ -86,7 +86,6 @@ export class SelectTenantComponent implements OnInit {
   }
 
   async onTenantSelect(tenant: any) {
-    debugger
     this.userData.Privileges = await this.getUserRoles(tenant.RoleId, tenant.TenantCode);
     if (this.roleDetail.IsActive == false) {
       this._messageDialogService.openDialogBox('Error', "User role is deactivated.", Constants.msgBoxError);
