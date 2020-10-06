@@ -586,14 +586,17 @@ export class AddComponent implements OnInit {
     else {
       var contacts = [];
       if (this.contactlist.length <= 0) {
-        if (contactObject.ContactType = "Primary") {
+        if (contactObject.ContactType == "Primary") {
           contactObject.IsActivationLinkSent = true;
         }
       }
       else {
         var primaryContact = this.contactlist.filter(s => s.ContactType == "Primary");
         if (primaryContact == null || primaryContact.length == 0) {
-          contactObject.IsActivationLinkSent = true;
+          if (contactObject.ContactType == "Primary") {
+            contactObject.IsActivationLinkSent = true;
+          }
+         
         }
       }
       contacts = this.contactlist.filter(s => contactObject.EmailAddress == s.EmailAddress);
@@ -719,19 +722,36 @@ export class AddComponent implements OnInit {
     }
   }
 
-  sentActivationLink(contact) {
-    this.contactlist.forEach(item => {
-      if (contact.EmailAddress == item.EmailAddress) {
-        item.IsActivationLinkSent = true;
-      }
+  async sentActivationLink(contact) {
+    if (this.updateOperationMode) {
+      let data = [{
+        "Identifier": contact.Identifier,
+        "TenantCode": this.tenant.TenantCode
+      }];
 
-    });
-    this.dataSource = new MatTableDataSource(this.contactlist);
-    this.dataSource.sort = this.sort;
-    this.array = this.contactlist;
-    this.totalSize = this.array.length;
-    this.iterator();
+      let isDeleted = await this.tenantService.sendActivationLink(data);
+      if (isDeleted) {
+        let messageString = "Activation link sent successfully. Please check your email";
+        this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+        this.BindContacts();
+      }
+    }
+    else {
+      this.contactlist.forEach(item => {
+        if (contact.EmailAddress == item.EmailAddress) {
+          item.IsActivationLinkSent = true;
+        }
+
+      });
+      this.dataSource = new MatTableDataSource(this.contactlist);
+      this.dataSource.sort = this.sort;
+      this.array = this.contactlist;
+      this.totalSize = this.array.length;
+      this.iterator();
+    }
+    
   }
+
   private markFormGroupUnTouched(formGroup: FormGroup) {
     (<any>Object).values(formGroup.controls).forEach(control => {
       control.markAsUntouched();

@@ -208,7 +208,7 @@ export class TenantService {
     return <boolean>this.isRecordSaved;
   }
 
-  public async sendActivationLink(postData, tenantEditModeOn): Promise<boolean> {
+  public async sendActivationLink(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.tenantContactSendActivationUrl;
     this.uiLoader.start();
