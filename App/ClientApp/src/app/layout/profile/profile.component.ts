@@ -67,6 +67,10 @@ export class ProfileComponent implements OnInit {
   public userRecord: any = {};
   public User = { RoleIdentifier: 0, Image: '', CountryCode: '' }
   public countrycodeLists = [{ "Identifier": 0, "Code": "Please Select", "DialingCode": "" }];
+  public isTenantAdminUser: boolean = false;
+  public isInstantTenantManager: boolean = false;
+  public isTenantGroupManager: boolean = false;
+  public TenantCode = '';
 
   constructor(private _location: Location,
     private formbulder: FormBuilder,
@@ -139,6 +143,11 @@ export class ProfileComponent implements OnInit {
       mobileNumber: [null, Validators.compose([Validators.required, Validators.maxLength(10),
       Validators.minLength(10), Validators.pattern(this.onlyNumbers)])]
     })
+
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    this.isInstantTenantManager = userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() == 'true' ? true : false;
+    this.isTenantGroupManager = userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() == 'true' ? true : false;
+    this.TenantCode = userClaimsDetail.TenantCode != null ? userClaimsDetail.TenantCode : '';
     this.getCountries();
   }
 
@@ -160,35 +169,6 @@ export class ProfileComponent implements OnInit {
     this.getProfileRecord();
   }
 
-  //Function call to get country code--
-  // async getCountryDetails() {
-  //     let service = this.injector.get(UserService);
-  //     let searchParameter: any = {};
-  //     searchParameter.PagingParameter = {};
-  //     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
-  //     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
-  //     searchParameter.SortParameter = {};
-  //     searchParameter.SortParameter.SortColumn = Constants.Name;
-  //     searchParameter.SortParameter.SortOrder = Constants.Ascending;
-  //     searchParameter.SearchMode = Constants.Contains;
-  //     this.countrycodeList = await service.getCountryCode(searchParameter);
-  //     this.isCountryDataRetrieved = true;
-  //     this.countrycodeList.forEach(element => {
-  //         let countryObject = {
-  //             "Identifier": element.Identifier,
-  //             "Name": element.Name,
-  //             "Code": element.Code,
-  //             "DialingCode": element.DialingCode,
-  //             "DisplayName": element.DialingCode + '-' + element.Name,
-  //         }
-  //         this.countrycodeLists.push(countryObject);
-  //     })
-  //     this.jqxcountryCodeDropDownList.source(this.countrycodeLists);
-  //     if (this.isLanguageDataRetrieved == true && this.isCountryDataRetrieved == true) {
-  //         this.getProfileRecord();
-  //     }
-  // }
-
   async getProfileRecord() {
     let service = this.injector.get(UserService);
     let searchParameter: any = {};
@@ -201,11 +181,14 @@ export class ProfileComponent implements OnInit {
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.IsSkipSuperAdmin = false;
+    searchParameter.IsInstanceManager = this.isInstantTenantManager == true ? true : false;
+    searchParameter.IsGroupManager = this.isTenantGroupManager == true ? true : false;
+    if(this.isTenantGroupManager == true) {
+      searchParameter.TenantCode = this.TenantCode;
+    }
     this.uiLoader.start();
-
     var response = await service.getUser(searchParameter);
     this.usersList = response.usersList
-
     if (this.usersList.length > 0) {
       this.userRecord = this.usersList[0]
       this.userIdentifier = this.userRecord.Identifier;
@@ -259,8 +242,8 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
+  
   public onCountrySelected(event) {
-
     const value = event.target.value;
     if (value == "") {
       this.profileFormErrorObject.showCountryCodeError = true;
@@ -268,13 +251,10 @@ export class ProfileComponent implements OnInit {
     }
     else {
       this.profileFormErrorObject.showCountryCodeError = false;
-
       this.User.CountryCode = value
-
     }
-
-    console.log(value);
   }
+
   onFileChanged(event) {
     let file = event.target.files[0];
     if (file.size > 200000) {
@@ -322,18 +302,14 @@ export class ProfileComponent implements OnInit {
       this.profileFormErrorObject.showUserLastNameError = true;
       return false;
     }
-    // if (this.profileFormGroup.controls.email.invalid) {
-    //     this.profileFormErrorObject.showUserEmailError = true;
-    //     return false;
-    // }
     if (this.profileFormGroup.controls.mobileNumber.invalid) {
       this.profileFormErrorObject.showUserMobileNumberError = true;
       return false;
     }
     return true;
   }
-  saveButtonValidation(): boolean {
 
+  saveButtonValidation(): boolean {
     if (this.imageSize > 200000) {
       return true;
     }
@@ -362,6 +338,7 @@ export class ProfileComponent implements OnInit {
     }
     return false;
   }
+
   //save functionality.
   onSubmit() {
     if (this.profileFormValidaton()) {
@@ -441,6 +418,7 @@ export class ProfileComponent implements OnInit {
     this.isTheme5Active = false;
     this.isTheme0Active = false;
   }
+
   theme2() {
     const dom: any = document.querySelector('body');
     dom.classList.add('theme2');
@@ -456,6 +434,7 @@ export class ProfileComponent implements OnInit {
     this.isTheme5Active = false;
     this.isTheme0Active = false;
   }
+
   theme3() {
     const dom: any = document.querySelector('body');
     dom.classList.remove('theme2');
@@ -472,6 +451,7 @@ export class ProfileComponent implements OnInit {
     this.isTheme0Active = false;
 
   }
+
   theme4() {
     const dom: any = document.querySelector('body');
     dom.classList.remove('theme2');
@@ -487,6 +467,7 @@ export class ProfileComponent implements OnInit {
     this.isTheme5Active = false;
     this.isTheme0Active = false;
   }
+
   theme5() {
     const dom: any = document.querySelector('body');
     dom.classList.remove('theme2');
@@ -502,6 +483,7 @@ export class ProfileComponent implements OnInit {
     this.isTheme5Active = true;
     this.isTheme0Active = false;
   }
+
   theme0() {
     const dom: any = document.querySelector('body');
     dom.classList.remove('theme2');
