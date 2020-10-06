@@ -209,7 +209,7 @@
               <th class="width12 ip-w-20" mat-header-cell *matHeaderCellDef> Actions </th>
               <td mat-cell *matCellDef="let contact">
                 <div class="action-btns btn-tbl-action">
-                  <button type="button" id="btnUpdateRole" title="Send Activation/Reset Password Link">
+                  <button type="button" id="btnUpdateRole" title="Send Activation/Reset Password Link" (click)="sentActivationLink(contact)" *ngIf="!contact.IsActivationLinkSent">
                     <span class="fa fa-external-link"></span>
                   </button>
                   <button type="button" id="btnUpdateRole" title="Update" (click)="ShowAddContactContainer('Edit',contact)">

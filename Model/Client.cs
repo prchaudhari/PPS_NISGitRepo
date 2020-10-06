@@ -24,6 +24,11 @@ namespace nIS
         private string tenantCode = string.Empty;
 
         /// <summary>
+        ///The tenant code
+        /// </summary>
+        private string parentTenantCode = string.Empty;
+
+        /// <summary>
         ///The tenant name
         /// </summary>
         private string tenantName = string.Empty;
@@ -236,6 +241,23 @@ namespace nIS
             set
             {
                 this.tenantCode = value;
+            }
+        }
+
+        /// <summary>
+        /// gets or sets the tenant code.
+        /// </summary>
+        [Description("Parent Tenant code")]
+        public string ParentTenantCode
+        {
+            get
+            {
+                return this.parentTenantCode;
+            }
+
+            set
+            {
+                this.parentTenantCode = value;
             }
         }
 

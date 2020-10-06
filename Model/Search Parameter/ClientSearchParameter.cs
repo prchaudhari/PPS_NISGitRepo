@@ -43,6 +43,10 @@ namespace nIS
         /// The tenant manage type.
         /// </summary>
         private string tenantType = string.Empty;
+        /// <summary>
+        /// The tenant manage type.
+        /// </summary>
+        private string parentTenantCode = string.Empty;
 
         /// <summary>
         /// The Email Address.
@@ -203,6 +207,22 @@ namespace nIS
             set
             {
                 this.tenantType = value;
+            }
+        }
+        /// <summary>
+        /// gets or sets theParentTenantCode
+        /// </summary>
+        [Description("ParentTenantCode")]
+        public string ParentTenantCode
+        {
+            get
+            {
+                return this.parentTenantCode;
+            }
+
+            set
+            {
+                this.parentTenantCode = value;
             }
         }
 
