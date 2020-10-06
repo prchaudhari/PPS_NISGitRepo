@@ -5,5 +5,6 @@
     [Code] NVARCHAR(50) NULL,
 	[DialingCode] NVARCHAR(50) NULL,
 	[IsActive] BIT NOT NULL,
-	[IsDeleted] BIT NOT NULL
+	[IsDeleted] BIT NOT NULL, 
+    [TenantCode] NVARCHAR(50) NOT NULL
 )

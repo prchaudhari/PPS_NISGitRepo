@@ -21,15 +21,15 @@ namespace nIS
             : base("name=NISEntities")
         {
         }
-        public NISEntities(string connectionString)
-                                               : base(connectionString)
-        {
-        }
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+        public NISEntities(string connectionString)
+                                               : base(connectionString)
+        {
+        }
         public virtual DbSet<UserRecord> UserRecords { get; set; }
         public virtual DbSet<UserCredentialHistoryRecord> UserCredentialHistoryRecords { get; set; }
         public virtual DbSet<UserLoginRecord> UserLoginRecords { get; set; }
@@ -48,7 +48,6 @@ namespace nIS
         public virtual DbSet<TenantRecord> TenantRecords { get; set; }
         public virtual DbSet<RoleRecord> RoleRecords { get; set; }
         public virtual DbSet<CityRecord> CityRecords { get; set; }
-        public virtual DbSet<CountryRecord> CountryRecords { get; set; }
         public virtual DbSet<StateRecord> StateRecords { get; set; }
         public virtual DbSet<WidgetRecord> WidgetRecords { get; set; }
         public virtual DbSet<AssetSettingRecord> AssetSettingRecords { get; set; }
@@ -85,6 +84,7 @@ namespace nIS
         public virtual DbSet<TenantUserRecord> TenantUserRecords { get; set; }
         public virtual DbSet<MultiTenantUserAccessMapRecord> MultiTenantUserAccessMapRecords { get; set; }
         public virtual DbSet<View_MultiTenantUserAccessMapRecord> View_MultiTenantUserAccessMapRecord { get; set; }
+        public virtual DbSet<CountryRecord> CountryRecords { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

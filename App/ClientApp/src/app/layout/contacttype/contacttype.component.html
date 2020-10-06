@@ -32,10 +32,6 @@
             <th class="width25 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
             <td mat-cell *matCellDef="let element">{{element.Description}} </td>
           </ng-container>
-          <!--<ng-container matColumnDef="dialingcode">
-            <th class="width30 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Dialing Code </th>
-            <td mat-cell *matCellDef="let element"> {{element.IsActive}}</td>
-          </ng-container>-->
           <ng-container matColumnDef="actions">
             <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
@@ -67,11 +63,6 @@
           <label>Name</label>
           <input type="text" class="form-control" id="filterDisplayName" formControlName="filterName">
         </div>
-        <div class="form-group">
-          <label>Code</label>
-          <input type="text" class="form-control" id="filterOwner" formControlName="filterCode">
-        </div>
-
       </div>
       <!--[ngClass]="filterClass"-->
       <div class="filter-footer">
@@ -99,7 +90,7 @@
   <form [formGroup]="AddContactTypeFormGroup">
     <div class="form-popup side-popup width340" [ngClass]="addContactTypeContainer? 'show' : 'hide'">
       <div class="filter-head">
-        <label class="m-0">Add ContactType</label>
+        <label class="m-0">Add Contact Type</label>
       </div>
 
       <div class="filter-body stylescrollbar">
@@ -110,9 +101,9 @@
             <div class="validation-msg" style="color:red">
               <ul *ngIf="AddName.touched && AddName.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="AddName.errors?.pattern">Invalid contact type name</li>
-                <li class="text-danger" *ngIf="AddName.errors?.required">ContactType name required</li>
-                <li class="text-danger" *ngIf="AddName.errors?.minlength">ContactType name length should not be less than 2</li>
-                <li class="text-danger" *ngIf="AddName.errors?.maxlength">ContactType name length should not be greater than 50</li>
+                <li class="text-danger" *ngIf="AddName.errors?.required">Contact type name required</li>
+                <li class="text-danger" *ngIf="AddName.errors?.minlength">Contact type name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="AddName.errors?.maxlength">Contact type name length should not be greater than 50</li>
               </ul>
             </div>
           </div>
@@ -148,7 +139,7 @@
   <form [formGroup]="EditContactTypeFormGroup">
     <div class="form-popup side-popup width340" [ngClass]="editContactTypeContainer? 'show' : 'hide'">
       <div class="filter-head">
-        <label class="m-0">Edit ContactType</label>
+        <label class="m-0">Edit Contact Type</label>
       </div>
       <div class="filter-body stylescrollbar">
         <div class="row">
@@ -158,9 +149,9 @@
             <div class="validation-msg" style="color:red">
               <ul *ngIf="EditName.touched && EditName.errors" style="list-style-type:none">
                 <li class="text-danger" *ngIf="EditName.errors?.pattern">Invalid schedule name</li>
-                <li class="text-danger" *ngIf="EditName.errors?.required">ContactType name required</li>
-                <li class="text-danger" *ngIf="EditName.errors?.minlength">ContactType name length should not be less than 2</li>
-                <li class="text-danger" *ngIf="EditName.errors?.maxlength">ContactType name length should not be greater than 50</li>
+                <li class="text-danger" *ngIf="EditName.errors?.required">Contact type name required</li>
+                <li class="text-danger" *ngIf="EditName.errors?.minlength">Contact type name length should not be less than 2</li>
+                <li class="text-danger" *ngIf="EditName.errors?.maxlength">Contact type name length should not be greater than 50</li>
               </ul>
             </div>
           </div>

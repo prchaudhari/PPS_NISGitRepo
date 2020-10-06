@@ -95,6 +95,7 @@ namespace nIS
                         DialingCode = country.DialingCode,
                         IsActive = true,
                         IsDeleted = false,
+                        TenantCode = tenantCode
                     });
                 });
 
@@ -288,7 +289,7 @@ namespace nIS
                                 Code = item.Code,
                                 DialingCode = item.DialingCode,
                                 IsActive = item.IsActive,
-                                IsDeleted = item.IsDeleted,
+                                IsDeleted = item.IsDeleted
                             });
                         });
                     }
@@ -391,12 +392,12 @@ namespace nIS
                 StringBuilder query = new StringBuilder();
                 if (operation.Equals(ModelConstant.ADD_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("Name.Equals(\"{0}\") or Code.Equals(\"{1}\") or DialingCode.Equals(\"{2}\")", item.CountryName, item.Code, item.DialingCode)).ToList()) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("Name.Equals(\"{0}\") or Code.Equals(\"{1}\") or DialingCode.Equals(\"{2}\")", item.CountryName, item.Code, item.DialingCode)).ToList()) + ") and TenantCode.Equals(\"" + tenantCode + "\") and IsDeleted.Equals(false)");
                 }
 
                 if (operation.Equals(ModelConstant.UPDATE_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("((Name.Equals(\"{0}\") or Code.Equals(\"{1}\") or DialingCode.Equals(\"{2}\")) and !Id.Equals({3}))", item.CountryName, item.Code, item.DialingCode, item.Identifier))) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", countries.Select(item => string.Format("((Name.Equals(\"{0}\") or Code.Equals(\"{1}\") or DialingCode.Equals(\"{2}\")) and !Id.Equals({3}))", item.CountryName, item.Code, item.DialingCode, item.Identifier))) + ") and TenantCode.Equals(\"" + tenantCode + "\") and IsDeleted.Equals(false)");
                 }
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -461,7 +462,7 @@ namespace nIS
                     }
                 }
 
-                queryString.Append("IsDeleted.Equals(false) ");
+                queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false)", tenantCode));
                 return queryString.ToString();
             }
             catch (Exception exception)

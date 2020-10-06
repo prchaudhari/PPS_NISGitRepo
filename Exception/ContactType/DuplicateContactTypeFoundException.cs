@@ -46,7 +46,7 @@ namespace nIS
         {
             get
             {
-                return ExceptionConstant.COUNTRY_EXCEPTION_SECTION + "~" + ExceptionConstant.DUPLICATE_COUNTRY_FOUND_EXCEPTION;
+                return ExceptionConstant.CONTACTTYPE_EXCEPTION_SECTION + "~" + ExceptionConstant.DUPLICATE_CONTACT_TYPE_FOUND_EXCEPTION;
             }
         }
 

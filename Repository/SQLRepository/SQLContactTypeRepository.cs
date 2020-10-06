@@ -149,7 +149,7 @@ namespace nIS
                     contactTypes.ToList().ForEach(contactType =>
                     {
                         ContactTypeRecord contactTypeRecord = contactTypeRecords.Single(item => item.Id == contactType.Identifier);
-                        contactTypeRecord.Name = contactType.Description;
+                        contactTypeRecord.Name = contactType.Name;
                         contactTypeRecord.Description = contactType.Description;
                     });
 
@@ -367,16 +367,15 @@ namespace nIS
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-
                 StringBuilder query = new StringBuilder();
                 if (operation.Equals(ModelConstant.ADD_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", contactTypes.Select(item => string.Format("Name.Equals(\"{0}\") ", item.Name)).ToList()) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", contactTypes.Select(item => string.Format("Name.Equals(\"{0}\") ", item.Name)).ToList()) + ") and TenantCode.Equals(\""+tenantCode+"\") and IsDeleted.Equals(false)");
                 }
 
                 if (operation.Equals(ModelConstant.UPDATE_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", contactTypes.Select(item => string.Format("(Name.Equals(\"{0}\") and !Id.Equals({1}))", item.Name, item.Identifier))) + ") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", contactTypes.Select(item => string.Format("(Name.Equals(\"{0}\") and !Id.Equals({1}))", item.Name, item.Identifier))) + ") and TenantCode.Equals(\"" + tenantCode + "\") and IsDeleted.Equals(false)");
                 }
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -429,19 +428,7 @@ namespace nIS
                     }
                 }
 
-                if (validationEngine.IsValidText(contactTypeSearchParameter.ContactTypeCode))
-                {
-                    if (contactTypeSearchParameter.SearchMode == SearchMode.Equals)
-                    {
-                        queryString.Append(string.Format("Code.Equals(\"{0}\") and ", contactTypeSearchParameter.ContactTypeCode));
-                    }
-                    else
-                    {
-                        queryString.Append(string.Format("Code.Contains(\"{0}\") and ", contactTypeSearchParameter.ContactTypeCode));
-                    }
-                }
-
-                queryString.Append("IsDeleted.Equals(false) ");
+                queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false)", tenantCode));
                 return queryString.ToString();
             }
             catch (Exception exception)

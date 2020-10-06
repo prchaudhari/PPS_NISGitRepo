@@ -38,8 +38,6 @@ export class ContacttypeComponent implements OnInit {
   public onlyAlphabetswithInbetweenSpaceUpto50Characters = Constants.onlyAlphabetswithInbetweenSpaceUpto50Characters;
   public totalRecordCount = 0;
   public filterName1 = '';
-  public filterCode1 = '';
-  public filterDialingCode1 = '';
   public sortOrder = Constants.Descending;
   public sortColumn = 'Name';
   public AddContactTypeFormGroup: FormGroup;
@@ -61,9 +59,9 @@ export class ContacttypeComponent implements OnInit {
   ngOnInit() {
     this.getContactTypes(null);
     this.ContactTypeFilterForm = this.fb.group({
-      filterName: [null],
-      filterCode: [null]
+      filterName: [null]
     });
+
     this.AddContactTypeFormGroup = this.fb.group({
       AddName: [null, Validators.compose([Validators.required,
       Validators.minLength(Constants.inputMinLenth), Validators.maxLength(Constants.inputMaxLenth),
@@ -118,7 +116,6 @@ export class ContacttypeComponent implements OnInit {
     this.sortedContactTypeList = this.contacttypeList.slice();
   }
 
-
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
@@ -130,11 +127,6 @@ export class ContacttypeComponent implements OnInit {
   get filterName() {
     return this.ContactTypeFilterForm.get('filterName');
   }
-
-  get filterCode() {
-    return this.ContactTypeFilterForm.get('filterCode');
-  }
-
 
   sortData(sort: MatSort) {
     const data = this.contacttypeList.slice();
@@ -183,9 +175,6 @@ export class ContacttypeComponent implements OnInit {
     if (this.filterName1 != null && this.filterName1 != '') {
       searchParameter.ContactTypeName = this.filterName1.trim();
     }
-    if (this.filterCode1 != null && this.filterCode1 != '') {
-      searchParameter.ContactTypeCode = this.filterCode1.trim();
-    }
 
     var response = await contacttypeService.getContactTypes(searchParameter);
     this.contacttypeList = response.List;
@@ -227,11 +216,6 @@ export class ContacttypeComponent implements OnInit {
         this.filterName1 = this.ContactTypeFilterForm.value.filterName.trim();
         searchParameter.Name = this.ContactTypeFilterForm.value.filterName.trim();
       }
-      if (this.ContactTypeFilterForm.value.filterCode != null && this.ContactTypeFilterForm.value.filterCode != '') {
-        this.filterCode1 = this.ContactTypeFilterForm.value.filterCode.trim();
-        searchParameter.ContactTypeOwner = this.ContactTypeFilterForm.value.filterCode.trim();
-      }
-
 
       this.currentPage = 0;
       this.getContactTypes(searchParameter);
@@ -241,14 +225,11 @@ export class ContacttypeComponent implements OnInit {
 
   resetContactTypeFilterForm() {
     this.ContactTypeFilterForm.patchValue({
-      filterName: null,
-      filterCode: null,
+      filterName: null
     });
 
     this.currentPage = 0;
     this.filterName1 = '';
-    this.filterDialingCode1 = '';
-    this.filterCode1 = '';
   }
 
   //this method helps to navigate to add
@@ -270,11 +251,11 @@ export class ContacttypeComponent implements OnInit {
     let message = 'Are you sure, you want to delete this record?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        let roleData = [{
+        let data = [{
           "Identifier": role.Identifier,
         }];
 
-        let isDeleted = await this.contacttypeService.deleteContactType(roleData);
+        let isDeleted = await this.contacttypeService.deleteContactType(data);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
@@ -327,14 +308,12 @@ export class ContacttypeComponent implements OnInit {
     if (form == 'Add') {
       if (this.AddContactTypeFormGroup.invalid) {
         return true;
-
       }
       return false;
     }
     else if (form == 'Edit') {
       if (this.EditContactTypeFormGroup.invalid) {
         return true;
-
       }
       return false;
     }

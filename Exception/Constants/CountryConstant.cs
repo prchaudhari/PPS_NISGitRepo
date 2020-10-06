@@ -60,9 +60,18 @@ namespace nIS
         public const string CONTACTTYPE_EXCEPTION_SECTION = "ContactType";
 
         /// <summary>
+        /// The duplicate country found exception key
+        /// </summary>
+        public const string DUPLICATE_CONTACT_TYPE_FOUND_EXCEPTION = "Duplicate contact type found";
+
+        /// <summary>
         /// The country not found exception key
         /// </summary>
-        //public const string COUNTRY_NOT_FOUND_EXCEPTION = "CountryNotFoundException";
+        public const string CONTACT_TYPE_NOT_FOUND_EXCEPTION = "Contact type not found exception";
+
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
         public const string CONTACTTYPE_REFERENCEIN_CONTACT_EXCEPTION = "Contact type is used in tenant contact";
     }
 }

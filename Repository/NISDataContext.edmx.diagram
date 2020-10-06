@@ -23,7 +23,6 @@
         <EntityTypeShape EntityType="NISModel.TenantRecord" Width="1.75" PointX="7" PointY="2.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.RoleRecord" Width="1.75" PointX="2.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.CityRecord" Width="1.625" PointX="0.75" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.CountryRecord" Width="1.75" PointX="7" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StateRecord" Width="1.75" PointX="4.875" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.WidgetRecord" Width="1.75" PointX="4.875" PointY="2.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AssetSettingRecord" Width="1.75" PointX="2.75" PointY="3.875" IsExpanded="false" />
@@ -60,6 +59,7 @@
         <EntityTypeShape EntityType="NISModel.TenantUserRecord" Width="1.5" PointX="6.75" PointY="8.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.MultiTenantUserAccessMapRecord" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_MultiTenantUserAccessMapRecord" Width="1.5" PointX="2.75" PointY="8.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.CountryRecord" Width="1.5" PointX="7" PointY="3.25" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
