@@ -76,8 +76,8 @@ export class SidebarComponent implements OnInit {
         this.URL = '/tenantgroups';
         this.route.navigate(['/tenantgroups']);
       }else if(this.isTenantAdminUser == true) {
-        this.URL = '/contacttype';
-        this.route.navigate(['/contacttype']);
+        this.URL = '/tenantConfiguration';
+        this.route.navigate(['/tenantConfiguration']);
       }
       
     }
