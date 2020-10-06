@@ -93,15 +93,24 @@ export class SelectTenantComponent implements OnInit {
     if (this.roleDetail.IsActive == false) {
       this.uiLoader.stop();
       this._messageDialogService.openDialogBox('Error', "User role is deactivated.", Constants.msgBoxError);
-      this.localstorageservice.removeLocalStorageData();
+      this.onCancelTenantSelection();
     }
     else {
       if (this.userData.Privileges.length == 0 || this.userData.Privileges == null) {
         this.uiLoader.stop();
         this._messageDialogService.openDialogBox('Error', "User role has no permission assigned", Constants.msgBoxError);
-        this.localstorageservice.removeLocalStorageData();
+        this.onCancelTenantSelection();
       }
       else {
+
+        var loggedInUser = this.localstorageservice.GetCurrentUser();
+        loggedInUser.RoleIdentifier = this.roleDetail.Identifier;
+        loggedInUser.RoleName = this.roleDetail.Name;
+        loggedInUser.TenantCode = tenant.TenantCode;
+        this.localstorageservice.SetCurrentUser(loggedInUser);
+
+        this.userData.RoleIdentifier = this.roleDetail.Identifier;
+        this.userData.TenantCode = tenant.TenantCode;
         localStorage.setItem('userClaims', JSON.stringify(this.userData));
         var userClaimsRolePrivilegeOperations = this.userData.Privileges;
         var isFound = false;
