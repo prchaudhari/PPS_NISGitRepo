@@ -78,7 +78,15 @@ export class SelectTenantComponent implements OnInit {
 
   ngOnInit() {
     this.userData = JSON.parse(localStorage.getItem('userClaims'));
-    this.getTenants();
+    if (this.userData) {
+      if(this.userData.IsUserHaveMultiTenantAccess == null || this.userData.IsUserHaveMultiTenantAccess.toLocaleLowerCase() != 'true') {
+        this.onCancelTenantSelection();
+      }
+      this.getTenants();
+    }
+    else {
+      this.onCancelTenantSelection();
+    }
   }
 
   async getTenants() {

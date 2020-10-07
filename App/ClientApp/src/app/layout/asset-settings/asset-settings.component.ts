@@ -1,15 +1,15 @@
 
-import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { Component, OnInit, Injector } from '@angular/core';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import * as $ from 'jquery';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Location } from '@angular/common';
-
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAccessor, FormArray, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { AssetSetting } from './asset-setting'
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
@@ -19,6 +19,7 @@ import { HttpClientService } from 'src/app/core/services/httpClient.service';
   templateUrl: './asset-settings.component.html',
   styleUrls: ['./asset-settings.component.scss']
 })
+
 export class AssetSettingsComponent implements OnInit {
   public isUploadAssets: boolean = false;
   public isCollapsedImage: boolean = true;
@@ -31,7 +32,6 @@ export class AssetSettingsComponent implements OnInit {
   public isVideoFileDropdownError = false;
 
   constructor(private _location: Location,
-    //private _window: WindowRef,
     private _router: Router,
     private _activatedRouter: ActivatedRoute,
     private _http: HttpClient,
@@ -39,7 +39,9 @@ export class AssetSettingsComponent implements OnInit {
     private formbuilder: FormBuilder,
     private _messageDialogService: MessageDialogService,
     private injector: Injector,
+    private localstorageservice: LocalStorageService,
     private fb: FormBuilder) { }
+
   imagedropdownList = [];
   imageselectedItems = [];
   imagedropdownSettings: IDropdownSettings = {};
@@ -58,6 +60,13 @@ export class AssetSettingsComponent implements OnInit {
   };
 
   ngOnInit() {
+
+    var userdata = this.localstorageservice.GetCurrentUser();
+    if(userdata == null || userdata.RoleName != 'Tenant Admin') {
+      this.localstorageservice.removeLocalStorageData();
+      this._router.navigate(['login']);
+    }
+
     this.imagedropdownList = [
       { id: 1, item_text: 'png' },
       { id: 2, item_text: 'jpeg' }
@@ -72,6 +81,7 @@ export class AssetSettingsComponent implements OnInit {
       itemsShowLimit: 3,
       allowSearchFilter: false
     };
+
     this.videodropdownList = [
       { id: 1, item_text: 'mp4' },
     ];
@@ -104,6 +114,7 @@ export class AssetSettingsComponent implements OnInit {
     })
     this.LoadAsset();
   }
+
   get assetImageHeight() {
     return this.imageForm.get('assetImageHeight');
   }
@@ -129,7 +140,7 @@ export class AssetSettingsComponent implements OnInit {
   }
 
   textBoxValueChanged(e): void {
-    console.log(e);
+    //console.log(e);
   }
 
   LoadAsset(): void {

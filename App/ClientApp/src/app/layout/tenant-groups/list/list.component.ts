@@ -58,17 +58,24 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTenantGroups(null);
-    this.TenantGroupFilterForm = this.fb.group({
-      filterName: [null]
-    });
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
+      if(userClaimsDetail.IsInstanceTenantManager == null || userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() != 'true') {
+        this.localstorageservice.removeLocalStorageData();
+        this.route.navigate(['login']);
+      }
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
     }
     else {
-      this.userClaimsRolePrivilegeOperations = [];
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
     }
+
+    this.TenantGroupFilterForm = this.fb.group({
+      filterName: [null]
+    });
+    this.getTenantGroups(null);
+
   }
 
   ngAfterViewInit() {

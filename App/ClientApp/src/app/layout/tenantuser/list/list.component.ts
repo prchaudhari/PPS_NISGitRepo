@@ -132,10 +132,10 @@ export class ListComponent implements OnInit {
     LockStatus: null,
     ActivationStatus: true,
   };
+  public userClaimsRolePrivilegeOperations: any[] = [];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
 
   constructor(private http: HttpClient,
     private formBuilder: FormBuilder,
@@ -262,18 +262,26 @@ export class ListComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-
   ngOnInit() {
-    // this.getTenantUserdetail();
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      if(userClaimsDetail.IsInstanceTenantManager == null || userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() != 'true') {
+        this.localstorageservice.removeLocalStorageData();
+        this.router.navigate(['login']);
+      }
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.localstorageservice.removeLocalStorageData();
+      this.router.navigate(['login']);
+    }
+
     this.tenantuserFormGroup = this.formBuilder.group({
       FirstName: ['', Validators.compose([])],
       EmailAddress: ['', Validators.compose([])],
       TenantUserActiveStatus: [1, Validators.compose([])],
       TenantUserLockStatus: [0, Validators.compose([])],
     })
-    //var tenantuserClaimsDetail = JSON.parse(localStorage.getItem('tenantuserClaims'));
-    //this.tenantuserClaimsRolePrivilegeOperations = tenantuserClaimsDetail.Privileges;
-    //this.loggedInTenantUserIdentifier = tenantuserClaimsDetail.TenantUserIdentifier;
     this.fetchTenantUserRecord();
   }
 
@@ -308,12 +316,10 @@ export class ListComponent implements OnInit {
       if (el.Image != '' && el.Image != null) {
         el.Image = el.Image;
       }
-
     })
 
     if (this.tenantuserLists.length == 0 && this.isFilterDone == true) {
-      let message = "TenantUser not found"
-
+      let message = "Tenant user not found";
     }
     this.dataSource = new MatTableDataSource<TenantUser>(this.tenantuserLists);
     this.dataSource.sort = this.sort;
@@ -481,7 +487,6 @@ export class ListComponent implements OnInit {
         }
       });
     }
-
   }
 
   activeDeactiveTenantUser(tenantuser: TenantUser) {
@@ -515,7 +520,6 @@ export class ListComponent implements OnInit {
         }
       });
     }
-
   }
 
   //this method helps to navigate to add
@@ -530,7 +534,6 @@ export class ListComponent implements OnInit {
     }
     else {
       this.TenantUserFilter.RoleIdentifier = Number(value);
-
     }
   }
 
@@ -544,8 +547,6 @@ export class ListComponent implements OnInit {
     }
     else if (value == "2") {
       this.TenantUserFilter.LockStatus = false;
-
-
     }
   }
 
@@ -556,13 +557,9 @@ export class ListComponent implements OnInit {
     }
     else if (value == "1") {
       this.TenantUserFilter.ActivationStatus = true;
-
-
     }
     else if (value == "2") {
       this.TenantUserFilter.ActivationStatus = false;
-
-
     }
   }
 

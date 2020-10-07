@@ -9,43 +9,14 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      {
-        path: '',
-        component: ListComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: "list",
-        component: ListComponent,
-        canActivate: [UnAuthorisedUrlGuard, AuthGuard]
-      },
-      {
-        path: 'add',
-        data: { 'Operation': 'Create' },
-        component: AddEditComponent,
-        canActivate: [UnAuthorisedUrlGuard, AuthGuard]
-      },
-      {
-        path: 'edit',
-        data: { 'Operation': 'Edit' },
-        component: AddEditComponent,
-        canActivate: [UnAuthorisedUrlGuard, AuthGuard]
-      },
-      {
-        path: 'view',
-        data: { 'Operation': 'View' },
-        component: ViewComponent,
-        canActivate: [UnAuthorisedUrlGuard, AuthGuard]
-      },
-      //{
-      //  path: 'profile', component: ProfileComponent,
-      //  canActivate: [AuthGuard]
-      //},
+      { path: '', component: ListComponent, canActivate: [AuthGuard] },
+      { path: "list", component: ListComponent, canActivate: [AuthGuard] },
+      { path: 'add', component: AddEditComponent, canActivate: [AuthGuard] },
+      { path: 'edit', component: AddEditComponent, canActivate: [AuthGuard] },
+      { path: 'view', component: ViewComponent, canActivate: [AuthGuard] },
     ],
-    data: { 'EntityName': 'User' }
   }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -62,20 +62,26 @@ export class ListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
+    
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      if(userClaimsDetail.IsTenantGroupManager == null || userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() != 'true') {
+        this.localstorageservice.removeLocalStorageData();
+        this.route.navigate(['login']);
+      }
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
+    }
+
     this.getTenant(null);
-    //this.getStatementDefinition(null);
     this.TenantFilterForm = this.fb.group({
       filterName: [null],
       filterDomainName: [null],
       filterCountry: [null],
     });
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.userClaimsRolePrivilegeOperations = [];
-    }
   }
 
   ngAfterViewInit() {
@@ -296,11 +302,10 @@ export class ListComponent implements OnInit {
     let message = 'Are you sure, you want to delete this record?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        let roleData = [{
+        let data = [{
           "TenantCode": role.TenantCode,
         }];
-
-        let isDeleted = await this.tenantService.deleteTenant(roleData);
+        let isDeleted = await this.tenantService.deleteTenant(data);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
@@ -316,20 +321,17 @@ export class ListComponent implements OnInit {
       message = "Do you really want to deactivate tenant?"
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-
           let isDeleted = await this.tenantService.deactivate(tenant.TenantCode);
           if (isDeleted) {
             let messageString = "Tenant deactivated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
             this.getTenant(null);
-
           }
         }
       });
     }
     else {
       message = "Do you really want to activate tenant?"
-
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
           let isDeleted = await this.tenantService.activate(tenant.TenantCode);
@@ -337,12 +339,10 @@ export class ListComponent implements OnInit {
             let messageString = "Tenant activated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
             this.getTenant(null);
-
-
           }
         }
       });
     }
-
   }
+
 }

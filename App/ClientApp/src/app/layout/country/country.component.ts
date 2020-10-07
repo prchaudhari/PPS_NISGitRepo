@@ -59,6 +59,26 @@ export class CountryComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
+
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      var userdata = this.localstorageservice.GetCurrentUser();
+      if(userdata != null && userdata.RoleName == 'Tenant Admin') {
+        this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+      }
+      else if(userClaimsDetail.IsTenantGroupManager != null && userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() == 'true') {
+        this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+      }
+      else {
+        this.localstorageservice.removeLocalStorageData();
+        this.route.navigate(['login']);
+      }
+    }
+    else {
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
+    }
+
     this.getCountrys(null);
     this.CountryFilterForm = this.fb.group({
       filterName: [null],
@@ -91,13 +111,7 @@ export class CountryComponent implements OnInit {
       Validators.pattern(this.dialingCodeRegex)
       ])]
     });
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.userClaimsRolePrivilegeOperations = [];
-    }
+    
   }
   get AddName() {
     return this.AddCountryFormGroup.get('AddName');

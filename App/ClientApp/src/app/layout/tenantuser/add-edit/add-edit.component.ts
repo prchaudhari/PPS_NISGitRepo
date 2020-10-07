@@ -166,7 +166,6 @@ export class AddEditComponent implements OnInit {
           localStorage.removeItem("tenantuserRouteparams");
         }
       }
-
     });
 
     if (localStorage.getItem("tenantuserRouteparams")) {
@@ -188,7 +187,6 @@ export class AddEditComponent implements OnInit {
           localStorage.removeItem("tenantuserRouteparams");
         }
       }
-
     });
   }
 
@@ -212,9 +210,7 @@ export class AddEditComponent implements OnInit {
       CountryCode: [0, Validators.compose([Validators.required])],
       Image: [null]
     })
-
     this.getCountries();
-
   }
 
   //Function to get role--
@@ -238,7 +234,6 @@ export class AddEditComponent implements OnInit {
    
     if (this.tenantuserEditModeOn) {
       this.fillTenantUserDetail();
-
     }
   }
 
@@ -250,20 +245,14 @@ export class AddEditComponent implements OnInit {
     }
 
     this.tenantuserFormErrorObject.showProfilePictureSizeError = false;
-
     var pattern = /image-*/;
-
     if (!file.type.match(pattern)) {
-
       this.tenantuserFormErrorObject.showProfilePictureTypeError = true;
-
       return false;
     }
     this.tenantuserFormErrorObject.showProfilePictureTypeError = false;
-
     let reader = new FileReader();
     reader.readAsDataURL(file);
-
     reader.onload = (e) => {
       if (reader.DONE == 2) {
         this.image = reader.result.toString();
@@ -315,8 +304,6 @@ export class AddEditComponent implements OnInit {
       searchParameter.SortParameter.SortColumn = Constants.UserName;
       searchParameter.SortParameter.SortOrder = Constants.Ascending;
       searchParameter.SearchMode = Constants.Contains;
-
-      //this.getRole();
     }
   }
 
@@ -367,7 +354,6 @@ export class AddEditComponent implements OnInit {
   }
 
   saveButtonValidation(): boolean {
-
     if (this.imageSize > 200000) {
       return true;
     }
@@ -377,22 +363,18 @@ export class AddEditComponent implements OnInit {
     if (this.tenantuserFormErrorObject.showProfilePictureTypeError) {
       return true;
     }
-
     if (this.tenantuserFormGroup.controls.firstName.invalid) {
       return true;
     }
     if (this.tenantuserFormGroup.controls.lastName.invalid) {
       return true;
-
     }
     if (this.tenantuserFormGroup.controls.email.invalid) {
       return true;
     }
-
     if (this.tenantuserFormGroup.controls.mobileNumber.invalid) {
       return true;
     }
-
     if (this.TenantUser.CountryCode == 0) {
       return true;
     }
@@ -400,23 +382,18 @@ export class AddEditComponent implements OnInit {
   }
 
   public onRoleSelected(event) {
-
     const value = event.target.value;
     if (value == "0") {
       this.tenantuserFormErrorObject.roleShowError = true;
       this.TenantUser.RoleIdentifier = 0;
-
     }
     else {
       this.tenantuserFormErrorObject.roleShowError = false;
-
       this.TenantUser.RoleIdentifier = Number(value);
-
     }
   }
 
   public onCountrySelected(event) {
-
     const value = event.target.value;
     if (value == "") {
       this.tenantuserFormErrorObject.showCountryCodeError = true;
@@ -424,18 +401,13 @@ export class AddEditComponent implements OnInit {
     }
     else {
       this.tenantuserFormErrorObject.showCountryCodeError = false;
-
       this.TenantUser.CountryCode = value
-
     }
-
-    console.log(value);
   }
 
   //Function to add tenantuser--
   onSubmit() {
     if (this.tenantuserFormValidaton()) {
-
       let selectedroleArray = [];
       this.roleList.forEach(role => {
         if (role.Identifier == this.TenantUser.RoleIdentifier) {
@@ -475,7 +447,6 @@ export class AddEditComponent implements OnInit {
     var TenantUserArr = [];
     tenantuserObject.IsInstanceManager = true;
     TenantUserArr.push(tenantuserObject);
-
     this.spinner.start();
     this.service.saveUser(TenantUserArr, this.tenantuserEditModeOn).subscribe(data => {
       this.spinner.stop();
@@ -513,12 +484,9 @@ export class AddEditComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
-    //this.spinner.start();
-
+    searchParameter.IsInstanceManager = true;
     var response = await tenantuserService.getUser(searchParameter);
     this.tenantusersList = response.usersList;
-
-    //this.spinner.stop();
     this.tenantusersList.forEach(tenantuserObject => {
       this.resourceId = tenantuserObject.ResourceIdentifier
       this.previewUrl = [];
@@ -574,7 +542,6 @@ export class AddEditComponent implements OnInit {
           this.isImageLoded = true
           this.showDefaultLogo = false
         }
-
         reader.readAsDataURL(fileInput.target.files[i]);
       }
     }

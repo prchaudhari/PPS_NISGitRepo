@@ -2,17 +2,11 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TenantUserService } from '../tenantuser.service';
-import { HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
-import { MsgBoxComponent } from 'src/app/shared/modules/message/messagebox.component';
 import { Constants } from 'src/app/shared/constants/constants';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
-import { ResourceService } from 'src/app/shared/services/resource.service';
 import { TenantUser } from '../tenantuser';
-import { SortOrder } from 'src/app/shared/enums/sort-order.enum';
-import { SearchMode } from 'src/app/shared/enums/search-mode.enum';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 
 @Component({
@@ -84,8 +78,7 @@ export class ViewComponent implements OnInit {
             this.TenantUserFilter.ActivationStatus = this.params.Routeparams.filteredparams.ActivationStatus;
           }
         } else {
-          localStorage.removeItem("tenantuserRouteparams");
-
+            localStorage.removeItem("tenantuserRouteparams");
         }
       }
     });
@@ -108,6 +101,7 @@ export class ViewComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Contains;
+    searchParameter.IsInstanceManager = true;
     //this.spinner.start();
     var response = await tenantuserService.getUser(searchParameter);
     this.tenantuserViewArray = response.usersList;

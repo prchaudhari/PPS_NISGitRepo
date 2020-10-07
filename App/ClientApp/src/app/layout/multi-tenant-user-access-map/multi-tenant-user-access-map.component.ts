@@ -6,11 +6,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MultiTenantUserAccessMapService } from './multi-tenant-user-access-map.service';
-import { TenantService } from '../tenants/tenant.service';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-multi-tenant-user-access-map',
@@ -73,6 +74,8 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
     private injector: Injector,
     private _messageDialogService: MessageDialogService,
     private _http: HttpClient,
+    private localstorageservice: LocalStorageService,
+    private route: Router,
     private uiLoader: NgxUiLoaderService) {
     }
 
@@ -200,6 +203,19 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
 
   ngOnInit() {
 
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      if(userClaimsDetail.IsTenantGroupManager == null || userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() != 'true') {
+        this.localstorageservice.removeLocalStorageData();
+        this.route.navigate(['login']);
+      }
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
+    }
+
     //Validations for Page Form.
     this.multiTenantUserAccessMapFormGroup = this.formbuilder.group({
       primaryTenantCode: [0, Validators.compose([Validators.required])],
@@ -214,14 +230,6 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
       filterTargetTenantName: [null],
       filterRole: [null]
     });
-
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.userClaimsRolePrivilegeOperations = [];
-    }
 
     this.getTenants();
     this.getTenantUserMappingData(null);
@@ -416,7 +424,12 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
   async getTenants() {
     let multiTenantUserRoleAccessService = this.injector.get(MultiTenantUserAccessMapService);
     var response = await multiTenantUserRoleAccessService.GetParentAndChildtenants();
-    this.lstPrimaryTenant = response.List;
+    this.lstPrimaryTenant = [{ 'TenantCode': '0', 'TenantName': 'Select Tenant' }];
+    var _lst = response.List;
+    for(let i=0; i<_lst.length; i++) {
+      let rec = Object.assign({}, _lst[i]);
+      this.lstPrimaryTenant.push(rec);
+    }
   }
 
   async getTenantUsers() {

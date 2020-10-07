@@ -46,9 +46,7 @@ export class ContacttypeComponent implements OnInit {
   public isAddContactType: boolean = false;
   public editContactTypeContainer: boolean;
   public isEditContactType: boolean = false;
-  closeFilter() {
-    this.isFilter = !this.isFilter;
-  }
+  
   public contacttypeId: number = 0;
   displayedColumns: string[] = ['name', 'code', 'actions'];
   dataSource = new MatTableDataSource<any>();
@@ -56,7 +54,25 @@ export class ContacttypeComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+  closeFilter() {
+    this.isFilter = !this.isFilter;
+  }
+
   ngOnInit() {
+
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      if(userClaimsDetail.IsTenantGroupManager == null || userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() != 'true') {
+        this.localstorageservice.removeLocalStorageData();
+        this.route.navigate(['login']);
+      }
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
+    }
+
     this.getContactTypes(null);
     this.ContactTypeFilterForm = this.fb.group({
       filterName: [null]
@@ -78,14 +94,9 @@ export class ContacttypeComponent implements OnInit {
       EditDescription: ['', Validators.compose([Validators.maxLength(500)])],
 
     });
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.userClaimsRolePrivilegeOperations = [];
-    }
+    
   }
+
   get AddName() {
     return this.AddContactTypeFormGroup.get('AddName');
   }
@@ -246,21 +257,19 @@ export class ContacttypeComponent implements OnInit {
     this.EditContactTypeFormGroup.controls['EditDescription'].setValue(contacttype.Description);
   }
 
-  //function written to delete role
-  deleteContactType(role: ContactType) {
+  //function written to delete contact type
+  deleteContactType(contacttype: ContactType) {
     let message = 'Are you sure, you want to delete this record?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
         let data = [{
-          "Identifier": role.Identifier,
+          "Identifier": contacttype.Identifier,
         }];
-
         let isDeleted = await this.contacttypeService.deleteContactType(data);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
           this.getContactTypes(null);
-
         }
       }
     });

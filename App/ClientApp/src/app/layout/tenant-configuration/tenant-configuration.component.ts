@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Constants } from 'src/app/shared/constants/constants';
 import { TenantConfigurationService } from './tenantConfiguration.service';
-import { HttpClient, HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
-import { MsgBoxComponent } from 'src/app/shared/modules/message/messagebox.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
@@ -13,13 +12,14 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { TenantConfiguration } from './tenatconfiguration';
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
-
 import * as $ from 'jquery';
+
 @Component({
   selector: 'app-tenant-configuration',
   templateUrl: './tenant-configuration.component.html',
   styleUrls: ['./tenant-configuration.component.scss']
 })
+
 export class TenantConfigurationComponent implements OnInit {
 
   tenantConfigurationForm: FormGroup;
@@ -43,6 +43,7 @@ export class TenantConfigurationComponent implements OnInit {
     showConcurrencyCountError: false,
   };
   public setting: TenantConfiguration;
+
   //getters of render engine Form group
   get TenantConfigurationName() {
     return this.tenantConfigurationForm.get('TenantConfigurationName');
@@ -51,18 +52,23 @@ export class TenantConfigurationComponent implements OnInit {
   get TenantConfigurationAssetPath() {
     return this.tenantConfigurationForm.get('TenantConfigurationAssetPath');
   }
+
   get TenantConfigurationArchivalPath() {
     return this.tenantConfigurationForm.get('TenantConfigurationArchivalPath');
   }
+
   get TenantConfigurationDescription() {
     return this.tenantConfigurationForm.get('TenantConfigurationDescription');
   }
+
   get TenantConfigurationOutputPDFPath() {
     return this.tenantConfigurationForm.get('TenantConfigurationOutputPDFPath');
   }
+
   get TenantConfigurationOutputHTMLPath() {
     return this.tenantConfigurationForm.get('TenantConfigurationOutputHTMLPath');
   }
+
   get TenantConfigurationInputDataSourcePath() {
     return this.tenantConfigurationForm.get('TenantConfigurationInputDataSourcePath');
   }
@@ -70,6 +76,7 @@ export class TenantConfigurationComponent implements OnInit {
   get TenantConfigurationDateFormat() {
     return this.tenantConfigurationForm.get('TenantConfigurationDateFormat');
   }
+
   get TenantConfigurationArchivalPeriod() {
     return this.tenantConfigurationForm.get('TenantConfigurationArchivalPeriod');
   }
@@ -117,6 +124,13 @@ export class TenantConfigurationComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    var userdata = this.localstorageservice.GetCurrentUser();
+    if(userdata == null || userdata.RoleName != 'Tenant Admin') {
+      this.localstorageservice.removeLocalStorageData();
+      this.router.navigate(['login']);
+    }
+
     // Render engine form validations.
     this.tenantConfigurationForm = this.formBuilder.group({
       TenantConfigurationName: [null, Validators.compose([Validators.required, ,
@@ -132,7 +146,6 @@ export class TenantConfigurationComponent implements OnInit {
       TenantConfigurationArchivalPeriod: [null, Validators.compose([])],
     });
     this.getTenantConfigurationDetails();
-
   }
 
   async getTenantConfigurationDetails() {
@@ -185,9 +198,9 @@ export class TenantConfigurationComponent implements OnInit {
     if (this.archivalPeriodError) {
       return true;
     }
-
     return false;
   }
+
   OnArchivalChange() {
     if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod > 0) {
       this.isArchivalPathRequired = true;
@@ -215,6 +228,7 @@ export class TenantConfigurationComponent implements OnInit {
       this.isArchivalPeriodRequired = false;
     }
   }
+
   onConcurrencyCountSelected(event) {
     const value = event.target.value;
     if (value == "0") {
@@ -244,7 +258,6 @@ export class TenantConfigurationComponent implements OnInit {
   }
 
   onSubmit() {
-
     this.setting.Name = this.tenantConfigurationForm.value.TenantConfigurationName;
     this.setting.OutputPDFPath = this.tenantConfigurationForm.value.TenantConfigurationDescription;
     this.setting.Description = this.tenantConfigurationForm.value.TenantConfigurationOutputPDFPath;
@@ -274,15 +287,11 @@ export class TenantConfigurationComponent implements OnInit {
             localStorage.removeItem("DateFormat");
             localStorage.setItem("DateFormat", tenantConfigurationObj.DateFormat);
           }
-
         }
       }, (error) => {
         this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
-
         this.spinner.stop();
-
       });
-
   }
 
 }
