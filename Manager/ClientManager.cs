@@ -696,28 +696,25 @@ namespace nIS
                 tenantSearchParameter.SortingParameter.SortColumn = clientSearchParameter.SortParameter.SortColumn;
 
                 tenantSearchParameter.PagingParameter = new Websym.Core.TenantManager.PagingParameter();
-                tenantSearchParameter.PagingParameter.PageIndex = clientSearchParameter.PagingParameter.PageIndex;
-                tenantSearchParameter.PagingParameter.PageSize = clientSearchParameter.PagingParameter.PageSize;
+                tenantSearchParameter.PagingParameter.PageIndex = 0;
+                tenantSearchParameter.PagingParameter.PageSize = 0;
 
                 tenantSearchParameter.IsPrimaryTenant = clientSearchParameter.IsPrimaryTenant;
                 tenantSearchParameter.TenantDomainName = clientSearchParameter.TenantDomainName;
                 tenantSearchParameter.TenantName = clientSearchParameter.TenantName;
                 tenantSearchParameter.TenantCode = clientSearchParameter.TenantCode;
                 tenantSearchParameter.TenantType = clientSearchParameter.TenantType;
-
-
+                tenantSearchParameter.ParentTenantCode = clientSearchParameter.ParentTenantCode;
                 tenants = this.configurationUtility.GetTenant(tenantSearchParameter);
                 if (tenants != null && tenants.Count > 0)
                 {
                     clientCount = tenants.Count;
                 }
-
             }
             catch
             {
                 throw;
             }
-
 
             return clientCount;
         }
