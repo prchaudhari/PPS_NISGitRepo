@@ -6,6 +6,7 @@ export class TenantUser {
   "ContactNumber": string;
   "Password": string;
   "ProfileImage": string;
+  "Image": string;
   "IsLocked": boolean;
   "IsActive": boolean;
   "Roles": [];

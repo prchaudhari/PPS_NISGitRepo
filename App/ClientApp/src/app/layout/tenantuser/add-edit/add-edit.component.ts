@@ -161,7 +161,7 @@ export class AddEditComponent implements OnInit {
   ) {
     router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
-        if (e.url.includes('/tenantuser/tenantuserAdd')) {
+        if (e.url.includes('/tenantusers/add')) {
           this.tenantuserEditModeOn = false;
           localStorage.removeItem("tenantuserRouteparams");
         }
@@ -176,7 +176,7 @@ export class AddEditComponent implements OnInit {
 
     router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
-        if (e.url.includes('/tenantuser')) {
+        if (e.url.includes('/tenantusers')) {
           //set passing parameters to localstorage.
           this.params = JSON.parse(localStorage.getItem('tenantuserRouteparams'));
           if (localStorage.getItem('tenantuserRouteparams')) {

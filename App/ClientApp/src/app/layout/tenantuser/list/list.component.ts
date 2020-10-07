@@ -154,7 +154,7 @@ export class ListComponent implements OnInit {
     //remove localstorage item.
     router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
-        if (e.url.includes('/tenantuser')) {
+        if (e.url.includes('/tenantusers')) {
 
         } else {
           localStorage.removeItem("tenantuserRouteparams")

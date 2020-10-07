@@ -65,7 +65,7 @@ export class ViewComponent implements OnInit {
     //getting localstorage item
     router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
-        if (e.url.includes('/tenantuser')) {
+        if (e.url.includes('/tenantusers')) {
           //set passing parameters to localstorage.
           this.params = JSON.parse(localStorage.getItem('tenantuserRouteparams'));
           if (this.params) {
@@ -108,7 +108,7 @@ export class ViewComponent implements OnInit {
     //this.spinner.stop();
     if (this.tenantuserViewArray.length > 0) {
       this.tenantuserRecord = this.tenantuserViewArray[0];
-      this.profileImageList = this.tenantuserViewArray[0].ProfileImage;
+      this.profileImageList = this.tenantuserViewArray[0].Image;
       if (this.profileImageList.URL == "" || this.profileImageList.URL == undefined) {
         this.tenantuserImage = "assets/images/tenantuser.png"
       }

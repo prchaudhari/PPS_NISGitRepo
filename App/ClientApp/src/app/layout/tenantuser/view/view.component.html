@@ -19,8 +19,8 @@
             </div>
             <div *ngIf="tenantuserRecord.Image=='' || tenantuserRecord.Image==null">
               <div class="ltr-img">
-                <span>{{tenantuserRecord.FirstName.charAt(0) | titlecase}}</span>
-                <span>{{tenantuserRecord.LastName.charAt(0) | titlecase}}</span>
+                <span *ngIf="tenantuserRecord.FirstName!=undefined">{{tenantuserRecord.FirstName.charAt(0) | titlecase}}</span>
+                <span *ngIf="tenantuserRecord.LastName!=undefined">{{tenantuserRecord.LastName.charAt(0) | titlecase}}</span>
               </div>
             </div>
           </div>
