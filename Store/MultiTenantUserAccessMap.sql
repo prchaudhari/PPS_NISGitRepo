@@ -5,6 +5,7 @@
 	[AssociatedTenantCode] NVARCHAR(50) NOT NULL,
 	[OtherTenantCode] NVARCHAR(50) NOT NULL,
 	[OtherTenantAccessRoleId] BIGINT NOT NULL,
+	[ParentTenantCode] NVARCHAR(50) NOT NULL,
 	[IsActive] BIT NOT NULL,
 	[IsDeleted] BIT NOT NULL, 
     [LastUpdatedBy] BIGINT NOT NULL, 

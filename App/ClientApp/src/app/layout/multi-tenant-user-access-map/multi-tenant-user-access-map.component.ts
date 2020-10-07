@@ -150,7 +150,8 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
       this.tenantUserMappingFormErrorObject.showPrimaryTenantError = false;
       this.selectedPrimaryTenantCode = val;
       for(let i=0; i<this.lstPrimaryTenant.length; i++) {
-        if(this.lstPrimaryTenant[i].TenantCode != '0' && this.lstPrimaryTenant[i].TenantCode != this.selectedPrimaryTenantCode) {
+        if(this.lstPrimaryTenant[i].TenantCode != '0' && this.lstPrimaryTenant[i].TenantCode != this.selectedPrimaryTenantCode
+        && this.lstPrimaryTenant[i].TenantType != "Group") {
           let rec = Object.assign({}, this.lstPrimaryTenant[i]);
           this.lstOtherTenants.push(rec);
         }
@@ -454,7 +455,9 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
         data => {
           let records: any = data;
           records.forEach(obj => {
-            this.roles = [...this.roles, obj];
+            if(obj.Name != 'Tenant Admin') {
+              this.roles = [...this.roles, obj];
+            }
           });
           this.uiLoader.stop();
         },

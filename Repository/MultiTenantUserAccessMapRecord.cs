@@ -23,5 +23,6 @@ namespace nIS
         public bool IsDeleted { get; set; }
         public long LastUpdatedBy { get; set; }
         public System.DateTime LastUpdatedDate { get; set; }
+        public string ParentTenantCode { get; set; }
     }
 }

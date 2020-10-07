@@ -108,9 +108,11 @@ namespace nIS
                 SearchMode = SearchMode.Equals
             };
             var lstTenants = new ClientManager(Container.GetUnityContainer()).GetClients(clientSearchParameter, tenantCode);
+            var ParentTenentCode = string.Empty;
             if (lstTenants.Count > 0)
             {
                 var tenant = lstTenants.FirstOrDefault();
+                ParentTenentCode = tenant.ParentTenantCode;
                 if (tenant.TenantType == "Instance" && user.IsInstanceManager)
                 {
                     isInstanceTenantManager = true;
@@ -140,7 +142,7 @@ namespace nIS
                     },
                     SearchMode = SearchMode.Equals
                 };
-                var lstTenantUserRoleAccess = new MultiTenantUserRoleAccessManager(Container.GetUnityContainer()).GetMultiTenantUserRoleAccessList(multiTenantUserRoleAccessSearchParameter, tenantCode);
+                var lstTenantUserRoleAccess = new MultiTenantUserRoleAccessManager(Container.GetUnityContainer()).GetMultiTenantUserRoleAccessList(multiTenantUserRoleAccessSearchParameter, ParentTenentCode);
                 if (lstTenantUserRoleAccess.Count > 0)
                 {
                     isUserHaveMultiTenantAccess = true;

@@ -132,7 +132,7 @@ namespace nIS
         public bool AddClients(IList<Client> clients, string tenantCode, bool addRegisterFlag = false)
         {
             bool result = false;
-            string domainNamePattern = @"[^a-zA-Z0-9]";
+            //string domainNamePattern = @"[^a-zA-Z0-9]";
             List<Client> clientsToBeDeleted = new List<Client>();
             IList<TenantContact> tenantContacts = new List<TenantContact>();
             try
@@ -396,7 +396,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -454,7 +454,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -477,7 +477,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -605,6 +605,7 @@ namespace nIS
                         client.PrimaryLastName = tenant.PrimaryLastName;
                         client.PrimaryEmailAddress = tenant.PrimaryEmailAddress;
                         client.PrimaryContactNumber = tenant.PrimaryContactNumber;
+                        client.ParentTenantCode = tenant.ParentTenantCode;
                         clients.Add(client);
 
                     });

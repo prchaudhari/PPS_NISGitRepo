@@ -103,7 +103,8 @@ namespace nIS
                         IsActive = true,
                         IsDeleted = false,
                         LastUpdatedBy = loginUserId,
-                        LastUpdatedDate = DateTime.Now
+                        LastUpdatedDate = DateTime.Now,
+                        ParentTenantCode = tenantCode
                     });
                 });
 
@@ -493,7 +494,8 @@ namespace nIS
                             UserName = record.UserName,
                             TenantCode = record.TenantCode,
                             TenantName = record.TenantName,
-                            RoleId = record.RoleId
+                            RoleId = record.RoleId,
+                            TenantImage = record.TenantImage ?? ""
                         });
                     });
                 }
@@ -577,7 +579,7 @@ namespace nIS
                 if (validationEngine.IsValidText(searchParameter.OtherTenantCode))
                 {
                     queryString.Append("(" + string.Join("or ", searchParameter.OtherTenantCode.ToString().Split(',').Select(item => string.Format("OtherTenantCode.Equals(\"{0}\") ", item))) + ") and ");
-                }
+                }              
             }
             if (searchParameter.SearchMode == SearchMode.Contains)
             {
@@ -598,14 +600,13 @@ namespace nIS
                     queryString.Append(string.Format("RoleName.Contains(\"{0}\") and ", searchParameter.RoleName));
                 }
             }
-            
+
             if (searchParameter.IsActive != null)
             {
                 queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.IsActive));
             }
-            
 
-            queryString.Append(string.Format(" IsDeleted.Equals(false)", tenantCode));
+            queryString.Append(string.Format("ParentTenantCode.Equals(\"{0}\") and IsDeleted.Equals(false)", tenantCode));
             return queryString.ToString();
         }
 

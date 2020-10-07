@@ -38,7 +38,6 @@ namespace nIS
         /// </summary>
         public string AssociatedTenantName { get; set; }
 
-
         /// <summary>
         /// The target tenant code
         /// </summary>

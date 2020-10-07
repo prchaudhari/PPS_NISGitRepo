@@ -176,7 +176,13 @@ export class ListComponent implements OnInit {
       searchParameter.Name = this.filterRoleValue;
     }
     var response = await roleService.getRoles(searchParameter);
-    this.roleList = response.roleList;
+    let _list = response.roleList;
+    _list.forEach(role => {
+      if(role.Name != 'Tenant Admin') {
+        this.roleList = [...this.roleList, role];
+      }
+    });
+    //this.roleList = response.roleList;
     this.totalRecordCount = response.RecordCount;
     if (this.roleList.length == 0 && this.isFilterDone == true) {
       let message = "NO record found";

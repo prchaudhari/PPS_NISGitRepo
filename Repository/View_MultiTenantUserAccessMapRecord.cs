@@ -31,5 +31,6 @@ namespace nIS
         public long LastUpdatedBy { get; set; }
         public string LastUpdatedByUserName { get; set; }
         public System.DateTime LastUpdatedDate { get; set; }
+        public string ParentTenantCode { get; set; }
     }
 }
