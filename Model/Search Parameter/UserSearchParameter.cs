@@ -78,12 +78,12 @@ namespace nIS
         /// <summary>
         /// The user isInstanceManager status
         /// </summary>
-        private bool isInstanceManager = false;
+        private bool? isInstanceManager = null;
 
         /// <summary>
         /// The user isGroupManager status
         /// </summary>
-        private bool isGroupManager = false;
+        private bool? isGroupManager = null;
 
         /// <summary>
         /// The utility object
@@ -292,7 +292,7 @@ namespace nIS
         /// Gets or sets isGroupManager field.
         /// </summary>
         [Description("IsGroupManager")]
-        public bool IsGroupManager
+        public bool? IsGroupManager
         {
             get
             {
@@ -308,7 +308,7 @@ namespace nIS
         /// Gets or sets isInstanceManager field.
         /// </summary>
         [Description("isInstanceManager")]
-        public bool IsInstanceManager
+        public bool? IsInstanceManager
         {
             get
             {

@@ -154,7 +154,7 @@ namespace nIS
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                if(userSearchParameter.IsGroupManager)
+                if (userSearchParameter.IsGroupManager != null && userSearchParameter.IsGroupManager == true)
                 {
                     tenantCode = userSearchParameter.TenantCode;
                 }

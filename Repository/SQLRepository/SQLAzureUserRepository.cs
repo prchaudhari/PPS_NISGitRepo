@@ -1222,9 +1222,16 @@ namespace nIS
                     queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.IsActive));
                 }
 
-                queryString.Append(string.Format("IsInstanceManager.Equals({0}) and ", searchParameter.IsInstanceManager));
+                if (searchParameter.IsInstanceManager != null) 
+                {
+                    queryString.Append(string.Format("IsInstanceManager.Equals({0}) and ", searchParameter.IsInstanceManager));
+                }
 
-                queryString.Append(string.Format("IsGroupManager.Equals({0}) and ", searchParameter.IsGroupManager));
+                if (searchParameter.IsGroupManager != null)
+                {
+                    queryString.Append(string.Format("IsGroupManager.Equals({0}) and ", searchParameter.IsGroupManager));
+                }
+
                 if (searchParameter.ActivationStatus != null)
                 {
                     queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.ActivationStatus));
