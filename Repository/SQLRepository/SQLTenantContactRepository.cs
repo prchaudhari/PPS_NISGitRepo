@@ -102,8 +102,8 @@ namespace nIS
                         IsDeleted = false,
                         TenantCode = tenantCode,
                         CountryId = tenantContact.CountryId,
-                        ContactType=tenantContact.ContactTypeId,
-                        IsActivationLinkSent=tenantContact.IsActivationLinkSent
+                        ContactType = tenantContact.ContactTypeId,
+                        IsActivationLinkSent = tenantContact.IsActivationLinkSent
 
                     });
                 });
@@ -277,12 +277,29 @@ namespace nIS
                     {
                         throw new TenantContactNotFoundException(tenantCode);
                     }
-
+                    IList<TenantContactRecord> tenantContactUser = new List<TenantContactRecord>();
                     tenantContactRecords.ToList().ForEach(item =>
                     {
                         item.IsDeleted = true;
+                        if (item.IsActivationLinkSent)
+                        {
+                            tenantContactUser.Add(item);
+                        }
                     });
 
+                    if (tenantContactUser.Count > 0)
+                    {
+                        query = new StringBuilder();
+                        query.Append("(" + string.Join("or ", string.Join(",", tenantContactUser.Select(item => item.EmailAddress).Distinct()).ToString().Split(',').Select(item => string.Format("EmailAddress.Equals({0}) ", item))) + ") ");
+                        query.Append("and IsDeleted.Equals(false)");
+                        query.Append(string.Format(" and TenantCode.Equals(\"{0}\") and ", tenantCode));
+                        List<UserRecord> record = new List<UserRecord>();
+                        record?.ToList().ForEach(item =>
+                        {
+                            item.IsDeleted = true;
+
+                        });
+                    }
                     nVidYoEntitiesDataContext.SaveChanges();
                 }
                 result = true;
@@ -366,13 +383,13 @@ namespace nIS
                         LastName = tenantContactRecord.LastName,
                         EmailAddress = tenantContactRecord.EmailAddress,
                         ContactNumber = tenantContactRecord.ContactNumber,
-                        CountryCode= countires.Where(i => i.Id == tenantContactRecord.CountryId).FirstOrDefault().DialingCode,
+                        CountryCode = countires.Where(i => i.Id == tenantContactRecord.CountryId).FirstOrDefault().DialingCode,
                         CountryId = (long)tenantContactRecord.CountryId,
-                        ContactTypeId=tenantContactRecord.ContactType,
-                        ContactType= contactTypeRecords.Where(item=>item.Id.ToString()==tenantContactRecord.ContactType).FirstOrDefault().Name,
+                        ContactTypeId = tenantContactRecord.ContactType,
+                        ContactType = contactTypeRecords.Where(item => item.Id.ToString() == tenantContactRecord.ContactType).FirstOrDefault().Name,
                         Image = tenantContactRecord.Image,
                         IsActive = tenantContactRecord.IsActive,
-                        IsActivationLinkSent=tenantContactRecord.IsActivationLinkSent,
+                        IsActivationLinkSent = tenantContactRecord.IsActivationLinkSent,
                         TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? tenantContactRecord.TenantCode : tenantCode,
                     });
 

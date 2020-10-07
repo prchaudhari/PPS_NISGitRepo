@@ -10,7 +10,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Tenant } from '../../tenants/tenant';
 import { TenantService } from '../../tenants/tenant.service';
-
+import { User } from '../../users/user';
+import { UserService } from '../../users/user.service';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
@@ -22,6 +23,7 @@ export class ViewComponent implements OnInit {
   public isCollapsedPermissions: boolean = true;
   public tenantgroup: Tenant;
   public tenantgroupUsers: any[] = [];
+  public tenantGroupUserList: any[] = [];
   public params;
   public userClaimsRolePrivilegeOperations: any[] = [];
   public isCollapsedTenantGroupUsers: boolean = true;
@@ -40,6 +42,7 @@ export class ViewComponent implements OnInit {
   
   constructor(private _router: Router,
     private injector: Injector,
+    private service: UserService,
     private tenantService: TenantService,
     private _messageDialogService: MessageDialogService) {
       this.tenantgroup = new Tenant;
@@ -95,16 +98,7 @@ export class ViewComponent implements OnInit {
     var response = await tenantService.getTenant(searchParameter);
     this.tenantgroup = response.List[0];
 
-    this.tenantgroupUsers = [
-      { FirstName: 'Allan', LastName: 'Finch', EmailAddress: 'allan.finch@nis.com', ContactNumber: '+231-9734667889' },
-      { FirstName: 'Glenn', LastName: 'Steyn', EmailAddress: 'glenn.styen@nis.com', ContactNumber: '+231-5235674356' },
-      { FirstName: 'Dean', LastName: 'Jones', EmailAddress: 'dean.jones@nis.com', ContactNumber: '+231-6756734567' },
-    ];
-    this.dataSource = new MatTableDataSource<any>(this.tenantgroupUsers);
-    this.dataSource.sort = this.sort;
-    this.array = this.tenantgroupUsers;
-    this.totalSize = this.array.length;
-    this.iterator();
+    this.BindTenantGroupUsers();
   }
 
   ngOnInit() {
@@ -184,6 +178,26 @@ export class ViewComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  async BindTenantGroupUsers() {
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = Constants.UserName;
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.TenantCode = this.tenantgroup.TenantCode;
+    searchParameter.IsGroupManager = true;
+    var response = await this.service.getUser(searchParameter);
+    var userList = response.usersList;
+    // this.totalRecordCount = response.RecordCount;
+    this.tenantGroupUserList = userList
+    this.dataSource = new MatTableDataSource<any>(this.tenantGroupUserList);
+    this.dataSource.sort = this.sort;
+    this.array = this.tenantGroupUserList;
+    this.totalSize = this.array.length;
+    this.iterator();
+  }
 }
 
 function compareStr(a: string, b: string, isAsc: boolean) {
