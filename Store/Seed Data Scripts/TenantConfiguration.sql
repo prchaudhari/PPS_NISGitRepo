@@ -8,6 +8,9 @@ INSERT INTO [NIS].[TenantConfiguration]
            ,[OutputPDFPath]
            ,[ArchivalPath]
            ,[AssetPath]
+           ,[ArchivalPeriod]
+           ,[ArchivalPeriodUnit]
+           ,[DateFormat]
            ,[TenantCode])
-VALUES('','','','','','','',@SuperTenantCode);
+VALUES('Test','','','','','','','',0,'',@SuperTenantCode);
 GO

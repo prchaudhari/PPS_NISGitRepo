@@ -630,10 +630,12 @@ export class AddComponent implements OnInit {
       let message = 'Are you sure, you want to delete this record?';
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-          let data = [{
-            "Identifier": contact.Identifier,
-            "TenantCode": this.tenant.TenantCode
-          }];
+          //let data = [{
+          //  "Identifier": contact.Identifier,
+          //  "TenantCode": this.tenant.TenantCode
+          //}];
+          let data = [];
+          data.push(contact);
 
           let isDeleted = await this.tenantService.deleteTenantContact(data);
           if (isDeleted) {
@@ -724,10 +726,8 @@ export class AddComponent implements OnInit {
 
   async sentActivationLink(contact) {
     if (this.updateOperationMode) {
-      let data = [{
-        "Identifier": contact.Identifier,
-        "TenantCode": this.tenant.TenantCode
-      }];
+      let data = [];
+      data.push(contact);
 
       let isDeleted = await this.tenantService.sendActivationLink(data);
       if (isDeleted) {

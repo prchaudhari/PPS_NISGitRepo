@@ -531,7 +531,7 @@ export class AddComponent implements OnInit {
 
   async saveTenant() {
     if (this.tenantGroupUserList.length <= 0) {
-      this._messageDialogService.openDialogBox('Error', "Please add tenant gourp user information", Constants.msgBoxSuccess);
+      this._messageDialogService.openDialogBox('Error', "Please add at least one tenant group user", Constants.msgBoxSuccess);
     }
     else {
       this.tenant.TenantName = this.tenantGroupFormGroup.value.tenantGroupName;

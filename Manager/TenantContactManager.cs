@@ -98,7 +98,7 @@ namespace nIS
             {
                 this.IsValidtenantContacts(tenantContacts, tenantCode);
                 this.IsDuplicateEmailOrContactNumber(tenantContacts, tenantCode);
-              
+
                 result = this.tenantContactRepository.AddTenantContacts(tenantContacts, tenantCode);
 
                 return result;
@@ -156,6 +156,7 @@ namespace nIS
             {
                 this.CheckTenantContactDependency(tenantContacts, tenantCode);
                 result = this.tenantContactRepository.DeleteTenantContacts(tenantContacts, tenantCode);
+                
             }
             catch (Exception ex)
             {
@@ -285,10 +286,22 @@ namespace nIS
                         CountryId = item.CountryId,
                         TenantCode = tenantCode
                     }).ToList();
-                    result= this.userManager.AddUsers(users, tenantCode);
-                    if(result)
+                    IList<Role> roles = new List<Role>();
+                    RoleManager roleManager = new RoleManager(this.unityContainer);
+                    roles = roleManager.GetRoles(new RoleSearchParameter()
                     {
-                        this.tenantContactRepository.UpdateActivationLinkStatus(tenantContacts, tenantCode);
+                        SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
+                        Name = ModelConstant.TENANT_ADMIN_ROLE,
+                        IsRequiredRolePrivileges = true,
+                    }, tenantContacts[0].TenantCode);
+                    users.ToList().ForEach(item =>
+                    {
+                        item.Roles = roles;
+                    });
+                    result = this.userManager.AddUsers(users, tenantContacts[0].TenantCode);
+                    if (result)
+                    {
+                        this.tenantContactRepository.UpdateActivationLinkStatus(tenantContacts, tenantContacts[0].TenantCode);
                     }
                 }
 
@@ -422,8 +435,21 @@ namespace nIS
         {
             try
             {
-                string tenantContactIdentifiers = string.Join(",", tenantContacts.Select(tenantContact => tenantContact.Identifier.ToString()).ToList());
+                tenantContacts.ToList().ForEach(item =>
+                {
 
+                    ClientSearchParameter clientSearchPaarmeter = new ClientSearchParameter();
+                    clientSearchPaarmeter.SortParameter = new SortParameter();
+                    clientSearchPaarmeter.SortParameter.SortColumn = "TenantCode";
+                    clientSearchPaarmeter.PrimaryEmailAddress = item.EmailAddress;
+                    var clients = new ClientManager(this.unityContainer).GetClients(clientSearchPaarmeter, ModelConstant.DEFAULT_TENANT_CODE);
+                    if (clients != null || clients?.Count > 0)
+                    {
+                        Exception ex = new Exception("This contact is used in tenant primary contact details");
+                        throw ex;
+
+                    }
+                });
             }
             catch (Exception)
             {

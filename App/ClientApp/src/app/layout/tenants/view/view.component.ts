@@ -61,7 +61,7 @@ export class ViewComponent implements OnInit {
           this.params = JSON.parse(localStorage.getItem('tenantparams'));
           if (localStorage.getItem('tenantparams')) {
             this.tenant.TenantCode = this.params.Routeparams.passingparams.TenantTenantCode;
-            this.getTenantRecords();
+            //this.getTenantRecords();
           }
         } else {
           localStorage.removeItem("tenantparams");
@@ -117,14 +117,17 @@ export class ViewComponent implements OnInit {
     else {
       this.userClaimsRolePrivilegeOperations = [];
     }
-   
+    if (localStorage.getItem('tenantparams')) {
+      this.tenant.TenantCode = this.params.Routeparams.passingparams.TenantTenantCode;
+      this.getTenantRecords();
+    }
   }
 
   navigateToTenantEdit() {
     let queryParams = {
       Routeparams: {
         passingparams: {
-          "TenantCode": this.tenant.TenantCode,
+          "TenantTenantCode": this.tenant.TenantCode,
         },
         filteredparams: {
           //passing data using json stringify.
@@ -180,6 +183,7 @@ export class ViewComponent implements OnInit {
     this.totalSize = this.array.length;
     this.iterator();
   }
+
   private iterator() {
     const end = (this.currentPage + 1) * this.pageSize;
     const start = this.currentPage * this.pageSize;

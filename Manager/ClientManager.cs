@@ -173,7 +173,7 @@ namespace nIS
                 clients.ToList().ForEach(client =>
                 {
                     Tenant tenant = new Tenant();
-                    
+
                     client.PrimaryFirstName = client.TenantContacts.FirstOrDefault().FirstName;
                     client.PrimaryLastName = client.TenantContacts.FirstOrDefault().LastName;
                     client.PrimaryEmailAddress = client.TenantContacts.FirstOrDefault().EmailAddress;
@@ -350,21 +350,21 @@ namespace nIS
                 clients.ToList().ForEach(client =>
                 {
                     Tenant tenant = new Tenant();
-                    client.TenantContacts.ToList().ForEach(item =>
-                    {
-                        if (item.ContactType.Equals(ModelConstant.TENANT_PRIMARY_CONTACT))
-                        {
-                            client.PrimaryFirstName = item.FirstName;
-                            client.PrimaryLastName = item.LastName;
-                            client.PrimaryEmailAddress = item.EmailAddress;
-                            client.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
+                    //client.TenantContacts.ToList().ForEach(item =>
+                    //{
+                    //    if (item.ContactType.Equals(ModelConstant.TENANT_PRIMARY_CONTACT))
+                    //    {
+                    //        client.PrimaryFirstName = item.FirstName;
+                    //        client.PrimaryLastName = item.LastName;
+                    //        client.PrimaryEmailAddress = item.EmailAddress;
+                    //        client.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
 
-                            tenant.PrimaryFirstName = item.FirstName;
-                            tenant.PrimaryLastName = item.LastName;
-                            tenant.PrimaryEmailAddress = item.EmailAddress;
-                            tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
-                        }
-                    });
+                    //        tenant.PrimaryFirstName = item.FirstName;
+                    //        tenant.PrimaryLastName = item.LastName;
+                    //        tenant.PrimaryEmailAddress = item.EmailAddress;
+                    //        tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
+                    //    }
+                    //});
 
                     //// Assign compulsary properties.
                     tenant.TenantCode = client.TenantCode;
@@ -575,7 +575,7 @@ namespace nIS
                                 {
                                     SortColumn = ModelConstant.SORT_COLUMN
                                 }
-                            }, tenantCode).ToList();
+                            }, tenant.TenantCode).ToList();
                             client.TenantContacts = contacts;
                         }
                         #endregion
@@ -610,9 +610,9 @@ namespace nIS
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
             return clients;
@@ -696,8 +696,7 @@ namespace nIS
                 tenantSearchParameter.SortingParameter.SortColumn = clientSearchParameter.SortParameter.SortColumn;
 
                 tenantSearchParameter.PagingParameter = new Websym.Core.TenantManager.PagingParameter();
-                tenantSearchParameter.PagingParameter.PageIndex = 0;
-                tenantSearchParameter.PagingParameter.PageSize = 0;
+
 
                 tenantSearchParameter.IsPrimaryTenant = clientSearchParameter.IsPrimaryTenant;
                 tenantSearchParameter.TenantDomainName = clientSearchParameter.TenantDomainName;
@@ -705,6 +704,7 @@ namespace nIS
                 tenantSearchParameter.TenantCode = clientSearchParameter.TenantCode;
                 tenantSearchParameter.TenantType = clientSearchParameter.TenantType;
                 tenantSearchParameter.ParentTenantCode = clientSearchParameter.ParentTenantCode;
+
                 tenants = this.configurationUtility.GetTenant(tenantSearchParameter);
                 if (tenants != null && tenants.Count > 0)
                 {
