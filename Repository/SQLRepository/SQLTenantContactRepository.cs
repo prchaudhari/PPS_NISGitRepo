@@ -372,6 +372,7 @@ namespace nIS
                         ContactType= contactTypeRecords.Where(item=>item.Id.ToString()==tenantContactRecord.ContactType).FirstOrDefault().Name,
                         Image = tenantContactRecord.Image,
                         IsActive = tenantContactRecord.IsActive,
+                        IsActivationLinkSent=tenantContactRecord.IsActivationLinkSent,
                         TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? tenantContactRecord.TenantCode : tenantCode,
                     });
 

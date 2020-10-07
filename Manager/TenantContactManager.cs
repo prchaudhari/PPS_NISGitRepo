@@ -285,10 +285,22 @@ namespace nIS
                         CountryId = item.CountryId,
                         TenantCode = tenantCode
                     }).ToList();
-                    result= this.userManager.AddUsers(users, tenantCode);
+                    IList<Role> roles = new List<Role>();
+                    RoleManager roleManager = new RoleManager(this.unityContainer);
+                    roles = roleManager.GetRoles(new RoleSearchParameter()
+                    {
+                        SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN },
+                        Name = ModelConstant.TENANT_ADMIN_ROLE,
+                        IsRequiredRolePrivileges = true,
+                    }, tenantContacts[0].TenantCode);
+                    users.ToList().ForEach(item =>
+                    {
+                        item.Roles = roles;
+                    });
+                    result = this.userManager.AddUsers(users, tenantContacts[0].TenantCode);
                     if(result)
                     {
-                        this.tenantContactRepository.UpdateActivationLinkStatus(tenantContacts, tenantCode);
+                        this.tenantContactRepository.UpdateActivationLinkStatus(tenantContacts, tenantContacts[0].TenantCode);
                     }
                 }
 
