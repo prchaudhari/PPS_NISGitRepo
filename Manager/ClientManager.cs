@@ -580,6 +580,7 @@ namespace nIS
                         }
                         #endregion
                         client.TenantCode = tenant.TenantCode;
+                        client.ParentTenantCode = tenant.ParentTenantCode;
                         client.TenantName = tenant.TenantName;
                         client.TenantDomainName = tenant.TenantDomainName;
                         client.PrimaryPinCode = tenant.PrimaryPinCode;
