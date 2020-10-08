@@ -750,7 +750,7 @@ namespace nIS
                     item.IsGroupManager = true;
                 });
 
-                result = this.userManager.AddUsers(users, tenantCode, false);
+                result = this.userManager.AddUsers(users, tenantCode, true);
             }
             catch (Exception ex)
             {

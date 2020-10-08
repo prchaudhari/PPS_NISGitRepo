@@ -112,7 +112,7 @@ namespace nIS
             if (lstTenants.Count > 0)
             {
                 var tenant = lstTenants.FirstOrDefault();
-                ParentTenentCode = tenant.ParentTenantCode;
+                ParentTenentCode = tenant.ParentTenantCode ?? tenantCode;
                 if (tenant.TenantType == "Instance" && user.IsInstanceManager)
                 {
                     isInstanceTenantManager = true;

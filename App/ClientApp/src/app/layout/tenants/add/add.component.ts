@@ -308,6 +308,8 @@ export class AddComponent implements OnInit {
     this.tenantFormGroup.controls['tenantState'].setValue(tenantList[0].TenantState);
     this.tenantFormGroup.controls['tenantCity'].setValue(tenantList[0].TenantState);
     this.tenantFormGroup.controls['tenantPostalCode'].setValue(tenantList[0].PrimaryPinCode);
+    this.FirstChar = this.tenant.TenantName.charAt(0);
+    this.image = this.tenant.TenantLogo;
   }
 
   public handlePage(e: any) {

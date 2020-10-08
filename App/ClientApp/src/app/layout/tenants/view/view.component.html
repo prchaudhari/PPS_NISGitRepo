@@ -23,11 +23,15 @@
         <div class="row">
           <div class="col-md-3 col-sm-4 col-12 form-group">
             <div class="profile-avtar-box">
-
+              <div *ngIf="tenant.TenantLogo!='' && tenant.TenantLogo!=null" class="image-preview">
+                <img [src]="tenant.TenantLogo" class="profile-avtar">
+              </div>
               <!--letter image-->
-              <div class="ltr-img">
-                <span>T</span>
-                <span>S</span>
+              <div *ngIf="tenant.TenantLogo=='' || tenant.TenantLogo==null">
+                <div class="ltr-img">
+                  <span>{{tenant.TenantName.charAt(0) | titlecase}}</span>
+                  <!-- <span>{{tenant.LastName.charAt(0) | titlecase}}</span> -->
+                </div>
               </div>
             </div>
             <div style="clear:both"></div>

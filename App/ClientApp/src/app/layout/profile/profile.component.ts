@@ -501,7 +501,13 @@ export class ProfileComponent implements OnInit {
   }
 
   backClicked() {
-    this.route.navigate(['dashboard']);
+    if(this.isInstantTenantManager) {
+      this.route.navigate(['tenantgroups']);
+    }else if(this.isTenantGroupManager) {
+      this.route.navigate(['tenants']);
+    }else {
+      this.route.navigate(['dashboard']);
+    }
   }
 
 }

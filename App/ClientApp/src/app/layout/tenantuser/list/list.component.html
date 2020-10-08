@@ -62,7 +62,7 @@
           <ng-container matColumnDef="actions">
             <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
-              <div class="action-btns btn-tbl-action">
+              <div class="action-btns btn-tbl-action" *ngIf="element.EmailAddress!='instancemanager@nis.com'">
                 <button type="button" title="View TenantUser" (click)="viewTenantUser(element)" id="btnView" routerLink="View"><span class="fa fa-file-text-o"></span></button>
                 <button type="button" title="Update TenantUser" *ngIf="element.IsActive" (click)="editTenantUser(element)" id="btnUpdate">
                   <span class="fa fa-pencil-square-o"></span>
@@ -71,6 +71,9 @@
                 <button type="button" (click)="unLockTenantUser(element)" *ngIf="!element.IsLocked" title="Lock TenantUser"><span class="fa fa-unlock-alt"></span></button>
                 <button type="button" (click)="activeDeactiveTenantUser(element)" title="Deactivate TenantUser" *ngIf="element.IsActive"><span class="fa fa-toggle-on text-success"></span></button>
                 <button type="button" (click)="activeDeactiveTenantUser(element)" title="Activate TenantUser" *ngIf="!element.IsActive"><span class="fa fa-toggle-off text-success"></span></button>
+              </div>
+              <div class="text-left" *ngIf="element.EmailAddress=='instancemanager@nis.com'">
+                NA
               </div>
             </td>
           </ng-container>

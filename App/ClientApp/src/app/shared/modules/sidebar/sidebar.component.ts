@@ -70,10 +70,10 @@ export class SidebarComponent implements OnInit {
     }
     else {
       if(this.isInstantTenantManager == true) {
-        this.URL = '/tenants';
+        this.URL = '/tenantgroups';
         this.route.navigate(['/tenants']);
       }else if(this.isTenantGroupManager == true) {
-        this.URL = '/tenantgroups';
+        this.URL = '/tenants';
         this.route.navigate(['/tenantgroups']);
       }else if(this.isTenantAdminUser == true) {
         this.URL = '/tenantConfiguration';
