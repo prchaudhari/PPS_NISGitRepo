@@ -10,6 +10,7 @@ namespace nIS
     {
         public long Identifier { get; set; }
         public long WidgetId { get; set; }
+        public string WidgetName { get; set; }
         public long PageId { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }

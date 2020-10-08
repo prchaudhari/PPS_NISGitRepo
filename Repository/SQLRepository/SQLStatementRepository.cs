@@ -663,7 +663,7 @@ namespace nIS
                                                         isRowComplete = false;
                                                     }
                                                     pageHtmlContent.Append("<div class='col-lg-" + divLength + "'>");
-                                                    if (mergedlst[x].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
+                                                    if (mergedlst[x].WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
@@ -671,14 +671,14 @@ namespace nIS
                                                         pageHtmlContent.Append(widgetHTML);
 
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML_FOR_STMT.Replace("{{AccountInfoData}}", "{{AccountInfoData_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.IMAGE_WIDGET_NAME)
                                                     {
 
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
@@ -702,79 +702,77 @@ namespace nIS
                                                         }
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.VIDEO_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.VIDEO_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML_FOR_STMT.Replace("{{AccountSummary}}", "{{AccountSummary_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string CurrentAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
                                                         CurrentAvailBalanceWidget = CurrentAvailBalanceWidget.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(CurrentAvailBalanceWidget);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string SavingAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
                                                         SavingAvailBalanceWidget = SavingAvailBalanceWidget.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(SavingAvailBalanceWidget);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML_FOR_STMT.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
-                                                        //class='card border-0';
-                                                        //pageHtmlContent.Replace()
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML_FOR_STMT.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML_FOR_STMT.Replace("{{IncomeSourceList}}", "{{IncomeSourceList_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.ANALYTIC_WIDGET_HTML_FOR_STMT;
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.SPENDING_TRENDS_WIDGET_HTML_FOR_STMT;
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.SAVING_TRENDS_WIDGET_HTML_FOR_STMT;
                                                         widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
                                                         pageHtmlContent.Append(widgetHTML);
                                                     }
-                                                    else if (mergedlst[x].WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
+                                                    else if (mergedlst[x].WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
                                                     {
                                                         string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
                                                         string widgetHTML = HtmlConstants.REMINDER_WIDGET_HTML_FOR_STMT.Replace("{{ReminderAndRecommdationDataList}}", "{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
@@ -907,7 +905,7 @@ namespace nIS
                     for (int j = 0; j < pagewidgets.Count; j++)
                     {
                         var widget = pagewidgets[j];
-                        if (widget.WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
+                        if (widget.WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME)
                         {
                             string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':" +
                                 "'4000 Executive Parkway','AddressLine2':'Saint Globin Rd','City':'Canary Wharf', 'State':'London', " +
@@ -927,7 +925,7 @@ namespace nIS
                                 pageContent.Replace("{{Address2}}", address2);
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                         {
                             string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement', " +
                                 "'CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";
@@ -954,7 +952,7 @@ namespace nIS
                             }
                             pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
                         }
-                        else if (widget.WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.IMAGE_WIDGET_NAME)
                         {
                             var imgAssetFilepath = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
                             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
@@ -968,7 +966,7 @@ namespace nIS
                             }
                             pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgAssetFilepath);
                         }
-                        else if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.VIDEO_WIDGET_NAME)
                         {
                             var vdoAssetFilepath = AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4";
                             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
@@ -986,7 +984,7 @@ namespace nIS
                             }
                             pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", vdoAssetFilepath);
                         }
-                        else if (widget.WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
                         {
                             string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"}" +
                                 ",{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":" +
@@ -1008,7 +1006,7 @@ namespace nIS
                                 }
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
                         {
                             string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'$', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
                             if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
@@ -1022,7 +1020,7 @@ namespace nIS
                                 pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
                         {
                             string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'$', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
                             if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
@@ -1036,7 +1034,7 @@ namespace nIS
                                 pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
                         {
                             StringBuilder selectOption = new StringBuilder();
                             var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
@@ -1062,7 +1060,7 @@ namespace nIS
                             pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
                             pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
                         }
-                        else if (widget.WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
                         {
                             StringBuilder selectOption = new StringBuilder();
                             var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
@@ -1089,7 +1087,7 @@ namespace nIS
 
                             pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
                         }
-                        else if (widget.WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
                         {
                             string incomeSourceListJson = "[{ 'Source': 'Salary Transfer', 'CurrentSpend': 3453, 'AverageSpend': 123},{ 'Source': 'Cash Deposit', 'CurrentSpend': 3453, 'AverageSpend': 6123},{ 'Source': 'Profit Earned', 'CurrentSpend': 3453, 'AverageSpend': 6123}, { 'Source': 'Rebete', 'CurrentSpend': 3453, 'AverageSpend': 123}]";
                             if (incomeSourceListJson != string.Empty && validationEngine.IsValidJson(incomeSourceListJson))
@@ -1112,25 +1110,25 @@ namespace nIS
                                 pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomestr.ToString());
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
                         {
                             scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\analyticschartdata.json'></script>");
                             pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
                         }
-                        else if (widget.WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
                         {
                             scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\savingtrenddata.json'></script>");
                             pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier));
                         }
-                        else if (widget.WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
                         {
                             scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\spendingtrenddata.json'></script>");
                             pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier));
                         }
-                        else if (widget.WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
                         {
                             string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
                             if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))
@@ -1253,7 +1251,7 @@ namespace nIS
                     for (int j = 0; j < pagewidgets.Count; j++)
                     {
                         var widget = pagewidgets[j];
-                        if (widget.WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
+                        if (widget.WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME)
                         {
                             string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'4000 Executive Parkway', 'AddressLine2':'Saint Globin Rd','City':'Canary Wharf', 'State':'London', 'Country':'England','Zip':'E14 9RZ'}";
                             if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
@@ -1271,7 +1269,7 @@ namespace nIS
                                 pageContent.Replace("{{Address2}}", address2);
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                         {
                             string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement', 'CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";
 
@@ -1292,7 +1290,7 @@ namespace nIS
                             }
                             pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
                         }
-                        else if (widget.WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.IMAGE_WIDGET_NAME)
                         {
                             var imageAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
                             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
@@ -1313,7 +1311,7 @@ namespace nIS
                             }
                             pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imageAssetPath);
                         }
-                        else if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.VIDEO_WIDGET_NAME)
                         {
                             var videoAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4";
                             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
@@ -1338,7 +1336,7 @@ namespace nIS
                             }
                             pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", videoAssetPath);
                         }
-                        else if (widget.WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
                         {
                             string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"}" +
                                 ",{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":" +
@@ -1360,7 +1358,7 @@ namespace nIS
                                 }
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
                         {
                             string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'$', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
                             if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
@@ -1374,7 +1372,7 @@ namespace nIS
                                 pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
                         {
                             string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'$', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
                             if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
@@ -1388,7 +1386,7 @@ namespace nIS
                                 pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
                         {
                             StringBuilder selectOption = new StringBuilder();
                             var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
@@ -1419,7 +1417,7 @@ namespace nIS
                             pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
                             pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
                         }
-                        else if (widget.WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
                         {
                             StringBuilder selectOption = new StringBuilder();
                             var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
@@ -1451,7 +1449,7 @@ namespace nIS
 
                             pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
                         }
-                        else if (widget.WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
                         {
                             string incomeSourceListJson = "[{ 'Source': 'Salary Transfer', 'CurrentSpend': 3453, 'AverageSpend': 123},{ 'Source': 'Cash Deposit', 'CurrentSpend': 3453, 'AverageSpend': 6123},{ 'Source': 'Profit Earned', 'CurrentSpend': 3453, 'AverageSpend': 6123}, { 'Source': 'Rebete', 'CurrentSpend': 3453, 'AverageSpend': 123}]";
                             if (incomeSourceListJson != string.Empty && validationEngine.IsValidJson(incomeSourceListJson))
@@ -1474,7 +1472,7 @@ namespace nIS
                                 pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomestr.ToString());
                             }
                         }
-                        else if (widget.WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
                         {
                             FileData fileData = new FileData();
                             fileData.FileName = "analyticschartdata.json";
@@ -1484,7 +1482,7 @@ namespace nIS
                             pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
                         }
-                        else if (widget.WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
                         {
                             FileData fileData = new FileData();
                             fileData.FileName = "spendingtrenddata.json";
@@ -1494,7 +1492,7 @@ namespace nIS
                             pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier));
                         }
-                        else if (widget.WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
                         {
                             FileData fileData = new FileData();
                             fileData.FileName = "savingtrenddata.json";
@@ -1504,7 +1502,7 @@ namespace nIS
                             pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier);
                             scriptHtmlRenderer.Append(HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier));
                         }
-                        else if (widget.WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
+                        else if (widget.WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
                         {
                             string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
                             if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))
@@ -1687,7 +1685,6 @@ namespace nIS
 
                         for (int x = 0; x < accountCount; x++)
                         {
-
                             accountNumber = string.Empty;
                             accountType = string.Empty;
                             if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
@@ -1734,31 +1731,12 @@ namespace nIS
                             }
 
                             var pagewidgets = page.PageWidgets;
-                            //for (int j = 0; j < pagewidgets.Count; j++)
-                            //{
-                            //    string widgetId = "AccountId_0_PageWidgetId_" + pagewidgets[j].Identifier + "_Counter"+ counter;
-                            //    string widgetIdWithAccount = "AccountId_"+ accountId+"_PageWidgetId_" + pagewidgets[j].Identifier + "_Counter" + counter;
-                            //    //statementPageContent.HtmlContent=statementPageContent.HtmlContent.Replace(widgetId, widgetIdWithAccount);
-                            //    //var regex = new Regex(Regex.Escape(widgetId));
-                            //    //statementPageContent.HtmlContent = regex.Replace(statementPageContent.HtmlContent, widgetIdWithAccount, 1);
-                            //    int pos = statementPageContent.HtmlContent.IndexOf(widgetId);
-
-                            //    statementPageContent.HtmlContent= statementPageContent.HtmlContent.Substring(0, pos) + widgetIdWithAccount + statementPageContent.HtmlContent.Substring(pos + widgetId.Length);
-                            //    counter++;
-                            //}
                             StringBuilder pageContent = new StringBuilder(statementPageContent.HtmlContent);
-
                             for (int j = 0; j < pagewidgets.Count; j++)
                             {
                                 var widget = pagewidgets[j];
-                                if (widget.WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID) //Customer Information Widget
+                                if (widget.WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME) //Customer Information Widget
                                 {
-                                    //var fileName = "CustomerVideo" + customer.Id + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".mp4";
-                                    //var videoPath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
-                                    //if (!Directory.Exists(videoPath))
-                                    //{
-                                    //    Directory.CreateDirectory(videoPath);
-                                    //}
                                     pageContent.Replace("{{CustomerName}}", (customer.FirstName.Trim() + " " + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim()));
                                     pageContent.Replace("{{Address1}}", customer.AddressLine1);
                                     string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
@@ -1767,7 +1745,6 @@ namespace nIS
                                     var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
                                     if (custMedia != null && custMedia.VideoURL != string.Empty)
                                     {
-                                        //webClient.DownloadFile(custMedia.VideoURL, (videoPath + "\\" + fileName));
                                         pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", custMedia.VideoURL);
                                     }
                                     else
@@ -1775,12 +1752,11 @@ namespace nIS
                                         var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
                                         if (batchDetail != null && batchDetail.VideoURL != string.Empty)
                                         {
-                                            //webClient.DownloadFile(batchDetail.VideoURL, (videoPath + "\\" + fileName));
                                             pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
                                         }
                                     }
                                 }
-                                else if (widget.WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID) //Account Information Widget
+                                else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
                                 {
                                     StringBuilder AccDivData = new StringBuilder();
                                     AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Date" + "</div><label class='list-value mb-0'>" + Convert.ToDateTime(customer.StatementDate).ToShortDateString() + "</label></div></div>");
@@ -1794,18 +1770,11 @@ namespace nIS
                                     AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number" + "</div><label class='list-value mb-0'>" + customer.RmContactNumber + "</label></div></div>");
                                     pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
                                 }
-                                else if (widget.WidgetId == HtmlConstants.IMAGE_WIDGET_ID) //Image Widget
+                                else if (widget.WidgetName == HtmlConstants.IMAGE_WIDGET_NAME) //Image Widget
                                 {
                                     var imgAssetFilepath = string.Empty;
-                                    //var imagePath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
-                                    //var fileName = "Image" + customer.Id + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".jpeg";
-
                                     if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                                     {
-                                        //if (!Directory.Exists(imagePath))
-                                        //{
-                                        //    Directory.CreateDirectory(imagePath);
-                                        //}
                                         dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
                                         if (widgetSetting.isPersonalize == false) //Is not dynamic image, then assign selected image from asset library
                                         {
@@ -1820,16 +1789,6 @@ namespace nIS
                                                     File.Copy(path, Path.Combine(imagePath, fileName));
                                                 }
                                                 imgAssetFilepath = "./" + fileName;
-                                                //using (MemoryStream ms = new MemoryStream())
-                                                //{
-                                                //    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
-                                                //    {
-                                                //        byte[] bytes = new byte[file.Length];
-                                                //        file.Read(bytes, 0, (int)file.Length);
-                                                //        ms.Write(bytes, 0, (int)file.Length);
-                                                //        File.WriteAllBytes((imagePath + "\\" + fileName), bytes.ToArray());
-                                                //    }
-                                                //}
                                             }
                                             else
                                             {
@@ -1866,23 +1825,15 @@ namespace nIS
                                         IsFailed = true;
                                     }
                                 }
-                                else if (widget.WidgetId == HtmlConstants.VIDEO_WIDGET_ID) //Video widget
+                                else if (widget.WidgetName == HtmlConstants.VIDEO_WIDGET_NAME) //Video widget
                                 {
                                     var vdoAssetFilepath = string.Empty;
-                                    //var fileName = "Video" + customer.Id + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".mp4";
-                                    //var videoPath = baseURL + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
-
                                     if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                                     {
-                                        //if (!Directory.Exists(videoPath))
-                                        //{
-                                        //    Directory.CreateDirectory(videoPath);
-                                        //}
                                         dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
                                         if (widgetSetting.isEmbedded == true)//If embedded then assigned it it from widget config json source url
                                         {
                                             vdoAssetFilepath = widgetSetting.SourceUrl;
-                                            //webClient.DownloadFile(vdoAssetFilepath, (videoPath + "\\" + fileName));
                                         }
                                         else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false) //If not dynamic video, then assign selected video from asset library
                                         {
@@ -1897,16 +1848,6 @@ namespace nIS
                                                     File.Copy(path, Path.Combine(videoPath, fileName));
                                                 }
                                                 vdoAssetFilepath = "./" + fileName;
-                                                //using (MemoryStream ms = new MemoryStream())
-                                                //{
-                                                //    using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
-                                                //    {
-                                                //        byte[] bytes = new byte[file.Length];
-                                                //        file.Read(bytes, 0, (int)file.Length);
-                                                //        ms.Write(bytes, 0, (int)file.Length);
-                                                //        File.WriteAllBytes((videoPath + "\\" + fileName), bytes.ToArray());
-                                                //    }
-                                                //}
                                             }
                                             else
                                             {
@@ -1920,7 +1861,6 @@ namespace nIS
                                             if (custMedia != null && custMedia.VideoURL != string.Empty)
                                             {
                                                 vdoAssetFilepath = custMedia.VideoURL;
-                                                //webClient.DownloadFile(custMedia.VideoURL, (videoPath + "\\" + fileName));
                                             }
                                             else
                                             {
@@ -1928,7 +1868,6 @@ namespace nIS
                                                 if (batchDetail != null && batchDetail.VideoURL != string.Empty)
                                                 {
                                                     vdoAssetFilepath = batchDetail.VideoURL;
-                                                    //webClient.DownloadFile(batchDetail.VideoURL, (videoPath + "\\" + fileName));
                                                 }
                                                 else
                                                 {
@@ -1945,7 +1884,7 @@ namespace nIS
                                         IsFailed = true;
                                     }
                                 }
-                                else if (widget.WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID) //Summary at Glance Widget
+                                else if (widget.WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME) //Summary at Glance Widget
                                 {
                                     if (accountrecords != null && accountrecords.Count > 0)
                                     {
@@ -1963,7 +1902,7 @@ namespace nIS
                                         IsFailed = true;
                                     }
                                 }
-                                else if (widget.WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
                                 {
                                     if (accountrecords != null && accountrecords.Count > 0)
                                     {
@@ -1993,7 +1932,7 @@ namespace nIS
                                         IsFailed = true;
                                     }
                                 }
-                                else if (widget.WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
                                 {
                                     if (accountrecords != null && accountrecords.Count > 0)
                                     {
@@ -2023,7 +1962,7 @@ namespace nIS
                                         IsFailed = true;
                                     }
                                 }
-                                else if (widget.WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
                                 {
                                     IList<AccountTransactionRecord> accountTransactions = new List<AccountTransactionRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -2093,7 +2032,7 @@ namespace nIS
                                         pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
                                     }
                                 }
-                                else if (widget.WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
                                 {
                                     IList<AccountTransactionRecord> accountTransactions = new List<AccountTransactionRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -2161,7 +2100,7 @@ namespace nIS
                                         pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
                                     }
                                 }
-                                else if (widget.WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
                                 {
                                     IList<Top4IncomeSourcesRecord> top4IncomeSources = new List<Top4IncomeSourcesRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -2196,7 +2135,7 @@ namespace nIS
                                     }
                                     pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomeSources.ToString());
                                 }
-                                else if (widget.WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
                                 {
                                     if (accountrecords.Count > 0)
                                     {
@@ -2228,7 +2167,7 @@ namespace nIS
                                     pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
                                     scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
                                 }
-                                else if (widget.WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
                                 {
                                     IList<SavingTrendRecord> savingtrends = new List<SavingTrendRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -2285,7 +2224,7 @@ namespace nIS
                                     var scriptval = HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + accountId + page.Identifier).Replace("savingdata", "savingdata" + accountId + page.Identifier);
                                     scriptHtmlRenderer.Append(scriptval);
                                 }
-                                else if (widget.WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
                                 {
                                     IList<SavingTrendRecord> spendingtrends = new List<SavingTrendRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -2342,7 +2281,7 @@ namespace nIS
                                     var scriptval = HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + accountId + page.Identifier).Replace("spendingdata", "spendingdata" + accountId + page.Identifier);
                                     scriptHtmlRenderer.Append(scriptval);
                                 }
-                                else if (widget.WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
+                                else if (widget.WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
                                 {
                                     IList<ReminderAndRecommendationRecord> reminderAndRecommendations = new List<ReminderAndRecommendationRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -2398,7 +2337,6 @@ namespace nIS
                         PageHeaderContent.Replace("{{SubTabs}}", SubTabs.ToString());
                         statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
                         statementPageContent.HtmlContent = newPageContent.ToString();
-                        //newStatementPageContents.Add(statementPageContent);
                     }
 
                     newStatementPageContents.ToList().ForEach(page =>

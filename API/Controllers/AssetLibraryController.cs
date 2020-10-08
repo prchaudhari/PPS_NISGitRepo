@@ -141,7 +141,7 @@ namespace nIS
 
                 TenantConfiguration tenantConfiguration = new TenantConfiguration();
                 tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.AssetPath))
                 {
                     path = tenantConfiguration.AssetPath;
                 }
@@ -297,7 +297,7 @@ namespace nIS
 
                 TenantConfiguration tenantConfiguration = new TenantConfiguration();
                 tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                if (tenantConfiguration != null &&!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
                 {
                     path = tenantConfiguration.AssetPath;
                 }
@@ -401,7 +401,6 @@ namespace nIS
             try
             {
                 bool uploadStatus = false;
-                bool resultStatus = false;
                 string fileName = string.Empty;
                 var filePath = string.Empty;
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
@@ -409,8 +408,6 @@ namespace nIS
                 bool isFolderUpload = false;
                 HttpResponseMessage result = null;
                 var httpRequest = HttpContext.Current.Request;
-
-
                 if (httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault() == string.Empty
                     || httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault() == "0"
                     )
@@ -435,14 +432,11 @@ namespace nIS
                     foreach (string file in httpRequest.Files)
                     {
                         IList<Asset> assets = new List<Asset>();
-
                         var postedFile = httpRequest.Files[count];
-
                         string basePath = string.Empty;
-
                         TenantConfiguration tenantConfiguration = new TenantConfiguration();
                         tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                        if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                        if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.AssetPath))
                         {
                             basePath = tenantConfiguration.AssetPath;
                         }
@@ -491,33 +485,19 @@ namespace nIS
                             LastUpdatedBy = new User { Identifier = lastUpdatedBy },
                             LastUpdatedDate = DateTime.UtcNow
                         }); ;
+                        
                         this.assetLibraryManager.AddAssets(assets, tenantCode);
-                        //}
-
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
-
                         uploadStatus = true;
-
                         count++;
                     }
                     result = Request.CreateResponse(HttpStatusCode.Created, docfiles);
-                    resultStatus = true;
                 }
                 else
                 {
                     result = Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
-
-                //if (resultStatus == true)
-                //{
-                //    if (assets?.Count > 0)
-                //    {
-                //        this.assetLibraryManager.AddAssets(assets, tenantCode);
-                //        uploadStatus = true;
-                //    }
-                //}
-
                 return uploadStatus;
             }
             catch (Exception exception)
@@ -578,14 +558,11 @@ namespace nIS
                     foreach (string file in httpRequest.Files)
                     {
                         IList<Asset> assets = new List<Asset>();
-
                         var postedFile = httpRequest.Files[count];
-
                         string basePath = string.Empty;
-
                         TenantConfiguration tenantConfiguration = new TenantConfiguration();
                         tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                        if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
+                        if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.AssetPath))
                         {
                             basePath = tenantConfiguration.AssetPath;
                         }
@@ -836,35 +813,12 @@ namespace nIS
                     Identifier = assetIdentifier,
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
-
-
-                //TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                //tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                //if (!string.IsNullOrEmpty(tenantConfiguration.AssetPath))
-                //{
-                //    path = tenantConfiguration.AssetPath;
-                //}
-                //else
-                //{
-                //    path = HttpContext.Current.Server.MapPath("~");
-                //}
-
-                //if (!path.EndsWith(ModelConstant.ASSETPATHSLASH))
-                //{
-                //    path = path + ModelConstant.ASSETPATHSLASH;
-                //}
-                //path = path + ModelConstant.ASSETS;
-
-                //asset.FilePath = path + ModelConstant.ASSETPATHSLASH + asset.AssetLibraryIdentifier + ModelConstant.ASSETPATHSLASH + asset.Name;
-
-
                 if (asset == null)
                 {
                     throw new AssetNotFoundException(tenantCode);
                 }
 
                 path = asset.FilePath.ToString();
-
                 if (!File.Exists(path))
                 {
                     throw new HttpResponseException(HttpStatusCode.NotFound);

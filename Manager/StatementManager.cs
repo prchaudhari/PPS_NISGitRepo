@@ -265,9 +265,7 @@ namespace nIS
             string finalHtml = "";
             try
             {
-                TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-
+                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                 StatementSearchParameter statementSearchParameter = new StatementSearchParameter
                 {
                     Identifier = statementIdentifier,
@@ -285,7 +283,6 @@ namespace nIS
                     },
                     SearchMode = SearchMode.Equals
                 };
-
                 var statements = this.StatementRepository.GetStatements(statementSearchParameter, tenantCode);
                 if (statements.Count != 0)
                 {
@@ -416,7 +413,7 @@ namespace nIS
 
                                                     var leftPaddingClass = i != 0 ? " pl-0" : "";
                                                     htmlString.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
-                                                    if (mergedlst[i].WidgetId == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_ID)
+                                                    if (mergedlst[i].WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME)
                                                     {
                                                         string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':" +
                                                             "'4000 Executive Parkway','AddressLine2':'Saint Globin Rd','City':'Canary Wharf', 'State':'London', " +
@@ -442,7 +439,7 @@ namespace nIS
                                                             htmlString.Append(customerHtmlWidget);
                                                         }
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
                                                     {
                                                         string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement', " +
                                                             "'CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";
@@ -482,7 +479,7 @@ namespace nIS
                                                         accountInfoData = accountInfoData.Replace("{{WidgetDivHeight}}", divHeight);
                                                         htmlString.Append(accountInfoData);
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.IMAGE_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.IMAGE_WIDGET_NAME)
                                                     {
                                                         var isImageFromAsset = false;
                                                         var assetId = 0;
@@ -492,7 +489,7 @@ namespace nIS
                                                             dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
                                                             if (widgetSetting.isPersonalize == false)
                                                             {
-                                                                if (tenantConfiguration.AssetPath == string.Empty)
+                                                                if (tenantConfiguration == null || tenantConfiguration.AssetPath == string.Empty)
                                                                 {
                                                                     imgAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                                                     isImageFromAsset = true;
@@ -512,7 +509,7 @@ namespace nIS
                                                         imgHtmlWidget = imgHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                         htmlString.Append(imgHtmlWidget);
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.VIDEO_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.VIDEO_WIDGET_NAME)
                                                     {
                                                         var isVideoFromAsset = false;
                                                         var assetId = 0;
@@ -526,7 +523,7 @@ namespace nIS
                                                             }
                                                             else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
                                                             {
-                                                                if (tenantConfiguration.AssetPath == string.Empty)
+                                                                if(tenantConfiguration == null || tenantConfiguration.AssetPath == string.Empty)
                                                                 {
                                                                     vdoAssetFilepath = baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
                                                                     isVideoFromAsset = true;
@@ -546,7 +543,7 @@ namespace nIS
                                                         vdoHtmlWidget = vdoHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                         htmlString.Append(vdoHtmlWidget);
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
                                                     {
                                                         string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"8356\"}" +
                                                             ",{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"6654\"},{\"AccountType\":" +
@@ -573,7 +570,7 @@ namespace nIS
                                                         accountSummary = accountSummary.Replace("{{WidgetDivHeight}}", divHeight);
                                                         htmlString.Append(accountSummary);
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
                                                     {
                                                         string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'$', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
                                                         if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
@@ -590,7 +587,7 @@ namespace nIS
                                                             htmlString.Append(CurrentAvailBalance);
                                                         }
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
                                                     {
                                                         string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'$', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
                                                         if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
@@ -607,7 +604,7 @@ namespace nIS
                                                             htmlString.Append(SavingAvailBalance);
                                                         }
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_TRANSACTION_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
                                                     {
                                                         string transactionJson = "[{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1876.00' }, { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' }, { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' }]";
                                                         if (transactionJson != string.Empty && validationEngine.IsValidJson(transactionJson))
@@ -633,7 +630,7 @@ namespace nIS
                                                             htmlString.Append(accountTransactionstr);
                                                         }
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.CURRENT_TRANSACTION_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
                                                     {
                                                         string transactionJson = "[{ 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL6574562', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' },{ 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL3557346', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1876.00' }, { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' }, { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' }]";
                                                         if (transactionJson != string.Empty && validationEngine.IsValidJson(transactionJson))
@@ -659,7 +656,7 @@ namespace nIS
                                                             htmlString.Append(accountTransactionstr);
                                                         }
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.TOP_4_INCOME_SOURCES_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
                                                     {
                                                         string incomeSourceListJson = "[{ 'Source': 'Salary Transfer', 'CurrentSpend': 3453, 'AverageSpend': 123}," +
                                                             "{ 'Source': 'Cash Deposit', 'CurrentSpend': 3453, 'AverageSpend': 6123},{ 'Source': 'Profit Earned'," +
@@ -673,8 +670,7 @@ namespace nIS
                                                                 var tdstring = string.Empty;
                                                                 if (Int32.Parse(item.CurrentSpend) > Int32.Parse(item.AverageSpend))
                                                                 {
-                                                                    tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>"
-                                                                    + item.AverageSpend + "</span>";
+                                                                    tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
                                                                 }
                                                                 else
                                                                 {
@@ -682,8 +678,7 @@ namespace nIS
                                                                     "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend
                                                                     + "</span>";
                                                                 }
-                                                                incomeSrc.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend +
-                                                                  "" + "</td><td>" + tdstring + "</td></tr>");
+                                                                incomeSrc.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend + "" + "</td><td>" + tdstring + "</td></tr>");
                                                             });
                                                             string srcstring = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML.Replace("{{IncomeSourceList}}",
                                                                 incomeSrc.ToString());
@@ -691,19 +686,19 @@ namespace nIS
                                                             htmlString.Append(srcstring);
                                                         }
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.ANALYTICS_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
                                                     {
                                                         htmlString.Append(HtmlConstants.ANALYTIC_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.SPENDING_TREND_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
                                                     {
                                                         htmlString.Append(HtmlConstants.SPENDING_TRENDS_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.SAVING_TREND_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
                                                     {
                                                         htmlString.Append(HtmlConstants.SAVING_TRENDS_WIDGET_HTML.Replace("{{WidgetDivHeight}}", divHeight));
                                                     }
-                                                    else if (mergedlst[i].WidgetId == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_ID)
+                                                    else if (mergedlst[i].WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
                                                     {
                                                         string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
                                                         if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))

@@ -254,6 +254,7 @@ namespace nIS
                 string whereClause = this.WhereClauseGenerator(pageSearchParameter, tenantCode);
 
                 IList<View_PageRecord> view_PageRecords = new List<View_PageRecord>();
+                IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString)) 
                 {
                     if (pageSearchParameter.PagingParameter.PageIndex > 0 && pageSearchParameter.PagingParameter.PageSize > 0)
@@ -279,9 +280,11 @@ namespace nIS
                         {
                             pageRecord.PageWidgetMapRecords = nISEntitiesDataContext.PageWidgetMapRecords.Where(itm => itm.PageId == pageRecord.Id && itm.TenantCode == tenantCode).ToList();
                         });
+
+                        widgetRecords = nISEntitiesDataContext.WidgetRecords.Where(item => item.TenantCode == tenantCode).ToList();
                     }
                 }
-
+                
                 if (view_PageRecords != null && view_PageRecords.ToList().Count > 0)
                 {
                     view_PageRecords?.ToList().ForEach(pageRecord =>
@@ -297,6 +300,7 @@ namespace nIS
                                     PageId = pageWidgetRecord.PageId,
                                     Height = pageWidgetRecord.Height,
                                     WidgetId = pageWidgetRecord.ReferenceWidgetId,
+                                    WidgetName = widgetRecords.Where(item => item.Id == pageWidgetRecord.ReferenceWidgetId).FirstOrDefault()?.WidgetName,
                                     Width = pageWidgetRecord.Width,
                                     Xposition = pageWidgetRecord.Xposition,
                                     Yposition = pageWidgetRecord.Yposition,

@@ -41,6 +41,34 @@ namespace nIS
 
         public const int CURRENT_ACCOUNT_PAGE_TYPE_ID = 3;
 
+        public const string CUSTOMER_INFORMATION_WIDGET_NAME = "CustomerInformation";
+
+        public const string ACCOUNT_INFORMATION_WIDGET_NAME = "AccountInformation";
+
+        public const string SUMMARY_AT_GLANCE_WIDGET_NAME = "Summary";
+
+        public const string IMAGE_WIDGET_NAME = "Image";
+
+        public const string VIDEO_WIDGET_NAME = "Video";
+
+        public const string ANALYTICS_WIDGET_NAME = "Analytics";
+
+        public const string SAVING_TRANSACTION_WIDGET_NAME = "SavingTransaction";
+
+        public const string CURRENT_TRANSACTION_WIDGET_NAME = "CurrentTransaction";
+
+        public const string SAVING_TREND_WIDGET_NAME = "SavingTrend";
+
+        public const string TOP_4_INCOME_SOURCE_WIDGET_NAME = "Top4IncomeSources";
+
+        public const string CURRENT_AVAILABLE_BALANCE_WIDGET_NAME = "CurrentAvailableBalance";
+
+        public const string SAVING_AVAILABLE_BALANCE_WIDGET_NAME = "SavingAvailableBalance";
+
+        public const string REMINDER_AND_RECOMMENDATION_WIDGET_NAME = "ReminderaAndRecommendation";
+
+        public const string SPENDING_TREND_WIDGET_NAME = "SpendingTrend";
+
         public const string HTML_HEADER = "<html><head><title>NIS Statement</title><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel='stylesheet' href='../common/css/bootstrap.min.css'><link rel='stylesheet' href='../common/css/font-awesome.min.css'><script src='../common/js/jquery.min.js'></script><script src='../common/js/popper.min.js'></script><script src='../common/js/bootstrap.min.js'></script><script src='../common/js/highcharts.js'></script><script src='../common/js/series-label.js'></script><script src='../common/js/exporting.js'></script><script src='../common/js/export-data.js'></script><script src='../common/js/accessibility.js'></script><script src='../common/js/script.js'></script><link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'></head><body onload='onPageLoad()'> <input type='hidden' id='StatementId' name='StatementId' value='{{StatementNumber}}'> <input type='hidden' id='CustomerId' name='CustomerId' value='{{CustomerNumber}}'><input type='hidden' id='FirstPageId' name='FirstPageId' value='{{FirstPageId}}'>";
 
         public const string NAVBAR_HTML = "<nav class='navbar navbar-expand-sm bg-white navbar-light p-0'>" +

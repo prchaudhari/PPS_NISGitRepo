@@ -259,13 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
-/API/assets/4
-/API/assets/14
-/API/assets/46
-/API/assets/8
-/API/assets/42
 /API/Statements
-/API/assets/3
 /API/Logs
-/API/assets/21
-/API/assets/2
+/API/assets
