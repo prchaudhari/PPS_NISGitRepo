@@ -369,6 +369,7 @@ export class AddComponent implements OnInit {
     searchParameter.SearchMode = Constants.Contains;
     searchParameter.TenantCode = this.tenant.TenantCode;
     searchParameter.IsGroupManager = true;
+    searchParameter.IsActive = true;
     var response = await this.service.getUser(searchParameter);
     var userList = response.usersList;
     // this.totalRecordCount = response.RecordCount;
@@ -501,10 +502,7 @@ export class AddComponent implements OnInit {
       let message = "Are you sure you want to delete this record?";
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-          let tenantGroupData = [{
-            "Identifier": tenantgroup.Identifier,
-          }];
-          let isDeleted = await this.service.deleteUser(tenantgroup.Identifier);
+          let isDeleted = await this.service.deactivate(tenantgroup.Identifier);
           if (isDeleted) {
             let messageString = Constants.recordDeletedMessage;
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
