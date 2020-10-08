@@ -74,6 +74,7 @@ export class AddComponent implements OnInit {
   public countrycodeList = [];
   public countrycodeLists = [{ "Identifier": 0, "CountryName": "Please Select", "Code": "Please Select", "DialingCode": "" }];
   dataSource = new MatTableDataSource<TenantContact>(this.contactlist);
+  public tenantAddressFieldError: boolean = false;
 
   get tenantName() {
     return this.tenantFormGroup.get('tenantName');
@@ -395,25 +396,18 @@ export class AddComponent implements OnInit {
     }
 
     this.tenantFormErrorObject.showProfilePictureSizeError = false;
-
     var pattern = /image-*/;
-
     if (!file.type.match(pattern)) {
-
       this.contactFormErrorObject.showProfilePictureTypeError = true;
-
       return false;
     }
     this.tenantFormErrorObject.showProfilePictureTypeError = false;
-
     let reader = new FileReader();
     reader.readAsDataURL(file);
 
     reader.onload = (e) => {
       if (reader.DONE == 2) {
         this.image = reader.result.toString();
-        //console.log('reader.result');
-        //console.log(this.image);
       }
     };
     reader.onerror = function (error) {
@@ -502,7 +496,6 @@ export class AddComponent implements OnInit {
 
   async UpdateContact() {
     var contact = this.contactTypeList.filter(s => this.contactEditFormGroup.value.EditcontactType == s.Identifier);
-
     var country = this.countrycodeLists.filter(s => this.contactEditFormGroup.value.EditCountryCode == s.Identifier);
     let contactObject: TenantContact = {
       "FirstName": this.contactEditFormGroup.value.EditfirstName.trim(),
@@ -598,7 +591,6 @@ export class AddComponent implements OnInit {
           if (contactObject.ContactType == "Primary") {
             contactObject.IsActivationLinkSent = true;
           }
-         
         }
       }
       contacts = this.contactlist.filter(s => contactObject.EmailAddress == s.EmailAddress);
@@ -664,8 +656,22 @@ export class AddComponent implements OnInit {
 
   }
 
+  onTenantAddressChange(value) {
+    debugger
+    console.log(value);
+    if(value == '') {
+      this.tenantAddressFieldError = true;
+    }else {
+      this.tenantAddressFieldError = false;
+    }
+  };
+
   validateTenantForm() {
     if (this.tenantFormGroup.invalid) {
+      return true;
+    }
+    if(this.tenantFormGroup.controls['tenantAddress'].value == '') {
+      //this.tenantAddressFieldError = true;
       return true;
     }
     if (this.imageSize > 200000) {
