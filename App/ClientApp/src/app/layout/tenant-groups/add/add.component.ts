@@ -12,8 +12,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CountryService } from '../../country/country.service';
 import { Tenant } from '../../tenants/tenant';
 import { TenantService } from '../../tenants/tenant.service';
-import { User } from '../../users/user';
 import { UserService } from '../../users/user.service';
+import { RoleService } from '../../roles/role.service';
+
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -61,6 +62,7 @@ export class AddComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   public countryList = [{ "Identifier": 0, "Code": "Please Select", "DialingCode": "" }];
   dataSource = new MatTableDataSource<any>(this.tenantGroupUserList);
+  public roleObject:any = {};
 
   constructor(private _location: Location,
     private _router: Router,
@@ -196,8 +198,25 @@ export class AddComponent implements OnInit {
 
     if (this.updateOperationMode) {
       this.getTenantGroups();
+      this.getTenantGroupManagerRole();
     }
     this.getCountries();
+  }
+
+  async getTenantGroupManagerRole() {
+    let roleService = this.injector.get(RoleService);
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = "Id";
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.Name = "Group Manager";
+    var response = await roleService.getRoles(searchParameter);
+    let _list = response.roleList;
+    this.roleObject = _list[0];
   }
 
   async getTenantGroups() {
@@ -362,6 +381,7 @@ export class AddComponent implements OnInit {
   }
 
   async onSubmitAddTenantGroupUser() {
+
     var country = this.countryList.filter(c => this.tenantGroupUserFormGroup.value.CountryCode == c.Identifier);
     let tenantGroupUserObject: any = {
       "FirstName": this.tenantGroupUserFormGroup.value.firstName.trim(),
@@ -415,6 +435,7 @@ export class AddComponent implements OnInit {
 
   async UpdateTenantGroupUser() {
     var country = this.countryList.filter(c => this.tenantGroupUserEditFormGroup.value.EditCountryCode == c.Identifier);
+    var tenantgroupuser = this.tenantGroupUserList.filter(s => this.TenantGroupUser.EmailAddress == s.EmailAddress)[0];
     var index = this.tenantGroupUserList.findIndex(s => this.TenantGroupUser.EmailAddress == s.EmailAddress);
     this.tenantGroupUserList.splice(index, 1);
     let tenantGroupUserObject: any = {
@@ -424,23 +445,36 @@ export class AddComponent implements OnInit {
       "ContactNumber": this.tenantGroupUserEditFormGroup.value.EditmobileNumber,
       "CountryId": this.tenantGroupUserEditFormGroup.value.EditCountryCode,
       "CountryCode": country[0].DialingCode,
-      "Identifier": 0,
+      "Identifier": tenantgroupuser.Identifier,
       "IsActive": true,
-      "IsActivationLinkSent": false
+      "IsActivationLinkSent": false,
+      "TenantCode": tenantgroupuser.TenantCode
     };
 
     if (this.updateOperationMode) {
       var data = [];
+      let roleArray = [];
+      roleArray.push({
+        "Identifier": this.roleObject.Identifier,
+        "Name": this.roleObject.Name,
+      });
+      tenantGroupUserObject.Roles = roleArray;
       data.push(tenantGroupUserObject);
-      let isRecordSaved = await this.service.saveUser(data, true);
-      if (isRecordSaved) {
-        let message = Constants.recordAddedMessage;
-        if (this.updateOperationMode) {
-          message = Constants.recordUpdatedMessage;
+      this._spinnerService.start();
+      this.service.saveUser(data, true).subscribe(data => {
+        this._spinnerService.stop();
+        if (data == true) {
+          let message = Constants.recordAddedMessage;
+          if (this.updateOperationMode) {
+            message = Constants.recordUpdatedMessage;
+          }
+          this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
+          this.BindTenantGroupUsers();
         }
-        this._messageDialogService.openDialogBox('Success', message, Constants.msgBoxSuccess);
-        this.BindTenantGroupUsers();
-      }
+      }, (error: any) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this._spinnerService.stop();
+      });
     }
     else {
       var contacts = [];

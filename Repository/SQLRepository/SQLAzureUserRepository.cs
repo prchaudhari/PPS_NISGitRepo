@@ -174,21 +174,19 @@ namespace nIS
 
                     users.ToList().ForEach(user =>
                     {
-                        UserRecord userRecord = nVidYoEntitiesDataContext.UserRecords.FirstOrDefault(data => data.Id == user.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
+                        string TenantCode = (user.TenantCode != null && user.TenantCode != string.Empty) ? user.TenantCode : tenantCode;
+                        UserRecord userRecord = nVidYoEntitiesDataContext.UserRecords.FirstOrDefault(data => data.Id == user.Identifier && data.TenantCode == TenantCode && data.IsDeleted == false);
+                        if (userRecord == null)
+                        {
+                            throw new UserNotFoundException(tenantCode);
+                        }
                         userRecord.FirstName = user.FirstName;
                         userRecord.LastName = user.LastName;
                         userRecord.ContactNumber = user.ContactNumber;
                         userRecord.EmailAddress = user.EmailAddress;
                         userRecord.Image = user.Image;
-                        userRecord.IsActive = user.IsActive;
-                        //userRecord.IsLocked = false;
-                        userRecord.NoofAttempts = 0;
-                        userRecord.TenantCode = tenantCode;
                         userRecord.CountryId = user.CountryId;
-                        //userRecord.IsGroupManager = user.IsGroupManager;
-                        //userRecord.IsInstanceManager = user.IsInstanceManager;
                     });
-
                     nVidYoEntitiesDataContext.SaveChanges();
                 }
 
