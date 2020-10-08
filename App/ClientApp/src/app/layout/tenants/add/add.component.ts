@@ -657,8 +657,6 @@ export class AddComponent implements OnInit {
   }
 
   onTenantAddressChange(value) {
-    debugger
-    console.log(value);
     if(value == '') {
       this.tenantAddressFieldError = true;
     }else {
