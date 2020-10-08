@@ -27,6 +27,6 @@ namespace nIS
         /// <summary>
         /// Duplicate Tenant user role access mapping found exception
         /// </summary>
-        public const string DUPLICATE_TENANT_USER_ROLE_ACCESS_MAPPING_FOUND_EXCEPTION = "Tenant user role access mapping already exists";
+        public const string DUPLICATE_TENANT_USER_ROLE_ACCESS_MAPPING_FOUND_EXCEPTION = "You already assigned one role of selected tenant for this user.";
     }
 }
