@@ -78,13 +78,13 @@ namespace nIS
         public virtual DbSet<View_PageRecord> View_PageRecord { get; set; }
         public virtual DbSet<View_StatementDefinitionRecord> View_StatementDefinitionRecord { get; set; }
         public virtual DbSet<View_SourceDataRecord> View_SourceDataRecord { get; set; }
-        public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
         public virtual DbSet<ContactTypeRecord> ContactTypeRecords { get; set; }
         public virtual DbSet<TenantContactRecord> TenantContactRecords { get; set; }
         public virtual DbSet<TenantUserRecord> TenantUserRecords { get; set; }
         public virtual DbSet<MultiTenantUserAccessMapRecord> MultiTenantUserAccessMapRecords { get; set; }
         public virtual DbSet<View_MultiTenantUserAccessMapRecord> View_MultiTenantUserAccessMapRecord { get; set; }
         public virtual DbSet<CountryRecord> CountryRecords { get; set; }
+        public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

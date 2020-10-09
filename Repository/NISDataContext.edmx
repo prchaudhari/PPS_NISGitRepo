@@ -834,6 +834,7 @@ warning 6002: The table/view 'NIS.NIS.View_ScheduleLog' does not have a primary 
             <PropertyRef Name="ScheduleName" />
             <PropertyRef Name="Status" />
             <PropertyRef Name="ExecutionDate" />
+            <PropertyRef Name="TenantCode" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="ScheduleName" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -841,6 +842,7 @@ warning 6002: The table/view 'NIS.NIS.View_ScheduleLog' does not have a primary 
           <Property Name="RecordProccessed" Type="varchar" MaxLength="63" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ExecutionDate" Type="datetime" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_SourceData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1125,7 +1127,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_ScheduleLog].[ProcessingTime] AS [ProcessingTime], 
     [View_ScheduleLog].[RecordProccessed] AS [RecordProccessed], 
     [View_ScheduleLog].[Status] AS [Status], 
-    [View_ScheduleLog].[ExecutionDate] AS [ExecutionDate]
+    [View_ScheduleLog].[ExecutionDate] AS [ExecutionDate], 
+    [View_ScheduleLog].[TenantCode] AS [TenantCode]
     FROM [NIS].[View_ScheduleLog] AS [View_ScheduleLog]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_SourceData" EntityType="Self.View_SourceData" store:Type="Views" store:Schema="NIS">
@@ -1236,7 +1239,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="View_PageRecord" EntityType="NISModel.View_PageRecord" />
           <EntitySet Name="View_StatementDefinitionRecord" EntityType="NISModel.View_StatementDefinitionRecord" />
           <EntitySet Name="View_SourceDataRecord" EntityType="NISModel.View_SourceDataRecord" />
-          <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
           <EntitySet Name="ContactTypeRecords" EntityType="NISModel.ContactTypeRecord" />
           <EntitySet Name="TenantContactRecords" EntityType="NISModel.TenantContactRecord" />
           <EntitySet Name="TenantUserRecords" EntityType="NISModel.TenantUserRecord" />
@@ -1249,6 +1251,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <FunctionImport Name="FnGetParentAndChildTenant" IsComposable="true" ReturnType="Collection(NISModel.FnGetParentAndChildTenant_Result)">
           <Parameter Name="ParentTenantCode" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2038,20 +2041,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="CustomerName" Type="String" MaxLength="702" FixedLength="false" Unicode="true" />
           <Property Name="PageTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="View_ScheduleLog">
-          <Key>
-            <PropertyRef Name="ScheduleName" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="ExecutionDate" />
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProcessingTime" Type="String" MaxLength="28" FixedLength="false" Unicode="false" />
-          <Property Name="RecordProccessed" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Id" Type="Int64" Nullable="false" />
-        </EntityType>
         <EntityType Name="ContactTypeRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -2212,6 +2201,22 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
           <Property Type="String" Name="ParentTenantCode" Nullable="true" />
         </ComplexType>
+        <EntityType Name="View_ScheduleLog">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ScheduleName" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="ExecutionDate" />
+            <PropertyRef Name="TenantCode" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessingTime" Type="String" MaxLength="28" FixedLength="false" Unicode="false" />
+          <Property Name="RecordProccessed" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3005,18 +3010,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_ScheduleLog">
-            <EntityTypeMapping TypeName="NISModel.View_ScheduleLog">
-              <MappingFragment StoreEntitySet="View_ScheduleLog">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ExecutionDate" ColumnName="ExecutionDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="RecordProccessed" ColumnName="RecordProccessed" />
-                <ScalarProperty Name="ProcessingTime" ColumnName="ProcessingTime" />
-                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ContactTypeRecords">
             <EntityTypeMapping TypeName="NISModel.ContactTypeRecord">
               <MappingFragment StoreEntitySet="ContactType">
@@ -3176,6 +3169,19 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="View_ScheduleLog">
+            <EntityTypeMapping TypeName="NISModel.View_ScheduleLog">
+              <MappingFragment StoreEntitySet="View_ScheduleLog">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ExecutionDate" ColumnName="ExecutionDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RecordProccessed" ColumnName="RecordProccessed" />
+                <ScalarProperty Name="ProcessingTime" ColumnName="ProcessingTime" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -14,11 +14,12 @@ namespace nIS
     
     public partial class View_ScheduleLog
     {
+        public long Id { get; set; }
         public string ScheduleName { get; set; }
         public string ProcessingTime { get; set; }
         public string RecordProccessed { get; set; }
         public string Status { get; set; }
         public System.DateTime ExecutionDate { get; set; }
-        public long Id { get; set; }
+        public string TenantCode { get; set; }
     }
 }
