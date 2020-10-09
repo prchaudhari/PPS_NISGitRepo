@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+    using Microsoft.Practices.ObjectBuilder2;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     #region References
@@ -834,6 +835,9 @@ namespace nIS
                         {
                             this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
                         });
+                        //customerMasters.ForEach(customer => {
+                        //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
+                        //});
                     }
                     else
                     {

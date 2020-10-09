@@ -232,9 +232,8 @@ namespace nIS
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
                 var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
-                TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
                 {
                     baseURL = tenantConfiguration.OutputHTMLPath;
                     outputLocation = tenantConfiguration.OutputHTMLPath;
@@ -264,9 +263,8 @@ namespace nIS
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
                 var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
-                TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
                 {
                     baseURL = tenantConfiguration.OutputHTMLPath;
                     outputLocation = tenantConfiguration.OutputHTMLPath;
