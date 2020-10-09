@@ -57,6 +57,10 @@
     <Compile Include="City\CityNotFoundException.cs" />
     <Compile Include="City\DuplicateCityFoundException.cs" />
     <Compile Include="City\InvalidCityException.cs" />
+    <Compile Include="Client\DeactivatedTenantGroupReferenceExceptionException.cs" />
+    <Compile Include="Client\DeactivatedTenantReferenceExceptionException.cs" />
+    <Compile Include="Client\DeleteTenantReferenceExceptionException.cs" />
+    <Compile Include="Client\DeleteTenantGroupReferenceExceptionException.cs" />
     <Compile Include="Client\ClientNotFoundException.cs" />
     <Compile Include="Client\ClientSubscriptionHistoryUpdatationFailedException.cs" />
     <Compile Include="Client\DuplicateClientException.cs" />

@@ -350,26 +350,14 @@ namespace nIS
                 clients.ToList().ForEach(client =>
                 {
                     Tenant tenant = new Tenant();
-                    //client.TenantContacts.ToList().ForEach(item =>
-                    //{
-                    //    if (item.ContactType.Equals(ModelConstant.TENANT_PRIMARY_CONTACT))
-                    //    {
-                    //        client.PrimaryFirstName = item.FirstName;
-                    //        client.PrimaryLastName = item.LastName;
-                    //        client.PrimaryEmailAddress = item.EmailAddress;
-                    //        client.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
 
-                    //        tenant.PrimaryFirstName = item.FirstName;
-                    //        tenant.PrimaryLastName = item.LastName;
-                    //        tenant.PrimaryEmailAddress = item.EmailAddress;
-                    //        tenant.PrimaryContactNumber = item.CountryCode + "-" + item.ContactNumber;
-                    //    }
-                    //});
-
-                    //// Assign compulsary properties.
                     tenant.TenantCode = client.TenantCode;
                     tenant.TenantName = client.TenantName;
                     tenant.TenantDomainName = client.TenantDomainName;
+                    tenant.PrimaryFirstName = client.PrimaryFirstName;
+                    tenant.PrimaryLastName = client.PrimaryLastName;
+                    tenant.PrimaryEmailAddress = client.PrimaryEmailAddress;
+                    tenant.PrimaryContactNumber = client.PrimaryContactNumber;
                     tenant.TenantType = client.TenantType;
                     tenant.PrimaryPinCode = client.PrimaryPinCode;
                     tenant.PrimaryAddressLine1 = client.PrimaryAddressLine1;
@@ -415,8 +403,36 @@ namespace nIS
             bool result = false;
             try
             {
-                IList<Tenant> tenants = new List<Tenant>();
 
+                clients.ToList().ForEach(item =>
+                {
+                    if (item.TenantType == "Group")
+                    {
+                        TenantSearchParameter tenantSearchParameter = new TenantSearchParameter();
+                        tenantSearchParameter.SortingParameter = new Websym.Core.TenantManager.SortParameter();
+                        tenantSearchParameter.SortingParameter.SortColumn = "TenantCode";
+                        tenantSearchParameter.ParentTenantCode = item.TenantCode;
+                        var childTenants = this.configurationUtility.GetTenant(tenantSearchParameter);
+                        if (childTenants != null && childTenants?.Count() > 0)
+                        {
+                            throw new DeleteTenantGroupReferenceExceptionException(item.TenantCode);
+                        }
+                    }
+                    else
+                    {
+                        UserSearchParameter userSearchParameter = new UserSearchParameter();
+                        userSearchParameter.SortParameter = new SortParameter();
+                        userSearchParameter.SortParameter.SortColumn = "Id";
+                        var users = this.userManager.GetUsers(userSearchParameter, item.TenantCode);
+                        users = users.Where(i => i.EmailAddress != item.PrimaryEmailAddress).ToList();
+                        if (users != null && users?.Count() > 0)
+                        {
+
+                            throw new DeleteTenantReferenceExceptionException(item.TenantCode);
+                        }
+                    }
+                });
+                IList<Tenant> tenants = new List<Tenant>();
                 clients.ToList().ForEach(item =>
                 {
                     tenants.Add(new Tenant
@@ -424,6 +440,7 @@ namespace nIS
                         TenantCode = item.TenantCode
                     });
                 });
+
                 result = this.configurationUtility.DeleteTenant(tenants);
 
                 return result;
@@ -434,7 +451,7 @@ namespace nIS
             }
         }
 
-        public bool ActivateClients(string tenantCode)
+        public bool ActivateClients(IList<Client> clients)
         {
             bool result = false;
             try
@@ -444,7 +461,7 @@ namespace nIS
 
                 tenants.Add(new Tenant
                 {
-                    TenantCode = tenantCode
+                    TenantCode = clients[0].TenantCode
                 });
 
                 result = this.configurationUtility.ActivateTenant(tenants);
@@ -458,17 +475,47 @@ namespace nIS
             }
         }
 
-        public bool DeactivateClients(string tenantCode)
+        public bool DeactivateClients(IList<Client> clients)
         {
             bool result = false;
             try
             {
-                IList<Tenant> tenants = new List<Tenant>();
-
-
-                tenants.Add(new Tenant
+                clients.ToList().ForEach(item =>
                 {
-                    TenantCode = tenantCode
+                    if (item.TenantType == "Group")
+                    {
+                        TenantSearchParameter tenantSearchParameter = new TenantSearchParameter();
+                        tenantSearchParameter.SortingParameter = new Websym.Core.TenantManager.SortParameter();
+                        tenantSearchParameter.SortingParameter.SortColumn = "TenantCode";
+                        tenantSearchParameter.ParentTenantCode = item.TenantCode;
+                        tenantSearchParameter.IsActive = true;
+                        var childTenants = this.configurationUtility.GetTenant(tenantSearchParameter);
+                        if (childTenants != null && childTenants?.Count() > 0)
+                        {
+                            throw new DeactivatedTenantGroupReferenceExceptionException(item.TenantCode);
+                        }
+                    }
+                    else
+                    {
+                        UserSearchParameter userSearchParameter = new UserSearchParameter();
+                        userSearchParameter.SortParameter = new SortParameter();
+                        userSearchParameter.SortParameter.SortColumn = "Id";
+                        var users = this.userManager.GetUsers(userSearchParameter, item.TenantCode);
+                        users = users.Where(i => i.EmailAddress != item.PrimaryEmailAddress).ToList();
+                        if (users != null && users?.Count() > 0)
+                        {
+
+                            throw new DeactivatedTenantReferenceExceptionException(item.TenantCode);
+                        }
+                    }
+                });
+                IList<Tenant> tenants = new List<Tenant>();
+                clients.ToList().ForEach(item =>
+                {
+                    tenants.Add(new Tenant
+                    {
+                        TenantCode = item.TenantCode
+                    });
                 });
 
                 result = this.configurationUtility.DeactivateTenant(tenants);

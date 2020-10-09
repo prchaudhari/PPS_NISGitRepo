@@ -51,7 +51,7 @@
                 <button type="button" id="btnViewRole" title="View" (click)="navigateToTenantView(role)">
                   <span class="fa fa-file-text-o"></span>
                 </button>
-                <button type="button" id="btnUpdateRole" title="Update" (click)="navigateToTenantEdit(role)">
+                <button type="button" id="btnUpdateRole" title="Update" *ngIf="role.IsActive"(click)="navigateToTenantEdit(role)">
                   <span class="fa fa-pencil-square-o"></span>
                 </button>
                 <button type="button" id="btnUpdateRole" title="Delete" (click)="deleteTenant(role)">

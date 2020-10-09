@@ -33,7 +33,7 @@ export class TenantService {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.tenantGetUrl;
     this.uiLoader.start();
-    var response : any = {};
+    var response: any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
@@ -46,7 +46,7 @@ export class TenantService {
               });
               response.List = this.tenantsList;
               response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
-            }else {
+            } else {
               response.List = this.tenantsList;
               response.RecordCount = 0;
             }
@@ -111,7 +111,7 @@ export class TenantService {
   //method to call api of delete Tenant.
   public async deleteTenant(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantDeleteUrl ;
+    let requestUrl = URLConfiguration.tenantDeleteUrl;
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -125,7 +125,7 @@ export class TenantService {
           }
         }
       }, (error) => {
-          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
         this.isRecordDeleted = false;
       });
@@ -233,9 +233,9 @@ export class TenantService {
 
   public async activate(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantActivate + "?" + "tenantIdentifier=" + postData;
+    let requestUrl = URLConfiguration.tenantActivate;
     this.uiLoader.start();
-    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -246,8 +246,10 @@ export class TenantService {
             this.isRecordDeleted = false;
           }
         }
-      }, (error: HttpResponse<any>) => {
+      }, (error) => {
         this.uiLoader.stop();
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+
         this.isRecordDeleted = false;
       });
     return <boolean>this.isRecordDeleted;
@@ -255,9 +257,9 @@ export class TenantService {
 
   public async deactivate(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.tenantDeactivate + "?" + "tenantIdentifier=" + postData;
+    let requestUrl = URLConfiguration.tenantDeactivate;
     this.uiLoader.start();
-    await httpClientService.CallGetHttp("GET", requestUrl).toPromise()
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -268,8 +270,9 @@ export class TenantService {
             this.isRecordDeleted = false;
           }
         }
-      }, (error: HttpResponse<any>) => {
+      }, (error) => {
         this.uiLoader.stop();
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.isRecordDeleted = false;
       });
     return <boolean>this.isRecordDeleted;
@@ -301,5 +304,5 @@ export class TenantService {
     return <boolean>this.isRecordSaved;
   }
 
- 
+
 }
