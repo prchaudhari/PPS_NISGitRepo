@@ -146,6 +146,7 @@ export class ViewComponent implements OnInit {
       if (isConfirmed) {
         let roleData = [{
           "TenantCode": this.tenant.TenantCode,
+          "TenantType":this.tenant.TenantType
         }];
 
         let isDeleted = await this.tenantService.deleteTenant(roleData);

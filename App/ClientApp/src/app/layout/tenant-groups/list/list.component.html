@@ -41,7 +41,7 @@
                   <button type="button" id="btnViewTenantGroup" title="View" (click)="navigateToTenantGroupView(tenantgroup)">
                     <span class="fa fa-file-text-o"></span>
                   </button>
-                  <button type="button" id="btnUpdateTenantGroup" title="Update" (click)="navigateToTenantGroupEdit(tenantgroup)">
+                  <button type="button" id="btnUpdateTenantGroup" title="Update" *ngIf="tenantgroup.IsActive" (click)="navigateToTenantGroupEdit(tenantgroup)">
                     <span class="fa fa-pencil-square-o"></span>
                   </button>
                   <button type="button" id="btnDeleteTenantGroup" title="Delete" (click)="deleteTenantGroup(tenantgroup)">
@@ -99,5 +99,4 @@
   </div>
   
   <div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>
-  
   

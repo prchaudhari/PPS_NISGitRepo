@@ -39,34 +39,34 @@ export class ViewComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  
+
   constructor(private _router: Router,
     private injector: Injector,
     private service: UserService,
     private tenantService: TenantService,
     private _messageDialogService: MessageDialogService) {
-      this.tenantgroup = new Tenant;
-      _router.events.subscribe(e => {
-        if (e instanceof NavigationEnd) {
-          if (e.url.includes('/tenantgroups/Add')) {
-            localStorage.removeItem("tenantgroupparams");
-          }
+    this.tenantgroup = new Tenant;
+    _router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        if (e.url.includes('/tenantgroups/Add')) {
+          localStorage.removeItem("tenantgroupparams");
         }
-      });
-  
-      _router.events.subscribe(e => {
-        if (e instanceof NavigationEnd) {
-          if (e.url.includes('/tenantgroups')) {
-            //set passing parameters to localstorage.
-            this.params = JSON.parse(localStorage.getItem('tenantgroupparams'));
-            if (localStorage.getItem('tenantgroupparams')) {
-              this.tenantgroup.TenantCode = this.params.Routeparams.passingparams.TenantGroupCode;
-            }
-          } else {
-            localStorage.removeItem("tenantgroupparams");
+      }
+    });
+
+    _router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        if (e.url.includes('/tenantgroups')) {
+          //set passing parameters to localstorage.
+          this.params = JSON.parse(localStorage.getItem('tenantgroupparams'));
+          if (localStorage.getItem('tenantgroupparams')) {
+            this.tenantgroup.TenantCode = this.params.Routeparams.passingparams.TenantGroupCode;
           }
+        } else {
+          localStorage.removeItem("tenantgroupparams");
         }
-      });
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -135,6 +135,7 @@ export class ViewComponent implements OnInit {
       if (isConfirmed) {
         let roleData = [{
           "TenantCode": this.tenantgroup.TenantCode,
+          "TenantType": this.tenantgroup.TenantType,
         }];
 
         let isDeleted = await this.tenantService.deleteTenant(roleData);

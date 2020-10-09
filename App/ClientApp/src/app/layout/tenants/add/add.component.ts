@@ -417,7 +417,7 @@ export class AddComponent implements OnInit {
 
   contactFormValidation(form): boolean {
     if (form == 'Edit') {
-      if (this.Contact.ContactType == 0) {
+      if (this.contactEditFormGroup.controls.EditcontactType.invalid) {
         return true;
       }
       if (this.contactEditFormGroup.controls.EditfirstName.invalid) {
@@ -429,7 +429,7 @@ export class AddComponent implements OnInit {
       if (this.contactEditFormGroup.controls.Editemail.invalid) {
         return true;
       }
-      if (this.Contact.CountryCode == 0) {
+      if (this.contactEditFormGroup.controls.EditCountryCode.value == 0) {
         return true;
       }
       if (this.contactEditFormGroup.controls.EditmobileNumber.invalid) {
@@ -438,7 +438,7 @@ export class AddComponent implements OnInit {
       return false;
     }
     else {
-      if (this.Contact.ContactType == 0) {
+      if (this.contactFormGroup.controls.ContactType.invalid) {
         return true;
       }
       if (this.contactFormGroup.controls.firstName.invalid) {
@@ -450,7 +450,7 @@ export class AddComponent implements OnInit {
       if (this.contactFormGroup.controls.email.invalid) {
         return true;
       }
-      if (this.Contact.CountryCode == 0) {
+      if (this.contactFormGroup.controls.CountryCode.value == 0) {
         return true;
       }
       if (this.contactFormGroup.controls.mobileNumber.invalid) {
@@ -657,9 +657,9 @@ export class AddComponent implements OnInit {
   }
 
   onTenantAddressChange(value) {
-    if(value == '') {
+    if (value == '') {
       this.tenantAddressFieldError = true;
-    }else {
+    } else {
       this.tenantAddressFieldError = false;
     }
   };
@@ -668,7 +668,7 @@ export class AddComponent implements OnInit {
     if (this.tenantFormGroup.invalid) {
       return true;
     }
-    if(this.tenantFormGroup.controls['tenantAddress'].value == '') {
+    if (this.tenantFormGroup.controls['tenantAddress'].value == '') {
       //this.tenantAddressFieldError = true;
       return true;
     }
@@ -755,7 +755,7 @@ export class AddComponent implements OnInit {
       this.totalSize = this.array.length;
       this.iterator();
     }
-    
+
   }
 
   private markFormGroupUnTouched(formGroup: FormGroup) {

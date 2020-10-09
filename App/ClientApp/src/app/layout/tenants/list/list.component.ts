@@ -62,10 +62,10 @@ export class ListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
-    
+
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
-      if(userClaimsDetail.IsTenantGroupManager == null || userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() != 'true') {
+      if (userClaimsDetail.IsTenantGroupManager == null || userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() != 'true') {
         this.localstorageservice.removeLocalStorageData();
         this.route.navigate(['login']);
       }
@@ -298,13 +298,12 @@ export class ListComponent implements OnInit {
   }
 
   //function written to delete role
-  deleteTenant(role: Tenant) {
+  deleteTenant(tenant: Tenant) {
     let message = 'Are you sure, you want to delete this record?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        let data = [{
-          "TenantCode": role.TenantCode,
-        }];
+        let data = [];
+        data.push(tenant);
         let isDeleted = await this.tenantService.deleteTenant(data);
         if (isDeleted) {
           let messageString = Constants.recordDeletedMessage;
@@ -321,7 +320,9 @@ export class ListComponent implements OnInit {
       message = "Do you really want to deactivate tenant?"
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-          let isDeleted = await this.tenantService.deactivate(tenant.TenantCode);
+          let data = [];
+          data.push(tenant);
+          let isDeleted = await this.tenantService.deactivate(data);
           if (isDeleted) {
             let messageString = "Tenant deactivated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
@@ -334,7 +335,9 @@ export class ListComponent implements OnInit {
       message = "Do you really want to activate tenant?"
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-          let isDeleted = await this.tenantService.activate(tenant.TenantCode);
+          let data = [];
+          data.push(tenant);
+          let isDeleted = await this.tenantService.activate(data);
           if (isDeleted) {
             let messageString = "Tenant activated successfully";
             this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);

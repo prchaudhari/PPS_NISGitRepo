@@ -181,12 +181,15 @@ namespace nIS
             bool result = false;
             try
             {
-                //this.tenantCode = ((IEnumerable<string>)Request.Headers.GetValues(ModelConstant.TENANT_CODE_KEY)).FirstOrDefault();
-                //this.tenantCode = ModelConstant.DEFAULT_TENANT_CODE;
-                //string tenantBaseURL = ConfigurationManager.AppSettings[ModelConstants.TENANTBASEURL];
-                //result = JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(tenantBaseURL, "Tenant", "Activate", JsonConvert.SerializeObject(clients), ModelConstant.TENANT_CODE_KEY, tenantCode));
+                if (!Request.Headers.Contains(ModelConstant.TENANT_CODE_KEY))
+                {
+                    throw new TenantNotFoundException(ModelConstant.DEFAULT_TENANT_CODE);
+                }
 
+                this.tenantCode = ((IEnumerable<string>)Request.Headers.GetValues(ModelConstant.TENANT_CODE_KEY)).FirstOrDefault();
+                result = this.clientManager.ActivateClients(clients);
                 return result;
+               
             }
             catch
             {
@@ -200,12 +203,15 @@ namespace nIS
             bool result = false;
             try
             {
-                //this.tenantCode = ((IEnumerable<string>)Request.Headers.GetValues(ModelConstant.TENANT_CODE_KEY)).FirstOrDefault();
-                //this.tenantCode = ModelConstant.DEFAULT_TENANT_CODE;
-                //string tenantBaseURL = ConfigurationManager.AppSettings[ModelConstants.TENANTBASEURL];
-                //result = JsonConvert.DeserializeObject<bool>(this.utility.ExecuteWebRequest(tenantBaseURL, "Tenant", "Deactivate", JsonConvert.SerializeObject(clients), ModelConstant.TENANT_CODE_KEY, tenantCode));
+                if (!Request.Headers.Contains(ModelConstant.TENANT_CODE_KEY))
+                {
+                    throw new TenantNotFoundException(ModelConstant.DEFAULT_TENANT_CODE);
+                }
 
+                this.tenantCode = ((IEnumerable<string>)Request.Headers.GetValues(ModelConstant.TENANT_CODE_KEY)).FirstOrDefault();
+                result = this.clientManager.DeactivateClients(clients);
                 return result;
+
             }
             catch
             {

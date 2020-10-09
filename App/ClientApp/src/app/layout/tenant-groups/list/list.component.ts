@@ -60,7 +60,7 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
-      if(userClaimsDetail.IsInstanceTenantManager == null || userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() != 'true') {
+      if (userClaimsDetail.IsInstanceTenantManager == null || userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() != 'true') {
         this.localstorageservice.removeLocalStorageData();
         this.route.navigate(['login']);
       }
@@ -250,14 +250,13 @@ export class ListComponent implements OnInit {
     let message = 'Are you sure, you want to delete this record?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-         let tenantGroupData = [{
-           "TenantCode": tenantgroup.TenantCode,
-         }];
+        let tenantGroupData = [];
+        tenantGroupData.push(tenantgroup);
         let isDeleted = await this.tenantService.deleteTenant(tenantGroupData);
         if (isDeleted) {
-        let messageString = Constants.recordDeletedMessage;
-        this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-        this.getTenantGroups(null);
+          let messageString = Constants.recordDeletedMessage;
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          this.getTenantGroups(null);
         }
       }
     });
@@ -267,31 +266,39 @@ export class ListComponent implements OnInit {
   activeDeactiveTenantGroup(tenantgroup: any) {
     let message;
     if (tenantgroup.IsActive) {
-      message = "Do you really want to deactivate tenant group?"
+      message = "Do you really want to deactivate tenant?"
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-          //let isDeleted = await this.tenantService.deactivateTenantGroup(tenantgroup.Id);
-          //if (isDeleted) {
-          let messageString = "Tenant group deactivated successfully";
-          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-          //this.getTenantGroups();
-          //}
+          let tenantGroupData = [];
+          tenantGroupData.push(tenantgroup);
+          let isDeleted = await this.tenantService.deactivate(tenantGroupData);
+          if (isDeleted) {
+            let messageString = "Tenant group deactivated successfully";
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.getTenantGroups(null);
+
+          }
         }
       });
     }
     else {
-      message = "Do you really want to activate tenant group?"
+      message = "Do you really want to activate tenant?"
+
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-          //let isDeleted = await this.tenantService.activateTeantGroup(tenantgroup.Id);
-          //if (isDeleted) {
-          let messageString = "Tenant group activated successfully";
-          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
-          //this.getTenantGroups();
-          //}
+          let tenantGroupData = [];
+          tenantGroupData.push(tenantgroup);
+          let isDeleted = await this.tenantService.activate(tenantGroupData);
+          if (isDeleted) {
+            let messageString = "Tenant group activated successfully";
+            this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+            this.getTenantGroups(null);
+
+          }
         }
       });
     }
+
 
   }
 
