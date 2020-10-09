@@ -58,14 +58,12 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
     }
 
   ngOnInit() {
-
     this.applyBackgroundImage(this.BackgroundImageAssetId, this.BackgroundImageURL);
-
     this.ItemArray = [];
     for(let i=0; i< this.widgetItemArray.length; i++) {
       let widget = Object.assign({}, this.widgetItemArray[i]);
-      if(widget.widgetId == 9 || widget.widgetId == 6 || widget.widgetId == 14) {
-        widget.component = this.bindComponent(widget.widgetId)
+      if(widget.WidgetName == 'SavingTrend' || widget.WidgetName == 'Analytics' || widget.WidgetName == 'SpendingTrend') {
+        widget.component = this.bindComponent(widget.WidgetName)
       }
       this.ItemArray.push(widget);
     }
@@ -127,12 +125,12 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
 
   }
 
-  bindComponent(widgetId): any {
-    if (widgetId == 9) {
+  bindComponent(widgetName): any {
+    if (widgetName == 'SavingTrend') {
       return SavingTrendsPreviewComponent;
-    }else if(widgetId == 6) {
+    }else if(widgetName == 'Analytics') {
       return AnalyticsWidgetPreviewComponent;
-    }else if(widgetId == 14) {
+    }else if(widgetName == 'SpendingTrend') {
       return SpendindTrendsPreviewComponent;
     }
 }

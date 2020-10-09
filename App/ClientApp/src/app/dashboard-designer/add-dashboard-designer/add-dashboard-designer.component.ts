@@ -126,30 +126,6 @@ export class AddDashboardDesignerComponent implements OnInit {
               }
             }
           }
-          // else if (localStorage.getItem('pageDesignEditRouteparams')) {
-          //   this.params = JSON.parse(localStorage.getItem('pageDesignEditRouteparams'));
-          //   this.PageName = this.params.Routeparams.passingparams.PageName
-          //   this.PageIdentifier = this.params.Routeparams.passingparams.PageIdentifier
-          //   this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
-          //   this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
-          //   this.PageTypeName = this.params.Routeparams.passingparams.PageTypeName
-          //   this.BackgroundImageAssetLibraryId = this.params.Routeparams.passingparams.BackgroundImageAssetLibraryId
-          //   this.BackgroundImageAssetId = this.params.Routeparams.passingparams.BackgroundImageAssetId
-          //   this.BackgroundImageURL = this.params.Routeparams.passingparams.BackgroundImageURL
-
-          //   if (this.params.Routeparams.passingparams.PageWidgetArrayString != null && this.params.Routeparams.passingparams.PageWidgetArrayString != ""
-          //     && this.testJSON(this.params.Routeparams.passingparams.PageWidgetArrayString)) {
-
-          //     this.widgetsGridsterItemArray = JSON.parse(this.params.Routeparams.passingparams.PageWidgetArrayString)
-          //     for (let x = 0; x < this.widgetsGridsterItemArray.length; x++) {
-          //       let obj = this.bindComponent(this.widgetsGridsterItemArray[x].widgetId);
-          //       if (obj != null) {
-          //         this.widgetsGridsterItemArray[x].component = obj.component;
-          //         this.widgetsGridsterItemArray[x].value = obj.value;
-          //       }
-          //     }
-          //   }
-          // }
         } else {
           localStorage.removeItem("pageDesignRouteparams");
           localStorage.removeItem("pageDesignEditRouteparams");
@@ -870,9 +846,10 @@ export class AddDashboardDesignerComponent implements OnInit {
           gridsterItem.cols = pageWidgets[i].Width;
           gridsterItem.rows = pageWidgets[i].Height;
           gridsterItem.widgetId = pageWidgets[i].WidgetId;
+          gridsterItem.WidgetName = pageWidgets[i].WidgetName;
           gridsterItem.WidgetSetting = pageWidgets[i].WidgetSetting;
           gridsterItem.widgetItemCount = this.widgetItemCount;
-          let obj = this.bindComponent(pageWidgets[i].WidgetId);
+          let obj = this.bindComponent(pageWidgets[i].WidgetName);
           gridsterItem.component = obj.component;
           gridsterItem.value = obj.value;
           this.widgetsGridsterItemArray.push(gridsterItem);
@@ -881,63 +858,64 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
   }
 
-  bindComponent(widgetId): any {
+  bindComponent(widgetName): any {
     let gridObj: any = {};
-    if (widgetId == 1) {
-      gridObj.component = CustomerInformationComponent;
-      gridObj.value = "CustomerInformation";
-    } else if (widgetId == 2) {
-      gridObj.component = AccountInformationComponent;
-      gridObj.value = "AccountInformation";
-    } else if (widgetId == 4) {
-      gridObj.component = ImageComponent;
-      gridObj.value = "Image";
-    } else if (widgetId == 5) {
-      gridObj.component = VideoComponent;
-      gridObj.value = "Video";
-    } else if (widgetId == 3) {
-      gridObj.component = SummaryAtGlanceComponent;
-      gridObj.value = "Summary";
+    if(widgetName == 'CustomerInformation') {
+        gridObj.component = CustomerInformationComponent;
+        gridObj.value = "CustomerInformation";
     }
-    else if (widgetId == 11) {
-      gridObj.component = CurrentAvailableBalanceComponent;
-      gridObj.value = "CurrentAvailableBalance";
+    else if(widgetName == 'AccountInformation') {
+        gridObj.component = AccountInformationComponent;
+        gridObj.value = "AccountInformation";
     }
-    else if (widgetId == 12) {
-      gridObj.component = SavingAvailableBalanceComponent;
-      gridObj.value = "SavingAvailableBalance";
+    else if(widgetName == 'Image') {
+        gridObj.component = ImageComponent;
+        gridObj.value = "Image";
     }
-    else if (widgetId == 8) {
-      gridObj.component = TransactionDetailsComponent;
-      gridObj.value = "CurrentTransaction";
+    else if(widgetName == 'Video') {
+        gridObj.component = VideoComponent;
+        gridObj.value = "Video";
     }
-    else if (widgetId == 7) {
-      gridObj.component = SavingTransactionDetailsComponent;
-      gridObj.value = "SavingTransaction";
+    else if(widgetName == 'Summary') {
+        gridObj.component = SummaryAtGlanceComponent;
+        gridObj.value = "Summary";
     }
-
-
-    else if (widgetId == 14) {
-      gridObj.component = SpendindTrendsComponent;
-      gridObj.value = "SpendingTrend";
+    else if (widgetName == 'CurrentAvailableBalance') {
+        gridObj.component = CurrentAvailableBalanceComponent;
+        gridObj.value = "CurrentAvailableBalance";
     }
-    else if (widgetId == 10) {
-      gridObj.component = TopIncomeSourcesComponent;
-      gridObj.value = "Top4IncomeSources";
+      else if (widgetName == 'SavingAvailableBalance') {
+        gridObj.component = SavingAvailableBalanceComponent;
+        gridObj.value = "SavingAvailableBalance";
     }
-    else if (widgetId == 9) {
-      gridObj.component = SavingTrendsComponent;
-      gridObj.value = "SavingTrend";
+      else if (widgetName == 'CurrentTransaction') {
+        gridObj.component = TransactionDetailsComponent;
+        gridObj.value = "CurrentTransaction";
     }
-    else if (widgetId == 6) {
-      gridObj.component = AnalyticsWidgetComponent;
-      gridObj.value = "Analytics";
+      else if (widgetName == 'SavingTransaction') {
+        gridObj.component = SavingTransactionDetailsComponent;
+        gridObj.value = "SavingTransaction";
     }
-    else if (widgetId == 13) {
-      gridObj.component = ReminderAndRecommComponent;
-      gridObj.value = "ReminderaAndRecommendation";
+    else if (widgetName == 'SpendingTrend') {
+        gridObj.component = SpendindTrendsComponent;
+        gridObj.value = "SpendingTrend";
     }
-
+    else if (widgetName == 'Top4IncomeSources') {
+        gridObj.component = TopIncomeSourcesComponent;
+        gridObj.value = "Top4IncomeSources";
+    }
+    else if (widgetName == 'SavingTrend') {
+        gridObj.component = SavingTrendsComponent;
+        gridObj.value = "SavingTrend";
+    }
+    else if (widgetName == 'Analytics') {
+        gridObj.component = AnalyticsWidgetComponent;
+        gridObj.value = "Analytics";
+    }
+    else if (widgetName == 'ReminderaAndRecommendation') {
+        gridObj.component = ReminderAndRecommComponent;
+        gridObj.value = "ReminderaAndRecommendation";
+    }
     return gridObj;
   }
 
