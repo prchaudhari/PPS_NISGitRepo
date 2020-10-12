@@ -61,6 +61,7 @@ export class AddComponent implements OnInit {
     showCountryError: false,
     showProfilePictureSizeError: false,
     showProfilePictureTypeError: false,
+    showCountryCodeError: false
   };
   public imageSize: number;
   public imageType = "";
@@ -75,6 +76,7 @@ export class AddComponent implements OnInit {
   public countrycodeLists = [{ "Identifier": 0, "CountryName": "Please Select", "Code": "Please Select", "DialingCode": "" }];
   dataSource = new MatTableDataSource<TenantContact>(this.contactlist);
   public tenantAddressFieldError: boolean = false;
+  public tenantCountryCode = 0;
 
   get tenantName() {
     return this.tenantFormGroup.get('tenantName');
@@ -487,10 +489,12 @@ export class AddComponent implements OnInit {
   public onTenantCountrySelected(event) {
     const value = event.target.value;
     if (value == "0") {
-      this.tenantFormErrorObject.showCountryError = true;
+      this.tenantFormErrorObject.showCountryCodeError = true;
+      this.tenantCountryCode = 0;
     }
     else {
-      this.tenantFormErrorObject.showCountryError = false;
+      this.tenantFormErrorObject.showCountryCodeError = false;
+      this.tenantCountryCode = Number(value);
     }
   }
 
@@ -669,7 +673,9 @@ export class AddComponent implements OnInit {
       return true;
     }
     if (this.tenantFormGroup.controls['tenantAddress'].value == '') {
-      //this.tenantAddressFieldError = true;
+      return true;
+    }
+    if(this.tenantCountryCode == 0) {
       return true;
     }
     if (this.imageSize > 200000) {

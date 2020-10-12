@@ -107,7 +107,7 @@
                 <textarea class="form-control" rows="4" formControlName="tenantAddress" (change)="onTenantAddressChange($event.target.value)"></textarea>
                 <ul style="list-style-type:none">
                   <li class="text-danger" *ngIf="tenantAddressFieldError==true">
-                    Address field required.
+                    Tenant address field required.
                   </li>
                 </ul>
               </div>
@@ -121,7 +121,7 @@
                 <div class="validation-msg" style="color:red">
                   <ul *ngIf="tenantFormErrorObject.showCountryCodeError" style="list-style-type:none">
                     <li class="text-danger">
-                      Please select country
+                      Please select tenant country
                     </li>
                   </ul>
                 </div>
@@ -129,17 +129,37 @@
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>State</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" id="inputState" formControlName="tenantState">
+                <div class="validation-msg" style="color:red" *ngIf="tenantState.touched && tenantState.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="tenantState.errors?.required">
+                      Tenant state field required
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>City</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" id="inputCity" formControlName="tenantCity">
-
+                <div class="validation-msg" style="color:red" *ngIf="tenantCity.touched && tenantCity.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="tenantCity.errors?.required">
+                      Tenant city field required
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Postal Code</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" id="inputDomainName" formControlName="tenantPostalCode">
+                <div class="validation-msg" style="color:red" *ngIf="tenantPostalCode.touched && tenantPostalCode.errors">
+                  <ul style="list-style-type:none">
+                    <li class="text-danger" *ngIf="tenantPostalCode.errors?.required">
+                      Tenant postal code field required
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
