@@ -69,9 +69,9 @@ export class UserService {
   //method to call api of delete User.
   public async deleteUser(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.userDeleteUrl + "?" + "identifier=" + postData;
+    let requestUrl = URLConfiguration.userDeleteUrl ;
     this.uiLoader.start();
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -82,7 +82,8 @@ export class UserService {
             this.isRecordDeleted = false;
           }
         }
-      }, (error: HttpResponse<any>) => {
+      }, (error) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
         this.isRecordDeleted = false;
       });

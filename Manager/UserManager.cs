@@ -17,6 +17,8 @@ namespace nIS
     using System.Transactions;
     using Unity;
     using Websym.Core.EventManager;
+    using Websym.Core.TenantManager;
+
 
     #endregion
 
@@ -41,10 +43,11 @@ namespace nIS
         /// </summary>
         private readonly ICryptoManager cryptoManager;
 
+
         /// <summary>
-        /// The resource manager
+        /// The utility object
         /// </summary>
-        //private readonly ResourceManager resourceManager = null;
+        private IConfigurationUtility configurationUtility = null;
 
         /// <summary>
         /// The utility.
@@ -67,6 +70,7 @@ namespace nIS
                 this.unityContainer = unityContainer;
                 this.userRepository = this.unityContainer.Resolve<IUserRepository>();
                 this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
+                this.configurationUtility = new ConfigurationUtility(this.unityContainer);
             }
             catch (Exception ex)
             {
@@ -935,8 +939,7 @@ namespace nIS
                         var clients = new ClientManager(this.unityContainer).GetClients(clientSearchPaarmeter, ModelConstant.DEFAULT_TENANT_CODE);
                         if (clients != null || clients?.Count > 0)
                         {
-                            Exception ex = new Exception("This user is used in tenant group primary contact details");
-                            throw ex;
+                            throw new UserReferenceInTenantGroupException(item.TenantCode);
 
                         }
                     }

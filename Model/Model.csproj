@@ -65,6 +65,7 @@
     <Compile Include="Common\BaseSearchEntity.cs" />
     <Compile Include="Common\CityConstant.cs" />
     <Compile Include="Common\ClientConstants.cs" />
+    <Compile Include="Common\DynamicWidgetConstant.cs" />
     <Compile Include="Common\CountryConstant.cs" />
     <Compile Include="Common\HtmlConstants.cs" />
     <Compile Include="Common\ModelConstant.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Common\StateConstant.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="ContactType.cs" />
+    <Compile Include="DyanmicWidget.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="CustomerInformation.cs" />
     <Compile Include="DashboardData.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Search Parameter\CitySearchParameter.cs" />
     <Compile Include="Search Parameter\ClientSearchParameter.cs" />
     <Compile Include="Search Parameter\ContactTypeSearchParameter.cs" />
+    <Compile Include="Search Parameter\DynamicWidgteSearchParameter.cs" />
     <Compile Include="Search Parameter\CountrySearchParameter.cs" />
     <Compile Include="Search Parameter\MultiTenantUserRoleAccessSearchParameter.cs" />
     <Compile Include="Search Parameter\RenderEngineSearchParameter.cs" />
