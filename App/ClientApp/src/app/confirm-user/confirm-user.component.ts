@@ -5,6 +5,7 @@ import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.serv
 import { ConfigConstants } from 'src/app/shared/constants/configConstants'
 import { Constants } from 'src/app/shared/constants/constants';
 import * as $ from 'jquery';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-confirm-user',
@@ -21,11 +22,14 @@ export class ConfirmUserComponent implements OnInit {
   public hideConfirmPwd = true;
   public passwordRegex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
 
-  constructor(private _http: HttpClient, private _router: Router, private _activatedRouter: ActivatedRoute,
-    private _messageDialogService: MessageDialogService) { }
+  constructor(private _http: HttpClient, 
+    private _router: Router, 
+    private _activatedRouter: ActivatedRoute,
+    private spinner: NgxUiLoaderService,
+    private _messageDialogService: MessageDialogService) 
+    { }
 
   ngOnInit() {
-    //console.log(this._activatedRouter.snapshot.queryParams.token);
 
     $(document).ready(function () {
       $(".fa-eye").mousedown(function () {
@@ -71,13 +75,14 @@ export class ConfirmUserComponent implements OnInit {
     let params = new HttpParams();
     params = params.append('newPassword', this.newPassword);
     params = params.append('encryptedText', this.encryptedText);
-    console.log(this.newPassword);
-    console.log(this.encryptedText);
+    //console.log(this.newPassword);
+    //console.log(this.encryptedText);
     let operationUrl = this.baseURL + 'User/Confirm';
-    $('.overlay').show();
-
+    //$('.overlay').show();
+    this.spinner.start();
     this._http.get(operationUrl, { params: params })
       .subscribe(data => {
+        this.spinner.stop();
         this._messageDialogService.openDialogBox('Success', "Password generated successfully", Constants.msgBoxSuccess);
         localStorage.removeItem('currentUserName');
         localStorage.removeItem('currentUserTheme');

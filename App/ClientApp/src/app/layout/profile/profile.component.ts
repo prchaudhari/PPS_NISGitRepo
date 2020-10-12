@@ -204,22 +204,15 @@ export class ProfileComponent implements OnInit {
         mobileNo = this.userRecord.MobileNumber;
       }
       let country = this.countrycodeLists.filter(i => { return i.Identifier == this.userRecord.CountryId });
+      let countrycode = country != null ? country[0].Identifier : 0;
       this.profileFormGroup.patchValue({
         firstName: this.userRecord.FirstName,
         lastName: this.userRecord.LastName,
         email: this.userRecord.EmailAddress,
         mobileNumber: mobileNo,
-        CountryCode: country[0].Identifier
+        CountryCode: countrycode
       })
-      this.profileFormGroup.controls['CountryCode'].setValue(country[0].Identifier);
-      this.profileFormGroup.patchValue({
-        firstName: this.userRecord.FirstName,
-        lastName: this.userRecord.LastName,
-        email: this.userRecord.EmailAddress,
-        mobileNumber: mobileNo,
-        CountryCode: country[0].Identifier//mobileNoArr[0],
-      });
-      this.profileFormGroup.controls['CountryCode'].setValue(country[0].Identifier);
+      this.profileFormGroup.controls['CountryCode'].setValue(countrycode);
       this.image = this.userRecord.Image;
       localStorage.setItem("currentUserTheme", this.userRecord.Theme);
       if (this.userRecord.Theme == 1) {
@@ -329,7 +322,6 @@ export class ProfileComponent implements OnInit {
     if (this.profileFormGroup.controls.email.invalid) {
       return true;
     }
-
     if (this.profileFormGroup.controls.mobileNumber.invalid) {
       return true;
     }
