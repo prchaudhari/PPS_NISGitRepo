@@ -140,19 +140,22 @@ export class ListComponent implements OnInit {
 
   //method called on initialization
   ngOnInit() {
-    this.getRoleRecords(null)
-    this.roleFilterForm = this.fb.group({
-      filterRoleName: [null],
-      DeactivateRole: [null]
-    });
-    //this.backParamCheck();
+
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
     }
     else {
-      this.userClaimsRolePrivilegeOperations = [];
+      this.localstorageservice.removeLocalStorageData();
+      this.router.navigate(['login']);
     }
+
+    this.getRoleRecords(null)
+    this.roleFilterForm = this.fb.group({
+      filterRoleName: [null],
+      DeactivateRole: [null]
+    });
+    
   }
 
   //This method has been used for fetching role records
@@ -176,8 +179,9 @@ export class ListComponent implements OnInit {
       searchParameter.Name = this.filterRoleValue;
     }
     var response = await roleService.getRoles(searchParameter);
-    let _list = response.roleList;
-    _list.forEach(role => {
+    //let _list = response.roleList;
+    this.roleList = [];
+    response.roleList.forEach(role => {
       if(role.Name != 'Tenant Admin') {
         this.roleList = [...this.roleList, role];
       }

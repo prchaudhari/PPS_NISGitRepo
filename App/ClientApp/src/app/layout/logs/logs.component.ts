@@ -53,12 +53,10 @@ export class LogsComponent implements OnInit {
   public filterExecutionDate = null;
   public sortColumn = 'Name';
   public sortOrder = Constants.Ascending;
-  closeFilter() {
-    this.isFilter = !this.isFilter;
-  }
 
   displayedColumns: string[] = ['schedule', 'time', 'record', 'status', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
+  public DataFormat;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -108,8 +106,21 @@ export class LogsComponent implements OnInit {
     return this.ScheduleLogFilterForm.get('filterPublishedOnFromDate');
   }
 
-  public DataFormat;
+  closeFilter() {
+    this.isFilter = !this.isFilter;
+  }
+
   ngOnInit() {
+    
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
+    }
+
     this.DataFormat = localStorage.getItem('DateFormat');
     this.getScheduleLogs(null);
     this.ScheduleLogFilterForm = this.fb.group({
@@ -118,13 +129,6 @@ export class LogsComponent implements OnInit {
       filterPublishedOnFromDate: [null],
     });
 
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.userClaimsRolePrivilegeOperations = [];
-    }
   }
 
   sortData(sort: MatSort) {

@@ -21,39 +21,46 @@
           </mat-paginator>
         </div>
       </div>
-      <div class="widget-area-grid padding-0">
-        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
-          <!-- Position Column -->
-          <ng-container matColumnDef="name">
-            <th class="width30 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let element">{{element.CountryName}}</td>
-          </ng-container>
-          <ng-container matColumnDef="code">
-            <th class="width25 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Code </th>
-            <td mat-cell *matCellDef="let element">{{element.Code}} </td>
-          </ng-container>
-          <ng-container matColumnDef="dialingcode">
-            <th class="width30 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Dialing Code </th>
-            <td mat-cell *matCellDef="let element"> {{element.DialingCode}}</td>
-          </ng-container>
-          <ng-container matColumnDef="actions">
-            <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let element">
-              <div class="action-btns btn-tbl-action">
 
-                <button type="button" id="btnUpdateRole" title="Update" (click)="navigateToCountryEdit(element)">
-                  <span class="fa fa-pencil-square-o"></span>
-                </button>
-                <button type="button" id="btnDeleteRole" title="Delete" (click)="deleteCountry(element)">
-                  <span class="fa fa-trash-o"></span>
-                </button>
-              </div>
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+      <div *ngIf='countryList!=undefined'>
+        <div class="widget-area-grid padding-0" *ngIf='countryList.length!=0'>
+          <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+              <th class="width30 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+              <td mat-cell *matCellDef="let element">{{element.CountryName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="code">
+              <th class="width25 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Code </th>
+              <td mat-cell *matCellDef="let element">{{element.Code}} </td>
+            </ng-container>
+            <ng-container matColumnDef="dialingcode">
+              <th class="width30 ip-w-40" mat-header-cell *matHeaderCellDef mat-sort-header> Dialing Code </th>
+              <td mat-cell *matCellDef="let element"> {{element.DialingCode}}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th class="width15 ip-w-35" mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="action-btns btn-tbl-action">
+  
+                  <button type="button" id="btnUpdateRole" title="Update" (click)="navigateToCountryEdit(element)">
+                    <span class="fa fa-pencil-square-o"></span>
+                  </button>
+                  <button type="button" id="btnDeleteRole" title="Delete" (click)="deleteCountry(element)">
+                    <span class="fa fa-trash-o"></span>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div class="widget-area-grid padding-0 text-center" *ngIf='countryList.length==0'>
+          No record found
+        </div>
       </div>
+      
     </div>
   </div>
   <!--desktop view end-->

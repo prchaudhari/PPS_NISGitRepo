@@ -88,17 +88,21 @@ export class ListAssetLibraryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAssetLibraryRecords(null)
-    this.assetLibraryFilterForm = this.fb.group({
-      filterAssetLibraryName: [null],
-    });
+    
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
     }
     else {
-      this.userClaimsRolePrivilegeOperations = [];
+      this.localstorageservice.removeLocalStorageData();
+      this.router.navigate(['login']);
     }
+
+    this.getAssetLibraryRecords(null)
+    this.assetLibraryFilterForm = this.fb.group({
+      filterAssetLibraryName: [null],
+    });
+
   }
 
   async getAssetLibraryRecords(searchParameter) {
@@ -131,7 +135,6 @@ export class ListAssetLibraryComponent implements OnInit {
       });
     }
     this.dataSource = new MatTableDataSource<AssetLibrary>(this.assetLibraryList);
-   
     this.dataSource.sort = this.sort;
     this.array = this.assetLibraryList;
     this.totalSize = this.totalRecordCount;

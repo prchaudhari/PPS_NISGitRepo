@@ -67,6 +67,16 @@ export class ListComponent implements OnInit {
 
   public DataFormat;
   ngOnInit() {
+
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
+    }
+    
     this.DataFormat = localStorage.getItem('DateFormat');
     this.getSchedule(null);
     //this.getStatementDefinition(null);
@@ -77,13 +87,6 @@ export class ListComponent implements OnInit {
       filterStartDate: [null],
       filterEndDate: [null],
     });
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.userClaimsRolePrivilegeOperations = [];
-    }
   }
 
   ngAfterViewInit() {

@@ -130,7 +130,7 @@ export class ListComponent implements OnInit {
     DesignationIdentifier: null,
     PreferedLanguageIdentifier: null,
     LockStatus: null,
-    ActivationStatus: true,
+    ActivationStatus: null,
   };
   public userClaimsRolePrivilegeOperations: any[] = [];
 
@@ -279,7 +279,7 @@ export class ListComponent implements OnInit {
     this.tenantuserFormGroup = this.formBuilder.group({
       FirstName: ['', Validators.compose([])],
       EmailAddress: ['', Validators.compose([])],
-      TenantUserActiveStatus: [1, Validators.compose([])],
+      TenantUserActiveStatus: [0, Validators.compose([])],
       TenantUserLockStatus: [0, Validators.compose([])],
     })
     this.fetchTenantUserRecord();
@@ -296,7 +296,7 @@ export class ListComponent implements OnInit {
       newsearchParameter.SortParameter.SortColumn = Constants.UserName;
       newsearchParameter.SortParameter.SortOrder = Constants.Ascending;
       newsearchParameter.SearchMode = Constants.Contains;
-      newsearchParameter.ActivationStatus = true;
+      //newsearchParameter.ActivationStatus = true;
       searchParameter = newsearchParameter;
     }
     searchParameter.IsInstanceManager = true;
