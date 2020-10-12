@@ -993,6 +993,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <Property Name="TenantName" Type="nvarchar(max)" Nullable="false" />
                 <Property Name="RoleId" Type="bigint" Nullable="false" />
                 <Property Name="TenantImage" Type="nvarchar(max)" />
+                <Property Name="TenantType" Type="nvarchar(max)" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -2146,6 +2147,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Type="String" Name="TenantName" Nullable="false" />
           <Property Type="Int64" Name="RoleId" Nullable="false" />
           <Property Type="String" Name="TenantImage" Nullable="true" />
+          <Property Type="String" Name="TenantType" Nullable="true" />
         </ComplexType>
         <EntityType Name="CountryRecord">
           <Key>
@@ -3107,6 +3109,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="TenantName" ColumnName="TenantName" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="TenantImage" ColumnName="TenantImage" />
+                <ScalarProperty Name="TenantType" ColumnName="TenantType" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

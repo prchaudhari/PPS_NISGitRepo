@@ -116,10 +116,12 @@ namespace nIS
                 if (tenant.TenantType == "Instance" && user.IsInstanceManager)
                 {
                     isInstanceTenantManager = true;
+                    ParentTenentCode = tenantCode; //Instant tenant manager, itself is the super parent for all tenant.
                 }
                 else if (tenant.TenantType == "Group" && user.IsGroupManager)
                 {
                     isTenantGroupManager = true;
+                    ParentTenentCode = tenant.TenantCode; //Group manager, itself is the parent tenant
                 }
             }
 

@@ -149,10 +149,10 @@ export class LoginComponent implements OnInit {
       let timeDiff = Math.floor((currentDate.getTime() - lastReqTime.getTime()) / (1000 * 60));
       if (timeDiff < 15) {
         var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-        var userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
         if (userClaimsDetail) {
           var isFound = false;
           var state = 0;
+          var userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
           this.statePrivilegeMap.forEach(map => {
             var isPresent = userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
             if (isPresent != undefined && isPresent.length > 0) {

@@ -6,6 +6,7 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { MultiTenantUserAccessMapService } from '../layout/multi-tenant-user-access-map/multi-tenant-user-access-map.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ConfigConstants } from '../shared/constants/configConstants';
 
 @Component({
   selector: 'app-select-tenant',
@@ -19,6 +20,8 @@ export class SelectTenantComponent implements OnInit {
   public commonRolePrivileges = [];
   public roleDetail;
   public userData;
+  public DefaultTenantCode = ConfigConstants.TenantCode;
+
   public statePrivilegeMap: any = [{
     "State": "dashboard",
     "Entity": "Dashboard",
@@ -97,7 +100,11 @@ export class SelectTenantComponent implements OnInit {
 
   async onTenantSelect(tenant: any) {
     this.uiLoader.start();
-    this.userData.Privileges = await this.getUserRoles(tenant.RoleId, tenant.TenantCode);
+    let tenantcode = tenant.TenantCode;
+    if(tenant.TenantType == 'Group') {
+      tenantcode = this.DefaultTenantCode == undefined ? '00000000-0000-0000-0000-000000000000' : this.DefaultTenantCode;
+    }
+    this.userData.Privileges = await this.getUserRoles(tenant.RoleId, tenantcode);
     if (this.roleDetail.IsActive == false) {
       this.uiLoader.stop();
       this._messageDialogService.openDialogBox('Error', "User role is deactivated.", Constants.msgBoxError);
@@ -120,7 +127,11 @@ export class SelectTenantComponent implements OnInit {
         this.userData.RoleIdentifier = this.roleDetail.Identifier;
         this.userData.TenantCode = tenant.TenantCode;
         localStorage.setItem('userClaims', JSON.stringify(this.userData));
-        var userClaimsRolePrivilegeOperations = this.userData.Privileges;
+
+        if(tenant.TenantType == 'Group') {
+          this.route.navigate(['tenants']);
+        }else {
+          var userClaimsRolePrivilegeOperations = this.userData.Privileges;
         var isFound = false;
         var state = 0;
         this.statePrivilegeMap.forEach(map => {
@@ -135,6 +146,7 @@ export class SelectTenantComponent implements OnInit {
         this.uiLoader.stop();
         if (isFound) {
           this.route.navigate([state]);
+        }  
         }
       }
     }       

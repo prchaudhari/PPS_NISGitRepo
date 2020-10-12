@@ -71,10 +71,10 @@ export class SidebarComponent implements OnInit {
     else {
       if(this.isInstantTenantManager == true) {
         this.URL = '/tenantgroups';
-        this.route.navigate(['/tenants']);
+        this.route.navigate(['/tenantgroups']);
       }else if(this.isTenantGroupManager == true) {
         this.URL = '/tenants';
-        this.route.navigate(['/tenantgroups']);
+        this.route.navigate(['/tenants']);
       }else if(this.isTenantAdminUser == true) {
         this.URL = '/tenantConfiguration';
         this.route.navigate(['/tenantConfiguration']);
@@ -329,6 +329,19 @@ export class SidebarComponent implements OnInit {
     }
     else if(this.URL.includes('/tenantusers')) {
       this.URL = '/tenantusers';
+    }
+  }
+
+  navigateToRespectiveUserLandingPage() {
+    if(this.isInstantTenantManager == true) {
+      this.URL = '/tenantgroups';
+      this.route.navigate(['/tenantgroups']);
+    }else if(this.isTenantGroupManager == true) {
+      this.URL = '/tenants';
+      this.route.navigate(['/tenants']);
+    }else if(this.isTenantAdminUser == true) {
+      this.URL = '/dashboard';
+      this.route.navigate(['/dashboard']);
     }
   }
 

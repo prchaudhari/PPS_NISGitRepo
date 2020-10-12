@@ -835,7 +835,8 @@ namespace nIS
                         {
                             this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
                         });
-                        //customerMasters.ForEach(customer => {
+                        //customerMasters.ForEach(customer =>
+                        //{
                         //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
                         //});
                     }

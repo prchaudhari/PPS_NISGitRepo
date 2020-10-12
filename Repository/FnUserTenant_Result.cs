@@ -19,5 +19,6 @@ namespace nIS
         public string TenantName { get; set; }
         public long RoleId { get; set; }
         public string TenantImage { get; set; }
+        public string TenantType { get; set; }
     }
 }

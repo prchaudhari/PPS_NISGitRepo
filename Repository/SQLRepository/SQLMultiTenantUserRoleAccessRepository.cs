@@ -495,7 +495,8 @@ namespace nIS
                             TenantCode = record.TenantCode,
                             TenantName = record.TenantName,
                             RoleId = record.RoleId,
-                            TenantImage = record.TenantImage ?? ""
+                            TenantImage = record.TenantImage ?? "",
+                            TenantType = record.TenantType
                         });
                     });
                 }
