@@ -60,6 +60,7 @@
         <EntityTypeShape EntityType="NISModel.View_MultiTenantUserAccessMapRecord" Width="1.5" PointX="2.75" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.CountryRecord" Width="1.5" PointX="7" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.875" PointY="8.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DynamicWidgetRecord" Width="1.5" PointX="4.875" PointY="8.875" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

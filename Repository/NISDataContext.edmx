@@ -211,6 +211,30 @@
           <Property Name="ImageURL" Type="nvarchar(max)" />
           <Property Name="VideoURL" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="DynamicWidget">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WidgetName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="WidgetType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PageTypeId" Type="bigint" Nullable="false" />
+          <Property Name="EntityId" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ThemeType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ThemeCSS" Type="nvarchar(max)" />
+          <Property Name="WidgetSettings" Type="nvarchar(max)" />
+          <Property Name="WidgetFilterSettings" Type="nvarchar(max)" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedBy" Type="bigint" Nullable="false" />
+          <Property Name="PublishedBy" Type="bigint" />
+          <Property Name="PublishedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="Id" />
@@ -1014,6 +1038,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="CustomerInfo" EntityType="Self.CustomerInfo" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DynamicWidget" EntityType="Self.DynamicWidget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="MultiTenantUserAccessMap" EntityType="Self.MultiTenantUserAccessMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NewsAlert" EntityType="Self.NewsAlert" Schema="NIS" store:Type="Tables" />
@@ -1253,6 +1278,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Parameter Name="ParentTenantCode" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
+          <EntitySet Name="DynamicWidgetRecords" EntityType="NISModel.DynamicWidgetRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2219,6 +2245,30 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="DynamicWidgetRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WidgetName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PageTypeId" Type="Int64" Nullable="false" />
+          <Property Name="EntityId" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ThemeType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ThemeCSS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetFilterSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
+          <Property Name="PublishedBy" Type="Int64" />
+          <Property Name="PublishedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3181,6 +3231,31 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="RecordProccessed" ColumnName="RecordProccessed" />
                 <ScalarProperty Name="ProcessingTime" ColumnName="ProcessingTime" />
                 <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DynamicWidgetRecords">
+            <EntityTypeMapping TypeName="NISModel.DynamicWidgetRecord">
+              <MappingFragment StoreEntitySet="DynamicWidget">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
+                <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="WidgetFilterSettings" ColumnName="WidgetFilterSettings" />
+                <ScalarProperty Name="WidgetSettings" ColumnName="WidgetSettings" />
+                <ScalarProperty Name="ThemeCSS" ColumnName="ThemeCSS" />
+                <ScalarProperty Name="ThemeType" ColumnName="ThemeType" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
+                <ScalarProperty Name="WidgetType" ColumnName="WidgetType" />
+                <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

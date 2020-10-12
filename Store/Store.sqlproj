@@ -121,6 +121,7 @@
     <Build Include="ContactType.sql" />
     <Build Include="TenantUser.sql" />
     <Build Include="MultiTenantUserAccessMap.sql" />
+    <Build Include="DynamicWidget.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

@@ -125,6 +125,9 @@
     <Compile Include="CustomerMediaRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DynamicWidgetRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="FnGetParentAndChildTenant_Result.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -135,6 +138,7 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="IRepository\IContactTypeRepository.cs" />
+    <Compile Include="IRepository\IDynamicWidgetRepository.cs" />
     <Compile Include="IRepository\IMultiTenantUserRoleAccessRepository.cs" />
     <Compile Include="IRepository\ISQLTenantContactRepository.cs" />
     <Compile Include="IRepository\IAnalyticsDataRepository.cs" />
@@ -217,6 +221,7 @@
     <Compile Include="SQLRepository\SQLAzureStateRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureTenantUserRepository.cs" />
     <Compile Include="SQLRepository\SQLContactTypeRepository.cs" />
+    <Compile Include="SQLRepository\SQLDynamicWidgetRepository.cs" />
     <Compile Include="SQLRepository\SQLCountryRepository.cs" />
     <Compile Include="SQLRepository\SQLMultiTenantUserRoleAccessRepository.cs" />
     <Compile Include="SQLRepository\SQLTenantContactRepository.cs" />

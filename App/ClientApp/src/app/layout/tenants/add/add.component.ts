@@ -400,7 +400,7 @@ export class AddComponent implements OnInit {
     this.tenantFormErrorObject.showProfilePictureSizeError = false;
     var pattern = /image-*/;
     if (!file.type.match(pattern)) {
-      this.contactFormErrorObject.showProfilePictureTypeError = true;
+      this.tenantFormErrorObject.showProfilePictureTypeError = true;
       return false;
     }
     this.tenantFormErrorObject.showProfilePictureTypeError = false;
@@ -681,10 +681,10 @@ export class AddComponent implements OnInit {
     if (this.imageSize > 200000) {
       return true;
     }
-    if (this.contactFormErrorObject.showProfilePictureSizeError) {
+    if (this.tenantFormErrorObject.showProfilePictureSizeError) {
       return true;
     }
-    if (this.contactFormErrorObject.showProfilePictureTypeError) {
+    if (this.tenantFormErrorObject.showProfilePictureTypeError) {
       return true;
     }
     return false;
