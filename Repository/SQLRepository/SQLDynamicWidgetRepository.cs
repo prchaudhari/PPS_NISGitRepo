@@ -381,7 +381,68 @@ namespace nIS
             return dynamicWidgetCount;
         }
 
+
         #endregion
+
+        public IList<TenantEntity> GetTenantEntities(string tenantCode)
+        {
+            IList<TenantEntity> tenantEntities = new List<TenantEntity>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<TenantEntityRecord> tenantEntityRecords = new List<TenantEntityRecord>();
+                    tenantEntityRecords = nISEntitiesDataContext.TenantEntityRecords.Where(item => item.TenantCode == tenantCode).ToList();
+                    tenantEntities = tenantEntityRecords.Select(item => new TenantEntity
+                    {
+                        Identifier = item.Id,
+                        Name = item.Name,
+                        Description = item.Name,
+                        CreatedBy = item.CreatedBy,
+                        CreatedDate = item.CreatedOn,
+                        LastUpdatedBy = item.LastUpdatedBy,
+                        IsActive = item.IsActive,
+                    }).ToList();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return tenantEntities;
+        }
+
+        public IList<EntityFieldMap> GetEntityFields(long entityIdentifier, string tenantCode)
+        {
+            IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<EntityFieldMapRecord> entityFieldRecords = new List<EntityFieldMapRecord>();
+                    entityFieldRecords = nISEntitiesDataContext.EntityFieldMapRecords.Where(item => item.TenantCode == tenantCode && item.EntityId==entityIdentifier).ToList();
+                    entityFieldMaps = entityFieldRecords.Select(item => new EntityFieldMap
+                    {
+                        Identifier = item.Id,
+                        Name = item.Name,
+                        EntityIdentifier = item.Id,
+                        DataType = item.DataType,
+                        IsDeleted = item.IsDeleted,
+                        IsActive = item.IsActive,
+                    }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return entityFieldMaps;
+        }
 
         #endregion
 

@@ -122,6 +122,8 @@
     <Build Include="TenantUser.sql" />
     <Build Include="MultiTenantUserAccessMap.sql" />
     <Build Include="DynamicWidget.sql" />
+    <Build Include="Entity.sql" />
+    <Build Include="EntityFieldMap.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

@@ -128,6 +128,9 @@
     <Compile Include="DynamicWidgetRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityFieldMapRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="FnGetParentAndChildTenant_Result.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -256,6 +259,9 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TenantContactRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TenantEntityRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TenantRecord.cs">

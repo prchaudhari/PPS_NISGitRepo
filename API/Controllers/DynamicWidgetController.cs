@@ -148,6 +148,38 @@ namespace nIS
             return countries;
         }
 
+        [HttpPost]
+        public IList<TenantEntity> GetTenantEntities()
+        {
+            IList<TenantEntity> tenantEntities = new List<TenantEntity>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                tenantEntities = this.dynamicWidgetManager.GetTenantEntities(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return tenantEntities;
+        }
+
+        [HttpPost]
+        public IList<EntityFieldMap> GetEntityFields(long entityIdentfier)
+        {
+            IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                entityFieldMaps = this.dynamicWidgetManager.GetEntityFields(entityIdentfier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return entityFieldMaps;
+        }
+
         #endregion
         #endregion
     }

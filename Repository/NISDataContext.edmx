@@ -235,6 +235,18 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="EntityFieldMap">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EntityId" Type="bigint" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DataType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="Id" />
@@ -552,6 +564,21 @@
           <Property Name="IsActivationLinkSent" Type="bit" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CountryId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TenantEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="LastUpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedBy" Type="bigint" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TenantUser">
           <Key>
@@ -1039,6 +1066,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DynamicWidget" EntityType="Self.DynamicWidget" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="EntityFieldMap" EntityType="Self.EntityFieldMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="MultiTenantUserAccessMap" EntityType="Self.MultiTenantUserAccessMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NewsAlert" EntityType="Self.NewsAlert" Schema="NIS" store:Type="Tables" />
@@ -1061,6 +1089,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="StatementPageMap" EntityType="Self.StatementPageMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantConfiguration" EntityType="Self.TenantConfiguration" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantContact" EntityType="Self.TenantContact" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="TenantEntity" EntityType="Self.TenantEntity" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantUser" EntityType="Self.TenantUser" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Top4IncomeSources" EntityType="Self.Top4IncomeSources" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="NIS" store:Type="Tables" />
@@ -1279,6 +1308,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           </FunctionImport>
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
           <EntitySet Name="DynamicWidgetRecords" EntityType="NISModel.DynamicWidgetRecord" />
+          <EntitySet Name="EntityFieldMapRecords" EntityType="NISModel.EntityFieldMapRecord" />
+          <EntitySet Name="TenantEntityRecords" EntityType="NISModel.TenantEntityRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2265,6 +2296,33 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
           <Property Name="PublishedBy" Type="Int64" />
           <Property Name="PublishedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EntityFieldMapRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EntityId" Type="Int64" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DataType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TenantEntityRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="LastUpdatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3256,6 +3314,35 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
                 <ScalarProperty Name="WidgetType" ColumnName="WidgetType" />
                 <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EntityFieldMapRecords">
+            <EntityTypeMapping TypeName="NISModel.EntityFieldMapRecord">
+              <MappingFragment StoreEntitySet="EntityFieldMap">
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TenantEntityRecords">
+            <EntityTypeMapping TypeName="NISModel.TenantEntityRecord">
+              <MappingFragment StoreEntitySet="TenantEntity">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="LastUpdatedOn" ColumnName="LastUpdatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

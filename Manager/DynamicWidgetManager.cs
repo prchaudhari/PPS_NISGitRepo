@@ -187,6 +187,37 @@ namespace nIS
 
         #endregion
 
+        public IList<TenantEntity> GetTenantEntities(string tenantCode)
+        {
+            IList<TenantEntity> tenantEntities = new List<TenantEntity>();
+            try
+            {
+
+                tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return tenantEntities;
+        }
+
+
+        public IList<EntityFieldMap> GetEntityFields(long entityIdentfier, string tenantCode)
+        {
+            IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
+            try
+            {
+
+                entityFieldMaps = this.dynamicWidgetRepository.GetEntityFields(entityIdentfier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return entityFieldMaps;
+        }
+
         #region Get DynamicWidget Count
         /// <summary>
         /// This method helps to get count of dynamicWidget.

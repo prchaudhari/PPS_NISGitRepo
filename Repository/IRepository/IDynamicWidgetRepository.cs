@@ -63,5 +63,10 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns>dynamicWidget count</returns>
         int GetDynamicWidgetCount(DynamicWidgetSearchParameter dynamicWidgetSearchParameter, string tenantCode);
+
+        IList<TenantEntity> GetTenantEntities(string tenantCode);
+
+        IList<EntityFieldMap> GetEntityFields(long entityIdentifier, string tenantCode);
+
     }
 }
