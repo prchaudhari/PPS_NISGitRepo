@@ -200,6 +200,29 @@
         int MonthDifference(DateTime endDate, DateTime startDate);
 
         /// <summary>
+        /// This method help to get day difference in between 2 dates
+        /// </summary>
+        /// <param name="endDate"> the end date value </param>
+        /// <param name="startDate"> the start date value </param>
+        /// <returns>difference between 2 dates in numeric</returns>
+        int DayDifference(DateTime endDate, DateTime startDate);
+
+        /// <summary>
+        /// This method help to get year difference in between 2 dates
+        /// </summary>
+        /// <param name="endDate"> the end date value </param>
+        /// <param name="startDate"> the start date value </param>
+        /// <returns>difference between 2 dates in numeric</returns>
+        int YearDifference(DateTime startDate, DateTime endDate);
+
+        /// <summary>
+        /// This method help to get numeric value of month
+        /// </summary>
+        /// <param name="m"> the string value of month </param>
+        /// <returns>numeric value of month</returns>
+        int getNumericMonth(string m);
+
+        /// <summary>
         /// This method help to save image file from url
         /// </summary>
         /// <param name="filePath"> the file path value </param>

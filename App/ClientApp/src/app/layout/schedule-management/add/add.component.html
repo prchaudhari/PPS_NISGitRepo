@@ -35,49 +35,19 @@
         </div>
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
-            <label>Recurrance Pattern</label>
-            <div class="width100 form-group d-flex justify-content-start">
-              <div class="custom-control custom-radio mr-2">
-                <input class="custom-control-input" type="radio"
-                       name="recpat" id="Daily" value="option1" checked formControlName="RecurrancePattern" (click)="isDailyClicked()">
-                <label class="custom-control-label dir-rtl" for="Daily">
-                  Daily
-                </label>
-              </div>
-              <div class="custom-control custom-radio mr-2">
-                <input class="custom-control-input" type="radio"
-                       name="recpat" id="Weekly" value="option1" formControlName="RecurrancePattern" (click)="isWeeklyClicked()">
-                <label class="custom-control-label dir-rtl" for="Weekly">
-                  Weekly
-                </label>
-              </div>
-              <div class="custom-control custom-radio mr-2">
-                <input class="custom-control-input" type="radio"
-                       name="recpat" id="Monthly" value="option1" formControlName="RecurrancePattern" (click)="isMonthlyClicked()">
-                <label class="custom-control-label dir-rtl" for="Monthly">
-                  Monthly
-                </label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input class="custom-control-input" type="radio"
-                       name="recpat" id="Yearly" value="option1" formControlName="RecurrancePattern" (click)="isYearlyClicked()">
-                <label class="custom-control-label dir-rtl" for="Yearly">
-                  Yearly
-                </label>
-              </div>
+            <label>Start Date<span class="text-danger">*</span></label>
+            <div class="position-relative">
+              <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate"
+                     placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)" [disabled]="IsStartDateDisable">
+              <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+                <i class="fa fa-calendar"></i>
+              </span>
+              <owl-date-time #dt [pickerType]="'calendar'" [disabled]="IsStartDateDisable"></owl-date-time>
             </div>
-            <!--<label id="lblTemplate" for="inputRoleName">Day of Month<span class="text-danger">*</span></label>
-            <select formControlName="DayOfMonth" (change)="onDayOfMonthSelected($event)" class="form-control" [attr.disabled]="IsStartDateDisable?'':null">
-              <option *ngFor="let sd of DayOfMonthList" [value]="sd.Identifier">{{sd.Name}}</option>
-            </select>
-            <div class="validation-msg" style="color:red">
-              <ul *ngIf="scheduleFormErrorObject.dayOfmonthShowError" style="list-style-type:none">
-                <li class="text-danger">
-                  Please select day of month
-                </li>
-              </ul>
-            </div>-->
-          </div>
+            <div class="text-danger" *ngIf="filterFromDateError">
+              {{filterFromDateErrorMessage}}
+            </div>
+          </div>         
           <div class="col-md-4 col-lg-4 form-group">
             <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) <span class="text-danger">*</span></label>
             <div class="row">
@@ -108,168 +78,109 @@
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="isDaily">
-          <div class="col-md-8 col-lg-8 form-group">
-            <div class="card border-0 mb-2 card-shadow">
-              <div class="card-body d-flex justify-content-start">
-                <div class="custom-control custom-radio mr-2">
-                  <input class="custom-control-input" type="radio"
-                         name="dailytype" id="opDaily" value="optiondaily" checked>
-                  <label class="custom-control-label dir-rtl" for="opDaily">
-                    <div class="form-inline" style="margin-top:-5px">
-                      <div class="form-group xs-frm">
-                        <label for="" class="dir-ltr">Repeat every</label>
-                        <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0">
-                        <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0" max="12">
-                        <label> day(s) </label>
-                      </div>
-                    </div>
-                  </label>
-                </div>
-                <div class="custom-control custom-radio">
-                  <input class="custom-control-input" type="radio"
-                         name="dailytype" id="fullWeek" value="optiondaily">
-                  <label class="custom-control-label dir-rtl" for="fullWeek">
-                    Every Weekday
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" *ngIf="isWeekly">
-          <div class="col-md-8 col-lg-8 form-group">
-            <div class="card border-0 mb-2 card-shadow">
-              <div class="card-body">
-                <div class="form-inline mb-2">
-                  <div class="form-group xs-frm">
-                    <label for="" class="dir-ltr">Recur every</label>
-                    <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0">
-                    <label> week(s) on: </label>
-                  </div>
-                </div>
-                <div class="d-flex justify-content-start">
-                  <div class="custom-control custom-checkbox mr-2">
-                    <input class="custom-control-input" type="checkbox" value="">
-                    <label class="custom-control-label">   Monday</label>
-                  </div>
-                  <div class="custom-control custom-checkbox mr-2">
-                    <input class="custom-control-input" type="checkbox" value="">
-                    <label class="custom-control-label">   Tuesday</label>
-                  </div>
-                  <div class="custom-control custom-checkbox mr-2">
-                    <input class="custom-control-input" type="checkbox" value="">
-                    <label class="custom-control-label">   Wednesday</label>
-                  </div>
-                  <div class="custom-control custom-checkbox mr-2">
-                    <input class="custom-control-input" type="checkbox" value="">
-                    <label class="custom-control-label">   Thursday</label>
-                  </div>
-                  <div class="custom-control custom-checkbox mr-2">
-                    <input class="custom-control-input" type="checkbox" value="">
-                    <label class="custom-control-label">   Friday</label>
-                  </div>
-                  <div class="custom-control custom-checkbox mr-2">
-                    <input class="custom-control-input" type="checkbox" value="">
-                    <label class="custom-control-label">   Saturday</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input" type="checkbox" value="">
-                    <label class="custom-control-label">   Sunday</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" *ngIf="isMonthly">
-          <div class="col-md-4 col-lg-4 form-group">
-            <div class="card border-0 mb-2 card-shadow">
-              <div class="card-body">
-                <div class="form-inline">
-                  <div class="form-group xs-frm">
-                    <label for="" class="dir-ltr">Day</label>
-                    <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0">
-                    <label> of every </label>
-                    <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0" max="12">
-                    <label> month(s) </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" *ngIf="isYearly">
-          <div class="col-md-8 col-lg-8 form-group">
-            <div class="card border-0 mb-2 card-shadow">
-              <div class="card-body">
-                <div class="form-inline">
-                  <div class="form-group xs-frm">
-                    <label for="" class="dir-ltr">Recur every </label>
-                    <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0">
-                    <label> year(s) on </label>
-                    <select class="form-control  mx-sm-2 width30 sm-w-50">
-                      <option>Select Month</option>
-                      <option>Jan</option>
-                      <option>Feb</option>
-                      <option>Mar</option>
-                      <option>May</option>
-                      <option>Jun</option>
-                      <option>Jul</option>
-                      <option>Aug</option>
-                      <option>Sept</option>
-                      <option>Oct</option>
-                      <option>Nov</option>
-                      <option>Dec</option>
-                    </select>
-                    <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
-            <label>Start Date<span class="text-danger">*</span></label>
-            <div class="position-relative">
-              <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filtershiftfromdate"
-                     placeholder="Please select start date" readonly (ngModelChange)="onFilterDateChange($event)" [disabled]="IsStartDateDisable">
-              <span [owlDateTimeTrigger]="dt" class="datetime-icon">
-                <i class="fa fa-calendar"></i>
-              </span>
-              <owl-date-time #dt [pickerType]="'calendar'" [disabled]="IsStartDateDisable"></owl-date-time>
-            </div>
-            <div class="text-danger" *ngIf="filterFromDateError">
-              {{filterFromDateErrorMessage}}
+            <label>Recurrance Pattern<span class="text-danger">*</span></label>
+            <select formControlName="RecurrancePattern" class="form-control" (change)='OnRecurrancePatternChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
+              <option value="DoesNotRepeat">Does not Repeat</option>
+              <!-- <option value="Weekday">Every Weekday(Mon-Fri)</option>
+              <option value="Daily">Daily</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Monthly">Monthly</option>
+              <option value="Yearly">Yearly</option> -->
+              <option value="Custom">Repeat</option>
+            </select>
+          </div>
+
+          <div class="col-md-8 col-lg-8">
+            <div *ngIf='isCustom'>
+              <label for="" class="dir-ltr">Repeat every</label>
+              <div class="row">
+                <div class="col-md-2 col-lg-2 form-group">
+                  <input type="number" id="inputRepeatEvery" class="form-control width100 sm-w-50" min="1" formControlName='RepeatEvery' 
+                    (change)='onRepeatEveryChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
+                </div>
+                <div class="col-md-3 col-lg-3 form-group">
+                  <select formControlName="RepeatEveryBy" class="form-control" (change)='onRepeatEveryByValueChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
+                    <option value="Day">Day</option>
+                    <option value="Week">Week</option>
+                    <option value="Month">Month</option>
+                    <option value="Year">Year</option>
+                  </select>
+                </div>
+                <div class="col-md-7 col-lg-7">
+                  <div *ngIf='isWeekly'>
+                    <div class="weekDays-selector">
+                      <input type="checkbox" id="weekday-monday" class="weekday" (change)="weekdaySelection($event,'Monday',1)" [attr.disabled]="IsAnyBatchExecuted?'':null"/>
+                      <label for="weekday-monday">M</label>
+                      <input type="checkbox" id="weekday-tuesday" class="weekday" (change)="weekdaySelection($event,'Tuesday',2)" [attr.disabled]="IsAnyBatchExecuted?'':null"/>
+                      <label for="weekday-tuesday">T</label>
+                      <input type="checkbox" id="weekday-wednesday" class="weekday" (change)="weekdaySelection($event,'Wednesday',3)" [attr.disabled]="IsAnyBatchExecuted?'':null"/>
+                      <label for="weekday-wednesday">W</label>
+                      <input type="checkbox" id="weekday-thursday" class="weekday" (change)="weekdaySelection($event,'Thursday',4)" [attr.disabled]="IsAnyBatchExecuted?'':null"/>
+                      <label for="weekday-thursday">T</label>
+                      <input type="checkbox" id="weekday-friday" class="weekday" (change)="weekdaySelection($event,'Friday',5)" [attr.disabled]="IsAnyBatchExecuted?'':null"/>
+                      <label for="weekday-friday">F</label>
+                      <input type="checkbox" id="weekday-saturday" class="weekday" (change)="weekdaySelection($event,'Saturday',6)" [attr.disabled]="IsAnyBatchExecuted?'':null"/>
+                      <label for="weekday-saturday">S</label>
+                      <input type="checkbox" id="weekday-sunday" class="weekday" (change)="weekdaySelection($event,'Sunday',7)" [attr.disabled]="IsAnyBatchExecuted?'':null"/>
+                      <label for="weekday-sunday">S</label>
+                    </div>               
+                  </div>
+                  <div *ngIf='isMonthly'>
+                    <div class="row">
+                      <div class="col-md-2 col-lg-2 form-group pr-0">
+                        <label for="" class="dir-ltr pt-1">On day</label>
+                      </div>
+                      <div class="col-md-4 col-lg-4 form-group pl-0">
+                        <input type="number" id="inputCustomMonthDay" class="form-control" min="1" max="29" formControlName='CustomMonthDay' 
+                          (change)='onCustomMonthDayChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf='isYearly'>
+                    <div class="row">
+                      <div class="col-md-1 col-lg-1 form-group">
+                        <label for="" class="dir-ltr pt-1">On</label>
+                      </div>
+                      <div class="col-md-4 col-lg-4 form-group pl-0">
+                        <select class="form-control" formControlName='CustomYearMonth' (change)='onCustomYearMonthChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
+                          <option *ngFor="let mnth of monthArray" [value]="mnth">{{mnth}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-3 col-lg-3 form-group">
+                        <input type="number" id="inputCustomYearDay" class="form-control" min="1" max="29" formControlName='CustomYearDay' 
+                          (change)='onCustomYearDayChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+
+        <div class="row">
+          <label class="pl-3">{{ScheduleOccuranceMessage}}</label>
+        </div>
+
+        <div class="row mt-2" *ngIf="isNoEndDate==false"> 
           <div class="col-md-4 col-lg-4 form-group">
             <div class="d-flex justify-content-start">
               <div class="custom-control custom-radio mr-2">
-                <input class="custom-control-input" type="radio"
-                       name="enddatetype" id="enddate" value="optiondate" checked (click)="isEndDateClicked()">
+                <input class="custom-control-input" type="radio" name="enddatetype" id="enddate" value="optiondate" (click)="isEndDateClicked()">
                 <label class="custom-control-label dir-rtl" for="enddate">
                   End Date
                 </label>
               </div>
               <div class="custom-control custom-radio mr-2">
-                <input class="custom-control-input" type="radio"
-                       name="enddatetype" id="endafter" value="optiondate" (click)="isEndAfterClicked()">
+                <input class="custom-control-input" type="radio" name="enddatetype" id="endafter" value="optiondate" (click)="isEndAfterClicked()">
                 <label class="custom-control-label dir-rtl" for="endafter">
                   End After
                 </label>
               </div>
-              <!--<div class="custom-control custom-radio mr-2">
-                <input class="custom-control-input" type="radio"
-                       name="enddatetype" id="noenddate" value="optiondate" (click)="isNoEndDateClicked()">
-                <label class="custom-control-label dir-rtl" for="noenddate">
-                  No End date
-                </label>
-              </div>-->
             </div>
 
-            <!--<label>End Date</label><span class="text-danger" *ngIf="IsEndDateRequired">*</span>-->
             <div *ngIf="isEndDate">
               <div class="position-relative">
                 <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filtershiftenddate"
@@ -290,44 +201,15 @@
               <div class="form-inline">
                 <div class="form-group xs-frm">
                   <label> End After </label>
-                  <input type="number" id="" class="form-control mx-sm-2 width30 sm-w-50" min="0">
+                  <input type="number" id="inputScheduleEndAfterNoOccurences" class="form-control mx-sm-2 width30 sm-w-50" min="1" 
+                      formControlName="scheduleEndAfterNoOccurences" (change)='onScheduleEndAfterNoOccurencesChange()'>
                   <label> occurrences </label>
                 </div>
               </div>
             </div>
-            <div *ngIf="isNoEndDate">
-              NA
-            </div>
           </div>
-          <!--<div class="col-md-4 col-lg-4 form-group">
-            <div class="row">
-              <div class="col-sm-6">
-                <label>No End Date</label>
-                <div>
-                  <label class="switch d-block">
-                    <input type="checkbox" id="inputNoEndDate" formControlName="NoEndDate" [checked]="!IsEndDateRequired" value="" (change)="NoEndDateClicked($event.target)">
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <label>Export to PDF</label>
-                <div>
-                  <label class="switch d-block">
-                    <input type="checkbox" id="inputExportToPDF" formControlName="ExportToPDF" [checked]="IsExportToPDF" value="" (change)="IsExportToPDFClicked($event.target)">
-
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-
-          </div>-->
         </div>
-        <div class="row">
-
-        </div>
+        
       </div>
     </div>
     <div class="card border-0 mt-4 mb-3 bg-transparent">

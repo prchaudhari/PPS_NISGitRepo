@@ -52,9 +52,11 @@ export class ErrorMessageConstants {
   public static get getStartDateLessThanCurrentDateMessage(): string { return "Start Date should be less than current date." };
   public static get getEndDateLessThanCurrentDateMessage(): string { return "End Date should be less than current date." };
   public static get getStartDateLessThanEndDateMessage(): string { return "Start date should be less than end date." };
+  public static get getEndDateShouldBeGreaterThanStartDateMessage(): string { return "End date should be greater than start date." };
   public static get getNoRecordFoundMessage(): string { return "No record found." };
 
   public static get getStartDateThanCurrentDateMessage(): string { return "Start Date should not be less than or equal to current date." };
+  public static get getStartDateShouldBeDayAfterTodayOrGreaterThanItMessage(): string { return "Start Date should be day after today or greater than it." };
   public static get getEndDateThanCurrentDateMessage(): string { return "End Date should not be less than or equal to current date." };
   public static get getPreviousEndDateShouldNotBeLessThanEndDateMessage(): string { return "End date should not be less than previous end date." };
   public static get getStartDateAndEndDateShouldhaveMonthDifferenceMessage(): string { return "Start date and end date should have minimum one month difference." };

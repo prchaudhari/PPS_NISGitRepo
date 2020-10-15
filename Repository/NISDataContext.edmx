@@ -876,6 +876,7 @@ warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key
           <Property Name="IsEndsAfterNoOfOccurrences" Type="bit" />
           <Property Name="NoOfOccurrences" Type="bigint" />
           <Property Name="StatementName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ExecutedBatchCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_ScheduleLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1172,7 +1173,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_Schedule].[MonthOfYear] AS [MonthOfYear], 
     [View_Schedule].[IsEndsAfterNoOfOccurrences] AS [IsEndsAfterNoOfOccurrences], 
     [View_Schedule].[NoOfOccurrences] AS [NoOfOccurrences], 
-    [View_Schedule].[StatementName] AS [StatementName]
+    [View_Schedule].[StatementName] AS [StatementName], 
+    [View_Schedule].[ExecutedBatchCount] AS [ExecutedBatchCount]
     FROM [NIS].[View_Schedule] AS [View_Schedule]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_ScheduleLog" EntityType="Self.View_ScheduleLog" store:Type="Views" store:Schema="NIS">
@@ -1980,6 +1982,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="MonthOfYear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsEndsAfterNoOfOccurrences" Type="Boolean" />
           <Property Name="NoOfOccurrences" Type="Int64" />
+          <Property Name="ExecutedBatchCount" Type="Int32" />
         </EntityType>
         <EntityType Name="View_UserRecord">
           <Key>
@@ -3007,6 +3010,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="View_ScheduleRecord">
             <EntityTypeMapping TypeName="NISModel.View_ScheduleRecord">
               <MappingFragment StoreEntitySet="View_Schedule">
+                <ScalarProperty Name="ExecutedBatchCount" ColumnName="ExecutedBatchCount" />
                 <ScalarProperty Name="NoOfOccurrences" ColumnName="NoOfOccurrences" />
                 <ScalarProperty Name="IsEndsAfterNoOfOccurrences" ColumnName="IsEndsAfterNoOfOccurrences" />
                 <ScalarProperty Name="MonthOfYear" ColumnName="MonthOfYear" />

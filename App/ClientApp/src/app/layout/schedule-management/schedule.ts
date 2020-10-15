@@ -18,5 +18,13 @@ export class Schedule {
   "LastUpdatedDate": string;
   "UpdateBy": User;
   "Statement": Statement;
-  "IsExportToPDF":boolean
+  "IsExportToPDF":boolean;
+  "RecurrancePattern":string;
+  "RepeatEveryDayMonWeekYear":number;
+  "WeekDays":string;
+  "IsEveryWeekDay":boolean;
+  "MonthOfYear":string;
+  "IsEndsAfterNoOfOccurrences":boolean;
+  "NoOfOccurrences":number;
+  "ExecutedBatchCount":number;
 }

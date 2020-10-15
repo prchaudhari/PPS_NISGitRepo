@@ -10,6 +10,7 @@ import { Schedule } from '../schedule';
 import { Statement } from '../../statement-defination/statement';
 import { StatementService } from '../../statement-defination/statement.service';
 import { User } from '../../users/user';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-add',
@@ -43,54 +44,297 @@ export class AddComponent implements OnInit {
   public isFirstimeLoad = false;
   public IsStartDateDisable = false;
   public IsEndDateDisable = false;
-  public isDaily: boolean = true;
+  public isDaily: boolean = false;
   public isWeekly: boolean = false;
   public isMonthly: boolean = false;
   public isYearly: boolean = false;
   public isEndDate: boolean = true;
   public isEndAfter: boolean = false;
-  public isNoEndDate: boolean = false;
+  public isNoEndDate: boolean = true;
+
+  public ScheduleOccuranceMessage = '';
+  public monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  public dayArray = ['Sunday','Monday','Tuesday','Wednesday','Thrusday','Friday','Saturday'];
+  public isCustom: boolean = false;
+  public scheduleStartDate = new Date();
+  public scheduleEndDate = new Date();
+  public tommorrow = new Date();
+  public scheduleOccuranceDay = 0;
+  public scheduleOccuranceMonth = '';
+  public selectedWeekdays = [];
+  public DataFormat;
+  public IsAnyBatchExecuted: boolean = false;
+
+  get ScheduleName() {
+    return this.scheduleForm.get('ScheduleName');
+  }
+
+  get StatementDefinition() {
+    return this.scheduleForm.get('StatementDefinition');
+  }
+
+  get DayOfMonth() {
+    return this.scheduleForm.get('DayOfMonth');
+  }
+
+  get TimeOfDayHours() {
+    return this.scheduleForm.get('TimeOfDayHours');
+  }
+
+  get TimeOfDayMinutes() {
+    return this.scheduleForm.get('TimeOfDayMinutes');
+  }
+
+  get filtershiftfromdate() {
+    return this.scheduleForm.get('filtershiftfromdate');
+  }
+
+  get filtershiftenddate() {
+    return this.scheduleForm.get('filtershiftenddate');
+  }
+
+  //get ExportToPDF() {
+  //  return this.scheduleForm.get('ExportToPDF');
+  //}
+
+  //get NoEndDate() {
+  //  return this.scheduleForm.get('NoEndDate');
+  //}
+
+  get RepeatEvery() {
+    return this.scheduleForm.get('RepeatEvery');
+  }
+
+  get RecurrancePattern() {
+    return this.scheduleForm.get('RecurrancePattern');
+  }
+
+  get RepeatEveryBy() {
+    return this.scheduleForm.get('RepeatEveryBy');
+  }
+
+  get CustomYearMonth() {
+    return this.scheduleForm.get('CustomYearMonth');
+  }
+
+  get CustomYearDay() {
+    return this.scheduleForm.get('CustomYearDay');
+  }
+
+  get CustomMonthDay() {
+    return this.scheduleForm.get('CustomMonthDay');
+  }
+
+  get scheduleEndAfterNoOccurences() {
+    return this.scheduleForm.get('scheduleEndAfterNoOccurences');
+  }
+
+  OnRecurrancePatternChange() {
+    let RecurrancePatternVal = this.scheduleForm.value.RecurrancePattern != null ? this.scheduleForm.value.RecurrancePattern : '';
+    if(RecurrancePatternVal != '') {
+      var d = this.scheduleStartDate;
+      var today = d.toLocaleDateString();
+      var dte = d.getDate();
+      var day = d.getDay();
+      var month = d.getMonth();
+      this.isCustom = false;
+      this.isNoEndDate = false;
+
+      if(this.isEndDate == true) {
+        setTimeout(() => {
+          $('#enddate').prop('checked', true);
+        }, 10);
+      }else {
+        setTimeout(() => {
+          $('#enddate').prop('checked', false);
+        }, 10);
+      }
+
+      if(this.isEndAfter == true) {
+        setTimeout(() => {
+          $('#endafter').prop('checked', true);
+        }, 10);
+      }else {
+        setTimeout(() => {
+          $('#endafter').prop('checked', false);
+        }, 10);
+      }
+      if(RecurrancePatternVal == 'Weekday') {
+        this.ScheduleOccuranceMessage = 'Occurs every Monday through Friday starting ' + today;
+      }else if(RecurrancePatternVal == 'Daily') {
+        this.ScheduleOccuranceMessage = 'Occurs every day starting ' + today;
+      }else if(RecurrancePatternVal == 'Weekly') {
+        this.ScheduleOccuranceMessage = 'Occurs every ' + this.dayArray[day] + ' starting ' + today;
+      }else if(RecurrancePatternVal == 'Monthly') {
+        this.ScheduleOccuranceMessage = 'Occurs every Month on day ' + dte + ' starting ' + today;
+      }else if(RecurrancePatternVal == 'Yearly') {
+        this.ScheduleOccuranceMessage = 'Occurs every Year on day '+ dte + ' of ' + this.monthArray[month] + ' starting ' + today;
+      }else if(RecurrancePatternVal == 'Custom') {
+        this.isCustom = true;
+        this.setScheduleOccuranceMessage();
+      }else {
+        this.isNoEndDate = true;
+        this.ScheduleOccuranceMessage = '';
+      }
+    }else {
+      this.ScheduleOccuranceMessage = '';
+    }
+  }
+
+  onRepeatEveryByValueChange() {
+    let repeatEveryByVal = this.scheduleForm.value.RepeatEveryBy != null ? this.scheduleForm.value.RepeatEveryBy : 'Day';
+    if(repeatEveryByVal == 'Day') {
+      this.isDaily = true;
+      this.isWeekly = false;
+      this.isMonthly = false;
+      this.isYearly = false;
+    }else if(repeatEveryByVal == 'Week') {
+      this.isDaily = false;
+      this.isWeekly = true;
+      this.isMonthly = false;
+      this.isYearly = false;
+    }else if(repeatEveryByVal == 'Month') {
+      this.isDaily = false;
+      this.isWeekly = false;
+      this.isMonthly = true;
+      this.isYearly = false;
+    }else if(repeatEveryByVal == 'Year') {
+      this.isDaily = false;
+      this.isWeekly = false;
+      this.isMonthly = false;
+      this.isYearly = true;
+    }
+    this.setScheduleOccuranceMessage();
+  }
+
+  onRepeatEveryChange() {
+    if(this.scheduleForm.value.RepeatEvery==0) {
+      this.scheduleForm.controls['RepeatEvery'].setValue(1);
+    }
+    this.setScheduleOccuranceMessage();
+  }
+
+  onCustomMonthDayChange() {
+    if(this.scheduleForm.value.CustomMonthDay==0) {
+      this.scheduleForm.controls['CustomMonthDay'].setValue(1);
+    }else if(this.scheduleForm.value.CustomMonthDay>29) {
+      this.scheduleForm.controls['CustomMonthDay'].setValue(29);
+    }
+    this.scheduleOccuranceDay = this.scheduleForm.value.CustomMonthDay;
+    this.setScheduleOccuranceMessage();
+  }
+
+  onCustomYearDayChange() {
+    if(this.scheduleForm.value.CustomYearDay==0) {
+      this.scheduleForm.controls['CustomYearDay'].setValue(1);
+    }else if(this.scheduleForm.value.CustomYearDay>29) {
+      this.scheduleForm.controls['CustomYearDay'].setValue(29);
+    }
+    this.scheduleOccuranceDay = this.scheduleForm.value.CustomYearDay;
+    this.setScheduleOccuranceMessage();
+  }
+
+  onScheduleEndAfterNoOccurencesChange() {
+    if(this.scheduleForm.value.scheduleEndAfterNoOccurences==0) {
+      this.scheduleForm.controls['scheduleEndAfterNoOccurences'].setValue(1);
+    }
+    this.setScheduleOccuranceMessage();
+  }
+
+  onCustomYearMonthChange() {
+    this.scheduleOccuranceMonth = this.scheduleForm.value.CustomYearMonth;
+    this.setScheduleOccuranceMessage();
+  }
+
+  weekdaySelection(event, day, Id) {
+    if (event.target.checked) {
+      this.selectedWeekdays.push({'Id': Id, 'Day': day});
+    }else {
+      let index = this.selectedWeekdays.findIndex(x => x.Id == Id);
+      this.selectedWeekdays.splice(index, 1);
+    }
+    this.setScheduleOccuranceMessage();
+  }
+
+  setScheduleOccuranceMessage() {
+    var ssd = new Date(this.scheduleForm.value.filtershiftfromdate);
+    var schedulestartdte = ssd.toLocaleDateString();
+    var dte = this.scheduleOccuranceDay != 0 ? this.scheduleOccuranceDay : ssd.getDate();
+    var month = this.scheduleOccuranceMonth != '' ? this.scheduleOccuranceMonth : this.monthArray[ssd.getMonth()];
+
+    let scheduleRunUtilMessage = '';
+    if(this.isEndDate == true && this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
+      let sed = new Date(this.scheduleForm.value.filtershiftenddate);
+      scheduleRunUtilMessage = ' until '+sed.toLocaleDateString();
+    }else if(this.isEndAfter == true && this.scheduleForm.value.scheduleEndAfterNoOccurences != null && this.scheduleForm.value.scheduleEndAfterNoOccurences != 0) {
+      scheduleRunUtilMessage = ' upto '+this.scheduleForm.value.scheduleEndAfterNoOccurences + " occurence.";
+    }
+    
+    let repeatEvery = this.scheduleForm.value.RepeatEvery != null ? this.scheduleForm.value.RepeatEvery : 1;
+    let repeatEveryByVal = this.scheduleForm.value.RepeatEveryBy != null ? this.scheduleForm.value.RepeatEveryBy : 'Day';
+    let occurance = '';
+
+    if(repeatEveryByVal == 'Day') {
+      if(repeatEvery == 1) {
+        occurance = 'day';
+      }else{
+        occurance = repeatEvery+' days ';
+      }
+    }
+    else if(repeatEveryByVal == 'Week') {
+      var weekdaystr = '';
+      if(this.selectedWeekdays.length > 0) {
+        this.selectedWeekdays.sort(function(a, b){
+          return a.Id - b.Id;
+        });
+        for(let i=0; i<this.selectedWeekdays.length; i++) {
+          let day = this.selectedWeekdays[i].Day;
+          weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
+          setTimeout(() => {
+            $('#weekday-'+day.toLowerCase()).prop('checked', true);
+          }, 10);
+        }
+      }
+      if(repeatEvery == 1) {
+        occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
+      }else{
+        occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
+      }
+    }
+    else if(repeatEveryByVal == 'Month') {
+      if(repeatEvery == 1) {
+        occurance = 'month on day '+dte;
+      }else{
+        occurance = repeatEvery+' months on day '+dte;
+      }
+      this.scheduleForm.get('CustomMonthDay').setValue(dte);
+    }
+    else if(repeatEveryByVal == 'Year') {
+      if(repeatEvery == 1) {
+        occurance = 'month on day '+dte+ ' of '+month;
+      }else{
+        occurance = repeatEvery+' months on day '+dte+ ' of '+month;
+      }
+      this.scheduleForm.get('CustomYearMonth').setValue(month);
+      this.scheduleForm.get('CustomYearDay').setValue(dte);
+    }
+    this.ScheduleOccuranceMessage = 'Occurs every '+occurance+' starting ' + schedulestartdte + scheduleRunUtilMessage;
+  }
 
   isEndDateClicked() {
     this.isEndDate = true;
     this.isEndAfter = false;
     this.isNoEndDate = false;
+    this.setScheduleOccuranceMessage();
   }
+
   isEndAfterClicked() {
     this.isEndDate = false;
     this.isEndAfter = true;
     this.isNoEndDate = false;
+    this.setScheduleOccuranceMessage();
   }
-  isNoEndDateClicked() {
-    this.isEndDate = false;
-    this.isEndAfter = false;
-    this.isNoEndDate = true;
-  }
-  isDailyClicked() {
-    this.isDaily = true;
-    this.isWeekly = false;
-    this.isMonthly = false;
-    this.isYearly = false;
-  }
-  isWeeklyClicked() {
-    this.isDaily = false;
-    this.isWeekly = true;
-    this.isMonthly = false;
-    this.isYearly = false;
-  }
-  isMonthlyClicked() {
-    this.isDaily = false;
-    this.isWeekly = false;
-    this.isMonthly = true;
-    this.isYearly = false;
 
-  }
-  isYearlyClicked() {
-    this.isDaily = false;
-    this.isWeekly = false;
-    this.isMonthly = false;
-    this.isYearly = true;
-  }
   constructor(
     private formBuilder: FormBuilder,
     private spinner: NgxUiLoaderService,
@@ -128,8 +372,12 @@ export class AddComponent implements OnInit {
     });
   }
 
-  public DataFormat;
   ngOnInit() {
+
+    this.tommorrow.setDate(this.tommorrow.getDate() + 1);
+    this.tommorrow.setHours(0,0,0,0);
+    this.scheduleStartDate = this.tommorrow;
+
     this.DataFormat = localStorage.getItem('DateFormat');
     this.st = new Statement;
     this.st.Name = "Please Select";
@@ -162,35 +410,49 @@ export class AddComponent implements OnInit {
       this.TimeOfDayHoursList.push(object);
     }
 
-    for (var i = 0; i <= 59; i++) {
-      var object = { Identifier: i.toString(), Name: "" };
-      if (i < 10) {
-        object.Name = "0" + i;
+    var x=0;
+    while (x<=55) {
+      var object = { Identifier: x.toString(), Name: "" };
+      if (x < 10) {
+        object.Name = "0" + x;
       }
       else {
-        object.Name = i.toString();
+        object.Name = x.toString();
       }
       this.TimeOfDayMinutesList.push(object);
+      x = x + 5;
     }
 
     this.scheduleForm = this.formBuilder.group({
       ScheduleName: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50),
       Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
       StatementDefinition: [0, Validators.compose([Validators.required])],
-      DayOfMonth: ["Please Select", Validators.compose([Validators.required])],
+      //DayOfMonth: ["Please Select", Validators.compose([Validators.required])],
       TimeOfDayHours: ["Please Select", Validators.compose([Validators.required])],
       TimeOfDayMinutes: ["Please Select", Validators.compose([Validators.required])],
       filtershiftfromdate: [null, Validators.compose([Validators.required])],
-      filtershiftenddate: [null,],
-      RecurrancePattern:[]
+      filtershiftenddate: [null],
+      RepeatEvery:[null],
+      RecurrancePattern: ["DoesNotRepeat", Validators.compose([Validators.required])],
+      RepeatEveryBy: ["Day"],
+      CustomYearMonth:[null],
+      CustomYearDay:[null],
+      CustomMonthDay:[null],
+      scheduleEndAfterNoOccurences: [null]
       //ExportToPDF: [false],
       //NoEndDate: [false],
     })
 
-    this.scheduleForm.controls['StatementDefinition'].setValue(this.st.Identifier);
-    this.scheduleForm.controls['DayOfMonth'].setValue(obj.Identifier);
-    this.scheduleForm.controls['TimeOfDayHours'].setValue(obj.Identifier);
-    this.scheduleForm.controls['TimeOfDayMinutes'].setValue(obj.Identifier);
+    if(this.updateOperationMode == false) {
+      this.scheduleForm.controls['StatementDefinition'].setValue(this.st.Identifier);
+      //this.scheduleForm.controls['DayOfMonth'].setValue(obj.Identifier);
+      this.scheduleForm.controls['TimeOfDayHours'].setValue(obj.Identifier);
+      this.scheduleForm.controls['TimeOfDayMinutes'].setValue(obj.Identifier);
+      this.scheduleForm.controls['filtershiftfromdate'].setValue(this.tommorrow); //Default today is the schedule start date
+      this.scheduleForm.controls['RepeatEvery'].setValue(1);
+      this.scheduleForm.controls['scheduleEndAfterNoOccurences'].setValue(1);
+    }
+    
     this.getStatements();
   }
 
@@ -247,7 +509,7 @@ export class AddComponent implements OnInit {
     this.schedule = response.List[0];
     this.scheduleForm.controls['ScheduleName'].setValue(this.schedule.Name);
     this.scheduleForm.controls['StatementDefinition'].setValue(this.schedule.Statement.Identifier);
-    this.scheduleForm.controls['DayOfMonth'].setValue(this.schedule.DayOfMonth);
+    //this.scheduleForm.controls['DayOfMonth'].setValue(this.schedule.DayOfMonth);
     this.scheduleForm.controls['TimeOfDayHours'].setValue(this.schedule.HourOfDay);
     this.scheduleForm.controls['TimeOfDayMinutes'].setValue(this.schedule.MinuteOfDay);
     this.scheduleForm.controls['filtershiftfromdate'].setValue(new Date(this.schedule.StartDate));
@@ -264,51 +526,52 @@ export class AddComponent implements OnInit {
       this.IsEndDateRequired = false;
     }
     else {
-      this.scheduleForm.controls['filtershiftenddate'].setValue(this.schedule.EndDate);
+      this.scheduleForm.controls['filtershiftenddate'].setValue(new Date(this.schedule.EndDate));
     }
+    
+    if(this.schedule.RecurrancePattern == null || this.schedule.RecurrancePattern == '') {
+      this.scheduleForm.controls['RecurrancePattern'].setValue("Custom");
+    }else {
+      this.scheduleForm.controls['RecurrancePattern'].setValue(this.schedule.RecurrancePattern);
+    }
+    
+    if(this.schedule.RecurrancePattern == null || this.schedule.RecurrancePattern == '') {
+      this.scheduleForm.controls['RecurrancePattern'].setValue("Custom");
+      this.scheduleForm.controls['RepeatEveryBy'].setValue("Month");
+    }else {
+      if(this.schedule.RecurrancePattern.includes('Custom')) {
+        let index = this.schedule.RecurrancePattern.indexOf('-');
+        let RepeatEveryBy = this.schedule.RecurrancePattern.substring(index+1, this.schedule.RecurrancePattern.length);
+        this.scheduleForm.controls['RepeatEveryBy'].setValue(RepeatEveryBy);
+        let pattern = this.schedule.RecurrancePattern.substring(0, index);
+        this.scheduleForm.controls['RecurrancePattern'].setValue(pattern);
+      }else {
+        this.scheduleForm.controls['RecurrancePattern'].setValue(this.schedule.RecurrancePattern);
+      }
+    }
+    
+    if(this.schedule.DayOfMonth != null && this.schedule.DayOfMonth != 0) {
+      this.scheduleForm.controls['CustomMonthDay'].setValue(this.schedule.DayOfMonth);
+    }else {
+      this.scheduleForm.controls['CustomMonthDay'].setValue(1);
+    }
+
+    if(this.schedule.RepeatEveryDayMonWeekYear == null || this.schedule.RepeatEveryDayMonWeekYear == 0) {
+      this.scheduleForm.controls['RepeatEvery'].setValue(1);
+    }else {
+      this.scheduleForm.controls['RepeatEvery'].setValue(this.schedule.RepeatEveryDayMonWeekYear);
+    }
+    
     if (this.schedule.IsExportToPDF) {
       this.IsExportToPDF = true;
     }
     else {
       this.IsExportToPDF = false;
     }
+
+    this.IsAnyBatchExecuted = this.schedule.ExecutedBatchCount > 0 ? true : false;
+    this.OnRecurrancePatternChange();
   }
-
-  get ScheduleName() {
-    return this.scheduleForm.get('ScheduleName');
-  }
-
-  get StatementDefinition() {
-    return this.scheduleForm.get('StatementDefinition');
-  }
-
-  get DayOfMonth() {
-    return this.scheduleForm.get('DayOfMonth');
-  }
-
-  get TimeOfDayHours() {
-    return this.scheduleForm.get('TimeOfDayHours');
-  }
-
-  get TimeOfDayMinutes() {
-    return this.scheduleForm.get('TimeOfDayMinutes');
-  }
-
-  get filtershiftfromdate() {
-    return this.scheduleForm.get('filtershiftfromdate');
-  }
-
-  get filtershiftenddate() {
-    return this.scheduleForm.get('filtershiftenddate');
-  }
-
-  //get ExportToPDF() {
-  //  return this.scheduleForm.get('ExportToPDF');
-  //}
-
-  //get NoEndDate() {
-  //  return this.scheduleForm.get('NoEndDate');
-  //}
 
   public onStateDefinitionSelected(event) {
     const value = event.target.value;
@@ -382,13 +645,12 @@ export class AddComponent implements OnInit {
     this.filterToDateErrorMessage = "";
     this.filterDateDifferenecError = false;
     this.filterDateDiffErrorMessage = "";
-    let currentDte = new Date();
     if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '') {
       if (this.IsStartDateDisable == false) {
         let startDate = this.scheduleForm.value.filtershiftfromdate;
-        if (startDate.getTime() < currentDte.getTime()) {
+        if (startDate.getTime() < this.tommorrow.getTime()) {
           this.filterFromDateError = true;
-          this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateThanCurrentDateMessage;
+          this.filterFromDateErrorMessage = ErrorMessageConstants.getStartDateShouldBeDayAfterTodayOrGreaterThanItMessage;
         }
       }
     }
@@ -401,32 +663,23 @@ export class AddComponent implements OnInit {
           this.filterToDateErrorMessage = ErrorMessageConstants.getPreviousEndDateShouldNotBeLessThanEndDateMessage;
         }
       }
-      else {
-        if (toDate.getTime() < currentDte.getTime()) {
-          this.filterToDateError = true;
-          this.filterToDateErrorMessage = ErrorMessageConstants.getEndDateThanCurrentDateMessage;
-        }
-      }
     }
-    if (this.scheduleForm.value.filtershiftfromdate != null && this.scheduleForm.value.filtershiftfromdate != '' &&
-      this.scheduleForm.value.filtershiftenddate != null && this.scheduleForm.value.filtershiftenddate != '') {
+    if (this.isEndDate==true) {
       let startDate = this.scheduleForm.value.filtershiftfromdate;
       let toDate = this.scheduleForm.value.filtershiftenddate;
-      if (this.IsEndDateRequired) {
-        if (startDate.getTime() >= toDate.getTime()) {
-          this.filterToDateError = true;
-          this.filterToDateErrorMessage = ErrorMessageConstants.getStartDateLessThanEndDateMessage;
-        }
-        else {
-          if (this.monthDiff(startDate, toDate) < 30) {
-            this.filterDateDifferenecError = true;
-            this.filterDateDiffErrorMessage = ErrorMessageConstants.getStartDateAndEndDateShouldhaveMonthDifferenceMessage;
-            this.filterToDateError = false;
-            this.filterToDateErrorMessage = "";
-          }
+      if(startDate!=null && toDate!=null) {
+        if (this.monthDiff(startDate, toDate) < 30) {
+          this.filterDateDifferenecError = true;
+          this.filterDateDiffErrorMessage = ErrorMessageConstants.getStartDateAndEndDateShouldhaveMonthDifferenceMessage;
+          this.filterToDateError = false;
+          this.filterToDateErrorMessage = "";
         }
       }
     }
+
+    this.scheduleStartDate = new Date(this.scheduleForm.value.filtershiftfromdate);
+    this.scheduleEndDate = new Date(this.scheduleForm.value.filtershiftenddate);
+    this.setScheduleOccuranceMessage();
   }
 
   monthDiff(d1, d2) {
@@ -437,9 +690,9 @@ export class AddComponent implements OnInit {
   vaildateForm() {
     if (this.scheduleForm.invalid)
       return true;
-    if (this.scheduleForm.value.DayOfMonth == "Please Select") {
-      return true;
-    }
+    // if (this.scheduleForm.value.DayOfMonth == "Please Select") {
+    //   return true;
+    // }
     if (this.scheduleForm.value.TimeOfDayHours == "Please Select") {
       return true;
     }
@@ -449,15 +702,21 @@ export class AddComponent implements OnInit {
     if (this.scheduleForm.value.StatementDefinition == "0") {
       return true;
     }
+    if (this.scheduleForm.value.RecurrancePattern == "Custom" && this.scheduleForm.value.RepeatEvery <= 0) {
+      return true;
+    }
     if (this.filterFromDateError || this.scheduleForm.value.filtershiftfromdate == "") {
       return true;
     }
-    if (this.IsEndDateRequired) {
+    if (this.isEndDate==true) {
       if (this.filterToDateError || this.scheduleForm.value.filtershiftenddate == "" || this.scheduleForm.value.filtershiftenddate == null) {
         return true;
       }
     }
     if (this.filterDateDifferenecError) {
+      return true;
+    }
+    if(this.isEndAfter==true && this.scheduleForm.value.scheduleEndAfterNoOccurences>=0) {
       return true;
     }
     return false;
@@ -467,11 +726,55 @@ export class AddComponent implements OnInit {
     this.schedule.Name = this.scheduleForm.value.ScheduleName;
     this.schedule.Statement.Identifier = this.scheduleForm.value.StatementDefinition;
     this.schedule.StartDate = this.scheduleForm.value.filtershiftfromdate;
-    this.schedule.EndDate = this.IsEndDateRequired ? this.scheduleForm.value.filtershiftenddate : null;
     this.schedule.IsExportToPDF = this.IsExportToPDF;
     this.schedule.UpdateBy = new User();
     var userid = localStorage.getItem('UserId')
     this.schedule.UpdateBy.Identifier = Number(userid);
+
+    if(this.updateOperationMode==false) {
+      this.schedule.RecurrancePattern = this.scheduleForm.value.RecurrancePattern;
+      this.schedule.IsEveryWeekDay = this.scheduleForm.value.RecurrancePattern == "Weekday" ? true : false;
+
+      var weekdaystr = '';
+      var d = this.scheduleStartDate;
+      var day = d.getDay();
+      var month = d.getMonth();
+      if(this.scheduleForm.value.RecurrancePattern=='Weekly') {
+        weekdaystr = weekdaystr + this.dayArray[day];
+        this.schedule.WeekDays = weekdaystr;
+      }
+      else if(this.scheduleForm.value.RecurrancePattern=='Monthly') {
+        this.schedule.DayOfMonth = day;
+      }
+      else if(this.scheduleForm.value.RecurrancePattern=='Yearly') {
+        this.schedule.DayOfMonth = day;
+        this.schedule.MonthOfYear = this.monthArray[month];
+      }
+      else if(this.scheduleForm.value.RecurrancePattern == "Custom") {
+        this.schedule.RecurrancePattern = this.scheduleForm.value.RecurrancePattern + '-' +this.scheduleForm.value.RepeatEveryBy;
+        this.schedule.RepeatEveryDayMonWeekYear = this.scheduleForm.value.RepeatEvery != null ? this.scheduleForm.value.RepeatEvery : 1;
+        if(this.schedule.RecurrancePattern == 'Custom-Week' && this.selectedWeekdays.length > 0) {
+          this.selectedWeekdays.sort(function(a, b) {
+            return a.Id - b.Id;
+          });
+          for(let i=0; i<this.selectedWeekdays.length; i++) {
+            weekdaystr = weekdaystr + (weekdaystr != '' ? ',' : '') + this.selectedWeekdays[i].Day;
+          }
+          this.schedule.WeekDays = weekdaystr;
+        }
+        this.schedule.DayOfMonth = this.schedule.RecurrancePattern == 'Custom-Month' ? this.scheduleForm.value.CustomMonthDay : 0;
+        this.schedule.MonthOfYear = this.schedule.RecurrancePattern == 'Custom-Year' ? this.scheduleForm.value.CustomYearMonth : null;
+      }
+    }
+
+    if(this.isEndAfter != null && this.isEndAfter == true) {
+      this.schedule.IsEndsAfterNoOfOccurrences = this.isEndAfter;
+      this.schedule.NoOfOccurrences = this.scheduleForm.value.scheduleEndAfterNoOccurences;
+    }
+
+    this.schedule.EndDate = this.isEndDate ? this.scheduleForm.value.filtershiftenddate : null;
+    console.log(this.schedule);
+
     let pageArray = [];
     pageArray.push(this.schedule);
     let scheduleService = this.injector.get(ScheduleService);

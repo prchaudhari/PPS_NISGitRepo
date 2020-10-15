@@ -132,8 +132,7 @@ namespace nIS
                         IsEveryWeekDay = schedule.IsEveryWeekDay,
                         MonthOfYear = schedule.MonthOfYear,
                         IsEndsAfterNoOfOccurrences = schedule.IsEndsAfterNoOfOccurrences,
-                        NoOfOccurrences = schedule.NoOfOccurrences,
-
+                        NoOfOccurrences = schedule.NoOfOccurrences
                     });
                 });
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -144,21 +143,28 @@ namespace nIS
                 }
                 if (result)
                 {
-                    scheduleRecords.ToList().ForEach(item =>
+                    scheduleRecords.ToList().ForEach(schedulerecord =>
                     {
-                        int diff = this.utility.MonthDifference(item.EndDate ?? DateTime.Now, item.StartDate ?? DateTime.Now);
-                        //If schedule day of month is greater than end date day of month, then batch record will generate for that month
-                        if (item.StartDate?.Day > Convert.ToInt32(item.DayOfMonth) && item.EndDate?.Day < Convert.ToInt32(item.DayOfMonth))
+                        int batchIndex = 1;
+                        if (schedulerecord.RecurrancePattern == "DoesNotRepeat")
                         {
-                            diff--;
+                            this.AddDoesNotRepeatBatch(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId);
                         }
-                        else if (item.StartDate?.Day < Convert.ToInt32(item.DayOfMonth) && item.EndDate?.Day >= Convert.ToInt32(item.DayOfMonth))
+                        else if (schedulerecord.RecurrancePattern == "Daily" || schedulerecord.RecurrancePattern == "Custom-Day")
                         {
-                            diff++;
+                            this.AddDailyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
                         }
-                        if (diff > 0)
+                        else if (schedulerecord.RecurrancePattern == "Weekday" || schedulerecord.RecurrancePattern == "Weekly" || schedulerecord.RecurrancePattern == "Custom-Week")
                         {
-                            this.AddBatchMaster(item, 1, diff, tenantCode, userId);
+                            this.AddWeeklyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                        }
+                        else if (schedulerecord.RecurrancePattern == "Monthly" || schedulerecord.RecurrancePattern == "Custom-Month")
+                        {
+                            this.AddMonthlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                        }
+                        else if (schedulerecord.RecurrancePattern == "Yearly" || schedulerecord.RecurrancePattern == "Custom-Year")
+                        {
+                            this.AddYearlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
                         }
                     });
                 }
@@ -239,42 +245,67 @@ namespace nIS
                         scheduleRecord.NoOfOccurrences = item.NoOfOccurrences;
                         nISEntitiesDataContext.SaveChanges();
 
-                        //If any batch is not executed or data ready for it, then delete all batches and re-insert it as per start date and end date, 
-                        //Else insert new batches as per new end date and previous end date logic
-                        var batches = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id && (batch.IsExecuted || batch.IsDataReady)).ToList();
-                        if (batches.Count == 0)
+                        if (item.IsRecurrancePatternChange)
                         {
-                            var batchesToDelete = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id).ToList();
-                            nISEntitiesDataContext.BatchMasterRecords.RemoveRange(batchesToDelete);
-                            nISEntitiesDataContext.SaveChanges();
-
-                            int diff = this.utility.MonthDifference(item.EndDate ?? DateTime.Now, item.StartDate ?? DateTime.Now);
-                            //If schedule day of month is greater than end date day of month, then batch record will generate for that month
-                            if (item.StartDate?.Day > Convert.ToInt32(item.DayOfMonth) && item.EndDate?.Day < Convert.ToInt32(item.DayOfMonth))
+                            //If any batch is not executed or data ready for it, then delete all batches and re-insert it as per start date and end date, 
+                            //Else insert new batches as per new end date and previous end date logic
+                            var batches = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id && (batch.IsExecuted || batch.IsDataReady)).ToList();
+                            if (batches.Count == 0)
                             {
-                                diff--;
+                                var batchesToDelete = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id).ToList();
+                                nISEntitiesDataContext.BatchMasterRecords.RemoveRange(batchesToDelete);
+                                nISEntitiesDataContext.SaveChanges();
+                                int batchIndex = 1;
+                                if (scheduleRecord.RecurrancePattern == "DoesNotRepeat")
+                                {
+                                    this.AddDoesNotRepeatBatch(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId);
+                                }
+                                else if (scheduleRecord.RecurrancePattern == "Daily" || scheduleRecord.RecurrancePattern == "Custom-Day")
+                                {
+                                    this.AddDailyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
+                                }
+                                else if (scheduleRecord.RecurrancePattern == "Weekday" || scheduleRecord.RecurrancePattern == "Weekly" || scheduleRecord.RecurrancePattern == "Custom-Week")
+                                {
+                                    this.AddWeeklyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
+                                }
+                                else if (scheduleRecord.RecurrancePattern == "Monthly" || scheduleRecord.RecurrancePattern == "Custom-Month")
+                                {
+                                    this.AddMonthlyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
+                                }
+                                else if (scheduleRecord.RecurrancePattern == "Yearly" || scheduleRecord.RecurrancePattern == "Custom-Year")
+                                {
+                                    this.AddYearlyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
+                                }
                             }
-                            else if (item.StartDate?.Day < Convert.ToInt32(item.DayOfMonth) && item.EndDate?.Day >= Convert.ToInt32(item.DayOfMonth))
+                            else
                             {
-                                diff++;
-                            }
-                            if (diff > 0)
-                            {
-                                this.AddBatchMaster(scheduleRecord, 1, diff, tenantCode, userId);
+                                var Batches = nISEntitiesDataContext.BatchMasterRecords.Where(b => b.ScheduleId == scheduleRecord.Id).OrderByDescending(x => x.BatchExecutionDate).ToList();
+                                int batchIndex = Batches.Count + 1;
+                                var lastExecutedBatch = Batches.FirstOrDefault();
+                                var newStartDate = lastExecutedBatch.BatchExecutionDate;
+                                if (scheduleRecord.RecurrancePattern == "Daily" || scheduleRecord.RecurrancePattern == "Custom-Day")
+                                {
+                                    newStartDate.AddDays(1);
+                                    this.AddDailyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
+                                }
+                                else if (scheduleRecord.RecurrancePattern == "Weekday" || scheduleRecord.RecurrancePattern == "Weekly" || scheduleRecord.RecurrancePattern == "Custom-Week")
+                                {
+                                    newStartDate.AddDays(1);
+                                    this.AddWeeklyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
+                                }
+                                else if (scheduleRecord.RecurrancePattern == "Monthly" || scheduleRecord.RecurrancePattern == "Custom-Month")
+                                {
+                                    newStartDate.AddMonths(1);
+                                    this.AddMonthlyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
+                                }
+                                else if (scheduleRecord.RecurrancePattern == "Yearly" || scheduleRecord.RecurrancePattern == "Custom-Year")
+                                {
+                                    newStartDate.AddYears(1);
+                                    this.AddYearlyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
+                                }
                             }
                         }
-                        else
-                        {
-                            //If schedule day of month is greater than end date day of month, then batch record will generate for that month
-                            if (scheduleRecord.EndDate?.Day < Convert.ToInt32(item.DayOfMonth))
-                            {
-                                prevDiff--;
-                            }
-                            if (newDiff > 0)
-                            {
-                                this.AddBatchMaster(scheduleRecord, (prevDiff + 1), (prevDiff + newDiff), tenantCode, userId);
-                            }
-                        }
+                        
                     });
 
                     result = true;
@@ -396,8 +427,7 @@ namespace nIS
                             MonthOfYear = scheduleRecord.MonthOfYear,
                             IsEndsAfterNoOfOccurrences = scheduleRecord.IsEndsAfterNoOfOccurrences,
                             NoOfOccurrences = scheduleRecord.NoOfOccurrences,
-
-
+                            ExecutedBatchCount = scheduleRecord.ExecutedBatchCount ?? 0
                         }).ToList();
                     }
                 }
@@ -1085,6 +1115,7 @@ namespace nIS
                                 batchExecutionDate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
                                 end++;
                             }
+
                             else
                             {
                                 var tempDate = scheduleStartDate.AddMonths(ValueToAddInMonth);
@@ -1111,6 +1142,355 @@ namespace nIS
                     }
                 }
                 return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to add batch with no repeat occurence.
+        /// </summary>
+        /// <param name="schedule"></param>
+        /// <param name="tenantCode"></param>
+        /// <param name="userId"></param>
+        /// <returns>true if added successfully otherwise false</returns>
+        private bool AddDoesNotRepeatBatch(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId)
+        {
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    //var scheduleStartDate = schedule.StartDate ?? DateTime.Now;
+                    BatchMasterRecord record = new BatchMasterRecord();
+                    record.BatchName = "Batch 1 of " + schedule.Name;
+                    record.TenantCode = tenantCode;
+                    record.CreatedBy = userId;
+                    record.CreatedDate = DateTime.UtcNow;
+                    record.ScheduleId = schedule.Id;
+                    record.IsExecuted = false;
+                    record.IsDataReady = false;
+                    var batchExecutionDate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, scheduleStartDate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                    record.BatchExecutionDate = batchExecutionDate;
+                    record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                    record.Status = BatchStatus.New.ToString();
+                    nISEntitiesDataContext.BatchMasterRecords.Add(record);
+                    nISEntitiesDataContext.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to add batch on daily basis schedule run occurenace.
+        /// </summary>
+        /// <param name="schedule"></param>
+        /// <param name="tenantCode"></param>
+        /// <param name="userId"></param>
+        /// <param name="isCustom"></param>
+        /// <returns>true if added successfully otherwise false</returns>
+        private bool AddDailyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        {
+            bool result = false;
+            try
+            {
+                var repeatEveryDays = schedule.RecurrancePattern == "Custom-Day" ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+                int dayDiff = 0;
+                if (schedule.EndDate != null)
+                {
+                    dayDiff = this.utility.DayDifference(schedule.EndDate ?? DateTime.Now, scheduleStartDate);
+                }
+                else
+                {
+                    dayDiff = Convert.ToInt32(schedule.NoOfOccurrences ?? 1) * repeatEveryDays;
+                }
+
+                if (dayDiff > 0)
+                {
+                    var newstartdate = scheduleStartDate;
+                    int idx = 1;
+                    while (idx <= dayDiff)
+                    {
+                        BatchMasterRecord record = new BatchMasterRecord();
+                        record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                        record.TenantCode = tenantCode;
+                        record.CreatedBy = userId;
+                        record.CreatedDate = DateTime.UtcNow;
+                        record.ScheduleId = schedule.Id;
+                        record.IsExecuted = false;
+                        record.IsDataReady = false;
+                        var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                        record.BatchExecutionDate = batchExecutionDate;
+                        record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                        record.Status = BatchStatus.New.ToString();
+                        batchMasterRecords.Add(record);
+                        newstartdate = newstartdate.AddDays(repeatEveryDays);
+                        batchIndex++;
+                        idx = idx + repeatEveryDays;
+                    }
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                        result = true;
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to add batch on weekday or weekly basis schedule run occurenace.
+        /// </summary>
+        /// <param name="schedule"></param>
+        /// <param name="tenantCode"></param>
+        /// <param name="userId"></param>
+        /// <param name="isCustom"></param>
+        /// <returns>true if added successfully otherwise false</returns>
+        private bool AddWeeklyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        {
+            bool result = false;
+            try
+            {
+                var repeatEveryDays = schedule.RecurrancePattern == "Custom-Week" ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+
+                int dayDiff = 0;
+                //var scheduleStartDate = schedule.StartDate ?? DateTime.Now;
+                if (schedule.EndDate != null)
+                {
+                    dayDiff = this.utility.DayDifference(schedule.EndDate ?? DateTime.Now, scheduleStartDate);
+                }
+                else
+                {
+                    dayDiff = Convert.ToInt32(schedule.NoOfOccurrences) * repeatEveryDays;
+                }
+
+                var newstartdate = scheduleStartDate;
+                if (dayDiff > 0)
+                {
+                    if (schedule.RecurrancePattern == "Weekday")
+                    {
+                        for (int index = 1; index <= dayDiff; index++)
+                        {
+                            if (newstartdate.DayOfWeek != DayOfWeek.Saturday && newstartdate.DayOfWeek != DayOfWeek.Sunday)
+                            {
+                                BatchMasterRecord record = new BatchMasterRecord();
+                                record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                                record.TenantCode = tenantCode;
+                                record.CreatedBy = userId;
+                                record.CreatedDate = DateTime.UtcNow;
+                                record.ScheduleId = schedule.Id;
+                                record.IsExecuted = false;
+                                record.IsDataReady = false;
+                                var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                                record.BatchExecutionDate = batchExecutionDate;
+                                record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                                record.Status = BatchStatus.New.ToString();
+                                batchMasterRecords.Add(record);
+                                batchIndex++;
+                            }
+                            newstartdate = newstartdate.AddDays(repeatEveryDays);
+                        }
+                    }
+                    else
+                    {
+                        var days = schedule.WeekDays.Split(new Char[] { ',' });
+                        int idx = 1, noOfDaysInWeek = 7;
+                        while (idx <= dayDiff)
+                        {
+                            if (days.Contains(newstartdate.DayOfWeek.ToString()))
+                            {
+                                BatchMasterRecord record = new BatchMasterRecord();
+                                record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                                record.TenantCode = tenantCode;
+                                record.CreatedBy = userId;
+                                record.CreatedDate = DateTime.UtcNow;
+                                record.ScheduleId = schedule.Id;
+                                record.IsExecuted = false;
+                                record.IsDataReady = false;
+                                var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                                record.BatchExecutionDate = batchExecutionDate;
+                                record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                                record.Status = BatchStatus.New.ToString();
+                                batchMasterRecords.Add(record);
+                                batchIndex++;
+                            }
+
+                            if (newstartdate.DayOfWeek != DayOfWeek.Sunday)
+                            {
+                                newstartdate = newstartdate.AddDays(1);
+                                idx++;
+                            }
+                            else
+                            {
+                                newstartdate = newstartdate.AddDays(repeatEveryDays > 1 ? ((repeatEveryDays--) * noOfDaysInWeek) : 1);
+                                idx = idx + (repeatEveryDays > 1 ? ((repeatEveryDays--) * noOfDaysInWeek) : 1);
+                            }
+                        }
+                    }
+
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                        result = true;
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to add batch on monthly basis schedule run occurenace.
+        /// </summary>
+        /// <param name="schedule"></param>
+        /// <param name="tenantCode"></param>
+        /// <param name="userId"></param>
+        /// <param name="isCustom"></param>
+        /// <returns>true if added successfully otherwise false</returns>
+        private bool AddMonthlyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        {
+            bool result = false;
+            try
+            {
+                var repeatEveryMonths = schedule.RecurrancePattern == "Custom-Month" ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+                var newstartdate = scheduleStartDate;
+                if (schedule.DayOfMonth < newstartdate.Day)
+                {
+                    newstartdate.AddMonths(1);
+                }
+
+                if (schedule.EndDate != null)
+                {
+                    while (DateTime.Compare(newstartdate, schedule.EndDate ?? DateTime.Now) < 0)
+                    {
+                        BatchMasterRecord record = new BatchMasterRecord();
+                        record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                        record.TenantCode = tenantCode;
+                        record.CreatedBy = userId;
+                        record.CreatedDate = DateTime.UtcNow;
+                        record.ScheduleId = schedule.Id;
+                        record.IsExecuted = false;
+                        record.IsDataReady = false;
+                        var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                        record.BatchExecutionDate = batchExecutionDate;
+                        record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                        record.Status = BatchStatus.New.ToString();
+                        batchMasterRecords.Add(record);
+                        newstartdate = newstartdate.AddMonths(repeatEveryMonths);
+                        batchIndex++;
+                    }
+                }
+                else if (schedule.NoOfOccurrences != null && schedule.NoOfOccurrences > 0)
+                {
+                    long? occurences = schedule.NoOfOccurrences;
+                    while (occurences != null && occurences > 0)
+                    {
+                        BatchMasterRecord record = new BatchMasterRecord();
+                        record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                        record.TenantCode = tenantCode;
+                        record.CreatedBy = userId;
+                        record.CreatedDate = DateTime.UtcNow;
+                        record.ScheduleId = schedule.Id;
+                        record.IsExecuted = false;
+                        record.IsDataReady = false;
+                        var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                        record.BatchExecutionDate = batchExecutionDate;
+                        record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                        record.Status = BatchStatus.New.ToString();
+                        batchMasterRecords.Add(record);
+                        newstartdate = newstartdate.AddMonths(repeatEveryMonths);
+                        batchIndex++;
+                        occurences--;
+                    }
+                }
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to add batch on yearly basis schedule run occurenace.
+        /// </summary>
+        /// <param name="schedule"></param>
+        /// <param name="tenantCode"></param>
+        /// <param name="userId"></param>
+        /// <param name="isCustom"></param>
+        /// <returns>true if added successfully otherwise false</returns>
+        private bool AddYearlyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        {
+            try
+            {
+                var repeatEveryYears = schedule.RecurrancePattern == "Custom-Year" ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+                var startdate = scheduleStartDate;
+                if (this.utility.getNumericMonth(schedule.MonthOfYear) < startdate.Month
+                    || (this.utility.getNumericMonth(schedule.MonthOfYear) == startdate.Month && startdate.Day < schedule.DayOfMonth))
+                {
+                    startdate.AddYears(1);
+                }
+                var newstartdate = new DateTime(startdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear), Convert.ToInt32(schedule.DayOfMonth), 0, 0, 0);
+                var yearDiff = this.utility.YearDifference(schedule.EndDate ?? DateTime.Now, newstartdate);
+                if (yearDiff > 0)
+                {
+                    int idx = 1;
+                    while (idx <= yearDiff)
+                    {
+                        BatchMasterRecord record = new BatchMasterRecord();
+                        record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                        record.TenantCode = tenantCode;
+                        record.CreatedBy = userId;
+                        record.CreatedDate = DateTime.UtcNow;
+                        record.ScheduleId = schedule.Id;
+                        record.IsExecuted = false;
+                        record.IsDataReady = false;
+                        var batchExecutionDate = new DateTime(newstartdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear), Convert.ToInt32(schedule.DayOfMonth), Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                        record.BatchExecutionDate = batchExecutionDate;
+                        record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                        record.Status = BatchStatus.New.ToString();
+                        batchMasterRecords.Add(record);
+                        newstartdate = newstartdate.AddYears(repeatEveryYears);
+                        batchIndex++;
+                        idx = idx + repeatEveryYears;
+                    }
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
+                }
+                return true;
             }
             catch (Exception ex)
             {

@@ -843,7 +843,7 @@
                     res = "Dec";
                     break;
                 default:
-                    res = "Nulo";
+                    res = "Jan";
                     break;
             }
             return res;
@@ -858,6 +858,101 @@
         public int MonthDifference(DateTime endDate, DateTime startDate)
         {
             return (endDate.Month - startDate.Month) + 12 * (endDate.Year - startDate.Year);
+        }
+
+        /// <summary>
+        /// This method help to get day difference in between 2 dates
+        /// </summary>
+        /// <param name="endDate"> the end date value </param>
+        /// <param name="startDate"> the start date value </param>
+        /// <returns>difference between 2 dates in numeric</returns>
+        public int DayDifference(DateTime endDate, DateTime startDate)
+        {
+            return Convert.ToInt32((endDate.Date - startDate.Date).TotalDays);
+        }
+
+        /// <summary>
+        /// This method help to get year difference in between 2 dates
+        /// </summary>
+        /// <param name="endDate"> the end date value </param>
+        /// <param name="startDate"> the start date value </param>
+        /// <returns>difference between 2 dates in numeric</returns>
+        public int YearDifference(DateTime startDate, DateTime endDate)
+        {
+            //Excel documentation says "COMPLETE calendar years in between dates"
+            int years = endDate.Year - startDate.Year;
+
+            if (startDate.Month == endDate.Month &&// if the start month and the end month are the same
+                endDate.Day < startDate.Day// AND the end day is less than the start day
+                || endDate.Month < startDate.Month)// OR if the end month is less than the start month
+            {
+                years--;
+            }
+
+            return years;
+        }
+
+        /// <summary>
+        /// This method help to get numeric value of month
+        /// </summary>
+        /// <param name="m"> the string value of month </param>
+        /// <returns>numeric value of month</returns>
+        public int getNumericMonth(string m)
+        {
+            int res;
+            if (m.ToLower() == "january" || m.ToLower() == "jan")
+            {
+                res = 1;
+            }
+            else if (m.ToLower() == "february" || m.ToLower() == "feb")
+            {
+                res = 2;
+            }
+            else if (m.ToLower() == "march" || m.ToLower() == "mar")
+            {
+                res = 3;
+            }
+            else if (m.ToLower() == "april" || m.ToLower() == "apr")
+            {
+                res = 4;
+            }
+            else if (m.ToLower() == "may")
+            {
+                res = 5;
+            }
+            else if (m.ToLower() == "june" || m.ToLower() == "jun")
+            {
+                res = 6;
+            }
+            else if (m.ToLower() == "july" || m.ToLower() == "jul")
+            {
+                res = 7;
+            }
+            else if (m.ToLower() == "august" || m.ToLower() == "aug")
+            {
+                res = 8;
+            }
+            else if (m.ToLower() == "september" || m.ToLower() == "sep")
+            {
+                res = 9;
+            }
+            else if (m.ToLower() == "october" || m.ToLower() == "oct")
+            {
+                res = 10;
+            }
+            else if (m.ToLower() == "november" || m.ToLower() == "nov")
+            {
+                res = 11;
+            }
+            else if (m.ToLower() == "december" || m.ToLower() == "dec")
+            {
+                res = 12;
+            }
+            else
+            {
+                res = 1;
+            }
+            return res;
         }
 
         /// <summary>

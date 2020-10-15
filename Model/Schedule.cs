@@ -315,6 +315,8 @@ namespace nIS
         public string MonthOfYear { get; set; }
         public Nullable<bool> IsEndsAfterNoOfOccurrences { get; set; }
         public Nullable<long> NoOfOccurrences { get; set; }
+        public bool IsRecurrancePatternChange { get; set; }
+        public int ExecutedBatchCount { get; set; }
         #endregion
 
         #region Public Methods
@@ -338,7 +340,7 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("Status", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_STATUS);
                 }
-                if (!this.validationEngine.IsValidLong(this.DayOfMonth))
+                if (!this.validationEngine.IsValidLong(this.DayOfMonth, true))
                 {
                     exception.Data.Add(this.utility.GetDescription("DayOfMonth", typeof(Schedule)), ModelConstant.SCHEDULE_MODEL_SECTION + "~" + ModelConstant.INVALID_SCHEDULE_DAYOFMONTH);
                 }
