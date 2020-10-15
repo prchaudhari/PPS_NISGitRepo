@@ -63,6 +63,8 @@
         <EntityTypeShape EntityType="NISModel.DynamicWidgetRecord" Width="1.5" PointX="4.875" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.EntityFieldMapRecord" Width="1.5" PointX="6.75" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantEntityRecord" Width="1.5" PointX="8.75" PointY="8.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DynamicWidgetFilterDetail" Width="1.5" PointX="8.75" PointY="8.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_DynamicWidgetRecord" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

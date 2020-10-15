@@ -68,7 +68,7 @@ namespace nIS
 
         #region Public Methods
 
-        #region Add DynamicWidget
+        #region Add Dynamic Widget
 
         /// <summary>
         /// This method helps to adds the specified list of dynamicWidget in dynamicWidget repository.
@@ -99,12 +99,10 @@ namespace nIS
                         ThemeCSS = dynamicWidget.ThemeCSS,
                         WidgetSettings = dynamicWidget.WidgetSettings,
                         WidgetFilterSettings = dynamicWidget.WidgetFilterSettings,
-                        Status = dynamicWidget.Status,
+                        Status = "New",
                         CreatedBy = dynamicWidget.CreatedBy,
-                        CreatedOn = dynamicWidget.CreatedOn,
-                        LastUpdatedBy = dynamicWidget.LastUpdatedBy,
-                        PublishedBy = dynamicWidget.PublishedBy,
-                        PublishedDate = dynamicWidget.PublishedDate,
+                        CreatedOn = DateTime.UtcNow,
+                        LastUpdatedBy = dynamicWidget.CreatedBy,
                         IsActive = true,
                         IsDeleted = false,
                         TenantCode = tenantCode
@@ -130,7 +128,7 @@ namespace nIS
 
         #endregion
 
-        #region Update DynamicWidget
+        #region Update Dynamic Widget
 
         /// <summary>
         /// This method helps to update the specified list of dynamicWidgets in dynamicWidget repository.
@@ -197,7 +195,7 @@ namespace nIS
 
         #endregion
 
-        #region Delete DynamicWidget
+        #region Delete Dynamic Widget
 
         /// <summary>
         /// This method helps to delete the specified list of dynamicWidgets in dynamicWidget repository.
@@ -267,7 +265,7 @@ namespace nIS
 
         #endregion
 
-        #region Get DynamicWidgets
+        #region Get Dynamic Widgets
 
         /// <summary>
         /// This method helps to retrieve dynamicWidgets based on specified search condition from repository.
@@ -280,7 +278,7 @@ namespace nIS
         public IList<DynamicWidget> GetDynamicWidgets(DynamicWidgetSearchParameter dynamicWidgetSearchParameter, string tenantCode)
         {
             IList<DynamicWidget> dynamicWidgets = new List<DynamicWidget>();
-            IList<DynamicWidgetRecord> dynamicWidgetRecords = new List<DynamicWidgetRecord>();
+            IList<View_DynamicWidgetRecord> dynamicWidgetRecords = new List<View_DynamicWidgetRecord>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
@@ -291,14 +289,14 @@ namespace nIS
 
                     if (dynamicWidgetSearchParameter.PagingParameter.PageIndex != 0 && dynamicWidgetSearchParameter.PagingParameter.PageSize != 0)
                     {
-                        dynamicWidgetRecords = nISEntitiesDataContext.DynamicWidgetRecords.Where(result).
+                        dynamicWidgetRecords = nISEntitiesDataContext.View_DynamicWidgetRecord.Where(result).
                         OrderBy(dynamicWidgetSearchParameter.SortParameter.SortColumn + " " + dynamicWidgetSearchParameter.SortParameter.SortOrder)
                        .Skip(dynamicWidgetSearchParameter.PagingParameter.PageSize * (dynamicWidgetSearchParameter.PagingParameter.PageIndex - 1))
                        .Take(dynamicWidgetSearchParameter.PagingParameter.PageIndex * dynamicWidgetSearchParameter.PagingParameter.PageSize).ToList();
                     }
                     else
                     {
-                        dynamicWidgetRecords = nISEntitiesDataContext.DynamicWidgetRecords.Where(result).
+                        dynamicWidgetRecords = nISEntitiesDataContext.View_DynamicWidgetRecord.Where(result).
                         OrderBy(dynamicWidgetSearchParameter.SortParameter.SortColumn + " " + dynamicWidgetSearchParameter.SortParameter.SortOrder).ToList();
                     }
 
@@ -322,7 +320,11 @@ namespace nIS
                                 CreatedBy = item.CreatedBy,
                                 CreatedOn = item.CreatedOn,
                                 LastUpdatedBy = item.LastUpdatedBy,
+                                CreatedByName=item.CreatedByName,
                                 PublishedBy = item.PublishedBy,
+                                PublishedByName = item.PublishedByName,
+                                EntityName=item.EntityName,
+                                PageTypeName=item.PageTypeName,
                                 PublishedDate = item.PublishedDate,
                                 IsActive = true,
                                 IsDeleted = false,
@@ -346,7 +348,7 @@ namespace nIS
 
         #endregion
 
-        #region Get DynamicWidget Count
+        #region Get Dynamic Widget Count
 
         /// <summary>
         /// This method reference to get dynamicWidget count
@@ -425,12 +427,12 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     IList<EntityFieldMapRecord> entityFieldRecords = new List<EntityFieldMapRecord>();
-                    entityFieldRecords = nISEntitiesDataContext.EntityFieldMapRecords.Where(item => item.TenantCode == tenantCode && item.EntityId==entityIdentifier).ToList();
+                    entityFieldRecords = nISEntitiesDataContext.EntityFieldMapRecords.Where(item => item.TenantCode == tenantCode && item.EntityId == entityIdentifier).ToList();
                     entityFieldMaps = entityFieldRecords.Select(item => new EntityFieldMap
                     {
                         Identifier = item.Id,
                         Name = item.Name,
-                        EntityIdentifier = item.Id,
+                        EntityIdentifier = item.EntityId,
                         DataType = item.DataType,
                         IsDeleted = item.IsDeleted,
                         IsActive = item.IsActive,

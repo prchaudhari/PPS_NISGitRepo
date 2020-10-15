@@ -88,6 +88,8 @@ namespace nIS
         public virtual DbSet<DynamicWidgetRecord> DynamicWidgetRecords { get; set; }
         public virtual DbSet<EntityFieldMapRecord> EntityFieldMapRecords { get; set; }
         public virtual DbSet<TenantEntityRecord> TenantEntityRecords { get; set; }
+        public virtual DbSet<DynamicWidgetFilterDetail> DynamicWidgetFilterDetails { get; set; }
+        public virtual DbSet<View_DynamicWidgetRecord> View_DynamicWidgetRecord { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
