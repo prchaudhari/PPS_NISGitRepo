@@ -124,6 +124,7 @@
     <Build Include="DynamicWidget.sql" />
     <Build Include="Entity.sql" />
     <Build Include="EntityFieldMap.sql" />
+    <Build Include="DynamicWidgetFilterDetail.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

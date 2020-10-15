@@ -129,4 +129,28 @@ GO
 
 
 
+/****** Object:  View [NIS].[View_DynamicWidget]    Script Date: 2020-09-29 14:33:01 ******/
+IF OBJECT_ID (N'NIS.View_DynamicWidget', N'V') IS NOT NULL 
+DROP VIEW [NIS].View_DynamicWidget
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [NIS].View_DynamicWidget
+AS
+SELECT s.*, usr1.FirstName+' '+usr1.LastName AS PublishedByName,  
+usr2.FirstName+' '+usr2.LastName AS CreatedByName ,
+pg.Name as PageTypeName,ent.Name as EntityName
+FROM NIS.DynamicWidget s 
+LEFT JOIN NIS.[User] usr1 ON s.PublishedBy = usr1.Id
+INNER JOIN NIS.[User] usr2 ON s.CreatedBy = usr2.Id
+INNER JOIN NIS.TenantEntity ent ON s.EntityId = ent.Id
+INNER JOIN NIS.PageType pg ON s.PageTypeId = pg.Id
+
+GO
+
+
+
+
 
