@@ -35,50 +35,61 @@
   
             <!-- Name Column -->
             <ng-container matColumnDef="statement">
-              <th class="width25 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Definition </th>
+              <th class="width20 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Statement Definition </th>
               <td mat-cell *matCellDef="let element"> {{element.Statement.Name}} </td>
             </ng-container>
   
             <!-- Weight Column -->
             <ng-container matColumnDef="startDate">
-              <th class="width13 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
+              <th class="width10 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
               <td mat-cell *matCellDef="let element"> {{element.StartDate  | date:DataFormat}}</td>
             </ng-container>
   
             <!-- Symbol Column -->
             <ng-container matColumnDef="endDate">
-              <th class="width13 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
+              <th class="width10 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
               <td mat-cell *matCellDef="let element">
                 <span *ngIf='element.EndDate!="0001-01-01T00:00:00"'> {{element.EndDate  | date:DataFormat}}</span>
-                <span *ngIf='element.EndDate=="0001-01-01T00:00:00"'> - </span>
+                <span *ngIf='element.EndDate=="0001-01-01T00:00:00"'> NA </span>
               </td>
             </ng-container>
   
             <ng-container matColumnDef="DayOfMonth">
-              <th class="width12 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Day of Month </th>
-              <td mat-cell *matCellDef="let element"> {{element.DayOfMonth}} </td>
+              <th class="width10 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Day of Month </th>
+              <td mat-cell *matCellDef="let element"> 
+                <span *ngIf='element.DayOfMonth!=0'>{{element.DayOfMonth}}</span>
+                <span *ngIf='element.DayOfMonth==0'> NA </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="NoOfOccurrence">
+              <th class="width13 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> No Of Occurrences </th>
+              <td mat-cell *matCellDef="let element"> 
+                <span *ngIf='element.NoOfOccurrences!=null'>{{element.NoOfOccurrences}}</span>
+                <span *ngIf='element.NoOfOccurrences==null'> NA </span>
+              </td>
             </ng-container>
   
             <ng-container matColumnDef="actions">
               <th class="width20 ip-w-25" mat-header-cell *matHeaderCellDef> Actions </th>
               <td mat-cell *matCellDef="let element">
                 <div class="action-btns btn-tbl-action">
-                  <button type="button" id="btnViewRole" title="View" (click)="navigateToScheduleView(element)"
+                  <button type="button" id="btnViewSchedule" title="View" (click)="navigateToScheduleView(element)"
                           *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'View' }))">
                     <span class="fa fa-file-text-o"></span>
                   </button>
-                  <button type="button" id="btnUpdateRole" title="Update" [disabled]="!element.IsActive"  (click)="navigateToScheduleEdit(element)"
+                  <button type="button" id="btnUpdateSchedule" title="Update" [disabled]="!element.IsActive"  (click)="navigateToScheduleEdit(element)"
                           *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Edit' }))">
                     <span class="fa fa-pencil-square-o"></span>
                   </button>
-                  <button type="button" id="btnDeleteRole" (click)="deleteSchedule(element)"
+                  <button type="button" id="btnDeleteSchedule" (click)="deleteSchedule(element)"
                           *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Delete' }))">
                     <span class="fa fa-trash-o"></span>
                   </button>
-                  <button type="button" title="History" id="btnDelete" (click)="navigateToScheduleHistory(element)" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'View' }))"><span class="fa fa-history"></span></button>
-                  <button type="button" (click)="activeDeactiveSchedule(element)" title="Deactivate" *ngIf="element.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Edit' }))"><span class="fa fa-toggle-off text-success"></span></button>
-                  <button type="button" (click)="activeDeactiveSchedule(element)" title="Activate" *ngIf="!element.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Edit' }))"><span class="fa fa-toggle-on text-success"></span></button>
-  
+                  <button type="button" title="History" id="btnHistory" (click)="navigateToScheduleHistory(element)" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'View' }))"><span class="fa fa-history"></span></button>
+                  <button type="button" (click)="activeDeactiveSchedule(element)" title="Deactivate" *ngIf="element.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Edit' }))"><span class="fa fa-toggle-on text-success"></span></button>
+                  <button type="button" (click)="activeDeactiveSchedule(element)" title="Activate" *ngIf="!element.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Schedule Management',Operation: 'Edit' }))"><span class="fa fa-toggle-off text-success"></span></button>
+
                 </div>
               </td>
             </ng-container>

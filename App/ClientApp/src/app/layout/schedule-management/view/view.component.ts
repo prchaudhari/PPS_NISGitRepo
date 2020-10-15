@@ -2,9 +2,7 @@ import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy } 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { environment } from '../../../../environments/environment';
 import { Schedule } from '../schedule';
-import { SortParameter, SearchMode } from '../../../shared/models/commonmodel';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Location } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
@@ -12,16 +10,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Constants } from 'src/app/shared/constants/constants';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAccessor, FormArray, ValidatorFn } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { FormBuilder } from '@angular/forms';
 import { ScheduleService } from '../schedule.service';
 import { ConfigConstants } from '../../../shared/constants/configConstants';
+
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
+
 export class ViewComponent implements OnInit {
   public schedule: Schedule;
   public params;
@@ -35,11 +33,7 @@ export class ViewComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
   public array: any;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  navigateToListPage() {
-    this._location.back();
-  }
+  
   public isDaily: boolean = false;
   public isWeekly: boolean = true;
   public isMonthly: boolean = false;
@@ -47,47 +41,20 @@ export class ViewComponent implements OnInit {
   public isEndDate: boolean = true;
   public isEndAfter: boolean = false;
   public isNoEndDate: boolean = false;
+  public RecurrencePattern = '';
+  public ScheduleOccuranceMessage = '';
+  public monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  public dayObjectArr = [{Id: 1, 'Day':'Monday'},{Id:2,'Day':'Tuesday'},{Id:3, 'Day':'Wednesday'},{Id:4,'Day':'Thursday'},{Id:5, 'Day':'Friday'},{Id:6,'Day':'Saturday'},{Id: 7, 'Day':'Sunday'}];
+  public selectedWeekdays = [];
+  public RepeatEveryBy = '';
 
-  isEndDateClicked() {
-    this.isEndDate = true;
-    this.isEndAfter = false;
-    this.isNoEndDate = false;
-  }
-  isEndAfterClicked() {
-    this.isEndDate = false;
-    this.isEndAfter = true;
-    this.isNoEndDate = false;
-  }
-  isNoEndDateClicked() {
-    this.isEndDate = false;
-    this.isEndAfter = false;
-    this.isNoEndDate = true;
-  }
-  isDailyClicked() {
-    this.isDaily = true;
-    this.isWeekly = false;
-    this.isMonthly = false;
-    this.isYearly = false;
-  }
-  isWeeklyClicked() {
-    this.isDaily = false;
-    this.isWeekly = true;
-    this.isMonthly = false;
-    this.isYearly = false;
-  }
-  isMonthlyClicked() {
-    this.isDaily = false;
-    this.isWeekly = false;
-    this.isMonthly = true;
-    this.isYearly = false;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+  navigateToListPage() {
+    this._location.back();
   }
-  isYearlyClicked() {
-    this.isDaily = false;
-    this.isWeekly = false;
-    this.isMonthly = false;
-    this.isYearly = true;
-  }
+
   constructor(
     private _location: Location,
     private _router: Router,
@@ -101,18 +68,14 @@ export class ViewComponent implements OnInit {
     private router: Router,
   ) {
     this.schedule = new Schedule;
-
     let me = this;
-
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/schedule/Add')) {
           localStorage.removeItem("scheduleparams");
         }
       }
-
     });
-
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/schedule')) {
@@ -121,13 +84,11 @@ export class ViewComponent implements OnInit {
           if (localStorage.getItem('scheduleparams')) {
             this.schedule.Identifier = this.params.Routeparams.passingparams.ScheduleIdentifier;
             this.getScheduleRecords();
-
           }
         } else {
           localStorage.removeItem("scheduleparams");
         }
       }
-
     });
   }
 
@@ -156,6 +117,88 @@ export class ViewComponent implements OnInit {
     searchParameter.IsStatementDefinitionRequired = true;
     var response = await scheduleService.getSchedule(searchParameter);
     this.schedule = response.List[0];
+
+    if(this.schedule.RecurrancePattern == null || this.schedule.RecurrancePattern == '') {
+      this.RecurrencePattern = 'Repeat';
+    }else {
+      if(this.schedule.RecurrancePattern.includes('Custom')) {
+        let index = this.schedule.RecurrancePattern.indexOf('-');
+        this.RepeatEveryBy = this.schedule.RecurrancePattern.substring(index+1, this.schedule.RecurrancePattern.length);
+        this.RecurrencePattern = this.schedule.RecurrancePattern.substring(0, index);
+      }else {
+        this.RecurrencePattern = this.schedule.RecurrancePattern;
+      }
+    }
+    this.RecurrencePattern = this.schedule.RecurrancePattern;
+
+    if(this.schedule.WeekDays != null && this.schedule.WeekDays!='') {
+      var scheduledays = this.schedule.WeekDays.split(',');
+      scheduledays.forEach(day => {
+        var dayObj = this.dayObjectArr.filter(x => x.Day.toLocaleLowerCase() == day.toLocaleLowerCase())[0];
+        this.selectedWeekdays.push({'Id': dayObj.Id, 'Day': dayObj.Day});
+      }); 
+    }
+
+    this.setScheduleOccuranceMessage();
+  }
+
+  setScheduleOccuranceMessage() {
+    var ssd = new Date(this.schedule.StartDate);
+    var schedulestartdte = ssd.toLocaleDateString();
+    var dte = ssd.getDate();
+    var month = this.monthArray[ssd.getMonth()];
+
+    let scheduleRunUtilMessage = '';
+    if(this.schedule.EndDate != null && this.schedule.EndDate.toString() != "0001-01-01T00:00:00") {
+      let sed = new Date(this.schedule.EndDate);
+      scheduleRunUtilMessage = ' until '+sed.toLocaleDateString();
+    }else if(this.schedule.NoOfOccurrences != null) {
+      scheduleRunUtilMessage = ' upto '+this.schedule.NoOfOccurrences + " occurence.";
+    }
+    
+    let repeatEvery = this.schedule.RepeatEveryDayMonWeekYear != null && this.schedule.RepeatEveryDayMonWeekYear != 0 ? this.schedule.RepeatEveryDayMonWeekYear : 1;
+    let repeatEveryByVal = this.RepeatEveryBy != null && this.RepeatEveryBy != '' ? this.RepeatEveryBy : 'Month';
+    let occurance = '';
+
+    if(repeatEveryByVal == 'Day') {
+      if(repeatEvery == 1) {
+        occurance = 'day';
+      }else{
+        occurance = repeatEvery+' days ';
+      }
+    }
+    else if(repeatEveryByVal == 'Week') {
+      var weekdaystr = '';
+      if(this.selectedWeekdays.length > 0) {
+        this.selectedWeekdays.sort(function(a, b){
+          return a.Id - b.Id;
+        });
+        for(let i=0; i<this.selectedWeekdays.length; i++) {
+          let day = this.selectedWeekdays[i].Day;
+          weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
+        }
+      }
+      if(repeatEvery == 1) {
+        occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
+      }else{
+        occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
+      }
+    }
+    else if(repeatEveryByVal == 'Month') {
+      if(repeatEvery == 1) {
+        occurance = 'month on day '+dte;
+      }else{
+        occurance = repeatEvery+' months on day '+dte;
+      }
+    }
+    else if(repeatEveryByVal == 'Year') {
+      if(repeatEvery == 1) {
+        occurance = 'month on day '+dte+ ' of '+month;
+      }else{
+        occurance = repeatEvery+' months on day '+dte+ ' of '+month;
+      }
+    }
+    this.ScheduleOccuranceMessage = 'On every '+occurance+' starting ' + schedulestartdte + scheduleRunUtilMessage;
   }
 
   navigateToScheduleEdit() {

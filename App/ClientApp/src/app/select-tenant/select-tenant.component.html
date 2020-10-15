@@ -11,7 +11,14 @@
               <div class="account-container" *ngFor='let tenant of tenants'>
                   <div class="account-innercontainer" (click)='onTenantSelect(tenant)'>
                       <div class="account-logo">
-                        <img [src]="tenant.TenantLogo"/>
+                          <div *ngIf="tenant.TenantImage!=null && tenant.TenantImage!=''">
+                            <img [src]="tenant.TenantImage"/>
+                          </div>
+                          <div *ngIf="tenant.TenantImage==null || tenant.TenantImage==''">
+                            <div class="account-img">
+                              <span>{{tenant.TenantName.charAt(0) | titlecase}}</span>
+                            </div>
+                          </div>
                       </div>
                       <div class="account-title-box">
                         <div class="account-title text-wrap"> {{tenant.TenantName}} </div>

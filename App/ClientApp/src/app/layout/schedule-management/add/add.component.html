@@ -133,7 +133,7 @@
                         <label for="" class="dir-ltr pt-1">On day</label>
                       </div>
                       <div class="col-md-4 col-lg-4 form-group pl-0">
-                        <input type="number" id="inputCustomMonthDay" class="form-control" min="1" max="29" formControlName='CustomMonthDay' 
+                        <input type="number" id="inputCustomMonthDay" class="form-control" min="1" max="31" formControlName='CustomMonthDay' 
                           (change)='onCustomMonthDayChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
                       </div>
                     </div>
@@ -149,7 +149,7 @@
                         </select>
                       </div>
                       <div class="col-md-3 col-lg-3 form-group">
-                        <input type="number" id="inputCustomYearDay" class="form-control" min="1" max="29" formControlName='CustomYearDay' 
+                        <input type="number" id="inputCustomYearDay" class="form-control" min="1" max="31" formControlName='CustomYearDay' 
                           (change)='onCustomYearDayChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
                       </div>
                     </div>
@@ -214,7 +214,7 @@
     </div>
     <div class="card border-0 mt-4 mb-3 bg-transparent">
       <div class="card-body p-0">
-        <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="vaildateForm()" (click)="SaveSchedule()">Save</button>
+        <button class="btn-footer-fill mr-2" id="btnSave" type="submit" [disabled]="vaildateForm()" (click)="SaveSchedule()">Save</button>
         <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
       </div>
     </div>

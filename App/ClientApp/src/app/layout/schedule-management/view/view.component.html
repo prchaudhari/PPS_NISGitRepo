@@ -31,184 +31,39 @@
       <div class="row">
         <div class="col-md-4 col-lg-4">
           <label>Recurrance Pattern</label>
-          <div class="width100 form-group d-flex justify-content-start">
-            <div class="custom-control custom-radio mr-2">
-              <input class="custom-control-input" type="radio"
-                     name="recpat" id="Daily" value="option1" disabled (click)="isDailyClicked()">
-              <label class="custom-control-label dir-rtl" for="Daily">
-                Daily
-              </label>
-            </div>
-            <div class="custom-control custom-radio mr-2">
-              <input class="custom-control-input" type="radio"
-                     name="recpat" id="Weekly" value="option1" checked (click)="isWeeklyClicked()">
-              <label class="custom-control-label dir-rtl" for="Weekly">
-                Weekly
-              </label>
-            </div>
-            <div class="custom-control custom-radio mr-2">
-              <input class="custom-control-input" type="radio"
-                     name="recpat" id="Monthly" value="option1" disabled (click)="isMonthlyClicked()">
-              <label class="custom-control-label dir-rtl" for="Monthly">
-                Monthly
-              </label>
-            </div>
-            <div class="custom-control custom-radio">
-              <input class="custom-control-input" type="radio"
-                     name="recpat" id="Yearly" value="option1"disabled (click)="isYearlyClicked()">
-              <label class="custom-control-label dir-rtl" for="Yearly">
-                Yearly
-              </label>
-            </div>
-          </div>
-          <!--<label id="lblTemplate" for="inputRoleName">Day of Month</label>
-      <div>{{schedule.DayOfMonth}}</div>-->
+          <div>{{RecurrencePattern}}</div>
         </div>
+
         <div class="col-md-4 col-lg-4 form-group">
           <label id="lblTemplate" for="inputRoleName">Time for the day (HH : MM) </label>
-          <div>{{schedule.HourOfDay}} : {{schedule.MinuteOfDay}}</div>
+          <div><span *ngIf="10>schedule.HourOfDay">0</span>{{schedule.HourOfDay}} : {{schedule.MinuteOfDay}}</div>
+        </div>
+      </div>
 
-        </div>
-
-      </div>
-      <div class="row" *ngIf="isDaily">
-        <div class="col-md-8 col-lg-8 form-group">
-          <div class="card border-0 mb-2 card-shadow">
-            <div class="card-body d-flex justify-content-start">
-              <div class="custom-control custom-radio mr-2">
-                <input class="custom-control-input" type="radio"
-                       name="dailytype" id="opDaily" value="optiondaily" checked>
-                <label class="custom-control-label dir-rtl" for="opDaily">
-                  <div class="form-inline" style="margin-top:-5px">
-                    <div class="form-group xs-frm">
-                      <label for="" class="dir-ltr">Day</label>
-                      <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0">
-                      <label> of every </label>
-                      <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0" max="12">
-                      <label> month(s) </label>
-                    </div>
-                  </div>
-                </label>
-              </div>
-              <div class="custom-control custom-radio">
-                <input class="custom-control-input" type="radio"
-                       name="dailytype" id="fullWeek" value="optiondaily">
-                <label class="custom-control-label dir-rtl" for="fullWeek">
-                  Every Weekday
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="isWeekly">
-        <div class="col-md-8 col-lg-8 form-group">
-          <div class="card border-0 mb-2 card-shadow">
-            <div class="card-body">
-              <div class="form-inline mb-2">
-                <div class="form-group xs-frm">
-                  <label for="" class="dir-ltr">Recur every</label>
-                  <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0">
-                  <label> week(s) on: </label>
-                </div>
-              </div>
-              <div class="d-flex justify-content-start">
-                <div class="custom-control custom-checkbox mr-2">
-                  <input class="custom-control-input" type="checkbox" checked value="">
-                  <label class="custom-control-label">   Monday</label>
-                </div>
-                <div class="custom-control custom-checkbox mr-2">
-                  <input class="custom-control-input" type="checkbox" checked value="">
-                  <label class="custom-control-label">   Tuesday</label>
-                </div>
-                <div class="custom-control custom-checkbox mr-2">
-                  <input class="custom-control-input" type="checkbox" checked value="">
-                  <label class="custom-control-label">   Wednesday</label>
-                </div>
-                <div class="custom-control custom-checkbox mr-2">
-                  <input class="custom-control-input" type="checkbox" checked value="">
-                  <label class="custom-control-label">   Thursday</label>
-                </div>
-                <div class="custom-control custom-checkbox mr-2">
-                  <input class="custom-control-input" type="checkbox" disabled value="">
-                  <label class="custom-control-label">   Friday</label>
-                </div>
-                <div class="custom-control custom-checkbox mr-2">
-                  <input class="custom-control-input" type="checkbox" disabled value="">
-                  <label class="custom-control-label">   Saturday</label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                  <input class="custom-control-input" type="checkbox" disabled value="">
-                  <label class="custom-control-label">   Sunday</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="isMonthly">
-        <div class="col-md-4 col-lg-4 form-group">
-          <div class="card border-0 mb-2 card-shadow">
-            <div class="card-body">
-              <div class="form-inline">
-                <div class="form-group xs-frm">
-                  <label for="" class="dir-ltr">Day</label>
-                  <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0" value="3">
-                  <label> of every </label>
-                  <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0" value="2" max="12">
-                  <label> month(s) </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="isYearly">
-        <div class="col-md-8 col-lg-8 form-group">
-          <div class="card border-0 mb-2 card-shadow">
-            <div class="card-body">
-              <div class="form-inline">
-                <div class="form-group xs-frm">
-                  <label for="" class="dir-ltr">Recur every </label>
-                  <input type="number" id="" class="form-control mx-sm-2 width20 sm-w-50" min="0" value="2">
-                  <label> year(s) on </label>
-                  <select class="form-control  mx-sm-2 width30 sm-w-50">
-                    <option>Select Month</option>
-                    <option>Jan</option>
-                    <option selected>Feb</option>
-                    <option>Mar</option>
-                    <option>May</option>
-                    <option>Jun</option>
-                    <option>Jul</option>
-                    <option>Aug</option>
-                    <option>Sept</option>
-                    <option>Oct</option>
-                    <option>Nov</option>
-                    <option>Dec</option>
-                  </select>
-                  <input type="number" id="" value="2" class="form-control mx-sm-2 width20 sm-w-50" min="0">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-md-4 col-lg-4 form-group">
           <label>Start Date</label>
-          <div>{{schedule.StartDate  |  date:DataFormat}}</div>
+          <div>{{schedule.StartDate | date:DataFormat}}</div>
         </div>
         <div class="col-md-4 col-lg-4 form-group">
           <label>End Date</label>
           <div>
-            <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()!="0001-01-01T00:00:00"'> {{schedule.EndDate  |  date:DataFormat}}</span>
+            <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()!="0001-01-01T00:00:00"'> {{schedule.EndDate | date:DataFormat}}</span>
             <span *ngIf='schedule.EndDate != undefined && schedule.EndDate.toString()=="0001-01-01T00:00:00"'> - </span>
           </div>
         </div>
       </div>
-    </div>
 
+      <div class="row">
+        <div class="col-md-4 col-lg-4 form-group">
+          <label>Schedule will on</label>
+          <div>{{ScheduleOccuranceMessage}}</div>
+        </div>
+      </div>
+
+    </div>
   </div>
+
   <div class="card border-0 mb-2 card-shadow">
     <div class="card-header bg-white d-flex justify-content-between">
       <div>

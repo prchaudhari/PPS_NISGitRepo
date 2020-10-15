@@ -96,3 +96,19 @@
 		font-family: 'Roboto', sans-serif;
         font-weight:400;
     }
+
+.account-img {
+    width: 124px;
+    height: 124px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid thin #e1e1e1;
+    padding: 0;
+    font-size: 60px;
+    border-radius: 50%;
+    background: #e6e6e6;
+    color: #696868;
+    text-transform: uppercase;
+}

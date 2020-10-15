@@ -11,20 +11,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ScheduleService } from '../schedule.service';
 import { Schedule } from '../schedule';
-export interface ListElement {
-  name: string;
-  schedule: string;
-  startDate: string;
-  endDate: string;
-  DayOfMonth: string;
-}
-
-//const List_Data: ListElement[] = [
-//    { name: 'SM 01', schedule: 'SD 01', startDate: '01/02/2020', endDate: '02/02/2020', DayOfMonth:'29' },
-//    { name: 'SM 02', schedule: 'SD 02', startDate: '04/03/2020', endDate: '-', DayOfMonth:'27' },
-//    { name: 'SM 03', schedule: 'Sd 03', startDate: '05/04/2020', endDate: '-', DayOfMonth:'22' },
-//];
-
 
 @Component({
   selector: 'app-list',
@@ -59,7 +45,7 @@ export class ListComponent implements OnInit {
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
-  displayedColumns: string[] = ['name', 'statement', 'startDate', 'endDate', 'DayOfMonth', 'actions'];
+  displayedColumns: string[] = ['name', 'statement', 'startDate', 'endDate', 'DayOfMonth', 'NoOfOccurrence', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -283,6 +269,7 @@ export class ListComponent implements OnInit {
       case 'startDate': this.sortColumn = "StartDate"; break;
       case 'endDate': this.sortColumn = "EndDate"; break;
       case 'DayOfMonth': this.sortColumn = "DayOfMonth"; break;
+      case 'NoOfOccurrence': this.sortColumn = "NoOfOccurrences"; break;
       default: this.sortColumn = "LastUpdatedDate"; break;
     }
 
