@@ -705,7 +705,7 @@ namespace nIS
                         .Where(u => u.UserIdentifier == userLoginDetail.UserIdentifier)
                         .ToList();
 
-                    if (addedUserLoginRecord == null)
+                    if (addedUserLoginRecord == null || addedUserLoginRecord.Count == 0)
                     {
                         throw new UserNotFoundException(tenantCode);
                     }

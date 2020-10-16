@@ -363,6 +363,11 @@ namespace nIS
         /// </summary>
         public const string USERFORGOTPASSWORDMESSAGE = "UserForgotPasswordMessage";
 
+        /// <summary>
+        /// Indicates the new password is sent to user by mail.
+        /// </summary>
+        public const string SENDPASSWORDMAILTOUSERMESSAGE = "SendPasswordMailToUserMessage";
+
         #endregion
     }
 }

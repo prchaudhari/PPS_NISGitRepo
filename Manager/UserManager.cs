@@ -13,6 +13,7 @@ namespace nIS
     using System.Diagnostics;
     using System.Linq;
     using System.Net.Mail;
+    using System.Text;
     using System.Text.RegularExpressions;
     using System.Transactions;
     using Unity;
@@ -583,6 +584,53 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method will sent a mail of system generated password to user.
+        /// </summary>
+        /// <param name="userEmail">
+        /// User email address.
+        /// </param>
+        /// <param name="tenantCode">
+        /// The tenant code.
+        /// </param>
+        /// <returns>
+        /// If successfully compeleted, it will return true.
+        /// </returns>
+        public bool ResetUserPasswordByMail(string userEmail, string tenantCode)
+        {
+            try
+            {
+                UserSearchParameter searchParameter = new UserSearchParameter()
+                {
+                    SortParameter = new SortParameter()
+                    {
+                        SortColumn = "Id"
+                    },
+                    EmailAddress = userEmail
+                };
+                var user = this.GetUsers(searchParameter, tenantCode).FirstOrDefault();
+                if (user == null)
+                {
+                    throw new UserNotFoundException(tenantCode);
+                }
+
+                var newPassword = this.CreatePassword(10);
+                var res = this.ChangePassword(new UserLogin() { UserIdentifier = user.EmailAddress, UserPassword = newPassword, TeanantCode = user.TenantCode, IsSystemGenerated = true }, tenantCode);
+                MailMessage mail = new MailMessage();
+                mail.To.Add(user.EmailAddress);
+                mail.Subject = ConfigurationManager.AppSettings[ModelConstant.USERFORGOTPASSWORDSUBJECT];
+                mail.Body = string.Format(ConfigurationManager.AppSettings[ModelConstant.SENDPASSWORDMAILTOUSERMESSAGE], user.FirstName, "Username: "+user.EmailAddress, "Password: "+newPassword);
+                mail.IsBodyHtml = true;
+                IUtility iUtility = new Utility();
+                iUtility.SendMail(mail, string.Empty, 0, string.Empty, tenantCode);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region UpdateUsersNoOfAttempts
@@ -974,6 +1022,44 @@ namespace nIS
             {
                 throw exception;
             }
+        }
+
+        /// <summary>
+        /// This method will return the system generated random password
+        /// </summary>
+        /// <returns>
+        /// It will return rendom password string which contains atleast 1 upper case letter, 1 lower case letter, 1 special character and 1 digit
+        /// </returns>
+        private string CreatePassword(int length)
+        {
+            const string letters = "abcdefghijklmnopqrstuvwxyz";
+            const string numbers = "1234567890";
+            const string specialCharacters = "~!@#$*?";
+            StringBuilder res = new StringBuilder();
+            Random rnd = new Random();
+            int upperchars = 2;
+            int specialChars = 1;
+            int numberic = 2;
+            int lowerchars = length - upperchars - specialChars - numberic;
+
+            while (0 < upperchars--)
+            {
+                res.Append(letters[rnd.Next(letters.Length)].ToString().ToUpper());
+            }
+            while (0 < numberic--)
+            {
+                res.Append(numbers[rnd.Next(numbers.Length)]);
+            }
+            while (0 < specialChars--)
+            {
+                res.Append(specialCharacters[rnd.Next(specialCharacters.Length)]);
+            }
+            while (0 < lowerchars--)
+            {
+                res.Append(letters[rnd.Next(letters.Length)]);
+            }
+
+            return res.ToString();
         }
 
         /// <summary>

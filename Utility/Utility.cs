@@ -291,15 +291,7 @@
                 bool enableSSL = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["EnableSSL"]);
                 var smtpAddress = System.Configuration.ConfigurationManager.AppSettings["SMTPServer"];
                 var portNumber = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["SMTPPort"]);
-                //string smtpAddress = "smtp.gmail.com";
-                //int portNumber = 587;
-                //bool enableSSL = true;
-                //string emailFromAddress = "nvidyo@n4mative.net";
-                //string password = "Gauch022";
-                //string displayName = "nVidYo Team";
-
                 mail.From = new MailAddress(emailFromAddress, displayName);
-
                 using (SmtpClient smtp = new SmtpClient(smtpAddress, portNumber))
                 {
                     smtp.EnableSsl = enableSSL;

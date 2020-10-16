@@ -333,6 +333,28 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method will sent a mail of system generated password to user.
+        /// </summary>
+        /// <param name="userEmail">
+        /// User email address.
+        /// <returns>
+        /// If successfully compeleted, it will return true.
+        /// </returns>
+        [HttpPost]
+        public bool SendPasswordByMail(User user)
+        {
+            try
+            {
+                string tenantCode = ModelConstant.DEFAULT_TENANT_CODE;
+                return this.userManager.ResetUserPasswordByMail(user.EmailAddress, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region Get User Login Activity API
