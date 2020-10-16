@@ -1,9 +1,9 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { HttpClient, HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TenantUserService } from '../tenantuser.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { CellRenderService } from 'src/app/shared/services/cellsrenderer';
@@ -11,12 +11,10 @@ import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { Constants } from 'src/app/shared/constants/constants';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { PaginationInstance } from 'src/app/shared/modules/pagination/pagination.module';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
-import { ResourceService } from 'src/app/shared/services/resource.service';
 import { TenantUser } from '../tenantuser';
 import { LoginService } from '../../../login/login.service';
+import { UserService } from '../../users/user.service';
 
 @Component({
   selector: 'app-list',
@@ -133,6 +131,7 @@ export class ListComponent implements OnInit {
     ActivationStatus: null,
   };
   public userClaimsRolePrivilegeOperations: any[] = [];
+  public loginUserEmailAddress: string = '';
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -140,6 +139,7 @@ export class ListComponent implements OnInit {
   constructor(private http: HttpClient,
     private formBuilder: FormBuilder,
     private service: TenantUserService,
+    private userservice: UserService,
     private router: Router,
     private route: ActivatedRoute,
     private actionCellWindow: CellRenderService,
@@ -275,6 +275,8 @@ export class ListComponent implements OnInit {
       this.localstorageservice.removeLocalStorageData();
       this.router.navigate(['login']);
     }
+
+    this.loginUserEmailAddress = userClaimsDetail.UserPrimaryEmailAddress;
 
     this.tenantuserFormGroup = this.formBuilder.group({
       FirstName: ['', Validators.compose([])],
@@ -520,6 +522,22 @@ export class ListComponent implements OnInit {
         }
       });
     }
+  }
+
+  resetPassword(tenantuser) {
+    let message = 'Are you sure, you want to reset password for this record?';
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+        let data = {
+          "EmailAddress": tenantuser.EmailAddress
+        };
+        let result = await this.userservice.sendPassword(data);
+        if (result) {
+          let messageString = Constants.sentPasswordMailMessage;
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+        }
+      }
+    });
   }
 
   //this method helps to navigate to add
