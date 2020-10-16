@@ -1,22 +1,20 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Constants } from '../../../shared/constants/constants';
-import { ErrorMessageConstants } from '../../../shared/constants/constants';
 import { MessageDialogService } from '../../../shared/services/mesage-dialog.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Tenant } from '../../tenants/tenant';
 import { TenantService } from '../../tenants/tenant.service';
-import { User } from '../../users/user';
 import { UserService } from '../../users/user.service';
+
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
+
 export class ViewComponent implements OnInit {
 
   public isCollapsedDetails: boolean = false;
@@ -35,7 +33,7 @@ export class ViewComponent implements OnInit {
   public array: any;
   public sortedList: any[] = [];
 
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'no'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'no', 'actions'];
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -97,7 +95,6 @@ export class ViewComponent implements OnInit {
     searchParameter.TenantCode = this.tenantgroup.TenantCode;
     var response = await tenantService.getTenant(searchParameter);
     this.tenantgroup = response.List[0];
-
     this.BindTenantGroupUsers();
   }
 
@@ -133,12 +130,12 @@ export class ViewComponent implements OnInit {
     let message = 'Are you sure, you want to delete this record?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        let roleData = [{
+        let data = [{
           "TenantCode": this.tenantgroup.TenantCode,
           "TenantType": this.tenantgroup.TenantType,
         }];
 
-        let isDeleted = await this.tenantService.deleteTenant(roleData);
+        let isDeleted = await this.tenantService.deleteTenant(data);
         if (isDeleted) {
           this.navigateToListPage();
           let messageString = Constants.recordDeletedMessage;
@@ -198,6 +195,22 @@ export class ViewComponent implements OnInit {
     this.array = this.tenantGroupUserList;
     this.totalSize = this.array.length;
     this.iterator();
+  }
+
+  resetPassword(tenantgroupuser) {
+    let message = 'Are you sure, you want to reset password for this record?';
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+        let data = {
+          "EmailAddress": tenantgroupuser.EmailAddress
+        };
+        let result = await this.service.sendPassword(data);
+        if (result) {
+          let messageString = Constants.sentPasswordMailMessage;
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+        }
+      }
+    });
   }
 }
 

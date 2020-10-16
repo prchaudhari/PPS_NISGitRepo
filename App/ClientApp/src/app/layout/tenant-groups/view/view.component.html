@@ -67,17 +67,26 @@
                 </td>
               </ng-container>
               <ng-container matColumnDef="email">
-                <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
                 <td mat-cell *matCellDef="let tenantgroupuser">
                   <span *ngIf="tenantgroupuser.EmailAddress==null">-</span>
                   <span *ngIf="tenantgroupuser.EmailAddress!=null">{{tenantgroupuser.EmailAddress}} </span>
                 </td>
               </ng-container>
               <ng-container matColumnDef="no">
-                <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
+                <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No. </th>
                 <td mat-cell *matCellDef="let tenantgroupuser">
                   <span *ngIf="tenantgroupuser.ContactNumber==null">-</span>
                   <span *ngIf="tenantgroupuser.ContactNumber!=null">{{tenantgroupuser.ContactNumber}} </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th class="width15 ip-w-20" mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let tenantgroupuser">
+                  <div class="action-btns btn-tbl-action">
+                    <button type="button" title="Reset Password" id="btnResetPassword" (click)="resetPassword(tenantgroupuser)">
+                      <span class="fa fa-refresh"></span></button>
+                  </div>
                 </td>
               </ng-container>
           
