@@ -11,7 +11,6 @@
   <ul class='nav nav-toolbar float-right' [ngClass]="isTopbarShow? 'show':'hide'">
     <li class="nav-item" *ngIf='isTenantAdminUser'>
       <a class="nav-link top-nav-link" id="settingsSideBar" (click)="ChangeSideBar()">
-        <span></span>
         <i class="fa fa-cog"></i>
       </a>
     </li>
@@ -24,6 +23,7 @@
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" (click)="navigateToProfile()">Profile</a>
         <a class="dropdown-item" (click)="navigateToChangePassword()">Change Password</a>
+        <a class="dropdown-item" (click)="switchTenant()" *ngIf="isUserHaveMultiTenantAccess">Switch Tenant</a>
         <a class="dropdown-item" (click)="logout()">Logout</a>
       </div>
     </li>
@@ -39,6 +39,11 @@
         <i id="HomeSettingIcon" *ngIf="IsMainMenu" class="fa fa-cog" title="Setings"></i>
       </a>
     </li>
+    <!-- <li class="nav-item" *ngIf="isUserHaveMultiTenantAccess">
+      <a class="nav-link top-nav-link" id="switchTenantlink" (click)="switchTenant()" title="Switch Tenant">
+        <i class="fa fa-exchange"></i>
+      </a>
+    </li> -->
     <li class="nav-item dropdown">
       <a class="nav-link top-nav-link" id="dropdownMenuButton" data-toggle="dropdown">
         <span class="user-name-nav">{{loggedInUserName}}</span>
@@ -47,6 +52,7 @@
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" (click)="navigateToProfile()">Profile</a>
         <a class="dropdown-item" (click)="navigateToChangePassword()">Change Password</a>
+        <a class="dropdown-item" (click)="switchTenant()" *ngIf="isUserHaveMultiTenantAccess">Switch Tenant</a>
         <a class="dropdown-item" (click)="logout()">Logout</a>
       </div>
     </li>

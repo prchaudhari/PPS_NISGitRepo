@@ -29,10 +29,13 @@ export class SidebarComponent implements OnInit {
   iconTitle = "Asset Configuration Settings";
   public element: HTMLElement;
   public userClaimsRolePrivilegeOperations;
+  public statePrivilegeMap;
   public isTenantAdminUser: boolean = false;
   public isInstantTenantManager: boolean = false;
   public isTenantGroupManager: boolean = false;
+  public isUserHaveMultiTenantAccess: boolean = false;
   public isByBtnClickEvent: boolean = false;
+  public userRoleName: string = '';
 
   toggleNav() {
     if (this.sidebar_class == "hide-sidebar" || this.collapse_class == "collapse-container" || this.sidebar_footer == "hide-side-bar-footer", this.collapse_toogleClass == "fa-bars") {
@@ -221,9 +224,13 @@ export class SidebarComponent implements OnInit {
     this.loggedInUserName = localStorage.getItem('currentUserName');
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-
     this.isInstantTenantManager = userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() == 'true' ? true : false;
     this.isTenantGroupManager = userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() == 'true' ? true : false;
+    this.isUserHaveMultiTenantAccess = userClaimsDetail.IsUserHaveMultiTenantAccess.toLocaleLowerCase() == 'true' ? true : false;
+    this.statePrivilegeMap = JSON.parse(localStorage.getItem("StatePrivilegeMap"));
+
+    var user = this.localstorageservice.GetCurrentUser();
+    this.userRoleName = user.RoleName;
 
     var loggedInUserDetails = JSON.parse(localStorage.getItem('user'));
     this.isTenantAdminUser = loggedInUserDetails.RoleName == 'Tenant Admin' ? true : false;
@@ -336,13 +343,49 @@ export class SidebarComponent implements OnInit {
     if(this.isInstantTenantManager == true) {
       this.URL = '/tenantgroups';
       this.route.navigate(['/tenantgroups']);
-    }else if(this.isTenantGroupManager == true) {
-      this.URL = '/tenants';
-      this.route.navigate(['/tenants']);
-    }else if(this.isTenantAdminUser == true) {
-      this.URL = '/dashboard';
-      this.route.navigate(['/dashboard']);
     }
+    else if(this.isTenantGroupManager == true) {
+      if(this.isUserHaveMultiTenantAccess == true && this.userRoleName == 'Group Manager') {
+        this.URL = '/tenants';
+        this.route.navigate(['/tenants']);
+      }else {
+        this.routeNavigate();
+      }  
+    }
+    else if(this.isTenantAdminUser == true) {
+      if(this.isUserHaveMultiTenantAccess == true && this.userRoleName == 'Tenant Admin') {
+        this.URL = '/dashboard';
+        this.IsMainMenu = true;
+      this.route.navigate(['/dashboard']);
+      }else {
+        this.routeNavigate();
+      }
+    }
+    else {
+      this.routeNavigate();
+    }
+  }
+
+  routeNavigate() {
+    var isFound = false;
+        var state = 0;
+        this.statePrivilegeMap.forEach(map => {
+          var isPresent = this.userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
+          if (isPresent != undefined && isPresent.length > 0) {
+            if (isFound == false) {
+              isFound = true;
+              state = map.State;
+            }
+          }
+        });
+        if (isFound) {
+          this.URL = '/'+state;
+          this.route.navigate([state]);
+        }
+  }
+
+  switchTenant() {
+    this.route.navigate(['selectTenant']);
   }
 
 }

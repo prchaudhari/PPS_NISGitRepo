@@ -269,6 +269,7 @@ export class LoginComponent implements OnInit {
         userData.IsInstanceTenantManager = data.IsInstanceTenantManager;
         userData.IsTenantGroupManager = data.IsTenantGroupManager;
         userData.IsUserHaveMultiTenantAccess = data.IsUserHaveMultiTenantAccess;
+        userData.RoleName = data.RoleName;
         //userData.UserCode = data.UserCode;
         userData.RoleIdentifier = data.RoleIdentifier;
         //userData.PreferedLanguageCode = data.PreferedLanguageCode;
@@ -284,6 +285,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("currentUserTheme", userData.UserTheme);
         //localStorage.setItem("currentUserTheme", userData.UserTheme);
         localStorage.setItem("DateFormat", data.DateFormat);
+
+        localStorage.setItem("StatePrivilegeMap", JSON.stringify(this.statePrivilegeMap));
 
         if(userData.IsInstanceTenantManager != null && userData.IsInstanceTenantManager.toLocaleLowerCase() == 'true') {
           localStorage.setItem('userClaims', JSON.stringify(userData));

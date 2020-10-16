@@ -21,56 +21,7 @@ export class SelectTenantComponent implements OnInit {
   public roleDetail;
   public userData;
   public DefaultTenantCode = ConfigConstants.TenantCode;
-
-  public statePrivilegeMap: any = [{
-    "State": "dashboard",
-    "Entity": "Dashboard",
-  },
-  {
-    "State": "user",
-    "Entity": "User",
-  },
-  {
-    "State": "dashboard",
-    "Entity": "Dashboard",
-  },
-  {
-    "State": "roles",
-    "Entity": "Role",
-  },
-  {
-    "State": "assetlibrary",
-    "Entity": "Asset Library",
-  },
-  {
-    "State": "widgets",
-    "Entity": "Widget",
-  },
-  {
-    "State": "pages",
-    "Entity": "Page",
-  },
-  {
-    "State": "statementdefination",
-    "Entity": "Statement Definition",
-  },
-  {
-    "State": "schedulemanagement",
-    "Entity": "Schedule Management",
-  },
-  {
-    "State": "logs",
-    "Entity": "Log",
-  },
-  {
-    "State": "analytics",
-    "Entity": "Analytics",
-  },
-  {
-    "State": "statemenetsearch",
-    "Entity": "Statement Search",
-  },
-  ]
+  public statePrivilegeMap;
 
   constructor(private injector: Injector,
     private loginService: LoginService,
@@ -81,6 +32,7 @@ export class SelectTenantComponent implements OnInit {
 
   ngOnInit() {
     this.userData = JSON.parse(localStorage.getItem('userClaims'));
+    this.statePrivilegeMap = JSON.parse(localStorage.getItem("StatePrivilegeMap"));
     if (this.userData) {
       if(this.userData.IsUserHaveMultiTenantAccess == null || this.userData.IsUserHaveMultiTenantAccess.toLocaleLowerCase() != 'true') {
         this.onCancelTenantSelection();
@@ -117,7 +69,6 @@ export class SelectTenantComponent implements OnInit {
         this.onCancelTenantSelection();
       }
       else {
-
         var loggedInUser = this.localstorageservice.GetCurrentUser();
         loggedInUser.RoleIdentifier = this.roleDetail.Identifier;
         loggedInUser.RoleName = this.roleDetail.Name;
@@ -126,6 +77,7 @@ export class SelectTenantComponent implements OnInit {
 
         this.userData.RoleIdentifier = this.roleDetail.Identifier;
         this.userData.TenantCode = tenant.TenantCode;
+        this.userData.RoleName = this.roleDetail.Name;
         localStorage.setItem('userClaims', JSON.stringify(this.userData));
 
         if(tenant.TenantType == 'Group') {
