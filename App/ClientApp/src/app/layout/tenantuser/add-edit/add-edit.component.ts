@@ -11,15 +11,13 @@ import { MsgBoxComponent } from 'src/app/shared/modules/message/messagebox.compo
 import { Router, NavigationEnd } from '@angular/router';
 import { jqxDropDownListComponent } from 'jqwidgets-ng/jqxdropdownlist';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfiguration';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
-import { SortOrder } from 'src/app/shared/enums/sort-order.enum';
-import { SearchMode } from 'src/app/shared/enums/search-mode.enum';
 import { LoginService } from '../../../login/login.service';
 import { Country } from '../../country/country';
 import { CountryService } from '../../country/country.service';
+import { RoleService } from '../../roles/role.service';
+
 @Component({
   selector: 'app-add-edit',
   templateUrl: './add-edit.component.html',
@@ -102,6 +100,7 @@ export class AddEditComponent implements OnInit {
   public isCountryDataRetrieved: boolean = false;
   public fileArray = [];
   public Theme = 6;
+  public roleObject:any = {};
 
   // Object created to initlialize the error boolean value.
   public tenantuserFormErrorObject: any = {
@@ -211,9 +210,25 @@ export class AddEditComponent implements OnInit {
       Image: [null]
     })
     this.getCountries();
+    this.getInstantManagerRole();
   }
 
   //Function to get role--
+  async getInstantManagerRole() {
+    let roleService = this.injector.get(RoleService);
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = "Id";
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.Name = "Instance Manager";
+    var response = await roleService.getRoles(searchParameter);
+    let _list = response.roleList;
+    this.roleObject = _list[0];
+  }
  
   public countryList: Country;
   async getCountries() {
@@ -412,8 +427,8 @@ export class AddEditComponent implements OnInit {
       this.roleList.forEach(role => {
         if (role.Identifier == this.TenantUser.RoleIdentifier) {
           selectedroleArray.push({
-            "Identifier": 1,
-            "Name": role.Name,
+            "Identifier": this.roleObject.Identifier,
+            "Name": this.roleObject.Name,
           });
         }
       })
