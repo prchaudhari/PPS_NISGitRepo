@@ -24,6 +24,7 @@ export class UserService {
   public countrycodeList = [];
   public ouList = [];
   public isDependencyPresent: boolean = false;
+
   constructor(
     private injector: Injector,
     private uiLoader: NgxUiLoaderService,
@@ -262,6 +263,28 @@ export class UserService {
         this.isDependencyPresent = false;
       });
     return <boolean>this.isDependencyPresent;
+  }
+
+  public async sendPassword(data): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.userSendPassword;
+    this.uiLoader.start();
+    let result: boolean = false;
+    await httpClientService.CallHttp("POST", requestUrl, data).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            result = true;
+          }else {
+            result = false;
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+        result = false;
+      });
+    return <boolean>result;
   }
 
 }

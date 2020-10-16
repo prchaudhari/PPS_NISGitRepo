@@ -12,6 +12,7 @@ export class Constants {
   public static get changePasswordMessage(): string { return "Password changed successfully." };
   public static get setPasswordMessage(): string { return "Password set successfully." };
   public static get sentPasswordMessage(): string { return "Password link sent successfully on email." };
+  public static get sentPasswordMailMessage(): string { return "New password sent successfully on user email." };
   public static get msgBoxSuccess(): string { return "success" };
   public static get msgBoxError(): string { return "error" };
   public static get msgBoxWarning(): string { return "warning" };

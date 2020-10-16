@@ -50,6 +50,7 @@ export class URLConfiguration {
   public static get getHierarchyOrganizationUnitUrl(): string { return "OrganisationUnit/GetOragnaisationUnitHierarchy" };
   public static get userActivate(): string { return "User/Activate" };
   public static get userDeactivate(): string { return "User/DeActivate" };
+  public static get userSendPassword(): string { return "User/SendPasswordByMail" };
 
   //TenantTenantUser Url Method
   public static get tenantuserGetUrl(): string { return "TenantUser/List" };
