@@ -149,23 +149,23 @@ namespace nIS
                     scheduleRecords.ToList().ForEach(schedulerecord =>
                     {
                         int batchIndex = 1;
-                        if (schedulerecord.RecurrancePattern == "DoesNotRepeat")
+                        if (schedulerecord.RecurrancePattern == ModelConstant.DOES_NOT_REPEAT)
                         {
                             this.AddDoesNotRepeatBatch(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId);
                         }
-                        else if (schedulerecord.RecurrancePattern == "Daily" || schedulerecord.RecurrancePattern == "Custom-Day")
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.DAILY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
                         {
                             this.AddDailyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
                         }
-                        else if (schedulerecord.RecurrancePattern == "Weekday" || schedulerecord.RecurrancePattern == "Weekly" || schedulerecord.RecurrancePattern == "Custom-Week")
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.WEEKDAY || schedulerecord.RecurrancePattern == ModelConstant.WEEKLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
                         {
                             this.AddWeeklyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
                         }
-                        else if (schedulerecord.RecurrancePattern == "Monthly" || schedulerecord.RecurrancePattern == "Custom-Month")
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.MONTHLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
                         {
                             this.AddMonthlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
                         }
-                        else if (schedulerecord.RecurrancePattern == "Yearly" || schedulerecord.RecurrancePattern == "Custom-Year")
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.YEARLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
                         {
                             this.AddYearlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
                         }
@@ -254,23 +254,23 @@ namespace nIS
                             nISEntitiesDataContext.BatchMasterRecords.RemoveRange(batchesToDelete);
                             nISEntitiesDataContext.SaveChanges();
                             int batchIndex = 1;
-                            if (scheduleRecord.RecurrancePattern == "DoesNotRepeat")
+                            if (scheduleRecord.RecurrancePattern == ModelConstant.DOES_NOT_REPEAT)
                             {
                                 this.AddDoesNotRepeatBatch(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId);
                             }
-                            else if (scheduleRecord.RecurrancePattern == "Daily" || scheduleRecord.RecurrancePattern == "Custom-Day")
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.DAILY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
                             {
                                 this.AddDailyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
                             }
-                            else if (scheduleRecord.RecurrancePattern == "Weekday" || scheduleRecord.RecurrancePattern == "Weekly" || scheduleRecord.RecurrancePattern == "Custom-Week")
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.WEEKDAY || scheduleRecord.RecurrancePattern == ModelConstant.WEEKLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
                             {
                                 this.AddWeeklyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
                             }
-                            else if (scheduleRecord.RecurrancePattern == "Monthly" || scheduleRecord.RecurrancePattern == "Custom-Month")
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.MONTHLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
                             {
                                 this.AddMonthlyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
                             }
-                            else if (scheduleRecord.RecurrancePattern == "Yearly" || scheduleRecord.RecurrancePattern == "Custom-Year")
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.YEARLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
                             {
                                 this.AddYearlyOccurenceScheduleBatches(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
                             }
@@ -281,22 +281,22 @@ namespace nIS
                             int batchIndex = Batches.Count + 1;
                             var lastExecutedBatch = Batches.FirstOrDefault();
                             var newStartDate = lastExecutedBatch.BatchExecutionDate;
-                            if (scheduleRecord.RecurrancePattern == "Daily" || scheduleRecord.RecurrancePattern == "Custom-Day")
-                            {
+                            if (scheduleRecord.RecurrancePattern == ModelConstant.DAILY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
+                                {
                                 newStartDate.AddDays(1);
                                 this.AddDailyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
                             }
-                            else if (scheduleRecord.RecurrancePattern == "Weekday" || scheduleRecord.RecurrancePattern == "Weekly" || scheduleRecord.RecurrancePattern == "Custom-Week")
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.WEEKDAY || scheduleRecord.RecurrancePattern == ModelConstant.WEEKLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
                             {
                                 newStartDate.AddDays(1);
                                 this.AddWeeklyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
                             }
-                            else if (scheduleRecord.RecurrancePattern == "Monthly" || scheduleRecord.RecurrancePattern == "Custom-Month")
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.MONTHLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
                             {
                                 newStartDate.AddMonths(1);
                                 this.AddMonthlyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
                             }
-                            else if (scheduleRecord.RecurrancePattern == "Yearly" || scheduleRecord.RecurrancePattern == "Custom-Year")
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.YEARLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
                             {
                                 newStartDate.AddYears(1);
                                 this.AddYearlyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
@@ -1157,10 +1157,10 @@ namespace nIS
         {
             try
             {
+                var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //var scheduleStartDate = schedule.StartDate ?? DateTime.Now;
                     BatchMasterRecord record = new BatchMasterRecord();
                     record.BatchName = "Batch 1 of " + schedule.Name;
                     record.TenantCode = tenantCode;
@@ -1169,7 +1169,7 @@ namespace nIS
                     record.ScheduleId = schedule.Id;
                     record.IsExecuted = false;
                     record.IsDataReady = false;
-                    var batchExecutionDate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, scheduleStartDate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                    var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
                     record.BatchExecutionDate = batchExecutionDate;
                     record.DataExtractionDate = batchExecutionDate.AddDays(-1);
                     record.Status = BatchStatus.New.ToString();
@@ -1197,13 +1197,13 @@ namespace nIS
             bool result = false;
             try
             {
-                var repeatEveryDays = schedule.RecurrancePattern == "Custom-Day" ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                var repeatEveryDays = schedule.RecurrancePattern == ModelConstant.CUSTOM_DAY ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
                 this.SetAndValidateConnectionString(tenantCode);
                 List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
                 int dayDiff = 0;
                 if (schedule.EndDate != null)
                 {
-                    dayDiff = this.utility.DayDifference(schedule.EndDate ?? DateTime.Now, scheduleStartDate);
+                    dayDiff = this.utility.DayDifference(schedule.EndDate ?? DateTime.Now, scheduleStartDate) + 1;
                 }
                 else
                 {
@@ -1261,7 +1261,7 @@ namespace nIS
             bool result = false;
             try
             {
-                var repeatEveryDays = schedule.RecurrancePattern == "Custom-Week" ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                var repeatEveryDays = schedule.RecurrancePattern == ModelConstant.CUSTOM_WEEK ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
                 this.SetAndValidateConnectionString(tenantCode);
                 List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
 
@@ -1269,17 +1269,17 @@ namespace nIS
                 //var scheduleStartDate = schedule.StartDate ?? DateTime.Now;
                 if (schedule.EndDate != null)
                 {
-                    dayDiff = this.utility.DayDifference(schedule.EndDate ?? DateTime.Now, scheduleStartDate);
+                    dayDiff = this.utility.DayDifference(schedule.EndDate ?? DateTime.Now, scheduleStartDate) + 1;
                 }
                 else
                 {
                     dayDiff = Convert.ToInt32(schedule.NoOfOccurrences) * repeatEveryDays;
                 }
 
-                var newstartdate = scheduleStartDate;
+                var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
                 if (dayDiff > 0)
                 {
-                    if (schedule.RecurrancePattern == "Weekday")
+                    if (schedule.RecurrancePattern == ModelConstant.WEEKDAY)
                     {
                         for (int index = 1; index <= dayDiff; index++)
                         {
@@ -1325,17 +1325,27 @@ namespace nIS
                                 record.Status = BatchStatus.New.ToString();
                                 batchMasterRecords.Add(record);
                                 batchIndex++;
+                                if (schedule.NoOfOccurrences != null && schedule.NoOfOccurrences != 0)
+                                {
+                                    idx++;
+                                }
                             }
 
                             if (newstartdate.DayOfWeek != DayOfWeek.Sunday)
                             {
                                 newstartdate = newstartdate.AddDays(1);
-                                idx++;
+                                if (schedule.EndDate != null)
+                                {
+                                    idx++;
+                                }
                             }
                             else
                             {
                                 newstartdate = newstartdate.AddDays(repeatEveryDays > 1 ? ((repeatEveryDays--) * noOfDaysInWeek) : 1);
-                                idx = idx + (repeatEveryDays > 1 ? ((repeatEveryDays--) * noOfDaysInWeek) : 1);
+                                if (schedule.EndDate != null)
+                                {
+                                    idx = idx + (repeatEveryDays > 1 ? ((repeatEveryDays--) * noOfDaysInWeek) : 1);
+                                }
                             }
                         }
                     }
@@ -1368,10 +1378,11 @@ namespace nIS
             bool result = false;
             try
             {
-                var repeatEveryMonths = schedule.RecurrancePattern == "Custom-Month" ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                var repeatEveryMonths = schedule.RecurrancePattern == ModelConstant.CUSTOM_MONTH ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
                 this.SetAndValidateConnectionString(tenantCode);
                 List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
-                var newstartdate = scheduleStartDate;
+
+                var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
                 if (schedule.DayOfMonth < newstartdate.Day)
                 {
                     newstartdate = newstartdate.AddMonths(1);
@@ -1467,10 +1478,11 @@ namespace nIS
         {
             try
             {
-                var repeatEveryYears = schedule.RecurrancePattern == "Custom-Year" ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                var repeatEveryYears = schedule.RecurrancePattern == ModelConstant.CUSTOM_YEAR ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
                 this.SetAndValidateConnectionString(tenantCode);
                 List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
-                var startdate = scheduleStartDate;
+
+                var startdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
                 if (this.utility.getNumericMonth(schedule.MonthOfYear) < startdate.Month
                     || (this.utility.getNumericMonth(schedule.MonthOfYear) == startdate.Month && startdate.Day < schedule.DayOfMonth))
                 {
@@ -1486,7 +1498,10 @@ namespace nIS
                         DayOfMonth = lastDayOfMonth;
                     }
                 }
+                
                 var newstartdate = new DateTime(startdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear), DayOfMonth, 0, 0, 0);
+                newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
+
                 var yearDiff = this.utility.YearDifference(newstartdate, schedule.EndDate ?? DateTime.Now) + 1;
                 if (yearDiff > 0)
                 {

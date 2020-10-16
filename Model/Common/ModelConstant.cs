@@ -287,6 +287,20 @@ namespace nIS
         /// </summary>
         public const string INVALID_SCHEDULE_STATUS = "InvalidScheduleStatus";
 
+        /// <summary>
+        /// The schedule recurrence patterns
+        /// </summary>
+        public const string DOES_NOT_REPEAT = "DoesNotRepeat";
+        public const string DAILY = "Daily";
+        public const string CUSTOM_DAY = "Custom-Day";
+        public const string WEEKLY = "Weekly";
+        public const string CUSTOM_WEEK = "Custom-Week";
+        public const string WEEKDAY = "Weekday";
+        public const string MONTHLY = "Monthly";
+        public const string CUSTOM_MONTH = "Custom-Month";
+        public const string YEARLY = "Yearly";
+        public const string CUSTOM_YEAR = "Custom-Year";
+
         #endregion
 
         #region Role Privilege
