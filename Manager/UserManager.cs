@@ -619,7 +619,7 @@ namespace nIS
                 MailMessage mail = new MailMessage();
                 mail.To.Add(user.EmailAddress);
                 mail.Subject = ConfigurationManager.AppSettings[ModelConstant.USERFORGOTPASSWORDSUBJECT];
-                mail.Body = string.Format(ConfigurationManager.AppSettings[ModelConstant.SENDPASSWORDMAILTOUSERMESSAGE], user.FirstName, "Username: "+user.EmailAddress, "Password: "+newPassword);
+                mail.Body = string.Format(ConfigurationManager.AppSettings[ModelConstant.SENDPASSWORDMAILTOUSERMESSAGE], user.FirstName,  "Password: "+newPassword);
                 mail.IsBodyHtml = true;
                 IUtility iUtility = new Utility();
                 iUtility.SendMail(mail, string.Empty, 0, string.Empty, tenantCode);

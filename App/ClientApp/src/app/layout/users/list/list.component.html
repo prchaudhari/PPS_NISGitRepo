@@ -82,12 +82,12 @@
                 <button type="button" title="View User" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'View' }))" (click)="viewUser(element)" id="btnView" routerLink="View"><span class="fa fa-file-text-o"></span></button>
                 <button type="button" title="Update User" 
                 *ngIf="(element.IsActive && (userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" (click)="editUser(element)" id="btnUpdate"><span class="fa fa-pencil-square-o"></span></button>
-                <!--<button type="button" title="Delete" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Delete' }))" (click)="deleteUser(element)" id="btnDelete" data-toggle="modal" data-target="#confirmModal"><span class="fa fa-trash-o"></span></button>-->
                 <button type="button" (click)="unLockUser(element)" *ngIf="element.IsLocked && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" title="Unlock User"><span class="fa fa-lock"></span></button>
                 <button type="button" (click)="unLockUser(element)" *ngIf="!element.IsLocked && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))" title="Lock User"><span class="fa fa-unlock-alt"></span></button>
-
                 <button type="button" (click)="activeDeactiveUser(element)" title="Deactivate User" *ngIf="element.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))"><span class="fa fa-toggle-on text-success"></span></button>
                 <button type="button" (click)="activeDeactiveUser(element)" title="Activate User" *ngIf="!element.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Edit' }))"><span class="fa fa-toggle-off text-success"></span></button>
+
+                <button type="button" (click)="resetPassword(element)" *ngIf="element.IsActive && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'User',Operation: 'Reset Password' }))" title="Reset Password"><span class="fa fa-refresh"></span></button>
 
               </div>
             </td>

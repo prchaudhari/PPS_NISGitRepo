@@ -543,6 +543,23 @@ export class ListComponent implements OnInit {
     this.router.navigate(['user', 'userAdd']);
   }
 
+  //this method helps to reset user password
+  resetPassword(tenantuser) {
+    let message = 'Are you sure, you want to reset password for this record?';
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+        let data = {
+          "EmailAddress": tenantuser.EmailAddress
+        };
+        let result = await this.service.sendPassword(data);
+        if (result) {
+          let messageString = Constants.sentPasswordMailMessage;
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+        }
+      }
+    });
+  }
+
   public onRoleSelected(event) {
     const value = event.target.value;
     if (value == "0") {

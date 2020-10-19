@@ -163,6 +163,12 @@ export class AddComponent implements OnInit {
       "OtherDependentEntity": []
     },
     {
+      "EntityName": "User",
+      "Operation": "Reset Password",
+      "RelatedOperation": ["Edit", "View"],
+      "OtherDependentEntity": []
+    },
+    {
       "EntityName": "Role",
       "Operation": "Create",
       "RelatedOperation": ["Edit", "Delete", "View"],
