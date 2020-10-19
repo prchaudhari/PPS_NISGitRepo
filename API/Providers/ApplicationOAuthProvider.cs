@@ -166,7 +166,7 @@ namespace nIS
             });
 
             //Add is asset connected value in claim
-            string[] propertyData = new string[11]
+            string[] propertyData = new string[12]
             {
                 user.Identifier.ToString(),
                 user.FirstName + " " + user.LastName,
@@ -179,6 +179,7 @@ namespace nIS
                 isInstanceTenantManager.ToString(),
                 isTenantGroupManager.ToString(),
                 isUserHaveMultiTenantAccess.ToString(),
+                user.IsPasswordResetByAdmin.ToString()
             };
 
             AuthenticationTicket ticket = new AuthenticationTicket(claimIdentity, CreateProperties(propertyData));
@@ -275,6 +276,7 @@ namespace nIS
                 { "IsInstanceTenantManager",stringData[8] },
                 { "IsTenantGroupManager",stringData[9] },
                 { "IsUserHaveMultiTenantAccess",stringData[10] },
+                { "IsPasswordResetByAdmin",stringData[11] },
             };
             return new AuthenticationProperties(data);
         }

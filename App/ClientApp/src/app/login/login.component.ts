@@ -285,57 +285,63 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("currentUserTheme", userData.UserTheme);
         //localStorage.setItem("currentUserTheme", userData.UserTheme);
         localStorage.setItem("DateFormat", data.DateFormat);
-
         localStorage.setItem("StatePrivilegeMap", JSON.stringify(this.statePrivilegeMap));
 
-        if(userData.IsInstanceTenantManager != null && userData.IsInstanceTenantManager.toLocaleLowerCase() == 'true') {
+        if(data.IsPasswordResetByAdmin != null && data.IsPasswordResetByAdmin.toLocaleLowerCase() == 'true') {
           localStorage.setItem('userClaims', JSON.stringify(userData));
-          this.route.navigate(['tenantgroups']);
-        }
-        else if(userData.IsUserHaveMultiTenantAccess != null && userData.IsUserHaveMultiTenantAccess.toLocaleLowerCase() == 'true') {
-          localStorage.setItem('userClaims', JSON.stringify(userData));
-          this.route.navigate(['selectTenant']);
-        }
-        else if(userData.IsTenantGroupManager != null && userData.IsTenantGroupManager.toLocaleLowerCase() == 'true') {
-          localStorage.setItem('userClaims', JSON.stringify(userData));
-          this.route.navigate(['tenants']);
+          this.route.navigate(['changepassword']);
         }
         else {
-          userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);
-          if (this.roleDetail.IsActive == false) {
-            this._messageDialogService.openDialogBox('Error', "User role is deactivated.", Constants.msgBoxError);
-            this.localstorageservice.removeLocalStorageData();
+          if(userData.IsInstanceTenantManager != null && userData.IsInstanceTenantManager.toLocaleLowerCase() == 'true') {
+            localStorage.setItem('userClaims', JSON.stringify(userData));
+            this.route.navigate(['tenantgroups']);
+          }
+          else if(userData.IsUserHaveMultiTenantAccess != null && userData.IsUserHaveMultiTenantAccess.toLocaleLowerCase() == 'true') {
+            localStorage.setItem('userClaims', JSON.stringify(userData));
+            this.route.navigate(['selectTenant']);
+          }
+          else if(userData.IsTenantGroupManager != null && userData.IsTenantGroupManager.toLocaleLowerCase() == 'true') {
+            localStorage.setItem('userClaims', JSON.stringify(userData));
+            this.route.navigate(['tenants']);
           }
           else {
-            if (userData.Privileges.length == 0 || userData.Privileges == null) {
-              this._messageDialogService.openDialogBox('Error', "User role has no permission assigned.", Constants.msgBoxError);
+            userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);
+            if (this.roleDetail.IsActive == false) {
+              this._messageDialogService.openDialogBox('Error', "User role is deactivated.", Constants.msgBoxError);
               this.localstorageservice.removeLocalStorageData();
             }
             else {
-              localStorage.setItem('userClaims', JSON.stringify(userData));
-              //conditional code for theme
-              //this.handleTheme(userData.UserTheme);
-              //this.navigateToLandingPage();
-              this.loginErrorMsg = '';
-              var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-              var userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-              var isFound = false;
-              var state = 0;
-              this.statePrivilegeMap.forEach(map => {
-                var isPresent = userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
-                if (isPresent != undefined && isPresent.length > 0) {
-                  if (isFound == false) {
-                    isFound = true;
-                    state = map.State;
+              if (userData.Privileges.length == 0 || userData.Privileges == null) {
+                this._messageDialogService.openDialogBox('Error', "User role has no permission assigned.", Constants.msgBoxError);
+                this.localstorageservice.removeLocalStorageData();
+              }
+              else {
+                localStorage.setItem('userClaims', JSON.stringify(userData));
+                //conditional code for theme
+                //this.handleTheme(userData.UserTheme);
+                //this.navigateToLandingPage();
+                this.loginErrorMsg = '';
+                var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+                var userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+                var isFound = false;
+                var state = 0;
+                this.statePrivilegeMap.forEach(map => {
+                  var isPresent = userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
+                  if (isPresent != undefined && isPresent.length > 0) {
+                    if (isFound == false) {
+                      isFound = true;
+                      state = map.State;
+                    }
                   }
+                });
+                if (isFound) {
+                  this.route.navigate([state]);
                 }
-              });
-              if (isFound) {
-                this.route.navigate([state]);
               }
             }
           }
         }
+        
       }
     }, (error: HttpResponse<any>) => {
       this.spinner.stop();

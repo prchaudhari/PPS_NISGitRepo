@@ -94,6 +94,11 @@ namespace nIS
         /// </summary>
         private IUtility utility = new Utility();
 
+        /// <summary>
+        /// The user isPasswordResetByAdmin status
+        /// </summary>
+        private bool isPasswordResetByAdmin = false;
+
         #endregion
 
         #region Public Members
@@ -308,6 +313,22 @@ namespace nIS
         public long CountryId;
 
         public string DateFormat = string.Empty;
+
+        /// <summary>
+        /// Gets or sets isInstanceManager field.
+        /// </summary>
+        [Description("isPasswordResetByAdmin")]
+        public bool IsPasswordResetByAdmin
+        {
+            get
+            {
+                return this.isPasswordResetByAdmin;
+            }
+            set
+            {
+                this.isPasswordResetByAdmin = value;
+            }
+        }
 
 
         #endregion

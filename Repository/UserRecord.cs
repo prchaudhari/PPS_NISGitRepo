@@ -28,5 +28,6 @@ namespace nIS
         public Nullable<long> CountryId { get; set; }
         public bool IsInstanceManager { get; set; }
         public bool IsGroupManager { get; set; }
+        public Nullable<bool> IsPasswordResetByAdmin { get; set; }
     }
 }

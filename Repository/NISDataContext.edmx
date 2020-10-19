@@ -652,6 +652,7 @@
           <Property Name="CountryId" Type="bigint" />
           <Property Name="IsInstanceManager" Type="bit" Nullable="false" />
           <Property Name="IsGroupManager" Type="bit" Nullable="false" />
+          <Property Name="IsPasswordResetByAdmin" Type="bit" />
         </EntityType>
         <EntityType Name="UserCredentialHistory">
           <Key>
@@ -1419,6 +1420,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="CountryId" Type="Int64" />
           <Property Name="IsInstanceManager" Type="Boolean" Nullable="false" />
           <Property Name="IsGroupManager" Type="Boolean" Nullable="false" />
+          <Property Name="IsPasswordResetByAdmin" Type="Boolean" />
         </EntityType>
         <EntityType Name="UserCredentialHistoryRecord">
           <Key>
@@ -2483,6 +2485,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="UserRecords">
             <EntityTypeMapping TypeName="NISModel.UserRecord">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IsPasswordResetByAdmin" ColumnName="IsPasswordResetByAdmin" />
                 <ScalarProperty Name="IsGroupManager" ColumnName="IsGroupManager" />
                 <ScalarProperty Name="IsInstanceManager" ColumnName="IsInstanceManager" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />

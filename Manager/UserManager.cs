@@ -492,6 +492,19 @@ namespace nIS
                     throw new InvalidUserPasswordException(tenantCode);
                 }
 
+                //This flag is added for password reset by admin provision, 
+                //once admin user reset the user password then respecive user will get new password by mail, then this flag will set to true
+                //and this flag value will check as at the time of login, if true then system redirect to change password screen on respective users login
+                //So he can change the password as they wants and then update password reset by admin flag value to false.
+                if (user.IsPasswordResetByAdmin == true)
+                {
+                    user.IsPasswordResetByAdmin = false;
+                    var contactnumber = user.ContactNumber.Split(new Char[] { '-' })[1];
+                    user.ContactNumber = contactnumber;
+                    IList<User> users = new List<User>();
+                    users.Add(user);
+                    this.UpdateUsers(users, tenantCode);
+                }
 
                 return this.ChangePassword(new UserLogin() { UserIdentifier = user.EmailAddress, UserPassword = newPassword, TeanantCode = user.TenantCode }, tenantCode);
             }
@@ -614,16 +627,31 @@ namespace nIS
                     throw new UserNotFoundException(tenantCode);
                 }
 
-                var newPassword = this.CreatePassword(10);
-                var res = this.ChangePassword(new UserLogin() { UserIdentifier = user.EmailAddress, UserPassword = newPassword, TeanantCode = user.TenantCode, IsSystemGenerated = true }, tenantCode);
-                MailMessage mail = new MailMessage();
-                mail.To.Add(user.EmailAddress);
-                mail.Subject = ConfigurationManager.AppSettings[ModelConstant.USERFORGOTPASSWORDSUBJECT];
-                mail.Body = string.Format(ConfigurationManager.AppSettings[ModelConstant.SENDPASSWORDMAILTOUSERMESSAGE], user.FirstName,  "Password: "+newPassword);
-                mail.IsBodyHtml = true;
-                IUtility iUtility = new Utility();
-                iUtility.SendMail(mail, string.Empty, 0, string.Empty, tenantCode);
-                return true;
+                //To set password reset by admin value to true which will check on login for this user,
+                //If true then will redirect to change password screen, otherwise the respective landing page after login
+                user.IsPasswordResetByAdmin = true;
+                var contactnumber = user.ContactNumber.Split(new Char[] { '-' })[1];
+                user.ContactNumber = contactnumber;
+                IList<User> users = new List<User>();
+                users.Add(user);
+                var result = this.UpdateUsers(users, tenantCode);
+                if (result == true)
+                {
+                    var newPassword = this.CreatePassword(10);
+                    var res = this.ChangePassword(new UserLogin() { UserIdentifier = user.EmailAddress, UserPassword = newPassword, TeanantCode = user.TenantCode, IsSystemGenerated = true }, tenantCode);
+                    MailMessage mail = new MailMessage();
+                    mail.To.Add(user.EmailAddress);
+                    mail.Subject = ConfigurationManager.AppSettings[ModelConstant.USERFORGOTPASSWORDSUBJECT];
+                    mail.Body = string.Format(ConfigurationManager.AppSettings[ModelConstant.SENDPASSWORDMAILTOUSERMESSAGE], user.FirstName, "Password: " + newPassword);
+                    mail.IsBodyHtml = true;
+                    IUtility iUtility = new Utility();
+                    iUtility.SendMail(mail, string.Empty, 0, string.Empty, tenantCode);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {

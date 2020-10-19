@@ -105,7 +105,8 @@ namespace nIS
                         CountryId = user.CountryId,
                         TenantCode = tenantCode,
                         IsGroupManager = user.IsGroupManager,
-                        IsInstanceManager = user.IsInstanceManager
+                        IsInstanceManager = user.IsInstanceManager,
+                        IsPasswordResetByAdmin = false
                     });
                 });
 
@@ -186,6 +187,7 @@ namespace nIS
                         userRecord.EmailAddress = user.EmailAddress;
                         userRecord.Image = user.Image;
                         userRecord.CountryId = user.CountryId;
+                        userRecord.IsPasswordResetByAdmin = user.IsPasswordResetByAdmin;
                     });
                     nVidYoEntitiesDataContext.SaveChanges();
                 }
@@ -374,7 +376,8 @@ namespace nIS
                         TenantCode = tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE) ? userRecord.TenantCode : tenantCode,
                         Roles = roles,
                         IsGroupManager = userRecord.IsGroupManager,
-                        IsInstanceManager = userRecord.IsInstanceManager
+                        IsInstanceManager = userRecord.IsInstanceManager,
+                        IsPasswordResetByAdmin = userRecord.IsPasswordResetByAdmin ?? false
                     });
                 });
                 users = tempUsers;
@@ -431,7 +434,8 @@ namespace nIS
                         Roles = roles,
                         DateFormat = dateFormat,
                         IsGroupManager = userRecord.IsGroupManager,
-                        IsInstanceManager = userRecord.IsInstanceManager
+                        IsInstanceManager = userRecord.IsInstanceManager,
+                        IsPasswordResetByAdmin = userRecord.IsPasswordResetByAdmin ?? false
                     });
 
                 });
