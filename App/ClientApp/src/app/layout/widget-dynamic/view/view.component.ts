@@ -1,9 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Constants } from '../../../shared/constants/constants';
+import { ErrorMessageConstants } from '../../../shared/constants/constants';
+import { MessageDialogService } from '../../../shared/services/mesage-dialog.service';
+import { DynamicWidgetService } from '../dynamicWidget.service';
+import { DynamicWidget } from '../dynamicwidget';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+
 export interface ListElement {
   series: string;
   displayName: string;
@@ -27,6 +35,9 @@ export class ViewComponent implements OnInit {
   public pageSize = 5;
   public currentPage = 0;
   public totalSize = 0;
+  public dynamicWidgetDetails: DynamicWidget;
+  public params;
+  public userClaimsRolePrivilegeOperations: any[] = [];
 
   displayedColumns: string[] = ['series', 'displayName'];
   dataSource = new MatTableDataSource<ListElement>(List_Data);
@@ -38,6 +49,7 @@ export class ViewComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
   public handlePage(e: any) {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
@@ -66,7 +78,7 @@ export class ViewComponent implements OnInit {
 
   //select widget type radio
 
-   selectedLink: string = "Form";
+  selectedLink: string = "Form";
   setWidgetType(e: string): void {
     //  this.selectRowsOption = '';
     this.selectedLink = e;
@@ -79,12 +91,67 @@ export class ViewComponent implements OnInit {
   }
 
   navigateToListPage() {
-    this.route.navigate(['dynamicwidget']);
+    this._router.navigate(['dynamicwidget']);
   }
-  constructor(private route: Router) { }
+
+  constructor(
+    private _router: Router,
+    private injector: Injector,
+    private _messageDialogService: MessageDialogService,
+    private dynamicWidgetService: DynamicWidgetService
+  ) {
+    this.dynamicWidgetDetails = new DynamicWidget;
+    _router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        if (e.url.includes('/dynamicwidget/Add')) {
+          localStorage.removeItem("dynamicwidgetparams");
+        }
+      }
+    });
+
+    _router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        if (e.url.includes('/dynamicwidget')) {
+          //set passing parameters to localstorage.
+          this.params = JSON.parse(localStorage.getItem('dynamicwidgetparams'));
+          if (localStorage.getItem('dynamicwidgetparams')) {
+            this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.StatementIdentifier;
+            //this.getWidgetDetails();
+          }
+        } else {
+          localStorage.removeItem("dynamicwidgetparams");
+        }
+      }
+    });
+
+  }
 
   ngOnInit() {
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.userClaimsRolePrivilegeOperations = [];
+    }
+    if (localStorage.getItem('dynamicwidgetparams')) {
+      this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.StatementIdentifier;
+      this.getWidgetDetails();
+    }
   }
-
+  async getWidgetDetails() {
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = Constants.Name;
+    searchParameter.SortParameter.SortOrder = Constants.Ascending;
+    searchParameter.SearchMode = Constants.Exact;
+    searchParameter.Identifier = this.dynamicWidgetDetails.Identifier;
+    searchParameter.IsStatementPagesRequired = true;
+    var response = await this.dynamicWidgetService.getDynamicWidgets(searchParameter);
+    this.dynamicWidgetDetails = response.List[0];
+  }
 }
 

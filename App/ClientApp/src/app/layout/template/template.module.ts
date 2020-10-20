@@ -17,8 +17,8 @@ import { DisableControlDirective } from '../../shared/directive/disabled-control
   declarations: [ListComponent, AddComponent, ViewComponent, DisableControlDirective],
   imports: [
     CommonModule,
-      TemplateRoutingModule, MatSortModule, MatTableModule, MatPaginatorModule, OwlDateTimeModule, 
-      OwlNativeDateTimeModule, FormsModule, ReactiveFormsModule, NgbModule, SharedModule
+    TemplateRoutingModule, MatSortModule, MatTableModule, MatPaginatorModule, OwlDateTimeModule,
+    OwlNativeDateTimeModule, FormsModule, ReactiveFormsModule, NgbModule, SharedModule
   ],
 })
 export class TemplateModule { }

@@ -148,6 +148,28 @@ namespace nIS
             return countries;
         }
 
+        /// <summary>
+        /// This method helps to publish page.
+        /// </summary>
+        /// <param name="pageIdentifier"></param>
+        /// <returns>boolean value</returns>
+        [HttpPost]
+        public bool Publish(long widgetIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.dynamicWidgetManager.PublishDynamicWidget(widgetIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
         [HttpPost]
         public IList<TenantEntity> GetTenantEntities()
         {

@@ -3,34 +3,37 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListComponent } from './list/list.component';
 import { AddComponent } from './add/add.component';
 import { ViewComponent } from './view/view.component';
+import { WidgetdesignerComponent } from './widgetdesigner/widgetdesigner.component';
+
+import { AuthGuard, UnAuthorisedUrlGuard } from 'src/app/core/guard';
 
 const routes: Routes = [
   {
     path: '',
     children: [
       {
-        path: '',
-        //data: { 'Operation': 'View' },
-        component: ListComponent,
-        //canActivate: [AuthGuard]
+        path: '', component: ListComponent,
+        canActivate: [AuthGuard]
       },
       {
-        path: 'View',
-        // data: { 'Operation': 'View' },
-        component: ViewComponent,
-        // canActivate: [UnAuthorisedUrlGuard, AuthGuard]
+        path: 'Add', component: AddComponent,
+        canActivate: [AuthGuard]
       },
       {
-        path: 'Edit',
-        // data: { 'Operation': 'Edit' },
-        component: AddComponent,
-        // canActivate: [UnAuthorisedUrlGuard, AuthGuard]
+        path: 'View', component: ViewComponent,
+        canActivate: [AuthGuard]
       },
       {
-        path: 'Add',
-        // data: { 'Operation': 'Create' },
-        component: AddComponent,
-        // canActivate: [UnAuthorisedUrlGuard, AuthGuard]
+        path: 'List', component: ListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'Edit', component: AddComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'AddDesinger', component: WidgetdesignerComponent,
+        canActivate: [AuthGuard]
       }
     ],
     data: { 'EntityName': 'Role' }
