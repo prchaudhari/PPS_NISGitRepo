@@ -6,10 +6,13 @@
 namespace nIS
 {
     #region References
-
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
     using Unity;
 
     #endregion
@@ -30,6 +33,11 @@ namespace nIS
         /// </summary>
         IDynamicWidgetRepository dynamicWidgetRepository = null;
 
+        /// <summary>
+        /// The tenant configuration manager object.
+        /// </summary>
+        private TenantConfigurationManager tenantConfigurationManager = null;
+
         #endregion
 
         #region Constructor
@@ -45,6 +53,8 @@ namespace nIS
             {
                 this.unityContainer = unityContainer;
                 this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
+                this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
+
             }
             catch (Exception ex)
             {
@@ -241,6 +251,63 @@ namespace nIS
         }
         #endregion
 
+        public string PreviewDynamicWidget(long widgetIdentifier, string baseURL, string tenantCode)
+        {
+            StringBuilder htmlString = new StringBuilder();
+
+            try
+            {
+                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                DynamicWidgetSearchParameter pageSearchParameter = new DynamicWidgetSearchParameter
+                {
+                    Identifier = widgetIdentifier.ToString(),
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = ModelConstant.SORT_COLUMN,
+                    },
+                };
+                IList<DynamicWidget> dynamicWidgets = this.dynamicWidgetRepository.GetDynamicWidgets(pageSearchParameter, tenantCode);
+                if (dynamicWidgets.Count != 0)
+                {
+                    htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+                    for (int y = 0; y < dynamicWidgets.Count; y++)
+                    {
+
+
+                    }
+                    htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return htmlString.ToString();
+        }
+
+        /// <summary>
+        /// This method will call publish page method of repository
+        /// </summary>
+        /// <param name="pageIdentifier">Page identifier</param>
+        /// <param name="tenantCode">Tenant code of page.</param>
+        /// <returns>
+        /// Returns true if pages publish successfully, false otherwise.
+        /// </returns>
+        public bool PublishDynamicWidget(long widgetIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                result = this.dynamicWidgetRepository.PublishDynamicWidget(widgetIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
         #endregion
 
         #region Private Methods

@@ -5,9 +5,10 @@
 
 namespace nIS
 {
+
+    #region References
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    #region References
     using System;
     using System.Collections.Generic;
     using System.Linq;

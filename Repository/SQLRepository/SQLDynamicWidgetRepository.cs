@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+    using Newtonsoft.Json;
     #region References
 
     using System;
@@ -14,6 +15,7 @@ namespace nIS
     using System.Linq.Dynamic;
     using System.Text;
     using Unity;
+    using System.Security.Claims;
 
     #endregion
 
@@ -115,7 +117,20 @@ namespace nIS
                     {
                         nISEntitiesDataContext.DynamicWidgetRecords.AddRange(dynamicWidgetRecords);
                         nISEntitiesDataContext.SaveChanges();
+                        dynamicWidgetRecords.ToList().ForEach(item =>
+                        {
+                            if (item.WidgetFilterSettings != null && item.WidgetFilterSettings != "")
+                            {
+                                List<DynamicWidgetFilterDetail> details = JsonConvert.DeserializeObject<List<DynamicWidgetFilterDetail>>(item.WidgetFilterSettings);
+                                details.ToList().ForEach(d => {
+                                    d.DynamicWidgetId = item.Id;
+                                });
+                                nISEntitiesDataContext.DynamicWidgetFilterDetails.AddRange(details);
+                                nISEntitiesDataContext.SaveChanges();
+                            }
+                        });
                     }
+
                 }
 
                 return true;
@@ -178,6 +193,22 @@ namespace nIS
                     });
 
                     nISEntitiesDataContext.SaveChanges();
+                    dynamicWidgetRecords.ToList().ForEach(item =>
+                    {
+                        if (item.WidgetFilterSettings != null && item.WidgetFilterSettings != "")
+                        {
+                            List<DynamicWidgetFilterDetail> existingDetails = new List<DynamicWidgetFilterDetail>();
+                            existingDetails= nISEntitiesDataContext.DynamicWidgetFilterDetails.Where(d => d.DynamicWidgetId == item.Id).ToList();
+                            nISEntitiesDataContext.DynamicWidgetFilterDetails.RemoveRange(existingDetails);
+
+                            List<DynamicWidgetFilterDetail> details = JsonConvert.DeserializeObject<List<DynamicWidgetFilterDetail>>(item.WidgetFilterSettings);
+                            details.ToList().ForEach(d => {
+                                d.DynamicWidgetId = item.Id;
+                            });
+                            nISEntitiesDataContext.DynamicWidgetFilterDetails.AddRange(details);
+                            nISEntitiesDataContext.SaveChanges();
+                        }
+                    });
                 }
 
                 result = true;
@@ -216,36 +247,17 @@ namespace nIS
                 {
                     foreach (DynamicWidget dynamicWidget in dynamicWidgets)
                     {
-                        DynamicWidgetRecord dynamicWidgetRecords = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.Id == dynamicWidget.Identifier).FirstOrDefault();
-                        //if (dynamicWidgetRecords == null)
-                        //{
-                        //    throw new DynamicWidgetNotFoundException(tenantCode);
-                        //}
-
-                        //TenantRecord tenantRecord = nISEntitiesDataContext.TenantRecords.Where(item => item.TenantDynamicWidget == dynamicWidget.Identifier.ToString() && item.IsDeleted == false).FirstOrDefault();
-                        //if (tenantRecord != null)
-                        //{
-                        //    throw new DynamicWidgetReferenceInTenantException(tenantCode);
-                        //}
-
-                        //TenantContactRecord tenantContactRecord = nISEntitiesDataContext.TenantContactRecords.Where(item => item.DynamicWidgetId == dynamicWidget.Identifier && item.IsDeleted == false).FirstOrDefault();
-                        //if (tenantRecord != null)
-                        //{
-                        //    throw new DynamicWidgetReferenceInTenantContactException(tenantCode);
-                        //}
-
-                        //UserRecord user = nISEntitiesDataContext.UserRecords.Where(item => item.DynamicWidgetId == dynamicWidget.Identifier && item.IsDeleted == false).FirstOrDefault();
-                        //if (user != null)
-                        //{
-                        //    throw new DynamicWidgetReferenceInUserException(tenantCode);
-                        //}
-                        //TenantUserRecord tenantUserRecord = nISEntitiesDataContext.TenantUserRecords.Where(item => item.DynamicWidgetId == dynamicWidget.Identifier && item.IsDeleted == false).FirstOrDefault();
-                        //if (user != null)
-                        //{
-                        //    throw new DynamicWidgetReferenceInUserException(tenantCode);
-                        //}
-                        dynamicWidgetRecords.IsDeleted = true;
+                        DynamicWidgetRecord dynamicWidgetRecord = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.Id == dynamicWidget.Identifier).FirstOrDefault();
+                      
+                        dynamicWidgetRecord.IsDeleted = true;
                         nISEntitiesDataContext.SaveChanges();
+                        if (dynamicWidgetRecord.WidgetFilterSettings != null && dynamicWidgetRecord.WidgetFilterSettings != "")
+                        {
+                            List<DynamicWidgetFilterDetail> existingDetails = new List<DynamicWidgetFilterDetail>();
+                            existingDetails.Where(d => d.DynamicWidgetId == dynamicWidgetRecord.Id).ToList();
+                            nISEntitiesDataContext.DynamicWidgetFilterDetails.RemoveRange(existingDetails);
+
+                        }
                     }
 
                     result = true;
@@ -320,11 +332,11 @@ namespace nIS
                                 CreatedBy = item.CreatedBy,
                                 CreatedOn = item.CreatedOn,
                                 LastUpdatedBy = item.LastUpdatedBy,
-                                CreatedByName=item.CreatedByName,
+                                CreatedByName = item.CreatedByName,
                                 PublishedBy = item.PublishedBy,
                                 PublishedByName = item.PublishedByName,
-                                EntityName=item.EntityName,
-                                PageTypeName=item.PageTypeName,
+                                EntityName = item.EntityName,
+                                PageTypeName = item.PageTypeName,
                                 PublishedDate = item.PublishedDate,
                                 IsActive = true,
                                 IsDeleted = false,
@@ -347,6 +359,47 @@ namespace nIS
         }
 
         #endregion
+        /// <summary>
+        /// This method reference to publish page
+        /// </summary>
+        /// <param name="pageIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        public bool PublishDynamicWidget(long widgetIdnetifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<DynamicWidgetRecord> pageRecords = nISEntitiesDataContext.DynamicWidgetRecords.Where(itm => itm.Id == widgetIdnetifier).ToList();
+                    if (pageRecords == null || pageRecords.Count <= 0)
+                    {
+                        throw new PageNotFoundException(tenantCode);
+                    }
+
+                    pageRecords.ToList().ForEach(item =>
+                    {
+                        item.PublishedBy = userId;
+                        item.PublishedDate = DateTime.UtcNow;
+                        item.Status = PageStatus.Published.ToString();
+                    });
+
+                    nISEntitiesDataContext.SaveChanges();
+                }
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
 
         #region Get Dynamic Widget Count
 
@@ -537,6 +590,14 @@ namespace nIS
                 {
                     queryString.Append("(" + string.Join("or ", dynamicWidgetSearchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
                 }
+                if (validationEngine.IsValidText(dynamicWidgetSearchParameter.PageTypeId))
+                {
+                    queryString.Append("(" + string.Join("or ", dynamicWidgetSearchParameter.PageTypeId.ToString().Split(',').Select(item => string.Format("PageTypeId.Equals({0}) ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidText(dynamicWidgetSearchParameter.EntityId))
+                {
+                    queryString.Append("(" + string.Join("or ", dynamicWidgetSearchParameter.EntityId.ToString().Split(',').Select(item => string.Format("EntityId.Equals({0}) ", item))) + ") and ");
+                }
 
                 if (validationEngine.IsValidText(dynamicWidgetSearchParameter.DynamicWidgetName))
                 {
@@ -549,7 +610,28 @@ namespace nIS
                         queryString.Append(string.Format("WidgetName.Contains(\"{0}\") and ", dynamicWidgetSearchParameter.DynamicWidgetName));
                     }
                 }
-
+                if (validationEngine.IsValidText(dynamicWidgetSearchParameter.DynamicWidgetType))
+                {
+                    if (dynamicWidgetSearchParameter.SearchMode == SearchMode.Equals)
+                    {
+                        queryString.Append(string.Format("WidgetType.Equals(\"{0}\") and ", dynamicWidgetSearchParameter.DynamicWidgetType));
+                    }
+                    else
+                    {
+                        queryString.Append(string.Format("WidgetType.Contains(\"{0}\") and ", dynamicWidgetSearchParameter.DynamicWidgetType));
+                    }
+                }
+                if (validationEngine.IsValidText(dynamicWidgetSearchParameter.Status))
+                {
+                    if (dynamicWidgetSearchParameter.SearchMode == SearchMode.Equals)
+                    {
+                        queryString.Append(string.Format("Status.Equals(\"{0}\") and ", dynamicWidgetSearchParameter.Status));
+                    }
+                    else
+                    {
+                        queryString.Append(string.Format("Status.Contains(\"{0}\") and ", dynamicWidgetSearchParameter.Status));
+                    }
+                }
                 if (this.validationEngine.IsValidDate(dynamicWidgetSearchParameter.StartDate) && !this.validationEngine.IsValidDate(dynamicWidgetSearchParameter.EndDate))
                 {
                     DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(dynamicWidgetSearchParameter.StartDate), DateTimeKind.Utc);

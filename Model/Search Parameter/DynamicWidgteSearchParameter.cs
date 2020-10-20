@@ -42,7 +42,27 @@ namespace nIS
         /// <summary>
         /// The dynamicWidget code
         /// </summary>
+        private string enityId = string.Empty;
+
+        /// <summary>
+        /// The dynamicWidget code
+        /// </summary>
         private string pageTypeName = string.Empty;
+
+        /// <summary>
+        /// The dynamicWidget code
+        /// </summary>
+        private string status = string.Empty;
+
+        /// <summary>
+        /// The dynamicWidget code
+        /// </summary>
+        private string createdBy = string.Empty;
+
+        /// <summary>
+        /// The dynamicWidget code
+        /// </summary>
+        private string pageTypeId = string.Empty;
 
         /// <summary>
         /// The utility object
@@ -135,6 +155,70 @@ namespace nIS
             set
             {
                 this.pageTypeName = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets CreatedBy code
+        /// </summary>
+        [Description("CreatedBy")]
+        public string CreatedBy
+        {
+            get
+            {
+                return this.createdBy;
+            }
+            set
+            {
+                this.createdBy = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets PageTypeName code
+        /// </summary>
+        [Description("Status")]
+        public string Status
+        {
+            get
+            {
+                return this.status;
+            }
+            set
+            {
+                this.status = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets EntityId code
+        /// </summary>
+        [Description("EntityId")]
+        public string EntityId
+        {
+            get
+            {
+                return this.enityId;
+            }
+            set
+            {
+                this.enityId = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets PageTypeId code
+        /// </summary>
+        [Description("PageTypeId")]
+        public string PageTypeId
+        {
+            get
+            {
+                return this.pageTypeId;
+            }
+            set
+            {
+                this.pageTypeId = value;
             }
         }
 
