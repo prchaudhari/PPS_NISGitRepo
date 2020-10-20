@@ -42,6 +42,14 @@ namespace nIS
         /// </summary>
         private UserManager userManager = null;
 
+        /// <summary>
+        /// The contact type manager object
+        /// </summary>
+        private ContactTypeManager ContactTypeManager = null;
+
+        /// <summary>
+        /// The tenant contact manager object
+        /// </summary>
         private TenantContactManager tenantContactManager = null;
 
         /// <summary>
@@ -110,6 +118,7 @@ namespace nIS
             this.utility = new Utility();
             this.configurationUtility = new ConfigurationUtility(this.unityContainer);
             this.tenantContactManager = new TenantContactManager(this.unityContainer);
+            this.ContactTypeManager = new ContactTypeManager(this.unityContainer);
         }
 
         #endregion
@@ -305,6 +314,19 @@ namespace nIS
                             {
                                 throw new InvalidUserException(tenantCode);
                             }
+
+                            //TO create primary contact type for tenant group
+                            ContactType contactType = new ContactType
+                            {
+                                Name = ModelConstant.TENANT_PRIMARY_CONTACT,
+                                Description = "Primary Contact type  for tenant group",
+                                IsActive = true,
+                                IsDeleted = false,
+                                TenantCode = client.TenantCode
+                            };
+                            IList<ContactType> contactTypes = new List<ContactType>();
+                            contactTypes.Add(contactType);
+                            this.ContactTypeManager.AddContactTypes(contactTypes, client.TenantCode);
 
                             #endregion
                         }
