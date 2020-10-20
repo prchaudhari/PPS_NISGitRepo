@@ -46,10 +46,12 @@
     <None Remove="ClientApp\src\app\layout\tenants\tenant.ts" />
     <None Remove="ClientApp\src\app\layout\tenantuser\tenantuser.ts" />
     <None Remove="ClientApp\src\app\layout\users\user.ts" />
+    <None Remove="ClientApp\src\app\layout\widget-dynamic\dynamicwidget.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\widget.service.ts" />
     <None Remove="ClientApp\src\app\layout\widgets\Widget.ts" />
     <None Remove="ClientApp\src\app\shared\models\CommonModel.ts" />
     <None Remove="ClientApp\src\app\shared\modules\pagination\pagination.module.ts" />
+    <None Remove="ClientApp\src\app\shared\widgetpreview\widgetpreview.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,6 +75,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\layout\tenantuser\tenantuser.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.spec.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\users\user.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\widget-dynamic\dynamicwidget.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\login\login.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\constants\configConstants.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\constants\constants.ts" />
@@ -124,6 +127,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\layout\statement-search\statementSearch.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\layout\widget-dynamic\dynamicwidget.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\layout\widgets\widget.service.ts">

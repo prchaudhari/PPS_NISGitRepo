@@ -24,11 +24,13 @@ import { BnNgIdleService } from 'bn-ng-idle';
 import { DynamicGlobalVariable } from './shared/constants/constants';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PagePreviewComponent } from './shared/pagepreview/pagepreview.component';
+import { WidgetPreviewComponent } from './shared/widgetpreview/widgetpreview.component';
 import { SafeHtmlPip } from './shared/pagepreview/pagepreview.component';
 import { MultipleMessageboxComponent } from './shared/modules/multiple-messagebox/multiple-messagebox.component';
 import { SafeHtmlPipee } from './shared/modules/multiple-messagebox/multiple-messagebox.component';
 import { ErrorLogsViewComponent } from './shared/error-logs-view/error-logs-view.component';
 import { SelectTenantComponent } from './select-tenant/select-tenant.component';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { SelectTenantComponent } from './select-tenant/select-tenant.component';
     MsgBoxComponent,
     ConfirmUserComponent,
     PagePreviewComponent,
+    WidgetPreviewComponent,
     MultipleMessageboxComponent,
     SafeHtmlPip, 
     SafeHtmlPipee, ErrorLogsViewComponent, SelectTenantComponent
@@ -53,7 +56,8 @@ import { SelectTenantComponent } from './select-tenant/select-tenant.component';
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
     AuthenticationModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    RichTextEditorModule
   ],
   providers: [
     {
@@ -69,6 +73,7 @@ import { SelectTenantComponent } from './select-tenant/select-tenant.component';
   entryComponents: [
     MsgBoxComponent,
     PagePreviewComponent,
+    WidgetPreviewComponent,
     MultipleMessageboxComponent,
     ErrorLogsViewComponent
   ]

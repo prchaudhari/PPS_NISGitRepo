@@ -2,9 +2,9 @@ import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Constants } from 'src/app/shared/constants/constants';
-import { ErrorMessageConstants } from 'src/app/shared/constants/constants';
-import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
+import { Constants } from '../../../shared/constants/constants';
+import { ErrorMessageConstants } from '../../../shared/constants/constants';
+import { MessageDialogService } from '../../../shared/services/mesage-dialog.service';
 import { StatementService } from '../statement.service';
 
 @Component({

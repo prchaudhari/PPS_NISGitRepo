@@ -130,7 +130,7 @@ export class ListComponent implements OnInit {
 
     if (sort.direction == 'asc') {
       this.sortOrder = Constants.Ascending;
-    }else {
+    } else {
       this.sortOrder = Constants.Descending;
     }
 
@@ -469,5 +469,5 @@ export class ListComponent implements OnInit {
     localStorage.setItem("pageDesignEditRouteparams", JSON.stringify(queryParams))
     this.route.navigate(['../dashboardDesigner']);
   }
-  
+
 }

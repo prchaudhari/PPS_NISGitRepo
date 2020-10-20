@@ -47,6 +47,8 @@ export class Constants {
   public static get StatementPublishedSuccessfullyMessage(): string { return "Statement Published successfully." };
   public static get ScheduleReRunSuccessfullyMessage(): string { return "Schedule Re-Run successfully." };
   public static get StatementGeneratedSuccessfullyForSelectedRecordMessage(): string { return "Statement generated successfully for this record." };
+  public static get DynamicWidgetPublishedSuccessfullyMessage(): string { return "Dynamic widget published successfully." };
+  public static get DynamicWidgetCloneSuccessfullyMessage(): string { return "Dynamic widget clone successfully." };
 }
 
 export class ErrorMessageConstants {

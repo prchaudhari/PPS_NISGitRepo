@@ -121,6 +121,17 @@ export class URLConfiguration {
   public static get statementPreviewUrl(): string { return "Statement/Preview" };
   public static get statementCloneUrl(): string { return "Statement/Clone" };
 
+  //DynamicWidget Url Method
+  public static get dynamicWidgetGetUrl(): string { return "DynamicWidget/List" };
+  public static get dynamicWidgetAddUrl(): string { return "DynamicWidget/Add" };
+  public static get dynamicWidgetUpdateUrl(): string { return "DynamicWidget/Update" };
+  public static get dynamicWidgetDeleteUrl(): string { return "DynamicWidget/Delete" };
+  public static get dynamicWidgetPublishUrl(): string { return "DynamicWidget/Publish" };
+  public static get dynamicWidgetPreviewUrl(): string { return "DynamicWidget/Preview" };
+  public static get dynamicWidgetCloneUrl(): string { return "DynamicWidget/Clone" };
+  public static get dynamicWidgetGetEntitiesUrl(): string { return "DynamicWidget/GetTenantEntities" };
+  public static get dynamicWidgetGetEntityFieldsUrl(): string { return "DynamicWidget/GetEntityFields" };
+
   //Render Engine Url Method
   public static get renderEngineGetUrl(): string { return "RenderEngine/List" };
   public static get renderEngineAddUrl(): string { return "RenderEngine/Add" };
