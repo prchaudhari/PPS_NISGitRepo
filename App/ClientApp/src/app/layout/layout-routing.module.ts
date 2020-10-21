@@ -15,6 +15,7 @@ import { CountryComponent } from './country/country.component';
 import { ThemeConfigurationComponent } from './theme-configuration/theme-configuration.component';
 import { ContacttypeComponent} from './contacttype/contacttype.component'
 import { MultiTenantUserAccessMapComponent } from './multi-tenant-user-access-map/multi-tenant-user-access-map.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -32,6 +33,7 @@ const routes: Routes = [
       { path: 'assetlibrary', loadChildren: () => import('./asset-libraries/asset-libraries.module').then(m => m.AssetLibrariesModule) },
       { path: 'renderengines', loadChildren: () => import('./render-engine/render-engine.module').then(m => m.RenderEngineModule) },
       { path: 'tenantusers', loadChildren: () => import('./tenantuser/tenantuser.module').then(m => m.TenantuserModule) },
+      { path: 'tenantgroupusers', loadChildren: () => import('./tenant-group-users/tenant-group-users.module').then(m => m.TenantGroupUsersModule) },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'changepassword', component: ChangePasswordComponent },
       { path: 'profile', component: ProfileComponent },
@@ -48,8 +50,6 @@ const routes: Routes = [
       { path: 'multiTenantUserAccess', component: MultiTenantUserAccessMapComponent },
     ]
   }
-
-
 ];
 
 @NgModule({

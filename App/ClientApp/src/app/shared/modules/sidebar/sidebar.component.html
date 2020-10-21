@@ -116,7 +116,7 @@
         <a> <span class='nav-icon icon-users-line2' title="Tenants"> </span> <span class='nav-title'>Tenants</span> </a>
       </li>
 
-      <li [ngClass]="(URL=='/tenantgroups')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isInstantTenantManager" (click)="navigateToTenantGroups()">
+      <li [ngClass]="(URL=='/tenantgroups')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isInstanceTenantManager" (click)="navigateToTenantGroups()">
         <a> <span class='nav-icon icon-users-line2' title="Tenant Groups"> </span> <span class='nav-title'>Tenant Groups</span> </a>
       </li>
 
@@ -149,7 +149,10 @@
       <li [ngClass]="(URL=='/themeConfiguration')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isTenantAdminUser" (click)="navigateTothemeConfiguration()">
         <a> <span class='nav-icon fa fa-gear' title="Theme ConfigurationComponent"> </span> <span class='nav-title'>Theme Configuration</span> </a>
       </li>
-      <li [ngClass]="(URL=='/tenantusers')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isInstantTenantManager" (click)="navigateToTenantUsers()">
+      <li [ngClass]="(URL=='/tenantusers')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isInstanceTenantManager" (click)="navigateToTenantUsers()">
+        <a> <span class='nav-icon icon-users-line2' title="Users"> </span> <span class='nav-title'>Users</span> </a>
+      </li>
+      <li [ngClass]="(URL=='/tenantgroupusers')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isTenantGroupManager" (click)="navigateToTenantGroupUsers()">
         <a> <span class='nav-icon icon-users-line2' title="Users"> </span> <span class='nav-title'>Users</span> </a>
       </li>
       <li [ngClass]="(URL=='/statemenetsearch')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToStatemenetSearch()"

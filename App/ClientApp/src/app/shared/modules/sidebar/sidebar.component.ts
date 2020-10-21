@@ -31,7 +31,7 @@ export class SidebarComponent implements OnInit {
   public userClaimsRolePrivilegeOperations;
   public statePrivilegeMap;
   public isTenantAdminUser: boolean = false;
-  public isInstantTenantManager: boolean = false;
+  public isInstanceTenantManager: boolean = false;
   public isTenantGroupManager: boolean = false;
   public isUserHaveMultiTenantAccess: boolean = false;
   public isByBtnClickEvent: boolean = false;
@@ -73,7 +73,7 @@ export class SidebarComponent implements OnInit {
       this.route.navigate(['/dashboard']);
     }
     else {
-      if(this.isInstantTenantManager == true) {
+      if(this.isInstanceTenantManager == true) {
         this.URL = '/tenantgroups';
         this.route.navigate(['/tenantgroups']);
       }else if(this.isTenantGroupManager == true) {
@@ -137,6 +137,11 @@ export class SidebarComponent implements OnInit {
     this.URL = '/tenantusers';
     this.hideSidebar();
     this.route.navigate(['/tenantusers']);
+  }
+  navigateToTenantGroupUsers() {
+    this.URL = '/tenantgroupusers';
+    this.hideSidebar();
+    this.route.navigate(['/tenantgroupusers']);
   }
   navigateToTenantGroups() {
     this.URL = '/tenantgroups';
@@ -263,7 +268,7 @@ export class SidebarComponent implements OnInit {
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if(userClaimsDetail != null) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-      this.isInstantTenantManager = userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() == 'true' ? true : false;
+      this.isInstanceTenantManager = userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() == 'true' ? true : false;
       this.isTenantGroupManager = userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() == 'true' ? true : false;
       this.isUserHaveMultiTenantAccess = userClaimsDetail.IsUserHaveMultiTenantAccess.toLocaleLowerCase() == 'true' ? true : false;
       this.statePrivilegeMap = JSON.parse(localStorage.getItem("StatePrivilegeMap"));
@@ -276,10 +281,10 @@ export class SidebarComponent implements OnInit {
       this.isTenantAdminUser = loggedInUserDetails.RoleName == 'Tenant Admin' ? true : false;
  
       this.URL = this.route.url;
-      if(this.isInstantTenantManager == true || this.isTenantGroupManager == true || this.isTenantAdminUser) {
+      if(this.isInstanceTenantManager == true || this.isTenantGroupManager == true || this.isTenantAdminUser) {
         if (this.URL.includes('/tenants') || this.URL.includes('/tenantConfiguration') ||this.URL.includes('/settings') || this.URL.includes('/country') || 
         this.URL.includes('/tenantgroups') || this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype') || this.URL.includes('/multiTenantUserAccess')
-        || this.URL.includes('/tenantusers')) {
+        || this.URL.includes('/tenantusers') || this.URL.includes('/tenantgroupusers')) {
           this.IsMainMenu = false;
         }
         else {
@@ -340,12 +345,14 @@ export class SidebarComponent implements OnInit {
       else if(this.URL.includes('/tenantusers')) {
         this.URL = '/tenantusers';
       }
-    }
-    
+      else if(this.URL.includes('/tenantgroupusers')) {
+        this.URL = '/tenantgroupusers';
+      }
+    } 
   }
 
   navigateToRespectiveUserLandingPage() {
-    if(this.isInstantTenantManager == true) {
+    if(this.isInstanceTenantManager == true) {
       this.URL = '/tenantgroups';
       this.route.navigate(['/tenantgroups']);
     }
@@ -373,20 +380,20 @@ export class SidebarComponent implements OnInit {
 
   routeNavigate() {
     var isFound = false;
-        var state = 0;
-        this.statePrivilegeMap.forEach(map => {
-          var isPresent = this.userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
-          if (isPresent != undefined && isPresent.length > 0) {
-            if (isFound == false) {
-              isFound = true;
-              state = map.State;
-            }
-          }
-        });
-        if (isFound) {
-          this.URL = '/'+state;
-          this.route.navigate([state]);
+    var state = 0;
+    this.statePrivilegeMap.forEach(map => {
+      var isPresent = this.userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
+      if (isPresent != undefined && isPresent.length > 0) {
+        if (isFound == false) {
+          isFound = true;
+          state = map.State;
         }
+      }
+    });
+    if (isFound) {
+      this.URL = '/'+state;
+      this.route.navigate([state]);
+    }
   }
 
   switchTenant() {
