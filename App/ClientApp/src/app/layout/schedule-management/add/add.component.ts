@@ -748,16 +748,13 @@ export class AddComponent implements OnInit {
     }
     if (this.isEndDate==true && this.scheduleForm.value.RecurrancePattern != "DoesNotRepeat") {
       if (this.filterToDateError || this.scheduleForm.value.filtershiftenddate == "" || this.scheduleForm.value.filtershiftenddate == null) {
-        console.log("is end date error");
         return true;
       }
     }
     if (this.filterDateDifferenecError) {
-      console.log("is filterDateDifferenecError");
       return true;
     }
     if(this.isEndAfter==true && this.scheduleForm.value.scheduleEndAfterNoOccurences<=0) {
-      console.log("is end after error");
       return true;
     }
     return false;

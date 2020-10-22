@@ -122,10 +122,6 @@ export class ListComponent implements OnInit {
     if (localStorage.getItem("tenantgroupuserRouteparams")) {
       this.params = JSON.parse(localStorage.getItem('tenantgroupuserRouteparams'));
       this.UserIdentifier = this.params.Routeparams.passingparams.UserIdentifier;
-      this.TenantGroupUserFilter.FirstName = this.params.Routeparams.filteredparams.FirstName;
-      this.TenantGroupUserFilter.EmailAddress = this.params.Routeparams.filteredparams.EmailAddress;
-      this.TenantGroupUserFilter.LockStatus = this.params.Routeparams.filteredparams.LockStatus;
-      this.TenantGroupUserFilter.ActivationStatus = this.params.Routeparams.filteredparams.ActivationStatus;;
     }
     this.sortedTenantGroupUserList = this.tenantgroupuserLists.slice();
   }
@@ -273,10 +269,6 @@ export class ListComponent implements OnInit {
     this.params = JSON.parse(localStorage.getItem('tenantgroupuserRouteparams'));
     if (localStorage.getItem('tenantgroupuserRouteparams')) {
       this.UserIdentifier = this.params.Routeparams.passingparams.UserIdentifier;
-      this.TenantGroupUserFilter.FirstName = this.params.Routeparams.filteredparams.FirstName;
-      this.TenantGroupUserFilter.EmailAddress = this.params.Routeparams.filteredparams.EmailAddress;
-      this.TenantGroupUserFilter.LockStatus = this.params.Routeparams.filteredparams.LockStatus;
-      this.TenantGroupUserFilter.ActivationStatus = this.params.Routeparams.filteredparams.ActivationStatus;
     }
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
@@ -286,15 +278,6 @@ export class ListComponent implements OnInit {
     searchParameter.SortParameter.SortColumn = this.sortColumn;
     searchParameter.SortParameter.SortOrder = this.sortOrder;
     searchParameter.SearchMode = Constants.Contains;
-    searchParameter.GetResources = true;
-    if (this.TenantGroupUserFilter.FirstName != null) {
-      searchParameter.FirstName = this.TenantGroupUserFilter.FirstName;
-    }
-    if (this.TenantGroupUserFilter.EmailAddress != null) {
-      searchParameter.EmailAddress = this.TenantGroupUserFilter.EmailAddress;
-    }
-    searchParameter.LockStatus = this.TenantGroupUserFilter.LockStatus;
-    searchParameter.ActivationStatus = this.TenantGroupUserFilter.ActivationStatus;
     this.getTenantGroupUsers(searchParameter);
   }
 
