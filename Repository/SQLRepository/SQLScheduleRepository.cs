@@ -1157,7 +1157,9 @@ namespace nIS
         {
             try
             {
-                var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
@@ -1212,7 +1214,8 @@ namespace nIS
 
                 if (dayDiff > 0)
                 {
-                    var newstartdate = scheduleStartDate;
+                    var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                    newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                     int idx = 1;
                     while (idx <= dayDiff)
                     {
@@ -1273,10 +1276,12 @@ namespace nIS
                 }
                 else
                 {
-                    dayDiff = Convert.ToInt32(schedule.NoOfOccurrences) * repeatEveryDays;
+                    dayDiff = Convert.ToInt32(schedule.NoOfOccurrences);
                 }
 
-                var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
+                //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
                 if (dayDiff > 0)
                 {
                     if (schedule.RecurrancePattern == ModelConstant.WEEKDAY)
@@ -1484,11 +1489,11 @@ namespace nIS
 
                 var startdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
                 if (this.utility.getNumericMonth(schedule.MonthOfYear) < startdate.Month
-                    || (this.utility.getNumericMonth(schedule.MonthOfYear) == startdate.Month && startdate.Day < schedule.DayOfMonth))
+                    || (this.utility.getNumericMonth(schedule.MonthOfYear) == startdate.Month && startdate.Day > schedule.DayOfMonth))
                 {
                     startdate = startdate.AddYears(1);
                 }
-                
+
                 int DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
                 if (schedule.DayOfMonth > 28)
                 {
@@ -1502,7 +1507,16 @@ namespace nIS
                 var newstartdate = new DateTime(startdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear), DayOfMonth, 0, 0, 0);
                 newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
 
-                var yearDiff = this.utility.YearDifference(newstartdate, schedule.EndDate ?? DateTime.Now) + 1;
+                var yearDiff = 0;
+                if (schedule.EndDate != null)
+                {
+                    yearDiff = this.utility.YearDifference(newstartdate, schedule.EndDate ?? DateTime.Now) + 1;
+                }
+                else
+                {
+                    yearDiff = Convert.ToInt32(schedule.NoOfOccurrences);
+                }
+
                 if (yearDiff > 0)
                 {
                     int idx = 1;

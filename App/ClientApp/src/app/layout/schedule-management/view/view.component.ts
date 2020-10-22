@@ -143,62 +143,68 @@ export class ViewComponent implements OnInit {
   }
 
   setScheduleOccuranceMessage() {
-    var ssd = new Date(this.schedule.StartDate);
+    var dt = new Date(this.schedule.StartDate);
+    var dayOfMonth = this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
+    var ssd = new Date(dt.getFullYear(), dt.getMonth(), dayOfMonth);
     var schedulestartdte = ssd.toLocaleDateString();
     var dte = ssd.getDate();
     var month = this.monthArray[ssd.getMonth()];
 
-    let scheduleRunUtilMessage = '';
-    if(this.schedule.EndDate != null && this.schedule.EndDate.toString() != "0001-01-01T00:00:00") {
-      let sed = new Date(this.schedule.EndDate);
-      scheduleRunUtilMessage = ' until '+sed.toLocaleDateString();
-    }else if(this.schedule.NoOfOccurrences != null) {
-      scheduleRunUtilMessage = ' upto '+this.schedule.NoOfOccurrences + " occurence.";
-    }
-    
-    let repeatEvery = this.schedule.RepeatEveryDayMonWeekYear != null && this.schedule.RepeatEveryDayMonWeekYear != 0 ? this.schedule.RepeatEveryDayMonWeekYear : 1;
-    let repeatEveryByVal = this.RepeatEveryBy != null && this.RepeatEveryBy != '' ? this.RepeatEveryBy : 'Month';
-    let occurance = '';
-
-    if(repeatEveryByVal == 'Day') {
-      if(repeatEvery == 1) {
-        occurance = 'day';
-      }else{
-        occurance = repeatEvery+' days ';
+    if(this.schedule.RecurrancePattern == 'DoesNotRepeat') {
+      this.ScheduleOccuranceMessage = 'Occurs once on ' + schedulestartdte;
+    }else {
+      let scheduleRunUtilMessage = '';
+      if(this.schedule.EndDate != null && this.schedule.EndDate.toString() != "0001-01-01T00:00:00") {
+        let sed = new Date(this.schedule.EndDate);
+        scheduleRunUtilMessage = ' until '+sed.toLocaleDateString();
+      }else if(this.schedule.NoOfOccurrences != null) {
+        scheduleRunUtilMessage = ' upto '+this.schedule.NoOfOccurrences + " occurence.";
       }
-    }
-    else if(repeatEveryByVal == 'Week') {
-      var weekdaystr = '';
-      if(this.selectedWeekdays.length > 0) {
-        this.selectedWeekdays.sort(function(a, b){
-          return a.Id - b.Id;
-        });
-        for(let i=0; i<this.selectedWeekdays.length; i++) {
-          let day = this.selectedWeekdays[i].Day;
-          weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
+      
+      let repeatEvery = this.schedule.RepeatEveryDayMonWeekYear != null && this.schedule.RepeatEveryDayMonWeekYear != 0 ? this.schedule.RepeatEveryDayMonWeekYear : 1;
+      let repeatEveryByVal = this.RepeatEveryBy != null && this.RepeatEveryBy != '' ? this.RepeatEveryBy : 'Month';
+      let occurance = '';
+      if(repeatEveryByVal == 'Day') {
+        if(repeatEvery == 1) {
+          occurance = 'day';
+        }else{
+          occurance = repeatEvery+' days ';
         }
       }
-      if(repeatEvery == 1) {
-        occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
-      }else{
-        occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
+      else if(repeatEveryByVal == 'Week') {
+        var weekdaystr = '';
+        if(this.selectedWeekdays.length > 0) {
+          this.selectedWeekdays.sort(function(a, b){
+            return a.Id - b.Id;
+          });
+          for(let i=0; i<this.selectedWeekdays.length; i++) {
+            let day = this.selectedWeekdays[i].Day;
+            weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
+          }
+        }
+        if(repeatEvery == 1) {
+          occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
+        }else{
+          occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
+        }
       }
-    }
-    else if(repeatEveryByVal == 'Month') {
-      if(repeatEvery == 1) {
-        occurance = 'month on day '+dte;
-      }else{
-        occurance = repeatEvery+' months on day '+dte;
+      else if(repeatEveryByVal == 'Month') {
+        if(repeatEvery == 1) {
+          occurance = 'month on day '+dte;
+        }else{
+          occurance = repeatEvery+' months on day '+dte;
+        }
       }
-    }
-    else if(repeatEveryByVal == 'Year') {
-      if(repeatEvery == 1) {
-        occurance = 'month on day '+dte+ ' of '+month;
-      }else{
-        occurance = repeatEvery+' months on day '+dte+ ' of '+month;
+      else if(repeatEveryByVal == 'Year') {
+        if(repeatEvery == 1) {
+          occurance = 'month on day '+dte+ ' of '+month;
+        }else{
+          occurance = repeatEvery+' months on day '+dte+ ' of '+month;
+        }
       }
+      this.ScheduleOccuranceMessage = 'On every '+occurance+' starting ' + schedulestartdte + scheduleRunUtilMessage;
     }
-    this.ScheduleOccuranceMessage = 'On every '+occurance+' starting ' + schedulestartdte + scheduleRunUtilMessage;
+    
   }
 
   navigateToScheduleEdit() {
