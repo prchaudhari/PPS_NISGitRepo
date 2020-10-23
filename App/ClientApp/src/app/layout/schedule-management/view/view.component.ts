@@ -144,7 +144,7 @@ export class ViewComponent implements OnInit {
 
   setScheduleOccuranceMessage() {
     var dt = new Date(this.schedule.StartDate);
-    var dayOfMonth = this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
+    var dayOfMonth = this.schedule.DayOfMonth == undefined || this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
     var ssd = new Date(dt.getFullYear(), dt.getMonth(), dayOfMonth);
     var schedulestartdte = ssd.toLocaleDateString();
     var dte = ssd.getDate();
@@ -174,18 +174,22 @@ export class ViewComponent implements OnInit {
       else if(repeatEveryByVal == 'Week') {
         var weekdaystr = '';
         if(this.selectedWeekdays.length > 0) {
-          this.selectedWeekdays.sort(function(a, b){
-            return a.Id - b.Id;
-          });
-          for(let i=0; i<this.selectedWeekdays.length; i++) {
-            let day = this.selectedWeekdays[i].Day;
-            weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
+          if(this.selectedWeekdays.length == 7 && repeatEvery == 1) {
+            occurance = 'day';
+          }else {
+            this.selectedWeekdays.sort(function(a, b){
+              return a.Id - b.Id;
+            });
+            for(let i=0; i<this.selectedWeekdays.length; i++) {
+              let day = this.selectedWeekdays[i].Day;
+              weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
+            }
+            if(repeatEvery == 1) {
+              occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
+            }else{
+              occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
+            }
           }
-        }
-        if(repeatEvery == 1) {
-          occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
-        }else{
-          occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
         }
       }
       else if(repeatEveryByVal == 'Month') {
@@ -197,9 +201,9 @@ export class ViewComponent implements OnInit {
       }
       else if(repeatEveryByVal == 'Year') {
         if(repeatEvery == 1) {
-          occurance = 'month on day '+dte+ ' of '+month;
+          occurance = 'year on day '+dte+ ' of '+month;
         }else{
-          occurance = repeatEvery+' months on day '+dte+ ' of '+month;
+          occurance = repeatEvery+' years on day '+dte+ ' of '+month;
         }
       }
       this.ScheduleOccuranceMessage = 'On every '+occurance+' starting ' + schedulestartdte + scheduleRunUtilMessage;

@@ -65,6 +65,7 @@ export class AddComponent implements OnInit {
   public selectedWeekdays = [];
   public DataFormat;
   public IsAnyBatchExecuted: boolean = false;
+  public monthlyWarningMessage = '';
 
   get ScheduleName() {
     return this.scheduleForm.get('ScheduleName');
@@ -187,6 +188,7 @@ export class AddComponent implements OnInit {
   }
 
   onRepeatEveryByValueChange() {
+    this.monthlyWarningMessage = '';
     let repeatEveryByVal = this.scheduleForm.value.RepeatEveryBy != null ? this.scheduleForm.value.RepeatEveryBy : 'Day';
     if(repeatEveryByVal == 'Day') {
       this.isDaily = true;
@@ -203,6 +205,9 @@ export class AddComponent implements OnInit {
       this.isWeekly = false;
       this.isMonthly = true;
       this.isYearly = false;
+      if(this.scheduleForm.value.CustomMonthDay==31) {
+        this.monthlyWarningMessage = 'Some of the months have fewer days so schedule will be executed on the last day of month.';
+      }
     }else if(repeatEveryByVal == 'Year') {
       this.isDaily = false;
       this.isWeekly = false;
@@ -213,24 +218,29 @@ export class AddComponent implements OnInit {
   }
 
   onRepeatEveryChange() {
-    if(this.scheduleForm.value.RepeatEvery==0) {
+    if(this.scheduleForm.value.RepeatEvery<=0) {
       this.scheduleForm.controls['RepeatEvery'].setValue(1);
     }
     this.setScheduleOccuranceMessage();
   }
 
   onCustomMonthDayChange() {
-    if(this.scheduleForm.value.CustomMonthDay==0) {
+    if(this.scheduleForm.value.CustomMonthDay<=0) {
       this.scheduleForm.controls['CustomMonthDay'].setValue(1);
     }else if(this.scheduleForm.value.CustomMonthDay>31) {
       this.scheduleForm.controls['CustomMonthDay'].setValue(31);
     }
     this.scheduleOccuranceDay = this.scheduleForm.value.CustomMonthDay;
+    if(this.scheduleForm.value.CustomMonthDay==31) {
+      this.monthlyWarningMessage = 'Some of the months have fewer days so schedule will be executed on the last day of month.';
+    }else {
+      this.monthlyWarningMessage = '';
+    }
     this.setScheduleOccuranceMessage();
   }
 
   onCustomYearDayChange() {
-    if(this.scheduleForm.value.CustomYearDay==0) {
+    if(this.scheduleForm.value.CustomYearDay<=0) {
       this.scheduleForm.controls['CustomYearDay'].setValue(1);
     }else if(this.scheduleForm.value.CustomYearDay>31) {
       this.scheduleForm.controls['CustomYearDay'].setValue(31);
@@ -240,7 +250,7 @@ export class AddComponent implements OnInit {
   }
 
   onScheduleEndAfterNoOccurencesChange() {
-    if(this.scheduleForm.value.scheduleEndAfterNoOccurences==0) {
+    if(this.scheduleForm.value.scheduleEndAfterNoOccurences<=0) {
       this.scheduleForm.controls['scheduleEndAfterNoOccurences'].setValue(1);
     }
     this.setScheduleOccuranceMessage();
@@ -262,12 +272,10 @@ export class AddComponent implements OnInit {
   }
 
   setScheduleOccuranceMessage() {
-
-    var dt = new Date(this.schedule.StartDate);
-    var dayOfMonth = this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
+    var dt = new Date(this.scheduleStartDate);
+    var dayOfMonth = this.schedule.DayOfMonth == undefined || this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
     var ssd = new Date(dt.getFullYear(), dt.getMonth(), dayOfMonth);
     
-    //var ssd = new Date(this.scheduleForm.value.filtershiftfromdate);
     var schedulestartdte = ssd.toLocaleDateString();
     var dte = this.scheduleOccuranceDay != 0 ? this.scheduleOccuranceDay : ssd.getDate();
     var month = this.scheduleOccuranceMonth != '' ? this.scheduleOccuranceMonth : this.monthArray[ssd.getMonth()];
@@ -297,21 +305,31 @@ export class AddComponent implements OnInit {
       else if(repeatEveryByVal == 'Week') {
         var weekdaystr = '';
         if(this.selectedWeekdays.length > 0) {
-          this.selectedWeekdays.sort(function(a, b){
-            return a.Id - b.Id;
-          });
-          for(let i=0; i<this.selectedWeekdays.length; i++) {
-            let day = this.selectedWeekdays[i].Day;
-            weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
-            setTimeout(() => {
-              $('#weekday-'+day.toLowerCase()).prop('checked', true);
-            }, 10);
+          if(this.selectedWeekdays.length == 7 && repeatEvery == 1) {
+            occurance = 'day';
+            for(let i=0; i<this.selectedWeekdays.length; i++) {
+              let day = this.selectedWeekdays[i].Day;
+              setTimeout(() => {
+                $('#weekday-'+day.toLowerCase()).prop('checked', true);
+              }, 10);
+            }
+          }else {
+            this.selectedWeekdays.sort(function(a, b){
+              return a.Id - b.Id;
+            });
+            for(let i=0; i<this.selectedWeekdays.length; i++) {
+              let day = this.selectedWeekdays[i].Day;
+              weekdaystr = weekdaystr + (weekdaystr != '' ? (i == (this.selectedWeekdays.length - 1) ? ' and ' : ', ') : '') + day;                
+              setTimeout(() => {
+                $('#weekday-'+day.toLowerCase()).prop('checked', true);
+              }, 10);
+            }
+            if(repeatEvery == 1) {
+              occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
+            }else{
+              occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
+            }
           }
-        }
-        if(repeatEvery == 1) {
-          occurance = '' + (weekdaystr != '' ? 'on '+ weekdaystr : ' week');
-        }else{
-          occurance = repeatEvery+' weeks ' + (weekdaystr != '' ? 'on '+ weekdaystr : '');
         }
       }
       else if(repeatEveryByVal == 'Month') {
@@ -324,9 +342,9 @@ export class AddComponent implements OnInit {
       }
       else if(repeatEveryByVal == 'Year') {
         if(repeatEvery == 1) {
-          occurance = 'month on day '+dte+ ' of '+month;
+          occurance = 'year on day '+dte+ ' of '+month;
         }else{
-          occurance = repeatEvery+' months on day '+dte+ ' of '+month;
+          occurance = repeatEvery+' years on day '+dte+ ' of '+month;
         }
         this.scheduleForm.get('CustomYearDay').setValue(dte);
         this.scheduleForm.get('CustomYearMonth').setValue(month);
@@ -527,6 +545,7 @@ export class AddComponent implements OnInit {
     this.scheduleForm.controls['TimeOfDayHours'].setValue(this.schedule.HourOfDay);
     this.scheduleForm.controls['TimeOfDayMinutes'].setValue(this.schedule.MinuteOfDay);
     this.scheduleForm.controls['filtershiftfromdate'].setValue(new Date(this.schedule.StartDate));
+    this.scheduleStartDate = new Date(this.schedule.StartDate);
     var startDate = new Date(this.schedule.StartDate);
     var endDate = new Date(this.schedule.EndDate);
     var currentDate = new Date();

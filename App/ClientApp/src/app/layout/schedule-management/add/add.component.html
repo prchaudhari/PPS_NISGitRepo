@@ -80,7 +80,7 @@
         </div>
         <div class="row">
           <div class="col-md-4 col-lg-4 form-group">
-            <label>Recurrance Pattern<span class="text-danger">*</span></label>
+            <label>Recurrence Pattern<span class="text-danger">*</span></label>
             <select formControlName="RecurrancePattern" class="form-control" (change)='OnRecurrancePatternChange()' [attr.disabled]="IsAnyBatchExecuted?'':null">
               <option value="DoesNotRepeat">Does not Repeat</option>
               <!-- <option value="Weekday">Every Weekday(Mon-Fri)</option>
@@ -161,7 +161,12 @@
         </div>
 
         <div class="row">
-          <label class="pl-3">{{ScheduleOccuranceMessage}}</label>
+          <div class="col-md-4 col-lg-4 form-group">
+            <label>{{ScheduleOccuranceMessage}}</label>
+          </div>
+          <div class="col-md-8 col-lg-8 form-group" *ngIf='isMonthly'>
+            <label class="text-warning">{{monthlyWarningMessage}}</label>
+          </div>
         </div>
 
         <div class="row mt-2" *ngIf="isNoEndDate==false"> 
