@@ -72,7 +72,7 @@ export class ViewComponent implements OnInit {
   }
 
   displayedColumns: string[] = ['contactType', 'firstName', 'lastName', 'email', 'no',];
-  dataSource;
+  dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -107,6 +107,9 @@ export class ViewComponent implements OnInit {
     var response = await tenantService.getTenant(searchParameter);
     this.tenant = response.List[0];
     this.dataSource = new MatTableDataSource<TenantContact>(this.tenant.TenantContacts);
+    this.dataSource.sort = this.sort;
+    this.array = this.tenant.TenantContacts;
+    this.totalSize = this.tenant.TenantContacts.length;
   }
 
   ngOnInit() {
