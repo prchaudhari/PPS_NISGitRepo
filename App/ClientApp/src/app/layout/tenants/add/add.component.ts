@@ -303,14 +303,15 @@ export class AddComponent implements OnInit {
     }
     this.BindContacts();
     this.tenant = tenantList[0];
-    this.tenantFormGroup.controls['tenantName'].setValue(tenantList[0].TenantName);
-    this.tenantFormGroup.controls['tenantDescription'].setValue(tenantList[0].TenantDescription);
-    this.tenantFormGroup.controls['tenantDomainName'].setValue(tenantList[0].TenantDomainName);
-    this.tenantFormGroup.controls['tenantAddress'].setValue(tenantList[0].PrimaryAddressLine1);
-    this.tenantFormGroup.controls['tenantCountry'].setValue(tenantList[0].Country.Identifier);
-    this.tenantFormGroup.controls['tenantState'].setValue(tenantList[0].TenantState);
-    this.tenantFormGroup.controls['tenantCity'].setValue(tenantList[0].TenantState);
-    this.tenantFormGroup.controls['tenantPostalCode'].setValue(tenantList[0].PrimaryPinCode);
+    this.tenantCountryCode = this.tenant.Country != null && this.tenant.Country.Identifier != null ? this.tenant.Country.Identifier : 0;
+    this.tenantFormGroup.controls['tenantName'].setValue(this.tenant.TenantName);
+    this.tenantFormGroup.controls['tenantDescription'].setValue(this.tenant.TenantDescription);
+    this.tenantFormGroup.controls['tenantDomainName'].setValue(this.tenant.TenantDomainName);
+    this.tenantFormGroup.controls['tenantAddress'].setValue(this.tenant.PrimaryAddressLine1);
+    this.tenantFormGroup.controls['tenantCountry'].setValue(this.tenantCountryCode);
+    this.tenantFormGroup.controls['tenantState'].setValue(this.tenant.TenantState);
+    this.tenantFormGroup.controls['tenantCity'].setValue(this.tenant.TenantState);
+    this.tenantFormGroup.controls['tenantPostalCode'].setValue(this.tenant.PrimaryPinCode);
     this.FirstChar = this.tenant.TenantName.charAt(0);
     this.image = this.tenant.TenantLogo;
   }
