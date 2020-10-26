@@ -268,6 +268,8 @@ export class SidebarComponent implements OnInit {
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if(userClaimsDetail != null) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+      let userTheme = userClaimsDetail.UserTheme == null ? 'Theme0': userClaimsDetail.UserTheme;
+      this.handleTheme(userTheme);
       this.isInstanceTenantManager = userClaimsDetail.IsInstanceTenantManager.toLocaleLowerCase() == 'true' ? true : false;
       this.isTenantGroupManager = userClaimsDetail.IsTenantGroupManager.toLocaleLowerCase() == 'true' ? true : false;
       this.isUserHaveMultiTenantAccess = userClaimsDetail.IsUserHaveMultiTenantAccess.toLocaleLowerCase() == 'true' ? true : false;
@@ -398,6 +400,58 @@ export class SidebarComponent implements OnInit {
 
   switchTenant() {
     this.route.navigate(['selectTenant']);
+  }
+
+  handleTheme(theme) {
+    const dom: any = document.querySelector('body');
+    if (theme.toLocaleLowerCase() == 'theme1') {
+      dom.classList.add('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme2') {
+      dom.classList.remove('theme1');
+      dom.classList.add('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme3') {
+      dom.classList.remove('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.add('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme4') {
+      dom.classList.remove('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.add('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme5') {
+      dom.classList.remove('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.add('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme0') {
+      dom.classList.remove('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.add('theme0');
+    }
   }
 
 }

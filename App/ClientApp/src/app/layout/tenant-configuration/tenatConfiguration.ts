@@ -13,7 +13,8 @@ export class TenantConfiguration {
   ArchivalPeriodUnit: string;
   ArchivalPeriod: number;
   DateFormat: string;
-
+  ApplicationTheme: string;
+  WidgetThemeSetting: string;
 }
 
 export class TenantConfigurationSearchParameter {

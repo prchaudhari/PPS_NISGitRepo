@@ -51,23 +51,47 @@ namespace nIS
         #region Tenant Configuration
 
         /// <summary>
-        /// This method helps to get asset libraries list based on the search parameters.
+        /// This method helps to get tenant configuration list based on the search parameters.
         /// </summary>
-        /// <param name="tenantConfigurationSearchParameter"></param>
-        /// <returns>List of asset libraries</returns>
+        /// <returns>List of tenant configuration</returns>
         [HttpPost]
         public IList<TenantConfiguration> List()
         {
             IList<TenantConfiguration> tenantConfigurations = new List<TenantConfiguration>();
             try
             {
-
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 tenantConfigurations = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode);
             }
             catch (Exception exception)
             {
                 throw exception;
+            }
+
+            return tenantConfigurations;
+        }
+
+        /// <summary>
+        /// This method helps to get tenant configuration list based on the search parameters.
+        /// </summary>
+        /// <param name="clientSearchParameter"></param>
+        /// <returns>List of tenant configuration</returns>
+        [HttpPost]
+        public IList<TenantConfiguration> GetConfigurations(ClientSearchParameter clientSearchParameter)
+        {
+            IList<TenantConfiguration> tenantConfigurations = new List<TenantConfiguration>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                if (clientSearchParameter != null && clientSearchParameter.TenantCode != null && clientSearchParameter.TenantCode != string.Empty)
+                {
+                    tenantCode = clientSearchParameter.TenantCode;
+                }
+                tenantConfigurations = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             return tenantConfigurations;

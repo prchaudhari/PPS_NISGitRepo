@@ -7,6 +7,7 @@ import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.serv
 import { MultiTenantUserAccessMapService } from '../layout/multi-tenant-user-access-map/multi-tenant-user-access-map.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ConfigConstants } from '../shared/constants/configConstants';
+import { TenantConfigurationService } from '../layout/tenant-configuration/tenantConfiguration.service';
 
 @Component({
   selector: 'app-select-tenant',
@@ -21,6 +22,7 @@ export class SelectTenantComponent implements OnInit {
   public roleDetail;
   public userData;
   public DefaultTenantCode = ConfigConstants.TenantCode;
+  public baseURL: string = ConfigConstants.BaseURL;
   public statePrivilegeMap;
 
   constructor(private injector: Injector,
@@ -69,6 +71,14 @@ export class SelectTenantComponent implements OnInit {
         this.onCancelTenantSelection();
       }
       else {
+        let UserTheme = 'Theme0';
+        var searchParameter: any = {};
+        searchParameter.TenantCode = tenantcode;
+        let service = this.injector.get(TenantConfigurationService);
+        var response: any = await service.getTenantThemeConfigurations(searchParameter);
+        if(response != null && response.length > 0 && response[0].ApplicationTheme != null) {
+          UserTheme = response[0].ApplicationTheme;
+        }
         var loggedInUser = this.localstorageservice.GetCurrentUser();
         loggedInUser.RoleIdentifier = this.roleDetail.Identifier;
         loggedInUser.RoleName = this.roleDetail.Name;
@@ -78,27 +88,29 @@ export class SelectTenantComponent implements OnInit {
         this.userData.RoleIdentifier = this.roleDetail.Identifier;
         this.userData.TenantCode = tenant.TenantCode;
         this.userData.RoleName = this.roleDetail.Name;
+        this.userData.UserTheme = UserTheme;
         localStorage.setItem('userClaims', JSON.stringify(this.userData));
 
         if(tenant.TenantType == 'Group') {
           this.route.navigate(['tenants']);
         }else {
           var userClaimsRolePrivilegeOperations = this.userData.Privileges;
-        var isFound = false;
-        var state = 0;
-        this.statePrivilegeMap.forEach(map => {
-          var isPresent = userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
-          if (isPresent != undefined && isPresent.length > 0) {
-            if (isFound == false) {
-              isFound = true;
-              state = map.State;
+          this.handleTheme(this.userData.UserTheme);
+          var isFound = false;
+          var state = 0;
+          this.statePrivilegeMap.forEach(map => {
+            var isPresent = userClaimsRolePrivilegeOperations.filter(p => p.EntityName == map.Entity);
+            if (isPresent != undefined && isPresent.length > 0) {
+              if (isFound == false) {
+                isFound = true;
+                state = map.State;
+              }
             }
+          });
+          this.uiLoader.stop();
+          if (isFound) {
+            this.route.navigate([state]);
           }
-        });
-        this.uiLoader.stop();
-        if (isFound) {
-          this.route.navigate([state]);
-        }  
         }
       }
     }       
@@ -142,6 +154,58 @@ export class SelectTenantComponent implements OnInit {
   onCancelTenantSelection() {
     this.localstorageservice.removeLocalStorageData();
     this.route.navigate(['login']);
+  }
+
+  handleTheme(theme) {
+    const dom: any = document.querySelector('body');
+    if (theme.toLocaleLowerCase() == 'theme1') {
+      dom.classList.add('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme2') {
+      dom.classList.remove('theme1');
+      dom.classList.add('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme3') {
+      dom.classList.remove('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.add('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme4') {
+      dom.classList.remove('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.add('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme5') {
+      dom.classList.remove('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.add('theme5');
+      dom.classList.remove('theme0');
+    }
+    else if (theme.toLocaleLowerCase() == 'theme0') {
+      dom.classList.remove('theme1');
+      dom.classList.remove('theme2');
+      dom.classList.remove('theme3');
+      dom.classList.remove('theme4');
+      dom.classList.remove('theme5');
+      dom.classList.add('theme0');
+    }
   }
 
 }

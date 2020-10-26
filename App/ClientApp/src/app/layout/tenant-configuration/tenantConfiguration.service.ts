@@ -163,4 +163,36 @@ export class TenantConfigurationService {
     return <boolean>this.resultFlag;
   }
 
+  //method to call api of get tenant theme configuration.
+  async getTenantThemeConfigurations(searchParameter): Promise<any> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = "TenantConfiguration/GetConfigurations";
+    this.uiLoader.start();
+    let list: any = [];
+    await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          if (httpEvent["status"] === 200) {
+            list = [];
+            this.uiLoader.stop();
+            httpEvent['body'].forEach(obj => {
+              list = [...list, obj];
+            });
+          }
+          else {
+            list = [];
+            this.uiLoader.stop();
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        list = [];
+        this.uiLoader.stop();
+        if (error["error"] != null) {
+          let errorMessage = error["error"].Error["Message"];
+          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+        }
+      });
+    return <TenantConfiguration[]>list
+  }
+
 }

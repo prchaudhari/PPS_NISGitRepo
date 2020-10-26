@@ -270,10 +270,8 @@ export class LoginComponent implements OnInit {
         userData.IsTenantGroupManager = data.IsTenantGroupManager;
         userData.IsUserHaveMultiTenantAccess = data.IsUserHaveMultiTenantAccess;
         userData.RoleName = data.RoleName;
-        //userData.UserCode = data.UserCode;
         userData.RoleIdentifier = data.RoleIdentifier;
-        //userData.PreferedLanguageCode = data.PreferedLanguageCode;
-        //userData.UserTheme = data.UserTheme;
+        userData.UserTheme = data.UserTheme;
         userData.Privileges = [];
         localStorage.setItem('token', access_token);
         this.localstorageservice.SetCurrentUser(data);
@@ -283,7 +281,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("UserEmail", userData.UserPrimaryEmailAddress);
         localStorage.setItem("currentUserName", userName);
         localStorage.setItem("currentUserTheme", userData.UserTheme);
-        //localStorage.setItem("currentUserTheme", userData.UserTheme);
+        localStorage.setItem("currentUserTheme", userData.UserTheme);
         localStorage.setItem("DateFormat", data.DateFormat);
         localStorage.setItem("StatePrivilegeMap", JSON.stringify(this.statePrivilegeMap));
 
@@ -292,6 +290,10 @@ export class LoginComponent implements OnInit {
           this.route.navigate(['changepassword']);
         }
         else {
+          
+          //conditional code for theme
+          this.handleTheme(userData.UserTheme);
+
           if(userData.IsInstanceTenantManager != null && userData.IsInstanceTenantManager.toLocaleLowerCase() == 'true') {
             localStorage.setItem('userClaims', JSON.stringify(userData));
             this.route.navigate(['tenantgroups']);
@@ -317,8 +319,6 @@ export class LoginComponent implements OnInit {
               }
               else {
                 localStorage.setItem('userClaims', JSON.stringify(userData));
-                //conditional code for theme
-                //this.handleTheme(userData.UserTheme);
                 //this.navigateToLandingPage();
                 this.loginErrorMsg = '';
                 var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
@@ -393,7 +393,7 @@ export class LoginComponent implements OnInit {
 
   handleTheme(theme) {
     const dom: any = document.querySelector('body');
-    if (theme == 'Theme1' || theme == 1) {
+    if (theme.toLocaleLowerCase() == 'theme1') {
       dom.classList.add('theme1');
       dom.classList.remove('theme2');
       dom.classList.remove('theme3');
@@ -401,7 +401,7 @@ export class LoginComponent implements OnInit {
       dom.classList.remove('theme5');
       dom.classList.remove('theme0');
     }
-    else if (theme == 'Theme2' || theme == 2) {
+    else if (theme.toLocaleLowerCase() == 'theme2') {
       dom.classList.remove('theme1');
       dom.classList.add('theme2');
       dom.classList.remove('theme3');
@@ -409,15 +409,7 @@ export class LoginComponent implements OnInit {
       dom.classList.remove('theme5');
       dom.classList.remove('theme0');
     }
-    else if (theme == 'Theme2' || theme == 2) {
-      dom.classList.remove('theme1');
-      dom.classList.add('theme2');
-      dom.classList.remove('theme3');
-      dom.classList.remove('theme4');
-      dom.classList.remove('theme5');
-      dom.classList.remove('theme0');
-    }
-    else if (theme == 'Theme3' || theme == 3) {
+    else if (theme.toLocaleLowerCase() == 'theme3') {
       dom.classList.remove('theme1');
       dom.classList.remove('theme2');
       dom.classList.add('theme3');
@@ -425,7 +417,7 @@ export class LoginComponent implements OnInit {
       dom.classList.remove('theme5');
       dom.classList.remove('theme0');
     }
-    else if (theme == 'Theme4' || theme == 4) {
+    else if (theme.toLocaleLowerCase() == 'theme4') {
       dom.classList.remove('theme1');
       dom.classList.remove('theme2');
       dom.classList.remove('theme3');
@@ -433,7 +425,7 @@ export class LoginComponent implements OnInit {
       dom.classList.remove('theme5');
       dom.classList.remove('theme0');
     }
-    else if (theme == 'Theme5' || theme == 5) {
+    else if (theme.toLocaleLowerCase() == 'theme5') {
       dom.classList.remove('theme1');
       dom.classList.remove('theme2');
       dom.classList.remove('theme3');
@@ -441,7 +433,7 @@ export class LoginComponent implements OnInit {
       dom.classList.add('theme5');
       dom.classList.remove('theme0');
     }
-    else if (theme == 'Theme6' || theme == 6) {
+    else if (theme.toLocaleLowerCase() == 'Theme0') {
       dom.classList.remove('theme1');
       dom.classList.remove('theme2');
       dom.classList.remove('theme3');

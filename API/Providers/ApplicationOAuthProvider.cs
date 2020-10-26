@@ -148,6 +148,16 @@ namespace nIS
                 if (lstTenantUserRoleAccess.Count > 0)
                 {
                     isUserHaveMultiTenantAccess = true;
+                }             
+            }
+
+            var UserTheme = "Theme0";
+            if (!user.IsInstanceManager && !user.IsInstanceManager)
+            {
+                var tenantConfigs = new TenantConfigurationManager(Container.GetUnityContainer()).GetTenantConfigurations(user.TenantCode);
+                if (tenantConfigs != null && tenantConfigs.Count > 0)
+                {
+                    UserTheme = tenantConfigs[0].ApplicationTheme;
                 }
             }
 
@@ -166,7 +176,7 @@ namespace nIS
             });
 
             //Add is asset connected value in claim
-            string[] propertyData = new string[12]
+            string[] propertyData = new string[13]
             {
                 user.Identifier.ToString(),
                 user.FirstName + " " + user.LastName,
@@ -179,7 +189,8 @@ namespace nIS
                 isInstanceTenantManager.ToString(),
                 isTenantGroupManager.ToString(),
                 isUserHaveMultiTenantAccess.ToString(),
-                user.IsPasswordResetByAdmin.ToString()
+                user.IsPasswordResetByAdmin.ToString(),
+                UserTheme
             };
 
             AuthenticationTicket ticket = new AuthenticationTicket(claimIdentity, CreateProperties(propertyData));
@@ -277,6 +288,7 @@ namespace nIS
                 { "IsTenantGroupManager",stringData[9] },
                 { "IsUserHaveMultiTenantAccess",stringData[10] },
                 { "IsPasswordResetByAdmin",stringData[11] },
+                { "UserTheme",stringData[12] },
             };
             return new AuthenticationProperties(data);
         }

@@ -156,28 +156,32 @@ export class TenantConfigurationComponent implements OnInit {
         this.setting = <TenantConfiguration>data[0];
         this.spinner.stop();
         
-        this.tenantConfigurationForm.patchValue({
-          TenantConfigurationName: this.setting.Name,
-          TenantConfigurationDescription: this.setting.Description,
-          TenantConfigurationOutputPDFPath: this.setting.OutputPDFPath,
-          TenantConfigurationOutputHTMLPath: this.setting.OutputHTMLPath,
-          TenantConfigurationInputDataSourcePath: this.setting.InputDataSourcePath,
-          TenantConfigurationAssetPath: this.setting.AssetPath,
-          TenantConfigurationArchivalPath: this.setting.ArchivalPath,
-          TenantConfigurationArchivalPeriod: this.setting.ArchivalPeriod,
-          TenantConfigurationDateFormat: this.setting.DateFormat
-        });
-        if (this.setting.IsAssetPathEditable) {
-          this.AssetPathToolTip = "";
-        }
-        else {
-          this.AssetPathToolTip = "If Assets are present in the system then you cannot change asset path";
-        }
-        if (this.setting.IsOutputHTMLPathEditable) {
-          this.OutputPathToolTip = "";
-        }
-        else {
-          this.OutputPathToolTip = "If schedule is executed then you cannot change output HTML or PDF path";
+        if(this.setting != undefined) {
+          this.tenantConfigurationForm.patchValue({
+            TenantConfigurationName: this.setting.Name,
+            TenantConfigurationDescription: this.setting.Description,
+            TenantConfigurationOutputPDFPath: this.setting.OutputPDFPath,
+            TenantConfigurationOutputHTMLPath: this.setting.OutputHTMLPath,
+            TenantConfigurationInputDataSourcePath: this.setting.InputDataSourcePath,
+            TenantConfigurationAssetPath: this.setting.AssetPath,
+            TenantConfigurationArchivalPath: this.setting.ArchivalPath,
+            TenantConfigurationArchivalPeriod: this.setting.ArchivalPeriod,
+            TenantConfigurationDateFormat: this.setting.DateFormat
+          });
+          if (this.setting.IsAssetPathEditable) {
+            this.AssetPathToolTip = "";
+          }
+          else {
+            this.AssetPathToolTip = "If Assets are present in the system then you cannot change asset path";
+          }
+          if (this.setting.IsOutputHTMLPathEditable) {
+            this.OutputPathToolTip = "";
+          }
+          else {
+            this.OutputPathToolTip = "If schedule is executed then you cannot change output HTML or PDF path";
+          }
+        }else {
+          this.setting = new TenantConfiguration
         }
       },
       error => {
@@ -283,7 +287,7 @@ export class TenantConfigurationComponent implements OnInit {
         if (httpEvent.type == HttpEventType.Response) {
           this.spinner.stop();
           if (httpEvent["status"] === 200) {
-            this._messageDialogService.openDialogBox('Message', "Asset configuration saved successfully", Constants.msgBoxSuccess);
+            this._messageDialogService.openDialogBox('Message', "Tenant configuration saved successfully", Constants.msgBoxSuccess);
             localStorage.removeItem("DateFormat");
             localStorage.setItem("DateFormat", tenantConfigurationObj.DateFormat);
           }

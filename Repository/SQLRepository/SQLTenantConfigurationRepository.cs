@@ -159,18 +159,18 @@ namespace nIS
                     {
                         record = new TenantConfigurationRecord();
                     }
-                    record.Description = setting.Description;
-                    record.InputDataSourcePath = setting.InputDataSourcePath;
-                    record.OutputHTMLPath = setting.OutputHTMLPath;
-                    record.OutputPDFPath = setting.OutputPDFPath;
+                    record.Description = setting.Description ?? string.Empty;
+                    record.InputDataSourcePath = setting.InputDataSourcePath ?? string.Empty;
+                    record.OutputHTMLPath = setting.OutputHTMLPath ?? string.Empty;
+                    record.OutputPDFPath = setting.OutputPDFPath ?? string.Empty;
                     record.Name = setting.Name;
-                    record.AssetPath = setting.AssetPath;
-                    record.ArchivalPath = setting.ArchivalPath;
-                    record.ArchivalPeriod = (int)setting.ArchivalPeriod;
+                    record.AssetPath = setting.AssetPath ?? string.Empty;
+                    record.ArchivalPath = setting.ArchivalPath ?? string.Empty;
+                    record.ArchivalPeriod = setting.ArchivalPeriod == null ? 0 : setting.ArchivalPeriod;
                     //record.ArchivalPeriodUnit = setting.ArchivalPeriodUnit.ToString();
                     record.DateFormat = setting.DateFormat;
-                    record.ApplicationTheme = setting.ApplicationTheme ?? "";
-                    record.WidgetThemeSetting = setting.WidgetThemeSetting ?? "";
+                    record.ApplicationTheme = setting.ApplicationTheme ?? string.Empty;
+                    record.WidgetThemeSetting = setting.WidgetThemeSetting ?? string.Empty;
                     if (record.TenantCode == null || record.TenantCode == string.Empty)
                     {
                         record.TenantCode = tenantCode;
