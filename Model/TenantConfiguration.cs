@@ -40,7 +40,6 @@ namespace nIS
         [Description("ArchivalPath")]
         public string ArchivalPath { get; set; }
 
-
         [Description("IsAssetPathEditable")]
         public bool IsAssetPathEditable { get; set; }
 
@@ -55,6 +54,12 @@ namespace nIS
 
         [Description("DateFormat")]
         public string DateFormat { get; set; }
+
+        [Description("ApplicationTheme")]
+        public string ApplicationTheme { get; set; }
+
+        [Description("WidgetThemeSetting")]
+        public string WidgetThemeSetting { get; set; }
 
         /// <summary>
         /// The utility object

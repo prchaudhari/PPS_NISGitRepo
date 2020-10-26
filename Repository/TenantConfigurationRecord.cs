@@ -26,5 +26,7 @@ namespace nIS
         public Nullable<int> ArchivalPeriod { get; set; }
         public string ArchivalPeriodUnit { get; set; }
         public string DateFormat { get; set; }
+        public string ApplicationTheme { get; set; }
+        public string WidgetThemeSetting { get; set; }
     }
 }

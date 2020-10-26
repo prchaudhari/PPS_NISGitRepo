@@ -67,35 +67,29 @@ namespace nIS
         /// <returns></returns>
         public IList<TenantConfiguration> GetTenantConfigurations(string tenantCode)
         {
-            IList<TenantConfiguration> tenantConfigurations = new List<TenantConfiguration>();
             try
             {
-
-                tenantConfigurations = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode);
+                return this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode);
             }
             catch (Exception exception)
             {
                 throw exception;
             }
-            return tenantConfigurations;
         }
         /// <summary>
-        /// This method will call add asset library method of repository.
+        /// This method will call add save tenant configuration method of repository.
         /// </summary>
-        /// <param name="tenantConfigurations">Asset library are to be add.</param>
+        /// <param name="setting">tenant configuration are to be add.</param>
         /// <param name="tenantCode">Tenant code of asset library.</param>
         /// <returns>
         /// Returns true if entities added successfully, false otherwise.
         /// </returns>
         public bool Save(TenantConfiguration setting, string tenantCode)
         {
-            bool result = false;
             try
             {
                 this.IsValidTenantConfiguration(setting, tenantCode);
-
-                result = tenantConfigurationRepository.Save(setting, tenantCode);
-                return result;
+                return tenantConfigurationRepository.Save(setting, tenantCode);
             }
             catch (Exception ex)
             {

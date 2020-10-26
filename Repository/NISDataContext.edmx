@@ -559,6 +559,8 @@
           <Property Name="ArchivalPeriod" Type="int" />
           <Property Name="ArchivalPeriodUnit" Type="nvarchar" MaxLength="50" />
           <Property Name="DateFormat" Type="nvarchar" MaxLength="50" />
+          <Property Name="ApplicationTheme" Type="nvarchar" MaxLength="50" />
+          <Property Name="WidgetThemeSetting" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="TenantContact">
           <Key>
@@ -1968,6 +1970,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ArchivalPeriod" Type="Int32" />
           <Property Name="ArchivalPeriodUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DateFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationTheme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetThemeSetting" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="StatementAnalyticRecord">
           <Key>
@@ -3073,6 +3077,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="TenantConfigurationRecords">
             <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
               <MappingFragment StoreEntitySet="TenantConfiguration">
+                <ScalarProperty Name="WidgetThemeSetting" ColumnName="WidgetThemeSetting" />
+                <ScalarProperty Name="ApplicationTheme" ColumnName="ApplicationTheme" />
                 <ScalarProperty Name="DateFormat" ColumnName="DateFormat" />
                 <ScalarProperty Name="ArchivalPeriodUnit" ColumnName="ArchivalPeriodUnit" />
                 <ScalarProperty Name="ArchivalPeriod" ColumnName="ArchivalPeriod" />

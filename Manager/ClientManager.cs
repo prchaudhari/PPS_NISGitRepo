@@ -53,9 +53,14 @@ namespace nIS
         private TenantContactManager tenantContactManager = null;
 
         /// <summary>
-        /// The user manager object
+        /// The country manager object
         /// </summary>
         private CountryManager countryManager = null;
+
+        /// <summary>
+        /// The tenant configuration manager object
+        /// </summary>
+        private TenantConfigurationManager TenantConfigurationManager = null;
 
         /// <summary>
         /// The utility object
@@ -119,6 +124,7 @@ namespace nIS
             this.configurationUtility = new ConfigurationUtility(this.unityContainer);
             this.tenantContactManager = new TenantContactManager(this.unityContainer);
             this.ContactTypeManager = new ContactTypeManager(this.unityContainer);
+            this.TenantConfigurationManager = new TenantConfigurationManager(this.unityContainer);
         }
 
         #endregion
@@ -278,6 +284,24 @@ namespace nIS
                                 throw new InvalidUserException(tenantCode);
                             }
                             this.tenantContactManager.AddTenantContacts(client.TenantContacts, client.TenantCode);
+
+                            //To save tenant configuration
+                            TenantConfiguration tenantConfiguration = new TenantConfiguration
+                            {
+                                Name = "Tenant Configuration",
+                                Description = string.Empty,
+                                InputDataSourcePath = string.Empty,
+                                OutputHTMLPath = string.Empty,
+                                OutputPDFPath = string.Empty,
+                                AssetPath = string.Empty,
+                                ArchivalPath = string.Empty,
+                                ApplicationTheme = string.Empty,
+                                WidgetThemeSetting = string.Empty,
+                                DateFormat = string.Empty,
+                                ArchivalPeriod = 0,
+                                ArchivalPeriodUnit = 0,
+                            };
+                            this.TenantConfigurationManager.Save(tenantConfiguration, client.TenantCode);
 
                             #endregion
                         }

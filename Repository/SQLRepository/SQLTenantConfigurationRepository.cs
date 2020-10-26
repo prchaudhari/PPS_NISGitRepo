@@ -70,11 +70,11 @@ namespace nIS
 
         #region Public Functions
 
-        #region Asset Setting function
+        #region Tenant Configuration function
+
         /// <summary>
         /// This is responsible for get tenant configuration
         /// </summary>
-        /// <param name="assetSettingSearchParameter"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         public IList<TenantConfiguration> GetTenantConfigurations(string tenantCode)
@@ -83,7 +83,6 @@ namespace nIS
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     IList<TenantConfigurationRecord> tenantConfigurationRecord = new List<TenantConfigurationRecord>();
@@ -100,30 +99,33 @@ namespace nIS
                         ArchivalPath = item.ArchivalPath,
                         ArchivalPeriod = item.ArchivalPeriod!=null?(int)item.ArchivalPeriod:0,
                         ///ArchivalPeriodUnit = (ArchivalPeriod)(Enum.Parse(typeof(ArchivalPeriod), item.ArchivalPeriodUnit)),
-                        DateFormat = item.DateFormat
-
+                        DateFormat = item.DateFormat,
+                        ApplicationTheme = item.ApplicationTheme,
+                        WidgetThemeSetting = item.WidgetThemeSetting
                     }).ToList();
+
                     if (tenantConfigurations?.Count > 0)
                     {
-                        AssetRecord assetRecord = nISEntitiesDataContext.AssetRecords.Where(item => item.IsDeleted == false)?.ToList()?.FirstOrDefault();
-                        if (assetRecord != null)
+                        //To check any asset record is present or all asset records deleted, if count grater than 0 then asset path should be non-editable otherwise editable
+                        var assetRecords = nISEntitiesDataContext.AssetRecords.Where(item => item.IsDeleted == false)?.ToList();
+                        if (assetRecords != null && assetRecords.Count > 0)
                         {
                             tenantConfigurations[0].IsAssetPathEditable = false;
                         }
                         else
                         {
                             tenantConfigurations[0].IsAssetPathEditable = true;
-
                         }
-                        ScheduleLogDetailRecord scheduleLogDetialsRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.TenantCode == tenantCode && item.Status == "Completed")?.ToList()?.FirstOrDefault();
-                        if (scheduleLogDetialsRecord != null)
+
+                        //To check any one schedule record run status is completed, if yes then output html path should be non-editable otherwise editable
+                        var scheduleLogDetialsRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.TenantCode == tenantCode && item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
+                        if (scheduleLogDetialsRecords != null && scheduleLogDetialsRecords.Count > 0)
                         {
                             tenantConfigurations[0].IsOutputHTMLPathEditable = false;
                         }
                         else
                         {
                             tenantConfigurations[0].IsOutputHTMLPathEditable = true;
-
                         }
                     }
                 }
@@ -140,21 +142,23 @@ namespace nIS
         /// <summary>
         /// This is responsible for get tenant configuration
         /// </summary>
-        /// <param name="assetSettingSearchParameter"></param>
+        /// <param name="setting"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         public bool Save(TenantConfiguration setting, string tenantCode)
         {
             TenantConfigurationRecord record = new TenantConfigurationRecord();
-            bool result;
+            bool result = false;
             try
             {
-
                 this.SetAndValidateConnectionString(tenantCode);
-
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     record = nISEntitiesDataContext.TenantConfigurationRecords.Where(item => item.Id == setting.Identifier && item.TenantCode == tenantCode).FirstOrDefault();
+                    if (record == null)
+                    {
+                        record = new TenantConfigurationRecord();
+                    }
                     record.Description = setting.Description;
                     record.InputDataSourcePath = setting.InputDataSourcePath;
                     record.OutputHTMLPath = setting.OutputHTMLPath;
@@ -165,6 +169,13 @@ namespace nIS
                     record.ArchivalPeriod = (int)setting.ArchivalPeriod;
                     //record.ArchivalPeriodUnit = setting.ArchivalPeriodUnit.ToString();
                     record.DateFormat = setting.DateFormat;
+                    record.ApplicationTheme = setting.ApplicationTheme ?? "";
+                    record.WidgetThemeSetting = setting.WidgetThemeSetting ?? "";
+                    if (record.TenantCode == null || record.TenantCode == string.Empty)
+                    {
+                        record.TenantCode = tenantCode;
+                        nISEntitiesDataContext.TenantConfigurationRecords.Add(record);
+                    }
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
@@ -179,10 +190,10 @@ namespace nIS
         }
         #endregion
 
-
         #endregion
 
         #region Private Methhod
+
         #region Get Connection String
 
         /// <summary>
@@ -208,6 +219,7 @@ namespace nIS
         }
 
         #endregion 
+
         #endregion
 
     }
