@@ -21,13 +21,13 @@
                   <div class="card-body">
                     <div class="row">
                       <div class="col-md-5 col-lg-5 col-sm-5">
-                        <label>Field Name</label>
+                        <label>Field Name</label><span class="text-danger ml-2">*</span>
                         <select formControlName="FormEntityField" (change)="onEntityFieldSelected($event,'Form')" class="form-control">
                           <option *ngFor="let pt of entityFieldList" [value]="pt.Identifier">{{pt.Name}}</option>
                         </select>
                       </div>
                       <div class="col-md-5 col-lg-5 col-sm-5">
-                        <label>Display Name</label>
+                        <label>Display Name</label><span class="text-danger ml-2">*</span>
                         <input type="text" class="form-control" formControlName="FormFieldDisplayName" />
                       </div>
                       <div class="col-md-2 col-lg-2 col-sm-4">
@@ -35,7 +35,7 @@
                         <button class="btn-footer-fill" id="btnAdd" [disabled]="disableAddFieldDetails('Form')" (click)="addFieldDetails('Form')">Add </button>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="formList.length>0">
                       <div class="col-sm-12 p-1">
                         <div cdkDropList
                              class="example-list" style="height:auto;background:transparent;"
@@ -80,13 +80,13 @@
                     </div>
                     <div class="row">
                       <div class="col-md-6 col-lg-6 col-sm-6 form-group">
-                        <label>Series</label>
+                        <label>Series</label><span class="text-danger ml-2">*</span>
                         <select formControlName="PieSeries" (change)="onEntityFieldSelected($event,'Form')" class="form-control">
-                          <option *ngFor="let pt of entityFieldList" [value]="pt.Identifier">{{pt.Name}}</option>
+                          <option *ngFor="let pt of entityFieldList "  [value]="pt.Identifier">{{pt.Name}}</option>
                         </select>
                       </div>
                       <div class="col-md-6 col-lg-6 col-sm-6 form-group">
-                        <label>Value</label>
+                        <label>Value</label><span class="text-danger ml-2">*</span>
                         <select formControlName="PieValue" (change)="onEntityFieldSelected($event,'Form')" class="form-control">
                           <option *ngFor="let pt of entityFieldList" [value]="pt.Identifier">{{pt.Name}}</option>
                         </select>
@@ -108,7 +108,7 @@
                         <input type="text" class="form-control" formControlName="LineBarTitle" />
                       </div>-->
                       <div class="col-md-5 col-lg-5 col-sm-5 form-group">
-                        <label>X-Axis</label>
+                        <label>X-Axis</label><span class="text-danger ml-2">*</span>
                         <select class="form-control" formControlName="LineBarXAxis">
                           <option value="0"> Select</option>
                           <option value="Month"> Month</option>
@@ -119,13 +119,13 @@
                     </div>
                     <div class="row">
                       <div class="col-md-5 col-lg-5 col-sm-5">
-                        <label>Field Name</label>
+                        <label>Field Name</label><span class="text-danger ml-2">*</span>
                         <select formControlName="LineBarEntityField" (change)="onEntityFieldSelected($event,'Form')" class="form-control">
                           <option *ngFor="let pt of entityFieldList" [value]="pt.Identifier">{{pt.Name}}</option>
                         </select>
                       </div>
                       <div class="col-md-5 col-lg-5 col-sm-5">
-                        <label>Display Name</label>
+                        <label>Display Name</label><span class="text-danger ml-2">*</span>
                         <input type="text" class="form-control" formControlName="LineBarFieldDisplayName" />
                       </div>
                       <div class="col-md-2 col-lg-2 col-sm-2">
@@ -182,13 +182,13 @@
                     </div>
                     <div class="row">
                       <div class="col-md-4 col-lg-4 col-sm-4">
-                        <label>Field Name</label>
+                        <label>Field Name</label><span class="text-danger ml-2">*</span>
                         <select formControlName="TableEntityField" (change)="onEntityFieldSelected($event,'Form')" class="form-control">
                           <option *ngFor="let pt of entityFieldList" [value]="pt.Identifier">{{pt.Name}}</option>
                         </select>
                       </div>
                       <div class="col-md-4 col-lg-4 col-sm-4">
-                        <label>Header Name</label>
+                        <label>Header Name</label><span class="text-danger ml-2">*</span>
                         <input type="text" class="form-control" formControlName="TableHeaderName" />
                       </div>
                       <div class="col-md-2 col-lg-2 col-sm-2">
@@ -202,7 +202,7 @@
                         <button class="btn-footer-fill" id="btnAdd" [disabled]="disableAddFieldDetails('Table')" (click)="addFieldDetails('Table')">Add</button>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="tableHeader.length>0">
                       <div class="col-sm-12 p-1">
                         <div cdkDropList
                              class="example-list" style="height:auto;background:transparent;"
@@ -241,11 +241,26 @@
               <div class="col-sm-12 form-group">
                 <div class="card bg-light border-card">
                   <div class="card-body">
+
                     <div class="row">
-                      <!--<div class="col-md-5 col-lg-5 col-sm-5 form-group">
-                        <label>Title</label>
-                        <input type="text" class="form-control" />
-                      </div>-->
+                      <div class="col-md-5 col-lg-5 col-sm-5 form-group">
+                        <label>Asset Library</label>
+                        <select formControlName="HTMLAssetLibrary" (change)="onAssetLibrarySelected($event)" class="form-control">
+                          <option *ngFor="let al of assetLibraryList" [value]="al.Identifier">{{al.Name}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-5 col-lg-5 col-sm-5 form-group">
+                        <label>Asset</label>
+                        <select formControlName="HTMLAsset" class="form-control">
+                          <option *ngFor="let ast of assets" [value]="ast.Identifier">{{ast.Name}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 col-lg-2 col-sm-4">
+                        <label class="d-block">&nbsp;</label>
+                        <button class="btn-footer-fill" id="btnAdd" [disabled]="disableAssetAdd()" (click)="AddAsset()">Add</button>
+                      </div>
+                    </div>
+                    <div class="row">
                       <div class="col-md-5 col-lg-5 col-sm-5 form-group">
                         <label>Field Name</label>
                         <select formControlName="HTMLEntityField" (change)="onEntityFieldSelected($event,'Form')" class="form-control">
@@ -261,7 +276,7 @@
                       <div class="col-sm-12 form-group">
                         <ejs-richtexteditor id='defaultRTE' #htmleditor>
                           <ng-template #valueTemplate>
-                           
+
                           </ng-template>
                         </ejs-richtexteditor>
 
@@ -392,7 +407,7 @@
                       <!--<label>Select Color Theme</label>-->
                       <div class="custom-control custom-radio mr-2 mb-2">
                         <input class="custom-control-input" type="radio" [checked]="selectedTheme=='Theme1'" (click)="selectTheme('Theme1')"
-                               name="themeChartOption" id="Default" value="optionthemeChart" >
+                               name="themeChartOption" id="Default" value="optionthemeChart">
                         <label class="custom-control-label dir-rtl" for="themeChart1">
                           <div class="d-flex justify-content-start">
                             <div class="clr-box" style="background-color:#342ead"></div>
@@ -407,7 +422,7 @@
                                name="themeChartOption" id="Default" value="optionthemeChart">
                         <label class="custom-control-label dir-rtl" for="themeChart2">
                           <div class="d-flex justify-content-start">
-                            <div class="clr-box" style="background-color:#45046a"></div>
+                            <div class="clr-box" style="background-color: #45046a"></div>
                             <div class="clr-box" style="background-color: #5c2a9d"></div>
                             <div class="clr-box" style="background-color: #b5076b"></div>
                             <div class="clr-box" style="background-color: #f1ebbb"></div>
@@ -421,7 +436,7 @@
                                name="themeChartOption" id="Default" value="optionthemeChart">
                         <label class="custom-control-label dir-rtl" for="themeChart3">
                           <div class="d-flex justify-content-start">
-                            <div class="clr-box" style="background-color:#5fdde5"></div>
+                            <div class="clr-box" style="background-color: #5fdde5"></div>
                             <div class="clr-box" style="background-color: #f4ea8e"></div>
                             <div class="clr-box" style="background-color: #f37121"></div>
                             <div class="clr-box" style="background-color: #d92027"></div>
@@ -446,21 +461,21 @@
               </div>
               <div class="card bg-light border-card form-group">
                 <div class="card-header bg-white">
-                  <label class="mb-0">Title Font</label>
+                  <label class="mb-0">Title Font</label><span class="text-danger ml-2">*</span>
                 </div>
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-3 col-sm-6">
-                      <label> Color</label>
-                      <input type="color" formControlName="FontColor" class="form-control" />
+                      <label> Color</label><span class="text-danger ml-2">*</span>
+                      <input type="color" formControlName="TitleColor" class="form-control" />
                     </div>
                     <div class="col-md-3 col-sm-6">
-                      <label> Size</label>
-                      <input type="number" formControlName="FontSize" class="form-control" />
+                      <label> Size</label><span class="text-danger ml-2">*</span>
+                      <input type="number" formControlName="TitleSize" class="form-control" />
                     </div>
                     <div class="col-md-3 col-sm-6">
-                      <label> Weight</label>
-                      <select class="form-control" formControlName="FontWeight">
+                      <label> Weight</label><span class="text-danger ml-2">*</span>
+                      <select class="form-control" formControlName="TitleWeight">
                         <option value="0">Select</option>
                         <option value="Normal">Normal</option>
                         <option value="Italic">Italic</option>
@@ -468,12 +483,9 @@
                       </select>
                     </div>
                     <div class="col-md-3 col-sm-6 form-group">
-                      <label> Type</label>
-                      <select class="form-control" formControlName="FontType">
-                        <option value="0">Select</option>
-                        <option value="Type1">Type 01</option>
-                        <option value="Type2">Type 02</option>
-                        <option value="Type3">Type 03</option>
+                      <label> Type</label><span class="text-danger ml-2">*</span>
+                      <select formControlName="TitleType" class="form-control">
+                        <option *ngFor="let pt of fontFamilyList" [value]="pt.Identifier">{{pt.Name}}</option>
                       </select>
                     </div>
                   </div>
@@ -487,15 +499,15 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-3 col-sm-6">
-                      <label> Color</label>
+                      <label> Color</label><span class="text-danger ml-2">*</span>
                       <input type="color" class="form-control" formControlName="HeaderColor" />
                     </div>
                     <div class="col-md-3 col-sm-6">
-                      <label> Size</label>
+                      <label> Size</label><span class="text-danger ml-2">*</span>
                       <input type="number" class="form-control" formControlName="HeaderSize" />
                     </div>
                     <div class="col-md-3 col-sm-6">
-                      <label> Weight</label>
+                      <label> Weight</label><span class="text-danger ml-2">*</span>
                       <select class="form-control" formControlName="HeaderWeight">
                         <option value="0">Select</option>
                         <option value="Normal">Normal</option>
@@ -504,12 +516,9 @@
                       </select>
                     </div>
                     <div class="col-md-3 col-sm-6 form-group">
-                      <label> Type</label>
+                      <label> Type</label><span class="text-danger ml-2">*</span>
                       <select class="form-control" formControlName="HeaderType">
-                        <option value="0">Select</option>
-                        <option value="Type1">Type 01</option>
-                        <option value="Type2">Type 02</option>
-                        <option value="Type3">Type 03</option>
+                        <option *ngFor="let pt of fontFamilyList" [value]="pt.Identifier">{{pt.Name}}</option>
                       </select>
                     </div>
                   </div>
@@ -522,15 +531,15 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-3 col-sm-6">
-                      <label> Color</label>
+                      <label> Color</label><span class="text-danger ml-2">*</span>
                       <input type="color" class="form-control" formControlName="DataColor" />
                     </div>
                     <div class="col-md-3 col-sm-6">
-                      <label> Size</label>
+                      <label> Size</label><span class="text-danger ml-2">*</span>
                       <input type="number" class="form-control" formControlName="DataSize" />
                     </div>
                     <div class="col-md-3 col-sm-6">
-                      <label> Weight</label>
+                      <label> Weight</label><span class="text-danger ml-2">*</span>
                       <select class="form-control" formControlName="DataWeight">
                         <option value="0">Select</option>
                         <option value="Normal">Normal</option>
@@ -539,12 +548,9 @@
                       </select>
                     </div>
                     <div class="col-md-3 col-sm-6 form-group">
-                      <label> Type</label>
+                      <label> Type</label><span class="text-danger ml-2">*</span>
                       <select class="form-control" formControlName="DataType">
-                        <option value="0">Select</option>
-                        <option value="Type1">Type 01</option>
-                        <option value="Type2">Type 02</option>
-                        <option value="Type3">Type 03</option>
+                        <option *ngFor="let pt of fontFamilyList" [value]="pt.Identifier">{{pt.Name}}</option>
                       </select>
                     </div>
                   </div>

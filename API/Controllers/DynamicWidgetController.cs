@@ -170,6 +170,26 @@ namespace nIS
             return result;
         }
 
+        /// <summary>
+        /// This method helps to preview page.
+        /// </summary>
+        /// <param name="pageIdentifier"></param>
+        /// <returns>boolean value</returns>
+        [HttpPost]
+        public string Preview(long dynamicWidgetIdentifier)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                var baseURL = Url.Content("~/");
+                return this.dynamicWidgetManager.PreviewDynamicWidget(dynamicWidgetIdentifier, baseURL, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
         [HttpPost]
         public IList<TenantEntity> GetTenantEntities()
         {

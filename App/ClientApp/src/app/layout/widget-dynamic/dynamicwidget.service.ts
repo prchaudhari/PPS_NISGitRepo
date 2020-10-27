@@ -93,13 +93,10 @@ export class DynamicWidgetService {
   //method to call api of delete dynamicWidget.
   public async deleteDynamicWidget(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let identifier = null;
-    if (postData.length > 0) {
-      identifier = postData[0].Identifier;
-    }
-    let requestUrl = URLConfiguration.dynamicWidgetDeleteUrl + '?dynamicWidgetIdentifier=' + identifier;
+    
+    let requestUrl = URLConfiguration.dynamicWidgetDeleteUrl;
     this.uiLoader.start();
-    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
           this.uiLoader.stop();
@@ -182,7 +179,7 @@ export class DynamicWidgetService {
       identifier = postData[0].Identifier;
     }
 
-    let requestUrl = URLConfiguration.dynamicWidgetPreviewUrl + '?DynamicWidgetIdentifier=' + identifier;
+    let requestUrl = URLConfiguration.dynamicWidgetPreviewUrl + '?dynamicWidgetIdentifier=' + identifier;
     this.uiLoader.start();
     let resultString: string = "";
 

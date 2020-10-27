@@ -6,7 +6,7 @@ import { BrowserModule, DomSanitizer, SafeHtml } from '@angular/platform-browser
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
-
+import { Observable, Observer } from 'rxjs';
 @Pipe({
   name: 'safeHtml'
 })
@@ -15,11 +15,11 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
   selector: 'widgetpreview',
   template: `<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div class="modal-content overflow-auto stylescrollbar">
-                  <div class="modal-body p-1 text-center">
+                  <div class="modal-body p-1"  text-center>
                   <button type="button" class="close p-1 mt-n2" (click)="cancel()">
                     <span aria-hidden="true">&times;</span>
                   </button>
-                  <div [innerHtml]="htmlContent | safeHtml">
+                    <div [innerHtml]="htmlContent | safeHtml">
                     </div>
                   </div>
                 </div>
@@ -27,10 +27,13 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 })
 export class WidgetPreviewComponent extends DialogComponent<WidgetPreviewModel, boolean> implements WidgetPreviewModel, DialogOptions {
   htmlContent: string;
+  ChartData: any;
   backdropColor: string = "red";
-
   analyticschart;
   savingchart;
+  lineGraph;
+  barGraph;
+  pieChart;
   spendingchart;
   public baseURL: string = ConfigConstants.BaseURL;
 
@@ -51,9 +54,6 @@ export class WidgetPreviewComponent extends DialogComponent<WidgetPreviewModel, 
       plotShadow: false,
       type: 'pie',
       height: (9 / 16 * 100) + '%'
-    },
-    title: {
-      text: ''
     },
     tooltip: {
       pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -175,6 +175,45 @@ export class WidgetPreviewComponent extends DialogComponent<WidgetPreviewModel, 
         fillColor: 'white'
       }
     }]
+  }
+
+  public LineGraphChartOptions: any = {
+    xAxis: {
+      //categories: this.ChartData.xAxis
+    },
+    //series: this.ChartData.series
+  }
+
+  public BarGraphChartOptions: any = {
+    xAxis: {
+      //categories: this.ChartData.xAxis
+    },
+    //series: this.ChartData.series
+  }
+
+  public PieChartOptions: any = {
+    chart: {
+
+      type: 'pie'
+    },
+
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+
+    plotOptions: {
+
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: false,
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+        },
+        showInLegend: true
+      }
+    },
+
   }
 
   ngOnInit() {
@@ -488,7 +527,24 @@ export class WidgetPreviewComponent extends DialogComponent<WidgetPreviewModel, 
       });
 
     });
+    console.log("chart data in widget preview");
+    console.log(this.ChartData);
 
+    this.LineGraphChartOptions.xAxis.categories = this.ChartData.xAxis;
+    this.LineGraphChartOptions.series = this.ChartData.series;
+    this.LineGraphChartOptions.title = this.ChartData.title;
+    if (this.ChartData.color != "" || this.ChartData.color != null) {
+      Highcharts.setOptions({
+        colors: this.ChartData.color.split(",")
+      });
+    }
+    this.BarGraphChartOptions.xAxis.categories = this.ChartData.xAxis;
+    this.BarGraphChartOptions.series = this.ChartData.series;
+    this.BarGraphChartOptions.title = this.ChartData.title;
+
+
+    this.PieChartOptions.series = this.ChartData.series;
+    this.PieChartOptions.title = this.ChartData.title;
   }
 
   ngAfterViewInit() {
@@ -504,7 +560,18 @@ export class WidgetPreviewComponent extends DialogComponent<WidgetPreviewModel, 
     if (document.getElementById('savingTrendscontainer') != null) {
       this.savingchart = Highcharts.chart('savingTrendscontainer', this.SavingTrendChartOptions);
     }
-
+    if (document.getElementById('lineGraphcontainer') != null) {
+      this.lineGraph = Highcharts.chart('lineGraphcontainer', this.LineGraphChartOptions);
+    }
+    if (document.getElementById('lineGraphcontainer') != null) {
+      this.lineGraph = Highcharts.chart('lineGraphcontainer', this.LineGraphChartOptions);
+    }
+    if (document.getElementById('barGraphcontainer') != null) {
+      this.barGraph = Highcharts.chart('barGraphcontainer', this.BarGraphChartOptions);
+    }
+    if (document.getElementById('pieChartcontainer') != null) {
+      this.pieChart = Highcharts.chart('pieChartcontainer', this.PieChartOptions);
+    }
     var data = this.SavingTransactionAllData.reduce(function (groups, item) {
       const val = item["TransactionDate"]
       groups[val] = groups[val] || []
@@ -566,6 +633,7 @@ export class WidgetPreviewComponent extends DialogComponent<WidgetPreviewModel, 
 
 export interface WidgetPreviewModel {
   htmlContent: string;
+  ChartData: any;
 }
 
 interface DialogOptions {

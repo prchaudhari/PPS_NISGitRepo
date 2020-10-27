@@ -69,16 +69,25 @@ namespace nIS
 
         public const string SPENDING_TREND_WIDGET_NAME = "SpendingTrend";
 
+        public const string TABLE_DYNAMICWIDGET = "Table";
+        public const string FORM_DYNAMICWIDGET = "Form";
+        public const string LINEGRAPH_DYNAMICWIDGET = "LineGraph";
+        public const string BARGRAPH_DYNAMICWIDGET = "BarGraph";
+        public const string PICHART_DYNAMICWIDGET = "PieChart";
+        public const string HTML_DYNAMICWIDGET = "Html";
+
+
+
         public const string HTML_HEADER = "<html><head><title>NIS Statement</title><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel='stylesheet' href='../common/css/bootstrap.min.css'><link rel='stylesheet' href='../common/css/font-awesome.min.css'><script src='../common/js/jquery.min.js'></script><script src='../common/js/popper.min.js'></script><script src='../common/js/bootstrap.min.js'></script><script src='../common/js/highcharts.js'></script><script src='../common/js/series-label.js'></script><script src='../common/js/exporting.js'></script><script src='../common/js/export-data.js'></script><script src='../common/js/accessibility.js'></script><script src='../common/js/script.js'></script><link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'></head><body onload='onPageLoad()'> <input type='hidden' id='StatementId' name='StatementId' value='{{StatementNumber}}'> <input type='hidden' id='CustomerId' name='CustomerId' value='{{CustomerNumber}}'><input type='hidden' id='FirstPageId' name='FirstPageId' value='{{FirstPageId}}'>";
 
         public const string NAVBAR_HTML = "<nav class='navbar navbar-expand-sm bg-white navbar-light p-0'>" +
-            "<a href='javascript:void(0);' class='navbar-brand ml-3'> <img src='{{logo}}' height='50'></a>"+
+            "<a href='javascript:void(0);' class='navbar-brand ml-3'> <img src='{{logo}}' height='50'></a>" +
             "<a class='navbar-brand ml-auto' href='javascript:void(0);'> <img src='{{BrandLogo}}' height='50'></a> </nav> " +
             "<nav class='navbar navbar-expand-sm bg-dark navbar-dark'><div class='collapse navbar-collapse' id='collapsibleNavbar'>" +
             "<ul class='navbar-nav nav'>" + "{{NavItemList}}" + "</ul>" +
             "<ul class='navbar-nav ml-auto'>" + "<li class='nav-item date'><a class='text-white'>{{Today}}</a></li>" + "</ul></div></nav>";
 
-        public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'>" +
+        public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='ard border-0' style='height:{{WidgetDivHeight}}'>" +
             "<div class='p-1 bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div>" +
             "<div class='card-body'><div class='row'><div class='col-sm-4'><h4 class='mb-4'>{{CustomerName}}</h4>" + "<h6>{{Address1}}{{Address2}}</h6></div>" +
             "<div class='col-sm-8'> <video class='doc-video' controls><source src='{{VideoSource}}' type='video/mp4'></video>" + "</div></div></div></div>";
@@ -245,8 +254,29 @@ namespace nIS
 
         public const string CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT = "<script type='text/javascript'>$(document).ready(function(){setTimeout(function(){if(null!=currenttransactiondata&&currenttransactiondata.length>0){var t=currenttransactiondata;$('input[type=\"radio\"][name=\"currenttransactionRadio\"]').change(function(a){if('currentShowAll'==a.currentTarget.id)$('#CurrentTransactionTable tbody tr').remove(),$.each(t,function(t,a){var e=$('#CurrentTransactionTable tbody'),n=$('<tr>');n.append($('<td>',{text:a.TransactionDate})),n.append($('<td>',{text:a.TransactionType})),n.append($('<td>',{text:a.Narration})),n.append($('<td>',{text:parseFloat(a.FCY).toFixed(2),class:'text-right'})),n.append($('<td>',{text:parseFloat(a.CurrentRate).toFixed(2),class:'text-right'})),n.append($('<td>',{text:parseFloat(a.LCY).toFixed(2),class:'text-right'})),n.append($('<td>',{html:'<div class=\"action-btns btn-tbl-action\"><button type=\"button\" title=\"View\"><span class=\"fa fa-paper-plane-o\"></span></button></div>'})),e.append(n)});else{$('#CurrentTransactionTable tbody tr').remove();var e=t.reduce(function(t,a){const e=a.TransactionDate;return t[e]=t[e]||[],t[e].push(a),t},{});$.each(e,function(t,a){var e=0,n=0,r=0;a.length>1?(e=a.reduce(function(t,a){return t+parseFloat(a.FCY)},0),n=a.reduce(function(t,a){return t+parseFloat(a.LCY)},0),r=a.reduce(function(t,a){return t+parseFloat(a.CurrentRate)},0)):(e=a[0].FCY,n=a[0].LCY,r=a[0].CurrentRate);var o=$('#CurrentTransactionTable tbody'),p=$('<tr>');p.append($('<td>',{text:a[0].TransactionDate})),p.append($('<td>',{text:a[0].TransactionType})),p.append($('<td>',{text:'-'})),p.append($('<td>',{text:parseFloat(e).toFixed(2),class:'text-right'})),p.append($('<td>',{text:parseFloat(r).toFixed(2),class:'text-right'})),p.append($('<td>',{text:parseFloat(n).toFixed(2),class:'text-right'})),p.append($('<td>',{text:'-'})),o.append(p)})}}),$('input[type=\"radio\"][id=\"currentShowAll\"]').prop('checked',!0).trigger('change'),$('#filterStatus').on('change',function(){val=this.value;var t=[];t='0'==val?currenttransactiondata:jQuery.grep(currenttransactiondata,function(t){return t.Narration==val}),$('#CurrentTransactionTable tbody tr').remove(),$.each(t,function(t,a){var e=$('#CurrentTransactionTable tbody'),n=$('<tr>');n.append($('<td>',{text:a.TransactionDate})),n.append($('<td>',{text:a.TransactionType})),n.append($('<td>',{text:a.Narration})),n.append($('<td>',{text:parseFloat(a.FCY).toFixed(2),class:'text-right'})),n.append($('<td>',{text:parseFloat(a.CurrentRate).toFixed(2),class:'text-right'})),n.append($('<td>',{text:parseFloat(a.LCY).toFixed(2),class:'text-right'})),n.append($('<td>',{html:'<div class=\"action-btns btn-tbl-action\"><button type=\"button\" title=\"View\"><span class=\"fa fa-paper-plane-o\"></span></button></div>'})),e.append(n)})}),$('#ResetGrid').on('click',function(){$('#filterStatus').prop('selectedIndex','0');var t=currenttransactiondata;$.each(t,function(t,a){var e=$('#CurrentTransactionTable tbody'),n=$('<tr>');n.append($('<td>',{text:a.TransactionDate})),n.append($('<td>',{text:a.TransactionType})),n.append($('<td>',{text:a.Narration})),n.append($('<td>',{text:parseFloat(a.FCY).toFixed(2),class:'text-right'})),n.append($('<td>',{text:parseFloat(a.CurrentRate).toFixed(2),class:'text-right'})),n.append($('<td>',{text:parseFloat(a.LCY).toFixed(2),class:'text-right'})),n.append($('<td>',{html:'<div class=\"action-btns btn-tbl-action\"><button type=\"button\" title=\"View\"><span class=\"fa fa-paper-plane-o\"></span></button></div>'})),e.append(n)})}),$('#PrintGrid').on('click',function(){var t=document.getElementById('CurrentTransactionTable');newWin=window.open(''),newWin.document.write(t.outerHTML),newWin.print(),newWin.close()})}},100)});</script>";
 
+        public const string STYLE = "color:{{COLOR}};font-size:{{SIZE}}px;font-weight:{{WEIGHT}};font-family:'{{TYPE}}';";
+
         public const string HTML_FOOTER = " {{ChartScripts}} </body></html>";
 
-        public const string TABLEWIDEGTPREVIEW = "";
+        public const string TABLEWIDEGTPREVIEW = "<div class='card border-0'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0;' style={{TitleStyle}}>{{WidgetTitle}}</h5></div>" +
+                                "<div class='card-body'><div class='table-responsive stylescrollbar' style'max-height:350px;overflow-x:hidden;overflow-y:auto;'>" +
+                                "<table id = 'TableWidget' class='table m-1 table-hover'><thead style={{HeaderStyle}}>{{tableHeader}}</thead><tbody style={{BodyStyle}}>{{tableBody}}</tbody></table></div></div></div>";
+        public const string FORMWIDGETPREVIEW = "<div class='card border-0'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5><div class='card border-0 card-shadow m-auto width50'><div class='card-body p-2' style={{BodyStyle}}>{{FormData}}</div></div></div>";
+
+        public const string HTMLWIDGETPREVIEW = "<div class='card border-0'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body' style={{BodyStyle}}>{{FormData}}</div></div>";
+
+        public const string LINEGRAPH_WIDGETPREVIEW = "<div class='card border-0' style='height:600px'><div class='p-1 bg-light border-0 text-left'> " +
+            "<h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"lineGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
+        public const string PIECHART_WIDGETPREVIEW = "<div class='card border-0' style='height:600px'><div class='p-1 bg-light border-0 text-left'> " +
+            "<h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"pieChartcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
+        public const string BARGRAPH_WIDGETPREVIEW = "<div class='card border-0' style='height:600px'><div class='p-1 bg-light border-0 text-left'> " +
+                    "<h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"barGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
+        public const string THEME1 = "#342ead,#EA6227,#f2a51a,#b9ebcc";
+        public const string THEME2 = "#45046a,#5c2a9d,#b5076b,#f1ebbb";
+        public const string THEME3 = "#5fdde5,#f4ea8e,#f37121,#d92027";
+        public const string THEME4 = "#805D93,#F49FBC,#9EBD6E,#169873";
     }
 }

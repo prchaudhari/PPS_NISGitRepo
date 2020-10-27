@@ -7,13 +7,13 @@ namespace nIS
 {
     #region References
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Text.RegularExpressions;
     using Unity;
+    using Newtonsoft.Json.Linq;
+    using System.Dynamic;
 
     #endregion
 
@@ -254,7 +254,7 @@ namespace nIS
         public string PreviewDynamicWidget(long widgetIdentifier, string baseURL, string tenantCode)
         {
             StringBuilder htmlString = new StringBuilder();
-
+            string series = string.Empty;
             try
             {
                 var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
@@ -271,13 +271,247 @@ namespace nIS
                 if (dynamicWidgets.Count != 0)
                 {
                     htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-                    for (int y = 0; y < dynamicWidgets.Count; y++)
+                    for (int index = 0; index < dynamicWidgets.Count; index++)
                     {
+                        var dynamicWidget = dynamicWidgets[index];
+                        string html = string.Empty;
+                        TenantEntity entity = new TenantEntity();
+                        entity.Identifier = dynamicWidget.EntityId;
+                        entity.Name = dynamicWidget.EntityName;
+                       
+                        if (dynamicWidget.WidgetType == HtmlConstants.TABLE_DYNAMICWIDGET)
+                        {
+                            html = HtmlConstants.TABLEWIDEGTPREVIEW;
+                            if (dynamicWidget.ThemeType == "Custome")
+                            {
+                                StringBuilder style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                CustomeTheme themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
+                                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                                html = html.Replace("{{TitleStyle}}", style.ToString());
 
+                                style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                style = style.Replace("{{COLOR}}", themeDetails.HeaderColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.HeaderSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.HeaderWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.HeaderType);
+                                html = html.Replace("{{HeaderStyle}}", style.ToString());
+
+                                style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.DataType);
+                                html = html.Replace("{{BodyStyle}}", style.ToString());
+                            }
+                            else
+                            {
+                                CustomeTheme themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
+
+                                html = html.Replace("{{TitleStyle}}", "");
+                                html = html.Replace("{{HeaderStyle}}", "");
+                                html = html.Replace("{{BodyStyle}}", "");
+                            }
+                            html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
+                            List<DynamicWidgetTableEntity> entityFields = JsonConvert.DeserializeObject<List<DynamicWidgetTableEntity>>(dynamicWidget.WidgetSettings);
+                            StringBuilder tableHeader = new StringBuilder();
+                            tableHeader.Append("<tr>" + string.Join("", entityFields.Select(field => string.Format("<th>{0}</th> ", field.HeaderName))) + "</tr>");
+                            html = html.Replace("{{tableHeader}}", tableHeader.ToString());
+                            string jsonData = this.GetTablePreviewData(entity, entityFields);
+                            html = html.Replace("{{tableBody}}", jsonData);
+
+                            htmlString.Append(html);
+                            htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                        }
+                        else if (dynamicWidget.WidgetType == HtmlConstants.FORM_DYNAMICWIDGET)
+                        {
+                            html = HtmlConstants.FORMWIDGETPREVIEW;
+                            if (dynamicWidget.ThemeType == "Custome")
+                            {
+                                StringBuilder style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                CustomeTheme themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
+                                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                                html = html.Replace("{{TitleStyle}}", style.ToString());
+
+
+                                style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.DataType);
+                                html = html.Replace("{{BodyStyle}}", style.ToString());
+                            }
+                            else
+                            {
+                                html = html.Replace("{{TitleStyle}}", "");
+                                html = html.Replace("{{HeaderStyle}}", "");
+                                html = html.Replace("{{BodyStyle}}", "");
+                            }
+                            html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
+                            List<DynamicWidgetFormEntity> formEntity = JsonConvert.DeserializeObject<List<DynamicWidgetFormEntity>>(dynamicWidget.WidgetSettings);
+                            StringBuilder tableHeader = new StringBuilder();
+                            string jsonData = this.GetFormPreviewData(entity, formEntity);
+                            html = html.Replace("{{FormData}}", jsonData);
+                            htmlString.Append(html);
+                            htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                        }
+                        else if (dynamicWidget.WidgetType == HtmlConstants.HTML_DYNAMICWIDGET)
+                        {
+                            html = HtmlConstants.HTMLWIDGETPREVIEW;
+
+                            if (dynamicWidget.ThemeType == "Custome")
+                            {
+                                StringBuilder style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                CustomeTheme themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
+                                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                                html = html.Replace("{{TitleStyle}}", style.ToString());
+                            }
+                            else
+                            {
+                                html = html.Replace("{{TitleStyle}}", "");
+                            }
+                            html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
+                            string settings = dynamicWidget.WidgetSettings;
+                            IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
+                            entityFieldMaps = this.GetEntityFields(dynamicWidget.EntityId, tenantCode);
+                            string data = this.GetHTMLPreviewData(entity, entityFieldMaps, dynamicWidget.WidgetSettings);
+                            StringBuilder tableHeader = new StringBuilder();
+                            html = html.Replace("{{FormData}}", data);
+                            htmlString.Append(html);
+                            htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                        }
+                        else if (dynamicWidget.WidgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
+                        {
+                            html = HtmlConstants.LINEGRAPH_WIDGETPREVIEW;
+                            CustomeTheme themeDetails = new CustomeTheme();
+                            if (dynamicWidget.ThemeType == "Custome")
+                            {
+                                StringBuilder style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
+                                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                                html = html.Replace("{{TitleStyle}}", style.ToString());
+                            }
+                            else
+                            {
+                                html = html.Replace("{{TitleStyle}}", "");
+                            }
+                            html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
+                            IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
+                            DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynamicWidget.WidgetSettings);
+                            fieldMaps = this.GetEntityFields(dynamicWidget.EntityId, tenantCode);
+                            string theme = string.Empty;
+                            if (themeDetails != null)
+                            {
+                                theme = themeDetails.ChartColorTheme;
+                            }
+                            series = this.GetBarLineChartPreviewData(entity, dynamicWidget.Title, lineGraphDetails, "line", theme);
+                            htmlString.Append(html);
+                            htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                            JObject obj = new JObject();
+                            obj["html"] = htmlString.ToString();
+                            obj["chartData"] = series;
+                            string chartData = JsonConvert.SerializeObject(obj);
+                            htmlString = new StringBuilder();
+                            htmlString = htmlString.Append(chartData);
+                        }
+                        else if (dynamicWidget.WidgetType == HtmlConstants.BARGRAPH_DYNAMICWIDGET)
+                        {
+                            html = HtmlConstants.BARGRAPH_WIDGETPREVIEW;
+                            CustomeTheme themeDetails = new CustomeTheme();
+                            if (dynamicWidget.ThemeType == "Custome")
+                            {
+                                StringBuilder style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
+                                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                                html = html.Replace("{{TitleStyle}}", style.ToString());
+                            }
+                            else
+                            {
+                                html = html.Replace("{{TitleStyle}}", "");
+                            }
+                            html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
+                            IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
+                            DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynamicWidget.WidgetSettings);
+                            fieldMaps = this.GetEntityFields(dynamicWidget.EntityId, tenantCode);
+                            string theme = string.Empty;
+                            if (themeDetails != null)
+                            {
+                                theme = themeDetails.ChartColorTheme;
+                            }
+                            series = this.GetBarLineChartPreviewData(entity, dynamicWidget.Title, lineGraphDetails, "column", theme);
+                            htmlString.Append(html);
+                            htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                            JObject obj = new JObject();
+                            obj["html"] = htmlString.ToString();
+                            obj["chartData"] = series;
+                            string chartData = JsonConvert.SerializeObject(obj);
+                            htmlString = new StringBuilder();
+                            htmlString = htmlString.Append(chartData);
+                        }
+                        else if (dynamicWidget.WidgetType == HtmlConstants.PICHART_DYNAMICWIDGET)
+                        {
+                            html = HtmlConstants.PIECHART_WIDGETPREVIEW;
+                            CustomeTheme themeDetails = new CustomeTheme();
+                            if (dynamicWidget.ThemeType == "Custome")
+                            {
+                                StringBuilder style = new StringBuilder();
+                                style.Append(HtmlConstants.STYLE);
+                                themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
+                                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                                html = html.Replace("{{TitleStyle}}", style.ToString());
+                            }
+                            else
+                            {
+                                html = html.Replace("{{TitleStyle}}", "");
+                            }
+                            html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
+                            PieChartSettingDetails pieChartSetting = JsonConvert.DeserializeObject<PieChartSettingDetails>(dynamicWidget.WidgetSettings);
+                            string theme = string.Empty;
+                            if (themeDetails != null)
+                            {
+                                theme = themeDetails.ChartColorTheme;
+                            }
+                            IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
+                            fieldMaps = this.GetEntityFields(dynamicWidget.EntityId, tenantCode);
+
+                            series = this.GetPieChartPreviewData(entity, dynamicWidget.Title, pieChartSetting, "column", theme, fieldMaps);
+                            htmlString.Append(html);
+                            htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                            JObject obj = new JObject();
+                            obj["html"] = htmlString.ToString();
+                            obj["chartData"] = series;
+                            string chartData = JsonConvert.SerializeObject(obj);
+                            htmlString = new StringBuilder();
+                            htmlString = htmlString.Append(chartData);
+                        }
 
                     }
-                    htmlString.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
-                   
+
                 }
             }
             catch (Exception ex)
@@ -369,6 +603,557 @@ namespace nIS
             {
                 throw exception;
             }
+        }
+
+        private string GetTablePreviewData(TenantEntity entity, List<DynamicWidgetTableEntity> fieldMaps)
+        {
+            string obj = string.Empty;
+            IList<JObject> dataList = new List<JObject>();
+            JObject item = new JObject();
+            if (entity.Name == "Customer Information")
+            {
+                #region  Set Data
+                item["CutomerCode"] = "RMP4563";
+                item["FirstName"] = "Robert";
+                item["LastName"] = "Pattinson";
+                item["RMName"] = "Mr.Shown Andrew";
+                item["RMContactNo"] = "4487345353";
+                dataList.Add(item);
+                item = new JObject();
+
+                item["CutomerCode"] = "LD01254";
+                item["FirstName"] = "Laura";
+                item["LastName"] = "Doland";
+                item["RMName"] = "Mr.Sam Billings";
+                item["RMContactNo"] = "676232354";
+                dataList.Add(item);
+                item = new JObject();
+                item["CutomerCode"] = "JS00302";
+                item["FirstName"] = "John";
+                item["LastName"] = "Smuts";
+                item["RMName"] = "Mr.Jack Johnson";
+                item["RMContactNo"] = "4487867833";
+                dataList.Add(item);
+                item = new JObject();
+                item["CutomerCode"] = "RMP4563";
+                item["FirstName"] = "Robert";
+                item["LastName"] = "Pattinson";
+                item["RMName"] = "Mr.Shown Andrew";
+                item["RMContactNo"] = "4487345353";
+                dataList.Add(item);
+                item = new JObject();
+
+                item["CutomerCode"] = "LD01254";
+                item["FirstName"] = "Laura";
+                item["LastName"] = "Doland";
+                item["RMName"] = "Mr.Sam Billings";
+                item["RMContactNo"] = "676232354";
+                dataList.Add(item);
+                item = new JObject();
+                item["CutomerCode"] = "JS00302";
+                item["FirstName"] = "John";
+                item["LastName"] = "Smuts";
+                item["RMName"] = "Mr.Jack Johnson";
+                item["RMContactNo"] = "4487867833";
+                dataList.Add(item);
+
+                #endregion
+            }
+            else if (entity.Name == "Account Balalnce")
+            {
+                #region  Set Data
+
+                item["AccountNumber"] = "RMP4563";
+                item["AccountType"] = "Robert";
+                item["Balance"] = "15432.00";
+                item["TotalDeposit"] = "6235.34";
+                item["TotalSpend"] = "5760.00";
+                dataList.Add(item);
+                item = new JObject();
+
+                item["AccountNumber"] = "LD01254";
+                item["AccountType"] = "Laura";
+                item["Balance"] = "15432.00";
+                item["TotalDeposit"] = "5760.00";
+                item["TotalSpend"] = "2560.00";
+                dataList.Add(item);
+                item = new JObject();
+                item["AccountNumber"] = "JS00302";
+                item["AccountType"] = "John";
+                item["Balance"] = "5616.67";
+                item["TotalDeposit"] = "3452.12";
+                item["TotalSpend"] = "8432.00";
+                dataList.Add(item);
+                item = new JObject();
+                item["AccountNumber"] = "RMP4563";
+                item["AccountType"] = "Robert";
+                item["Balance"] = "6235.34";
+                item["TotalDeposit"] = "5616.67";
+                item["TotalSpend"] = "12621";
+                dataList.Add(item);
+                item = new JObject();
+
+                item["AccountNumber"] = "LD01254";
+                item["AccountType"] = "Laura";
+                item["Balance"] = "6235.34";
+                item["TotalDeposit"] = "Mr.Sam Billings";
+                item["TotalSpend"] = "676232354";
+                dataList.Add(item);
+                item = new JObject();
+                item["AccountNumber"] = "JS00302";
+                item["AccountType"] = "John";
+                item["Balance"] = "12621";
+                item["TotalDeposit"] = "5760.00";
+                item["TotalSpend"] = "6235.34";
+                dataList.Add(item);
+
+                #endregion
+            }
+            else if (entity.Name == "Account Transaction")
+            {
+                item["TransactionDate"] = "2020-07-15 00:00:00.000";
+                item["TransactionType"] = "CR";
+                item["Narration"] = "NXT TXN: IIFL IIFL8965435";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-19 00:00:00.000";
+                item["TransactionType"] = "CR";
+                item["Narration"] = "NXT TXN: IIFL IIFL8965435";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-20 00:00:00.000";
+                item["TransactionType"] = "DR";
+                item["Narration"] = "LD1508340249";
+                item["AccountType"] = "Current Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-20 00:00:00.000";
+                item["TransactionType"] = "DR";
+                item["Narration"] = "LD1508340249";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-22 00:00:00.000";
+                item["TransactionType"] = "CR";
+                item["Narration"] = "LD1508340249";
+                item["AccountType"] = "Current Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-24 00:00:00.000";
+                item["TransactionType"] = "DR";
+                item["Narration"] = "OPENING BALANCE";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+            }
+
+            StringBuilder tableBody = new StringBuilder();
+
+            dataList.ToList().ForEach(d =>
+            {
+                tableBody.Append("<tr>" + string.Join("", fieldMaps.Select(field =>
+                string.Format("<td>{0}</td> ", d[field.FieldName].ToString()
+                    )
+                )) + "</tr>");
+            });
+            obj = tableBody.ToString();
+            return obj;
+        }
+
+        private string GetFormPreviewData(TenantEntity entity, List<DynamicWidgetFormEntity> fieldMaps)
+        {
+            string obj = string.Empty;
+            IList<JObject> dataList = new List<JObject>();
+            JObject item = new JObject();
+            if (entity.Name == "Customer Information")
+            {
+                #region  Set Data
+                item["CutomerCode"] = "RMP4563";
+                item["FirstName"] = "Robert";
+                item["LastName"] = "Pattinson";
+                item["RMName"] = "Mr.Shown Andrew";
+                item["RMContactNo"] = "4487345353";
+                dataList.Add(item);
+                item = new JObject();
+
+                item["CutomerCode"] = "LD01254";
+                item["FirstName"] = "Laura";
+                item["LastName"] = "Doland";
+                item["RMName"] = "Mr.Sam Billings";
+                item["RMContactNo"] = "676232354";
+                dataList.Add(item);
+                item = new JObject();
+                item["CutomerCode"] = "JS00302";
+                item["FirstName"] = "John";
+                item["LastName"] = "Smuts";
+                item["RMName"] = "Mr.Jack Johnson";
+                item["RMContactNo"] = "4487867833";
+                dataList.Add(item);
+                item = new JObject();
+                item["CutomerCode"] = "RMP4563";
+                item["FirstName"] = "Robert";
+                item["LastName"] = "Pattinson";
+                item["RMName"] = "Mr.Shown Andrew";
+                item["RMContactNo"] = "4487345353";
+                dataList.Add(item);
+                item = new JObject();
+
+                item["CutomerCode"] = "LD01254";
+                item["FirstName"] = "Laura";
+                item["LastName"] = "Doland";
+                item["RMName"] = "Mr.Sam Billings";
+                item["RMContactNo"] = "676232354";
+                dataList.Add(item);
+                item = new JObject();
+                item["CutomerCode"] = "JS00302";
+                item["FirstName"] = "John";
+                item["LastName"] = "Smuts";
+                item["RMName"] = "Mr.Jack Johnson";
+                item["RMContactNo"] = "4487867833";
+                dataList.Add(item);
+
+                #endregion
+            }
+            else if (entity.Name == "Account Balalnce")
+            {
+                #region  Set Data
+
+                item["AccountNumber"] = "RMP4563";
+                item["AccountType"] = "Robert";
+                item["Balance"] = "15432.00";
+                item["TotalDeposit"] = "6235.34";
+                item["TotalSpend"] = "5760.00";
+                dataList.Add(item);
+                item = new JObject();
+
+                item["AccountNumber"] = "LD01254";
+                item["AccountType"] = "Laura";
+                item["Balance"] = "15432.00";
+                item["TotalDeposit"] = "5760.00";
+                item["TotalSpend"] = "2560.00";
+                dataList.Add(item);
+                item = new JObject();
+                item["AccountNumber"] = "JS00302";
+                item["AccountType"] = "John";
+                item["Balance"] = "5616.67";
+                item["TotalDeposit"] = "3452.12";
+                item["TotalSpend"] = "8432.00";
+                dataList.Add(item);
+                item = new JObject();
+                item["AccountNumber"] = "RMP4563";
+                item["AccountType"] = "Robert";
+                item["Balance"] = "6235.34";
+                item["TotalDeposit"] = "5616.67";
+                item["TotalSpend"] = "12621";
+                dataList.Add(item);
+                item = new JObject();
+
+                item["AccountNumber"] = "LD01254";
+                item["AccountType"] = "Laura";
+                item["Balance"] = "6235.34";
+                item["TotalDeposit"] = "Mr.Sam Billings";
+                item["TotalSpend"] = "676232354";
+                dataList.Add(item);
+                item = new JObject();
+                item["AccountNumber"] = "JS00302";
+                item["AccountType"] = "John";
+                item["Balance"] = "12621";
+                item["TotalDeposit"] = "5760.00";
+                item["TotalSpend"] = "6235.34";
+                dataList.Add(item);
+
+                #endregion
+            }
+            else if (entity.Name == "Account Transaction")
+            {
+                item["TransactionDate"] = "2020-07-15 00:00:00.000";
+                item["TransactionType"] = "CR";
+                item["Narration"] = "NXT TXN: IIFL IIFL8965435";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-19 00:00:00.000";
+                item["TransactionType"] = "CR";
+                item["Narration"] = "NXT TXN: IIFL IIFL8965435";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-20 00:00:00.000";
+                item["TransactionType"] = "DR";
+                item["Narration"] = "LD1508340249";
+                item["AccountType"] = "Current Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-20 00:00:00.000";
+                item["TransactionType"] = "DR";
+                item["Narration"] = "LD1508340249";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-22 00:00:00.000";
+                item["TransactionType"] = "CR";
+                item["Narration"] = "LD1508340249";
+                item["AccountType"] = "Current Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+                item["TransactionDate"] = "2020-07-24 00:00:00.000";
+                item["TransactionType"] = "DR";
+                item["Narration"] = "OPENING BALANCE";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+                dataList.Add(item);
+                item = new JObject();
+            }
+
+            StringBuilder tableBody = new StringBuilder();
+
+            dataList.ToList().ForEach(d =>
+            {
+                obj = string.Join("", fieldMaps.Select(field =>
+                  string.Format("<div class='row'><div class='col-sm-6'><label>{0}</label></div><div class='col-sm-6'>{1}</div></div>", field.DisplayName, d[field.FieldName].ToString())
+                ));
+            });
+            return obj;
+        }
+
+        private string GetHTMLPreviewData(TenantEntity entity, IList<EntityFieldMap> fieldMaps, string widgetSettings)
+        {
+            string obj = string.Empty;
+            JObject item = new JObject();
+            if (entity.Name == "Customer Information")
+            {
+                #region  Set Data
+                item["CutomerCode"] = "RMP4563";
+                item["FirstName"] = "Robert";
+                item["LastName"] = "Pattinson";
+                item["RMName"] = "Mr.Shown Andrew";
+                item["RMContactNo"] = "4487345353";
+                #endregion
+            }
+            else if (entity.Name == "Account Balalnce")
+            {
+                #region  Set Data
+
+                item["AccountNumber"] = "RMP4563";
+                item["AccountType"] = "Current Account";
+                item["Balance"] = "15432.00";
+                item["TotalDeposit"] = "6235.34";
+                item["TotalSpend"] = "5760.00";
+                #endregion
+            }
+            else if (entity.Name == "Account Transaction")
+            {
+                item["TransactionDate"] = "2020-07-15 00:00:00.000";
+                item["TransactionType"] = "CR";
+                item["Narration"] = "NXT TXN: IIFL IIFL8965435";
+                item["AccountType"] = "Saving Account";
+                item["FCY"] = "1666.67";
+                item["LCY"] = "1771.42";
+
+            }
+            StringBuilder tableBody = new StringBuilder();
+
+            fieldMaps.ToList().ForEach(field =>
+            {
+                string fieldIdFormat = "{{" + field.Name + "_" + field.Identifier + "}}";
+                if (widgetSettings.Contains(fieldIdFormat))
+                {
+                    widgetSettings = widgetSettings.Replace(fieldIdFormat.ToString(), item[field.Name].ToString());
+                }
+            });
+            obj = widgetSettings;
+            return obj;
+        }
+
+        private string GetBarLineChartPreviewData(TenantEntity entity, string chartTitle, DynamicWidgetLineGraph lineGraphDetails, string chartType, string theme)
+        {
+            string obj = string.Empty;
+            string colorTheme = string.Empty;
+            if (theme == "Theme1")
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme == "Theme2")
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme == "Theme3")
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
+            else if (theme == "Theme4")
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            StringBuilder tableBody = new StringBuilder();
+            IList<ChartSeries> series = new List<ChartSeries>();
+            IList<string> xAxis = new List<string>();
+            if (lineGraphDetails.XAxis == "Time")
+            {
+                xAxis.Add("08:00");
+                xAxis.Add("09:00");
+                xAxis.Add("10:00");
+                xAxis.Add("11:00");
+
+
+            }
+            else if (lineGraphDetails.XAxis == "Month")
+            {
+                xAxis.Add("Jan");
+                xAxis.Add("Feb");
+                xAxis.Add("Mar");
+                xAxis.Add("APr");
+            }
+            if (lineGraphDetails.XAxis == "Date")
+            {
+                xAxis.Add("10/09/2020");
+                xAxis.Add("11/09/2020");
+                xAxis.Add("12/09/2020");
+                xAxis.Add("13/09/2020");
+            }
+            Random random = new Random();
+
+            lineGraphDetails.Details.ToList().ForEach(field =>
+            {
+                List<decimal> data = new List<decimal>();
+                data.Add(random.Next(1, 5));
+                data.Add(random.Next(1, 5));
+                data.Add(random.Next(1, 5));
+                data.Add(random.Next(1, 5));
+                //xAxis.Add(field.DisplayName);
+
+                series.Add(new ChartSeries()
+                {
+                    name = field.DisplayName,
+                    data = data,
+                    type = chartType
+                });
+            });
+            GraphChartData chartData = new GraphChartData();
+            chartData.series = series;
+            chartData.xAxis = xAxis;
+            chartData.title = new ChartTitle();
+            chartData.title.text = chartTitle;
+            chartData.color = colorTheme;
+            obj = JsonConvert.SerializeObject(chartData);
+            return obj;
+        }
+
+        private string GetPieChartPreviewData(TenantEntity entity, string chartTitle, PieChartSettingDetails pieChartSettingDetails, string chartType, string theme, IList<EntityFieldMap> fieldMaps)
+        {
+            string obj = string.Empty;
+            string colorTheme = string.Empty;
+            if (theme == "Theme1")
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme == "Theme2")
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme == "Theme3")
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
+            else if (theme == "Theme4")
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            StringBuilder tableBody = new StringBuilder();
+            IList<PieChartSeries> series = new List<PieChartSeries>();
+            IList<string> xAxis = new List<string>();
+
+            Random random = new Random();
+            IList<PieChartData> data = new List<PieChartData>();
+            series.Add(new PieChartSeries()
+            {
+                name = pieChartSettingDetails.PieSeries
+            });
+            string seriesName = fieldMaps.Where(item => item.Identifier.ToString() == pieChartSettingDetails.PieSeries).ToList().FirstOrDefault().Name;
+            if (seriesName == "TransactionType")
+            {
+                data.Add(new PieChartData
+                {
+                    name = "CR",
+                    y = random.Next(1, 100)
+                });
+                data.Add(new PieChartData
+                {
+                    name = "DB",
+                    y = 100 - data[0].y
+                });
+            }
+            else if (seriesName == "AccountType")
+            {
+                data.Add(new PieChartData
+                {
+                    name = "Saving Account",
+                    y = random.Next(1, 100)
+                });
+                data.Add(new PieChartData
+                {
+                    name = "Current Account",
+                    y = random.Next(1, (int)(100 - data[0].y))
+                });
+                int remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "Wealth",
+                    y = random.Next(1, remainingPercentage)
+                });
+                remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "Recurring Deposite",
+                    y = random.Next(1, remainingPercentage)
+                });
+            }
+            else if (pieChartSettingDetails.PieSeries == "Narration")
+            {
+
+            }
+            else if (pieChartSettingDetails.PieSeries == "TransactionDate")
+            {
+
+            }
+            else if (pieChartSettingDetails.PieSeries == "AccountNumber")
+            {
+
+            }
+            series[0].data = data;
+
+            PiChartGraphData chartData = new PiChartGraphData();
+            chartData.series = series;
+            chartData.title = new ChartTitle();
+            chartData.title.text = chartTitle;
+            chartData.color = colorTheme;
+            obj = JsonConvert.SerializeObject(chartData);
+            return obj;
         }
 
         #endregion

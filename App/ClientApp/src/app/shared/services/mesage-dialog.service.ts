@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
-import { MsgBoxComponent } from 'src/app/shared/modules/message/messagebox.component';
-import { PagePreviewComponent } from 'src/app/shared/pagepreview/pagepreview.component'
-import { WidgetPreviewComponent } from 'src/app/shared/widgetpreview/widgetpreview.component'
+import { MsgBoxComponent } from '../modules/message/messagebox.component';
+import { PagePreviewComponent } from '../pagepreview/pagepreview.component'
+import { WidgetPreviewComponent } from '../widgetpreview/widgetpreview.component'
 import { Observable } from 'rxjs';
 import { MultipleMessageboxComponent } from '../modules/multiple-messagebox/multiple-messagebox.component';
 import { ErrorLogsViewComponent } from '../error-logs-view/error-logs-view.component'
@@ -31,9 +31,12 @@ export class MessageDialogService {
       htmlContent: message,
     });
   }
-  openWidgetPreviewDialogBox(message): Observable<any> {
+  openWidgetPreviewDialogBox(message, chartData): Observable<any> {
+    console.log("chart data in openWidgetPreviewDialogBox ");
+    console.log(chartData);
     return this._dialogService.addDialog(WidgetPreviewComponent, {
       htmlContent: message,
+      ChartData: chartData
     });
   }
   openPageDesignPreviewDialogBox(array, AssetId, Url): Observable<any> {

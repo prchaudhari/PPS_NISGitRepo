@@ -56,7 +56,7 @@ export class ListComponent implements OnInit {
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
 
-  displayedColumns: string[] = ['Name','Product', 'Entity', 'Widget', 'Owner', 'PublishedBy', 'PublishedDate', 'Status', 'actions'];
+  displayedColumns: string[] = ['WidgetName','Product', 'Entity', 'Widget', 'PublishedBy', 'PublishedDate', 'Status', 'actions'];
   dataSource = new MatTableDataSource<any>();
   public userClaimsRolePrivilegeOperations: any[] = [];
 
@@ -70,7 +70,7 @@ export class ListComponent implements OnInit {
   public filterPublishEndDate = null;
   public totalRecordCount = 0;
   public sortOrder = Constants.Descending;
-  public sortColumn = 'PublishedDate';
+  public sortColumn = 'CreatedOn';
   public pageTypeList: any[] = [{ "PageTypeName": "Select Page Type", "Identifier": 0 }];
   public entityList: any[] = [{ "Name": "Select Entity", "Identifier": 0 }];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -147,7 +147,7 @@ export class ListComponent implements OnInit {
     else {
       this.userClaimsRolePrivilegeOperations = [];
     }
- 
+
   }
 
   sortData(sort: MatSort) {
@@ -164,7 +164,7 @@ export class ListComponent implements OnInit {
     }
     //['Name', 'Product', 'Entity', 'Widget', 'Owner', 'PublishedBy', 'PublishedDate', 'Status', 'actions'];
     switch (sort.active) {
-      case 'Name': this.sortColumn = "WidgetName"; break;
+      case 'WidgetName': this.sortColumn = "WidgetName"; break;
       case 'Product': this.sortColumn = "PageTypeName"; break;
       case 'Entity': this.sortColumn = "EntityName"; break;
       case 'Widget': this.sortColumn = "WidgetType"; break;
@@ -208,7 +208,7 @@ export class ListComponent implements OnInit {
       searchParameter.EntityId = this.filterEntityId;
     }
     if (this.filterDynamicWidgetType != null && this.filterDynamicWidgetType != '') {
-      searchParameter.WidgetType = this.filterDynamicWidgetType;
+      searchParameter.DynamicWidgetType = this.filterDynamicWidgetType;
     }
 
     if (this.filterDynamicWidgetStatus != null && this.filterDynamicWidgetStatus != '') {
@@ -318,7 +318,7 @@ export class ListComponent implements OnInit {
           searchParameter.EntityId = this.DynamicWidgetFilterForm.value.filterEntity;
         }
         if (this.DynamicWidgetFilterForm.value.filterWidgetType != 0) {
-          searchParameter.WidgetType = this.DynamicWidgetFilterForm.value.filterWidgetType ;
+          searchParameter.DynamicWidgetType = this.DynamicWidgetFilterForm.value.filterWidgetType;
         }
         if (this.DynamicWidgetFilterForm.value.filterStatus != null && this.DynamicWidgetFilterForm.value.filterStatus != 0) {
           this.filterDynamicWidgetStatus = this.DynamicWidgetFilterForm.value.filterStatus;
@@ -426,9 +426,22 @@ export class ListComponent implements OnInit {
     let dynamicWidgetData = [{
       "Identifier": template.Identifier,
     }];
+    var chartData: any;
+    var html: string;
     let resultHtmlString = await this.dynamicWidgetService.previewDynamicWidget(dynamicWidgetData);
+    if (template.WidgetType == "LineGraph" || template.WidgetType == "BarGraph" || template.WidgetType == "PieChart") {
+      var object: any = {};
+      object = JSON.parse(resultHtmlString);
+      html = object.html;
+      chartData = JSON.parse(object.chartData);
+      //chartData = JSON.stringify(object.chartData)
+    }
+    else {
+      html = resultHtmlString;
+    }
     if (resultHtmlString != '') {
-      this._messageDialogService.openPreviewDialogBox(resultHtmlString);
+      console.log("chart data in list page" + chartData);
+      this._messageDialogService.openWidgetPreviewDialogBox(html, chartData);
     }
   }
 
@@ -445,7 +458,17 @@ export class ListComponent implements OnInit {
     this.route.navigate(['dynamicwidget', 'Edit']);
   }
 
-  navigateToView() {
+  navigateToView(template: DynamicWidget) {
+    let queryParams = {
+      Routeparams: {
+        passingparams: {
+          "DynamicWidgetName": template.WidgetName,
+          "DynamicWidgetIdentifier": template.Identifier,
+          "EntityId": template.EntityId
+        }
+      }
+    }
+    localStorage.setItem("dynamicwidgetparams", JSON.stringify(queryParams))
     this.route.navigate(['dynamicwidget', 'View']);
   }
 
@@ -458,7 +481,7 @@ export class ListComponent implements OnInit {
     var data = await dynamicWidgetService.getPageTypes();
     data.forEach(item => {
       this.pageTypeList.push(item);
-    })  
+    })
     if (this.pageTypeList.length == 0) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
@@ -470,11 +493,11 @@ export class ListComponent implements OnInit {
   }
 
   async getEntities() {
-    
+
     var data = await this.dynamicWidgetService.getEntities();
     data.forEach(item => {
       this.entityList.push(item);
-    }) 
+    })
     if (this.entityList.length == 0) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
@@ -482,7 +505,7 @@ export class ListComponent implements OnInit {
     }
 
   }
- 
+
   public onPageTypeSelected(event) {
     const value = event.target.value;
     if (value == "0") {
