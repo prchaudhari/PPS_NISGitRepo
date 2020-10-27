@@ -38,5 +38,7 @@
 	[ExternalCode] NVARCHAR(MAX) NULL,
 	[AutheticationMode] NVARCHAR(MAX) NULL,
 	[IsActive] BIT NOT NULL DEFAULT 1, 
-    [IsDeleted] BIT NOT NULL DEFAULT 0
+    [IsDeleted] BIT NOT NULL DEFAULT 0, 
+    [ParentTenantCode] NVARCHAR(MAX) NULL, 
+    [IsTenantConfigured] BIT NOT NULL
 )

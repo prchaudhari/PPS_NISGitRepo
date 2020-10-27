@@ -11,5 +11,7 @@
     [TenantCode] [nvarchar](50) NOT NULL,
     [ArchivalPeriod] [int] NULL,
 	[ArchivalPeriodUnit] [nvarchar](50) NULL,
-	[DateFormat] [nvarchar](50) NULL,
+	[DateFormat] [nvarchar](50) NULL, 
+    [ApplicationTheme] NVARCHAR(50) NULL, 
+    [WidgetThemeSetting] NVARCHAR(MAX) NULL,
 )
