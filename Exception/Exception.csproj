@@ -57,6 +57,7 @@
     <Compile Include="City\CityNotFoundException.cs" />
     <Compile Include="City\DuplicateCityFoundException.cs" />
     <Compile Include="City\InvalidCityException.cs" />
+    <Compile Include="Client\ClientConfigurationIsInProcessException.cs" />
     <Compile Include="Client\DeactivatedTenantGroupReferenceExceptionException.cs" />
     <Compile Include="Client\DeactivatedTenantReferenceExceptionException.cs" />
     <Compile Include="Client\DeleteTenantReferenceExceptionException.cs" />

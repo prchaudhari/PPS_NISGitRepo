@@ -223,6 +223,11 @@ namespace nIS
         /// </summary>
         City city = new City();
 
+        /// <summary>
+        /// The is Tenant Configured
+        /// </summary>
+        private bool isTenantConfigured = false;
+
         #endregion
 
         #region Public Members
@@ -906,6 +911,23 @@ namespace nIS
             set
             {
                 this.city = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets is tenant configured.
+        /// </summary>
+        [Description("Is Tenant Configured")]
+        public bool IsTenantConfigured
+        {
+            get
+            {
+                return this.isTenantConfigured;
+            }
+
+            set
+            {
+                this.isTenantConfigured = value;
             }
         }
 

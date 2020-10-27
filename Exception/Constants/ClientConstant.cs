@@ -42,6 +42,11 @@ namespace nIS
         /// </summary>
         public const string CLIENT_SUBSCRIPTION_FAILED_EXCEPTION = "ClientSubscriptionFailedException";
 
+        /// <summary>
+        /// The client not found exception key
+        /// </summary>
+        public const string CLIENT_CONFIGURATION_IS_IN_PROCESS_EXCEPTION = "Tenant on boarding is in process, till then please wait or contact Admin.";
+
         #endregion
     }
 }

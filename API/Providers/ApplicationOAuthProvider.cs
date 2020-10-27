@@ -112,6 +112,12 @@ namespace nIS
             if (lstTenants.Count > 0)
             {
                 var tenant = lstTenants.FirstOrDefault();
+                if (tenant.TenantType == "Tenant" && tenant.IsTenantConfigured == false)
+                {
+                    context.SetError("invalid_grant", "Tenant on boarding is in process, till then please wait or contact Admin.");
+                    return;
+                }
+
                 ParentTenentCode = (tenant.ParentTenantCode == null || tenant.ParentTenantCode == string.Empty) ? tenantCode : tenant.ParentTenantCode;
                 if (tenant.TenantType == "Instance" && user.IsInstanceManager)
                 {
@@ -123,6 +129,7 @@ namespace nIS
                     isTenantGroupManager = true;
                     ParentTenentCode = tenant.TenantCode; //Group manager, itself is the parent tenant
                 }
+                
             }
 
             if (!isInstanceTenantManager)

@@ -224,6 +224,7 @@ namespace nIS
                     tenant.StartDate = DateTime.UtcNow;
                     tenant.EndDate = DateTime.MaxValue;
                     tenant.ParentTenantCode = client.ParentTenantCode;
+                    tenant.IsTenantConfigured = client.TenantType == "Tenant" ? false : true;
                     tenants.Add(tenant);
                 });
 
@@ -421,7 +422,7 @@ namespace nIS
                     tenant.IsActive = client.IsActive;
                     tenant.TenantDescription = client.TenantDescription;
                     tenant.TenantLogo = client.TenantLogo;
-
+                    tenant.IsTenantConfigured = client.IsTenantConfigured;
                     tenants.Add(tenant);
                 });
 
@@ -639,9 +640,8 @@ namespace nIS
                             contact.ContactNumber = tenant.PrimaryContactNumber;
                             if ((!(string.IsNullOrEmpty(contact.FirstName)) && (!string.IsNullOrEmpty(contact.LastName)) && (!string.IsNullOrEmpty(contact.EmailAddress))))
                             {
-                                contact.ContactType = "Primary";
+                                contact.ContactType = ModelConstant.TENANT_PRIMARY_CONTACT; //"Primary";
                             }
-
                             contacts.Add(contact);
                         }
 
@@ -658,8 +658,8 @@ namespace nIS
                                 }
                             }, tenantCode)?.FirstOrDefault();
                             client.Country = tenantcountry;
-
                         }
+
                         if (clientSearchParameter.IsContactRequired)
                         {
                             contacts = this.tenantContactManager.GetTenantContacts(new TenantContactSearchParameter()
@@ -672,6 +672,7 @@ namespace nIS
                             client.TenantContacts = contacts;
                         }
                         #endregion
+
                         client.TenantCode = tenant.TenantCode;
                         client.ParentTenantCode = tenant.ParentTenantCode;
                         client.TenantName = tenant.TenantName;
@@ -699,11 +700,10 @@ namespace nIS
                         client.PrimaryEmailAddress = tenant.PrimaryEmailAddress;
                         client.PrimaryContactNumber = tenant.PrimaryContactNumber;
                         client.ParentTenantCode = tenant.ParentTenantCode;
+                        client.IsTenantConfigured = tenant.IsTenantConfigured;
                         clients.Add(client);
-
                     });
                 }
-
             }
             catch (Exception ex)
             {
