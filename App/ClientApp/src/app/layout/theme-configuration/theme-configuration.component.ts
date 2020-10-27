@@ -42,7 +42,7 @@ export class ThemeConfigurationComponent implements OnInit {
   public baseURL: string = ConfigConstants.BaseURL;
   public TenantConfiguration:any = {};
   public fontWeightArr = [{Id: 0, Name: 'Select', Value: 'Select'}, {Id: 1, Name: 'Normal', Value: 'Normal'}, {Id: 2, Name: 'Italic', Value: 'Italic'}, {Id: 3, Name: 'Bold', Value: 'Bold'}];
-  public fontTypeArr = [{Id: 0, Name: 'Select', Value: 'Select'}, {Id: 1, Name: 'Serif', Value: 'Serif'}, {Id: 2, Name: 'Tahoma', Value: 'Tahoma'}, {Id: 3, Name: 'Times Roman', Value: 'Times Roman'}];
+  public fontTypeArr = [{Id: 0, Name: 'Select', Value: 'Select'}, {Id: 1, Name: 'sans-serif', Value: 'sans-serif'}, {Id: 2, Name: 'Tahoma', Value: 'Tahoma'}, {Id: 3, Name: 'Times Roman', Value: 'Times Roman'}];
   
   constructor(private formBuilder: FormBuilder,
     private spinner: NgxUiLoaderService,
@@ -109,19 +109,20 @@ export class ThemeConfigurationComponent implements OnInit {
       TitleFontColor: ['#000000'],
       TitleFontSize: [16],
       TitleFontWeight: ['Bold'],
-      TitleFontType: ['Select'],
+      TitleFontType: ['sans-serif'],
 
       HeaderLabelFontColor: ['#000000'],
       HeaderLabelFontSize: [14],
       HeaderLabelFontWeight: ['Bold'],
-      HeaderLabelFontType: ['Select'],
+      HeaderLabelFontType: ['sans-serif'],
 
       DataLabelFontColor: ['#000000'],
-      DataLabelFontSize: [12],
+      DataLabelFontSize: [13],
       DataLabelFontWeight: ['Normal'],
-      DataLabelFontType: ['Select'],
-    });
+      DataLabelFontType: ['sans-serif'],
+    }); 
 
+    this.WidgetColorThemeName = 'charttheme1';
     this.getTenantConfigurationDetails();
   }
 
@@ -158,11 +159,13 @@ export class ThemeConfigurationComponent implements OnInit {
           if(this.TenantConfiguration.WidgetThemeSetting != null && this.TenantConfiguration.WidgetThemeSetting != '') {
             this.widgetThemeSetting = JSON.parse(this.TenantConfiguration.WidgetThemeSetting);
             
-            this.WidgetColorThemeName = this.widgetThemeSetting.ColorTheme.toLocaleLowerCase();
-            if(this.WidgetColorThemeName != '') {
-              setTimeout(() => {
-                $('#'+this.WidgetColorThemeName).prop('checked', true);
-              }, 10);
+            if(this.widgetThemeSetting.ColorTheme != null) {
+              this.WidgetColorThemeName = this.widgetThemeSetting.ColorTheme.toLocaleLowerCase();
+              if(this.WidgetColorThemeName != '') {
+                setTimeout(() => {
+                  $('#'+this.WidgetColorThemeName).prop('checked', true);
+                }, 10);
+              }
             }
 
             this.tenantThemeConfigurationForm.patchValue({
@@ -180,12 +183,6 @@ export class ThemeConfigurationComponent implements OnInit {
               DataLabelFontType: this.widgetThemeSetting.DataType != null ? this.widgetThemeSetting.DataType : 'Select'
             });
 
-            this.weightTitleFont = this.widgetThemeSetting.TitleWeight != null ? this.widgetThemeSetting.TitleWeight : 16;
-            this.typeTitleFont = this.widgetThemeSetting.TitleType != null ? this.widgetThemeSetting.TitleType : 'Select';
-            this.weightHeaderLabelFont = this.widgetThemeSetting.HeaderWeight != null ? this.widgetThemeSetting.HeaderWeight : "Bold";
-            this.typeHeaderLabelFont = this.widgetThemeSetting.HeaderType != null ? this.widgetThemeSetting.HeaderType : 'Select';
-            this.weightDataLabelFont = this.widgetThemeSetting.DataWeight != null ? this.widgetThemeSetting.DataWeight : "Normal";
-            this.typeDataLabelFont = this.widgetThemeSetting.DataType != null ? this.widgetThemeSetting.DataType : 'Select';
           }
         }
         
@@ -381,18 +378,18 @@ export class ThemeConfigurationComponent implements OnInit {
     
     this.widgetThemeSetting.TitleColor = this.tenantThemeConfigurationForm.value.TitleFontColor != undefined ? this.tenantThemeConfigurationForm.value.TitleFontColor : null;
     this.widgetThemeSetting.TitleSize = this.tenantThemeConfigurationForm.value.TitleFontSize != undefined ? this.tenantThemeConfigurationForm.value.TitleFontSize : null;
-    this.widgetThemeSetting.TitleWeight = this.weightTitleFont != undefined ? this.weightTitleFont : null;
-    this.widgetThemeSetting.TitleType = this.typeTitleFont != undefined ? this.typeTitleFont : null;
+    this.widgetThemeSetting.TitleWeight = this.tenantThemeConfigurationForm.value.TitleFontWeight != undefined ? this.tenantThemeConfigurationForm.value.TitleFontWeight : null;
+    this.widgetThemeSetting.TitleType = this.tenantThemeConfigurationForm.value.TitleFontType != undefined ? this.tenantThemeConfigurationForm.value.TitleFontType : null;
 
     this.widgetThemeSetting.HeaderColor = this.tenantThemeConfigurationForm.value.HeaderLabelFontColor != undefined ? this.tenantThemeConfigurationForm.value.HeaderLabelFontColor : null;
     this.widgetThemeSetting.HeaderSize = this.tenantThemeConfigurationForm.value.HeaderLabelFontSize != undefined ? this.tenantThemeConfigurationForm.value.HeaderLabelFontSize : null;
-    this.widgetThemeSetting.HeaderWeight = this.weightHeaderLabelFont != undefined ? this.weightHeaderLabelFont : null;
-    this.widgetThemeSetting.HeaderType = this.typeHeaderLabelFont != undefined ? this.typeHeaderLabelFont : null;
+    this.widgetThemeSetting.HeaderWeight = this.tenantThemeConfigurationForm.value.HeaderLabelFontWeight != undefined ? this.tenantThemeConfigurationForm.value.HeaderLabelFontWeight : null;
+    this.widgetThemeSetting.HeaderType = this.tenantThemeConfigurationForm.value.HeaderLabelFontType != undefined ? this.tenantThemeConfigurationForm.value.HeaderLabelFontType : null;
 
     this.widgetThemeSetting.DataColor = this.tenantThemeConfigurationForm.value.DataLabelFontColor != undefined ? this.tenantThemeConfigurationForm.value.DataLabelFontColor : null;
     this.widgetThemeSetting.DataSize = this.tenantThemeConfigurationForm.value.DataLabelFontSize != undefined ? this.tenantThemeConfigurationForm.value.DataLabelFontSize : null;
-    this.widgetThemeSetting.DataWeight = this.weightDataLabelFont != undefined ? this.weightDataLabelFont : null;
-    this.widgetThemeSetting.DataType = this.typeDataLabelFont != undefined ? this.typeDataLabelFont : null;
+    this.widgetThemeSetting.DataWeight = this.tenantThemeConfigurationForm.value.DataLabelFontWeight != undefined ? this.tenantThemeConfigurationForm.value.DataLabelFontWeight : null;
+    this.widgetThemeSetting.DataType = this.tenantThemeConfigurationForm.value.DataLabelFontType != undefined ? this.tenantThemeConfigurationForm.value.DataLabelFontType : null;
 
     this.TenantConfiguration.WidgetThemeSetting = JSON.stringify(this.widgetThemeSetting);
     this.saveTenantThemeConfigurationRecord(this.TenantConfiguration);

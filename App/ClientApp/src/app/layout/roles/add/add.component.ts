@@ -1,16 +1,13 @@
-
 import { Component, OnInit, Injector, ChangeDetectorRef } from '@angular/core';
 import { Location } from '@angular/common';
 import { Constants } from 'src/app/shared/constants/constants';
-import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAccessor, FormArray, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { RoleService } from '../role.service';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { RolePrivilege } from '../../../shared/models/rolePrivilege';
 import { RoleprivilegeMapping } from '../role';
 import { UserService } from '../../users/user.service';
@@ -165,37 +162,11 @@ export class AddComponent implements OnInit {
     {
       "EntityName": "User",
       "Operation": "Reset Password",
-      "RelatedOperation": ["Edit", "View"],
-      "OtherDependentEntity": []
-    },
-    {
-      "EntityName": "Role",
-      "Operation": "Create",
-      "RelatedOperation": ["Edit", "Delete", "View"],
-      "OtherDependentEntity": []
-    },
-    {
-      "EntityName": "Role",
-      "Operation": "Edit",
-      "RelatedOperation": ["Delete", "View"],
-      "OtherDependentEntity": []
-
-    },
-    {
-      "EntityName": "Role",
-      "Operation": "Delete",
       "RelatedOperation": ["View"],
       "OtherDependentEntity": []
     },
     {
       "EntityName": "Role",
-      "Operation": "View",
-      "RelatedOperation": [],
-      "OtherDependentEntity": []
-    },
-
-    {
-      "EntityName": "Role",
       "Operation": "Create",
       "RelatedOperation": ["Edit", "Delete", "View"],
       "OtherDependentEntity": []
@@ -205,7 +176,6 @@ export class AddComponent implements OnInit {
       "Operation": "Edit",
       "RelatedOperation": ["Delete", "View"],
       "OtherDependentEntity": []
-
     },
     {
       "EntityName": "Role",
@@ -249,7 +219,6 @@ export class AddComponent implements OnInit {
       "RelatedOperation": [],
       "OtherDependentEntity": []
     },
-
     {
       "EntityName": "Page",
       "Operation": "Create",
@@ -274,15 +243,12 @@ export class AddComponent implements OnInit {
       "RelatedOperation": [],
       "OtherDependentEntity": []
     },
-
     {
       "EntityName": "Page",
       "Operation": "Publish",
       "RelatedOperation": ["View"],
       "OtherDependentEntity": []
     },
-
-
     {
       "EntityName": "Statement Definition",
       "Operation": "Create",
@@ -307,15 +273,12 @@ export class AddComponent implements OnInit {
       "RelatedOperation": [],
       "OtherDependentEntity": []
     },
-
     {
       "EntityName": "Statement Definition",
       "Operation": "Publish",
       "RelatedOperation": ["View"],
       "OtherDependentEntity": []
     },
-
-
     {
       "EntityName": "Schedule Management",
       "Operation": "Create",
@@ -340,7 +303,6 @@ export class AddComponent implements OnInit {
       "RelatedOperation": [],
       "OtherDependentEntity": []
     },
-
     {
       "EntityName": "Log",
       "Operation": "View",
@@ -353,7 +315,6 @@ export class AddComponent implements OnInit {
       "RelatedOperation": [],
       "OtherDependentEntity": ["Page", "Widget"]
     },
-
     {
       "EntityName": "Statement Search",
       "Operation": "View",
@@ -383,17 +344,11 @@ export class AddComponent implements OnInit {
     });
   }
 
-  constructor(private _location: Location,
-    private formbuilder: FormBuilder,
-    private service: UserService,
+  constructor(private formbuilder: FormBuilder,
     private injector: Injector,
-    private _dialogService: DialogService,
     private uiLoader: NgxUiLoaderService,
     private _messageDialogService: MessageDialogService,
     private router: Router,
-    private localstorageservice: LocalStorageService,
-    // private spinner: NgxUiLoaderService,
-    private roleService: RoleService,
     private changeDetector: ChangeDetectorRef) {
     router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
@@ -984,14 +939,15 @@ export class AddComponent implements OnInit {
                   if (isPublishSelected == undefined || isPublishSelected.length == 0) {
                     opt.IsDisabled = false;
                   }
-
                 }
-
                 else if (opt.Operation == "View" && operation.Operation == "Publish") {
                   var isDeleteSelected = entity.RolePrivilegeOperations.filter(e => e.Operation == "Delete" && e.IsEnabled == true);
                   if (isDeleteSelected == undefined || isDeleteSelected.length == 0) {
                     opt.IsDisabled = false;
                   }
+                }
+                else if (opt.Operation == "View" && operation.Operation == "Reset Password") {
+                  opt.IsDisabled = false;
                 }
               }
             }
