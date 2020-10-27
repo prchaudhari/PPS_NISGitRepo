@@ -38,9 +38,21 @@ export class ViewComponent implements OnInit {
   public dynamicWidgetDetails: DynamicWidget;
   public params;
   public userClaimsRolePrivilegeOperations: any[] = [];
+  public lineBarGraphList: any[] = [];
+  public conditionList: any[] = [
+    { "Name": "Select", "Identifier": "0" },
+    { "Name": "Equals To", "Identifier": "EqualsTo" },
+    { "Name": "Not Equals To", "Identifier": "NotEqualsTo" },
+    { "Name": "Less Than", "Identifier": "LessThan" },
+    { "Name": "Greater Than", "Identifier": "GreaterThan" },
+    { "Name": "Contains", "Identifier": "Contains" },
+    { "Name": "Not Contains", "Identifier": "NotContains" }
 
+  ];
+  public themeCSS: any = {};
   displayedColumns: string[] = ['series', 'displayName'];
   dataSource = new MatTableDataSource<ListElement>(List_Data);
+  public entityFieldList: any[] = [{ "Name": "Select", "Identifier": 0 }];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -54,27 +66,17 @@ export class ViewComponent implements OnInit {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
   }
+  public isDefault: boolean = true;
+  public isCustome: boolean = false;
+  tableHeader = [];
 
-  tableHeader = [
-    { fn: 'Field Name 01', name: 'Date', sorting: 'Yes' },
-    { fn: 'Field Name 02', name: 'Amout', sorting: 'No' },
-    { fn: 'Field Name 03', name: 'Narration', sorting: 'Yes' },
-    { fn: 'Field Name 04', name: 'Balance', sorting: 'No' },
-    { fn: 'Field Name 05', name: 'Product', sorting: 'Yes' },
-    { fn: 'Field Name 06', name: 'User', sorting: 'Yes' },
-    { fn: 'Field Name 07', name: 'Role', sorting: 'Yes' },
-  ];
-
-  formList = [
-    { fn: 'Field Name 01', dn: 'Customer Name' },
-    { fn: 'Field Name 02', dn: 'Customer Id' },
-    { fn: 'Field Name 03', dn: 'Balance' },
-    { fn: 'Field Name 01', dn: 'Account Id' },
-  ];
+  formList = [];
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.tableHeader, event.previousIndex, event.currentIndex);
   }
+  public widgetFilterlist: any[] = [];
+  public displayWidgetFilterlist: any[] = [];
 
   //select widget type radio
 
@@ -115,7 +117,8 @@ export class ViewComponent implements OnInit {
           //set passing parameters to localstorage.
           this.params = JSON.parse(localStorage.getItem('dynamicwidgetparams'));
           if (localStorage.getItem('dynamicwidgetparams')) {
-            this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.StatementIdentifier;
+            this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
+            this.getEntityField(this.params.Routeparams.passingparams.EntityId);
             //this.getWidgetDetails();
           }
         } else {
@@ -135,8 +138,21 @@ export class ViewComponent implements OnInit {
       this.userClaimsRolePrivilegeOperations = [];
     }
     if (localStorage.getItem('dynamicwidgetparams')) {
-      this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.StatementIdentifier;
+      this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
       this.getWidgetDetails();
+    }
+  }
+  async getEntityField(value) {
+    var data = await this.dynamicWidgetService.getEntityFields(value);
+    this.entityFieldList = [{ "Name": "Select", "Identifier": 0 }];
+    data.forEach(item => {
+      this.entityFieldList.push(item);
+    });
+
+    if (this.entityFieldList.length == 0) {
+      let message = ErrorMessageConstants.getNoRecordFoundMessage;
+      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+      });
     }
   }
   async getWidgetDetails() {
@@ -145,13 +161,62 @@ export class ViewComponent implements OnInit {
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
     searchParameter.SortParameter = {};
-    searchParameter.SortParameter.SortColumn = Constants.Name;
+    searchParameter.SortParameter.SortColumn = "Id";
     searchParameter.SortParameter.SortOrder = Constants.Ascending;
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.Identifier = this.dynamicWidgetDetails.Identifier;
     searchParameter.IsStatementPagesRequired = true;
     var response = await this.dynamicWidgetService.getDynamicWidgets(searchParameter);
     this.dynamicWidgetDetails = response.List[0];
+
+
+    this.setWidgetType(this.dynamicWidgetDetails.WidgetType);
+
+    // this.getEntityField(this.dynamicWidgetDetails.EntityId);
+    if (this.dynamicWidgetDetails.ThemeCSS != null && this.dynamicWidgetDetails.ThemeCSS != '') {
+      this.themeCSS = JSON.parse(this.dynamicWidgetDetails.ThemeCSS);
+
+    }
+    this.isDefault = this.dynamicWidgetDetails.ThemeType == "Default" ? true : false;
+
+    this.isCustome = this.dynamicWidgetDetails.ThemeType == "Default" ? false : true;
+    if (this.dynamicWidgetDetails.WidgetFilterSettings != null && this.dynamicWidgetDetails.WidgetFilterSettings != '') {
+      this.widgetFilterlist = JSON.parse(this.dynamicWidgetDetails.WidgetFilterSettings);
+      this.widgetFilterlist.forEach(item => {
+        var object = item;
+        object.OperatorName = this.conditionList.filter(i => i.Identifier == item.Operator)[0].Name;
+        object.FieldName = this.entityFieldList.filter(i => i.Identifier == item.FieldId)[0].Name;
+        this.displayWidgetFilterlist.push(object);
+      });
+    }
+    if (this.dynamicWidgetDetails.WidgetSettings != null && this.dynamicWidgetDetails.WidgetSettings != '') {
+
+      var settings;
+      if (this.dynamicWidgetDetails.WidgetType != 'Html') {
+        settings = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
+      }
+
+      if (this.dynamicWidgetDetails.WidgetType == 'Form') {
+        this.formList = settings;
+      }
+      else if (this.dynamicWidgetDetails.WidgetType == 'Table') {
+        this.tableHeader = settings;
+      }
+      else if (this.dynamicWidgetDetails.WidgetType == 'Pie') {
+
+      }
+      else if (this.dynamicWidgetDetails.WidgetType == 'LineGraph' || this.dynamicWidgetDetails.WidgetType == 'BarGraph') {
+        //this.selectedTheme = this.isCustome ? themeCSS.ChartColorTheme : this.selectedTheme;
+        this.lineBarGraphList = settings.Details;
+        this.dataSource = new MatTableDataSource<any>(this.lineBarGraphList);
+
+      }
+      else if (this.dynamicWidgetDetails.WidgetType == 'Html') {
+        // this.rteObj.executeCommand('insertHTML', this.dynamicWidgetDetails.WidgetSettings);
+
+      }
+
+    }
   }
 }
 

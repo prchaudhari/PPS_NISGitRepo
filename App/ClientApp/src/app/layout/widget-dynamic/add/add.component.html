@@ -11,23 +11,23 @@
           <div class="col-sm-7">
             <div class="row">
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
-                <label>Widget Name</label>
+                <label>Widget Name</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" formControlName="WidgetName" />
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
-                <label>Title</label>
+                <label>Title</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" formControlName="WidgetTitle" />
               </div>
             </div>
             <div class="row">
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
-                <label>Page Type</label>
+                <label>Page Type</label><span class="text-danger ml-2">*</span>
                 <select formControlName="PageType" (change)="onPageTypeSelected($event)" class="form-control">
                   <option *ngFor="let pt of pageTypeList" [value]="pt.Identifier">{{pt.PageTypeName}}</option>
                 </select>
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
-                <label>Entity</label>
+                <label>Entity</label><span class="text-danger ml-2">*</span>
                 <select formControlName="Entity" (change)="onEntitySelected($event)" class="form-control">
                   <option *ngFor="let pt of entityList" [value]="pt.Identifier">{{pt.Name}}</option>
                 </select>
@@ -44,7 +44,7 @@
                 <div class="widget-card-small widget-card">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" id="inputWidgetForm" (click)="setWidgetType('Form')" [checked]="selectedLink=='Form'">
+                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetForm" (click)="setWidgetType('Form')" [checked]="selectedLink=='Form'">
                       <span class="fa fa-list-alt"></span>
                     </label>
                   </div>
@@ -55,7 +55,7 @@
                 <div class="widget-card-small widget-card">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" id="inputWidgetTable" (click)="setWidgetType('Table')" [checked]="selectedLink=='Table'">
+                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetTable" (click)="setWidgetType('Table')" [checked]="selectedLink=='Table'">
                       <span class="fa fa-table"></span>
                     </label>
                   </div>
@@ -66,7 +66,7 @@
                 <div class="widget-card-small widget-card">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" id="inputWidgetLineGraph" (click)="setWidgetType('LineGraph')" [checked]="selectedLink=='LineGraph'">
+                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetLineGraph" (click)="setWidgetType('LineGraph')" [checked]="selectedLink=='LineGraph'">
                       <span class="fa fa-line-chart"></span>
                     </label>
                   </div>
@@ -77,7 +77,7 @@
                 <div class="widget-card-small widget-card">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" id="inputWidgetBarGraph" (click)="setWidgetType('BarGraph')" [checked]="selectedLink=='BarGraph'">
+                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetBarGraph" (click)="setWidgetType('BarGraph')" [checked]="selectedLink=='BarGraph'">
                       <span class="fa fa-bar-chart"></span>
                     </label>
                   </div>
@@ -88,7 +88,7 @@
                 <div class="widget-card-small widget-card">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" id="inputWidgetPieChart" (click)="setWidgetType('PieChart')" [checked]="selectedLink=='PieChart'">
+                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetPieChart" (click)="setWidgetType('PieChart')" [checked]="selectedLink=='PieChart'">
                       <span class="fa fa-pie-chart"></span>
                     </label>
                   </div>

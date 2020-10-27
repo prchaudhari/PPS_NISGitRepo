@@ -79,6 +79,7 @@
     <Compile Include="Country.cs" />
     <Compile Include="CustomerInformation.cs" />
     <Compile Include="DashboardData.cs" />
+    <Compile Include="DynamicWidget\DynamicWidgetTableEntity.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityFieldMap.cs" />
     <Compile Include="Enum\Activity.cs" />

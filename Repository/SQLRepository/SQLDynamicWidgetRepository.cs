@@ -122,7 +122,8 @@ namespace nIS
                             if (item.WidgetFilterSettings != null && item.WidgetFilterSettings != "")
                             {
                                 List<DynamicWidgetFilterDetail> details = JsonConvert.DeserializeObject<List<DynamicWidgetFilterDetail>>(item.WidgetFilterSettings);
-                                details.ToList().ForEach(d => {
+                                details.ToList().ForEach(d =>
+                                {
                                     d.DynamicWidgetId = item.Id;
                                 });
                                 nISEntitiesDataContext.DynamicWidgetFilterDetails.AddRange(details);
@@ -198,11 +199,12 @@ namespace nIS
                         if (item.WidgetFilterSettings != null && item.WidgetFilterSettings != "")
                         {
                             List<DynamicWidgetFilterDetail> existingDetails = new List<DynamicWidgetFilterDetail>();
-                            existingDetails= nISEntitiesDataContext.DynamicWidgetFilterDetails.Where(d => d.DynamicWidgetId == item.Id).ToList();
+                            existingDetails = nISEntitiesDataContext.DynamicWidgetFilterDetails.Where(d => d.DynamicWidgetId == item.Id).ToList();
                             nISEntitiesDataContext.DynamicWidgetFilterDetails.RemoveRange(existingDetails);
 
                             List<DynamicWidgetFilterDetail> details = JsonConvert.DeserializeObject<List<DynamicWidgetFilterDetail>>(item.WidgetFilterSettings);
-                            details.ToList().ForEach(d => {
+                            details.ToList().ForEach(d =>
+                            {
                                 d.DynamicWidgetId = item.Id;
                             });
                             nISEntitiesDataContext.DynamicWidgetFilterDetails.AddRange(details);
@@ -248,7 +250,7 @@ namespace nIS
                     foreach (DynamicWidget dynamicWidget in dynamicWidgets)
                     {
                         DynamicWidgetRecord dynamicWidgetRecord = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.Id == dynamicWidget.Identifier).FirstOrDefault();
-                      
+
                         dynamicWidgetRecord.IsDeleted = true;
                         nISEntitiesDataContext.SaveChanges();
                         if (dynamicWidgetRecord.WidgetFilterSettings != null && dynamicWidgetRecord.WidgetFilterSettings != "")
@@ -608,6 +610,17 @@ namespace nIS
                     else
                     {
                         queryString.Append(string.Format("WidgetName.Contains(\"{0}\") and ", dynamicWidgetSearchParameter.DynamicWidgetName));
+                    }
+                }
+                if (validationEngine.IsValidText(dynamicWidgetSearchParameter.CreatedBy))
+                {
+                    if (dynamicWidgetSearchParameter.SearchMode == SearchMode.Equals)
+                    {
+                        queryString.Append(string.Format("CreatedByName.Equals(\"{0}\") and ", dynamicWidgetSearchParameter.CreatedBy));
+                    }
+                    else
+                    {
+                        queryString.Append(string.Format("CreatedByName.Contains(\"{0}\") and ", dynamicWidgetSearchParameter.CreatedBy));
                     }
                 }
                 if (validationEngine.IsValidText(dynamicWidgetSearchParameter.DynamicWidgetType))

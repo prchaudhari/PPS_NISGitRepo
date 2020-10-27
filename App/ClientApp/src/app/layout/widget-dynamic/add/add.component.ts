@@ -234,10 +234,20 @@ export class AddComponent implements OnInit {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/dynamicwidget')) {
           //set passing parameters to localstorage.
-          this.params = JSON.parse(localStorage.getItem('dynamicWidgetEditRouteparams'));
+
           if (localStorage.getItem('dynamicWidgetEditRouteparams')) {
+            this.params = JSON.parse(localStorage.getItem('dynamicWidgetEditRouteparams'));
             this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
             //this.getWidgetDetails();
+          }
+          else {
+            if (localStorage.getItem('dynamicWidgetAddRouteparams')) {
+              this.params = JSON.parse(localStorage.getItem('dynamicWidgetAddRouteparams'));
+            }
+            else {
+              localStorage.removeItem("dynamicWidgetAddRouteparams");
+
+            }
           }
         } else {
           localStorage.removeItem("dynamicWidgetEditRouteparams");
@@ -288,6 +298,22 @@ export class AddComponent implements OnInit {
       this.updateOperationMode = false;
 
     }
+    if (localStorage.getItem('dynamicWidgetAddRouteparams')) {
+      this.params = JSON.parse(localStorage.getItem('dynamicWidgetAddRouteparams'));
+      this.dynamicWidgetDetails.WidgetName = this.params.Routeparams.passingparams.WidgetName;
+      this.dynamicWidgetDetails.WidgetType = this.params.Routeparams.passingparams.WidgetType;
+      this.dynamicWidgetDetails.PageTypeId = this.params.Routeparams.passingparams.PageTypeId;
+      this.dynamicWidgetDetails.EntityId = this.params.Routeparams.passingparams.EntityId;
+      this.dynamicWidgetDetails.Title = this.params.Routeparams.passingparams.Title;
+      this.DynamicWidgetForm.patchValue({
+        WidgetName: this.dynamicWidgetDetails.WidgetName,
+        PageType: this.dynamicWidgetDetails.PageTypeId,
+        Entity: this.dynamicWidgetDetails.EntityId,
+        WidgetTitle: this.dynamicWidgetDetails.Title,
+      });
+      this.selectedLink = this.dynamicWidgetDetails.WidgetType;
+    }
+   
     this.getPageTypes();
     this.getEntities();
   }

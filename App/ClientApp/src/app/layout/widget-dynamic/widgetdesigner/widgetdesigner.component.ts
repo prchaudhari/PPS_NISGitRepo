@@ -1,10 +1,11 @@
-import { Component, OnInit, Injector, ViewChild } from '@angular/core';
+import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy, SecurityContext } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Constants } from '../../../shared/constants/constants';
 import { ErrorMessageConstants } from '../../../shared/constants/constants';
 import { MessageDialogService } from '../../../shared/services/mesage-dialog.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { DynamicWidgetService } from '../dynamicWidget.service';
 import { DynamicWidget } from '../dynamicwidget';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -14,7 +15,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 import { TemplateService } from '../../template/template.service';
-import { RichTextEditorComponent, MarkdownFormatter, EditorMode,RichTextEditor } from '@syncfusion/ej2-angular-richtexteditor';
+import { URLConfiguration } from '../../../shared/urlConfiguration/urlconfiguration';
+import { ConfigConstants } from '../../../shared/constants/configConstants';
+import { RichTextEditorComponent, MarkdownFormatter, EditorMode, RichTextEditor } from '@syncfusion/ej2-angular-richtexteditor';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AssetLibraryService } from '../../asset-libraries/asset-library.service';
+import { map } from 'rxjs/operators';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-widgetdesigner',
   templateUrl: './widgetdesigner.component.html',
@@ -22,7 +29,7 @@ import { RichTextEditorComponent, MarkdownFormatter, EditorMode,RichTextEditor }
   providers: [ToolbarService, LinkService, ImageService, HtmlEditorService]
 })
 export class WidgetdesignerComponent implements OnInit {
-  @ViewChild('htmleditor', {static: false}) rteObj: RichTextEditorComponent;
+  @ViewChild('htmleditor', { static: false }) rteObj: RichTextEditorComponent;
   //html editor code
   htmlContent = '';
   config: AngularEditorConfig = {
@@ -67,7 +74,7 @@ export class WidgetdesignerComponent implements OnInit {
     this.isCustome = true;
   }
   public filterConditions: any[] = [];
-  
+
   public isTheme1Active: boolean = false;
   public isTheme2Active: boolean = false;
   public isTheme3Active: boolean = false;
@@ -105,8 +112,18 @@ export class WidgetdesignerComponent implements OnInit {
     { "Name": "Not Contains", "Identifier": "NotContains" }
 
   ];
+  public fontFamilyList: any[] = [
+    { "Name": "Select", "Identifier": "0" },
+    { "Name": "Serif", "Identifier": "Serif" },
+    { "Name": "Sans-serif", "Identifier": "Sans-serif" },
+    { "Name": "Monospace", "Identifier": "Monospace" },
+    
+  ];
   public updateOperationMode: boolean;
   dataSource = new MatTableDataSource<any>(this.lineBarGraphList);
+  public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
+  public assets: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset' }];
+  public baseURL = ConfigConstants.BaseURL;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -158,8 +175,12 @@ export class WidgetdesignerComponent implements OnInit {
     private _router: Router,
     private fb: FormBuilder,
     private injector: Injector,
+    private uiLoader: NgxUiLoaderService,
     private _messageDialogService: MessageDialogService,
-    private dynamicWidgetService: DynamicWidgetService
+    private _http: HttpClient,
+    private dynamicWidgetService: DynamicWidgetService,
+    private sanitizer: DomSanitizer,
+    private localstorageservice: LocalStorageService
   ) {
     this.dynamicWidgetDetails = new DynamicWidget;
     _router.events.subscribe(e => {
@@ -183,6 +204,7 @@ export class WidgetdesignerComponent implements OnInit {
             this.dynamicWidgetDetails.Title = this.params.Routeparams.passingparams.Title;
             this.selectedLink = this.dynamicWidgetDetails.WidgetType;
             this.getEntityField(this.EntityId);
+            this.getAssetLibraries();
           }
         } else {
           localStorage.removeItem("widgetDesignerParams");
@@ -208,10 +230,10 @@ export class WidgetdesignerComponent implements OnInit {
       FilterField: [0],
       FilterOperator: [0],
       FilterValue: [null],
-      FontColor: [null],
-      FontSize: [null],
-      FontWeight: [0],
-      FontType: [0],
+      TitleColor: [null],
+      TitleSize: [null],
+      TitleWeight: [0],
+      TitleType: [0],
       HeaderColor: [null],
       HeaderSize: [null],
       HeaderWeight: [0],
@@ -220,7 +242,9 @@ export class WidgetdesignerComponent implements OnInit {
       DataSize: [null],
       DataWeight: [0],
       DataType: [0],
-      HTMLEntityField: [0]
+      HTMLEntityField: [0],
+      HTMLAsset: [0],
+      HTMLAssetLibrary: [0]
     });
     if (this.updateOperationMode) {
       this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
@@ -251,10 +275,10 @@ export class WidgetdesignerComponent implements OnInit {
         PageType: this.dynamicWidgetDetails.PageTypeId,
         Entity: this.dynamicWidgetDetails.EntityId,
         WidgetTitle: this.dynamicWidgetDetails.Title,
-        FontColor: themeCSS.FontColor,
-        FontSize: themeCSS.FontSize,
-        FontWeight: themeCSS.FontWeight,
-        FontType: themeCSS.FontType,
+        TitleColor: themeCSS.TitleColor,
+        TitleSize: themeCSS.TitleSize,
+        TitleWeight: themeCSS.TitleWeight,
+        TitleType: themeCSS.TitleType,
         HeaderColor: themeCSS.HeaderColor,
         HeaderSize: themeCSS.HeaderSize,
         HeaderWeight: themeCSS.HeaderWeight,
@@ -270,7 +294,7 @@ export class WidgetdesignerComponent implements OnInit {
     this.isCustome = this.dynamicWidgetDetails.ThemeType == "Default" ? false : true;
 
     if (this.dynamicWidgetDetails.WidgetFilterSettings != null && this.dynamicWidgetDetails.WidgetFilterSettings != '') {
-      this.widgetFilterlist =  JSON.parse(this.dynamicWidgetDetails.WidgetFilterSettings);
+      this.widgetFilterlist = JSON.parse(this.dynamicWidgetDetails.WidgetFilterSettings);
       this.widgetFilterlist.forEach(item => {
         var object = item;
         object.OperatorName = this.conditionList.filter(i => i.Identifier == item.Operator)[0].Name;
@@ -282,16 +306,16 @@ export class WidgetdesignerComponent implements OnInit {
 
       var settings;
       if (this.dynamicWidgetDetails.WidgetType != 'Html') {
-        settings= JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
+        settings = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
       }
-       
+
       if (this.dynamicWidgetDetails.WidgetType == 'Form') {
         this.formList = settings;
       }
       else if (this.dynamicWidgetDetails.WidgetType == 'Table') {
         this.tableHeader = settings;
       }
-      else if (this.dynamicWidgetDetails.WidgetType == 'Pie') {
+      else if (this.dynamicWidgetDetails.WidgetType == 'PieChart') {
         this.selectedTheme = this.isCustome ? themeCSS.ChartColorTheme : this.selectedTheme;
         this.DynamicWidgetForm.patchValue({
           PieSeries: settings.PieSeries,
@@ -307,12 +331,12 @@ export class WidgetdesignerComponent implements OnInit {
         });
       }
       else if (this.dynamicWidgetDetails.WidgetType == 'Html') {
-        this.rteObj.executeCommand('insertHTML', this.dynamicWidgetDetails.WidgetSettings); 
+        this.rteObj.executeCommand('insertHTML', this.dynamicWidgetDetails.WidgetSettings);
 
       }
 
     }
-    
+
     this.DynamicWidgetForm.patchValue({
       WidgetName: this.dynamicWidgetDetails.WidgetName,
       PageType: this.dynamicWidgetDetails.PageTypeId,
@@ -352,6 +376,44 @@ export class WidgetdesignerComponent implements OnInit {
 
   }
 
+  async getAssetLibraries() {
+    let assetLibraryService = this.injector.get(AssetLibraryService);
+    var searchParameter: any = {};
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = "Id";
+    searchParameter.SearchMode = Constants.Contains;
+
+    var response = await assetLibraryService.getAssetLibrary(searchParameter);
+    this.assetLibraryList.push(...response.assestLibraryList);
+  }
+
+  onAssetLibrarySelected(event) {
+    const value = event.target.value;
+    if (value != '0') {
+      this.LoadAsset(value);
+    } else {
+      this.assets = [];
+      this.assets.push({ 'Identifier': '0', 'Name': 'Select Asset' });
+    }
+  }
+
+
+  async LoadAsset(value) {
+    this.assets = [];
+    this.assets.push({ 'Identifier': '0', 'Name': 'Select Asset' });
+    let assetLibraryService = this.injector.get(AssetLibraryService);
+
+    let assetSearchParameter: any = {};
+    assetSearchParameter.AssetLibraryIdentifier = String(value);
+    assetSearchParameter.IsDeleted = false;
+    assetSearchParameter.SortParameter = {};
+    assetSearchParameter.SortParameter.SortColumn = Constants.Name;
+    assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
+    assetSearchParameter.SearchMode = Constants.Contains;
+
+    var response = await assetLibraryService.getAsset(assetSearchParameter);
+    this.assets.push(...response.assestList);
+  }
 
   async getEntityField(value) {
     var data = await this.dynamicWidgetService.getEntityFields(value);
@@ -471,18 +533,85 @@ export class WidgetdesignerComponent implements OnInit {
 
   public AddHTMLField() {
     var entityField = this.entityFieldList.filter(item => item.Identifier == this.DynamicWidgetForm.value.HTMLEntityField)[0];
-    var text = "{{" + entityField.Name + "_" + entityField.Identifier+"}}";
+    var text = "{{" + entityField.Name + "_" + entityField.Identifier + "}}";
 
     this.rteObj.executeCommand('insertText', text);
     this.DynamicWidgetForm.patchValue({
       HTMLEntityField: 0,
     })
- 
+  }
+
+  public AddAsset() {
+    var asset = this.assets.filter(item => item.Identifier == this.DynamicWidgetForm.value.HTMLAsset)[0];
+   
+    this.PreviewAsset(asset);
+    this.DynamicWidgetForm.patchValue({
+      HTMLAssetLibrary: 0,
+      HTMLAsset: 0
+    });
+  }
+
+  PreviewAsset(asset: any): void {
+    var fileType = asset.Name.split('.').pop();
+    var isImage;
+    var source;
+    if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
+      isImage = true;
+    }
+    else {
+      isImage = false;
+    }
+
+    this.uiLoader.start();
+    const headers = {};
+
+    var currentUser = this.localstorageservice.GetCurrentUser();
+    headers['Authorization'] = currentUser.token_type + ' ' + currentUser.access_token;
+    headers['TenantCode'] = currentUser.TenantCode;
+    var url = this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + asset.Identifier;
+    this._http.get(url, { responseType: "arraybuffer", observe: 'response', headers: headers }).pipe(map(response => response))
+      .subscribe(
+        data => {
+          this.uiLoader.stop();
+          let contentType = data.headers.get('Content-Type');
+          let fileName = data.headers.get('x-filename');
+          const blob = new Blob([data.body], { type: contentType });
+          if (isImage) {
+            let objectURL = URL.createObjectURL(blob);
+            source = this.sanitizer.bypassSecurityTrustHtml(objectURL);
+            var img = document.createElement('img');
+            img.src = source;
+            this.rteObj.executeCommand('insertHTML', img);
+          }
+          else {
+            let objectURL = URL.createObjectURL(blob);
+            source = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL)); //this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            var video = document.createElement('video');
+            video.src = source;
+            video.controls = true;
+            this.rteObj.executeCommand('insertHTML', video);
+          }
+        },
+        error => {
+          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          this.uiLoader.stop();
+        });
   }
 
   public disableAddHTMLField() {
 
     if (this.DynamicWidgetForm.value.HTMLEntityField == null || this.DynamicWidgetForm.value.HTMLEntityField == 0) {
+      return true;
+    }
+    return false
+  }
+
+  public disableAssetAdd() {
+
+    if (this.DynamicWidgetForm.value.HTMLAssetLibrary == null || this.DynamicWidgetForm.value.HTMLAssetLibrary == 0) {
+      return true;
+    }
+    if (this.DynamicWidgetForm.value.HTMLAsset == null || this.DynamicWidgetForm.value.HTMLAsset == 0) {
       return true;
     }
     return false
@@ -575,7 +704,7 @@ export class WidgetdesignerComponent implements OnInit {
     this.dynamicWidgetDetails.ThemeType = this.isDefault == true ? "Default" : "Custome";
     this.dynamicWidgetDetails.ThemeCSS = '';
     var chartTheme = '';
-   
+
     if (this.selectedLink == 'Form') {
       this.dynamicWidgetDetails.WidgetSettings = JSON.stringify(this.formList);
     }
@@ -587,14 +716,14 @@ export class WidgetdesignerComponent implements OnInit {
       object.Details = this.lineBarGraphList;
       object.XAxis = this.DynamicWidgetForm.value.LineBarXAxis;
       this.dynamicWidgetDetails.WidgetSettings = JSON.stringify(object);
-      chartTheme=this.selectedTheme
+      chartTheme = this.selectedTheme
     }
-    else if (this.selectedLink == 'Pie') {
+    else if (this.selectedLink == 'PieChart') {
       var object: any = {};
       object.PieSeries = this.DynamicWidgetForm.value.PieSeries;
       object.PieValue = this.DynamicWidgetForm.value.PieValue;
       this.dynamicWidgetDetails.WidgetSettings = JSON.stringify(object);
-      chartTheme = this.selectedTheme
+      chartTheme = this.selectedTheme;
     }
     else if (this.selectedLink == 'Html') {
       var html = this.rteObj.getHtml();
@@ -603,10 +732,10 @@ export class WidgetdesignerComponent implements OnInit {
     if (this.dynamicWidgetDetails.ThemeType == "Custome") {
 
       var themeObject = {
-        "FontColor": this.DynamicWidgetForm.value.FontColor,
-        "FontSize": this.DynamicWidgetForm.value.FontSize,
-        "FontWeight": this.DynamicWidgetForm.value.FontWeight,
-        "FontType": this.DynamicWidgetForm.value.FontType,
+        "TitleColor": this.DynamicWidgetForm.value.TitleColor,
+        "TitleSize": this.DynamicWidgetForm.value.TitleSize,
+        "TitleWeight": this.DynamicWidgetForm.value.TitleWeight,
+        "TitleType": this.DynamicWidgetForm.value.TitleType,
         "HeaderColor": this.DynamicWidgetForm.value.HeaderColor,
         "HeaderSize": this.DynamicWidgetForm.value.HeaderSize,
         "HeaderWeight": this.DynamicWidgetForm.value.HeaderWeight,
@@ -625,7 +754,7 @@ export class WidgetdesignerComponent implements OnInit {
     if (this.widgetFilterlist.length > 0) {
       this.dynamicWidgetDetails.WidgetFilterSettings = JSON.stringify(this.widgetFilterlist);
     }
-    
+
 
     var userid = localStorage.getItem('UserId');
     this.dynamicWidgetDetails.CreatedBy = Number(userid);
@@ -643,16 +772,28 @@ export class WidgetdesignerComponent implements OnInit {
   }
 
   NavigateToBack() {
+
     let queryParams = {
       Routeparams: {
         passingparams: {
-          "DynamicWidgetName": this.WidgetName,
-          "DynamicWidgetIdentifier": this.DynamicWidgetIdentifier,
+          "WidgetName": this.dynamicWidgetDetails.WidgetName,
+          "WidgetType": this.dynamicWidgetDetails.WidgetType,
+          "PageTypeId": this.dynamicWidgetDetails.PageTypeId,
+          "EntityId": this.dynamicWidgetDetails.EntityId,
+          "Title": this.dynamicWidgetDetails.Title,
+          "updateOperationMode": this.updateOperationMode,
+          "DynamicWidgetIdentifier": this.updateOperationMode ? this.dynamicWidgetDetails.Identifier : 0,
         }
       }
     }
-    localStorage.setItem("dynamicWidgetEditRouteparams", JSON.stringify(queryParams))
-    this._router.navigate(['dynamicwidget', 'Edit']);
+    if (this.updateOperationMode) {
+      localStorage.setItem("dynamicWidgetEditRouteparams", JSON.stringify(queryParams))
+      this._router.navigate(['dynamicwidget', 'Edit']);
+    }
+    else {
+      localStorage.setItem("dynamicWidgetAddRouteparams", JSON.stringify(queryParams))
+      this._router.navigate(['dynamicwidget', 'Add']);
+    }
   }
 
   theme1() {

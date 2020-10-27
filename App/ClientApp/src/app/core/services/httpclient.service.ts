@@ -40,6 +40,7 @@ export class HttpClientService {
       this.responseData = this.http.request(req);
       return this.responseData;
   }
+ 
     
 
 }
