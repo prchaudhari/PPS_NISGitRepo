@@ -171,6 +171,28 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method helps to clone dynamicWidget.
+        /// </summary>
+        /// <param name="dynamicWidgetIdentifier"></param>
+        /// <returns>boolean value</returns>
+        [HttpPost]
+        public bool Clone(long dynamicWidgetIdentifier)
+        {
+            bool result = false;
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.dynamicWidgetManager.CloneDynamicWidget(dynamicWidgetIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// This method helps to preview page.
         /// </summary>
         /// <param name="pageIdentifier"></param>

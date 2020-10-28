@@ -496,12 +496,12 @@ namespace nIS
                             string theme = string.Empty;
                             if (themeDetails != null)
                             {
-                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme == "")
+                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
                                 {
                                     theme = themeDetails.ChartColorTheme;
 
                                 }
-                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme == "")
+                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
                                 {
                                     theme = themeDetails.ColorTheme;
 
@@ -553,12 +553,12 @@ namespace nIS
                             string theme = string.Empty;
                             if (themeDetails != null)
                             {
-                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme == "")
+                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
                                 {
                                     theme = themeDetails.ChartColorTheme;
 
                                 }
-                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme == "")
+                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
                                 {
                                     theme = themeDetails.ColorTheme;
 
@@ -608,12 +608,12 @@ namespace nIS
                             string theme = string.Empty;
                             if (themeDetails != null)
                             {
-                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme == "")
+                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
                                 {
                                     theme = themeDetails.ChartColorTheme;
 
                                 }
-                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme == "")
+                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
                                 {
                                     theme = themeDetails.ColorTheme;
 
@@ -663,6 +663,29 @@ namespace nIS
             }
             return result;
         }
+
+        /// <summary>
+        /// This method will call clone dynamicWidget method of repository
+        /// </summary>
+        /// <param name="dynamicWidgetIdentifier">DynamicWidget identifier</param>
+        /// <param name="tenantCode">Tenant code of dynamicWidget.</param>
+        /// <returns>
+        /// Returns true if dynamicWidgets clone successfully, false otherwise.
+        /// </returns>
+        public bool CloneDynamicWidget(long dynamicWidgetIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                result = this.dynamicWidgetRepository.CloneDynamicWidget(dynamicWidgetIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
+
         #endregion
 
         #region Private Methods

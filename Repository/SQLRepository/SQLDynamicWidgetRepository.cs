@@ -438,6 +438,69 @@ namespace nIS
             return dynamicWidgetCount;
         }
 
+        /// <summary>
+        /// This method reference to clone dynamicWidget
+        /// </summary>
+        /// <param name="dynamicWidgetIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>return true if dynamicWidget clone successfully, else false</returns>
+        public bool CloneDynamicWidget(long dynamicWidgetIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dynamicWidgetRecord = nISEntitiesDataContext.DynamicWidgetRecords.Where(itm => itm.Id == dynamicWidgetIdentifier).FirstOrDefault();
+                    if (dynamicWidgetRecord == null)
+                    {
+                        throw new DynamicWidgetNotFoundException(tenantCode);
+                    }
+
+                    var lastDynamicWidgetRecord = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.EntityId == dynamicWidgetRecord.EntityId && item.PageTypeId == dynamicWidgetRecord.PageTypeId && item.IsDeleted == false).OrderByDescending(itm => itm.Id).FirstOrDefault();
+                    if (lastDynamicWidgetRecord == null)
+                    {
+                        throw new DynamicWidgetNotFoundException(tenantCode);
+                    }
+
+                    IList<DynamicWidgetRecord> dynamicWidgetRecordsForClone = new List<DynamicWidgetRecord>();
+                    dynamicWidgetRecordsForClone.Add(new DynamicWidgetRecord()
+                    {
+                        WidgetName = dynamicWidgetRecord.WidgetName,
+                        WidgetType = dynamicWidgetRecord.WidgetType,
+                        PageTypeId = dynamicWidgetRecord.PageTypeId,
+                        EntityId = dynamicWidgetRecord.EntityId,
+                        Title = dynamicWidgetRecord.Title,
+                        ThemeType = dynamicWidgetRecord.ThemeType,
+                        ThemeCSS = dynamicWidgetRecord.ThemeCSS,
+                        WidgetSettings = dynamicWidgetRecord.WidgetSettings,
+                        WidgetFilterSettings = dynamicWidgetRecord.WidgetFilterSettings,
+                        Status = "New",
+                        CreatedBy = dynamicWidgetRecord.CreatedBy,
+                        CreatedOn = DateTime.UtcNow,
+                        LastUpdatedBy = dynamicWidgetRecord.CreatedBy,
+                        IsActive = true,
+                        IsDeleted = false,
+                        TenantCode = tenantCode
+                    });
+
+                    nISEntitiesDataContext.DynamicWidgetRecords.AddRange(dynamicWidgetRecordsForClone);
+                    nISEntitiesDataContext.SaveChanges();
+                }
+
+                result = true;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return result;
+        }
 
         #endregion
 

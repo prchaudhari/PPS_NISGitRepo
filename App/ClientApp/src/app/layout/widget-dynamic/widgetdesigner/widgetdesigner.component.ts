@@ -30,6 +30,9 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browse
 })
 export class WidgetdesignerComponent implements OnInit {
   @ViewChild('htmleditor', { static: false }) rteObj: RichTextEditorComponent;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
   //html editor code
   htmlContent = '';
   config: AngularEditorConfig = {
@@ -128,10 +131,11 @@ export class WidgetdesignerComponent implements OnInit {
   public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
   public assets: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset' }];
   public baseURL = ConfigConstants.BaseURL;
+  public pieChartSeriesEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
+  public pieChartValueEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
+  public lineBarGraphFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
 
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
+  
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -425,6 +429,18 @@ export class WidgetdesignerComponent implements OnInit {
     data.forEach(item => {
       this.entityFieldList.push(item);
     });
+    this.entityFieldList.forEach(item => {
+      if (item.DataType != null && item.DataType == "String") {
+        this.pieChartSeriesEntityFields.push(item);
+      }
+    });
+
+    this.entityFieldList.forEach(item => {
+      if (item.DataType != null && item.DataType != "String") {
+        this.pieChartValueEntityFields.push(item);
+        this.lineBarGraphFields.push(item);
+      }
+    });
 
     if (this.entityFieldList.length == 0) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
@@ -565,7 +581,7 @@ export class WidgetdesignerComponent implements OnInit {
       var img = document.createElement('img');
       img.src = url;
       this.rteObj.executeCommand('insertHTML', img);
-      //this.rteObj.height="300"
+   
     }
     else {
       isImage = false;
@@ -708,12 +724,12 @@ export class WidgetdesignerComponent implements OnInit {
         return true;
       }
     }
-    else if (this.selectedLink == "Html") {
-      var html = this.rteObj.getHtml();
-      if (html == null || html == "") {
-        return html;
-      }
-    }
+    //else if (this.selectedLink == "Html") {
+    //  var html = this.rteObj.getHtml();
+    //  if (html == null || html == "") {
+    //    return html;
+    //  }
+    //}
     if (this.isCustome) {
 
       if (this.DynamicWidgetForm.value.TitleColor == null && this.DynamicWidgetForm.value.TitleColor == "") {
@@ -757,6 +773,7 @@ export class WidgetdesignerComponent implements OnInit {
     return false;
 
   }
+
   async saveWidgetDetails() {
     this.dynamicWidgetDetails.ThemeType = this.isDefault == true ? "Default" : "Custome";
     this.dynamicWidgetDetails.ThemeCSS = '';

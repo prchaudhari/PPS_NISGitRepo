@@ -69,12 +69,20 @@ namespace nIS
         IList<EntityFieldMap> GetEntityFields(long entityIdentifier, string tenantCode);
 
         /// <summary>
-        /// This method reference to publish page
+        /// This method reference to publish dynamic widget
         /// </summary>
         /// <param name="widgetIdnetifier"></param>
         /// <param name="tenantCode"></param>
         /// <returns></returns>
         bool PublishDynamicWidget(long widgetIdnetifier, string tenantCode);
+
+        /// <summary>
+        /// This method reference to clone dynamic widget
+        /// </summary>
+        /// <param name="dynamicWidgetIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        bool CloneDynamicWidget(long dynamicWidgetIdentifier, string tenantCode);
 
     }
 }
