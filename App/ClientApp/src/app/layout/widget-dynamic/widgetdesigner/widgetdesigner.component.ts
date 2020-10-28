@@ -30,6 +30,9 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browse
 })
 export class WidgetdesignerComponent implements OnInit {
   @ViewChild('htmleditor', { static: false }) rteObj: RichTextEditorComponent;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
   //html editor code
   htmlContent = '';
   config: AngularEditorConfig = {
@@ -82,7 +85,11 @@ export class WidgetdesignerComponent implements OnInit {
   public isTheme5Active: boolean = false;
   public isTheme0Active: boolean = true;
   //Functions call to click the theme of the page--
+  public inlineMode: object = { enable: false, onSelection: false };
+  public format: Object = {
+    width: 'auto',
 
+  };
   public pageSize = 5;
   public currentPage = 0;
   public totalSize = 0;
@@ -117,17 +124,18 @@ export class WidgetdesignerComponent implements OnInit {
     { "Name": "Serif", "Identifier": "Serif" },
     { "Name": "Sans-serif", "Identifier": "Sans-serif" },
     { "Name": "Monospace", "Identifier": "Monospace" },
-    
+
   ];
   public updateOperationMode: boolean;
   dataSource = new MatTableDataSource<any>(this.lineBarGraphList);
   public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
   public assets: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset' }];
   public baseURL = ConfigConstants.BaseURL;
+  public pieChartSeriesEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
+  public pieChartValueEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
+  public lineBarGraphFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
 
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
+  
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -421,6 +429,18 @@ export class WidgetdesignerComponent implements OnInit {
     data.forEach(item => {
       this.entityFieldList.push(item);
     });
+    this.entityFieldList.forEach(item => {
+      if (item.DataType != null && item.DataType == "String") {
+        this.pieChartSeriesEntityFields.push(item);
+      }
+    });
+
+    this.entityFieldList.forEach(item => {
+      if (item.DataType != null && item.DataType != "String") {
+        this.pieChartValueEntityFields.push(item);
+        this.lineBarGraphFields.push(item);
+      }
+    });
 
     if (this.entityFieldList.length == 0) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
@@ -543,7 +563,7 @@ export class WidgetdesignerComponent implements OnInit {
 
   public AddAsset() {
     var asset = this.assets.filter(item => item.Identifier == this.DynamicWidgetForm.value.HTMLAsset)[0];
-   
+
     this.PreviewAsset(asset);
     this.DynamicWidgetForm.patchValue({
       HTMLAssetLibrary: 0,
@@ -557,45 +577,23 @@ export class WidgetdesignerComponent implements OnInit {
     var source;
     if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
       isImage = true;
+      var url = "http://localhost/API/test/assets/10/COPY.png";
+      var img = document.createElement('img');
+      img.src = url;
+      this.rteObj.executeCommand('insertHTML', img);
+   
     }
     else {
       isImage = false;
+
+      var url = "http://localhost/API/test/assets/31/testvideo.mp4";
+
+      var video = document.createElement('video');
+      video.src = url;
+      video.controls = true;
+      this.rteObj.executeCommand('insertHTML', video);
     }
 
-    this.uiLoader.start();
-    const headers = {};
-
-    var currentUser = this.localstorageservice.GetCurrentUser();
-    headers['Authorization'] = currentUser.token_type + ' ' + currentUser.access_token;
-    headers['TenantCode'] = currentUser.TenantCode;
-    var url = this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + asset.Identifier;
-    this._http.get(url, { responseType: "arraybuffer", observe: 'response', headers: headers }).pipe(map(response => response))
-      .subscribe(
-        data => {
-          this.uiLoader.stop();
-          let contentType = data.headers.get('Content-Type');
-          let fileName = data.headers.get('x-filename');
-          const blob = new Blob([data.body], { type: contentType });
-          if (isImage) {
-            let objectURL = URL.createObjectURL(blob);
-            source = this.sanitizer.bypassSecurityTrustHtml(objectURL);
-            var img = document.createElement('img');
-            img.src = source;
-            this.rteObj.executeCommand('insertHTML', img);
-          }
-          else {
-            let objectURL = URL.createObjectURL(blob);
-            source = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL)); //this.sanitizer.bypassSecurityTrustUrl(objectURL);
-            var video = document.createElement('video');
-            video.src = source;
-            video.controls = true;
-            this.rteObj.executeCommand('insertHTML', video);
-          }
-        },
-        error => {
-          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
-          this.uiLoader.stop();
-        });
   }
 
   public disableAddHTMLField() {
@@ -699,12 +697,87 @@ export class WidgetdesignerComponent implements OnInit {
 
   }
 
-  async saveWidgetDetails() {
+  public saveButtonValidation() {
+    if (this.selectedLink == "Form") {
+      if (this.formList.length <= 0) {
+        return true;
+      }
+    }
+    else if (this.selectedLink == "Table") {
+      if (this.tableHeader.length <= 0) {
+        return true;
+      }
+    }
+    else if (this.selectedLink == 'LineGraph' || this.selectedLink == 'BarGraph') {
+      if (this.lineBarGraphList.length <= 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.LineBarXAxis == null || this.DynamicWidgetForm.value.LineBarXAxis == 0) {
+        return true;
+      }
+    }
+    else if (this.selectedLink == "PieChart") {
+      if (this.DynamicWidgetForm.value.PieValue == null || this.DynamicWidgetForm.value.PieValue == 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.PieSeries == null || this.DynamicWidgetForm.value.PieSeries == 0) {
+        return true;
+      }
+    }
+    //else if (this.selectedLink == "Html") {
+    //  var html = this.rteObj.getHtml();
+    //  if (html == null || html == "") {
+    //    return html;
+    //  }
+    //}
+    if (this.isCustome) {
 
+      if (this.DynamicWidgetForm.value.TitleColor == null && this.DynamicWidgetForm.value.TitleColor == "") {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.TitleSize == null || this.DynamicWidgetForm.value.TitleSize <= 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.TitleWeight == null || this.DynamicWidgetForm.value.TitleWeight == 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.TitleType == null || this.DynamicWidgetForm.value.TitleType == 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.HeaderColor == null && this.DynamicWidgetForm.value.HeaderColor == "") {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.HeaderSize == null || this.DynamicWidgetForm.value.HeaderSize <= 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.HeaderWeight == null || this.DynamicWidgetForm.value.HeaderWeight == 0) {
+
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.HeaderType == null || this.DynamicWidgetForm.value.HeaderType == 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.DataColor == null && this.DynamicWidgetForm.value.DataColor == "") {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.DataSize == null || this.DynamicWidgetForm.value.DataSize <= 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.DataWeight == null || this.DynamicWidgetForm.value.DataWeight == 0) {
+        return true;
+      }
+      if (this.DynamicWidgetForm.value.DataType == null || this.DynamicWidgetForm.value.DataType == 0) {
+        return true;
+      }
+    }
+    return false;
+
+  }
+
+  async saveWidgetDetails() {
     this.dynamicWidgetDetails.ThemeType = this.isDefault == true ? "Default" : "Custome";
     this.dynamicWidgetDetails.ThemeCSS = '';
     var chartTheme = '';
-
     if (this.selectedLink == 'Form') {
       this.dynamicWidgetDetails.WidgetSettings = JSON.stringify(this.formList);
     }
