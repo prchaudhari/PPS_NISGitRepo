@@ -55,3 +55,32 @@ RETURN
 )
 
 Go
+
+--To get static as well as dynamic widgets in single array by page type id and tenant code
+IF EXISTS (SELECT 1 FROM sys.objects 
+           WHERE Name = 'FnGetStaticAndDynamicWidgets'
+             AND Type IN ( N'FN', N'IF', N'TF', N'FS', N'FT' ))
+BEGIN
+    --PRINT 'User defined function Exists'
+	DROP FUNCTION [NIS].[FnGetStaticAndDynamicWidgets];
+END
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [NIS].[FnGetStaticAndDynamicWidgets] (@PageTypeId BIGINT, @TenantCode VARCHAR(50))
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT dw.ID, dw.WidgetName, dw.PageTypeId, dw.Title AS DisplayName, 0 AS Instantiable, dw.WidgetType 
+	FROM  [NIS].[DynamicWidget] dw 
+	WHERE dw.PageTypeId = @PageTypeId AND dw.IsActive = 1 AND dw.IsDeleted = 0 AND dw.TenantCode = @TenantCode
+	UNION
+	SELECT w.Id, w.WidgetName, @PageTypeId AS PageTypeId, w.DisplayName, w.Instantiable, 'Static' AS WidgetType
+	FROM [NIS].[Widget] w
+	WHERE w.PageTypeId LIKE '%'+CAST(@PageTypeId AS VARCHAR)+'%' AND w.IsActive = 1 AND w.IsDeleted = 0 AND w.TenantCode = @TenantCode
+)
+
+Go
