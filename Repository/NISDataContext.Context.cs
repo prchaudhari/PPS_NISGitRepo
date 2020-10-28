@@ -110,5 +110,19 @@ namespace nIS
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnGetParentAndChildTenant_Result>("[NISEntities].[FnGetParentAndChildTenant](@ParentTenantCode)", parentTenantCodeParameter);
         }
+    
+        [DbFunction("NISEntities", "FnGetStaticAndDynamicWidgets")]
+        public virtual IQueryable<FnGetStaticAndDynamicWidgets_Result> FnGetStaticAndDynamicWidgets(Nullable<long> pageTypeId, string tenantCode)
+        {
+            var pageTypeIdParameter = pageTypeId.HasValue ?
+                new ObjectParameter("PageTypeId", pageTypeId) :
+                new ObjectParameter("PageTypeId", typeof(long));
+    
+            var tenantCodeParameter = tenantCode != null ?
+                new ObjectParameter("TenantCode", tenantCode) :
+                new ObjectParameter("TenantCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnGetStaticAndDynamicWidgets_Result>("[NISEntities].[FnGetStaticAndDynamicWidgets](@PageTypeId, @TenantCode)", pageTypeIdParameter, tenantCodeParameter);
+        }
     }
 }

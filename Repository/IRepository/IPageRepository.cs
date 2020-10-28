@@ -101,5 +101,15 @@ namespace nIS
         /// </returns>
         IList<PageType> GetPageTypes(string tenantCode);
 
+        /// <summary>
+        /// This method gets the specified list of static as well as dynamic widgets from widgets and dynamic widgets repository.
+        /// </summary>
+        /// <param name="pageTypeId">The page type identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of static as well as dynamic widgets
+        /// </returns>
+        IList<Widget> GetStaticAndDynamicWidgets(long pageTypeId, string tenantCode);
+
     }
 }

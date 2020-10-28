@@ -770,6 +770,7 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="ParentTenantCode" Type="nvarchar(max)" />
+          <Property Name="IsTenantConfigured" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1095,6 +1096,22 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             </CollectionType>
           </ReturnType>
         </Function>
+        <Function Name="FnGetStaticAndDynamicWidgets" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="NIS">
+          <Parameter Name="PageTypeId" Type="bigint" Mode="In" />
+          <Parameter Name="TenantCode" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ID" Type="bigint" Nullable="false" />
+                <Property Name="WidgetName" Type="nvarchar" MaxLength="100" Nullable="false" />
+                <Property Name="PageTypeId" Type="bigint" />
+                <Property Name="DisplayName" Type="nvarchar" MaxLength="100" Nullable="false" />
+                <Property Name="Instantiable" Type="int" Nullable="false" />
+                <Property Name="WidgetType" Type="nvarchar" MaxLength="50" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <Function Name="FnUserTenant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="NIS">
           <Parameter Name="UserId" Type="int" Mode="In" />
           <ReturnType>
@@ -1403,6 +1420,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TenantEntityRecords" EntityType="NISModel.TenantEntityRecord" />
           <EntitySet Name="DynamicWidgetFilterDetails" EntityType="NISModel.DynamicWidgetFilterDetail" />
           <EntitySet Name="View_DynamicWidgetRecord" EntityType="NISModel.View_DynamicWidgetRecord" />
+          <FunctionImport Name="FnGetStaticAndDynamicWidgets" IsComposable="true" ReturnType="Collection(NISModel.FnGetStaticAndDynamicWidgets_Result)">
+            <Parameter Name="PageTypeId" Mode="In" Type="Int64" />
+            <Parameter Name="TenantCode" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -1654,6 +1675,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="ParentTenantCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsTenantConfigured" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="RoleRecord">
           <Key>
@@ -2480,6 +2502,14 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="PageTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EntityName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
+        <ComplexType Name="FnGetStaticAndDynamicWidgets_Result">
+          <Property Type="Int64" Name="ID" Nullable="false" />
+          <Property Type="String" Name="WidgetName" Nullable="false" MaxLength="100" />
+          <Property Type="Int64" Name="PageTypeId" Nullable="true" />
+          <Property Type="String" Name="DisplayName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="Instantiable" Nullable="false" />
+          <Property Type="String" Name="WidgetType" Nullable="false" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2710,6 +2740,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="TenantRecords">
             <EntityTypeMapping TypeName="NISModel.TenantRecord">
               <MappingFragment StoreEntitySet="Tenant">
+                <ScalarProperty Name="IsTenantConfigured" ColumnName="IsTenantConfigured" />
                 <ScalarProperty Name="ParentTenantCode" ColumnName="ParentTenantCode" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -3546,6 +3577,18 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="FnGetStaticAndDynamicWidgets" FunctionName="NISModel.Store.FnGetStaticAndDynamicWidgets">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NISModel.FnGetStaticAndDynamicWidgets_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
+                <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Instantiable" ColumnName="Instantiable" />
+                <ScalarProperty Name="WidgetType" ColumnName="WidgetType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

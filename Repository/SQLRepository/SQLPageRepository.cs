@@ -673,6 +673,44 @@ namespace nIS
             return pageTypes;
         }
 
+        /// <summary>
+        /// This method gets the specified list of static as well as dynamic widgets from widgets and dynamic widgets repository.
+        /// </summary>
+        /// <param name="pageTypeId">The page type identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of static as well as dynamic widgets
+        /// </returns>
+        public IList<Widget> GetStaticAndDynamicWidgets(long pageTypeId, string tenantCode)
+        {
+            IList<Widget> widgets = new List<Widget>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var widgetArr = nISEntitiesDataContext.FnGetStaticAndDynamicWidgets(pageTypeId, tenantCode);
+                    widgetArr.ToList().ForEach(w =>
+                    {
+                        widgets.Add(new Widget()
+                        {
+                            Identifier = w.ID,
+                            WidgetName = w.WidgetName,
+                            DisplayName = w.DisplayName,
+                            PageTypeId = w.PageTypeId ?? 0,
+                            Instantiable = w.Instantiable == 0 ? false : true,
+                            WidgetType = w.WidgetType
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return widgets;
+        }
+
         #endregion
 
         #region Private Methods

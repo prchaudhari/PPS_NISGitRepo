@@ -54,5 +54,6 @@ namespace nIS
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public string ParentTenantCode { get; set; }
+        public bool IsTenantConfigured { get; set; }
     }
 }

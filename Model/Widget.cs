@@ -51,7 +51,6 @@ namespace nIS
         /// </summary>
         private string pageTypeNames = string.Empty;
 
-        
         /// <summary>
         /// The widget description
         /// </summary>
@@ -102,6 +101,15 @@ namespace nIS
         /// </summary>
         string tenantCode = string.Empty;
 
+        /// <summary>
+        /// The widget type
+        /// </summary>
+        private string widgetType = string.Empty;
+
+        /// <summary>
+        /// The page type Identifier
+        /// </summary>
+        private long pageTypeId;
 
         #endregion
 
@@ -343,6 +351,43 @@ namespace nIS
             set
             {
                 this.updatedBy = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the widget type.
+        /// </summary>
+        /// <value>
+        /// The widget type.
+        /// </value>
+        [Description("WidgetType")]
+        public string WidgetType
+        {
+            get
+            {
+                return this.widgetType;
+            }
+
+            set
+            {
+                this.widgetType = value;
+            }
+        }
+
+        /// <summary>
+        /// gets or sets the page type identifier.
+        /// </summary>
+        [Description("PageTypeId")]
+        public long PageTypeId
+        {
+            get
+            {
+                return this.pageTypeId;
+            }
+
+            set
+            {
+                this.pageTypeId = value;
             }
         }
 

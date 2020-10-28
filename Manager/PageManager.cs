@@ -725,6 +725,26 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of static as well as dynamic widgets from widgets and dynamic widgets repository.
+        /// </summary>
+        /// <param name="pageTypeId">The page type identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of static as well as dynamic widgets
+        /// </returns>
+        public IList<Widget> GetStaticAndDynamicWidgets(long pageTypeId, string tenantCode)
+        {
+            try
+            {
+                return this.pageRepository.GetStaticAndDynamicWidgets(pageTypeId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region Private Methods

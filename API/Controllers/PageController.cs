@@ -241,6 +241,28 @@ namespace nIS
                 throw exception;
             }
         }
+
         #endregion
+
+        /// <summary>
+        /// This method gets the specified list of static as well as dynamic widgets from widgets and dynamic widgets repository.
+        /// </summary>
+        /// <param name="pageTypeId">The page type identifier</param>
+        /// <returns>
+        /// Returns the list of static as well as dynamic widgets
+        /// </returns>
+        [HttpPost]
+        public IList<Widget> GetStaticAndDynamicWidgets(long pageTypeId)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.pageManager.GetStaticAndDynamicWidgets(pageTypeId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

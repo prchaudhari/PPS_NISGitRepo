@@ -137,6 +137,9 @@
     <Compile Include="FnGetParentAndChildTenant_Result.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="FnGetStaticAndDynamicWidgets_Result.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="FnUserTenant_Result.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
