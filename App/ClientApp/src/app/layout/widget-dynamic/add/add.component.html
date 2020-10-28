@@ -1,8 +1,9 @@
 <div class="main-container">
   <div class="page-title d-flex justify-content-between">
-    <span class="xs-title">Dynamic Widgets</span>
+    <span class="xs-title" *ngIf="!updateOperationMode">Add Dynamic Widget</span>
+    <span class="xs-title" *ngIf="updateOperationMode">Update Dynamic Widget</span>
   </div>
-  
+
   <div class="card border-0 mb-2 card-shadow">
     <form [formGroup]="DynamicWidgetForm">
       <div class="card-body position-relative">
@@ -22,13 +23,13 @@
             <div class="row">
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Page Type</label><span class="text-danger ml-2">*</span>
-                <select formControlName="PageType" (change)="onPageTypeSelected($event)" class="form-control">
+                <select formControlName="PageType" [attr.disabled]="updateOperationMode?'':null" (change)="onPageTypeSelected($event)" class="form-control">
                   <option *ngFor="let pt of pageTypeList" [value]="pt.Identifier">{{pt.PageTypeName}}</option>
                 </select>
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Entity</label><span class="text-danger ml-2">*</span>
-                <select formControlName="Entity" (change)="onEntitySelected($event)" class="form-control">
+                <select formControlName="Entity" [attr.disabled]="updateOperationMode?'':null" (change)="onEntitySelected($event)" class="form-control">
                   <option *ngFor="let pt of entityList" [value]="pt.Identifier">{{pt.Name}}</option>
                 </select>
               </div>
@@ -41,10 +42,10 @@
             <div class="row">
               <div class="col-sm-12 form-group">
                 <!--repeat start-->
-                <div class="widget-card-small widget-card">
+                <div class="widget-card-small widget-card" *ngIf="(updateOperationMode && selectedLink=='Form') || !updateOperationMode">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetForm" (click)="setWidgetType('Form')" [checked]="selectedLink=='Form'">
+                      <input type="radio" name="widgetType" id="inputWidgetForm" (click)="setWidgetType('Form')" [checked]="selectedLink=='Form'">
                       <span class="fa fa-list-alt"></span>
                     </label>
                   </div>
@@ -52,10 +53,10 @@
                 </div>
                 <!--repeat end-->
                 <!--repeat start-->
-                <div class="widget-card-small widget-card">
+                <div class="widget-card-small widget-card" *ngIf="(updateOperationMode && selectedLink=='Table') || !updateOperationMode">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetTable" (click)="setWidgetType('Table')" [checked]="selectedLink=='Table'">
+                      <input type="radio" name="widgetType" id="inputWidgetTable" (click)="setWidgetType('Table')" [checked]="selectedLink=='Table'">
                       <span class="fa fa-table"></span>
                     </label>
                   </div>
@@ -63,10 +64,10 @@
                 </div>
                 <!--repeat end-->
                 <!--repeat start-->
-                <div class="widget-card-small widget-card">
+                <div class="widget-card-small widget-card" *ngIf="(updateOperationMode && selectedLink=='LineGraph') || !updateOperationMode">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetLineGraph" (click)="setWidgetType('LineGraph')" [checked]="selectedLink=='LineGraph'">
+                      <input type="radio" name="widgetType" id="inputWidgetLineGraph" (click)="setWidgetType('LineGraph')" [checked]="selectedLink=='LineGraph'">
                       <span class="fa fa-line-chart"></span>
                     </label>
                   </div>
@@ -74,10 +75,10 @@
                 </div>
                 <!--repeat end-->
                 <!--repeat start-->
-                <div class="widget-card-small widget-card">
+                <div class="widget-card-small widget-card" *ngIf="(updateOperationMode && selectedLink=='BarGraph') || !updateOperationMode">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetBarGraph" (click)="setWidgetType('BarGraph')" [checked]="selectedLink=='BarGraph'">
+                      <input type="radio" name="widgetType" id="inputWidgetBarGraph" (click)="setWidgetType('BarGraph')" [checked]="selectedLink=='BarGraph'">
                       <span class="fa fa-bar-chart"></span>
                     </label>
                   </div>
@@ -85,10 +86,10 @@
                 </div>
                 <!--repeat end-->
                 <!--repeat start-->
-                <div class="widget-card-small widget-card">
+                <div class="widget-card-small widget-card" *ngIf="(updateOperationMode && selectedLink=='PieChart') || !updateOperationMode">
                   <div class="hide-radio widget-icons">
                     <label>
-                      <input type="radio" name="widgetType" [readonly]="updateOperationMode" id="inputWidgetPieChart" (click)="setWidgetType('PieChart')" [checked]="selectedLink=='PieChart'">
+                      <input type="radio" name="widgetType" id="inputWidgetPieChart" (click)="setWidgetType('PieChart')" [checked]="selectedLink=='PieChart'">
                       <span class="fa fa-pie-chart"></span>
                     </label>
                   </div>
@@ -96,7 +97,7 @@
                 </div>
                 <!--repeat end-->
                 <!--repeat start-->
-                <div class="widget-card-small widget-card">
+                <div class="widget-card-small widget-card" *ngIf="(updateOperationMode && selectedLink=='Html') || !updateOperationMode">
                   <div class="hide-radio widget-icons">
                     <label>
                       <input type="radio" name="widgetType" id="inputWidgetHtml" (click)="setWidgetType('Html')" [checked]="selectedLink=='Html'">

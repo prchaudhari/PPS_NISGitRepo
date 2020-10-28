@@ -82,7 +82,7 @@
                       <div class="col-md-6 col-lg-6 col-sm-6 form-group">
                         <label>Series</label><span class="text-danger ml-2">*</span>
                         <select formControlName="PieSeries" (change)="onEntityFieldSelected($event,'Form')" class="form-control">
-                          <option *ngFor="let pt of entityFieldList "  [value]="pt.Identifier">{{pt.Name}}</option>
+                          <option *ngFor="let pt of entityFieldList " [value]="pt.Identifier">{{pt.Name}}</option>
                         </select>
                       </div>
                       <div class="col-md-6 col-lg-6 col-sm-6 form-group">
@@ -274,7 +274,7 @@
                     </div>
                     <div class="row">
                       <div class="col-sm-12 form-group">
-                        <ejs-richtexteditor id='defaultRTE' #htmleditor>
+                        <ejs-richtexteditor id='defaultRTE' [inlineMode]='inlineMode' [format]='format'  #htmleditor style="height:300px">
                           <ng-template #valueTemplate>
 
                           </ng-template>
@@ -592,7 +592,7 @@
   </div>
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
-      <button class="btn-footer-fill mr-2" id="btnSave" (click)="saveWidgetDetails()">Save </button>
+      <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="saveButtonValidation()" (click)="saveWidgetDetails()">Save </button>
       <button class="btn-footer-fill mr-2" id="btnSave" (click)="NavigateToBack()">Back </button>
       <button class="btn-footer-outline" id="btnCancel" (click)="navigateToListPage()">Cancel</button>
     </div>

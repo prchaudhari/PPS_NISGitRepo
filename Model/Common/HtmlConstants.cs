@@ -261,7 +261,7 @@ namespace nIS
         public const string TABLEWIDEGTPREVIEW = "<div class='card border-0'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0;' style={{TitleStyle}}>{{WidgetTitle}}</h5></div>" +
                                 "<div class='card-body'><div class='table-responsive stylescrollbar' style'max-height:350px;overflow-x:hidden;overflow-y:auto;'>" +
                                 "<table id = 'TableWidget' class='table m-1 table-hover'><thead style={{HeaderStyle}}>{{tableHeader}}</thead><tbody style={{BodyStyle}}>{{tableBody}}</tbody></table></div></div></div>";
-        public const string FORMWIDGETPREVIEW = "<div class='card border-0'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5><div class='card border-0 card-shadow m-auto width50'><div class='card-body p-2' style={{BodyStyle}}>{{FormData}}</div></div></div>";
+        public const string FORMWIDGETPREVIEW = "<div class='card border-0'><div class='p-1 bg-light border-0 text-left' style='margin-bottom: 10px;'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card border-0 card-shadow m-auto width100'><div class='card-body p-2' style={{BodyStyle}}>{{FormData}}</div></div></div>";
 
         public const string HTMLWIDGETPREVIEW = "<div class='card border-0'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body' style={{BodyStyle}}>{{FormData}}</div></div>";
 

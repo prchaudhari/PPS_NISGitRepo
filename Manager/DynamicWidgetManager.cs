@@ -278,45 +278,84 @@ namespace nIS
                         TenantEntity entity = new TenantEntity();
                         entity.Identifier = dynamicWidget.EntityId;
                         entity.Name = dynamicWidget.EntityName;
-                       
+                        CustomeTheme themeDetails = new CustomeTheme();
+                        if (dynamicWidget.ThemeType == "Default")
+                        {
+                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(tenantConfiguration.WidgetThemeSetting);
+                        }
+                        else
+                        {
+                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
+                        }
                         if (dynamicWidget.WidgetType == HtmlConstants.TABLE_DYNAMICWIDGET)
                         {
                             html = HtmlConstants.TABLEWIDEGTPREVIEW;
-                            if (dynamicWidget.ThemeType == "Custome")
+
+                            #region Apply theme settings
+                            StringBuilder style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+
+                            if (themeDetails.TitleColor != null)
                             {
-                                StringBuilder style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                CustomeTheme themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
                                 style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-                                html = html.Replace("{{TitleStyle}}", style.ToString());
-
-                                style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                style = style.Replace("{{COLOR}}", themeDetails.HeaderColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.HeaderSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.HeaderWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.HeaderType);
-                                html = html.Replace("{{HeaderStyle}}", style.ToString());
-
-                                style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.DataType);
-                                html = html.Replace("{{BodyStyle}}", style.ToString());
                             }
-                            else
+                            if (themeDetails.TitleSize != null)
                             {
-                                CustomeTheme themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
-
-                                html = html.Replace("{{TitleStyle}}", "");
-                                html = html.Replace("{{HeaderStyle}}", "");
-                                html = html.Replace("{{BodyStyle}}", "");
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
                             }
+                            if (themeDetails.TitleWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                            }
+                            if (themeDetails.TitleType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                            }
+
+                            html = html.Replace("{{TitleStyle}}", style.ToString());
+
+                            style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+                            if (themeDetails.HeaderColor != null)
+                            {
+                                style = style.Replace("{{COLOR}}", themeDetails.HeaderColor);
+                            }
+                            if (themeDetails.HeaderSize != null)
+                            {
+                                style = style.Replace("{{SIZE}}", themeDetails.HeaderSize);
+                            }
+                            if (themeDetails.HeaderWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.HeaderWeight);
+                            }
+                            if (themeDetails.HeaderType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.HeaderType);
+                            }
+                            html = html.Replace("{{HeaderStyle}}", style.ToString());
+
+
+                            style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+                            if (themeDetails.DataColor != null)
+                            {
+                                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
+                            }
+                            if (themeDetails.DataSize != null)
+                            {
+                                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
+                            }
+                            if (themeDetails.DataWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
+                            }
+                            if (themeDetails.DataType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.DataType);
+                            }
+                            html = html.Replace("{{BodyStyle}}", style.ToString());
+                            #endregion
+
                             html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
                             List<DynamicWidgetTableEntity> entityFields = JsonConvert.DeserializeObject<List<DynamicWidgetTableEntity>>(dynamicWidget.WidgetSettings);
                             StringBuilder tableHeader = new StringBuilder();
@@ -331,32 +370,51 @@ namespace nIS
                         else if (dynamicWidget.WidgetType == HtmlConstants.FORM_DYNAMICWIDGET)
                         {
                             html = HtmlConstants.FORMWIDGETPREVIEW;
-                            if (dynamicWidget.ThemeType == "Custome")
+
+                            #region Apply theme settings
+                            StringBuilder style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+
+                            if (themeDetails.TitleColor != null)
                             {
-                                StringBuilder style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                CustomeTheme themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
                                 style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-                                html = html.Replace("{{TitleStyle}}", style.ToString());
-
-
-                                style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.DataType);
-                                html = html.Replace("{{BodyStyle}}", style.ToString());
                             }
-                            else
+                            if (themeDetails.TitleSize != null)
                             {
-                                html = html.Replace("{{TitleStyle}}", "");
-                                html = html.Replace("{{HeaderStyle}}", "");
-                                html = html.Replace("{{BodyStyle}}", "");
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
                             }
+                            if (themeDetails.TitleWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                            }
+                            if (themeDetails.TitleType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                            }
+
+                            html = html.Replace("{{TitleStyle}}", style.ToString());
+                            style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+                            if (themeDetails.DataColor != null)
+                            {
+                                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
+                            }
+                            if (themeDetails.DataSize != null)
+                            {
+                                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
+                            }
+                            if (themeDetails.DataWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
+                            }
+                            if (themeDetails.DataType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.DataType);
+                            }
+                            html = html.Replace("{{BodyStyle}}", style.ToString());
+
+                            #endregion
+
                             html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
                             List<DynamicWidgetFormEntity> formEntity = JsonConvert.DeserializeObject<List<DynamicWidgetFormEntity>>(dynamicWidget.WidgetSettings);
                             StringBuilder tableHeader = new StringBuilder();
@@ -369,21 +427,31 @@ namespace nIS
                         {
                             html = HtmlConstants.HTMLWIDGETPREVIEW;
 
-                            if (dynamicWidget.ThemeType == "Custome")
+                            #region Apply theme settings
+                            StringBuilder style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+
+                            if (themeDetails.TitleColor != null)
                             {
-                                StringBuilder style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                CustomeTheme themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
                                 style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-                                html = html.Replace("{{TitleStyle}}", style.ToString());
                             }
-                            else
+                            if (themeDetails.TitleSize != null)
                             {
-                                html = html.Replace("{{TitleStyle}}", "");
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
                             }
+                            if (themeDetails.TitleWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                            }
+                            if (themeDetails.TitleType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                            }
+
+                            html = html.Replace("{{TitleStyle}}", style.ToString());
+
+                            #endregion
+
                             html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
                             string settings = dynamicWidget.WidgetSettings;
                             IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
@@ -397,22 +465,30 @@ namespace nIS
                         else if (dynamicWidget.WidgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
                         {
                             html = HtmlConstants.LINEGRAPH_WIDGETPREVIEW;
-                            CustomeTheme themeDetails = new CustomeTheme();
-                            if (dynamicWidget.ThemeType == "Custome")
+                            #region Apply theme settings
+                            StringBuilder style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+
+                            if (themeDetails.TitleColor != null)
                             {
-                                StringBuilder style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
                                 style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-                                html = html.Replace("{{TitleStyle}}", style.ToString());
                             }
-                            else
+                            if (themeDetails.TitleSize != null)
                             {
-                                html = html.Replace("{{TitleStyle}}", "");
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
                             }
+                            if (themeDetails.TitleWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                            }
+                            if (themeDetails.TitleType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                            }
+
+                            html = html.Replace("{{TitleStyle}}", style.ToString());
+
+                            #endregion
                             html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
                             IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
                             DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynamicWidget.WidgetSettings);
@@ -420,7 +496,16 @@ namespace nIS
                             string theme = string.Empty;
                             if (themeDetails != null)
                             {
-                                theme = themeDetails.ChartColorTheme;
+                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme == "")
+                                {
+                                    theme = themeDetails.ChartColorTheme;
+
+                                }
+                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme == "")
+                                {
+                                    theme = themeDetails.ColorTheme;
+
+                                }
                             }
                             series = this.GetBarLineChartPreviewData(entity, dynamicWidget.Title, lineGraphDetails, "line", theme);
                             htmlString.Append(html);
@@ -435,22 +520,32 @@ namespace nIS
                         else if (dynamicWidget.WidgetType == HtmlConstants.BARGRAPH_DYNAMICWIDGET)
                         {
                             html = HtmlConstants.BARGRAPH_WIDGETPREVIEW;
-                            CustomeTheme themeDetails = new CustomeTheme();
-                            if (dynamicWidget.ThemeType == "Custome")
+
+                            #region Apply theme settings
+                            StringBuilder style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+
+                            if (themeDetails.TitleColor != null)
                             {
-                                StringBuilder style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
                                 style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-                                html = html.Replace("{{TitleStyle}}", style.ToString());
                             }
-                            else
+                            if (themeDetails.TitleSize != null)
                             {
-                                html = html.Replace("{{TitleStyle}}", "");
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
                             }
+                            if (themeDetails.TitleWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                            }
+                            if (themeDetails.TitleType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                            }
+
+                            html = html.Replace("{{TitleStyle}}", style.ToString());
+
+                            #endregion
+
                             html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
                             IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
                             DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynamicWidget.WidgetSettings);
@@ -458,7 +553,16 @@ namespace nIS
                             string theme = string.Empty;
                             if (themeDetails != null)
                             {
-                                theme = themeDetails.ChartColorTheme;
+                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme == "")
+                                {
+                                    theme = themeDetails.ChartColorTheme;
+
+                                }
+                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme == "")
+                                {
+                                    theme = themeDetails.ColorTheme;
+
+                                }
                             }
                             series = this.GetBarLineChartPreviewData(entity, dynamicWidget.Title, lineGraphDetails, "column", theme);
                             htmlString.Append(html);
@@ -473,28 +577,47 @@ namespace nIS
                         else if (dynamicWidget.WidgetType == HtmlConstants.PICHART_DYNAMICWIDGET)
                         {
                             html = HtmlConstants.PIECHART_WIDGETPREVIEW;
-                            CustomeTheme themeDetails = new CustomeTheme();
-                            if (dynamicWidget.ThemeType == "Custome")
+
+                            #region Apply theme settings
+                            StringBuilder style = new StringBuilder();
+                            style.Append(HtmlConstants.STYLE);
+
+                            if (themeDetails.TitleColor != null)
                             {
-                                StringBuilder style = new StringBuilder();
-                                style.Append(HtmlConstants.STYLE);
-                                themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynamicWidget.ThemeCSS);
                                 style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-                                html = html.Replace("{{TitleStyle}}", style.ToString());
                             }
-                            else
+                            if (themeDetails.TitleSize != null)
                             {
-                                html = html.Replace("{{TitleStyle}}", "");
+                                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
                             }
+                            if (themeDetails.TitleWeight != null)
+                            {
+                                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+                            }
+                            if (themeDetails.TitleType != null)
+                            {
+                                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+                            }
+
+                            html = html.Replace("{{TitleStyle}}", style.ToString());
+
+                            #endregion
+
                             html = html.Replace("{{WidgetTitle}}", dynamicWidget.Title);
                             PieChartSettingDetails pieChartSetting = JsonConvert.DeserializeObject<PieChartSettingDetails>(dynamicWidget.WidgetSettings);
                             string theme = string.Empty;
                             if (themeDetails != null)
                             {
-                                theme = themeDetails.ChartColorTheme;
+                                if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme == "")
+                                {
+                                    theme = themeDetails.ChartColorTheme;
+
+                                }
+                                else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme == "")
+                                {
+                                    theme = themeDetails.ColorTheme;
+
+                                }
                             }
                             IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
                             fieldMaps = this.GetEntityFields(dynamicWidget.EntityId, tenantCode);
@@ -509,9 +632,7 @@ namespace nIS
                             htmlString = new StringBuilder();
                             htmlString = htmlString.Append(chartData);
                         }
-
                     }
-
                 }
             }
             catch (Exception ex)
@@ -1010,6 +1131,22 @@ namespace nIS
             {
                 colorTheme = HtmlConstants.THEME4;
             }
+            else if (theme.ToLower() == "ChartTheme1".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme.ToLower() == "ChartTheme2".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme.ToLower() == "ChartTheme3".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            else if (theme.ToLower() == "ChartTheme4".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
             StringBuilder tableBody = new StringBuilder();
             IList<ChartSeries> series = new List<ChartSeries>();
             IList<string> xAxis = new List<string>();
@@ -1083,6 +1220,22 @@ namespace nIS
             else if (theme == "Theme4")
             {
                 colorTheme = HtmlConstants.THEME4;
+            }
+            else if(theme.ToLower() == "ChartTheme1".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme.ToLower() == "ChartTheme2".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme.ToLower() == "ChartTheme3".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            else if (theme.ToLower() == "ChartTheme4".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME3;
             }
             StringBuilder tableBody = new StringBuilder();
             IList<PieChartSeries> series = new List<PieChartSeries>();
