@@ -234,6 +234,8 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CloneOfWidgetId" Type="bigint" />
+          <Property Name="Version" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="DynamicWidgetFilterDetail">
           <Key>
@@ -2420,6 +2422,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CloneOfWidgetId" Type="Int64" />
+          <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="EntityFieldMapRecord">
           <Key>
@@ -3487,6 +3491,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="DynamicWidgetRecords">
             <EntityTypeMapping TypeName="NISModel.DynamicWidgetRecord">
               <MappingFragment StoreEntitySet="DynamicWidget">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="CloneOfWidgetId" ColumnName="CloneOfWidgetId" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
