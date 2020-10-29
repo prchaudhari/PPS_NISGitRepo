@@ -37,5 +37,7 @@ namespace nIS
         public string CreatedByName { get; set; }
         public string PageTypeName { get; set; }
         public string EntityName { get; set; }
+        public Nullable<long> CloneOfWidgetId { get; set; }
+        public string Version { get; set; }
     }
 }

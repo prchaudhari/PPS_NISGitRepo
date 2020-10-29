@@ -524,13 +524,15 @@ export class AddComponent implements OnInit {
 
   async saveWidgetDetails() {
     var widget: DynamicWidget;
-    widget = new DynamicWidget();
+    widget = this.dynamicWidgetDetails;
     widget.WidgetName = this.DynamicWidgetForm.value.WidgetName;
     widget.WidgetType = this.selectedLink;
     widget.PageTypeId = this.DynamicWidgetForm.value.PageType;
     widget.EntityId = this.DynamicWidgetForm.value.Entity;
     widget.ThemeType = this.isDefault == true ? "Default" : "Custome";
     widget.Title = this.DynamicWidgetForm.value.WidgetTitle;
+
+    //widget.Identifier = this.dynamicWidgetDetails.Identifier;
     //if (this.selectedLink == 'Form') {
     //  widget.WidgetSettings = JSON.stringify(this.formList);
     //}

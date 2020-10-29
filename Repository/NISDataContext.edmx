@@ -816,6 +816,8 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CloneOfWidgetId" Type="bigint" />
+          <Property Name="Version" Type="nvarchar" MaxLength="100" />
           <Property Name="PublishedByName" Type="nvarchar" MaxLength="201" />
           <Property Name="CreatedByName" Type="nvarchar" MaxLength="201" Nullable="false" />
           <Property Name="PageTypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -1205,6 +1207,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_DynamicWidget].[IsActive] AS [IsActive], 
     [View_DynamicWidget].[IsDeleted] AS [IsDeleted], 
     [View_DynamicWidget].[TenantCode] AS [TenantCode], 
+    [View_DynamicWidget].[CloneOfWidgetId] AS [CloneOfWidgetId], 
+    [View_DynamicWidget].[Version] AS [Version], 
     [View_DynamicWidget].[PublishedByName] AS [PublishedByName], 
     [View_DynamicWidget].[CreatedByName] AS [CreatedByName], 
     [View_DynamicWidget].[PageTypeName] AS [PageTypeName], 
@@ -2507,6 +2511,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="CreatedByName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
           <Property Name="PageTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EntityName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CloneOfWidgetId" Type="Int64" />
+          <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="FnGetStaticAndDynamicWidgets_Result">
           <Property Type="Int64" Name="ID" Nullable="false" />
@@ -3560,6 +3566,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="View_DynamicWidgetRecord">
             <EntityTypeMapping TypeName="NISModel.View_DynamicWidgetRecord">
               <MappingFragment StoreEntitySet="View_DynamicWidget">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="CloneOfWidgetId" ColumnName="CloneOfWidgetId" />
                 <ScalarProperty Name="EntityName" ColumnName="EntityName" />
                 <ScalarProperty Name="PageTypeName" ColumnName="PageTypeName" />
                 <ScalarProperty Name="CreatedByName" ColumnName="CreatedByName" />

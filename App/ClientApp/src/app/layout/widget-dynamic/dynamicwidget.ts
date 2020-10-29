@@ -5,6 +5,7 @@ export class DynamicWidget {
   "WidgetType": string;
   "EntityName": string;
   "PageTypeName": string;
+  "Version": string;
   "PageTypeId": number;
   "EntityId": number;
   "Title": string;
