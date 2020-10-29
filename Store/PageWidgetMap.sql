@@ -8,5 +8,6 @@
     [Yposition] INT NOT NULL, 
     [PageId] BIGINT NOT NULL, 
     [WidgetSetting] NVARCHAR (MAX) NOT NULL,
-    [TenantCode] NVARCHAR(50) NOT NULL
+    [TenantCode] NVARCHAR(50) NOT NULL, 
+    [IsDynamicWidget] BIT NOT NULL
 )
