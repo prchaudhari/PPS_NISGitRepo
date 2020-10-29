@@ -341,6 +341,7 @@
           <Property Name="PageId" Type="bigint" Nullable="false" />
           <Property Name="WidgetSetting" Type="nvarchar(max)" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDynamicWidget" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ReminderAndRecommendation">
           <Key>
@@ -1573,6 +1574,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="PageId" Type="Int64" Nullable="false" />
           <Property Name="WidgetSetting" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDynamicWidget" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ScheduleRecord">
           <Key>
@@ -2665,6 +2667,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="PageWidgetMapRecords">
             <EntityTypeMapping TypeName="NISModel.PageWidgetMapRecord">
               <MappingFragment StoreEntitySet="PageWidgetMap">
+                <ScalarProperty Name="IsDynamicWidget" ColumnName="IsDynamicWidget" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="WidgetSetting" ColumnName="WidgetSetting" />
                 <ScalarProperty Name="PageId" ColumnName="PageId" />

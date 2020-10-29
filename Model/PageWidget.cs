@@ -18,5 +18,6 @@ namespace nIS
         public int Yposition { get; set; }
         public string WidgetSetting { get; set; }
         public string TenantCode { get; set; }
+        public bool IsDynamicWidget { get; set; }
     }
 }

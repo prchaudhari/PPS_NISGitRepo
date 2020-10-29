@@ -255,6 +255,7 @@ namespace nIS
 
                 IList<View_PageRecord> view_PageRecords = new List<View_PageRecord>();
                 IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
+                IList<DynamicWidgetRecord> dynamicWidgetRecords = new List<DynamicWidgetRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString)) 
                 {
                     if (pageSearchParameter.PagingParameter.PageIndex > 0 && pageSearchParameter.PagingParameter.PageSize > 0)
@@ -282,6 +283,7 @@ namespace nIS
                         });
 
                         widgetRecords = nISEntitiesDataContext.WidgetRecords.Where(item => item.TenantCode == tenantCode).ToList();
+                        dynamicWidgetRecords = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.TenantCode == tenantCode).ToList();
                     }
                 }
                 
@@ -300,11 +302,12 @@ namespace nIS
                                     PageId = pageWidgetRecord.PageId,
                                     Height = pageWidgetRecord.Height,
                                     WidgetId = pageWidgetRecord.ReferenceWidgetId,
-                                    WidgetName = widgetRecords.Where(item => item.Id == pageWidgetRecord.ReferenceWidgetId).FirstOrDefault()?.WidgetName,
+                                    WidgetName = pageWidgetRecord.IsDynamicWidget == true ? dynamicWidgetRecords.Where(item => item.Id == pageWidgetRecord.ReferenceWidgetId).FirstOrDefault()?.WidgetName : widgetRecords.Where(item => item.Id == pageWidgetRecord.ReferenceWidgetId).FirstOrDefault()?.WidgetName,
                                     Width = pageWidgetRecord.Width,
                                     Xposition = pageWidgetRecord.Xposition,
                                     Yposition = pageWidgetRecord.Yposition,
-                                    WidgetSetting = pageWidgetRecord.WidgetSetting
+                                    WidgetSetting = pageWidgetRecord.WidgetSetting,
+                                    IsDynamicWidget = pageWidgetRecord.IsDynamicWidget
                                 });
                             });
                         }
@@ -334,7 +337,6 @@ namespace nIS
                         });
                     });
                 }
-                
             }
             catch (Exception ex)
             {
@@ -542,7 +544,7 @@ namespace nIS
                             nISEntitiesDataContext.PageWidgetMapRecords.RemoveRange(existingPageWidgetMappingRecords);
                             nISEntitiesDataContext.SaveChanges();
                         }
-                        AddPageWidgets(item.PageWidgets, item.Identifier, tenantCode);
+                        this.AddPageWidgets(item.PageWidgets, item.Identifier, tenantCode);
                     }
                 });
 
@@ -621,7 +623,8 @@ namespace nIS
                             WidgetSetting = item.WidgetSetting,
                             Width = item.Width,
                             Xposition = item.Xposition,
-                            Yposition = item.Yposition
+                            Yposition = item.Yposition,
+                            IsDynamicWidget = item.IsDynamicWidget
                         });
                     });
 
@@ -913,7 +916,8 @@ namespace nIS
                         WidgetSetting = pageWidget.WidgetSetting,
                         Width = pageWidget.Width,
                         Xposition = pageWidget.Xposition,
-                        Yposition = pageWidget.Yposition
+                        Yposition = pageWidget.Yposition,
+                        IsDynamicWidget = pageWidget.IsDynamicWidget
                     });
                 });
 
