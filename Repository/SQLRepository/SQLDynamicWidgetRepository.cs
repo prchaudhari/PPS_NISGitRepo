@@ -107,6 +107,7 @@ namespace nIS
                         LastUpdatedBy = dynamicWidget.CreatedBy,
                         IsActive = true,
                         IsDeleted = false,
+                        Version = "1",
                         TenantCode = tenantCode
                     });
                 });
@@ -342,7 +343,9 @@ namespace nIS
                                 PublishedDate = item.PublishedDate,
                                 IsActive = true,
                                 IsDeleted = false,
-                                TenantCode = tenantCode
+                                Version=item.Version,
+                                TenantCode = tenantCode,
+                                
                             });
                         });
                     }
@@ -461,13 +464,17 @@ namespace nIS
                     {
                         throw new DynamicWidgetNotFoundException(tenantCode);
                     }
-
-                    var lastDynamicWidgetRecord = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.EntityId == dynamicWidgetRecord.EntityId && item.PageTypeId == dynamicWidgetRecord.PageTypeId && item.IsDeleted == false).OrderByDescending(itm => itm.Id).FirstOrDefault();
-                    if (lastDynamicWidgetRecord == null)
+                    string version = "";
+                    var cloneOfDynamicWidget = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.CloneOfWidgetId == dynamicWidgetIdentifier).ToList();
+                    if (cloneOfDynamicWidget?.Count() > 0)
                     {
-                        throw new DynamicWidgetNotFoundException(tenantCode);
+                        cloneOfDynamicWidget = cloneOfDynamicWidget.OrderByDescending(itm => itm.Id).ToList();
+                        version = Int64.Parse(cloneOfDynamicWidget.FirstOrDefault().Version) + 1 + "";
                     }
-
+                    else
+                    { 
+                        version="2";
+                    }
                     IList<DynamicWidgetRecord> dynamicWidgetRecordsForClone = new List<DynamicWidgetRecord>();
                     dynamicWidgetRecordsForClone.Add(new DynamicWidgetRecord()
                     {
@@ -486,6 +493,8 @@ namespace nIS
                         LastUpdatedBy = dynamicWidgetRecord.CreatedBy,
                         IsActive = true,
                         IsDeleted = false,
+                        Version= version,
+                        CloneOfWidgetId=dynamicWidgetIdentifier,
                         TenantCode = tenantCode
                     });
 

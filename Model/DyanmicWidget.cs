@@ -35,6 +35,8 @@ namespace nIS
         public string Status { get; set; }
         public long CreatedBy { get; set; }
         public string CreatedByName { get; set; }
+        public string Version { get; set; }
+
         public System.DateTime CreatedOn { get; set; }
         public long LastUpdatedBy { get; set; }
         public Nullable<long> PublishedBy { get; set; }
