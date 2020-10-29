@@ -1072,6 +1072,233 @@ export interface TransactionDetail {
   lyc: string;
 }
 
+
+// Component Created for Dynamic pier chart Widget--
+@Component({
+  selector: 'DynamicPieChartWidget',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Analytics </span>
+    </div>
+    <div class="widget-area position-relative width100">       
+        <div id="dynamicpiechartcontainer" class="p-3"></div>
+    </div>
+</div>`
+})
+export class DynamicPieChartWidgetComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: 'pie',
+      height: (9 / 16 * 100) + '%',
+    },
+    title: {
+      text: ''
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+      point: {
+        valueSuffix: '%'
+      }
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+        },
+        showInLegend: false
+      }
+    },
+    series: [{
+      name: 'Percentage',
+      colorByPoint: true,
+      data: [
+        {
+          name: 'Cutomer Information',
+          y: 11.84
+        }, {
+          name: 'Account Information',
+          y: 10.85
+        }, {
+          name: 'Image',
+          y: 4.67
+        }, {
+          name: 'Video',
+          y: 4.18
+        }, {
+          name: 'News Alerts',
+          y: 7.05
+        }]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('dynamicpiechartcontainer', this.options4);      
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Dynamic line chart Widget--
+@Component({
+  selector: 'DynamicLineChartWidget',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Your Saving Trends </span>
+    </div>
+    <div class="widget-area position-relative width100">
+      <div class="text-right" style="font-size:20px"><span>+5.6%</span><span class="pl-3">+3.5%</span></div>
+      <div id="dynamiclinechartscontainer" class="p-3"></div>        
+    </div>
+</div>`
+})
+export class DynamicLineChartWidgetComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+    },
+    labels: {
+      items: [{
+        //html: 'How you have been spending',
+        style: {
+          left: '50px',
+          top: '18px',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'black'
+        }
+      }]
+    },
+    series: [{
+      // type: 'spline',
+      name: '',
+      data: [1.5, 2.5, 3, 1.5, 3, 2, 4],
+      marker: {
+        lineWidth: 1,
+        lineColor: Highcharts.getOptions().colors[3],
+        fillColor: 'white'
+      }
+    }]
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('dynamiclinechartscontainer', this.options4);      
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Dynamic Bar Chart Widget--
+@Component({
+  selector: 'DynamicBarChartWidget',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Spending Trends </span>
+    </div>
+    <div class="widget-area position-relative width100">
+          <div id="dynamicbarchartscontainer" class="p-3"></div>       
+    </div>
+</div>`
+})
+export class DynamicBarChartWidgetComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May']
+    },
+    labels: {
+      items: [{
+        //html: 'How you have been spending',
+        style: {
+          left: '50px',
+          top: '18px',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'black'
+        }
+      }]
+    },
+    series: [{
+      type: 'column',
+      name: 'Your Income',
+      data: [1, 3, 4, 2, 5]
+    }, {
+      type: 'column',
+      name: 'Your Spending',
+      data: [2, 2, 1, 4, 1]
+    }, {
+      type: 'spline',
+      name: '',
+      data: [1.5, 2.5, 3, 1.5, 3],
+      marker: {
+        lineWidth: 2,
+        lineColor: Highcharts.getOptions().colors[3],
+        fillColor: 'white'
+      }
+    }]
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('dynamicbarchartscontainer', this.options4);  
+    }, 10);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 100);
+    });
+  }
+}
+
 /* ---  below highcharts components are created for page preview while designing..
     which are same as above highcharts widgets, but created due to facing issue in page preview in popup --- */
 
@@ -1289,6 +1516,232 @@ export class AnalyticsWidgetPreviewComponent {
   ngAfterViewInit() {
     setTimeout(() => {
       Highcharts.chart('chartWidgetPiePreviewcontainer', this.options4);      
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Dynamic line chart Widget for page preview while designing ----
+@Component({
+  selector: 'DynamicLineChartWidgetPreview',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Your Saving Trends </span>
+    </div>
+    <div class="widget-area position-relative width100">
+      <div class="text-right" style="font-size:20px"><span>+5.6%</span><span class="pl-3">+3.5%</span></div>
+      <div id="dynamiclinechartpreviewcontainer" class="p-3"></div>        
+    </div>
+</div>`
+})
+export class DynamicLineChartWidgetPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+    },
+    labels: {
+      items: [{
+        //html: 'How you have been spending',
+        style: {
+          left: '50px',
+          top: '18px',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'black'
+        }
+      }]
+    },
+    series: [{
+      // type: 'spline',
+      name: '',
+      data: [1.5, 2.5, 3, 1.5, 3, 2, 4],
+      marker: {
+        lineWidth: 1,
+        lineColor: Highcharts.getOptions().colors[3],
+        fillColor: 'white'
+      }
+    }]
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('dynamiclinechartpreviewcontainer', this.options4);      
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Dynamic Bar Chart Widget for page preview while designing ----
+@Component({
+  selector: 'DynamicBarChartWidgetPreview',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Spending Trends </span>
+    </div>
+    <div class="widget-area position-relative width100">
+          <div id="dynamicbarchartpreviewcontainer" class="p-3"></div>       
+    </div>
+</div>`
+})
+export class DynamicBarChartWidgetPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)'
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May']
+    },
+    labels: {
+      items: [{
+        //html: 'How you have been spending',
+        style: {
+          left: '50px',
+          top: '18px',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'black'
+        }
+      }]
+    },
+    series: [{
+      type: 'column',
+      name: 'Your Income',
+      data: [1, 3, 4, 2, 5]
+    }, {
+      type: 'column',
+      name: 'Your Spending',
+      data: [2, 2, 1, 4, 1]
+    }, {
+      type: 'spline',
+      name: '',
+      data: [1.5, 2.5, 3, 1.5, 3],
+      marker: {
+        lineWidth: 2,
+        lineColor: Highcharts.getOptions().colors[3],
+        fillColor: 'white'
+      }
+    }]
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('dynamicbarchartpreviewcontainer', this.options4);  
+    }, 10);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 100);
+    });
+  }
+}
+
+// Component Created for Dynamic pier chart Widget for page preview while designing --
+@Component({
+  selector: 'DynamicPieChartWidgetPreview',
+  template: `<div class="widget">
+    <div class="widget">
+    <div class="widget-header">
+        <span class="widget-header-title"> Analytics </span>
+    </div>
+    <div class="widget-area position-relative width100">       
+        <div id="dynamicpiechartpreviewcontainer" class="p-3"></div>
+    </div>
+</div>`
+})
+export class DynamicPieChartWidgetPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: 'pie',
+      height: (9 / 16 * 100) + '%',
+    },
+    title: {
+      text: ''
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+      point: {
+        valueSuffix: '%'
+      }
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+        },
+        showInLegend: false
+      }
+    },
+    series: [{
+      name: 'Percentage',
+      colorByPoint: true,
+      data: [
+        {
+          name: 'Cutomer Information',
+          y: 11.84
+        }, {
+          name: 'Account Information',
+          y: 10.85
+        }, {
+          name: 'Image',
+          y: 4.67
+        }, {
+          name: 'Video',
+          y: 4.18
+        }, {
+          name: 'News Alerts',
+          y: 7.05
+        }]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('dynamicpiechartpreviewcontainer', this.options4);      
     }, 100);
   }
 

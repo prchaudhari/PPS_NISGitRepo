@@ -98,6 +98,7 @@ export class URLConfiguration {
   public static get pagePreviewUrl(): string { return "Page/Preview" };
   public static get pageCloneUrl(): string { return "Page/Clone" };
   public static get pageTypeGetUrl(): string { return "PageType/List" };
+  public static get getStaticAndDynamicWidgetsUrl(): string { return "Page/GetStaticAndDynamicWidgets" };
 
   //widget Url methhod
   public static get widgetGetUrl(): string { return "Widget/List" };

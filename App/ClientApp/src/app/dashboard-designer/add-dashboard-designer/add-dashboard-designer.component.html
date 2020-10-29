@@ -42,7 +42,13 @@
                   'icon-rp-production1' : widget.WidgetName == 'SpendingTrend',
                   'fa-newspaper-o' : widget.WidgetName == 'NewsAlerts',
                   'fa-credit-card' : widget.WidgetName == 'CurrentTransaction',
-                  'icon-rp-quality1' : widget.WidgetName == 'Top4IncomeSources'
+                  'icon-rp-quality1' : widget.WidgetName == 'Top4IncomeSources',
+                  'fa-table fa-lg': widget.WidgetType == 'Table',
+                  'fa-list-alt fa-lg': widget.WidgetType == 'Form',
+                  'fa-code fa-lg': widget.WidgetType == 'Html',
+                  'fa-bar-chart fa-lg': widget.WidgetType == 'BarGraph',
+                  'fa-line-chart fa-lg': widget.WidgetType == 'LineGraph',
+                  'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart'
               }">
           </span><span class="nav-title"> {{widget.DisplayName}} </span>
         </a>
@@ -56,8 +62,8 @@
       <gridster [options]="options">
         <gridster-item [item]="item" *ngFor="let item of widgetsGridsterItemArray">
           <button class='fa fa-trash-o widget-action' (click)="removeItem($event,item)"></button>
-          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
-          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
           <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
           <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>

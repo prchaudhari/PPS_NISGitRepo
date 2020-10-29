@@ -264,4 +264,37 @@ export class DynamicWidgetService {
       });
     return <any[]>pageTypes
   }
+
+  //method to call api of get dynamicWidgets.
+  async getStaticAndDynamicWidgets(pageTypeId): Promise<any> {
+    let httpClientService = this.injector.get(HttpClientService);
+    //let requestUrl = URLConfiguration.getStaticAndDynamicWidgetsUrl;
+    let requestUrl = URLConfiguration.getStaticAndDynamicWidgetsUrl + '?pageTypeId=' + pageTypeId;
+    this.uiLoader.start();
+    let widgets: any = [];
+    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          if (httpEvent["status"] === 200) {
+            widgets = [];
+            this.uiLoader.stop();
+            httpEvent['body'].forEach(widget => {
+              widgets = [...widgets, widget];
+            });
+          }
+          else {
+            widgets = [];
+            this.uiLoader.stop();
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        widgets = [];
+        this.uiLoader.stop();
+        if (error["error"] != null) {
+          let errorMessage = error["error"].Error["Message"];
+          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+        }
+      });
+    return widgets
+  }
 }

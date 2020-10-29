@@ -20,7 +20,8 @@ import {
   SavingTrendsComponent,
   AnalyticsWidgetComponent,
   ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
-  SpendindTrendsPreviewComponent
+  SpendindTrendsPreviewComponent, DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent,
+  DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent
 } from './widgetComponent/widgetComponent';
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
 
@@ -33,7 +34,8 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     SavingTrendsComponent,
     AnalyticsWidgetComponent,
     ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
-    SpendindTrendsPreviewComponent,
+    SpendindTrendsPreviewComponent, DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent,
+    DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     PageDesignPreviewComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
@@ -53,6 +55,8 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     AnalyticsWidgetComponent,
     ReminderAndRecommComponent, SavingTrendsPreviewComponent,
     AnalyticsWidgetPreviewComponent, SpendindTrendsPreviewComponent,
+    DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent,
+    DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     PageDesignPreviewComponent],
 })
 export class DashboardDesignerModule { }

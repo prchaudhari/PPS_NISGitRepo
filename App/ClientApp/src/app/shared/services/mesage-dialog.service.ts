@@ -39,11 +39,12 @@ export class MessageDialogService {
       ChartData: chartData
     });
   }
-  openPageDesignPreviewDialogBox(array, AssetId, Url): Observable<any> {
+  openPageDesignPreviewDialogBox(array, AssetId, Url, pageTypeId): Observable<any> {
     return this._dialogService.addDialog(PageDesignPreviewComponent, {
       widgetItemArray: array,
       BackgroundImageAssetId: AssetId,
       BackgroundImageURL: Url,
+      PageTypeId: pageTypeId
     });
   }
 

@@ -21,8 +21,8 @@
     <div class="widget-container">
       <gridster [options]="options">
         <gridster-item  [item]="item" *ngFor="let item of widgetsGridsterItemArray">
-          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
-          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.widgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
           <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
           <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
@@ -50,19 +50,22 @@
         <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12 form-group">
             <label> Asset Library </label>
-            <div>{{imgAssetLibraryName}}</div>
+            <div *ngIf='imgAssetLibraryName != undefined && imgAssetLibraryName != ""'>{{imgAssetLibraryName}}</div>
+            <div *ngIf='imgAssetLibraryName != undefined && imgAssetLibraryName == ""'>NA</div>
           </div>
         </div>
         <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12 form-group">
             <label> Assets </label>
-            <div>{{imgAssetName}}</div>
+            <div *ngIf='imgAssetName != undefined && imgAssetName != ""'>{{imgAssetName}}</div>
+            <div *ngIf='imgAssetName != undefined && imgAssetName == ""'>NA</div>
           </div>
         </div>
         <div class="row" *ngIf="!isPersonalizeImage">
           <div class="col-sm-12">
             <label> URL </label>
-            <div>{{imageSourceUrl}}</div>
+            <div *ngIf='imageSourceUrl != undefined && imageSourceUrl != ""'>{{imageSourceUrl}}</div>
+            <div *ngIf='(imageSourceUrl != undefined && imageSourceUrl == "") || (imageSourceUrl == undefined)'>NA</div>
           </div>
         </div>
       </div>
@@ -107,19 +110,22 @@
       <div class="row" *ngIf="(isEmbedded && isPersonalize) || isEmbedded">
         <div class="col-sm-12 form-group">
           <label> URL </label>
-          <div>{{vdoSourceUrl}}</div>
+          <div *ngIf='vdoSourceUrl != undefined && vdoSourceUrl != ""'>{{vdoSourceUrl}}</div>
+          <div *ngIf='vdoSourceUrl != undefined && vdoSourceUrl == ""'>NA</div>
         </div>
       </div>
       <div class="row" *ngIf="!isEmbedded && !isPersonalize">
         <div class="col-sm-12 form-group">
           <label> Asset Library </label>
-          <div>{{vdoAssetLibraryName}}</div>
+          <div *ngIf='vdoAssetLibraryName != undefined && vdoAssetLibraryName != ""'>{{vdoAssetLibraryName}}</div>
+          <div *ngIf='vdoAssetLibraryName != undefined && vdoAssetLibraryName == ""'>NA</div>
         </div>
       </div>
       <div class="row" *ngIf="!isEmbedded && !isPersonalize">
         <div class="col-sm-12 form-group">
           <label> Assets </label>
-          <div>{{vdoAssetName}}</div>
+          <div *ngIf='vdoAssetName != undefined && vdoAssetName != ""'>{{vdoAssetName}}</div>
+          <div *ngIf='vdoAssetName != undefined && vdoAssetName == ""'>NA</div>
         </div>
       </div>
     </div>    

@@ -13,7 +13,8 @@ import { TemplateWidget } from '../../layout/template/templateWidget';
 import {
   CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
-  SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent
+  SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -25,6 +26,7 @@ import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfigurati
 import * as $ from 'jquery';
 import { map } from 'rxjs/operators';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 
 @Component({
   selector: 'app-add-dashboard-designer',
@@ -113,12 +115,17 @@ export class AddDashboardDesignerComponent implements OnInit {
             this.BackgroundImageURL = this.params.Routeparams.passingparams.BackgroundImageURL
             this.applyBackgroundImage(this.BackgroundImageAssetId, this.BackgroundImageURL);
             
+            if (this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString != null && this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString != ""
+              && this.testJSON(this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString)) {
+                this.widgetsArray = JSON.parse(this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString);
+            }
+
             if (this.params.Routeparams.passingparams.PageWidgetArrayString != null && this.params.Routeparams.passingparams.PageWidgetArrayString != ""
               && this.testJSON(this.params.Routeparams.passingparams.PageWidgetArrayString)) {
 
               this.widgetsGridsterItemArray = JSON.parse(this.params.Routeparams.passingparams.PageWidgetArrayString)
               for (let x = 0; x < this.widgetsGridsterItemArray.length; x++) {
-                let obj = this.bindComponent(this.widgetsGridsterItemArray[x].widgetId);
+                let obj = this.bindComponent(this.widgetsGridsterItemArray[x]);
                 if (obj != null) {
                   this.widgetsGridsterItemArray[x].component = obj.component;
                   this.widgetsGridsterItemArray[x].value = obj.value;
@@ -246,7 +253,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.selectedWidgetItemCount = widgetItemCount;
     this.isPersonalizeImage = false;
 
-    var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+    var records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       var widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -315,7 +322,7 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.isPersonalize = false;
     this.isEmbedded = false;
 
-    var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+    var records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
     if (records.length != 0) {
       var widgetSetting = records[0].WidgetSetting;
       if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -340,8 +347,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           this.LoadAsset('video', widgetConfigObj.AssetLibraryId);
         }
 
-        if ((widgetConfigObj.isPersonalize != null && widgetConfigObj.isPersonalize == false) ||
-          (widgetConfigObj.isEmbedded != null && widgetConfigObj.isEmbedded == false)) {
+        if (widgetConfigObj.AssetLibraryId != 0 && widgetConfigObj.AssetId != 0) {
 
           this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetConfigObj.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
           .subscribe(
@@ -419,7 +425,8 @@ export class AddDashboardDesignerComponent implements OnInit {
     if (this.pageEditModeOn && this.widgetsGridsterItemArray.length == 0) {
       this.getTemplate();
     } else {
-      this.getWidgetsByPageType();
+      //this.getWidgetsByPageType();
+      this.getStaticAndDynamicWidgets();
     }
 
     //gridster
@@ -519,6 +526,12 @@ export class AddDashboardDesignerComponent implements OnInit {
     );
   }
 
+  async getStaticAndDynamicWidgets() {
+    let dynamicWidgetService = this.injector.get(DynamicWidgetService);
+    var response = await dynamicWidgetService.getStaticAndDynamicWidgets(this.PageTypeId);
+    this.widgetsArray = <any[]>response;
+  }
+
   //Back Functionality.
   backClicked() {
     this.navigateToListPage();
@@ -532,6 +545,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           "PageName": this.PageName,
           "PageTypeId": this.PageTypeId,
           "PageWidgetArray": JSON.stringify(this.widgetsGridsterItemArray),
+          "StaticAndDynamicWidgetsArray": JSON.stringify(this.widgetsArray),
           "pageEditModeOn": this.pageEditModeOn,
           "BackgroundImageAssetId": this.BackgroundImageAssetId,
           "BackgroundImageURL": this.BackgroundImageURL,
@@ -564,12 +578,13 @@ export class AddDashboardDesignerComponent implements OnInit {
     for (var i = 0; i < this.widgetsGridsterItemArray.length; i++) {
       let widgetsGridsterItem = this.widgetsGridsterItemArray[i];
       let pageWidget: any = {};
-      pageWidget.WidgetId = widgetsGridsterItem.widgetId;
+      pageWidget.WidgetId = widgetsGridsterItem.WidgetId;
       pageWidget.Height = widgetsGridsterItem.rows;
       pageWidget.Width = widgetsGridsterItem.cols;
       pageWidget.Xposition = widgetsGridsterItem.x;
       pageWidget.Yposition = widgetsGridsterItem.y;
       pageWidget.WidgetSetting = widgetsGridsterItem.WidgetSetting != null ? widgetsGridsterItem.WidgetSetting : "";
+      pageWidget.IsDynamicWidget = widgetsGridsterItem.IsDynamicWidget;
       pageWidgets.push(pageWidget);
     }
     pageObject.PageWidgets = pageWidgets;
@@ -604,202 +619,306 @@ export class AddDashboardDesignerComponent implements OnInit {
     let widgets = this.widgetsArray.filter(x => x.Identifier == widgetId);
     if (widgets.length != 0) {
       let widget = widgets[0];
-      let widgetItems = this.widgetsGridsterItemArray.filter(w => w.widgetId == widget.Identifier);
+      let widgetItems = this.widgetsGridsterItemArray.filter(w => w.WidgetId == widget.Identifier);
       if (widget.Instantiable == false && widgetItems.length > 0) {
         let message = "You can not add multiple times " + widget.DisplayName + " widget";
         this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError);
       } else {
         this.widgetItemCount++;
-        if (widget.WidgetName == "CustomerInformation") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 8,
-            rows: 4,
-            y: 0,
-            x: 0,
-            component: CustomerInformationComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "AccountInformation") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 3,
-            rows: 4,
-            y: 0,
-            x: 0,
-            component: AccountInformationComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "Image") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 6,
-            rows: 3,
-            y: 0,
-            x: 0,
-            component: ImageComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "Video") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 6,
-            rows: 3,
-            y: 0,
-            x: 0,
-            component: VideoComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "Summary") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 9,
-            rows: 4,
-            y: 0,
-            x: 0,
-            component: SummaryAtGlanceComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "SavingAvailableBalance") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 3,
-            rows: 2,
-            y: 0,
-            x: 0,
-            component: SavingAvailableBalanceComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "CurrentAvailableBalance") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 3,
-            rows: 2,
-            y: 0,
-            x: 0,
-            component: CurrentAvailableBalanceComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "CurrentTransaction") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 12,
-            rows: 4,
-            y: 0,
-            x: 0,
-            component: TransactionDetailsComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "SavingTransaction") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 12,
-            rows: 4,
-            y: 0,
-            x: 0,
-            component: SavingTransactionDetailsComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-        else if (widget.WidgetName == "SpendingTrend") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 4,
-            rows: 3,
-            y: 0,
-            x: 0,
-            component: SpendindTrendsComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
+        if(widget.WidgetType == 'Static') {
 
-        else if (widget.WidgetName == "ReminderaAndRecommendation") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 4,
-            rows: 3,
-            y: 0,
-            x: 0,
-            component: ReminderAndRecommComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
+          if (widget.WidgetName == "CustomerInformation") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 7,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: CustomerInformationComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "AccountInformation") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 3,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: AccountInformationComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "Image") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: ImageComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "Video") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: VideoComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "Summary") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: SummaryAtGlanceComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "SavingAvailableBalance") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 3,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: SavingAvailableBalanceComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CurrentAvailableBalance") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 3,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: CurrentAvailableBalanceComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CurrentTransaction") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: TransactionDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "SavingTransaction") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: SavingTransactionDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "SpendingTrend") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: SpendindTrendsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "ReminderaAndRecommendation") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: ReminderAndRecommComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "Top4IncomeSources") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: TopIncomeSourcesComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "SavingTrend") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: SavingTrendsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "Analytics") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: AnalyticsWidgetComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
         }
-
-        else if (widget.WidgetName == "Top4IncomeSources") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 4,
-            rows: 2,
-            y: 0,
-            x: 0,
-            component: TopIncomeSourcesComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
+        else {
+          if(widget.WidgetType == 'Table') {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: SummaryAtGlanceComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: true
+            })
+          }
+          else if(widget.WidgetType == 'Form') {
+            return this.widgetsGridsterItemArray.push({
+              cols: 3,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: AccountInformationComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: true
+            })
+          }
+          else if(widget.WidgetType == 'BarGraph') {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: DynamicBarChartWidgetComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: true
+            })
+          }
+          else if(widget.WidgetType == 'LineGraph') {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: DynamicLineChartWidgetComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: true
+            })
+          }
+          else if(widget.WidgetType == 'PieChart') {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: DynamicPieChartWidgetComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: true
+            })
+          }
+          else if(widget.WidgetType == 'Html') {
+            
+          }
         }
-
-        else if (widget.WidgetName == "SavingTrend") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 4,
-            rows: 3,
-            y: 0,
-            x: 0,
-            component: SavingTrendsComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-
-        else if (widget.WidgetName == "Analytics") {
-          return this.widgetsGridsterItemArray.push({
-            cols: 4,
-            rows: 3,
-            y: 0,
-            x: 0,
-            component: AnalyticsWidgetComponent,
-            value: widget.WidgetName,
-            widgetId: widget.Identifier,
-            widgetItemCount: this.widgetItemCount,
-            WidgetSetting: ''
-          })
-        }
-
       }
     }
-
   }
 
   getTemplate() {
@@ -834,7 +953,8 @@ export class AddDashboardDesignerComponent implements OnInit {
       this.PageTypeId = template.PageTypeId;
       this.PageIdentifier = template.Identifier;
       this.pageVersion = template.Version;
-      this.getWidgetsByPageType();
+      //await this.getWidgetsByPageType();
+      await this.getStaticAndDynamicWidgets();
 
       let pageWidgets: TemplateWidget[] = template.PageWidgets;
       if (pageWidgets.length != 0) {
@@ -845,11 +965,13 @@ export class AddDashboardDesignerComponent implements OnInit {
           gridsterItem.y = pageWidgets[i].Yposition;
           gridsterItem.cols = pageWidgets[i].Width;
           gridsterItem.rows = pageWidgets[i].Height;
-          gridsterItem.widgetId = pageWidgets[i].WidgetId;
+          gridsterItem.WidgetId = pageWidgets[i].WidgetId;
           gridsterItem.WidgetName = pageWidgets[i].WidgetName;
           gridsterItem.WidgetSetting = pageWidgets[i].WidgetSetting;
           gridsterItem.widgetItemCount = this.widgetItemCount;
-          let obj = this.bindComponent(pageWidgets[i].WidgetName);
+          gridsterItem.IsDynamicWidget = pageWidgets[i].IsDynamicWidget;
+          gridsterItem.WidgetType = pageWidgets[i].IsDynamicWidget == false ? 'Static' : 'Dynamic';
+          let obj = this.bindComponent(pageWidgets[i]);
           gridsterItem.component = obj.component;
           gridsterItem.value = obj.value;
           this.widgetsGridsterItemArray.push(gridsterItem);
@@ -858,64 +980,79 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
   }
 
-  bindComponent(widgetName): any {
+  bindComponent(widget): any {
+    
+    let widgetName = widget.WidgetName;
+    let widgetType = widget.IsDynamicWidget == false ? 'Static' : 'Dynamic';
     let gridObj: any = {};
-    if(widgetName == 'CustomerInformation') {
+    if(widgetType == 'Static') {
+      if(widgetName == 'CustomerInformation') {
         gridObj.component = CustomerInformationComponent;
-        gridObj.value = "CustomerInformation";
+      }
+      else if(widgetName == 'AccountInformation') {
+          gridObj.component = AccountInformationComponent;
+      }
+      else if(widgetName == 'Image') {
+          gridObj.component = ImageComponent;
+      }
+      else if(widgetName == 'Video') {
+          gridObj.component = VideoComponent;
+      }
+      else if(widgetName == 'Summary') {
+          gridObj.component = SummaryAtGlanceComponent;
+      }
+      else if (widgetName == 'CurrentAvailableBalance') {
+          gridObj.component = CurrentAvailableBalanceComponent;
+      }
+        else if (widgetName == 'SavingAvailableBalance') {
+          gridObj.component = SavingAvailableBalanceComponent;
+      }
+        else if (widgetName == 'CurrentTransaction') {
+          gridObj.component = TransactionDetailsComponent;
+      }
+        else if (widgetName == 'SavingTransaction') {
+          gridObj.component = SavingTransactionDetailsComponent;
+      }
+      else if (widgetName == 'SpendingTrend') {
+          gridObj.component = SpendindTrendsComponent;
+      }
+      else if (widgetName == 'Top4IncomeSources') {
+          gridObj.component = TopIncomeSourcesComponent;
+      }
+      else if (widgetName == 'SavingTrend') {
+          gridObj.component = SavingTrendsComponent;
+      }
+      else if (widgetName == 'Analytics') {
+          gridObj.component = AnalyticsWidgetComponent;
+      }
+      else if (widgetName == 'ReminderaAndRecommendation') {
+          gridObj.component = ReminderAndRecommComponent;
+      }
     }
-    else if(widgetName == 'AccountInformation') {
-        gridObj.component = AccountInformationComponent;
-        gridObj.value = "AccountInformation";
-    }
-    else if(widgetName == 'Image') {
-        gridObj.component = ImageComponent;
-        gridObj.value = "Image";
-    }
-    else if(widgetName == 'Video') {
-        gridObj.component = VideoComponent;
-        gridObj.value = "Video";
-    }
-    else if(widgetName == 'Summary') {
+    else {
+      let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetType != 'Static');
+      widgetType = dynaWidgets[0].WidgetType;
+      if(widgetType == 'Table') {
         gridObj.component = SummaryAtGlanceComponent;
-        gridObj.value = "Summary";
+      }
+      else if(widgetType == 'Form') {
+        gridObj.component = AccountInformationComponent;
+      }
+      else if(widgetType == 'LineGraph') {
+        gridObj.component = DynamicLineChartWidgetComponent;
+      }
+      else if(widgetType == 'BarGraph') {
+        gridObj.component = DynamicBarChartWidgetComponent;
+      }
+      else if(widgetType == 'PieChart') {
+        gridObj.component = DynamicPieChartWidgetComponent;
+      }
+      else if(widgetType == 'Html') {
+
+      }
     }
-    else if (widgetName == 'CurrentAvailableBalance') {
-        gridObj.component = CurrentAvailableBalanceComponent;
-        gridObj.value = "CurrentAvailableBalance";
-    }
-      else if (widgetName == 'SavingAvailableBalance') {
-        gridObj.component = SavingAvailableBalanceComponent;
-        gridObj.value = "SavingAvailableBalance";
-    }
-      else if (widgetName == 'CurrentTransaction') {
-        gridObj.component = TransactionDetailsComponent;
-        gridObj.value = "CurrentTransaction";
-    }
-      else if (widgetName == 'SavingTransaction') {
-        gridObj.component = SavingTransactionDetailsComponent;
-        gridObj.value = "SavingTransaction";
-    }
-    else if (widgetName == 'SpendingTrend') {
-        gridObj.component = SpendindTrendsComponent;
-        gridObj.value = "SpendingTrend";
-    }
-    else if (widgetName == 'Top4IncomeSources') {
-        gridObj.component = TopIncomeSourcesComponent;
-        gridObj.value = "Top4IncomeSources";
-    }
-    else if (widgetName == 'SavingTrend') {
-        gridObj.component = SavingTrendsComponent;
-        gridObj.value = "SavingTrend";
-    }
-    else if (widgetName == 'Analytics') {
-        gridObj.component = AnalyticsWidgetComponent;
-        gridObj.value = "Analytics";
-    }
-    else if (widgetName == 'ReminderaAndRecommendation') {
-        gridObj.component = ReminderAndRecommComponent;
-        gridObj.value = "ReminderaAndRecommendation";
-    }
+
+    gridObj.value = widgetName;
     return gridObj;
   }
 
@@ -1121,7 +1258,7 @@ export class AddDashboardDesignerComponent implements OnInit {
       imageConfig.WidgetId = this.imageWidgetId;
       //imageConfig.BlobObjectUrl = this.isPersonalizeImage == true ? "" : this.imageBlobObjectUrl;
 
-      let oldItem = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
+      let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
       let newItem = Object.assign({}, oldItem)
       newItem.WidgetSetting = JSON.stringify(imageConfig);
       const index: number = this.widgetsGridsterItemArray.indexOf(oldItem);
@@ -1148,7 +1285,7 @@ export class AddDashboardDesignerComponent implements OnInit {
       videoConfig.isPersonalize = this.isPersonalize;
       videoConfig.isEmbedded = this.isEmbedded;
 
-      let oldItem = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
+      let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
       let newItem = Object.assign({}, oldItem)
       newItem.WidgetSetting = JSON.stringify(videoConfig);
       const index: number = this.widgetsGridsterItemArray.indexOf(oldItem);
@@ -1184,6 +1321,6 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   pageDesignPreview() {
-    this._messageDialogService.openPageDesignPreviewDialogBox(this.widgetsGridsterItemArray, this.BackgroundImageAssetId, this.BackgroundImageURL);
+    this._messageDialogService.openPageDesignPreviewDialogBox(this.widgetsGridsterItemArray, this.BackgroundImageAssetId, this.BackgroundImageURL, this.PageTypeId);
   }
 }

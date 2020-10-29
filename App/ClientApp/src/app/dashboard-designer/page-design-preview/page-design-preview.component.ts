@@ -1,4 +1,4 @@
-import { Component, OnInit, SecurityContext } from '@angular/core';
+import { Component, OnInit, SecurityContext, Injector } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { DialogComponent, DialogService } from '@tomblue/ng2-bootstrap-modal';
@@ -7,7 +7,10 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent } from '../widgetComponent/widgetComponent';
+import { SummaryAtGlanceComponent, AccountInformationComponent,
+  SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
+  DynamicBarChartWidgetPreviewComponent } from '../widgetComponent/widgetComponent';
+import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 
 //If you change dashboard-container class in below HTML template, 
 //then you can also need to change in applyBackgroundImage to replace new class name over there.
@@ -44,6 +47,8 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
   ItemArray:any[];
   BackgroundImageAssetId: number;
   BackgroundImageURL: string;
+  PageTypeId: number;
+  widgetsArray: any = [];
   backdropColor: string = "red";
   public options: GridsterConfig;
   dashboard: Array<GridsterItem>;
@@ -53,21 +58,15 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
   constructor(dialogService: DialogService,
     private _messageDialogService: MessageDialogService,
     private _http: HttpClient,
+    private injector: Injector,
     private sanitizer: DomSanitizer) { 
       super(dialogService);
     }
 
   ngOnInit() {
-    this.applyBackgroundImage(this.BackgroundImageAssetId, this.BackgroundImageURL);
-    this.ItemArray = [];
-    for(let i=0; i< this.widgetItemArray.length; i++) {
-      let widget = Object.assign({}, this.widgetItemArray[i]);
-      if(widget.WidgetName == 'SavingTrend' || widget.WidgetName == 'Analytics' || widget.WidgetName == 'SpendingTrend') {
-        widget.component = this.bindComponent(widget.WidgetName)
-      }
-      this.ItemArray.push(widget);
-    }
 
+    this.getStaticAndDynamicWidgets();
+  
     //gridster
     this.options = {
       gridType: GridType.VerticalFixed,
@@ -125,14 +124,54 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
 
   }
 
-  bindComponent(widgetName): any {
-    if (widgetName == 'SavingTrend') {
-      return SavingTrendsPreviewComponent;
-    }else if(widgetName == 'Analytics') {
-      return AnalyticsWidgetPreviewComponent;
-    }else if(widgetName == 'SpendingTrend') {
-      return SpendindTrendsPreviewComponent;
+  async getStaticAndDynamicWidgets() {
+    let dynamicWidgetService = this.injector.get(DynamicWidgetService);
+    var response = await dynamicWidgetService.getStaticAndDynamicWidgets(this.PageTypeId);
+    this.widgetsArray = <any[]>response;
+
+    this.applyBackgroundImage(this.BackgroundImageAssetId, this.BackgroundImageURL);
+    this.ItemArray = [];
+    for(let i=0; i< this.widgetItemArray.length; i++) {
+      let widget = Object.assign({}, this.widgetItemArray[i]);
+      if(widget.WidgetName == 'SavingTrend' || widget.WidgetName == 'Analytics' || widget.WidgetName == 'SpendingTrend' || widget.IsDynamicWidget == true) {
+        widget.component = this.bindComponent(widget)
+      }
+      this.ItemArray.push(widget);
     }
+  }
+
+  bindComponent(widget): any {
+    
+    let widgetName = widget.WidgetName;
+    let widgetType = 'Static';
+    if(widget.IsDynamicWidget == true) {
+      let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetType != 'Static');
+      widgetType = dynaWidgets[0].WidgetType;
+    }
+
+    if(widgetType == 'Static') {
+      if (widgetName == 'SavingTrend') {
+        return SavingTrendsPreviewComponent;
+      }else if(widgetName == 'Analytics') {
+        return AnalyticsWidgetPreviewComponent;
+      }else if(widgetName == 'SpendingTrend') {
+        return SpendindTrendsPreviewComponent;
+      }
+    }
+    else{
+      if (widgetType == 'LineGraph') {
+        return DynamicPieChartWidgetPreviewComponent;
+      }else if(widgetType == 'BarGraph') {
+        return DynamicBarChartWidgetPreviewComponent;
+      }else if(widgetType == 'PieChart') {
+        return DynamicPieChartWidgetPreviewComponent;
+      }else if(widgetType == 'Table') {
+        return SummaryAtGlanceComponent;
+      }else if(widgetType == 'Form') {
+        return AccountInformationComponent;
+      }
+    }
+    
 }
 
   cancel() {
@@ -164,6 +203,7 @@ export interface PageDesignPreviewModel {
   widgetItemArray:any[];
   BackgroundImageAssetId: number;
   BackgroundImageURL: string;
+  PageTypeId: number;
 }
 
 interface DialogOptions {

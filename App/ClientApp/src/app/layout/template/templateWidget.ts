@@ -8,4 +8,5 @@ export interface TemplateWidget {
     Xposition: number;
     Yposition: number;
     WidgetSetting: string;
+    IsDynamicWidget: boolean;
 }

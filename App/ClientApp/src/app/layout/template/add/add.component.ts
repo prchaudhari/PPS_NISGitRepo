@@ -36,6 +36,7 @@ export class AddComponent implements OnInit {
   public PageTypeId = 0;
   public PageTypeName;
   public PageWidgetArrayString: string = "";
+  public staticAndDynamicWidgetsArrayString:  string = '';
   public PageTypeIdBeforeChange: number = 0;
   public PageWidgetArrayStringBeforePageTypeChange: string = "";
   public isPageTypeChangeActionByClickingPreviousButton: boolean = false;
@@ -116,6 +117,7 @@ export class AddComponent implements OnInit {
             this.PageTypeId = this.params.Routeparams.passingparams.PageTypeId
             this.PageTypeIdBeforeChange = this.params.Routeparams.passingparams.PageTypeId
             this.PageWidgetArrayString = this.params.Routeparams.passingparams.PageWidgetArray
+            this.staticAndDynamicWidgetsArrayString = this.params.Routeparams.passingparams.StaticAndDynamicWidgetsArray
             this.PageWidgetArrayStringBeforePageTypeChange = this.params.Routeparams.passingparams.PageWidgetArray
             this.isPageTypeChangeActionByClickingPreviousButton = true;
             this.AssetLibraryIdOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageAssetLibraryId
@@ -130,6 +132,7 @@ export class AddComponent implements OnInit {
             this.pageEditModeOn = this.params.Routeparams.passingparams.pageEditModeOn
             this.PageTypeIdBeforeChange = this.params.Routeparams.passingparams.PageTypeId
             this.PageWidgetArrayString = this.params.Routeparams.passingparams.PageWidgetArray
+            this.staticAndDynamicWidgetsArrayString = this.params.Routeparams.passingparams.StaticAndDynamicWidgetsArray
             this.AssetLibraryIdOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageAssetLibraryId
             this.AssetIdOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageAssetId
             this.UrlOfBackgroundImage = this.params.Routeparams.passingparams.BackgroundImageURL
@@ -206,12 +209,13 @@ export class AddComponent implements OnInit {
       for (var i = 0; i < widgetsGridsterItemArray.length; i++) {
         let widgetsGridsterItem = widgetsGridsterItemArray[i];
         let pageWidget: any = {};
-        pageWidget.WidgetId = widgetsGridsterItem.widgetId;
+        pageWidget.WidgetId = widgetsGridsterItem.WidgetId;
         pageWidget.Height = widgetsGridsterItem.rows;
         pageWidget.Width = widgetsGridsterItem.cols;
         pageWidget.Xposition = widgetsGridsterItem.x;
         pageWidget.Yposition = widgetsGridsterItem.y;
         pageWidget.WidgetSetting = widgetsGridsterItem.WidgetSetting != null ? widgetsGridsterItem.WidgetSetting : "";
+        pageWidget.IsDynamicWidget = widgetsGridsterItem.IsDynamicWidget;
         pageWidgets.push(pageWidget);
       }
     }
@@ -305,7 +309,8 @@ export class AddComponent implements OnInit {
           "BackgroundImageURL": this.pageFormGroup.value.pageBackgroundImageUrl,
           "pageEditModeOn": this.pageEditModeOn,
           "PageIdentifier": this.pageEditModeOn ? this.PageIdentifier : 0,
-          "PageWidgetArrayString": this.PageWidgetArrayString
+          "PageWidgetArrayString": this.PageWidgetArrayString,
+          "StaticAndDynamicWidgetArrayString": this.staticAndDynamicWidgetsArrayString
         }
       }
     }

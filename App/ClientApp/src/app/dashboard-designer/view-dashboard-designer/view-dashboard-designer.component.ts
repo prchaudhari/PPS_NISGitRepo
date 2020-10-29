@@ -11,13 +11,15 @@ import { ConfigConstants } from '../../shared/constants/configConstants';
 import {
     CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
-    SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent
+    SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
+    DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 
 @Component({
   selector: 'app-view-dashboard-designer',
@@ -60,6 +62,8 @@ export class ViewDashboardDesignerComponent implements OnInit {
     public vdoAssetLibraryName: string = "";
     public pageVersion: string = "";
     public isNoConfigurationSaved: boolean = false;
+    public widgetsArray: any = [];
+    public PageTypeId = 0;
 
     //Back Functionality.
     backClicked() {
@@ -94,7 +98,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
         this.imageWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
         this.isNoConfigurationSaved = false;
-        var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+        var records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
         if(records.length != 0) {
             var widgetSetting = records[0].WidgetSetting;
             if(widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -131,7 +135,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
         this.videoWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
         this.isNoConfigurationSaved = false;
-        var records = this.widgetsGridsterItemArray.filter(x => x.widgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+        var records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.videoWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
         if(records.length != 0) {
             var widgetSetting = records[0].WidgetSetting;
             if(widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
@@ -212,6 +216,12 @@ export class ViewDashboardDesignerComponent implements OnInit {
         this.getPageRecord();
     }
 
+    async getStaticAndDynamicWidgets() {
+        let dynamicWidgetService = this.injector.get(DynamicWidgetService);
+        var response = await dynamicWidgetService.getStaticAndDynamicWidgets(this.PageTypeId);
+        this.widgetsArray = <any[]>response;
+    }
+
     async getPageRecord() {
         let templateService = this.injector.get(TemplateService);
         let searchParameter: any = {};
@@ -238,8 +248,10 @@ export class ViewDashboardDesignerComponent implements OnInit {
             let template = this.templateList[0];
             this.applyBackgroundImage(template.BackgroundImageAssetId, template.BackgroundImageURL);
             this.PageName = template.DisplayName;
+            this.PageTypeId = template.PageTypeId;
             this.PageIdentifier = template.Identifier;
             this.pageVersion = template.Version;
+            await this.getStaticAndDynamicWidgets();
             let pageWidgets: TemplateWidget[] = template.PageWidgets;
             if(pageWidgets.length != 0) {
                 for(let i=0; i < pageWidgets.length; i++) {
@@ -249,10 +261,11 @@ export class ViewDashboardDesignerComponent implements OnInit {
                     gridsterItem.y = pageWidgets[i].Yposition;
                     gridsterItem.cols = pageWidgets[i].Width;
                     gridsterItem.rows = pageWidgets[i].Height;
-                    gridsterItem.widgetId = pageWidgets[i].WidgetId;
+                    gridsterItem.WidgetId = pageWidgets[i].WidgetId;
                     gridsterItem.WidgetSetting = pageWidgets[i].WidgetSetting;
-                    gridsterItem.widgetItemCount = this.widgetItemCount;                    
-                    let obj = this.bindComponent(pageWidgets[i].WidgetName);
+                    gridsterItem.widgetItemCount = this.widgetItemCount;
+                    gridsterItem.IsDynamicWidget = pageWidgets[i].IsDynamicWidget;               
+                    let obj = this.bindComponent(pageWidgets[i]);
                     gridsterItem.component = obj.component;
                     gridsterItem.value = obj.value;
                     this.widgetsGridsterItemArray.push(gridsterItem);
@@ -261,66 +274,81 @@ export class ViewDashboardDesignerComponent implements OnInit {
         }
     }
 
-    bindComponent(widgetName): any {
+    bindComponent(widget): any {   
+        let widgetName = widget.WidgetName;
+        let widgetType = widget.IsDynamicWidget == false ? 'Static' : 'Dynamic';
         let gridObj: any = {};
-        if(widgetName == 'CustomerInformation') {
-            gridObj.component = CustomerInformationComponent;
-            gridObj.value = "CustomerInformation";
+        if(widgetType == 'Static') {
+            if(widgetName == 'CustomerInformation') {
+                gridObj.component = CustomerInformationComponent;
+            }
+            else if(widgetName == 'AccountInformation') {
+                gridObj.component = AccountInformationComponent;
+            }
+            else if(widgetName == 'Image') {
+                gridObj.component = ImageComponent;
+            }
+            else if(widgetName == 'Video') {
+                gridObj.component = VideoComponent;
+            }
+            else if(widgetName == 'Summary') {
+                gridObj.component = SummaryAtGlanceComponent;
+            }
+            else if (widgetName == 'CurrentAvailableBalance') {
+                gridObj.component = CurrentAvailableBalanceComponent;
+            }
+            else if (widgetName == 'SavingAvailableBalance') {
+                gridObj.component = SavingAvailableBalanceComponent;
+            }
+            else if (widgetName == 'CurrentTransaction') {
+                gridObj.component = TransactionDetailsComponent;
+            }
+            else if (widgetName == 'SavingTransaction') {
+                gridObj.component = SavingTransactionDetailsComponent;
+            }
+            else if (widgetName == 'SpendingTrend') {
+                gridObj.component = SpendindTrendsComponent;
+            }
+            else if (widgetName == 'Top4IncomeSources') {
+                gridObj.component = TopIncomeSourcesComponent;
+            }
+            else if (widgetName == 'SavingTrend') {
+                gridObj.component = SavingTrendsComponent;
+            }
+            else if (widgetName == 'Analytics') {
+                gridObj.component = AnalyticsWidgetComponent;
+            }
+            else if (widgetName == 'ReminderaAndRecommendation') {
+                gridObj.component = ReminderAndRecommComponent;
+            }
         }
-        else if(widgetName == 'AccountInformation') {
-            gridObj.component = AccountInformationComponent;
-            gridObj.value = "AccountInformation";
+        else {
+            let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetType != 'Static');
+            widgetType = dynaWidgets[0].WidgetType;
+            if(widgetType == 'Table') {
+                gridObj.component = SummaryAtGlanceComponent;
+            }
+            else if(widgetType == 'Form') {
+                gridObj.component = AccountInformationComponent;
+            }
+            else if(widgetType == 'LineGraph') {
+                gridObj.component = DynamicLineChartWidgetComponent;
+            }
+            else if(widgetType == 'BarGraph') {
+                gridObj.component = DynamicBarChartWidgetComponent;
+            }
+            else if(widgetType == 'PieChart') {
+                gridObj.component = DynamicPieChartWidgetComponent;
+            }
+            else if(widgetType == 'Html') {
+
+            }
         }
-        else if(widgetName == 'Image') {
-            gridObj.component = ImageComponent;
-            gridObj.value = "Image";
-        }
-        else if(widgetName == 'Video') {
-            gridObj.component = VideoComponent;
-            gridObj.value = "Video";
-        }
-        else if(widgetName == 'Summary') {
-            gridObj.component = SummaryAtGlanceComponent;
-            gridObj.value = "Summary";
-        }
-        else if (widgetName == 'CurrentAvailableBalance') {
-            gridObj.component = CurrentAvailableBalanceComponent;
-            gridObj.value = "CurrentAvailableBalance";
-        }
-          else if (widgetName == 'SavingAvailableBalance') {
-            gridObj.component = SavingAvailableBalanceComponent;
-            gridObj.value = "SavingAvailableBalance";
-        }
-          else if (widgetName == 'CurrentTransaction') {
-            gridObj.component = TransactionDetailsComponent;
-            gridObj.value = "CurrentTransaction";
-        }
-          else if (widgetName == 'SavingTransaction') {
-            gridObj.component = SavingTransactionDetailsComponent;
-            gridObj.value = "SavingTransaction";
-        }
-        else if (widgetName == 'SpendingTrend') {
-            gridObj.component = SpendindTrendsComponent;
-            gridObj.value = "SpendingTrend";
-        }
-        else if (widgetName == 'Top4IncomeSources') {
-            gridObj.component = TopIncomeSourcesComponent;
-            gridObj.value = "Top4IncomeSources";
-        }
-        else if (widgetName == 'SavingTrend') {
-            gridObj.component = SavingTrendsComponent;
-            gridObj.value = "SavingTrend";
-        }
-        else if (widgetName == 'Analytics') {
-            gridObj.component = AnalyticsWidgetComponent;
-            gridObj.value = "Analytics";
-        }
-        else if (widgetName == 'ReminderaAndRecommendation') {
-            gridObj.component = ReminderAndRecommComponent;
-            gridObj.value = "ReminderaAndRecommendation";
-        }
+
+        gridObj.value = widgetName;
         return gridObj;
     }
+    
 
     applyBackgroundImage(AssetId, ImageURL) {
         if(AssetId != null && AssetId != 0) {
