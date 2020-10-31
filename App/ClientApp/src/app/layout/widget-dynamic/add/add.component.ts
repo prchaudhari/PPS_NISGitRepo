@@ -1,11 +1,9 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Constants } from '../../../shared/constants/constants';
-import { ErrorMessageConstants } from '../../../shared/constants/constants';
+import { Router, NavigationEnd } from '@angular/router';
+import { Constants, ErrorMessageConstants } from '../../../shared/constants/constants';
 import { MessageDialogService } from '../../../shared/services/mesage-dialog.service';
-import { DynamicWidgetService } from '../dynamicWidget.service';
+import { DynamicWidgetService } from '../dynamicwidget.service';
 import { DynamicWidget } from '../dynamicwidget';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatPaginator } from '@angular/material/paginator';

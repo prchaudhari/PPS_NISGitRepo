@@ -25,36 +25,7 @@ export class MessageDialogService {
       cancelButtonText: "Cancel"
     });
   }
-
-  openPreviewDialogBox(message): Observable<any> {
-    return this._dialogService.addDialog(PagePreviewComponent, {
-      htmlContent: message,
-    });
-  }
-  openWidgetPreviewDialogBox(message, chartData): Observable<any> {
-    console.log("chart data in openWidgetPreviewDialogBox ");
-    console.log(chartData);
-    return this._dialogService.addDialog(WidgetPreviewComponent, {
-      htmlContent: message,
-      ChartData: chartData
-    });
-  }
-  openPageDesignPreviewDialogBox(array, AssetId, Url, pageTypeId): Observable<any> {
-    return this._dialogService.addDialog(PageDesignPreviewComponent, {
-      widgetItemArray: array,
-      BackgroundImageAssetId: AssetId,
-      BackgroundImageURL: Url,
-      PageTypeId: pageTypeId
-    });
-  }
-
-  openErrorLogDialogBox(scheduleLogId, scheduleName): Observable<any> {
-    return this._dialogService.addDialog(ErrorLogsViewComponent, {
-      scheduleLogId: scheduleLogId,
-      scheduleName: scheduleName,
-    });
-  }
-
+  
   openConfirmationDialogBox(title, message, msgType): Observable<any> {
     return this._dialogService.addDialog(MsgBoxComponent, {
       title: title,
@@ -62,17 +33,6 @@ export class MessageDialogService {
       msgType: msgType,
       actionButtonText: "Ok",
       showCancelButtun: true,
-      cancelButtonText: "Cancel"
-    });
-  }
-
-  openMulipleMessageDialogBox(title, message, msgType): Observable<any> {
-    return this._dialogService.addDialog(MultipleMessageboxComponent, {
-      title: title,
-      message: message,
-      msgType: msgType,
-      actionButtonText: "Ok",
-      showCancelButtun: false,
       cancelButtonText: "Cancel"
     });
   }

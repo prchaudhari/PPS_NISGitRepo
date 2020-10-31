@@ -15,6 +15,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
+import { PreviewDialogService } from './../../shared/services/preview-dialog.service';
 
 @Component({
   selector: 'app-logs',
@@ -366,7 +367,8 @@ export class LogsComponent implements OnInit {
   }
 
   ViewErrorLog(log: ScheduleLog) {
-    this._messageDialogService.openErrorLogDialogBox(log.Identifier, log.ScheduleName);
+    let previewservice = this.injector.get(PreviewDialogService);
+    previewservice.openErrorLogDialogBox(log.Identifier, log.ScheduleName);
   }
 }
 

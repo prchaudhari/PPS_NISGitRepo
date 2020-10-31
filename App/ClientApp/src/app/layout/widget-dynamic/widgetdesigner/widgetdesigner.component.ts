@@ -1,12 +1,11 @@
-import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy, SecurityContext } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Constants } from '../../../shared/constants/constants';
-import { ErrorMessageConstants } from '../../../shared/constants/constants';
+import { Router, NavigationEnd } from '@angular/router';
+import { Constants, ErrorMessageConstants } from '../../../shared/constants/constants';
 import { MessageDialogService } from '../../../shared/services/mesage-dialog.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
-import { DynamicWidgetService } from '../dynamicWidget.service';
+import { DynamicWidgetService } from '../dynamicwidget.service';
 import { DynamicWidget } from '../dynamicwidget';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,13 +14,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 import { TemplateService } from '../../template/template.service';
-import { URLConfiguration } from '../../../shared/urlConfiguration/urlconfiguration';
 import { ConfigConstants } from '../../../shared/constants/configConstants';
 import { RichTextEditorComponent, MarkdownFormatter, EditorMode, RichTextEditor } from '@syncfusion/ej2-angular-richtexteditor';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AssetLibraryService } from '../../asset-libraries/asset-library.service';
-import { map } from 'rxjs/operators';
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-widgetdesigner',
   templateUrl: './widgetdesigner.component.html',

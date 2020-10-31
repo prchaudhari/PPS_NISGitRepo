@@ -22,11 +22,11 @@ export class DynamicWidgetService {
 
   constructor(private http: HttpClient,
     private injector: Injector,
-    private uiLoader: NgxUiLoaderService,
-    private _messageDialogService: MessageDialogService) { }
+    private uiLoader: NgxUiLoaderService) { }
 
   //method to call api of get dynamicWidgets.
   async getDynamicWidgets(searchParameter): Promise<any> {
+    let messageService = this.injector.get(MessageDialogService);
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.dynamicWidgetGetUrl;
     this.uiLoader.start();
@@ -57,7 +57,7 @@ export class DynamicWidgetService {
         this.uiLoader.stop();
         if (error["error"] != null) {
           let errorMessage = error["error"].Error["Message"];
-          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+          messageService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       });
     return response
@@ -65,6 +65,7 @@ export class DynamicWidgetService {
 
   //service method to save or update dynamicWidget records
   public async saveDynamicWidget(postData, dynamicWidgetEditModeOn): Promise<boolean> {
+    let messageService = this.injector.get(MessageDialogService);
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.dynamicWidgetAddUrl;
     if (dynamicWidgetEditModeOn) {
@@ -83,7 +84,7 @@ export class DynamicWidgetService {
           }
         }
       }, (error) => {
-        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        messageService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.isRecordSaved = false;
         this.uiLoader.stop();
       });
@@ -93,7 +94,7 @@ export class DynamicWidgetService {
   //method to call api of delete dynamicWidget.
   public async deleteDynamicWidget(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    
+    let messageService = this.injector.get(MessageDialogService);
     let requestUrl = URLConfiguration.dynamicWidgetDeleteUrl;
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
@@ -108,7 +109,7 @@ export class DynamicWidgetService {
           }
         }
       }, (error) => {
-        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        messageService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
         this.isRecordDeleted = false
       });
@@ -118,6 +119,7 @@ export class DynamicWidgetService {
   //method to call api of publish dynamicWidget.
   public async publishDynamicWidget(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
+    let messageService = this.injector.get(MessageDialogService);
     let identifier = null;
     if (postData.length > 0) {
       identifier = postData[0].Identifier;
@@ -136,7 +138,7 @@ export class DynamicWidgetService {
           }
         }
       }, (error) => {
-        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        messageService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
         this.isRecordDeleted = false
       });
@@ -146,6 +148,7 @@ export class DynamicWidgetService {
   //method to call api of clone dynamicWidget.
   public async cloneDynamicWidget(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
+    let messageService = this.injector.get(MessageDialogService);
     let identifier = null;
     if (postData.length > 0) {
       identifier = postData[0].Identifier;
@@ -164,7 +167,7 @@ export class DynamicWidgetService {
           }
         }
       }, (error) => {
-        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        messageService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
         this.isRecordDeleted = false
       });
@@ -174,6 +177,7 @@ export class DynamicWidgetService {
   //method to call api of preview page.
   public async previewDynamicWidget(postData): Promise<string> {
     let httpClientService = this.injector.get(HttpClientService);
+    let messageService = this.injector.get(MessageDialogService);
     let identifier = null;
     if (postData.length > 0) {
       identifier = postData[0].Identifier;
@@ -195,7 +199,7 @@ export class DynamicWidgetService {
           }
         }
       }, (error) => {
-        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        messageService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
         resultString = '';
       });
@@ -205,6 +209,7 @@ export class DynamicWidgetService {
 
   async getEntities(): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
+    let messageService = this.injector.get(MessageDialogService);
     let requestUrl = URLConfiguration.dynamicWidgetGetEntitiesUrl;
     this.uiLoader.start();
     let pageTypes: any[] = [];
@@ -228,7 +233,7 @@ export class DynamicWidgetService {
         this.uiLoader.stop();
         if (error["error"] != null) {
           let errorMessage = error["error"].Error["Message"];
-          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+          messageService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       });
     return <any[]>pageTypes
@@ -236,6 +241,7 @@ export class DynamicWidgetService {
 
   async getEntityFields(id): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
+    let messageService = this.injector.get(MessageDialogService);
     let requestUrl = URLConfiguration.dynamicWidgetGetEntityFieldsUrl + '?entityIdentfier=' + id;
     this.uiLoader.start();
     let pageTypes: any[] = [];
@@ -259,7 +265,7 @@ export class DynamicWidgetService {
         this.uiLoader.stop();
         if (error["error"] != null) {
           let errorMessage = error["error"].Error["Message"];
-          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+          messageService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       });
     return <any[]>pageTypes
@@ -268,7 +274,7 @@ export class DynamicWidgetService {
   //method to call api of get dynamicWidgets.
   async getStaticAndDynamicWidgets(pageTypeId): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
-    //let requestUrl = URLConfiguration.getStaticAndDynamicWidgetsUrl;
+    let messageService = this.injector.get(MessageDialogService);
     let requestUrl = URLConfiguration.getStaticAndDynamicWidgetsUrl + '?pageTypeId=' + pageTypeId;
     this.uiLoader.start();
     let widgets: any = [];
@@ -292,7 +298,7 @@ export class DynamicWidgetService {
         this.uiLoader.stop();
         if (error["error"] != null) {
           let errorMessage = error["error"].Error["Message"];
-          this._messageDialogService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
+          messageService.openDialogBox('Error', errorMessage, Constants.msgBoxError);
         }
       });
     return widgets

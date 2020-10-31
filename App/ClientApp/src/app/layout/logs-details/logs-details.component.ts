@@ -12,6 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ScheduleLogServiceDetail } from './logs-details.service';
 import { ScheduleLogDetail } from './log-details';
+import { PreviewDialogService } from './../../shared/services/preview-dialog.service';
 
 export interface ListElement {
   UserID: string;
@@ -391,10 +392,12 @@ export class LogsDetailsComponent implements OnInit {
 
   viewLodMessage(log: ScheduleLogDetail) {
     if (log.Status == 'Failed') {
-      this._messageDialogService.openMulipleMessageDialogBox('Error', log.LogMessage, Constants.msgBoxSuccess);
+      let previewservice = this.injector.get(PreviewDialogService);
+      previewservice.openMulipleMessageDialogBox('Error', log.LogMessage, Constants.msgBoxSuccess);
     }
     else {
-      this._messageDialogService.openMulipleMessageDialogBox('Success', log.LogMessage, Constants.msgBoxSuccess);
+      let previewservice = this.injector.get(PreviewDialogService);
+      previewservice.openMulipleMessageDialogBox('Success', log.LogMessage, Constants.msgBoxSuccess);
     }
   }
 }

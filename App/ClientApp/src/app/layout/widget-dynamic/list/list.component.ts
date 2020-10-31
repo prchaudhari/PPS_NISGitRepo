@@ -8,9 +8,10 @@ import { LocalStorageService } from '../../../shared/services/local-storage.serv
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DynamicWidgetService } from '../dynamicWidget.service';
+import { DynamicWidgetService } from '../dynamicwidget.service';
 import { DynamicWidget } from '../dynamicwidget';
 import { TemplateService } from '../../template/template.service';
+import { PreviewDialogService } from '../../../shared/services/preview-dialog.service';
 
 export interface ListElement {
   Product: string;
@@ -439,8 +440,9 @@ export class ListComponent implements OnInit {
       html = resultHtmlString;
     }
     if (resultHtmlString != '') {
-      console.log("chart data in list page" + chartData);
-      this._messageDialogService.openWidgetPreviewDialogBox(html, chartData);
+      //console.log("chart data in list page" + chartData);
+      let previewservice = this.injector.get(PreviewDialogService);
+      previewservice.openWidgetPreviewDialogBox(html, chartData);
     }
   }
 

@@ -1,6 +1,5 @@
 import { Component, OnInit, SecurityContext, Injector } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
-import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { DialogComponent, DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { ConfigConstants } from '../../shared/constants/configConstants';
 import { HttpClient } from '@angular/common/http';
@@ -59,7 +58,6 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
   public baseURL: string = ConfigConstants.BaseURL;
 
   constructor(dialogService: DialogService,
-    private _messageDialogService: MessageDialogService,
     private _http: HttpClient,
     private injector: Injector,
     private sanitizer: DomSanitizer) { 

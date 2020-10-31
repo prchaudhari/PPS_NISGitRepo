@@ -17,7 +17,7 @@ export class SafeHtmlPipee implements PipeTransform {
     template: `<div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                    <div class="modal-body text-center">
-                   <div class="mb-4" [innerHtml]="message | safeHtm">
+                   <div class="mb-4 font-weight-normal text-secondary" [innerHtml]="message | safeHtm">
                     </div>
                     <button type="button" class="btn-footer-fill mr-1 btn-sm" [autofocus]='true' (click)="confirm()">{{actionButtonText}}</button>
                     <button type="button" class="btn-footer-outline btn-sm" [hidden]="!showCancelButtun" (click)="cancel()" >{{cancelButtonText}}</button>

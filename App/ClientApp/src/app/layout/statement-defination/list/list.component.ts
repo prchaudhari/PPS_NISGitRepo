@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { StatementService } from '../statement.service';
 import { Statement } from '../statement';
+import { PreviewDialogService } from '../../../shared/services/preview-dialog.service';
 
 @Component({
   selector: 'app-list',
@@ -414,7 +415,8 @@ export class ListComponent implements OnInit {
     }];
     let resultHtmlString = await this.statementService.previewStatement(pageData);
     if (resultHtmlString != '') {
-      this._messageDialogService.openPreviewDialogBox(resultHtmlString);
+      let previewservice = this.injector.get(PreviewDialogService);
+      previewservice.openPreviewDialogBox(resultHtmlString);
     }
   }
 }

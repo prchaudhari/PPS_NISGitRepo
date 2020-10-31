@@ -27,6 +27,7 @@ import * as $ from 'jquery';
 import { map } from 'rxjs/operators';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
+import { PreviewDialogService } from '../../shared/services/preview-dialog.service';
 
 @Component({
   selector: 'app-add-dashboard-designer',
@@ -1326,6 +1327,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   pageDesignPreview() {
-    this._messageDialogService.openPageDesignPreviewDialogBox(this.widgetsGridsterItemArray, this.BackgroundImageAssetId, this.BackgroundImageURL, this.PageTypeId);
+    let previewService = this.injector.get(PreviewDialogService);
+    previewService.openPageDesignPreviewDialogBox(this.widgetsGridsterItemArray, this.BackgroundImageAssetId, this.BackgroundImageURL, this.PageTypeId);
   }
 }
