@@ -66,6 +66,9 @@
           <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
           <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
           <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
+          <DynamicBarChartWidget [barchartItem]='item' *ngIf="item.WidgetType=='BarGraph'"></DynamicBarChartWidget>
+          <DynamicLineChartWidget [linechartItem]='item' *ngIf="item.WidgetType=='LineGraph'"></DynamicLineChartWidget>
+          <DynamicPieChartWidget [piechartItem]='item' *ngIf="item.WidgetType=='PieChart'"></DynamicPieChartWidget>
           <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
         </gridster-item>
       </gridster>

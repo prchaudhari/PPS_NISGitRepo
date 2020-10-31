@@ -749,7 +749,7 @@ namespace nIS
             }
         }
 
-        private string GetTablePreviewData(TenantEntity entity, List<DynamicWidgetTableEntity> fieldMaps)
+        public string GetTablePreviewData(TenantEntity entity, List<DynamicWidgetTableEntity> fieldMaps)
         {
             string obj = string.Empty;
             IList<JObject> dataList = new List<JObject>();
@@ -918,7 +918,7 @@ namespace nIS
             return obj;
         }
 
-        private string GetFormPreviewData(TenantEntity entity, List<DynamicWidgetFormEntity> fieldMaps)
+        public string GetFormPreviewData(TenantEntity entity, List<DynamicWidgetFormEntity> fieldMaps)
         {
             string obj = string.Empty;
             IList<JObject> dataList = new List<JObject>();
@@ -1085,7 +1085,7 @@ namespace nIS
             return obj;
         }
 
-        private string GetHTMLPreviewData(TenantEntity entity, IList<EntityFieldMap> fieldMaps, string widgetSettings)
+        public string GetHTMLPreviewData(TenantEntity entity, IList<EntityFieldMap> fieldMaps, string widgetSettings)
         {
             string obj = string.Empty;
             JObject item = new JObject();
@@ -1134,7 +1134,7 @@ namespace nIS
             return obj;
         }
 
-        private string GetBarLineChartPreviewData(TenantEntity entity, string chartTitle, DynamicWidgetLineGraph lineGraphDetails, string chartType, string theme)
+        public string GetBarLineChartPreviewData(TenantEntity entity, string chartTitle, DynamicWidgetLineGraph lineGraphDetails, string chartType, string theme)
         {
             string obj = string.Empty;
             string colorTheme = string.Empty;
@@ -1224,7 +1224,7 @@ namespace nIS
             return obj;
         }
 
-        private string GetPieChartPreviewData(TenantEntity entity, string chartTitle, PieChartSettingDetails pieChartSettingDetails, string chartType, string theme, IList<EntityFieldMap> fieldMaps)
+        public string GetPieChartPreviewData(TenantEntity entity, string chartTitle, PieChartSettingDetails pieChartSettingDetails, string chartType, string theme, IList<EntityFieldMap> fieldMaps)
         {
             string obj = string.Empty;
             string colorTheme = string.Empty;

@@ -268,6 +268,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
                     let obj = this.bindComponent(pageWidgets[i]);
                     gridsterItem.component = obj.component;
                     gridsterItem.value = obj.value;
+                    gridsterItem.WidgetType = obj.WidgetType;
                     this.widgetsGridsterItemArray.push(gridsterItem);
                 }
             }
@@ -344,7 +345,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
 
             }
         }
-
+        gridObj.WidgetType = widgetType;
         gridObj.value = widgetName;
         return gridObj;
     }

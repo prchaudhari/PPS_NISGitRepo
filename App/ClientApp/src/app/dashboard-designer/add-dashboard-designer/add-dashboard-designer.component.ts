@@ -88,6 +88,8 @@ export class AddDashboardDesignerComponent implements OnInit {
   public BackgroundImageURL = '';
   public BackgroundImageAssetLibraryId = 0;
 
+  public dynamicBarChartWidgetId: number = 0;
+
   constructor(private _location: Location,
     private injector: Injector,
     private fb: FormBuilder,
@@ -974,8 +976,10 @@ export class AddDashboardDesignerComponent implements OnInit {
           let obj = this.bindComponent(pageWidgets[i]);
           gridsterItem.component = obj.component;
           gridsterItem.value = obj.value;
+          gridsterItem.WidgetType = obj.WidgetType;
           this.widgetsGridsterItemArray.push(gridsterItem);
         }
+        console.log(this.widgetsGridsterItemArray);
       }
     }
   }
@@ -1052,6 +1056,7 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
     }
 
+    gridObj.WidgetType = widgetType;
     gridObj.value = widgetName;
     return gridObj;
   }

@@ -29,6 +29,9 @@ import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.
                   <gridster-item [item]="item" *ngFor="let item of ItemArray">
                       <vidyo-widget [vdoItem]="item" *ngIf="item.value=='Video'"></vidyo-widget>
                       <image-widget [imgItem]="item" *ngIf="item.value=='Image'"></image-widget>
+                      <DynamicBarChartWidgetPreview [dynamicBarchartItem]='item' *ngIf="item.WidgetType=='BarGraph'"></DynamicBarChartWidgetPreview>
+                      <DynamicLineChartWidgetPreview [linechartItem]='item' *ngIf="item.WidgetType=='LineGraph'"></DynamicLineChartWidgetPreview>
+                      <DynamicPieChartWidgetPreview [piechartItem]='item' *ngIf="item.WidgetType=='PieChart'"></DynamicPieChartWidgetPreview>
                       <ndc-dynamic [ndcDynamicComponent]="item.component"></ndc-dynamic>
                   </gridster-item>
                   </gridster>
@@ -133,7 +136,7 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
     this.ItemArray = [];
     for(let i=0; i< this.widgetItemArray.length; i++) {
       let widget = Object.assign({}, this.widgetItemArray[i]);
-      if(widget.WidgetName == 'SavingTrend' || widget.WidgetName == 'Analytics' || widget.WidgetName == 'SpendingTrend' || widget.IsDynamicWidget == true) {
+      if(widget.value == 'SavingTrend' || widget.value == 'Analytics' || widget.value == 'SpendingTrend' || widget.IsDynamicWidget == true) {
         widget.component = this.bindComponent(widget)
       }
       this.ItemArray.push(widget);
@@ -142,13 +145,14 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
 
   bindComponent(widget): any {
     
-    let widgetName = widget.WidgetName;
+    let widgetName = widget.value;
     let widgetType = 'Static';
     if(widget.IsDynamicWidget == true) {
       let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetType != 'Static');
       widgetType = dynaWidgets[0].WidgetType;
     }
 
+    debugger
     if(widgetType == 'Static') {
       if (widgetName == 'SavingTrend') {
         return SavingTrendsPreviewComponent;

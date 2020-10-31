@@ -183,6 +183,36 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
     }]
   }
 
+  public LineGraphChartOptions: any = {
+    xAxis: {
+    },
+  }
+
+  public BarGraphChartOptions: any = {
+    xAxis: {
+    },
+  }
+
+  public PieChartOptions: any = {
+    chart: {
+      type: 'pie'
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+        },
+        showInLegend: true
+      }
+    },
+  }
+
   ngOnInit() {
 
     $(document).ready(() => {
@@ -510,6 +540,65 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
     if (document.getElementById('savingTrendscontainer') != null) {
       this.savingchart = Highcharts.chart('savingTrendscontainer', this.SavingTrendChartOptions);
     }
+
+    if($('#hiddenLineChartIds').val() != undefined && $('#hiddenLineChartIds').val() != '') {
+      let lineChartIds = $('#hiddenLineChartIds').val().split(",");
+      for(let i=0; i< lineChartIds.length; i++) {
+        let widgetId = lineChartIds[i].split("_")[1];
+        if($('#hiddenLineGraphData_'+widgetId) != null) {
+          var chartdata = JSON.parse($('#hiddenLineGraphData_'+widgetId).val());
+          let linechartoptions = Object.assign({}, this.LineGraphChartOptions);
+          linechartoptions.xAxis.categories = chartdata.xAxis;
+          linechartoptions.series = chartdata.series;
+          linechartoptions.title = chartdata.title;
+          if (chartdata.color != "" || chartdata.color != null) {
+            Highcharts.setOptions({
+              colors: chartdata.color.split(",")
+            });
+          }
+          Highcharts.chart(''+lineChartIds[i], linechartoptions);
+        }
+      }
+    }
+
+    if($('#hiddenBarChartIds').val() != undefined && $('#hiddenBarChartIds').val() != '') {
+      let barChartIds = $('#hiddenBarChartIds').val().split(",");
+      for(let i=0; i< barChartIds.length; i++) {
+        let widgetId = barChartIds[i].split("_")[1];
+        if($('#hiddenBarGraphData_'+widgetId) != null) {
+          var chartdata = JSON.parse($('#hiddenBarGraphData_'+widgetId).val());
+          let barchartoptions = Object.assign({}, this.BarGraphChartOptions);
+          barchartoptions.xAxis.categories = chartdata.xAxis;
+          barchartoptions.series = chartdata.series;
+          barchartoptions.title = chartdata.title;
+          if (chartdata.color != "" || chartdata.color != null) {
+            Highcharts.setOptions({
+              colors: chartdata.color.split(",")
+            });
+          }
+          Highcharts.chart(''+barChartIds[i], barchartoptions);
+        }
+      }
+    }
+
+    if($('#hiddenPieChartIds').val() != null && $('#hiddenPieChartIds').val() != '') {
+      let pieChartIds = $('#hiddenPieChartIds').val().split(",");
+      for(let i=0; i< pieChartIds.length; i++) {
+        let widgetId = pieChartIds[i].split("_")[1];
+        if($('#hiddenPieChartData_'+widgetId) != null) {
+          var chartdata = JSON.parse($('#hiddenPieChartData_'+widgetId).val());
+          let piechartoptions = Object.assign({}, this.PieChartOptions);
+          piechartoptions.series = chartdata.series;
+          piechartoptions.title = chartdata.title;
+          if (chartdata.color != "" || chartdata.color != null) {
+            Highcharts.setOptions({
+              colors: chartdata.color.split(",")
+            });
+          }
+          Highcharts.chart(''+pieChartIds[i], piechartoptions);
+        }
+      }
+    }
     
     var data = this.SavingTransactionAllData.reduce(function (groups, item) {
       const val = item["TransactionDate"]
@@ -566,7 +655,6 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       tbody.append(tr);
     });
   }
-
 
 }
 

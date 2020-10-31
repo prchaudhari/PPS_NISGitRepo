@@ -1082,13 +1082,14 @@ export interface TransactionDetail {
         <span class="widget-header-title"> Analytics </span>
     </div>
     <div class="widget-area position-relative width100">       
-        <div id="dynamicpiechartcontainer" class="p-3"></div>
+      <div [attr.id]="barChartDivId" class="p-3"></div>      
     </div>
 </div>`
 })
 export class DynamicPieChartWidgetComponent {
-  @Input()
+  @Input() piechartItem: any;
   widgetsGridsterItemArray: any[] = [];
+  barChartDivId = '';
 
   public options4: any = {
     chart: {
@@ -1144,18 +1145,24 @@ export class DynamicPieChartWidgetComponent {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('dynamicpiechartcontainer', this.options4);      
-    }, 100);
+    if(this.piechartItem != undefined) {
+      setTimeout(() => {
+        Highcharts.chart(this.barChartDivId, this.options4);  
+      }, 10);
+    }
   }
 
   ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
+    if(this.piechartItem != undefined) {
+      this.barChartDivId = "pieChartcontainer"+this.piechartItem.WidgetId;
+      $(document).ready(function () {
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      });
+    }
   }
+
 }
 
 // Component Created for Dynamic line chart Widget--
@@ -1168,13 +1175,14 @@ export class DynamicPieChartWidgetComponent {
     </div>
     <div class="widget-area position-relative width100">
       <div class="text-right" style="font-size:20px"><span>+5.6%</span><span class="pl-3">+3.5%</span></div>
-      <div id="dynamiclinechartscontainer" class="p-3"></div>        
+      <div [attr.id]="barChartDivId" class="p-3"></div>      
     </div>
 </div>`
 })
 export class DynamicLineChartWidgetComponent {
-  @Input()
+  @Input() linechartItem: any;
   widgetsGridsterItemArray: any[] = [];
+  barChartDivId = '';
   public options4: any = {
     chart: {
       height: (9 / 16 * 100) + '%',
@@ -1210,19 +1218,26 @@ export class DynamicLineChartWidgetComponent {
       }
     }]
   }
+
   ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('dynamiclinechartscontainer', this.options4);      
-    }, 100);
+    if(this.linechartItem != undefined) {
+      setTimeout(() => {
+        Highcharts.chart(this.barChartDivId, this.options4);  
+      }, 10);
+    }
   }
 
   ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
+    if(this.linechartItem != undefined) {
+      this.barChartDivId = "lineGraphcontainer"+this.linechartItem.WidgetId;
+      $(document).ready(function () {
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      });
+    }
   }
+
 }
 
 // Component Created for Dynamic Bar Chart Widget--
@@ -1231,15 +1246,17 @@ export class DynamicLineChartWidgetComponent {
   template: `<div class="widget">
     <div class="widget">
     <div class="widget-header">
-        <span class="widget-header-title"> Spending Trends </span>
+      <span class="widget-header-title"> Spending Trends </span>
     </div>
     <div class="widget-area position-relative width100">
-          <div id="dynamicbarchartscontainer" class="p-3"></div>       
+        <div [attr.id]="barChartDivId" class="p-3"></div>       
     </div>
 </div>`
 })
 export class DynamicBarChartWidgetComponent {
-  @Input()
+  @Input() barchartItem: any;
+
+  barChartDivId = '';
   widgetsGridsterItemArray: any[] = [];
   public options4: any = {
     chart: {
@@ -1285,17 +1302,22 @@ export class DynamicBarChartWidgetComponent {
     }]
   }
   ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('dynamicbarchartscontainer', this.options4);  
-    }, 10);
+    if(this.barchartItem != undefined) {
+      setTimeout(() => {
+        Highcharts.chart(this.barChartDivId, this.options4);  
+      }, 10);
+    }
   }
 
   ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 100);
-    });
+    if(this.barchartItem != undefined) {
+      this.barChartDivId = "barGraphcontainer"+this.barchartItem.WidgetId;
+      $(document).ready(function () {
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      });
+    }
   }
 }
 
@@ -1520,6 +1542,7 @@ export class AnalyticsWidgetPreviewComponent {
   }
 
   ngOnInit() {
+    debugger
     $(document).ready(function () {
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
@@ -1538,13 +1561,14 @@ export class AnalyticsWidgetPreviewComponent {
     </div>
     <div class="widget-area position-relative width100">
       <div class="text-right" style="font-size:20px"><span>+5.6%</span><span class="pl-3">+3.5%</span></div>
-      <div id="dynamiclinechartpreviewcontainer" class="p-3"></div>        
+      <div [attr.id]="barChartDivId" class="p-3"></div>          
     </div>
 </div>`
 })
 export class DynamicLineChartWidgetPreviewComponent {
-  @Input()
+  @Input() linechartItem: any;
   widgetsGridsterItemArray: any[] = [];
+  barChartDivId = '';
   public options4: any = {
     chart: {
       height: (9 / 16 * 100) + '%',
@@ -1580,19 +1604,26 @@ export class DynamicLineChartWidgetPreviewComponent {
       }
     }]
   }
+
   ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('dynamiclinechartpreviewcontainer', this.options4);      
-    }, 100);
+    if(this.linechartItem != undefined) {
+      setTimeout(() => {
+        Highcharts.chart(this.barChartDivId, this.options4);  
+      }, 10);
+    }
   }
 
   ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
+    if(this.linechartItem != undefined) {
+      this.barChartDivId = "dynamiclinechartpreviewcontainer"+this.linechartItem.WidgetId;
+      $(document).ready(function () {
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      });
+    }
   }
+
 }
 
 // Component Created for Dynamic Bar Chart Widget for page preview while designing ----
@@ -1601,16 +1632,18 @@ export class DynamicLineChartWidgetPreviewComponent {
   template: `<div class="widget">
     <div class="widget">
     <div class="widget-header">
-        <span class="widget-header-title"> Spending Trends </span>
+      <span class="widget-header-title"> Spending Trends </span>
     </div>
     <div class="widget-area position-relative width100">
-          <div id="dynamicbarchartpreviewcontainer" class="p-3"></div>       
+      <div [attr.id]="barChartDivId" class="p-3"></div>
     </div>
 </div>`
 })
 export class DynamicBarChartWidgetPreviewComponent {
-  @Input()
+  @Input() dynamicBarchartItem: any;
   widgetsGridsterItemArray: any[] = [];
+  barChartDivId = '';
+
   public options4: any = {
     chart: {
       height: (9 / 16 * 100) + '%',
@@ -1654,19 +1687,26 @@ export class DynamicBarChartWidgetPreviewComponent {
       }
     }]
   }
+
   ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('dynamicbarchartpreviewcontainer', this.options4);  
-    }, 10);
+    if(this.dynamicBarchartItem != undefined) {
+      setTimeout(() => {
+        Highcharts.chart(this.barChartDivId, this.options4);  
+      }, 10);
+    }
   }
 
   ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 100);
-    });
+    if(this.dynamicBarchartItem != undefined) {
+      this.barChartDivId = "dynamicbarchartpreviewcontainer"+this.dynamicBarchartItem.WidgetId;
+      $(document).ready(function () {
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      });
+    }
   }
+
 }
 
 // Component Created for Dynamic pier chart Widget for page preview while designing --
@@ -1678,13 +1718,14 @@ export class DynamicBarChartWidgetPreviewComponent {
         <span class="widget-header-title"> Analytics </span>
     </div>
     <div class="widget-area position-relative width100">       
-        <div id="dynamicpiechartpreviewcontainer" class="p-3"></div>
+      <div [attr.id]="barChartDivId" class="p-3"></div>  
     </div>
 </div>`
 })
 export class DynamicPieChartWidgetPreviewComponent {
-  @Input()
+  @Input() piechartItem: any;
   widgetsGridsterItemArray: any[] = [];
+  barChartDivId = '';
 
   public options4: any = {
     chart: {
@@ -1740,16 +1781,22 @@ export class DynamicPieChartWidgetPreviewComponent {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      Highcharts.chart('dynamicpiechartpreviewcontainer', this.options4);      
-    }, 100);
+    if(this.piechartItem != undefined) {
+      setTimeout(() => {
+        Highcharts.chart(this.barChartDivId, this.options4);  
+      }, 10);
+    }
   }
 
   ngOnInit() {
-    $(document).ready(function () {
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
-      }, 10);
-    });
+    if(this.piechartItem != undefined) {
+      this.barChartDivId = "dynamicpiechartpreviewcontainer"+this.piechartItem.WidgetId;
+      $(document).ready(function () {
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      });
+    }
   }
+
 }

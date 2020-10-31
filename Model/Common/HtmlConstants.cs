@@ -87,7 +87,7 @@ namespace nIS
             "<ul class='navbar-nav nav'>" + "{{NavItemList}}" + "</ul>" +
             "<ul class='navbar-nav ml-auto'>" + "<li class='nav-item date'><a class='text-white'>{{Today}}</a></li>" + "</ul></div></nav>";
 
-        public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='ard border-0' style='height:{{WidgetDivHeight}}'>" +
+        public const string CUSTOMER_INFORMATION_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'>" +
             "<div class='p-1 bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div>" +
             "<div class='card-body'><div class='row'><div class='col-sm-4'><h4 class='mb-4'>{{CustomerName}}</h4>" + "<h6>{{Address1}}{{Address2}}</h6></div>" +
             "<div class='col-sm-8'> <video class='doc-video' controls><source src='{{VideoSource}}' type='video/mp4'></video>" + "</div></div></div></div>";
@@ -259,7 +259,7 @@ namespace nIS
         public const string HTML_FOOTER = " {{ChartScripts}} </body></html>";
 
         public const string TABLEWIDEGTPREVIEW = "<div class='card border-0'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0;' style={{TitleStyle}}>{{WidgetTitle}}</h5></div>" +
-                                "<div class='card-body'><div class='table-responsive stylescrollbar' style'max-height:350px;overflow-x:hidden;overflow-y:auto;'>" +
+                                "<div class='card-body'><div class='table-responsive stylescrollbar' style='max-height:350px;overflow-x:hidden;overflow-y:auto;'>" +
                                 "<table id = 'TableWidget' class='table m-1 table-hover'><thead style={{HeaderStyle}}>{{tableHeader}}</thead><tbody style={{BodyStyle}}>{{tableBody}}</tbody></table></div></div></div>";
         public const string FORMWIDGETPREVIEW = "<div class='card border-0'><div class='p-1 bg-light border-0 text-left' style='margin-bottom: 10px;'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card border-0 card-shadow m-auto width100'><div class='card-body p-2' style={{BodyStyle}}>{{FormData}}</div></div></div>";
 
@@ -273,6 +273,18 @@ namespace nIS
 
         public const string BARGRAPH_WIDGETPREVIEW = "<div class='card border-0' style='height:600px'><div class='p-1 bg-light border-0 text-left'> " +
                     "<h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"barGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
+        public const string TABLE_WIDEGT_FOR_PAGE_PREVIEW = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0;' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'><div class='table-responsive stylescrollbar' style='max-height:350px;overflow-x:hidden;overflow-y:auto;'> <table id = 'TableWidget' class='table m-1 table-hover'><thead style={{HeaderStyle}}>{{tableHeader}}</thead><tbody style={{BodyStyle}}>{{tableBody}}</tbody></table></div></div></div>";
+
+        public const string FORM_WIDGET_FOR_PAGE_PREVIEW = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left' style='margin-bottom: 10px;'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card border-0 card-shadow m-auto width100'><div class='card-body p-2' style={{BodyStyle}}>{{FormData}}</div></div></div>";
+
+        public const string HTML_WIDGET_FOR_PAGE_PREVIEW = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body' style={{BodyStyle}}>{{FormData}}</div></div>";
+
+        public const string LINE_GRAPH_FOR_PAGE_PREVIEW = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"lineGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
+        public const string PIE_CHART_FOR_PAGE_PREVIEW = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"pieChartcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
+        public const string BAR_GRAPH_FOR_PAGE_PREVIEW = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'> <h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"barGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
 
         public const string THEME1 = "#342ead,#EA6227,#f2a51a,#b9ebcc";
         public const string THEME2 = "#45046a,#5c2a9d,#b5076b,#f1ebbb";
