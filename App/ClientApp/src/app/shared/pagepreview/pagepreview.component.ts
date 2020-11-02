@@ -208,7 +208,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
           enabled: true,
           format: '<b>{point.name}</b>: {point.percentage:.1f} %'
         },
-        showInLegend: true
+        showInLegend: false
       }
     },
   }
@@ -550,7 +550,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
           let linechartoptions = Object.assign({}, this.LineGraphChartOptions);
           linechartoptions.xAxis.categories = chartdata.xAxis;
           linechartoptions.series = chartdata.series;
-          linechartoptions.title = chartdata.title;
+          linechartoptions.title = {text: ''};
           if (chartdata.color != "" || chartdata.color != null) {
             Highcharts.setOptions({
               colors: chartdata.color.split(",")
@@ -570,7 +570,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
           let barchartoptions = Object.assign({}, this.BarGraphChartOptions);
           barchartoptions.xAxis.categories = chartdata.xAxis;
           barchartoptions.series = chartdata.series;
-          barchartoptions.title = chartdata.title;
+          barchartoptions.title = {text: ''};
           if (chartdata.color != "" || chartdata.color != null) {
             Highcharts.setOptions({
               colors: chartdata.color.split(",")
@@ -589,7 +589,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
           var chartdata = JSON.parse($('#hiddenPieChartData_'+widgetId).val());
           let piechartoptions = Object.assign({}, this.PieChartOptions);
           piechartoptions.series = chartdata.series;
-          piechartoptions.title = chartdata.title;
+          piechartoptions.title = {text: ''};
           if (chartdata.color != "" || chartdata.color != null) {
             Highcharts.setOptions({
               colors: chartdata.color.split(",")
