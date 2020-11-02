@@ -200,7 +200,7 @@ export class AddDashboardDesignerComponent implements OnInit {
             error => {
               //$('.overlay').show();
           });
-    }else if(ImageURL != '') {
+    }else if(ImageURL != null && ImageURL != '') {
       $('gridster').css('background', 'url('+ImageURL+')');
     }
     
