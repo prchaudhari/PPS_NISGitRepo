@@ -1,0 +1,6 @@
+﻿CREATE TABLE [NIS].[TTD_UserSubscriptions]
+(
+	Id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	UserName NVARCHAR(100) NOT NULL,
+	CountOfSubscription BIGINT NOT NULL,
+)

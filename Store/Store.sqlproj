@@ -125,6 +125,15 @@
     <Build Include="Entity.sql" />
     <Build Include="EntityFieldMap.sql" />
     <Build Include="DynamicWidgetFilterDetail.sql" />
+    <Build Include="TTD_SubscriptionMaster.sql" />
+    <Build Include="TTD_SubscriptionSummary.sql" />
+    <Build Include="TTD_SubscriptionSpend.sql" />
+    <Build Include="TTD_UserSubscriptions.sql" />
+    <Build Include="TTD_VendorSubscription.sql" />
+    <Build Include="TTD_SubscriptionUsage.sql" />
+    <Build Include="TTD_DataUsage.sql" />
+    <Build Include="TTD_MeetingUsage.sql" />
+    <Build Include="TTD_EmailsBySubscription.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />
