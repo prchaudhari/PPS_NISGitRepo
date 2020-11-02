@@ -35,5 +35,6 @@ namespace nIS
         public string TenantCode { get; set; }
         public Nullable<long> CloneOfWidgetId { get; set; }
         public string Version { get; set; }
+        public string PreviewData { get; set; }
     }
 }

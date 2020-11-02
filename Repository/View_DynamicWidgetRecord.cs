@@ -39,5 +39,6 @@ namespace nIS
         public string EntityName { get; set; }
         public Nullable<long> CloneOfWidgetId { get; set; }
         public string Version { get; set; }
+        public string PreviewData { get; set; }
     }
 }
