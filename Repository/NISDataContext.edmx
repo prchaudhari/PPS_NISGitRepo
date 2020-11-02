@@ -642,15 +642,6 @@
           <Property Name="Details" Type="nvarchar" MaxLength="500" />
           <Property Name="Amount" Type="decimal" Precision="11" Scale="2" Nullable="false" />
         </EntityType>
-        <EntityType Name="TTD_DataUsage">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Month" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Microsoft" Type="bigint" Nullable="false" />
-          <Property Name="Zoom" Type="bigint" Nullable="false" />
-        </EntityType>
         <EntityType Name="TTD_EmailsBySubscription">
           <Key>
             <PropertyRef Name="Id" />
@@ -658,15 +649,6 @@
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Subscription" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Emails" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_MeetingUsage">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Month" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Microsoft" Type="bigint" Nullable="false" />
-          <Property Name="Zoom" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="TTD_SubscriptionMaster">
           <Key>
@@ -680,39 +662,6 @@
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="EndDate" Type="datetime" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionSpend">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Month" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Microsoft" Type="bigint" Nullable="false" />
-          <Property Name="Zoom" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionSummary">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Vendor" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="Subscription" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="Total" Type="bigint" Nullable="false" />
-          <Property Name="AverageSpend" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionUsage">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EmployeeID" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Subscription" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="VendorName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="EmployeeName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Usage" Type="bigint" Nullable="false" />
-          <Property Name="Emails" Type="bigint" Nullable="false" />
-          <Property Name="Meetings" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="TTD_UserSubscriptions">
           <Key>
@@ -1271,13 +1220,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TenantUser" EntityType="Self.TenantUser" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Top4IncomeSources" EntityType="Self.Top4IncomeSources" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_DataUsage" EntityType="Self.TTD_DataUsage" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TTD_EmailsBySubscription" EntityType="Self.TTD_EmailsBySubscription" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_MeetingUsage" EntityType="Self.TTD_MeetingUsage" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TTD_SubscriptionMaster" EntityType="Self.TTD_SubscriptionMaster" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_SubscriptionSpend" EntityType="Self.TTD_SubscriptionSpend" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_SubscriptionSummary" EntityType="Self.TTD_SubscriptionSummary" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_SubscriptionUsage" EntityType="Self.TTD_SubscriptionUsage" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TTD_UserSubscriptions" EntityType="Self.TTD_UserSubscriptions" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TTD_VendorSubscription" EntityType="Self.TTD_VendorSubscription" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="NIS" store:Type="Tables" />
@@ -1534,13 +1478,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             <Parameter Name="PageTypeId" Mode="In" Type="Int64" />
             <Parameter Name="TenantCode" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="TTD_DataUsageRecord" EntityType="NISModel.TTD_DataUsageRecord" />
           <EntitySet Name="TTD_EmailsBySubscriptionRecord" EntityType="NISModel.TTD_EmailsBySubscriptionRecord" />
-          <EntitySet Name="TTD_MeetingUsageRecord" EntityType="NISModel.TTD_MeetingUsageRecord" />
           <EntitySet Name="TTD_SubscriptionMasterRecord" EntityType="NISModel.TTD_SubscriptionMasterRecord" />
-          <EntitySet Name="TTD_SubscriptionSpendRecord" EntityType="NISModel.TTD_SubscriptionSpendRecord" />
-          <EntitySet Name="TTD_SubscriptionSummaryRecord" EntityType="NISModel.TTD_SubscriptionSummaryRecord" />
-          <EntitySet Name="TTD_SubscriptionUsage" EntityType="NISModel.TTD_SubscriptionUsage" />
           <EntitySet Name="TTD_UserSubscriptionsRecord" EntityType="NISModel.TTD_UserSubscriptionsRecord" />
           <EntitySet Name="TTD_VendorSubscriptionRecord" EntityType="NISModel.TTD_VendorSubscriptionRecord" />
         </EntityContainer>
@@ -2639,15 +2578,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Type="Int32" Name="Instantiable" Nullable="false" />
           <Property Type="String" Name="WidgetType" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="TTD_DataUsageRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Month" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Microsoft" Type="Int64" Nullable="false" />
-          <Property Name="Zoom" Type="Int64" Nullable="false" />
-        </EntityType>
         <EntityType Name="TTD_EmailsBySubscriptionRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -2655,15 +2585,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Subscription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Emails" Type="Int64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_MeetingUsageRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Month" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Microsoft" Type="Int64" Nullable="false" />
-          <Property Name="Zoom" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="TTD_SubscriptionMasterRecord">
           <Key>
@@ -2677,39 +2598,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionSpendRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Month" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Microsoft" Type="Int64" Nullable="false" />
-          <Property Name="Zoom" Type="Int64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionSummaryRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Vendor" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Subscription" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="Int64" Nullable="false" />
-          <Property Name="AverageSpend" Type="Int64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionUsage">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmployeeID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Subscription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="VendorName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Usage" Type="Int64" Nullable="false" />
-          <Property Name="Emails" Type="Int64" Nullable="false" />
-          <Property Name="Meetings" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="TTD_UserSubscriptionsRecord">
           <Key>
@@ -3815,31 +3703,11 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="TTD_DataUsageRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_DataUsageRecord">
-              <MappingFragment StoreEntitySet="TTD_DataUsage">
-                <ScalarProperty Name="Zoom" ColumnName="Zoom" />
-                <ScalarProperty Name="Microsoft" ColumnName="Microsoft" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TTD_EmailsBySubscriptionRecord">
             <EntityTypeMapping TypeName="NISModel.TTD_EmailsBySubscriptionRecord">
               <MappingFragment StoreEntitySet="TTD_EmailsBySubscription">
                 <ScalarProperty Name="Emails" ColumnName="Emails" />
                 <ScalarProperty Name="Subscription" ColumnName="Subscription" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_MeetingUsageRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_MeetingUsageRecord">
-              <MappingFragment StoreEntitySet="TTD_MeetingUsage">
-                <ScalarProperty Name="Zoom" ColumnName="Zoom" />
-                <ScalarProperty Name="Microsoft" ColumnName="Microsoft" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3854,42 +3722,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="Subscription" ColumnName="Subscription" />
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_SubscriptionSpendRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_SubscriptionSpendRecord">
-              <MappingFragment StoreEntitySet="TTD_SubscriptionSpend">
-                <ScalarProperty Name="Zoom" ColumnName="Zoom" />
-                <ScalarProperty Name="Microsoft" ColumnName="Microsoft" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_SubscriptionSummaryRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_SubscriptionSummaryRecord">
-              <MappingFragment StoreEntitySet="TTD_SubscriptionSummary">
-                <ScalarProperty Name="AverageSpend" ColumnName="AverageSpend" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Subscription" ColumnName="Subscription" />
-                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_SubscriptionUsage">
-            <EntityTypeMapping TypeName="NISModel.TTD_SubscriptionUsage">
-              <MappingFragment StoreEntitySet="TTD_SubscriptionUsage">
-                <ScalarProperty Name="Meetings" ColumnName="Meetings" />
-                <ScalarProperty Name="Emails" ColumnName="Emails" />
-                <ScalarProperty Name="Usage" ColumnName="Usage" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="Subscription" ColumnName="Subscription" />
-                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

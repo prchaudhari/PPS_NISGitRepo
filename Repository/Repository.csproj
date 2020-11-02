@@ -282,25 +282,10 @@
     <Compile Include="TransactionDetailRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TTD_DataUsageRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="TTD_EmailsBySubscriptionRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TTD_MeetingUsageRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="TTD_SubscriptionMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_SubscriptionSpendRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_SubscriptionSummaryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_SubscriptionUsage.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_UserSubscriptionsRecord.cs">
