@@ -22,7 +22,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                                    : base(connectionString)
+                                                       : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -94,6 +94,11 @@ namespace nIS
         public virtual DbSet<TTD_SubscriptionMasterRecord> TTD_SubscriptionMasterRecord { get; set; }
         public virtual DbSet<TTD_UserSubscriptionsRecord> TTD_UserSubscriptionsRecord { get; set; }
         public virtual DbSet<TTD_VendorSubscriptionRecord> TTD_VendorSubscriptionRecord { get; set; }
+        public virtual DbSet<TTD_DataUsageRecord> TTD_DataUsageRecord { get; set; }
+        public virtual DbSet<TTD_MeetingUsageRecord> TTD_MeetingUsageRecord { get; set; }
+        public virtual DbSet<TTD_SubscriptionSpendRecord> TTD_SubscriptionSpendRecord { get; set; }
+        public virtual DbSet<TTD_SubscriptionSummaryRecord> TTD_SubscriptionSummaryRecord { get; set; }
+        public virtual DbSet<TTD_SubscriptionUsageRecord> TTD_SubscriptionUsageRecord { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
