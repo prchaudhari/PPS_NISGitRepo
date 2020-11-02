@@ -130,32 +130,19 @@ namespace nIS
         public const string SPENDING_TRENDS_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'> " +
             "<h5 class='m-0'>Spending Trends</h5></div><div class='card-body'> <div id=\"spendingTrendscontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
 
-        public const string CUSTOMER_INFORMATION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'>" +
-            "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div>" +
-            "<div class='card-body'><div class='row'><div class='col-sm-4'><h4 class='mb-4'>{{CustomerName}}</h4>" + "<h6>{{Address1}}{{Address2}}</h6></div>" +
-            "<div class='col-sm-8'> <video class='doc-video' controls><source src='{{VideoSource}}' type='video/mp4'></video>" + "</div></div></div></div>";
+        public const string CUSTOMER_INFORMATION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Customer Information</h5></div><div class='card-body'><div class='row'><div class='col-sm-4'><h4 class='mb-4'>{{CustomerName}}</h4>" + "<h6>{{Address1}}{{Address2}}</h6></div><div class='col-sm-8'> <video class='doc-video' controls><source src='{{VideoSource}}' type='video/mp4'></video>" + "</div></div></div></div>";
 
-        public const string ACCOUNT_INFORMATION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>" +
-            "Account Information</h5></div> <div class='card-body'>" + "{{AccountInfoData}}" + "</div></div>";
+        public const string ACCOUNT_INFORMATION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Account Information</h5></div> <div class='card-body'>{{AccountInfoData}}</div></div>";
 
-        public const string SUMMARY_AT_GLANCE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>" +
-            "Summary at Glance</h5></div> <div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'>" +
-            "<thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>" + "{{AccountSummary}}</tbody></table></div></div></div>";
+        public const string SUMMARY_AT_GLANCE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'> <h5 class='m-0'>Summary at Glance</h5></div> <div class='card-body'><div class='table-responsive'> <table class='table m-0 table-hover'><thead><tr><th>Account</th><th>Currency</th><th>Amount</th></tr></thead><tbody>" + "{{AccountSummary}}</tbody></table></div></div></div>";
 
-        public const string IMAGE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Image Information</h5></div> <div class='card-body text-center'>{{TargetLink}}<img src='{{ImageSource}}' class='img-fluid'/>{{EndTargetLink}}</div></div>";
+        public const string IMAGE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Image Information</h5></div> <div class='card-body text-center'>{{TargetLink}}<img src='{{ImageSource}}' class='img-fluid'/>{{EndTargetLink}}</div></div>";
 
-        public const string VIDEO_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Video Information</h5> " +
-            "</div> <div class='card-body text-center'><video class='video-widget' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
+        public const string VIDEO_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Video Information</h5> </div> <div class='card-body text-center'><video class='video-widget' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
 
-        public const string SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' >" +
-            "<div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Available Balance</h5> </div>" +
-            "<div class='card-body'><div class='fnt14'><h4 class='mb-4 text-right'><i class='{{AccountIndicatorClass}}' aria-hidden='true'></i>&nbsp;{{TotalValue}}</h4>" +
-            "<span class='float-left'> Total Deposits</span><span class='float-right'>{{TotalDeposit}}</span><br/>" +
-            "<span class='float-left'> Total Spend</span><span class='float-right'>{{TotalSpend}}</span><br/>" +
-            "<span class='float-left'> Savings </span><span class='float-right'>{{Savings}}</span><br/></div></div></div>";
+        public const string SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>Available Balance</h5> </div><div class='card-body'><div class='fnt14'><h4 class='mb-4 text-right'><i class='{{AccountIndicatorClass}}' aria-hidden='true'></i>&nbsp;{{TotalValue}}</h4><span class='float-left'> Total Deposits</span><span class='float-right'>{{TotalDeposit}}</span><br/><span class='float-left'> Total Spend </span><span class='float-right'>{{TotalSpend}}</span><br/><span class='float-left'> Savings </span><span class='float-right'>{{Savings}}</span><br/></div></div></div>";
 
-        public const string SAVING_TRANSACTION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-        "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
+        public const string SAVING_TRANSACTION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'>" + "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
         "<input type='radio' id='savingShowAll' checked name='savingtransactionRadio'>&nbsp;<label for='showAll'>Show All</label>&nbsp;" +
         "<input type='radio' id='savingGrpDate' name='savingtransactionRadio'>&nbsp;<label for='grpDate'>Group By Date</label></div>" +
         " <div class='float-right'><div class='float-left mr-2'><select class='form-control float-left' id='filterStatus'><option value = '0'> Search Item</option>" +
@@ -166,8 +153,7 @@ namespace nIS
             "Current Rate</th> <th class='width13 text-right'>LCY</th><th class='width12'>Action</th></tr>" +
         "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
-        public const string CURRENT_TRANSACTION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-        "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
+        public const string CURRENT_TRANSACTION_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'>" + "<h5 class='m-0'>Transaction Details</h5></div>" + "<div class='card-body'>" + "<div class='float-left'> " +
         "<input type='radio' id='currentShowAll' checked name='currenttransactionRadio'>&nbsp;<label for='showAll'>Show All</label>&nbsp;" +
         "<input type='radio' id='currentGrpDate' name='currenttransactionRadio'>&nbsp;<label for='grpDate'>Group By Date</label></div>" +
         " <div class='float-right'><div class='float-left mr-2'><select class='form-control float-left' id='filterStatus'><option value = '0'> Search Item</option>" +
@@ -178,22 +164,17 @@ namespace nIS
             "Current Rate</th> <th class='width13 text-right'>LCY</th><th class='width12'>Action</th></tr>" +
         "</thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
-        public const string REMINDER_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>" +
-            "Reminder and Recommendation</h5></div><div class='card-body' style='font-size:12px;'> {{ReminderAndRecommdationDataList}} </div></div>";
+        public const string REMINDER_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'><h5 class='m-0'>" + "Reminder and Recommendation</h5></div><div class='card-body' style='font-size:12px;'> {{ReminderAndRecommdationDataList}} </div></div>";
 
-        public const string TOP_4_INCOME_SOURCE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'>" +
-            "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><table class='table-borderless width100'><thead class='border-bottom'><tr>" +
+        public const string TOP_4_INCOME_SOURCE_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'>" + "<h5 class='m-0'>Top 4 Income Sources</h5></div><div class='card-body'><table class='table-borderless width100'><thead class='border-bottom'><tr>" +
             "<td class='width50'></td><td class='width20'>This Month</td><td class='width30'>Usually you spend</td></tr>" +
             "</thead><tbody>{{IncomeSourceList}}</tbody></table></div></div>";
 
-        public const string ANALYTIC_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'> " +
-            "<h5 class='m-0'>Analytics</h5></div>" + "<div class='card-body'> <div id=\"analyticschartcontainer\"></div></div></div> ";
+        public const string ANALYTIC_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'> " + "<h5 class='m-0'>Analytics</h5></div>" + "<div class='card-body'> <div id=\"analyticschartcontainer\"></div></div></div> ";
 
-        public const string SAVING_TRENDS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'> " +
-            "<h5 class='m-0'>Saving Trends</h5></div><div class='card-body'> <div id=\"savingTrendscontainer\"></div></div></div> ";
+        public const string SAVING_TRENDS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'> " + "<h5 class='m-0'>Saving Trends</h5></div><div class='card-body'> <div id=\"savingTrendscontainer\"></div></div></div> ";
 
-        public const string SPENDING_TRENDS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0'><div class='card-header bg-light border-0 text-left'> " +
-            "<h5 class='m-0'>Spending Trends</h5></div><div class='card-body'> <div id=\"spendingTrendscontainer\"></div></div></div> ";
+        public const string SPENDING_TRENDS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'> " + "<h5 class='m-0'>Spending Trends</h5></div><div class='card-body'> <div id=\"spendingTrendscontainer\"></div></div></div> ";
 
 
         public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3 bdy-scroll stylescrollbar'>";
