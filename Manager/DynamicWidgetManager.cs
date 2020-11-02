@@ -1228,6 +1228,8 @@ namespace nIS
         {
             string obj = string.Empty;
             string colorTheme = string.Empty;
+
+            #region Set Color Theme
             if (theme == "Theme1")
             {
                 colorTheme = HtmlConstants.THEME1;
@@ -1244,7 +1246,7 @@ namespace nIS
             {
                 colorTheme = HtmlConstants.THEME4;
             }
-            else if(theme.ToLower() == "ChartTheme1".ToLower())
+            else if (theme.ToLower() == "ChartTheme1".ToLower())
             {
                 colorTheme = HtmlConstants.THEME1;
             }
@@ -1259,7 +1261,9 @@ namespace nIS
             else if (theme.ToLower() == "ChartTheme4".ToLower())
             {
                 colorTheme = HtmlConstants.THEME3;
-            }
+            } 
+            #endregion
+
             StringBuilder tableBody = new StringBuilder();
             IList<PieChartSeries> series = new List<PieChartSeries>();
             IList<string> xAxis = new List<string>();
@@ -1309,17 +1313,93 @@ namespace nIS
                     y = random.Next(1, remainingPercentage)
                 });
             }
-            else if (pieChartSettingDetails.PieSeries == "Narration")
+            else if (seriesName == "Narration")
             {
+                data.Add(new PieChartData
+                {
+                    name = "Monthly Charges",
+                    y = random.Next(1, 100)
+                });
+                data.Add(new PieChartData
+                {
+                    name = "OPENING BALANCE",
+                    y = random.Next(1, (int)(100 - data[0].y))
+                });
+                int remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "LD1508340249",
+                    y = random.Next(1, remainingPercentage)
+                });
+               
+            }
+            else if (seriesName == "TransactionDate")
+            {
+                //xAxis.Add("10/09/2020");
+                //xAxis.Add("11/09/2020");
+                //xAxis.Add("12/09/2020");
+                //xAxis.Add("13/09/2020");
+                data.Add(new PieChartData
+                {
+                    name = "10/09/2020",
+                    y = random.Next(1, 100)
+                });
+                data.Add(new PieChartData
+                {
+                    name = "11/09/2020",
+                    y = random.Next(1, (int)(100 - data[0].y))
+                });
+                int remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "12/09/2020",
+                    y = random.Next(1, remainingPercentage)
+                });
+                remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "13/09/2020",
+                    y = random.Next(1, remainingPercentage)
+                });
+                remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "14/09/2020",
+                    y = random.Next(1, remainingPercentage)
+                });
+
 
             }
-            else if (pieChartSettingDetails.PieSeries == "TransactionDate")
+            else if (seriesName == "AccountNumber")
             {
-
-            }
-            else if (pieChartSettingDetails.PieSeries == "AccountNumber")
-            {
-
+                data.Add(new PieChartData
+                {
+                    name = "RMP4563",
+                    y = random.Next(1, 100)
+                });
+                data.Add(new PieChartData
+                {
+                    name = "LPP4563",
+                    y = random.Next(1, (int)(100 - data[0].y))
+                });
+                int remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "JS00302",
+                    y = random.Next(1, remainingPercentage)
+                });
+                remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "LD01254",
+                    y = random.Next(1, remainingPercentage)
+                });
+                remainingPercentage = (int)data.Sum(item => item.y);
+                data.Add(new PieChartData
+                {
+                    name = "MD00302",
+                    y = random.Next(1, remainingPercentage)
+                });
             }
             series[0].data = data;
 
