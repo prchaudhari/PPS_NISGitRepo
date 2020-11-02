@@ -7,39 +7,17 @@ namespace nIS
 {
     public class HtmlConstants
     {
-        public const int CUSTOMER_INFORMATION_WIDGET_ID = 1;
-
-        public const int ACCOUNT_INFORMATION_WIDGET_ID = 2;
-
-        public const int SUMMARY_AT_GLANCE_WIDGET_ID = 3;
-
-        public const int IMAGE_WIDGET_ID = 4;
-
-        public const int VIDEO_WIDGET_ID = 5;
-
-        public const int ANALYTICS_WIDGET_ID = 6;
-
-        public const int SAVING_TRANSACTION_WIDGET_ID = 7;
-
-        public const int CURRENT_TRANSACTION_WIDGET_ID = 8;
-
-        public const int SAVING_TREND_WIDGET_ID = 9;
-
-        public const int TOP_4_INCOME_SOURCES_WIDGET_ID = 10;
-
-        public const int CURRENT_AVAILABLE_BALANCE_WIDGET_ID = 11;
-
-        public const int SAVING_AVAILABLE_BALANCE_WIDGET_ID = 12;
-
-        public const int REMINDER_AND_RECOMMENDATION_WIDGET_ID = 13;
-
-        public const int SPENDING_TREND_WIDGET_ID = 14;
-
         public const int HOME_PAGE_TYPE_ID = 1;
 
         public const int SAVING_ACCOUNT_PAGE_TYPE_ID = 2;
 
         public const int CURRENT_ACCOUNT_PAGE_TYPE_ID = 3;
+
+        public const string HOME_PAGE = "Home";
+
+        public const string CURRENT_ACCOUNT_PAGE = "Current Account";
+
+        public const string SAVING_ACCOUNT_PAGE = "Saving Account";
 
         public const string CUSTOMER_INFORMATION_WIDGET_NAME = "CustomerInformation";
 

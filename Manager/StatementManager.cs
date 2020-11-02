@@ -334,36 +334,37 @@ namespace nIS
 
                                     var extraclass = x > 0 ? "d-none " + tabClassName : tabClassName;
                                     var pageHeaderHtml = "<div id='{{DivId}}' class='p-2 tabDivClass {{ExtraClass}}' {{BackgroundImage}}>";
-                                    if (page.PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID)
+                                    if (page.PageTypeName == HtmlConstants.HOME_PAGE)
                                     {
                                         if (page.BackgroundImageAssetId != 0)
                                         {
-                                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "");
+                                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", string.Empty);
                                             extraclass = extraclass + " BackgroundImage " + page.BackgroundImageAssetId;
                                             isBackgroundImage = true;
                                         }
-                                        else if (page.BackgroundImageURL != string.Empty)
+                                        else if (page.BackgroundImageURL != null && page.BackgroundImageURL != string.Empty)
                                         {
                                             pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "style='background: url(" + page.BackgroundImageURL + ")'");
                                             isBackgroundImage = true;
                                         }
                                         else
                                         {
-                                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "");
+                                            //Background image will set at child div of current div tag
+                                            pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", string.Empty);
                                         }
                                     }
                                     else
                                     {
-                                        pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", "");
+                                        pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", string.Empty);
                                     }
                                     htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
 
                                     htmlString.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
-                                    if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                                     {
                                         htmlString.Append("<ul class='nav nav-tabs' style='margin-top:-5px;'>");
-                                        htmlString.Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeId ==
-                                            HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
+                                        htmlString.Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName ==
+                                            HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
                                         htmlString.Append("</ul>");
 
                                         var divClass = string.Empty;
@@ -373,13 +374,13 @@ namespace nIS
                                             divClass = divClass + " BackgroundImage " + page.BackgroundImageAssetId;
                                             isBackgroundImage = true;
                                         }
-                                        else if (page.BackgroundImageURL != string.Empty)
+                                        else if (page.BackgroundImageURL != null && page.BackgroundImageURL != string.Empty)
                                         {
                                             styleTag = styleTag + " style='background: url(" + page.BackgroundImageURL + ")'";
                                             isBackgroundImage = true;
                                         }
 
-                                        htmlString.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-6789' " +
+                                        htmlString.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-6789' " +
                                             "class='tab-pane fade in active show " + divClass + "' " + styleTag + ">");
                                     }
 
@@ -420,7 +421,7 @@ namespace nIS
                                                         isRowComplete = false;
                                                     }
 
-                                                    var leftPaddingClass = i != 0 ? " pl-0" : "";
+                                                    var leftPaddingClass = i != 0 ? " pl-0" : string.Empty;
                                                     htmlString.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
 
                                                     if (!mergedlst[i].IsDynamicWidget)
@@ -914,7 +915,7 @@ namespace nIS
                                     {
                                         htmlString.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
                                     }
-                                    if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                                     {
                                         htmlString.Append(HtmlConstants.END_DIV_TAG);
                                     }

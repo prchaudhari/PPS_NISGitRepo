@@ -658,7 +658,7 @@ namespace nIS
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(item => item.IsActive == true && item.IsDeleted == false)?.ToList();
+                    pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(item => item.IsActive == true && item.IsDeleted == false && item.TenantCode == tenantCode)?.ToList();
                 }
                 pageTypeRecords?.ToList().ForEach(pageType => 
                 pageTypes.Add(new PageType()

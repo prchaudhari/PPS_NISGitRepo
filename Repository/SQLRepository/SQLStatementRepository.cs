@@ -619,7 +619,7 @@ namespace nIS
 
                                     StringBuilder pageHeaderContent = new StringBuilder();
                                     pageHeaderContent.Append(HtmlConstants.WIDGET_HTML_HEADER);
-                                    if (page.PageTypeName.ToLower().Contains("saving") || page.PageTypeName.ToLower().Contains("current"))
+                                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                                     {
                                         pageHeaderContent.Append("{{SubTabs}}");
                                     }
@@ -890,15 +890,13 @@ namespace nIS
                     StringBuilder newPageContent = new StringBuilder();
                     newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
 
-                    if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                     {
                         SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
-                        SubTabs.Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeId ==
-                            HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
+                        SubTabs.Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
                         SubTabs.Append("</ul>");
 
-                        newPageContent.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-6789' " +
-                            "class='tab-pane fade in active show'>");
+                        newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-6789' class='tab-pane fade in active show'>");
                     }
 
                     var pagewidgets = page.PageWidgets;
@@ -1148,7 +1146,7 @@ namespace nIS
                     }
 
                     newPageContent.Append(pageContent);
-                    if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                     {
                         newPageContent.Append(HtmlConstants.END_DIV_TAG);
                     }
@@ -1238,13 +1236,13 @@ namespace nIS
                     StringBuilder newPageContent = new StringBuilder();
                     newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
 
-                    if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                     {
                         SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
-                        SubTabs.Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
+                        SubTabs.Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
                         SubTabs.Append("</ul>");
 
-                        newPageContent.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-6789' class='tab-pane fade in active show'>");
+                        newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-6789' class='tab-pane fade in active show'>");
                     }
 
                     var pagewidgets = page.PageWidgets;
@@ -1522,7 +1520,7 @@ namespace nIS
                     }
 
                     newPageContent.Append(pageContent);
-                    if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                     {
                         newPageContent.Append(HtmlConstants.END_DIV_TAG);
                     }
@@ -1646,11 +1644,11 @@ namespace nIS
                         var page = statement.Pages[i];
                         StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
 
-                        if (page.PageTypeId == HtmlConstants.HOME_PAGE_TYPE_ID)
+                        if (page.PageTypeName == HtmlConstants.HOME_PAGE)
                         {
                             accountCount = 1;
                         }
-                        else if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
+                        else if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                         {
                             savingaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving"))?.ToList();
                             if (savingaccountrecords == null || savingaccountrecords.Count == 0)
@@ -1660,7 +1658,7 @@ namespace nIS
                             }
                             accountCount = savingaccountrecords.Count;
                         }
-                        else if (page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                        else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                         {
                             curerntaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current"))?.ToList();
                             if (curerntaccountrecords == null || curerntaccountrecords.Count == 0)
@@ -1687,13 +1685,13 @@ namespace nIS
                         {
                             accountNumber = string.Empty;
                             accountType = string.Empty;
-                            if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
+                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                             {
                                 accountNumber = savingaccountrecords[x].AccountNumber;
                                 accountId = savingaccountrecords[x].Id;
                                 accountType = savingaccountrecords[x].AccountType;
                             }
-                            if (page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                            if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                             {
                                 accountNumber = curerntaccountrecords[x].AccountNumber;
                                 accountId = curerntaccountrecords[x].Id;
@@ -1701,21 +1699,21 @@ namespace nIS
                             }
 
                             string lastFourDigisOfAccountNumber = accountNumber.Length > 4 ? accountNumber.Substring(Math.Max(0, accountNumber.Length - 4)) : accountNumber;
-                            if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                             {
                                 if (x == 0)
                                 {
                                     SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
                                 }
 
-                                SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " +
+                                SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " +
                                     " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
 
-                                newPageContent.Append("<div id='" + (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID ? "Saving" : "Current") +
+                                newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") +
                                     "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "")
                                     + "'>");
 
-                                if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID)
+                                if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                                 {
                                     newPageContent.Append("<input type='hidden' id='SavingAccountId' name='SavingAccountId' value='" + accountId + "'>");
                                 }
@@ -2323,7 +2321,7 @@ namespace nIS
                             }
 
                             newPageContent.Append(pageContent);
-                            if (page.PageTypeId == HtmlConstants.SAVING_ACCOUNT_PAGE_TYPE_ID || page.PageTypeId == HtmlConstants.CURRENT_ACCOUNT_PAGE_TYPE_ID)
+                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                             {
                                 newPageContent.Append(HtmlConstants.END_DIV_TAG);
                             }
