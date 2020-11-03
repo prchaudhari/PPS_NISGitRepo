@@ -30,5 +30,6 @@ namespace nIS
         public string StatementPeriod { get; set; }
         public string RmName { get; set; }
         public string RmContactNumber { get; set; }
+        public string TenantCode { get; set; }
     }
 }

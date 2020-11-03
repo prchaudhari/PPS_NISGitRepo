@@ -6,6 +6,7 @@
 	[WidgetId] [bigint] NOT NULL,
 	[ImageURL] [nvarchar](max) NULL,
 	[VideoURL] [nvarchar](max) NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL, 
  CONSTRAINT [PK_BatchDetails] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

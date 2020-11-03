@@ -21,5 +21,6 @@ namespace nIS
         public long WidgetId { get; set; }
         public string ImageURL { get; set; }
         public string VideoURL { get; set; }
+        public string TenantCode { get; set; }
     }
 }

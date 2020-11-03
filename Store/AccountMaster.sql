@@ -13,7 +13,8 @@
 	[FeesPaid] [decimal](11, 2) NULL,
 	[GrandTotal] [decimal](11, 2) NULL,
 	[Percentage] [decimal](4, 2) NULL,
- CONSTRAINT [PK_AccountMaster] PRIMARY KEY CLUSTERED 
+ [TenantCode] NVARCHAR(50) NOT NULL, 
+    CONSTRAINT [PK_AccountMaster] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)

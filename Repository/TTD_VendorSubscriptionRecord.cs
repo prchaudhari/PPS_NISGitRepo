@@ -17,5 +17,6 @@ namespace nIS
         public long Id { get; set; }
         public string VenderName { get; set; }
         public long CountOfSubscription { get; set; }
+        public string TenantCode { get; set; }
     }
 }

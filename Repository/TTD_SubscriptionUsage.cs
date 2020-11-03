@@ -23,5 +23,6 @@ namespace nIS
         public long Usage { get; set; }
         public long Emails { get; set; }
         public long Meetings { get; set; }
+        public string TenantCode { get; set; }
     }
 }

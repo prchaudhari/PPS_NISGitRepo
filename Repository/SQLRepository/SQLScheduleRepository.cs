@@ -561,7 +561,7 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    schedules = nISEntitiesDataContext.ScheduleRecords.Where(item => item.StartDate <= currentDate && (item.EndDate == null || item.EndDate >= currentDate) && item.DayOfMonth == currentDate.Day && currentDate.Hour == item.HourOfDay && currentDate.Minute == item.MinuteOfDay && item.IsActive && !item.IsDeleted).ToList();
+                    schedules = nISEntitiesDataContext.ScheduleRecords.Where(item => item.StartDate <= currentDate && (item.EndDate == null || item.EndDate >= currentDate) && item.DayOfMonth == currentDate.Day && currentDate.Hour == item.HourOfDay && currentDate.Minute == item.MinuteOfDay && item.IsActive && !item.IsDeleted && item.TenantCode == tenantCode).ToList();
                 }
                 if (schedules.Count != 0)
                 {
@@ -591,7 +591,7 @@ namespace nIS
 
                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                         {
-                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.BatchExecutionDate.Day == schedule.DayOfMonth && item.BatchExecutionDate.Hour == schedule.HourOfDay && item.BatchExecutionDate.Minute == schedule.MinuteOfDay && !item.IsExecuted && item.Status == BatchStatus.New.ToString())?.ToList()?.FirstOrDefault();
+                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.BatchExecutionDate.Day == schedule.DayOfMonth && item.BatchExecutionDate.Hour == schedule.HourOfDay && item.BatchExecutionDate.Minute == schedule.MinuteOfDay && !item.IsExecuted && item.Status == BatchStatus.New.ToString() && item.TenantCode == tenantCode)?.ToList()?.FirstOrDefault();
                         }
 
                         if (batchMaster != null)
@@ -661,8 +661,8 @@ namespace nIS
                                             nISEntitiesDataContext.ScheduleRunHistoryRecords.Add(runHistory);
                                             nISEntitiesDataContext.SaveChanges();
 
-                                            batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier)?.ToList();
-                                            customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id).ToList();
+                                            batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.TenantCode == tenantCode)?.ToList();
+                                            customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
                                         }
 
                                         if (customerMasters.Count > 0)
@@ -682,10 +682,10 @@ namespace nIS
                                         {
                                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                             {
-                                                nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().ForEach(item => item.Status = BatchStatus.BatchDataNotAvailable.ToString());
-                                                nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).ToList().ForEach(item => item.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString());
-                                                nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id).ToList().ForEach(item => item.EndDate = DateTime.Now);
-                                                nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId).ToList().ForEach(item => item.Status = ScheduleStatus.BatchDataNotAvailable.ToString());
+                                                nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = BatchStatus.BatchDataNotAvailable.ToString());
+                                                nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString());
+                                                nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.EndDate = DateTime.Now);
+                                                nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = ScheduleStatus.BatchDataNotAvailable.ToString());
                                                 nISEntitiesDataContext.SaveChanges();
                                             }
                                         }
@@ -700,7 +700,7 @@ namespace nIS
                                     batchMaster.Status = BatchStatus.BatchDataNotAvailable.ToString();
                                     scheduleLog.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString();
                                     nISEntitiesDataContext.ScheduleLogRecords.Add(scheduleLog);
-                                    var scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == schedule.Id).FirstOrDefault();
+                                    var scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == schedule.Id && item.TenantCode == tenantCode).FirstOrDefault();
                                     scheduleRecord.Status = ScheduleStatus.BatchDataNotAvailable.ToString();
                                     nISEntitiesDataContext.SaveChanges();
                                 }
@@ -710,12 +710,12 @@ namespace nIS
                         {
                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                             {
-                                batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.BatchExecutionDate.Day == schedule.DayOfMonth && item.BatchExecutionDate.Hour == schedule.HourOfDay && item.BatchExecutionDate.Minute == schedule.MinuteOfDay)?.ToList()?.FirstOrDefault();
+                                batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.BatchExecutionDate.Day == schedule.DayOfMonth && item.BatchExecutionDate.Hour == schedule.HourOfDay && item.BatchExecutionDate.Minute == schedule.MinuteOfDay && item.TenantCode == tenantCode)?.ToList()?.FirstOrDefault();
                                 if (!batchMaster.IsExecuted)
                                 {
                                     scheduleLog.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString();
                                     nISEntitiesDataContext.ScheduleLogRecords.Add(scheduleLog);
-                                    var scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == schedule.Id).FirstOrDefault();
+                                    var scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == schedule.Id && item.TenantCode == tenantCode).FirstOrDefault();
                                     scheduleRecord.Status = ScheduleStatus.BatchDataNotAvailable.ToString();
                                     nISEntitiesDataContext.SaveChanges();
                                 }
@@ -754,7 +754,7 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == batch.ScheduleId).ToList()?.FirstOrDefault();
+                    scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == batch.ScheduleId && item.TenantCode == tenantCode).ToList()?.FirstOrDefault();
                     if (scheduleRecord == null)
                     {
                         throw new ScheduleNotFoundException(tenantCode);
@@ -766,7 +766,7 @@ namespace nIS
                     scheduleLog.CreationDate = DateTime.Now;
                     scheduleLog.TenantCode = tenantCode;
 
-                    batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batch.Identifier && item.ScheduleId == scheduleRecord.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString())?.ToList().FirstOrDefault();
+                    batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batch.Identifier && item.ScheduleId == scheduleRecord.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString() && item.TenantCode == tenantCode)?.ToList().FirstOrDefault();
                     var IsDataAvail = false;
                     if (batchMaster != null)
                     {
@@ -850,8 +850,8 @@ namespace nIS
                         nISEntitiesDataContext.ScheduleRunHistoryRecords.Add(runHistory);
                         nISEntitiesDataContext.SaveChanges();
 
-                        batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier)?.ToList();
-                        customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id).ToList();
+                        batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.TenantCode == tenantCode)?.ToList();
+                        customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
                     }
 
                     if (customerMasters.Count > 0)
@@ -871,10 +871,10 @@ namespace nIS
                     {
                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                         {
-                            nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().ForEach(item => item.Status = BatchStatus.BatchDataNotAvailable.ToString());
-                            nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).ToList().ForEach(item => item.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString());
-                            nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id).ToList().ForEach(item => item.EndDate = DateTime.Now);
-                            nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId).ToList().ForEach(item => item.Status = ScheduleStatus.BatchDataNotAvailable.ToString());
+                            nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = BatchStatus.BatchDataNotAvailable.ToString());
+                            nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString());
+                            nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.EndDate = DateTime.Now);
+                            nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = ScheduleStatus.BatchDataNotAvailable.ToString());
                             nISEntitiesDataContext.SaveChanges();
                         }
                     }

@@ -1674,8 +1674,8 @@ namespace nIS
 
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id)?.ToList();
-                        customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.BatchId == batchMaster.Id)?.ToList();
+                        accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
+                        customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
                     }
                     if (accountrecords == null || accountrecords.Count == 0)
                     {
@@ -2053,7 +2053,7 @@ namespace nIS
                                     IList<AccountTransactionRecord> accountTransactions = new List<AccountTransactionRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
-                                        accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving") && item.AccountId == accountId)?.OrderByDescending(item => item.TransactionDate)?.ToList();
+                                        accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving") && item.AccountId == accountId && item.TenantCode == tenantCode)?.OrderByDescending(item => item.TransactionDate)?.ToList();
 
                                         StringBuilder transaction = new StringBuilder();
                                         StringBuilder selectOption = new StringBuilder();
@@ -2123,7 +2123,7 @@ namespace nIS
                                     IList<AccountTransactionRecord> accountTransactions = new List<AccountTransactionRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
-                                        accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current") && item.AccountId == accountId)?.OrderByDescending(item => item.TransactionDate)?.ToList();
+                                        accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current") && item.AccountId == accountId && item.TenantCode == tenantCode)?.OrderByDescending(item => item.TransactionDate)?.ToList();
 
                                         StringBuilder transaction = new StringBuilder();
                                         StringBuilder selectOption = new StringBuilder();
@@ -2191,7 +2191,7 @@ namespace nIS
                                     IList<Top4IncomeSourcesRecord> top4IncomeSources = new List<Top4IncomeSourcesRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
-                                        top4IncomeSources = nISEntitiesDataContext.Top4IncomeSourcesRecord.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id)?.OrderByDescending(item => item.CurrentSpend)?.Take(4)?.ToList();
+                                        top4IncomeSources = nISEntitiesDataContext.Top4IncomeSourcesRecord.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.OrderByDescending(item => item.CurrentSpend)?.Take(4)?.ToList();
                                     }
 
                                     StringBuilder incomeSources = new StringBuilder();
@@ -2258,7 +2258,7 @@ namespace nIS
                                     IList<SavingTrendRecord> savingtrends = new List<SavingTrendRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
-                                        savingtrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountId == accountId).ToList();
+                                        savingtrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountId == accountId && item.TenantCode == tenantCode).ToList();
                                     }
                                     if (savingtrends != null && savingtrends.Count > 0)
                                     {
@@ -2315,7 +2315,7 @@ namespace nIS
                                     IList<SavingTrendRecord> spendingtrends = new List<SavingTrendRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
-                                        spendingtrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountId == accountId).ToList();
+                                        spendingtrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountId == accountId && item.TenantCode == tenantCode).ToList();
                                     }
                                     if (spendingtrends != null && spendingtrends.Count > 0)
                                     {
@@ -2372,7 +2372,7 @@ namespace nIS
                                     IList<ReminderAndRecommendationRecord> reminderAndRecommendations = new List<ReminderAndRecommendationRecord>();
                                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
-                                        reminderAndRecommendations = nISEntitiesDataContext.ReminderAndRecommendationRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id)?.ToList();
+                                        reminderAndRecommendations = nISEntitiesDataContext.ReminderAndRecommendationRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
                                     }
 
                                     StringBuilder reminderstr = new StringBuilder();

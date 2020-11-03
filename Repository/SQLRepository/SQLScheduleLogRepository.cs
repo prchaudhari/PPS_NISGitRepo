@@ -330,7 +330,7 @@ namespace nIS
                             batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == scheduleRecord.Id && item.TenantCode == tenantCode)?.FirstOrDefault();
                             if (batchMaster != null)
                             {
-                                batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id)?.ToList();
+                                batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
                             }
                         }
                     }
@@ -660,7 +660,7 @@ namespace nIS
                 var customerMaster = new CustomerMasterRecord();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 { 
-                    customerMaster = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == scheduleLogDetail.CustomerId && item.BatchId == batchMaster.Id).FirstOrDefault();
+                    customerMaster = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == scheduleLogDetail.CustomerId && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).FirstOrDefault();
                 }
 
                 if (customerMaster != null)
@@ -687,7 +687,7 @@ namespace nIS
                         }
                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                         {
-                            var scheduleLogDetailRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Id == scheduleLogDetail.Id).FirstOrDefault();
+                            var scheduleLogDetailRecord = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Id == scheduleLogDetail.Id && item.TenantCode == tenantCode).FirstOrDefault();
                             if (scheduleLogDetailRecord != null)
                             {
                                 scheduleLogDetailRecord.CustomerId = customerMaster.Id;
@@ -714,10 +714,10 @@ namespace nIS
                                     });
                                 }
 
-                                nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId)?.ToList().ForEach(scheduleLog =>
+                                nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId && item.TenantCode == tenantCode)?.ToList().ForEach(scheduleLog =>
                                 {
-                                    var _lstScheduleLogDetail = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId).ToList();
-                                    var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
+                                    var _lstScheduleLogDetail = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId && item.TenantCode == tenantCode).ToList();
+                                    var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString() && item.TenantCode == tenantCode)?.ToList();
                                     if (successRecords != null && successRecords.Count == _lstScheduleLogDetail.Count)
                                     {
                                         scheduleLog.Status = ScheduleLogStatus.Completed.ToString();

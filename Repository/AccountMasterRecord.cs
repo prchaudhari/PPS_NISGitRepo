@@ -28,5 +28,6 @@ namespace nIS
         public Nullable<decimal> FeesPaid { get; set; }
         public Nullable<decimal> GrandTotal { get; set; }
         public Nullable<decimal> Percentage { get; set; }
+        public string TenantCode { get; set; }
     }
 }

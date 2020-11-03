@@ -4,4 +4,5 @@
 	Month NVARCHAR(100) NOT NULL,	
 	Microsoft BIGINT NOT NULL,
 	Zoom BIGINT NOT NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL, 
 )

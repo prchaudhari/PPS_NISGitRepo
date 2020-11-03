@@ -19,5 +19,6 @@ namespace nIS
         public string Subscription { get; set; }
         public long Total { get; set; }
         public long AverageSpend { get; set; }
+        public string TenantCode { get; set; }
     }
 }

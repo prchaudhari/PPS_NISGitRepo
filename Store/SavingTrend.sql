@@ -7,5 +7,6 @@
 	[SpendAmount] [decimal](11, 2) NOT NULL,
 	[SpendPercentage] [decimal](4, 2) NULL,
 	[Income] [decimal](11, 2) NULL,
-	[IncomePercentage] [decimal](4, 2) NULL
+	[IncomePercentage] [decimal](4, 2) NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL
 )

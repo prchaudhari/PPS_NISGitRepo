@@ -20,5 +20,6 @@ namespace nIS
         public string Source { get; set; }
         public Nullable<decimal> CurrentSpend { get; set; }
         public Nullable<decimal> AverageSpend { get; set; }
+        public string TenantCode { get; set; }
     }
 }

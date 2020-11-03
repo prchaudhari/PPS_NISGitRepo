@@ -15,6 +15,7 @@
 	[StatementPeriod] [nvarchar](50) NULL,
 	[RmName] [nvarchar](50) NULL,
 	[RmContactNumber] [nvarchar](50) NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL, 
  CONSTRAINT [PK_CustomerMaster] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

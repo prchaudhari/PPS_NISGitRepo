@@ -22,5 +22,6 @@ namespace nIS
         public string Email { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
+        public string TenantCode { get; set; }
     }
 }

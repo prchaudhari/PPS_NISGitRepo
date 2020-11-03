@@ -10,6 +10,7 @@
 	[FCY] [nvarchar](50) NULL,
 	[CurrentRate] [nvarchar](50) NULL,
 	[LCY] [nvarchar](50) NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL, 
  CONSTRAINT [PK_AccountTransaction] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

@@ -4,5 +4,6 @@
 	Vendor	NVARCHAR(250) NOT NULL,	
 	Subscription NVARCHAR(250) NOT NULL,	
 	Total BIGINT NOT NULL,
-	AverageSpend BIGINT NOT NULL
+	AverageSpend BIGINT NOT NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL, 
 )

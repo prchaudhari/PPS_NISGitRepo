@@ -5,5 +5,6 @@
 	[BatchId] [bigint] NOT NULL,
 	[Description] [nvarchar](500) NOT NULL,
 	[LabelText] [nvarchar](500) NOT NULL,
-	[TargetURL] [nvarchar](500) NULL
+	[TargetURL] [nvarchar](500) NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL
 )

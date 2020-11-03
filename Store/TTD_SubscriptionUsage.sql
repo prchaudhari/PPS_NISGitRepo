@@ -8,5 +8,6 @@
 	Email	NVARCHAR(100) NOT NULL,	
 	Usage	BIGINT NOT NULL,
 	Emails	BIGINT NOT NULL,
-	Meetings BIGINT NOT NULL
+	Meetings BIGINT NOT NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL, 
 )

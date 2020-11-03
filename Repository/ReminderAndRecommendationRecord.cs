@@ -20,5 +20,6 @@ namespace nIS
         public string Description { get; set; }
         public string LabelText { get; set; }
         public string TargetURL { get; set; }
+        public string TenantCode { get; set; }
     }
 }

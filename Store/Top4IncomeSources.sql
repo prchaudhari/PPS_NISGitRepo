@@ -6,4 +6,5 @@
 	[Source] [nvarchar](100) NULL,
 	[CurrentSpend] [decimal](11, 2) NULL,
 	[AverageSpend] [decimal](11, 2) NULL,
+	[TenantCode] NVARCHAR(50) NOT NULL, 
 )

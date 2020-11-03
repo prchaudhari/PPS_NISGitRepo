@@ -25,5 +25,6 @@ namespace nIS
         public string FCY { get; set; }
         public string CurrentRate { get; set; }
         public string LCY { get; set; }
+        public string TenantCode { get; set; }
     }
 }

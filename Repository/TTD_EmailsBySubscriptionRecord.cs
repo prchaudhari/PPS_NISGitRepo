@@ -17,5 +17,6 @@ namespace nIS
         public long Id { get; set; }
         public string Subscription { get; set; }
         public long Emails { get; set; }
+        public string TenantCode { get; set; }
     }
 }

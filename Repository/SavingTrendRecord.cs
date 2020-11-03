@@ -23,5 +23,6 @@ namespace nIS
         public Nullable<decimal> SpendPercentage { get; set; }
         public Nullable<decimal> Income { get; set; }
         public Nullable<decimal> IncomePercentage { get; set; }
+        public string TenantCode { get; set; }
     }
 }
