@@ -12,7 +12,7 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class TTD_SubscriptionUsage
+    public partial class TTD_SubscriptionUsageRecord
     {
         public long Id { get; set; }
         public string EmployeeID { get; set; }
@@ -20,7 +20,7 @@ namespace nIS
         public string VendorName { get; set; }
         public string EmployeeName { get; set; }
         public string Email { get; set; }
-        public long Usage { get; set; }
+        public decimal Usage { get; set; }
         public long Emails { get; set; }
         public long Meetings { get; set; }
         public string TenantCode { get; set; }

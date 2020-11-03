@@ -300,7 +300,7 @@
     <Compile Include="TTD_SubscriptionSummaryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TTD_SubscriptionUsage.cs">
+    <Compile Include="TTD_SubscriptionUsageRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_UserSubscriptionsRecord.cs">
