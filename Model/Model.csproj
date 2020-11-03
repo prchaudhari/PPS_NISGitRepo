@@ -129,6 +129,7 @@
     <Compile Include="Search Parameter\PageSearchParameter.cs" />
     <Compile Include="Search Parameter\SchdeuleSearchParameter.cs" />
     <Compile Include="Search Parameter\StateSearchParameter.cs" />
+    <Compile Include="Search Parameter\SubscriptionMasterSearchParameter.cs" />
     <Compile Include="Search Parameter\TenantContactSearchParameter.cs" />
     <Compile Include="Search Parameter\TenantUserSearchParameter.cs" />
     <Compile Include="Search Parameter\WidgetSearchParameter.cs" />
@@ -143,6 +144,15 @@
     <Compile Include="TenantConfiguration.cs" />
     <Compile Include="TenantContact.cs" />
     <Compile Include="TenantUser.cs" />
+    <Compile Include="TransactionData\DataUsage.cs" />
+    <Compile Include="TransactionData\EmailsBySubscription.cs" />
+    <Compile Include="TransactionData\MeetingUsage.cs" />
+    <Compile Include="TransactionData\SubscriptionMaster.cs" />
+    <Compile Include="TransactionData\SubscriptionSpend.cs" />
+    <Compile Include="TransactionData\SubscriptionSummary.cs" />
+    <Compile Include="TransactionData\SubscriptionUsage.cs" />
+    <Compile Include="TransactionData\UserSubscription.cs" />
+    <Compile Include="TransactionData\VendorSubscription.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserLogin.cs" />
     <Compile Include="UserLoginActivityHistory.cs" />

@@ -50,7 +50,7 @@ namespace nIS
             unityContainer.RegisterType<ITenantUserRepository, SQLTenantUserRepository>();
             unityContainer.RegisterType<IMultiTenantUserRoleAccessRepository, SQLMultiTenantUserRoleAccessRepository>();
             unityContainer.RegisterType<IDynamicWidgetRepository, SQLDynamicWidgetRepository>();
-
+            unityContainer.RegisterType<ITenantTransactionDataRepository, TenantTransactionDataRepository>();
             return unityContainer;
         }
     }
