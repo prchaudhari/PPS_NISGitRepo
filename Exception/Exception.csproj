@@ -87,6 +87,7 @@
     <Compile Include="ContactType\ContactTypeReferenceInTenantContactException.cs" />
     <Compile Include="ContactType\DuplicateContactTypeFoundException.cs" />
     <Compile Include="ContactType\InvalidContactTypeException.cs" />
+    <Compile Include="Dynamic Widget\WidgetSettingsNotFoundException.cs" />
     <Compile Include="Dynamic Widget\DynamicWidgetNotFoundException.cs" />
     <Compile Include="Dynamic Widget\DuplicateDynamicWidgetFoundException.cs" />
     <Compile Include="Dynamic Widget\InvalidDynamicWidgetException.cs" />

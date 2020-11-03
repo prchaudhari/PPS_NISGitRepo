@@ -33,6 +33,12 @@ namespace nIS
         /// The dynamic widget not found exception key
         /// </summary>
         //public const string DYNAMICWIDGET_NOT_FOUND_EXCEPTION = "DynamicWidgetNotFoundException";
+        public const string DYNAMIC_WIDGET_SETTING_NOT_FOUND = "Widget settings not found exception";
+
+        /// <summary>
+        /// The dynamic widget not found exception key
+        /// </summary>
+        //public const string DYNAMICWIDGET_NOT_FOUND_EXCEPTION = "DynamicWidgetNotFoundException";
         public const string DYNAMICWIDGET_REFERENCEIN_USER_EXCEPTION = "DynamicWidget is used in user";
 
         /// <summary>

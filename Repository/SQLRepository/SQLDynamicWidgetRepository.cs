@@ -108,6 +108,7 @@ namespace nIS
                         IsActive = true,
                         IsDeleted = false,
                         Version = "1",
+                        PreviewData=dynamicWidget.PreviewData,
                         TenantCode = tenantCode
                     });
                 });
@@ -192,6 +193,7 @@ namespace nIS
                         dynamicWidgetRecord.LastUpdatedBy = dynamicWidget.LastUpdatedBy;
                         dynamicWidgetRecord.PublishedBy = dynamicWidget.PublishedBy;
                         dynamicWidgetRecord.PublishedDate = dynamicWidget.PublishedDate;
+                        dynamicWidgetRecord.PreviewData = dynamicWidget.PreviewData;
                     });
 
                     nISEntitiesDataContext.SaveChanges();
@@ -345,6 +347,7 @@ namespace nIS
                                 IsDeleted = false,
                                 Version=item.Version,
                                 TenantCode = tenantCode,
+                                PreviewData=item.PreviewData,
                                 
                             });
                         });

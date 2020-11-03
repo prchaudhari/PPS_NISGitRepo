@@ -30,6 +30,8 @@ namespace nIS
         public string Title { get; set; }
         public string ThemeType { get; set; }
         public string ThemeCSS { get; set; }
+
+        public string PreviewData = string.Empty;
         public string WidgetSettings { get; set; }
         public string WidgetFilterSettings { get; set; }
         public string Status { get; set; }
