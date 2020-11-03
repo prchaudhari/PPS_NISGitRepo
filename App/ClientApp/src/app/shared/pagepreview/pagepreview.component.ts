@@ -112,7 +112,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       text: ''
     },
     xAxis: {
-      categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr']
+      categories: ['Jan', 'Feb', 'Mar', 'Apr','May']
     },
     labels: {
       items: [{
@@ -156,7 +156,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       text: ''
     },
     xAxis: {
-      categories: ['Now', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul']
     },
     labels: {
       items: [{

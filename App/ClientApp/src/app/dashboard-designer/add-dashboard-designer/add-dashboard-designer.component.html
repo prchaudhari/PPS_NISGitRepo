@@ -25,7 +25,7 @@
   <div class="widget-sidebar stylescrollbar" [ngClass]="isWidgetSidebar? 'show-sidebar show-sidebar-widget':'hide-sidebar'">
     <ul class="side-bar-ul">
       <li class="side-bar-li" title={{widget.DisplayName}} *ngFor="let widget of widgetsArray">
-        <a (click)="selectWidget(widget.Identifier)">
+        <a (click)="selectWidget(widget.Identifier, widget.WidgetName)">
           <span class="nav-icon fa" [ngClass]="{
                   'fa-address-book-o': widget.WidgetName == 'CustomerInformation',
                   'fa-address-card-o' : widget.WidgetName == 'AccountInformation',

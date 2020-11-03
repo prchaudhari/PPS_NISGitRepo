@@ -618,11 +618,11 @@ export class AddDashboardDesignerComponent implements OnInit {
     router.navigate(['pages']);
   }
 
-  selectWidget(widgetId) {
-    let widgets = this.widgetsArray.filter(x => x.Identifier == widgetId);
+  selectWidget(widgetId, widgetName) {
+    let widgets = this.widgetsArray.filter(x => x.Identifier == widgetId && x.WidgetName == widgetName);
     if (widgets.length != 0) {
       let widget = widgets[0];
-      let widgetItems = this.widgetsGridsterItemArray.filter(w => w.WidgetId == widget.Identifier);
+      let widgetItems = this.widgetsGridsterItemArray.filter(w => w.WidgetId == widget.Identifier && w.value == widget.WidgetName);
       if (widget.Instantiable == false && widgetItems.length > 0) {
         let message = "You can not add multiple times " + widget.DisplayName + " widget";
         this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError);
