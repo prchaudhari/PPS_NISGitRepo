@@ -217,5 +217,36 @@ export class ViewComponent implements OnInit {
 
     }
   }
+
+  navigationToEditDynamicWidget() {
+    let queryParams = {
+      Routeparams: {
+        passingparams: {
+          "DynamicWidgetName": this.dynamicWidgetDetails.WidgetName,
+          "DynamicWidgetIdentifier": this.dynamicWidgetDetails.Identifier,
+        }
+      }
+    }
+    localStorage.setItem("dynamicWidgetEditRouteparams", JSON.stringify(queryParams))
+    this._router.navigate(['dynamicwidget', 'Edit']);
+  }
+
+  async DeleteDynamicWidget() {
+    let message = "Are you sure, you want to delete this record?";
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+        let dynamicWidgetData = [{
+          "Identifier": this.dynamicWidgetDetails.Identifier,
+        }];
+
+        let resultFlag = await this.dynamicWidgetService.deleteDynamicWidget(dynamicWidgetData);
+        if (resultFlag) {
+          let messageString = Constants.recordDeletedMessage;
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          this.navigateToListPage();
+        }
+      }
+    });
+  }
 }
 

@@ -1050,14 +1050,14 @@ namespace nIS
             string seriesName = fieldMaps.Where(item => item.Identifier.ToString() == pieChartSettingDetails.PieSeries).ToList().FirstOrDefault().Name;
             series.Add(new PieChartSeries()
             {
-                name = seriesName
+                name = pieChartSettingDetails.PieSeriesName
             });
             int remainingPercentage = 100;
             for (int i = 1; i < 5; i++)
             {
                 data.Add(new PieChartData
                 {
-                    name = seriesName + i.ToString(),
+                    name = pieChartSettingDetails.PieSeriesName + i.ToString(),
                     y = random.Next(1, remainingPercentage)
                 });
                 remainingPercentage = 100 - (int)data.Sum(item => item.y);

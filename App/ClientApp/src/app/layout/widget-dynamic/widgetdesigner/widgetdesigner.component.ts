@@ -15,10 +15,11 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 import { TemplateService } from '../../template/template.service';
 import { ConfigConstants } from '../../../shared/constants/configConstants';
-import { RichTextEditorComponent, MarkdownFormatter, EditorMode, RichTextEditor } from '@syncfusion/ej2-angular-richtexteditor';
+import { RichTextEditorComponent, MarkdownFormatter, EditorMode, RichTextEditor, MarkdownEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AssetLibraryService } from '../../asset-libraries/asset-library.service';
 import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-widgetdesigner',
   templateUrl: './widgetdesigner.component.html',
@@ -29,7 +30,8 @@ export class WidgetdesignerComponent implements OnInit {
   @ViewChild('htmleditor', { static: false }) rteObj: RichTextEditorComponent;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
+  public mode: string = 'Markdown';
+  public editorValue;
   //html editor code
   htmlContent = '';
   config: AngularEditorConfig = {
@@ -106,6 +108,9 @@ export class WidgetdesignerComponent implements OnInit {
   public PageTypeName;
   public DynamicWidgetIdentifier;
   public EntityName;
+  onSubmit(form: any): void {
+    alert(form.value.name);
+  }
   public conditionList: any[] = [
     { "Name": "Select", "Identifier": "0" },
     { "Name": "Equals To", "Identifier": "EqualsTo" },
@@ -132,7 +137,7 @@ export class WidgetdesignerComponent implements OnInit {
   public pieChartValueEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
   public lineBarGraphFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
 
-  
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -231,6 +236,7 @@ export class WidgetdesignerComponent implements OnInit {
       LineBarXAxis: [0],
       PieSeries: [0],
       PieValue: [0],
+      PieSeriesName:[null],
       FilterConditionOperator: ["0"],
       FilterField: [0],
       FilterOperator: [0],
@@ -324,7 +330,8 @@ export class WidgetdesignerComponent implements OnInit {
         this.selectedTheme = this.isCustome ? themeCSS.ChartColorTheme : this.selectedTheme;
         this.DynamicWidgetForm.patchValue({
           PieSeries: settings.PieSeries,
-          PieValue: settings.PieValue
+          PieValue: settings.PieValue,
+          PieSeriesName: settings.PieSeriesName
         });
       }
       else if (this.dynamicWidgetDetails.WidgetType == 'LineGraph' || this.dynamicWidgetDetails.WidgetType == 'BarGraph') {
@@ -336,10 +343,12 @@ export class WidgetdesignerComponent implements OnInit {
         });
       }
       else if (this.dynamicWidgetDetails.WidgetType == 'Html') {
-        this.rteObj.executeCommand('insertHTML', this.dynamicWidgetDetails.WidgetSettings);
-
+      //  this.rteObj.executeCommand('insertHTML', this.dynamicWidgetDetails.WidgetSettings);
+        //var div = document.createElement('div');
+        //div.innerHTML = this.dynamicWidgetDetails.WidgetSettings
+        //this.rteObj.executeCommand('insertHTML', div);
+        this.editorValue = this.dynamicWidgetDetails.WidgetSettings;
       }
-
     }
 
     this.DynamicWidgetForm.patchValue({
@@ -560,12 +569,28 @@ export class WidgetdesignerComponent implements OnInit {
 
   public AddAsset() {
     var asset = this.assets.filter(item => item.Identifier == this.DynamicWidgetForm.value.HTMLAsset)[0];
+    var fileType = asset.Name.split('.').pop();
+    var isImage;
+    var source;
+    var filePath = ConfigConstants.BaseURL + "assets" + "/" + asset.AssetLibraryIdentifier + "/" + asset.Name;
+    if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
+      isImage = true;
+      var url = filePath;
+      var img = document.createElement('img');
+      img.src = url;
+      this.rteObj.executeCommand('insertHTML', img);
+      this.rteObj.formatter.saveData();
+    }
+    else {
+      isImage = false;
+      var url = filePath;
+      var video = document.createElement('video');
+      video.src = url;
 
-    this.PreviewAsset(asset);
-    this.DynamicWidgetForm.patchValue({
-      HTMLAssetLibrary: 0,
-      HTMLAsset: 0
-    });
+      video.controls = true;
+      this.rteObj.executeCommand('insertHTML', video);
+      this.rteObj.formatter.saveData();
+    }
   }
 
   PreviewAsset(asset: any): void {
@@ -578,7 +603,7 @@ export class WidgetdesignerComponent implements OnInit {
       var img = document.createElement('img');
       img.src = url;
       this.rteObj.executeCommand('insertHTML', img);
-   
+
     }
     else {
       isImage = false;
@@ -720,6 +745,10 @@ export class WidgetdesignerComponent implements OnInit {
       if (this.DynamicWidgetForm.value.PieSeries == null || this.DynamicWidgetForm.value.PieSeries == 0) {
         return true;
       }
+      if (this.DynamicWidgetForm.value.PieSeriesName == null || this.DynamicWidgetForm.value.PieSeriesName == "") {
+        return true;
+      }
+      
     }
     //else if (this.selectedLink == "Html") {
     //  var html = this.rteObj.getHtml();
@@ -792,6 +821,8 @@ export class WidgetdesignerComponent implements OnInit {
       var object: any = {};
       object.PieSeries = this.DynamicWidgetForm.value.PieSeries;
       object.PieValue = this.DynamicWidgetForm.value.PieValue;
+      object.PieSeriesName = this.DynamicWidgetForm.value.PieSeriesName;
+      
       this.dynamicWidgetDetails.WidgetSettings = JSON.stringify(object);
       chartTheme = this.selectedTheme;
     }
@@ -828,6 +859,8 @@ export class WidgetdesignerComponent implements OnInit {
 
     var userid = localStorage.getItem('UserId');
     this.dynamicWidgetDetails.CreatedBy = Number(userid);
+    this.dynamicWidgetDetails.EntityName = this.EntityName;
+
     var widgetList = [];
     widgetList.push(this.dynamicWidgetDetails);
     let isRecordSaved = await this.dynamicWidgetService.saveDynamicWidget(widgetList, this.updateOperationMode);

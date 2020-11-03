@@ -529,7 +529,7 @@ export class AddComponent implements OnInit {
     widget.EntityId = this.DynamicWidgetForm.value.Entity;
     widget.ThemeType = this.isDefault == true ? "Default" : "Custome";
     widget.Title = this.DynamicWidgetForm.value.WidgetTitle;
-
+    widget.EntityName = this.entityList.filter(item => item.Identifier == this.DynamicWidgetForm.value.Entity)[0].Name;
     //widget.Identifier = this.dynamicWidgetDetails.Identifier;
     //if (this.selectedLink == 'Form') {
     //  widget.WidgetSettings = JSON.stringify(this.formList);
