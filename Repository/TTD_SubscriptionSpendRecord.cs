@@ -16,8 +16,8 @@ namespace nIS
     {
         public long Id { get; set; }
         public string Month { get; set; }
-        public long Microsoft { get; set; }
-        public long Zoom { get; set; }
+        public decimal Microsoft { get; set; }
+        public decimal Zoom { get; set; }
         public string TenantCode { get; set; }
     }
 }
