@@ -61,6 +61,9 @@ namespace nIS
         [Description("WidgetThemeSetting")]
         public string WidgetThemeSetting { get; set; }
 
+        [Description("BaseUrlForTransactionData")]
+        public string BaseUrlForTransactionData { get; set; }
+
         /// <summary>
         /// The utility object
         /// </summary>

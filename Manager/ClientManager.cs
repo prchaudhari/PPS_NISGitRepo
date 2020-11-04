@@ -286,7 +286,7 @@ namespace nIS
                             }
                             this.tenantContactManager.AddTenantContacts(client.TenantContacts, client.TenantCode);
 
-                            //To save tenant configuration
+                            //To save default entry for tenant configuration
                             TenantConfiguration tenantConfiguration = new TenantConfiguration
                             {
                                 Name = "Tenant Configuration",
@@ -301,6 +301,7 @@ namespace nIS
                                 DateFormat = string.Empty,
                                 ArchivalPeriod = 0,
                                 ArchivalPeriodUnit = 0,
+                                BaseUrlForTransactionData = string.Empty
                             };
                             this.TenantConfigurationManager.Save(tenantConfiguration, client.TenantCode);
 

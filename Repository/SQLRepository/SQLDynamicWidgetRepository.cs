@@ -348,7 +348,8 @@ namespace nIS
                                 Version=item.Version,
                                 TenantCode = tenantCode,
                                 PreviewData=item.PreviewData,
-                                
+                                APIPath = item.APIPath,
+                                RequestType = item.RequestType
                             });
                         });
                     }
@@ -536,6 +537,9 @@ namespace nIS
                         CreatedDate = item.CreatedOn,
                         LastUpdatedBy = item.LastUpdatedBy,
                         IsActive = item.IsActive,
+                        APIPath = item.APIPath,
+                        RequestType = item.RequestType,
+                        TenantCode = item.TenantCode
                     }).ToList();
 
                 }

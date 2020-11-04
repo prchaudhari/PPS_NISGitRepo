@@ -28,5 +28,6 @@ namespace nIS
         public string DateFormat { get; set; }
         public string ApplicationTheme { get; set; }
         public string WidgetThemeSetting { get; set; }
+        public string BaseUrlForTransactionData { get; set; }
     }
 }

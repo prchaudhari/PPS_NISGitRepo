@@ -139,9 +139,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [NIS].View_DynamicWidget
 AS
-SELECT s.*, usr1.FirstName+' '+usr1.LastName AS PublishedByName,  
-usr2.FirstName+' '+usr2.LastName AS CreatedByName ,
-pg.Name as PageTypeName,ent.Name as EntityName
+SELECT s.*, usr1.FirstName+' '+usr1.LastName AS PublishedByName, usr2.FirstName+' '+usr2.LastName AS CreatedByName ,
+pg.Name as PageTypeName,ent.Name as EntityName, ent.APIPath, ent.RequestType
 FROM NIS.DynamicWidget s 
 LEFT JOIN NIS.[User] usr1 ON s.PublishedBy = usr1.Id
 INNER JOIN NIS.[User] usr2 ON s.CreatedBy = usr2.Id

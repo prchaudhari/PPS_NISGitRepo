@@ -213,6 +213,10 @@ namespace nIS
             }
         }
 
+        public string APIPath { get; set; }
+        public string RequestType { get; set; }
+        public string TenantCode { get; set; }
+
         #endregion
 
         #region Public Methods

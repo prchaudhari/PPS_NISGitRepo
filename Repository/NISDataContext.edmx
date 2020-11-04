@@ -572,6 +572,7 @@
           <Property Name="DateFormat" Type="nvarchar" MaxLength="50" />
           <Property Name="ApplicationTheme" Type="nvarchar" MaxLength="50" />
           <Property Name="WidgetThemeSetting" Type="nvarchar(max)" />
+          <Property Name="BaseUrlForTransactionData" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="TenantContact">
           <Key>
@@ -905,6 +906,8 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
             <PropertyRef Name="CreatedByName" />
             <PropertyRef Name="PageTypeName" />
             <PropertyRef Name="EntityName" />
+            <PropertyRef Name="APIPath" />
+            <PropertyRef Name="RequestType" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="WidgetName" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -932,6 +935,8 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
           <Property Name="CreatedByName" Type="nvarchar" MaxLength="201" Nullable="false" />
           <Property Name="PageTypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EntityName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="APIPath" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RequestType" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1332,7 +1337,9 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_DynamicWidget].[PublishedByName] AS [PublishedByName], 
     [View_DynamicWidget].[CreatedByName] AS [CreatedByName], 
     [View_DynamicWidget].[PageTypeName] AS [PageTypeName], 
-    [View_DynamicWidget].[EntityName] AS [EntityName]
+    [View_DynamicWidget].[EntityName] AS [EntityName], 
+    [View_DynamicWidget].[APIPath] AS [APIPath], 
+    [View_DynamicWidget].[RequestType] AS [RequestType]
     FROM [NIS].[View_DynamicWidget] AS [View_DynamicWidget]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_MultiTenantUserAccessMap" EntityType="Self.View_MultiTenantUserAccessMap" store:Type="Views" store:Schema="NIS">
@@ -2139,6 +2146,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="DateFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ApplicationTheme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WidgetThemeSetting" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BaseUrlForTransactionData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="StatementAnalyticRecord">
           <Key>
@@ -2628,6 +2636,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             <PropertyRef Name="PageTypeName" />
             <PropertyRef Name="EntityName" />
             <PropertyRef Name="PreviewData" />
+            <PropertyRef Name="APIPath" />
+            <PropertyRef Name="RequestType" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="WidgetName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -2655,6 +2665,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="CloneOfWidgetId" Type="Int64" />
           <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PreviewData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="APIPath" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RequestType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="FnGetStaticAndDynamicWidgets_Result">
           <Property Type="Int64" Name="ID" Nullable="false" />
@@ -3368,6 +3380,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="TenantConfigurationRecords">
             <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
               <MappingFragment StoreEntitySet="TenantConfiguration">
+                <ScalarProperty Name="BaseUrlForTransactionData" ColumnName="BaseUrlForTransactionData" />
                 <ScalarProperty Name="WidgetThemeSetting" ColumnName="WidgetThemeSetting" />
                 <ScalarProperty Name="ApplicationTheme" ColumnName="ApplicationTheme" />
                 <ScalarProperty Name="DateFormat" ColumnName="DateFormat" />
@@ -3816,6 +3829,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="View_DynamicWidgetRecord">
             <EntityTypeMapping TypeName="NISModel.View_DynamicWidgetRecord">
               <MappingFragment StoreEntitySet="View_DynamicWidget">
+                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+                <ScalarProperty Name="APIPath" ColumnName="APIPath" />
                 <ScalarProperty Name="PreviewData" ColumnName="PreviewData" />
                 <ScalarProperty Name="Version" ColumnName="Version" />
                 <ScalarProperty Name="CloneOfWidgetId" ColumnName="CloneOfWidgetId" />

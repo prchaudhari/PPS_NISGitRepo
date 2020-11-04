@@ -13,5 +13,6 @@
 	[ArchivalPeriodUnit] [nvarchar](50) NULL,
 	[DateFormat] [nvarchar](50) NULL, 
     [ApplicationTheme] NVARCHAR(50) NULL, 
-    [WidgetThemeSetting] NVARCHAR(MAX) NULL,
+    [WidgetThemeSetting] NVARCHAR(MAX) NULL, 
+    [BaseUrlForTransactionData] NVARCHAR(MAX) NULL,
 )

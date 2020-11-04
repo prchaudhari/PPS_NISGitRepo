@@ -40,5 +40,7 @@ namespace nIS
         public Nullable<long> CloneOfWidgetId { get; set; }
         public string Version { get; set; }
         public string PreviewData { get; set; }
+        public string APIPath { get; set; }
+        public string RequestType { get; set; }
     }
 }

@@ -47,6 +47,8 @@ namespace nIS
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public string TenantCode { get; set; }
+        public string APIPath { get; set; }
+        public string RequestType { get; set; }
 
         #endregion
 

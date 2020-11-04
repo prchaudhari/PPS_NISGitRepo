@@ -101,7 +101,8 @@ namespace nIS
                         ///ArchivalPeriodUnit = (ArchivalPeriod)(Enum.Parse(typeof(ArchivalPeriod), item.ArchivalPeriodUnit)),
                         DateFormat = item.DateFormat,
                         ApplicationTheme = item.ApplicationTheme,
-                        WidgetThemeSetting = item.WidgetThemeSetting
+                        WidgetThemeSetting = item.WidgetThemeSetting,
+                        BaseUrlForTransactionData = item.BaseUrlForTransactionData
                     }).ToList();
 
                     if (tenantConfigurations?.Count > 0)
@@ -171,6 +172,7 @@ namespace nIS
                     record.DateFormat = setting.DateFormat;
                     record.ApplicationTheme = setting.ApplicationTheme ?? string.Empty;
                     record.WidgetThemeSetting = setting.WidgetThemeSetting ?? string.Empty;
+                    record.BaseUrlForTransactionData = setting.BaseUrlForTransactionData != null && setting.BaseUrlForTransactionData != string.Empty ? setting.BaseUrlForTransactionData : "";
                     if (record.TenantCode == null || record.TenantCode == string.Empty)
                     {
                         record.TenantCode = tenantCode;
