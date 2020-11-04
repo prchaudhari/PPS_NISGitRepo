@@ -176,6 +176,18 @@ namespace nIS
 
         public const string SPENDING_TRENDS_WIDGET_HTML_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-header bg-light border-0 text-left'> " + "<h5 class='m-0'>Spending Trends</h5></div><div class='card-body'> <div id=\"spendingTrendscontainer\"></div></div></div> ";
 
+        public const string TABLE_WIDEGT_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0;' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'><div class='table-responsive stylescrollbar' style='max-height:350px;overflow-x:hidden;overflow-y:auto;'> <table id = 'TableWidget' class='table m-1 table-hover'><thead style={{HeaderStyle}}>{{tableHeader}}</thead><tbody style={{BodyStyle}}>{{tableBody}}</tbody></table></div></div></div>";
+
+        public const string FORM_WIDGET_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left' style='margin-bottom: 10px;'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card border-0 card-shadow m-auto width100'><div class='card-body p-2' style={{BodyStyle}}>{{FormData}}</div></div></div>";
+
+        public const string HTML_WIDGET_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body' style={{BodyStyle}}>{{FormData}}</div></div>";
+
+        public const string LINE_GRAPH_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"lineGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
+        public const string PIE_CHART_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'><h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"pieChartcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
+        public const string BAR_GRAPH_FOR_STMT = "<div id={{WidgetId}} class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'> <h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"barGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+
 
         public const string CONTAINER_DIV_HTML_HEADER = "<div class='container-fluid mt-3 mb-3 bdy-scroll stylescrollbar'>";
 

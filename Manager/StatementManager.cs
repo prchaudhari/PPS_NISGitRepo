@@ -797,25 +797,9 @@ namespace nIS
                                                                 var lineGraphWidgetHtml = HtmlConstants.LINE_GRAPH_FOR_PAGE_PREVIEW;
                                                                 lineGraphWidgetHtml = lineGraphWidgetHtml.Replace("lineGraphcontainer", "lineGraphcontainer_" + dynawidget.Identifier);
                                                                 lineGraphWidgetHtml = lineGraphWidgetHtml.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                lineGraphWidgetHtml = this.ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(lineGraphWidgetHtml, themeDetails);
+                                                                lineGraphWidgetHtml = this.ApplyStyleCssForDynamicGraphAndChartWidgets(lineGraphWidgetHtml, themeDetails);
                                                                 lineGraphWidgetHtml = lineGraphWidgetHtml.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
-                                                                DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynawidget.WidgetSettings);
-                                                                fieldMaps = this.dynamicWidgetManager.GetEntityFields(dynawidget.EntityId, tenantCode);
-                                                                string theme = string.Empty;
-                                                                if (themeDetails != null)
-                                                                {
-                                                                    if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
-                                                                    {
-                                                                        theme = themeDetails.ChartColorTheme;
-                                                                    }
-                                                                    else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
-                                                                    {
-                                                                        theme = themeDetails.ColorTheme;
-                                                                    }
-                                                                }
-                                                                var series = dynawidget.PreviewData;
-                                                                lineGraphWidgetHtml = lineGraphWidgetHtml + "<input type='hidden' id='hiddenLineGraphData_" + dynawidget.Identifier + "' value='" + series + "'>";
+                                                                lineGraphWidgetHtml = lineGraphWidgetHtml + "<input type='hidden' id='hiddenLineGraphData_" + dynawidget.Identifier + "' value='" + dynawidget.PreviewData + "'>";
                                                                 linegraphIds.Add("lineGraphcontainer_" + dynawidget.Identifier);
                                                                 htmlString.Append(lineGraphWidgetHtml);
                                                             }
@@ -824,25 +808,9 @@ namespace nIS
                                                                 var barGraphWidgetHtml = HtmlConstants.BAR_GRAPH_FOR_PAGE_PREVIEW;
                                                                 barGraphWidgetHtml = barGraphWidgetHtml.Replace("{{WidgetDivHeight}}", divHeight);
                                                                 barGraphWidgetHtml = barGraphWidgetHtml.Replace("barGraphcontainer", "barGraphcontainer_" + dynawidget.Identifier);
-                                                                barGraphWidgetHtml = this.ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(barGraphWidgetHtml, themeDetails);
+                                                                barGraphWidgetHtml = this.ApplyStyleCssForDynamicGraphAndChartWidgets(barGraphWidgetHtml, themeDetails);
                                                                 barGraphWidgetHtml = barGraphWidgetHtml.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
-                                                                DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynawidget.WidgetSettings);
-                                                                fieldMaps = this.dynamicWidgetManager.GetEntityFields(dynawidget.EntityId, tenantCode);
-                                                                string theme = string.Empty;
-                                                                if (themeDetails != null)
-                                                                {
-                                                                    if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
-                                                                    {
-                                                                        theme = themeDetails.ChartColorTheme;
-                                                                    }
-                                                                    else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
-                                                                    {
-                                                                        theme = themeDetails.ColorTheme;
-                                                                    }
-                                                                }
-                                                                var series = dynawidget.PreviewData;
-                                                                barGraphWidgetHtml = barGraphWidgetHtml + "<input type='hidden' id='hiddenBarGraphData_" + dynawidget.Identifier + "' value='" + series + "'>";
+                                                                barGraphWidgetHtml = barGraphWidgetHtml + "<input type='hidden' id='hiddenBarGraphData_" + dynawidget.Identifier + "' value='" + dynawidget.PreviewData + "'>";
                                                                 bargraphIds.Add("barGraphcontainer_" + dynawidget.Identifier);
                                                                 htmlString.Append(barGraphWidgetHtml);
                                                             }
@@ -851,25 +819,9 @@ namespace nIS
                                                                 var pieChartWidgetHtml = HtmlConstants.PIE_CHART_FOR_PAGE_PREVIEW;
                                                                 pieChartWidgetHtml = pieChartWidgetHtml.Replace("{{WidgetDivHeight}}", divHeight);
                                                                 pieChartWidgetHtml = pieChartWidgetHtml.Replace("pieChartcontainer", "pieChartcontainer_" + dynawidget.Identifier);
-                                                                pieChartWidgetHtml = this.ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(pieChartWidgetHtml, themeDetails);
+                                                                pieChartWidgetHtml = this.ApplyStyleCssForDynamicGraphAndChartWidgets(pieChartWidgetHtml, themeDetails);
                                                                 pieChartWidgetHtml = pieChartWidgetHtml.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                PieChartSettingDetails pieChartSetting = JsonConvert.DeserializeObject<PieChartSettingDetails>(dynawidget.WidgetSettings);
-                                                                IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
-                                                                fieldMaps = this.dynamicWidgetManager.GetEntityFields(dynawidget.EntityId, tenantCode);
-                                                                string theme = string.Empty;
-                                                                if (themeDetails != null)
-                                                                {
-                                                                    if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
-                                                                    {
-                                                                        theme = themeDetails.ChartColorTheme;
-                                                                    }
-                                                                    else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
-                                                                    {
-                                                                        theme = themeDetails.ColorTheme;
-                                                                    }
-                                                                }
-                                                                var series = dynawidget.PreviewData;
-                                                                pieChartWidgetHtml = pieChartWidgetHtml + "<input type='hidden' id='hiddenPieChartData_" + dynawidget.Identifier + "' value='" + series + "'>";
+                                                                pieChartWidgetHtml = pieChartWidgetHtml + "<input type='hidden' id='hiddenPieChartData_" + dynawidget.Identifier + "' value='" + dynawidget.PreviewData + "'>";
                                                                 piechartIds.Add("pieChartcontainer_" + dynawidget.Identifier);
                                                                 htmlString.Append(pieChartWidgetHtml);
                                                             }
@@ -877,7 +829,7 @@ namespace nIS
                                                             {
                                                                 var htmlWidget = HtmlConstants.HTML_WIDGET_FOR_PAGE_PREVIEW;
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = this.ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(htmlWidget, themeDetails);
+                                                                htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                                 string settings = dynawidget.WidgetSettings;
                                                                 IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
@@ -1105,7 +1057,7 @@ namespace nIS
             return html;
         }
 
-        private string ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(string html, CustomeTheme themeDetails)
+        private string ApplyStyleCssForDynamicGraphAndChartWidgets(string html, CustomeTheme themeDetails)
         {
             StringBuilder style = new StringBuilder();
             style.Append(HtmlConstants.STYLE);

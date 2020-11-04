@@ -728,7 +728,7 @@ namespace nIS
                                                     var lineGraphWidgetHtml = HtmlConstants.LINE_GRAPH_FOR_PAGE_PREVIEW;
                                                     lineGraphWidgetHtml = lineGraphWidgetHtml.Replace("lineGraphcontainer", "lineGraphcontainer_" + dynawidget.Identifier);
                                                     lineGraphWidgetHtml = lineGraphWidgetHtml.Replace("{{WidgetDivHeight}}", divHeight);
-                                                    lineGraphWidgetHtml = this.ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(lineGraphWidgetHtml, themeDetails);
+                                                    lineGraphWidgetHtml = this.ApplyStyleCssForDynamicGraphAndChartWidgets(lineGraphWidgetHtml, themeDetails);
                                                     lineGraphWidgetHtml = lineGraphWidgetHtml.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                     IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
                                                     DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynawidget.WidgetSettings);
@@ -755,7 +755,7 @@ namespace nIS
                                                     var barGraphWidgetHtml = HtmlConstants.BAR_GRAPH_FOR_PAGE_PREVIEW;
                                                     barGraphWidgetHtml = barGraphWidgetHtml.Replace("{{WidgetDivHeight}}", divHeight);
                                                     barGraphWidgetHtml = barGraphWidgetHtml.Replace("barGraphcontainer", "barGraphcontainer_" + dynawidget.Identifier);
-                                                    barGraphWidgetHtml = this.ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(barGraphWidgetHtml, themeDetails);
+                                                    barGraphWidgetHtml = this.ApplyStyleCssForDynamicGraphAndChartWidgets(barGraphWidgetHtml, themeDetails);
                                                     barGraphWidgetHtml = barGraphWidgetHtml.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                     IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
                                                     DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynawidget.WidgetSettings);
@@ -782,7 +782,7 @@ namespace nIS
                                                     var pieChartWidgetHtml = HtmlConstants.PIE_CHART_FOR_PAGE_PREVIEW;
                                                     pieChartWidgetHtml = pieChartWidgetHtml.Replace("{{WidgetDivHeight}}", divHeight);
                                                     pieChartWidgetHtml = pieChartWidgetHtml.Replace("pieChartcontainer", "pieChartcontainer_" + dynawidget.Identifier);
-                                                    pieChartWidgetHtml = this.ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(pieChartWidgetHtml, themeDetails);
+                                                    pieChartWidgetHtml = this.ApplyStyleCssForDynamicGraphAndChartWidgets(pieChartWidgetHtml, themeDetails);
                                                     pieChartWidgetHtml = pieChartWidgetHtml.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                     PieChartSettingDetails pieChartSetting = JsonConvert.DeserializeObject<PieChartSettingDetails>(dynawidget.WidgetSettings);
                                                     IList<EntityFieldMap> fieldMaps = new List<EntityFieldMap>();
@@ -808,7 +808,7 @@ namespace nIS
                                                 {
                                                     var htmlWidget = HtmlConstants.HTML_WIDGET_FOR_PAGE_PREVIEW;
                                                     htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                    htmlWidget = this.ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(htmlWidget, themeDetails);
+                                                    htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
                                                     htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                     string settings = dynawidget.WidgetSettings;
                                                     IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
@@ -1058,7 +1058,7 @@ namespace nIS
             return html;
         }
 
-        private string ApplyStyleCssForDynamicHtmlGraphAndChartWidgets(string html, CustomeTheme themeDetails)
+        private string ApplyStyleCssForDynamicGraphAndChartWidgets(string html, CustomeTheme themeDetails)
         {
             StringBuilder style = new StringBuilder();
             style.Append(HtmlConstants.STYLE);
