@@ -12,17 +12,22 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class TTD_SubscriptionMasterRecord
+    public partial class TTD_CustomerMasterRecord
     {
         public long Id { get; set; }
         public long BatchId { get; set; }
-        public long CustomerId { get; set; }
         public string CustomerCode { get; set; }
-        public string VendorName { get; set; }
-        public string Subscription { get; set; }
-        public string Email { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public string Zip { get; set; }
+        public Nullable<System.DateTime> StatementDate { get; set; }
+        public string StatementPeriod { get; set; }
         public string TenantCode { get; set; }
     }
 }

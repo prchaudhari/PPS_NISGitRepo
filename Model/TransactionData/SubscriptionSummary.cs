@@ -8,7 +8,9 @@ namespace nIS
     public class SubscriptionSummary
     {
         public long Identifier { get; set; }
-        public string Vendor { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
+        public string VendorName { get; set; }
         public string Subscription { get; set; }
         public decimal Total { get; set; }
         public decimal AverageSpend { get; set; }

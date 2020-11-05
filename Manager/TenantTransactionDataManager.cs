@@ -62,6 +62,25 @@ namespace nIS
 
         #region Public Methods
 
+        /// <summary>
+        /// This method gets the specified list of customer master from tenant transaction data repository.
+        /// </summary>
+        /// <param name="customerSearchParameter">The subscription master search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer master
+        /// </returns>
+        public IList<CustomerMaster> Get_TTD_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.Get_TTD_CustomerMasters(customerSearchParameter, tenantCode);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// This method gets the specified list of subscription master from tenant transaction data repository.
@@ -126,16 +145,16 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of subscription spends from tenant transaction data repository.
         /// </summary>
-        /// <param name="month">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of subscription spends
         /// </returns>
-        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(string month, string tenantCode)
+        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
-                return this.tenantTransactionDataRepository.Get_TTD_SubscriptionSpends(month, tenantCode);
+                return this.tenantTransactionDataRepository.Get_TTD_SubscriptionSpends(subscriptionMasterSearchParameter, tenantCode);
             }
             catch (Exception ex)
             {
@@ -146,16 +165,16 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of user subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="employeeId">The employee id value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of user subscriptions
         /// </returns>
-        public IList<UserSubscription> Get_TTD_UserSubscriptions(string employeeId, string tenantCode)
+        public IList<UserSubscription> Get_TTD_UserSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
-                return this.tenantTransactionDataRepository.Get_TTD_UserSubscriptions(employeeId, tenantCode);
+                return this.tenantTransactionDataRepository.Get_TTD_UserSubscriptions(subscriptionMasterSearchParameter, tenantCode);
             }
             catch (Exception ex)
             {
@@ -166,16 +185,16 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of vendor subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="VendorName">The vendor name value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of vendor subscriptions
         /// </returns>
-        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(string VendorName, string tenantCode)
+        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
-                return this.tenantTransactionDataRepository.Get_TTD_VendorSubscriptions(VendorName, tenantCode);
+                return this.tenantTransactionDataRepository.Get_TTD_VendorSubscriptions(subscriptionMasterSearchParameter, tenantCode);
             }
             catch (Exception ex)
             {
@@ -186,16 +205,16 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of data usages from tenant transaction data repository.
         /// </summary>
-        /// <param name="month">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of data usages
         /// </returns>
-        public IList<DataUsage> Get_TTD_DataUsages(string month, string tenantCode)
+        public IList<DataUsage> Get_TTD_DataUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
-                return this.tenantTransactionDataRepository.Get_TTD_DataUsages(month, tenantCode);
+                return this.tenantTransactionDataRepository.Get_TTD_DataUsages(subscriptionMasterSearchParameter, tenantCode);
             }
             catch (Exception ex)
             {
@@ -206,16 +225,16 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of meeting usages from tenant transaction data repository.
         /// </summary>
-        /// <param name="month">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of meeting usages
         /// </returns>
-        public IList<MeetingUsage> Get_TTD_MeetingUsages(string month, string tenantCode)
+        public IList<MeetingUsage> Get_TTD_MeetingUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
-                return this.tenantTransactionDataRepository.Get_TTD_MeetingUsages(month, tenantCode);
+                return this.tenantTransactionDataRepository.Get_TTD_MeetingUsages(subscriptionMasterSearchParameter, tenantCode);
             }
             catch (Exception ex)
             {
@@ -226,16 +245,16 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of emails by subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="subscription">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of emails by subscription
         /// </returns>
-        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(string subscription, string tenantCode)
+        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
-                return this.tenantTransactionDataRepository.Get_TTD_EmailsBySubscription(subscription, tenantCode);
+                return this.tenantTransactionDataRepository.Get_TTD_EmailsBySubscription(subscriptionMasterSearchParameter, tenantCode);
             }
             catch (Exception ex)
             {

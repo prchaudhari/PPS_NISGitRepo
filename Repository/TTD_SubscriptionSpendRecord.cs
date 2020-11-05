@@ -15,7 +15,10 @@ namespace nIS
     public partial class TTD_SubscriptionSpendRecord
     {
         public long Id { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
         public string Month { get; set; }
+        public long Year { get; set; }
         public decimal Microsoft { get; set; }
         public decimal Zoom { get; set; }
         public string TenantCode { get; set; }

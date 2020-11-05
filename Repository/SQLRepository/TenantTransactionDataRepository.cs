@@ -61,6 +61,74 @@ namespace nIS
         #region Public Methods
 
         /// <summary>
+        /// This method gets the specified list of customer master from tenant transaction data repository.
+        /// </summary>
+        /// <param name="customerSearchParameter">The subscription master search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer master
+        /// </returns>
+        public IList<CustomerMaster> Get_TTD_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode)
+        {
+            IList<CustomerMaster> customerMasters = new List<CustomerMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomer(customerSearchParameter, tenantCode);
+                var customerMasterRecords = new List<TTD_CustomerMasterRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    if (customerSearchParameter.PagingParameter.PageIndex > 0 && customerSearchParameter.PagingParameter.PageSize > 0)
+                    {
+                        customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord
+                        .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((customerSearchParameter.PagingParameter.PageIndex - 1) * customerSearchParameter.PagingParameter.PageSize)
+                        .Take(customerSearchParameter.PagingParameter.PageSize)
+                        .ToList();
+                    }
+                    else
+                    {
+                        customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord
+                        .Where(whereClause)
+                        .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
+                    }
+
+                    if (customerMasterRecords != null && customerMasterRecords.Count > 0)
+                    {
+                        customerMasterRecords.ForEach(item =>
+                        {
+                            customerMasters.Add(new CustomerMaster()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerCode = item.CustomerCode,
+                                FirstName = item.FirstName,
+                                MiddleName = item.MiddleName,
+                                LastName = item.LastName,
+                                AddressLine1 = item.AddressLine1,
+                                AddressLine2 = item.AddressLine2,
+                                City = item.City,
+                                State = item.State,
+                                Country = item.Country,
+                                Zip = item.Zip,
+                                StatementDate = item.StatementDate,
+                                StatementPeriod = item.StatementPeriod,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return customerMasters;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method gets the specified list of subscription master from tenant transaction data repository.
         /// </summary>
         /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
@@ -102,10 +170,11 @@ namespace nIS
                             subscriptionMasters.Add(new SubscriptionMaster()
                             {
                                 Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                CustomerCode = item.CustomerCode,
                                 VendorName = item.VendorName,
                                 Subscription = item.Subscription,
-                                EmployeeId = item.EmployeeID,
-                                EmployeeName = item.EmployeeName,
                                 EmailId = item.Email,
                                 StartDate = item.StartDate,
                                 EndDate = item.EndDate,
@@ -164,10 +233,10 @@ namespace nIS
                             subscriptionUsages.Add(new SubscriptionUsage()
                             {
                                 Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
                                 VendorName = item.VendorName,
                                 Subscription = item.Subscription,
-                                EmployeeId = item.EmployeeID,
-                                EmployeeName = item.EmployeeName,
                                 Email = item.Email,
                                 Usage = item.Usage,
                                 Emails = item.Emails,
@@ -227,6 +296,9 @@ namespace nIS
                             subscriptionSummaries.Add(new SubscriptionSummary()
                             {
                                 Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                VendorName = item.VendorName,
                                 Subscription = item.Subscription,
                                 Total = item.Total,
                                 AverageSpend = item.AverageSpend,
@@ -246,27 +318,36 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of subscription spends from tenant transaction data repository.
         /// </summary>
-        /// <param name="month">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of subscription spends
         /// </returns>
-        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(string month, string tenantCode)
+        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             IList<SubscriptionSpend> subscriptionSpends = new List<SubscriptionSpend>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
                 var subscriptionSpendRecords = new List<TTD_SubscriptionSpendRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (month == null || month == string.Empty)
+                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
                     {
-                        subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord.Where(item => item.TenantCode == tenantCode).ToList();
+                        subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .ToList();
                     }
                     else
                     {
-                        subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord.Where(item => item.Month.Contains(month) && item.TenantCode == tenantCode).ToList();
+                        subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord
+                        .Where(whereClause)
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
                     }
 
                     if (subscriptionSpendRecords != null && subscriptionSpendRecords.Count > 0)
@@ -276,7 +357,10 @@ namespace nIS
                             subscriptionSpends.Add(new SubscriptionSpend()
                             {
                                 Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
                                 Month = item.Month,
+                                Year = item.Year,
                                 Microsoft = item.Microsoft,
                                Zoom = item.Zoom,
                                TenantCode = item.TenantCode
@@ -292,31 +376,39 @@ namespace nIS
             }
         }
 
-
         /// <summary>
         /// This method gets the specified list of user subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="employeeId">The employee id value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of user subscriptions
         /// </returns>
-        public IList<UserSubscription> Get_TTD_UserSubscriptions(string employeeId, string tenantCode)
+        public IList<UserSubscription> Get_TTD_UserSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             IList<UserSubscription> userSubscriptions = new List<UserSubscription>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
                 var userSubscriptionRecords = new List<TTD_UserSubscriptionsRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (employeeId == null || employeeId == string.Empty)
+                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
                     {
-                        userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord.Where(item => item.TenantCode == tenantCode).ToList();
+                        userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .ToList();
                     }
                     else
                     {
-                        userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord.Where(item => item.UserName.Contains(employeeId) && item.TenantCode == tenantCode).ToList();
+                        userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord
+                        .Where(whereClause)
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
                     }
 
                     if (userSubscriptionRecords != null && userSubscriptionRecords.Count > 0)
@@ -326,7 +418,8 @@ namespace nIS
                             userSubscriptions.Add(new UserSubscription()
                             {
                                 Identifier = item.Id,
-                                UserName = item.UserName,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
                                 CountOfSubscription = item.CountOfSubscription,
                                 TenantCode = item.TenantCode
                             });
@@ -344,27 +437,36 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of vendor subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="VendorName">The vendor name value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of vendor subscriptions
         /// </returns>
-        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(string VendorName, string tenantCode)
+        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             IList<VendorSubscription> vendorSubscriptions = new List<VendorSubscription>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
                 var vendorSubscriptionRecords = new List<TTD_VendorSubscriptionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (VendorName == null || VendorName == string.Empty)
+                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
                     {
-                        vendorSubscriptionRecords = nISEntitiesDataContext.TTD_VendorSubscriptionRecord.Where(item => item.TenantCode == tenantCode).ToList();
+                        vendorSubscriptionRecords = nISEntitiesDataContext.TTD_VendorSubscriptionRecord
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .ToList();
                     }
                     else
                     {
-                        vendorSubscriptionRecords = nISEntitiesDataContext.TTD_VendorSubscriptionRecord.Where(item => item.VenderName.Contains(VendorName) && item.TenantCode == tenantCode).ToList();
+                        vendorSubscriptionRecords = nISEntitiesDataContext.TTD_VendorSubscriptionRecord
+                        .Where(whereClause)
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
                     }
 
                     if (vendorSubscriptionRecords != null && vendorSubscriptionRecords.Count > 0)
@@ -374,6 +476,8 @@ namespace nIS
                             vendorSubscriptions.Add(new VendorSubscription()
                             {
                                 Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
                                 VenderName = item.VenderName,
                                 CountOfSubscription = item.CountOfSubscription,
                                 TenantCode = item.TenantCode
@@ -392,27 +496,36 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of data usages from tenant transaction data repository.
         /// </summary>
-        /// <param name="month">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of data usages
         /// </returns>
-        public IList<DataUsage> Get_TTD_DataUsages(string month, string tenantCode)
+        public IList<DataUsage> Get_TTD_DataUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             IList<DataUsage> dataUsages = new List<DataUsage>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
                 var dataUsageRecords = new List<TTD_DataUsageRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (month == null || month == string.Empty)
+                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
                     {
-                        dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord.Where(item => item.TenantCode == tenantCode).ToList();
+                        dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .ToList();
                     }
                     else
                     {
-                        dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord.Where(item => item.Month.Contains(month) && item.TenantCode == tenantCode).ToList();
+                        dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord
+                        .Where(whereClause)
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
                     }
 
                     if (dataUsageRecords != null && dataUsageRecords.Count > 0)
@@ -422,7 +535,10 @@ namespace nIS
                             dataUsages.Add(new DataUsage()
                             {
                                 Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
                                 Month = item.Month,
+                                Year = item.Year,
                                 Microsoft = item.Microsoft,
                                 Zoom = item.Zoom,
                                 TenantCode = item.TenantCode
@@ -441,27 +557,36 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of meeting usages from tenant transaction data repository.
         /// </summary>
-        /// <param name="month">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of meeting usages
         /// </returns>
-        public IList<MeetingUsage> Get_TTD_MeetingUsages(string month, string tenantCode)
+        public IList<MeetingUsage> Get_TTD_MeetingUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             IList<MeetingUsage> meetingUsages = new List<MeetingUsage>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
                 var meetingUsageRecords = new List<TTD_MeetingUsageRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (month == null || month == string.Empty)
+                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
                     {
-                        meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord.Where(item => item.TenantCode == tenantCode).ToList();
+                        meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .ToList();
                     }
                     else
                     {
-                        meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord.Where(item => item.Month.Contains(month) && item.TenantCode == tenantCode).ToList();
+                        meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord
+                        .Where(whereClause)
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
                     }
 
                     if (meetingUsageRecords != null && meetingUsageRecords.Count > 0)
@@ -471,7 +596,10 @@ namespace nIS
                             meetingUsages.Add(new MeetingUsage()
                             {
                                 Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
                                 Month = item.Month,
+                                Year = item.Year,
                                 Microsoft = item.Microsoft,
                                 Zoom = item.Zoom,
                                 TenantCode = item.TenantCode
@@ -490,27 +618,36 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of emails by subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="subscription">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of emails by subscription
         /// </returns>
-        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(string subscription, string tenantCode)
+        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             IList<EmailsBySubscription> emailsBySubscriptions = new List<EmailsBySubscription>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
                 var emailsBySubscriptionRecords = new List<TTD_EmailsBySubscriptionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscription == null || subscription == string.Empty)
+                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
                     {
-                        emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord.Where(item => item.TenantCode == tenantCode).ToList();
+                        emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                        .ToList();
                     }
                     else
                     {
-                        emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord.Where(item => item.Subscription.Contains(subscription) && item.TenantCode == tenantCode).ToList();
+                        emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord
+                        .Where(whereClause)
+                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
                     }
 
                     if (emailsBySubscriptionRecords != null && emailsBySubscriptionRecords.Count > 0)
@@ -520,6 +657,8 @@ namespace nIS
                             emailsBySubscriptions.Add(new EmailsBySubscription()
                             {
                                 Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
                                 Emails = item.Emails,
                                 Subscription = item.Subscription,
                                 TenantCode = item.TenantCode
@@ -556,33 +695,42 @@ namespace nIS
                 {
                     queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
                 }
-                if (validationEngine.IsValidText(searchParameter.VendorName))
-                {
-                    queryString.Append(string.Format("VendorName.Equals(\"{0}\") and ", searchParameter.VendorName));
-                }
             }
-            if (searchParameter.SearchMode == SearchMode.Contains)
+            if (validationEngine.IsValidLong(searchParameter.BatchId))
             {
-                if (validationEngine.IsValidText(searchParameter.VendorName))
-                {
-                    queryString.Append(string.Format("VendorName.Contains(\"{0}\") and ", searchParameter.VendorName));
-                }
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidText(searchParameter.VendorName))
+            {
+                queryString.Append(string.Format("VendorName.Contains(\"{0}\") and ", searchParameter.VendorName));
             }
             if (validationEngine.IsValidText(searchParameter.Subscription))
             {
                 queryString.Append(string.Format("Subscription.Contains(\"{0}\") and ", searchParameter.Subscription));
             }
-            if (validationEngine.IsValidText(searchParameter.EmployeeId))
-            {
-                queryString.Append(string.Format("EmployeeID.Contains(\"{0}\") and ", searchParameter.EmployeeId));
-            }
-            if (validationEngine.IsValidText(searchParameter.EmployeeName))
-            {
-                queryString.Append(string.Format("EmployeeName.Contains(\"{0}\") and ", searchParameter.EmployeeName));
-            }
             if (validationEngine.IsValidText(searchParameter.EmailId))
             {
                 queryString.Append(string.Format("Email.Contains(\"{0}\") and ", searchParameter.EmailId));
+            }
+            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
+        private string WhereClauseGeneratorForCustomer(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            if (validationEngine.IsValidLong(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidLong(searchParameter.BatchId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
             }
             queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();

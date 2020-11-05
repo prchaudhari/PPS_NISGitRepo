@@ -8,6 +8,8 @@ namespace nIS
     public class EmailsBySubscription
     {
         public long Identifier { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
         public string Subscription { get; set; }
         public long Emails { get; set; }
         public string TenantCode { get; set; }

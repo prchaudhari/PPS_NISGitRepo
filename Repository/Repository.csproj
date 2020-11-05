@@ -284,6 +284,9 @@
     <Compile Include="TransactionDetailRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="TTD_CustomerMasterRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="TTD_DataUsageRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

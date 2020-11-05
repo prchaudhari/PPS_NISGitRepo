@@ -8,10 +8,10 @@ namespace nIS
     public class SubscriptionUsage
     {
         public long Identifier { get; set; }
-        public string EmployeeId { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
         public string Subscription { get; set; }
         public string VendorName { get; set; }
-        public string EmployeeName { get; set; }
         public string Email { get; set; }
         public decimal Usage { get; set; }
         public long Emails { get; set; }

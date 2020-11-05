@@ -11,6 +11,17 @@ namespace nIS
 
     public interface ITenantTransactionDataRepository
     {
+
+        /// <summary>
+        /// This method gets the specified list of customer master from tenant transaction data repository.
+        /// </summary>
+        /// <param name="customerSearchParameter">The subscription master search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer master
+        /// </returns>
+        IList<CustomerMaster> Get_TTD_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode);
+
         /// <summary>
         /// This method gets the specified list of subscription master from tenant transaction data repository.
         /// </summary>
@@ -49,56 +60,56 @@ namespace nIS
         /// <returns>
         /// Returns the list of subscription spends
         /// </returns>
-        IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(string month, string tenantCode);
+        IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode);
 
         /// <summary>
         /// This method gets the specified list of user subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="employeeId">The employee id value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of user subscriptions
         /// </returns>
-        IList<UserSubscription> Get_TTD_UserSubscriptions(string employeeId, string tenantCode);
+        IList<UserSubscription> Get_TTD_UserSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode);
 
         /// <summary>
         /// This method gets the specified list of vendor subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="VendorName">The vendor name value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of vendor subscriptions
         /// </returns>
-        IList<VendorSubscription> Get_TTD_VendorSubscriptions(string VendorName, string tenantCode);
+        IList<VendorSubscription> Get_TTD_VendorSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode);
 
         /// <summary>
         /// This method gets the specified list of data usages from tenant transaction data repository.
         /// </summary>
-        /// <param name="month">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of data usages
         /// </returns>
-        IList<DataUsage> Get_TTD_DataUsages(string month, string tenantCode);
+        IList<DataUsage> Get_TTD_DataUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode);
 
         /// <summary>
         /// This method gets the specified list of meeting usages from tenant transaction data repository.
         /// </summary>
-        /// <param name="month">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of meeting usages
         /// </returns>
-        IList<MeetingUsage> Get_TTD_MeetingUsages(string month, string tenantCode);
+        IList<MeetingUsage> Get_TTD_MeetingUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode);
 
         /// <summary>
         /// This method gets the specified list of emails by subscription from tenant transaction data repository.
         /// </summary>
-        /// <param name="subscription">The month value</param>
+        /// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// Returns the list of emails by subscription
         /// </returns>
-       IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(string subscription, string tenantCode);
+        IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode);
     }
 }

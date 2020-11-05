@@ -134,6 +134,7 @@
     <Build Include="TTD_DataUsage.sql" />
     <Build Include="TTD_MeetingUsage.sql" />
     <Build Include="TTD_EmailsBySubscription.sql" />
+    <Build Include="TTD_CustomerMaster.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

@@ -15,7 +15,10 @@ namespace nIS
     public partial class TTD_DataUsageRecord
     {
         public long Id { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
         public string Month { get; set; }
+        public long Year { get; set; }
         public long Microsoft { get; set; }
         public long Zoom { get; set; }
         public string TenantCode { get; set; }

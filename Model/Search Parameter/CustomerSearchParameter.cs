@@ -1,4 +1,4 @@
-﻿// <copyright file="SubscriptionMasterSearchParameter.cs" company="Websym Solutions Pvt Ltd">
+﻿// <copyright file="CustomerSearchParameter.cs" company="Websym Solutions Pvt Ltd">
 // Copyright (c) 2018 Websym Solutions Pvt Ltd.
 // </copyright>
 // -----------------------------------------------------------------------  
@@ -15,10 +15,9 @@ namespace nIS
     #endregion
 
     /// <summary>
-    /// This class represents subscription master search parameter
+    /// This class represents customer search parameter
     /// </summary>
-    /// 
-    public class SubscriptionMasterSearchParameter: BaseSearchEntity
+    public class CustomerSearchParameter: BaseSearchEntity
     {
         /// <summary>
         /// The utility object
@@ -30,15 +29,8 @@ namespace nIS
         /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
 
-
         public long Identifier { get; set; }
         public long BatchId { get; set; }
-        public long CustomerId { get; set; }
-        public string VendorName { get; set; }
-        public string Subscription { get; set; }
-        public string CustomerCode { get; set; }
-        public string CustomerName { get; set; }
-        public string EmailId { get; set; }
 
         /// <summary>
         /// Determines whether this instance of subscription search parameter is valid.
@@ -53,7 +45,7 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("Batch Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_BATCH_ID);
                 }
-                if (validationEngine.IsValidLong(this.CustomerId))
+                if (validationEngine.IsValidLong(this.Identifier))
                 {
                     exception.Data.Add(this.utility.GetDescription("Customer Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_CUSTOMER_ID);
                 }

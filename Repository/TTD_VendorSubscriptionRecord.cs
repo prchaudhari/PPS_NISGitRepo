@@ -15,6 +15,8 @@ namespace nIS
     public partial class TTD_VendorSubscriptionRecord
     {
         public long Id { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
         public string VenderName { get; set; }
         public long CountOfSubscription { get; set; }
         public string TenantCode { get; set; }

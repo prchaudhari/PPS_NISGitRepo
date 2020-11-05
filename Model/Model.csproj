@@ -73,6 +73,7 @@
     <Compile Include="Common\PagingParameter.cs" />
     <Compile Include="Common\RenderEngineConstant.cs" />
     <Compile Include="Common\StateConstant.cs" />
+    <Compile Include="Common\TransactionDataConstant.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="ContactType.cs" />
     <Compile Include="DyanmicWidget.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Search Parameter\CitySearchParameter.cs" />
     <Compile Include="Search Parameter\ClientSearchParameter.cs" />
     <Compile Include="Search Parameter\ContactTypeSearchParameter.cs" />
+    <Compile Include="Search Parameter\CustomerSearchParameter.cs" />
     <Compile Include="Search Parameter\DynamicWidgteSearchParameter.cs" />
     <Compile Include="Search Parameter\CountrySearchParameter.cs" />
     <Compile Include="Search Parameter\MultiTenantUserRoleAccessSearchParameter.cs" />
@@ -144,6 +146,7 @@
     <Compile Include="TenantConfiguration.cs" />
     <Compile Include="TenantContact.cs" />
     <Compile Include="TenantUser.cs" />
+    <Compile Include="TransactionData\CustomerMaster.cs" />
     <Compile Include="TransactionData\DataUsage.cs" />
     <Compile Include="TransactionData\EmailsBySubscription.cs" />
     <Compile Include="TransactionData\MeetingUsage.cs" />
