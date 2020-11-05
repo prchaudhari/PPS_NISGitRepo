@@ -11,11 +11,10 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
+import { ToolbarService, NodeSelection, LinkService, ImageService } from "@syncfusion/ej2-angular-richtexteditor";
+import { RichTextEditorComponent, HtmlEditorService, QuickToolbarService, InsertHtml ,SaveFormat} from "@syncfusion/ej2-angular-richtexteditor";
 import { TemplateService } from '../../template/template.service';
 import { ConfigConstants } from '../../../shared/constants/configConstants';
-import { RichTextEditorComponent, MarkdownFormatter, EditorMode, RichTextEditor, MarkdownEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AssetLibraryService } from '../../asset-libraries/asset-library.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -26,42 +25,37 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./widgetdesigner.component.scss'],
   providers: [ToolbarService, LinkService, ImageService, HtmlEditorService]
 })
+
 export class WidgetdesignerComponent implements OnInit {
-  @ViewChild('htmleditor', { static: false }) rteObj: RichTextEditorComponent;
+  @ViewChild("customRTE", {static: false})public rteObj: RichTextEditorComponent;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   public mode: string = 'Markdown';
-  public editorValue;
+  public editorValue: any = "";
   //html editor code
   htmlContent = '';
-  config: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    defaultParagraphSeparator: 'p',
-    defaultFontName: 'Arial',
-    toolbarHiddenButtons: [
-      //['bold']
-    ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
+  
+  public tools: object = {
+    items: [
+      "Bold",
+      "Italic",
+      "Underline",
+      "|",
+      "Formats",
+      "Alignments",
+      "OrderedList",
+      "UnorderedList",
+      "|",
+      "CreateLink",
+      "Image",
+      "|",
+      "SourceCode",
+      "|",
+      "Undo",
+      "Redo"
     ]
   };
+  public value: any = "<p> test data</p><!---->";
   public isDefault: boolean = true;
   public isCustome: boolean = false;
   public dynamicWidgetDetails: DynamicWidget;
@@ -136,8 +130,11 @@ export class WidgetdesignerComponent implements OnInit {
   public pieChartSeriesEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
   public pieChartValueEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
   public lineBarGraphFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
-
-
+  saveformate: SaveFormat;
+  public insertImageSettings: object = {
+   
+    saveFormat:"Base64"
+  };
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -236,7 +233,7 @@ export class WidgetdesignerComponent implements OnInit {
       LineBarXAxis: [0],
       PieSeries: [0],
       PieValue: [0],
-      PieSeriesName:[null],
+      PieSeriesName: [null],
       FilterConditionOperator: ["0"],
       FilterField: [0],
       FilterOperator: [0],
@@ -261,6 +258,9 @@ export class WidgetdesignerComponent implements OnInit {
       this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
       this.getWidgetDetails();
     }
+    
+   
+
   }
 
   async getWidgetDetails() {
@@ -343,7 +343,7 @@ export class WidgetdesignerComponent implements OnInit {
         });
       }
       else if (this.dynamicWidgetDetails.WidgetType == 'Html') {
-      //  this.rteObj.executeCommand('insertHTML', this.dynamicWidgetDetails.WidgetSettings);
+        //  this.rteObj.executeCommand('insertHTML', this.dynamicWidgetDetails.WidgetSettings);
         //var div = document.createElement('div');
         //div.innerHTML = this.dynamicWidgetDetails.WidgetSettings
         //this.rteObj.executeCommand('insertHTML', div);
@@ -576,22 +576,26 @@ export class WidgetdesignerComponent implements OnInit {
     if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
       isImage = true;
       var url = filePath;
-      var img = document.createElement('img');
+      var img = document.createElement("img");
       img.src = url;
-      this.rteObj.executeCommand('insertHTML', img);
+      InsertHtml.Insert(this.rteObj.contentModule.getDocument(), img);
       this.rteObj.formatter.saveData();
+      this
     }
     else {
       isImage = false;
       var url = filePath;
-      var video = document.createElement('video');
+      var video = document.createElement("video");
       video.src = url;
 
       video.controls = true;
-      this.rteObj.executeCommand('insertHTML', video);
+
+      InsertHtml.Insert(this.rteObj.contentModule.getDocument(), video);
       this.rteObj.formatter.saveData();
     }
   }
+
+
 
   PreviewAsset(asset: any): void {
     var fileType = asset.Name.split('.').pop();
@@ -748,7 +752,7 @@ export class WidgetdesignerComponent implements OnInit {
       if (this.DynamicWidgetForm.value.PieSeriesName == null || this.DynamicWidgetForm.value.PieSeriesName == "") {
         return true;
       }
-      
+
     }
     //else if (this.selectedLink == "Html") {
     //  var html = this.rteObj.getHtml();
@@ -822,7 +826,7 @@ export class WidgetdesignerComponent implements OnInit {
       object.PieSeries = this.DynamicWidgetForm.value.PieSeries;
       object.PieValue = this.DynamicWidgetForm.value.PieValue;
       object.PieSeriesName = this.DynamicWidgetForm.value.PieSeriesName;
-      
+
       this.dynamicWidgetDetails.WidgetSettings = JSON.stringify(object);
       chartTheme = this.selectedTheme;
     }

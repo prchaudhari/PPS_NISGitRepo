@@ -279,12 +279,15 @@
                     <div class="row">
                       <div class="col-sm-12 form-group">
                         <!--<form #form='ngForm' (ngSubmit)="onSubmit(form)">-->
-                          <ejs-richtexteditor id='defaultRTE' [value]="editorValue"
-                                              #htmleditor style="height:300px">
+                        <ejs-richtexteditor id='customRTE' #customRTE
+                                            [toolbarSettings]='tools'
+                                            [value]='editorValue' [insertImageSettings]='insertImageSettings'
+                                            >
 
-                          </ejs-richtexteditor>
+                        </ejs-richtexteditor>
 
-                         
+
+
                         <!--</form>-->
                       </div>
                     </div>

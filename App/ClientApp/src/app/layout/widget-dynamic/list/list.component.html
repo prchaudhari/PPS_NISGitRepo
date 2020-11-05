@@ -87,7 +87,7 @@
                 <button type="button" id="btnViewRole" title="View" (click)="navigateToView(dynamicwidget)">
                   <span class="fa fa-file-text-o"></span>
                 </button>
-                <button type="button" id="btnUpdateRole" *ngIf="dynamicwidget.Status=='New'" title="Update" (click)="navigationToEditDynamicWidget(dynamicwidget)">
+                <button type="button" id="btnUpdateRole" *ngIf="dynamicwidget.Status=='New'" title="Edit" (click)="navigationToEditDynamicWidget(dynamicwidget)">
                   <span class="fa fa-pencil-square-o"></span>
                 </button>
                 <button type="button" id="btnUpdateRole" title="Delete" (click)="DeleteDynamicWidget(dynamicwidget)">
@@ -147,7 +147,7 @@
           <input type="text" class="form-control" formControlName="filterOwner" />
         </div>
         <div class="form-group">
-          <label>Status Status</label>
+          <label>Status</label>
           <select class="form-control" formControlName="filterStatus">
             <option value="0" selected> Select</option>
             <option value="New">New</option>
