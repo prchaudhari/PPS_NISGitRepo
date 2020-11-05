@@ -391,6 +391,7 @@ export class AddComponent implements OnInit {
     assetSearchParameter.SortParameter.SortColumn = Constants.Name;
     assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
     assetSearchParameter.SearchMode = Constants.Contains;
+    assetSearchParameter.Extension = "jpg, png, jpeg";
     let assets: any[];
     this.uiLoader.start();
     this._http.post(this.baseURL + URLConfiguration.assetGetUrl, assetSearchParameter).subscribe(
