@@ -54,7 +54,7 @@ export class ListComponent implements OnInit {
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
-  displayedColumns: string[] = ['name', 'domainName', 'country', 'actions'];
+  displayedColumns: string[] = ['name', 'primarycontact', 'country', 'actions'];
 
   dataSource = new MatTableDataSource<any>();
 
@@ -222,7 +222,7 @@ export class ListComponent implements OnInit {
     //'name', 'domainName', 'country', 
     switch (sort.active) {
       case 'name': this.sortColumn = "TenantName"; break;
-      case 'domainName': this.sortColumn = "TenantDomainName"; break;
+      case 'primarycontact': this.sortColumn = "PrimaryEmailAddress"; break;
       default: this.sortColumn = "Id"; break;
     }
 

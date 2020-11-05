@@ -86,9 +86,9 @@ export class AddComponent implements OnInit {
     return this.tenantFormGroup.get('tenantCountry');
   }
 
-  get tenantDomainName() {
-    return this.tenantFormGroup.get('tenantDomainName');
-  }
+  // get tenantDomainName() {
+  //   return this.tenantFormGroup.get('tenantDomainName');
+  // }
 
   get tenantAddress() {
     return this.tenantFormGroup.get('tenantAddress');
@@ -213,7 +213,7 @@ export class AddComponent implements OnInit {
     this.tenantFormGroup = this.formbuilder.group({
       tenantName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(100)])],
       tenantDescription: ['', Validators.compose([Validators.maxLength(500)])],
-      tenantDomainName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(100)])],
+      //tenantDomainName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(100)])],
       tenantAddress: ['', Validators.compose([Validators.maxLength(500)])],
       tenantCountry: [0, Validators.compose([Validators.required])],
       tenantState: ['', Validators.compose([Validators.required])],
@@ -306,7 +306,7 @@ export class AddComponent implements OnInit {
     this.tenantCountryCode = this.tenant.Country != null && this.tenant.Country.Identifier != null ? this.tenant.Country.Identifier : 0;
     this.tenantFormGroup.controls['tenantName'].setValue(this.tenant.TenantName);
     this.tenantFormGroup.controls['tenantDescription'].setValue(this.tenant.TenantDescription);
-    this.tenantFormGroup.controls['tenantDomainName'].setValue(this.tenant.TenantDomainName);
+    //this.tenantFormGroup.controls['tenantDomainName'].setValue(this.tenant.TenantDomainName);
     this.tenantFormGroup.controls['tenantAddress'].setValue(this.tenant.PrimaryAddressLine1);
     this.tenantFormGroup.controls['tenantCountry'].setValue(this.tenantCountryCode);
     this.tenantFormGroup.controls['tenantState'].setValue(this.tenant.TenantState);
@@ -697,7 +697,7 @@ export class AddComponent implements OnInit {
       if (primaryContact.length > 0) {
 
         this.tenant.TenantName = this.tenantFormGroup.value.tenantName;
-        this.tenant.TenantDomainName = this.tenantFormGroup.value.tenantDomainName;
+        this.tenant.TenantDomainName = "domain.com";
         this.tenant.PrimaryPinCode = this.tenantFormGroup.value.tenantPostalCode;
         this.tenant.PrimaryAddressLine1 = this.tenantFormGroup.value.tenantAddress;
         this.tenant.TenantCity = this.tenantFormGroup.value.tenantCity
