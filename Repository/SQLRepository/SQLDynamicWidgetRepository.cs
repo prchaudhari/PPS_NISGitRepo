@@ -499,7 +499,8 @@ namespace nIS
                         IsDeleted = false,
                         Version= version,
                         CloneOfWidgetId=dynamicWidgetIdentifier,
-                        TenantCode = tenantCode
+                        TenantCode = tenantCode,
+                        PreviewData = dynamicWidgetRecord.PreviewData
                     });
 
                     nISEntitiesDataContext.DynamicWidgetRecords.AddRange(dynamicWidgetRecordsForClone);
