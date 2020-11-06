@@ -15,6 +15,9 @@ namespace nIS
 
     public class AccountMaster
     {
+        public long Identifier { get; set; }
+        public long BatchId { get; set; }
+        public long CustomerId { get; set; }
         public string AccountNumber { get; set; }
         public string AccountType { get; set; }
         public string Currency { get; set; }
@@ -26,5 +29,6 @@ namespace nIS
         public string FeesPaid { get; set; }
         public string GrandTotal { get; set; }
         public string Percentage { get; set; }
+        public string TenantCode { get; set; }
     }
 }

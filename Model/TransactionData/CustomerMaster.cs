@@ -23,6 +23,8 @@ namespace nIS
         public string Zip { get; set; }
         public DateTime? StatementDate { get; set; }
         public string StatementPeriod { get; set; }
+        public string RmName { get; set; }
+        public string RmContactNumber { get; set; }
         public string TenantCode { get; set; }
     }
 }

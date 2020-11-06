@@ -262,6 +262,66 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of customer master from tenant transaction data repository.
+        /// </summary>
+        /// <param name="customerSearchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer master
+        /// </returns>
+        public IList<CustomerMaster> Get_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.Get_CustomerMasters(customerSearchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer account master from tenant transaction data repository.
+        /// </summary>
+        /// <param name="accountSearchParameter">The account search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account master
+        /// </returns>
+        public IList<AccountMaster> Get_AccountMaster(CustomerAccountSearchParameter accountSearchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.Get_AccountMaster(accountSearchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer account transaction from tenant transaction data repository.
+        /// </summary>
+        /// <param name="accountSearchParameter">The account search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account transaction
+        /// </returns>
+        public IList<AccountTransaction> Get_AccountTransaction(CustomerAccountSearchParameter accountSearchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.Get_AccountTransaction(accountSearchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }

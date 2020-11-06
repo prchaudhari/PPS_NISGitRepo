@@ -120,6 +120,7 @@
     <Compile Include="Search Parameter\CitySearchParameter.cs" />
     <Compile Include="Search Parameter\ClientSearchParameter.cs" />
     <Compile Include="Search Parameter\ContactTypeSearchParameter.cs" />
+    <Compile Include="Search Parameter\CustomerAccountSearchParameter.cs" />
     <Compile Include="Search Parameter\CustomerSearchParameter.cs" />
     <Compile Include="Search Parameter\DynamicWidgteSearchParameter.cs" />
     <Compile Include="Search Parameter\CountrySearchParameter.cs" />

@@ -674,6 +674,208 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of customer master from tenant transaction data repository.
+        /// </summary>
+        /// <param name="customerSearchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer master
+        /// </returns>
+        public IList<CustomerMaster> Get_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode)
+        {
+            IList<CustomerMaster> customerMasters = new List<CustomerMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomer(customerSearchParameter, tenantCode);
+                var customerMasterRecords = new List<CustomerMasterRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    if (customerSearchParameter.PagingParameter.PageIndex > 0 && customerSearchParameter.PagingParameter.PageSize > 0)
+                    {
+                        customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords
+                        .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((customerSearchParameter.PagingParameter.PageIndex - 1) * customerSearchParameter.PagingParameter.PageSize)
+                        .Take(customerSearchParameter.PagingParameter.PageSize)
+                        .ToList();
+                    }
+                    else
+                    {
+                        customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords
+                        .Where(whereClause)
+                        .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
+                    }
+
+                    if (customerMasterRecords != null && customerMasterRecords.Count > 0)
+                    {
+                        customerMasterRecords.ForEach(item =>
+                        {
+                            customerMasters.Add(new CustomerMaster()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerCode = item.CustomerCode,
+                                FirstName = item.FirstName,
+                                MiddleName = item.MiddleName,
+                                LastName = item.LastName,
+                                AddressLine1 = item.AddressLine1,
+                                AddressLine2 = item.AddressLine2,
+                                City = item.City,
+                                State = item.State,
+                                Country = item.Country,
+                                Zip = item.Zip,
+                                StatementDate = item.StatementDate,
+                                StatementPeriod = item.StatementPeriod,
+                                RmName = item.RmName,
+                                RmContactNumber = item.RmContactNumber,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return customerMasters;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer account master from tenant transaction data repository.
+        /// </summary>
+        /// <param name="accountSearchParameter">The account search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account master
+        /// </returns>
+        public IList<AccountMaster> Get_AccountMaster(CustomerAccountSearchParameter accountSearchParameter, string tenantCode)
+        {
+            IList<AccountMaster> accountMasters = new List<AccountMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerAccount(accountSearchParameter, tenantCode);
+                var accountMasterRecords = new List<AccountMasterRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
+                    {
+                        accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords
+                        .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
+                        .Take(accountSearchParameter.PagingParameter.PageSize)
+                        .ToList();
+                    }
+                    else
+                    {
+                        accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords
+                        .Where(whereClause)
+                        .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
+                    }
+
+                    if (accountMasterRecords != null && accountMasterRecords.Count > 0)
+                    {
+                        accountMasterRecords.ForEach(item =>
+                        {
+                            accountMasters.Add(new AccountMaster()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                AccountType = item.AccountType,
+                                AccountNumber = item.AccountNumber,
+                                Currency = item.Currency,
+                                Balance = Convert.ToString(item.Balance),
+                                TotalDeposit = Convert.ToString(item.TotalDeposit),
+                                TotalSpend = Convert.ToString(item.TotalSpend),
+                                ProfitEarned = Convert.ToString(item.ProfitEarned),
+                                Indicator = item.Indicator,
+                                FeesPaid = Convert.ToString(item.FeesPaid),
+                                GrandTotal = Convert.ToString(item.GrandTotal),
+                                Percentage = Convert.ToString(item.Percentage),
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return accountMasters;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer account transaction from tenant transaction data repository.
+        /// </summary>
+        /// <param name="accountSearchParameter">The account search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account transaction
+        /// </returns>
+        public IList<AccountTransaction> Get_AccountTransaction(CustomerAccountSearchParameter accountSearchParameter, string tenantCode)
+        {
+            IList<AccountTransaction> accountTransactions = new List<AccountTransaction>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerAccount(accountSearchParameter, tenantCode);
+                var accountTransactionRecords = new List<AccountTransactionRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
+                    {
+                        accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords
+                        .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
+                        .Take(accountSearchParameter.PagingParameter.PageSize)
+                        .ToList();
+                    }
+                    else
+                    {
+                        accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords
+                        .Where(whereClause)
+                        .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
+                    }
+
+                    if (accountTransactionRecords != null && accountTransactionRecords.Count > 0)
+                    {
+                        accountTransactionRecords.ForEach(item =>
+                        {
+                            accountTransactions.Add(new AccountTransaction()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                AccountId = item.AccountId,
+                                AccountType = item.AccountType,
+                                TransactionDate = item.TransactionDate.ToShortDateString(),
+                                TransactionType = item.TransactionType,
+                                Narration = item.Narration,
+                                FCY = Convert.ToString(item.FCY),
+                                LCY = Convert.ToString(item.LCY),
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return accountTransactions;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -731,6 +933,38 @@ namespace nIS
             if (validationEngine.IsValidLong(searchParameter.BatchId))
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
+            }
+            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
+        private string WhereClauseGeneratorForCustomerAccount(CustomerAccountSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            //send account id value to this property when account master data fetching
+            if (validationEngine.IsValidLong(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+            
+            //send account id value to this property when account transaction data fetching
+            if (validationEngine.IsValidLong(searchParameter.AccountId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.AccountId.ToString().Split(',').Select(item => string.Format("AccountId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.BatchId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidText(searchParameter.AccountType))
+            {
+                queryString.Append(string.Format("AccountType.Contains(\"{0}\") and ", searchParameter.AccountType));
             }
             queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
