@@ -8,6 +8,7 @@ import { MultiTenantUserAccessMapService } from '../layout/multi-tenant-user-acc
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ConfigConstants } from '../shared/constants/configConstants';
 import { TenantConfigurationService } from '../layout/tenant-configuration/tenantConfiguration.service';
+import { TenantService } from '../layout/tenants/tenant.service';
 
 @Component({
   selector: 'app-select-tenant',
@@ -72,6 +73,7 @@ export class SelectTenantComponent implements OnInit {
       }
       else {
         let UserTheme = 'Theme0';
+        await this.getTenantRecords(tenantcode);
         var searchParameter: any = {};
         searchParameter.TenantCode = tenantcode;
         let service = this.injector.get(TenantConfigurationService);
@@ -143,6 +145,24 @@ export class SelectTenantComponent implements OnInit {
       });
     }
     return this.commonRolePrivileges;
+  }
+
+  async getTenantRecords(tenantcode) {
+    let tenantService = this.injector.get(TenantService);
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = 'Id';
+    searchParameter.SortParameter.SortOrder = Constants.Descending;
+    searchParameter.SearchMode = Constants.Exact;
+    searchParameter.TenantCode = tenantcode;
+    searchParameter.IsCountryRequired = false;
+    searchParameter.IsContactRequired = false;
+    var response = await tenantService.getTenant(searchParameter);
+    let tenant = response.List[0];
+    localStorage.setItem('tenantDetails', JSON.stringify(tenant));
   }
 
   rolePrivilegeExists(entityName, operationName) {

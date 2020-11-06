@@ -11,6 +11,7 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { Constants, DynamicGlobalVariable } from 'src/app/shared/constants/constants';
 import { ResourceService } from 'src/app/shared/services/resource.service';
 import { AuthenticationService } from 'src/app/authentication/authentication.service';
+import { TenantService } from '../layout/tenants/tenant.service';
 
 @Component({
   selector: 'app-login',
@@ -319,6 +320,7 @@ export class LoginComponent implements OnInit {
               }
               else {
                 localStorage.setItem('userClaims', JSON.stringify(userData));
+                await this.getTenantRecords(userData.TenantCode);
                 //this.navigateToLandingPage();
                 this.loginErrorMsg = '';
                 var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
@@ -383,6 +385,24 @@ export class LoginComponent implements OnInit {
       });
     }
     return this.commonRolePrivileges;
+  }
+
+  async getTenantRecords(tenantcode) {
+    let tenantService = this.injector.get(TenantService);
+    let searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = 'Id';
+    searchParameter.SortParameter.SortOrder = Constants.Descending;
+    searchParameter.SearchMode = Constants.Exact;
+    searchParameter.TenantCode = tenantcode;
+    searchParameter.IsCountryRequired = false;
+    searchParameter.IsContactRequired = false;
+    var response = await tenantService.getTenant(searchParameter);
+    let tenant = response.List[0];
+    localStorage.setItem('tenantDetails', JSON.stringify(tenant));
   }
 
   rolePrivilegeExists(entityName, operationName) {

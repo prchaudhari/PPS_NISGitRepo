@@ -295,7 +295,7 @@ namespace nIS
                     var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                     if (statementPages.Count != 0)
                     {
-                        string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "assets/images/logo_black.png").Replace("{{logo}}", "assets/images/nisLogo.png");
+                        string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "assets/images/nisLogo.png");
                         navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                         StringBuilder navItemList = new StringBuilder();
                         tempHtml.Append("<div class='bdy-scroll stylescrollbar'>");

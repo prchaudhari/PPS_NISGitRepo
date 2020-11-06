@@ -472,6 +472,30 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
         }
       });
 
+      if($('#TenantLogo').length) {
+        let tenant = JSON.parse(localStorage.getItem('tenantDetails'));
+        if(tenant != null) {
+          if(tenant.TenantLogo != undefined && tenant.TenantLogo != null && tenant.TenantLogo != '') {
+            let image = new Image();
+            image.src = tenant.TenantLogo;
+            image.height = 40;
+            $('#TenantLogo').append(image);
+          }else {
+            let tenantname = tenant.TenantName.charAt(0).toUpperCase();
+            let div = document.createElement('div');
+            div.classList.add('ltr-img');
+            div.style.height = '50px';
+            div.style.width = '50px';
+            div.style.fontSize = '30px';
+
+            let span = document.createElement('span');
+            span.textContent = tenantname;
+            div.appendChild(span);
+            $('#TenantLogo').append(div);
+          }
+        }
+      }
+
       $(".VideoAsset").each((index, element) => {
         var classlst = element.classList;
         var assetId = classlst[classlst.length - 1];
