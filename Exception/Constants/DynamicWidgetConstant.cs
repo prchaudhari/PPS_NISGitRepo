@@ -33,7 +33,7 @@ namespace nIS
         /// The dynamic widget not found exception key
         /// </summary>
         //public const string DYNAMICWIDGET_NOT_FOUND_EXCEPTION = "DynamicWidgetNotFoundException";
-        public const string DYNAMIC_WIDGET_SETTING_NOT_FOUND = "Widget settings not found exception";
+        public const string DYNAMIC_WIDGET_SETTING_NOT_FOUND = "No configuration set for the widget";
 
         /// <summary>
         /// The dynamic widget not found exception key

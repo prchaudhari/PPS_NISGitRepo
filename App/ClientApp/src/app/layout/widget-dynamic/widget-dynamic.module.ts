@@ -14,14 +14,14 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { WidgetdesignerComponent } from './widgetdesigner/widgetdesigner.component';
-
+import { SharedModule } from '../../shared/modules/shared.module';
 @NgModule({
   declarations: [ListComponent, AddComponent, ViewComponent, WidgetdesignerComponent],
   imports: [
     CommonModule,
     WidgetDynamicRoutingModule, MatSortModule, MatTableModule, MatPaginatorModule,
     DragDropModule, OwlDateTimeModule, OwlNativeDateTimeModule, AngularEditorModule,
-    FormsModule, ReactiveFormsModule, HttpClientModule, RichTextEditorModule
+    FormsModule, ReactiveFormsModule, HttpClientModule, RichTextEditorModule, SharedModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

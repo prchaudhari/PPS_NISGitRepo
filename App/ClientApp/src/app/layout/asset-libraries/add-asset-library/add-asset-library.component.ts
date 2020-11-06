@@ -685,7 +685,7 @@ export class AddAssetLibraryComponent implements OnInit {
     this.overrideAssetContainer = true;
     var items;
     this.overrideFileType = asset.FilePath.split('.')[1];
-    if (this.overrideFileType == 'png' || this.overrideFileType == 'jpeg') {
+    if (this.overrideFileType == 'png' || this.overrideFileType == 'jpeg' || this.overrideFileType == 'jpg') {
       items = this.CopyfileExtension.filter(x => x == 'image/png');
       if (items.length > 0) {
         this.supportedFilesForOverride = "png";
@@ -877,7 +877,7 @@ export class AddAssetLibraryComponent implements OnInit {
     if (isValidFileType) {
       var imagePattern = /image-*/;
       var vedioPattern = /video-*/;
-      if (file.type.match(imagePattern) && (this.overrideFileType == 'png' || this.overrideFileType == 'jpeg')) {
+      if (file.type.match(imagePattern) && (this.overrideFileType == 'png' || this.overrideFileType == 'jpeg' || this.overrideFileType == 'jpg')) {
         this.fileType = 'Image';
         if (file.size > this.actualSetting.ImageSize) {
           this.fileSize = this.setting.ImageSize
@@ -1166,6 +1166,7 @@ export class AddAssetLibraryComponent implements OnInit {
             this.FileExtension[i] = "image/jpeg";
 
           }
+          
           else if (this.FileExtension[i] == "mp4") {
             this.FileExtension[i] = "video/mp4";
           }

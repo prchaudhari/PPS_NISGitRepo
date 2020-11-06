@@ -5,7 +5,7 @@
       <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
     </div>
     <div>
-      <button class="btn-add btn-cust" id="btnAddRoles" (click)="navigateToAdd()">
+      <button class="btn-add btn-cust" id="btnAddRoles" (click)="navigateToAdd()" *ngIf="(userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Create' })">
         <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Dynamic Widget
       </button>
 
@@ -84,20 +84,20 @@
             <th class="width15 ip-w-25" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let dynamicwidget">
               <div class="action-btns btn-tbl-action">
-                <button type="button" id="btnViewRole" title="View" (click)="navigateToView(dynamicwidget)">
+                <button type="button" id="btnViewRole" title="View" (click)="navigateToView(dynamicwidget)" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'View' }))">
                   <span class="fa fa-file-text-o"></span>
                 </button>
-                <button type="button" id="btnUpdateRole" *ngIf="dynamicwidget.Status=='New'" title="Edit" (click)="navigationToEditDynamicWidget(dynamicwidget)">
+                <button type="button" id="btnUpdateRole" *ngIf="dynamicwidget.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Edit' }))" title="Edit" (click)="navigationToEditDynamicWidget(dynamicwidget)">
                   <span class="fa fa-pencil-square-o"></span>
                 </button>
-                <button type="button" id="btnUpdateRole" title="Delete" (click)="DeleteDynamicWidget(dynamicwidget)">
+                <button type="button" id="btnUpdateRole" title="Delete" *ngIf="(userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Delete' })" (click)="DeleteDynamicWidget(dynamicwidget)">
                   <span class="fa fa-trash"></span>
                 </button>
-                <button type="button" title="Publish" id="btnPublish" *ngIf="dynamicwidget.Status=='New'" (click)="PublishDynamicWidget(dynamicwidget)"><span class="fa fa-share"></span></button>
-                <button type="button" title="Clone" id="btnClone" *ngIf="dynamicwidget.Status=='Published'" (click)="CloneDynamicWidget(dynamicwidget)">
+                <button type="button" title="Publish" id="btnPublish" *ngIf="dynamicwidget.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Publish' }))" (click)="PublishDynamicWidget(dynamicwidget)"><span class="fa fa-share"></span></button>
+                <button type="button" title="Clone" id="btnClone" *ngIf="dynamicwidget.Status!='New' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Create' }))" (click)="CloneDynamicWidget(dynamicwidget)">
                   <span class="fa fa-clone"></span>
                 </button>
-                <button type="button" title="Preview" id="btnPreview" (click)="PreviewDynamicWidget(dynamicwidget)">
+                <button type="button" title="Preview" id="btnPreview" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'View' }))" (click)="PreviewDynamicWidget(dynamicwidget)" >
                   <span class="fa fa-eye"></span>
                 </button>
               </div>
