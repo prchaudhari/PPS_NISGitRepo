@@ -146,11 +146,10 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
     let widgetName = widget.value;
     let widgetType = 'Static';
     if(widget.IsDynamicWidget == true) {
-      let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetType != 'Static');
+      let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');
       widgetType = dynaWidgets[0].WidgetType;
     }
 
-    debugger
     if(widgetType == 'Static') {
       if (widgetName == 'SavingTrend') {
         return SavingTrendsPreviewComponent;

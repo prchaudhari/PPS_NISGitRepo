@@ -276,7 +276,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
     }
 
     bindComponent(widget): any {   
-        let widgetName = widget.WidgetName;
+        let widgetName = widget.WidgetName == undefined ? widget.value : widget.WidgetName;
         let widgetType = widget.IsDynamicWidget == false ? 'Static' : 'Dynamic';
         let gridObj: any = {};
         if(widgetType == 'Static') {
@@ -324,7 +324,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
         }
         else {
-            let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetType != 'Static');
+            let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');
             widgetType = dynaWidgets[0].WidgetType;
             if(widgetType == 'Table') {
                 gridObj.component = SummaryAtGlanceComponent;
