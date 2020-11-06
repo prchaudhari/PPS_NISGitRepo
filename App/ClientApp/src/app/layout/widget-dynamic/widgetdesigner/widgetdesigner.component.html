@@ -348,6 +348,7 @@
                         </div>
                       </div>
                     </div>
+                   
                     <!--repeat start-->
                     <div class="row form-group" *ngFor="let list of displayWidgetFilterlist">
                       <div class="col-sm-2 col-md-2 col-lg-2">
@@ -569,32 +570,7 @@
 
           </div>
 
-          <div class="col-sm-5">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="mb-3">
-                  <h6 class="mb-1" *ngIf="isSelected('Form')">Widget Type : Form</h6>
-                  <h6 class="mb-1" *ngIf="isSelected('Table')">Widget Type : Table</h6>
-                  <h6 class="mb-1" *ngIf="isSelected('LineGraph')">Widget Type : Line Graph</h6>
-                  <h6 class="mb-1" *ngIf="isSelected('BarGraph')">Widget Type : Bar Graph</h6>
-                  <h6 class="mb-1" *ngIf="isSelected('PieChart')">Widget Type : Pie Chart</h6>
-                  <h6 class="mb-1" *ngIf="isSelected('Html')">Widget Type : Html</h6>
-                </div>
-                <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
-                  <div class="card-body d-flex justify-content-center align-items-center" *ngIf='selectedLink!=undefined'>
-                    <img *ngIf="isSelected('Form')" src="assets/images/AccountInfoWidget.PNG" class="img-fluid" id="imgWidget" />
-                    <img *ngIf="isSelected('Table')" src="assets/images/SummaryWidget.PNG" class="img-fluid" id="imgWidget" />
-                    <img *ngIf="isSelected('LineGraph')" src="assets/images/SavingTrendWidget.PNG" class="img-fluid" id="imgWidget" />
-                    <img *ngIf="isSelected('BarGraph')" src="assets/images/SpendingTrendWidget.PNG" class="img-fluid" id="imgWidget" />
-                    <img *ngIf="isSelected('PieChart')" src="assets/images/Analytics.png" class="img-fluid" id="imgWidget" />
-                    <!--<div *ngIf="isSelected('Html')" class="html"> {{ htmlContent }}</div>-->
-                    <img *ngIf="isSelected('Html')" src="assets/images/Analytics.png" class="img-fluid" id="imgWidget" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+         
         </div>
       </div>
     </form>

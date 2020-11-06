@@ -859,7 +859,7 @@ namespace nIS
             item = new JObject();
             fieldMaps.ToList().ForEach(field =>
             {
-                item[field.FieldName] = field.FieldName +"1";
+                item[field.FieldName] = field.FieldName + "1";
             });
             dataList.Add(item);
 
@@ -877,37 +877,10 @@ namespace nIS
         {
             string obj = string.Empty;
             JObject item = new JObject();
-            if (entity.Name == "Customer Information")
+            fieldMaps.ToList().ForEach(field =>
             {
-                #region  Set Data
-                item["CutomerCode"] = "RMP4563";
-                item["FirstName"] = "Robert";
-                item["LastName"] = "Pattinson";
-                item["RMName"] = "Mr.Shown Andrew";
-                item["RMContactNo"] = "4487345353";
-                #endregion
-            }
-            else if (entity.Name == "Account Balalnce")
-            {
-                #region  Set Data
-
-                item["AccountNumber"] = "RMP4563";
-                item["AccountType"] = "Current Account";
-                item["Balance"] = "15432.00";
-                item["TotalDeposit"] = "6235.34";
-                item["TotalSpend"] = "5760.00";
-                #endregion
-            }
-            else if (entity.Name == "Account Transaction")
-            {
-                item["TransactionDate"] = "2020-07-15 00:00:00.000";
-                item["TransactionType"] = "CR";
-                item["Narration"] = "NXT TXN: IIFL IIFL8965435";
-                item["AccountType"] = "Saving Account";
-                item["FCY"] = "1666.67";
-                item["LCY"] = "1771.42";
-
-            }
+                item[field.Name] = field.Name + "1";
+            });
             StringBuilder tableBody = new StringBuilder();
 
             fieldMaps.ToList().ForEach(field =>
