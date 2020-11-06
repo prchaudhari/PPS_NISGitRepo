@@ -12,7 +12,7 @@ import {
     CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-    DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent
+    DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -342,7 +342,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
                 gridObj.component = DynamicPieChartWidgetComponent;
             }
             else if(widgetType == 'Html') {
-
+                gridObj.component = DynamicHhtmlComponent;
             }
         }
         gridObj.WidgetType = widgetType;

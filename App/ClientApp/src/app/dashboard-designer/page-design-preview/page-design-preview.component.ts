@@ -8,7 +8,7 @@ import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SummaryAtGlanceComponent, AccountInformationComponent,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
-  DynamicBarChartWidgetPreviewComponent } from '../widgetComponent/widgetComponent';
+  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent } from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 
 //If you change dashboard-container class in below HTML template, 
@@ -170,6 +170,8 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
         return SummaryAtGlanceComponent;
       }else if(widgetType == 'Form') {
         return AccountInformationComponent;
+      }else if(widgetType == 'Html') {
+        return DynamicHhtmlComponent;
       }
     }
     

@@ -14,7 +14,7 @@ import {
   CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -917,7 +917,19 @@ export class AddDashboardDesignerComponent implements OnInit {
             })
           }
           else if(widget.WidgetType == 'Html') {
-            
+            return this.widgetsGridsterItemArray.push({
+              cols: 5,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: DynamicHhtmlComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: true
+            })
           }
         }
       }
@@ -1053,7 +1065,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         gridObj.component = DynamicPieChartWidgetComponent;
       }
       else if(widgetType == 'Html') {
-
+        gridObj.component = DynamicHhtmlComponent;
       }
     }
 

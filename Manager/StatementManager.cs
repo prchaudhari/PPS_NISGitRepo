@@ -825,7 +825,7 @@ namespace nIS
                                                                 piechartIds.Add("pieChartcontainer_" + dynawidget.Identifier);
                                                                 htmlString.Append(pieChartWidgetHtml);
                                                             }
-                                                            else if (dynawidget.WidgetType == HtmlConstants.HTMLWIDGETPREVIEW)
+                                                            else if (dynawidget.WidgetType == HtmlConstants.HTML_DYNAMICWIDGET)
                                                             {
                                                                 var htmlWidget = HtmlConstants.HTML_WIDGET_FOR_PAGE_PREVIEW;
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);

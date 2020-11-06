@@ -1321,6 +1321,30 @@ export class DynamicBarChartWidgetComponent {
   }
 }
 
+// Component Created for Image Widget--
+@Component({
+  selector: 'html-widget',
+  template: `<div class="widget">
+    <div class="widget-header">
+      <span class="widget-header-title"> Dynamic Html </span>
+    </div>
+    <div class="widget-area position-relative width100">
+      <div class="widget-indicator-inner text-center pt-2">
+        <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:18em;'></i>
+      </div>
+    </div>
+  </div>`
+})
+export class DynamicHhtmlComponent {
+
+  constructor() {}
+
+  ngOnInit() {
+    
+  }
+
+}
+
 /* ---  below highcharts components are created for page preview while designing..
     which are same as above highcharts widgets, but created due to facing issue in page preview in popup --- */
 

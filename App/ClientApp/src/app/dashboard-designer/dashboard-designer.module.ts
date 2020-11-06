@@ -20,7 +20,8 @@ import {
   SavingTrendsComponent,
   AnalyticsWidgetComponent,
   ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
-  SpendindTrendsPreviewComponent, DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent,
+  SpendindTrendsPreviewComponent, DynamicLineChartWidgetComponent, 
+  DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
   DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent
 } from './widgetComponent/widgetComponent';
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
@@ -34,7 +35,8 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     SavingTrendsComponent,
     AnalyticsWidgetComponent,
     ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
-    SpendindTrendsPreviewComponent, DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent,
+    SpendindTrendsPreviewComponent, DynamicBarChartWidgetComponent, 
+    DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     PageDesignPreviewComponent],
   imports: [
@@ -55,7 +57,7 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     AnalyticsWidgetComponent,
     ReminderAndRecommComponent, SavingTrendsPreviewComponent,
     AnalyticsWidgetPreviewComponent, SpendindTrendsPreviewComponent,
-    DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent,
+    DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     PageDesignPreviewComponent],
 })
