@@ -875,6 +875,16 @@
           <Property Name="UpdateBy" Type="bigint" Nullable="false" />
           <Property Name="Instantiable" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="WidgetPageTypeMap">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WidgetId" Type="bigint" Nullable="false" />
+          <Property Name="PageTypeId" Type="bigint" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDynamicWidget" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Tenant">
           <Key>
             <PropertyRef Name="Id" />
@@ -1347,6 +1357,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="UserRoleMap" EntityType="Self.UserRoleMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="WidgetPageTypeMap" EntityType="Self.WidgetPageTypeMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
           <EntitySet Name="View_DynamicWidget" EntityType="Self.View_DynamicWidget" store:Type="Views" store:Schema="NIS">
             <DefiningQuery>SELECT 
@@ -1606,6 +1617,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TTD_SubscriptionUsageRecord" EntityType="NISModel.TTD_SubscriptionUsageRecord" />
           <EntitySet Name="TTD_UserSubscriptionsRecord" EntityType="NISModel.TTD_UserSubscriptionsRecord" />
           <EntitySet Name="TTD_VendorSubscriptionRecord" EntityType="NISModel.TTD_VendorSubscriptionRecord" />
+          <EntitySet Name="WidgetPageTypeMaps" EntityType="NISModel.WidgetPageTypeMap" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2849,6 +2861,16 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="CountOfSubscription" Type="Int64" Nullable="false" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="WidgetPageTypeMap">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WidgetId" Type="Int64" Nullable="false" />
+          <Property Name="PageTypeId" Type="Int64" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDynamicWidget" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4088,6 +4110,17 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="VenderName" ColumnName="VenderName" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WidgetPageTypeMaps">
+            <EntityTypeMapping TypeName="NISModel.WidgetPageTypeMap">
+              <MappingFragment StoreEntitySet="WidgetPageTypeMap">
+                <ScalarProperty Name="IsDynamicWidget" ColumnName="IsDynamicWidget" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
+                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

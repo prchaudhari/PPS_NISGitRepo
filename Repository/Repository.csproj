@@ -356,6 +356,9 @@
     <Compile Include="View_UserRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="WidgetPageTypeMap.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="WidgetRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
