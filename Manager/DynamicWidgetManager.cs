@@ -117,7 +117,11 @@ namespace nIS
 
                             }
                         }
-                        item.PreviewData = this.GetPreviewData(entity, item.Title, item.WidgetSettings, item.WidgetType, theme, entityFieldMaps);
+                        if (item.WidgetType != HtmlConstants.HTML_DYNAMICWIDGET)
+                        {
+                            item.PreviewData = this.GetPreviewData(entity, item.Title, item.WidgetSettings, item.WidgetType, theme, entityFieldMaps);
+
+                        }
                     }
                 });
                 result = this.dynamicWidgetRepository.AddDynamicWidgets(dynamicWidgets, tenantCode);
@@ -186,7 +190,11 @@ namespace nIS
 
                             }
                         }
-                        item.PreviewData = this.GetPreviewData(entity, item.Title, item.WidgetSettings, item.WidgetType, theme, entityFieldMaps);
+                        if (item.WidgetType != HtmlConstants.HTML_DYNAMICWIDGET)
+                        {
+                            item.PreviewData = this.GetPreviewData(entity, item.Title, item.WidgetSettings, item.WidgetType, theme, entityFieldMaps);
+
+                        }
                     }
                 });
                 result = this.dynamicWidgetRepository.UpdateDynamicWidgets(dynamicWidgets, tenantCode);
@@ -1058,7 +1066,7 @@ namespace nIS
                 List<DynamicWidgetFormEntity> formEntity = JsonConvert.DeserializeObject<List<DynamicWidgetFormEntity>>(widgetSettings);
                 previewData = this.GetFormPreviewData(entity, formEntity);
             }
-          
+            
             else if (widgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
             {
                 DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(widgetSettings);
