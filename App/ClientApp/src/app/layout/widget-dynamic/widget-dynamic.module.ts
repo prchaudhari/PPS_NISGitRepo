@@ -15,13 +15,16 @@ import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { WidgetdesignerComponent } from './widgetdesigner/widgetdesigner.component';
 import { SharedModule } from '../../shared/modules/shared.module';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 @NgModule({
   declarations: [ListComponent, AddComponent, ViewComponent, WidgetdesignerComponent],
   imports: [
     CommonModule,
     WidgetDynamicRoutingModule, MatSortModule, MatTableModule, MatPaginatorModule,
     DragDropModule, OwlDateTimeModule, OwlNativeDateTimeModule, AngularEditorModule,
-    FormsModule, ReactiveFormsModule, HttpClientModule, RichTextEditorModule, SharedModule
+    FormsModule, ReactiveFormsModule, HttpClientModule, RichTextEditorModule, SharedModule,
+     NgMultiSelectDropDownModule.forRoot()
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

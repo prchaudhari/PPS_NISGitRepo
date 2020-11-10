@@ -23,9 +23,24 @@
             <div class="row">
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Page Type</label><span class="text-danger ml-2">*</span>
-                <select formControlName="PageType" [attr.disabled]="updateOperationMode?'':null" (change)="onPageTypeSelected($event)" class="form-control">
-                  <option *ngFor="let pt of pageTypeList" [value]="pt.Identifier">{{pt.PageTypeName}}</option>
-                </select>
+
+                <ng-multiselect-dropdown [data]="pageTypeList" [attr.disabled]="updateOperationMode?'':null"
+                                         [settings]="pageTypedropdownSettings"
+                                         (onSelect)="onItemSelectPageType($event)"
+                                         (onSelectAll)="onSelectAllPageType($event)"
+                                         [(ngModel)]="pageTypeselectedItems"
+                                         formControlName="PageType"
+                                         (onDeSelect)="onItemDeSelectPageType($event)"
+                                         (onDeSelectAll)="onItemDeSelectAllPageType($event)"
+                                         name="fieldName" ngDefaultControl >
+                </ng-multiselect-dropdown>
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="isPageTypeFileDropdownError" style="list-style-type:none">
+                    <li class="text-danger">
+                      Please select page type
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
                 <label>Entity</label><span class="text-danger ml-2">*</span>

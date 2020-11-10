@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, RichTextEditor } from '@syncfusion/ej2-angular-richtexteditor';
 import { TemplateService } from '../../template/template.service';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 export interface ListElement {
   series: string;
@@ -34,34 +35,48 @@ const List_Data: ListElement[] = [
 export class AddComponent implements OnInit {
   //html editor code
   htmlContent = '';
-  config: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    defaultParagraphSeparator: 'p',
-    defaultFontName: 'Arial',
-    toolbarHiddenButtons: [
-      //['bold']
-    ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
-    ]
+  public pageTypedropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'Identifier',
+    textField: 'PageTypeName',
+    selectAllText: 'Select All',
+    unSelectAllText: 'Un Select All',
+    itemsShowLimit: 3,
+    allowSearchFilter: false,
+    
   };
+  public pageTypeselectedItems: any[] = [];
+  public isPageTypeFileDropdownError = false;
+
+  onItemSelectPageType(item: any) {
+    var elements = this.pageTypeselectedItems.filter(x => x.Identifier == item.Identifier);
+    if (elements == null && elements.length == 0) {
+      this.pageTypeselectedItems.push(item);
+      this.isPageTypeFileDropdownError = false;
+    }
+  }
+
+  onSelectAllPageType(items: any) {
+    this.pageTypeselectedItems = [];
+    for (var i = 0; i <= items.length; i++) {
+      this.pageTypeselectedItems.push(items[i]);
+    }
+    this.isPageTypeFileDropdownError = false;
+  }
+
+  onItemDeSelectPageType(item: any) {
+
+    this.pageTypeselectedItems = this.pageTypeselectedItems.filter(x => x.Identifier != item.Identifier);
+    if (this.pageTypeselectedItems.length == 0) {
+      this.isPageTypeFileDropdownError = true;
+    }
+  }
+
+  onItemDeSelectAllPageType(item: any) {
+    this.pageTypeselectedItems = [];
+    this.isPageTypeFileDropdownError = true;
+  }
+
   public isDefault: boolean = true;
   public isCustome: boolean = false;
   public dynamicWidgetDetails: DynamicWidget;
@@ -137,7 +152,9 @@ export class AddComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
   public DynamicWidgetForm: FormGroup;
-  public pageTypeList: any[] = [{ "PageTypeName": "Select Page Type", "Identifier": 0 }];
+  public pageTypeList: any[] = [{ "PageTypeName": "Usage", "Identifier": 16 },
+    { "PageTypeName": "Billing", "Identifier": 17 }];
+
   public entityList: any[] = [{ "Name": "Select Entity", "Identifier": 0 }];
   public entityFieldList: any[] = [{ "Name": "Select", "Identifier": 0 }];
   displayedColumns: string[] = ['series', 'displayName', 'actions'];
@@ -257,7 +274,7 @@ export class AddComponent implements OnInit {
   ngOnInit() {
     this.DynamicWidgetForm = this.fb.group({
       WidgetName: [null],
-      PageType: [0],
+      PageType: [null],
       Entity: [0],
       WidgetTitle: [null],
       FormEntityField: [0],
@@ -290,7 +307,7 @@ export class AddComponent implements OnInit {
     if (localStorage.getItem('dynamicWidgetEditRouteparams')) {
       this.updateOperationMode = true;
       this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
-      this.getWidgetDetails();
+      //this.getWidgetDetails();
     }
     else {
       this.updateOperationMode = false;
@@ -301,6 +318,8 @@ export class AddComponent implements OnInit {
       this.dynamicWidgetDetails.WidgetName = this.params.Routeparams.passingparams.WidgetName;
       this.dynamicWidgetDetails.WidgetType = this.params.Routeparams.passingparams.WidgetType;
       this.dynamicWidgetDetails.PageTypeId = this.params.Routeparams.passingparams.PageTypeId;
+      this.dynamicWidgetDetails.PageTypes = this.params.Routeparams.passingparams.PageTypeId;
+      this.pageTypeselectedItems = this.params.Routeparams.passingparams.PageTypeId;
       this.dynamicWidgetDetails.EntityId = this.params.Routeparams.passingparams.EntityId;
       this.dynamicWidgetDetails.Title = this.params.Routeparams.passingparams.Title;
       this.DynamicWidgetForm.patchValue({
@@ -311,7 +330,7 @@ export class AddComponent implements OnInit {
       });
       this.selectedLink = this.dynamicWidgetDetails.WidgetType;
     }
-   
+
     this.getPageTypes();
     this.getEntities();
   }
@@ -356,10 +375,17 @@ export class AddComponent implements OnInit {
     this.isDefault = this.dynamicWidgetDetails.ThemeType == "Default" ? true : false;
 
     this.isCustome = this.dynamicWidgetDetails.ThemeType == "Default" ? false : true;
-
+    //var pagetypes = this.dynamicWidgetDetails.PageTypeId.split(",");
+    //pagetypes.forEach(pg => {
+    //  var item = this.pageTypeList.filter(x => x.Identifier == pg);
+    //  if (item != null && item.length > 0) {
+    //    this.ageTypeselectedItems.push(item[0]);
+    //  }
+    //});
+    this.pageTypeselectedItems = this.dynamicWidgetDetails.PageTypes;
     this.DynamicWidgetForm.patchValue({
       WidgetName: this.dynamicWidgetDetails.WidgetName,
-      PageType: this.dynamicWidgetDetails.PageTypeId,
+      PageType: this.pageTypeselectedItems,
       Entity: this.dynamicWidgetDetails.EntityId,
       WidgetTitle: this.dynamicWidgetDetails.Title,
     });
@@ -372,6 +398,11 @@ export class AddComponent implements OnInit {
     data.forEach(item => {
       this.pageTypeList.push(item);
     })
+    if (localStorage.getItem('dynamicWidgetEditRouteparams')) {
+      this.updateOperationMode = true;
+      this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
+      this.getWidgetDetails();
+    }
     if (this.pageTypeList.length == 0) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
@@ -525,7 +556,8 @@ export class AddComponent implements OnInit {
     widget = this.dynamicWidgetDetails;
     widget.WidgetName = this.DynamicWidgetForm.value.WidgetName;
     widget.WidgetType = this.selectedLink;
-    widget.PageTypeId = this.DynamicWidgetForm.value.PageType;
+    widget.PageTypes = this.pageTypeselectedItems;;
+    //widget.PageTypeId = 0;
     widget.EntityId = this.DynamicWidgetForm.value.Entity;
     widget.ThemeType = this.isDefault == true ? "Default" : "Custome";
     widget.Title = this.DynamicWidgetForm.value.WidgetTitle;
@@ -607,7 +639,7 @@ export class AddComponent implements OnInit {
         passingparams: {
           "WidgetName": this.DynamicWidgetForm.value.WidgetName,
           "WidgetType": this.selectedLink,
-          "PageTypeId": this.DynamicWidgetForm.value.PageType,
+          "PageTypeId": this.pageTypeselectedItems,
           "PageTypeName": pagetype.PageTypeName,
           "EntityId": this.DynamicWidgetForm.value.Entity,
           "EntityName": entity.Name,

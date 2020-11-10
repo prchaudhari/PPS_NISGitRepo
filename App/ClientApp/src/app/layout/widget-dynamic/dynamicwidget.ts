@@ -6,12 +6,14 @@ export class DynamicWidget {
   "EntityName": string;
   "PageTypeName": string;
   "Version": string;
-  "PageTypeId": number;
+  "PageTypeId": string;
   "EntityId": number;
   "Title": string;
   "ThemeType": string;
   "ThemeCSS": string;
   "WidgetSettings": string;
+  "PreviewData": string;
+
   "WidgetFilterSettings": string;
   "Status": string;
   "CreatedBy": number;
@@ -24,5 +26,6 @@ export class DynamicWidget {
   "IsActive": boolean;
   "IsDeleted": boolean;
   "TenantCode": string;
+  "PageTypes": any;
 }
 

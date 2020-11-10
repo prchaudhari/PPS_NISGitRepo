@@ -12,7 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToolbarService, NodeSelection, LinkService, ImageService } from "@syncfusion/ej2-angular-richtexteditor";
-import { RichTextEditorComponent, HtmlEditorService, QuickToolbarService, InsertHtml ,SaveFormat} from "@syncfusion/ej2-angular-richtexteditor";
+import { RichTextEditorComponent, HtmlEditorService, QuickToolbarService, InsertHtml, SaveFormat } from "@syncfusion/ej2-angular-richtexteditor";
 import { TemplateService } from '../../template/template.service';
 import { ConfigConstants } from '../../../shared/constants/configConstants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -27,14 +27,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class WidgetdesignerComponent implements OnInit {
-  @ViewChild("customRTE", {static: false})public rteObj: RichTextEditorComponent;
+  @ViewChild("customRTE", { static: false }) public rteObj: RichTextEditorComponent;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   public mode: string = 'Markdown';
   public editorValue: any = "";
   //html editor code
   htmlContent = '';
-  
+
   public tools: object = {
     items: [
       "Bold",
@@ -132,8 +132,8 @@ export class WidgetdesignerComponent implements OnInit {
   public lineBarGraphFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
   saveformate: SaveFormat;
   public insertImageSettings: object = {
-   
-    saveFormat:"Base64"
+
+    saveFormat: "Base64"
   };
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -143,7 +143,7 @@ export class WidgetdesignerComponent implements OnInit {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
   }
-
+  public htmlFieldsMappinng: any[] = [];
   tableHeader = [];
 
   formList = [];
@@ -207,6 +207,8 @@ export class WidgetdesignerComponent implements OnInit {
             this.dynamicWidgetDetails.WidgetName = this.params.Routeparams.passingparams.WidgetName;
             this.dynamicWidgetDetails.WidgetType = this.params.Routeparams.passingparams.WidgetType;
             this.dynamicWidgetDetails.PageTypeId = this.params.Routeparams.passingparams.PageTypeId;
+            this.dynamicWidgetDetails.PageTypes = this.params.Routeparams.passingparams.PageTypeId;
+
             this.dynamicWidgetDetails.EntityId = this.params.Routeparams.passingparams.EntityId;
             this.dynamicWidgetDetails.Title = this.params.Routeparams.passingparams.Title;
             this.selectedLink = this.dynamicWidgetDetails.WidgetType;
@@ -258,8 +260,8 @@ export class WidgetdesignerComponent implements OnInit {
       this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
       this.getWidgetDetails();
     }
-    
-   
+
+
 
   }
 
@@ -564,7 +566,8 @@ export class WidgetdesignerComponent implements OnInit {
     this.rteObj.executeCommand('insertText', text);
     this.DynamicWidgetForm.patchValue({
       HTMLEntityField: 0,
-    })
+    });
+    this.htmlFieldsMappinng.push({ "Key": entityField.Name, "Value": text});;
   }
 
   public AddAsset() {
@@ -832,7 +835,11 @@ export class WidgetdesignerComponent implements OnInit {
     }
     else if (this.selectedLink == 'Html') {
       var html = this.rteObj.getHtml();
-      this.dynamicWidgetDetails.WidgetSettings = html;
+      this.dynamicWidgetDetails.PreviewData = html;
+      if (this.htmlFieldsMappinng.length > 0) {
+        this.dynamicWidgetDetails.WidgetSettings = JSON.stringify(this.htmlFieldsMappinng);
+
+      }
     }
     if (this.dynamicWidgetDetails.ThemeType == "Custome") {
 
