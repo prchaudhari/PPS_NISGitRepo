@@ -14,7 +14,6 @@ namespace nIS
 
     #endregion
 
-
     /// <summary>
     /// This class implements manager layer of asset library manager.
     /// </summary>
@@ -343,6 +342,140 @@ namespace nIS
         }
 
         #endregion
+
+        #region Group and Instance Manager Report
+        public InstanceManagerReport GetInstanceManagerDashboard(string tenantCode)
+        {
+            InstanceManagerReport instanceManagerReport = new InstanceManagerReport();
+            ClientSearchParameter clientSearchPaarmeter = new ClientSearchParameter();
+            clientSearchPaarmeter.SortParameter = new SortParameter();
+            clientSearchPaarmeter.SortParameter.SortColumn = "TenantCode";
+            clientSearchPaarmeter.ParentTenantCode = tenantCode;
+            clientSearchPaarmeter.TenantType = "Group";
+
+            instanceManagerReport.UsersByGroup = new GraphChartData();
+            PieChartSeries series = new PieChartSeries();
+            // instanceManagerReport.PublishedStatementByGroup.
+            var tenantGroups = new ClientManager(this.unityContainer).GetClients(clientSearchPaarmeter, ModelConstant.DEFAULT_TENANT_CODE);
+            int totalTenants = 0;
+            if (tenantGroups?.Count > 0)
+            {
+                instanceManagerReport.TotalGroup = tenantGroups.Count;
+                IList<PieChartData> pieChartDatas = new List<PieChartData>();
+
+                GraphChartData usersByGroup = new GraphChartData();
+                usersByGroup.title = new ChartTitle();
+                usersByGroup.title.text = "Users by Group";
+                usersByGroup.xAxis = new List<string>();
+                usersByGroup.series = new List<ChartSeries>();
+
+                instanceManagerReport.PublishedStatementByGroup = new PiChartGraphData();
+                instanceManagerReport.PublishedStatementByGroup.title = new ChartTitle();
+                instanceManagerReport.PublishedStatementByGroup.title.text = "Published statement by Tenant Groups";
+
+                GraphChartData generatedStmtByGroup = new GraphChartData();
+                generatedStmtByGroup.title = new ChartTitle();
+                generatedStmtByGroup.title.text = "Generated statement by Groups";
+                generatedStmtByGroup.series = new List<ChartSeries>();
+
+                IList<decimal> userCount = new List<decimal>();
+                IList<decimal> generatedStmtCount = new List<decimal>();
+                tenantGroups.ToList().ForEach(group =>
+                {
+                    clientSearchPaarmeter = new ClientSearchParameter();
+                    clientSearchPaarmeter.SortParameter = new SortParameter();
+                    clientSearchPaarmeter.SortParameter.SortColumn = "TenantCode";
+                    clientSearchPaarmeter.ParentTenantCode = group.TenantCode;
+                    clientSearchPaarmeter.TenantType = "Tenant";
+                    usersByGroup.xAxis.Add(group.TenantName);
+                    generatedStmtByGroup.xAxis.Add(group.TenantName);
+                    var tenants = new ClientManager(this.unityContainer).GetClients(clientSearchPaarmeter, ModelConstant.DEFAULT_TENANT_CODE);
+                    if (tenants?.Count > 0)
+                    {
+                        int publishedStatementOfGroup = 0;
+                        int totalUsers = 0;
+                        int generatedStmt = 0;
+                        totalTenants = totalTenants + tenants.Count;
+                        tenants.ToList().ForEach(tenant =>
+                        {
+
+                            StatementManager statementManager = new StatementManager(this.unityContainer);
+                            var publishedStatements = statementManager.GetStatementCount(new StatementSearchParameter
+                            {
+                                Status = "Published",
+
+                                SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                            }, tenant.TenantCode);
+                            publishedStatementOfGroup = publishedStatementOfGroup + publishedStatements;
+
+                            UserManager userManager = new UserManager(this.unityContainer);
+                            var createdUser = userManager.GetUserCount(new UserSearchParameter
+                            {
+                                SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                            }, tenant.TenantCode);
+                            if (createdUser > 0)
+                            {
+                                totalUsers = totalUsers + createdUser;
+                            }
+
+                            ScheduleLogManager scheduleLogManager = new ScheduleLogManager(this.unityContainer);
+                            var generatedStatements = scheduleLogManager.GetScheduleLogDetailsCount(new ScheduleLogDetailSearchParameter
+                            {
+                                Status = "Completed",
+                                SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                            }, tenant.TenantCode);
+                            if (generatedStatements > 0)
+                            {
+                                generatedStmt = generatedStmt + generatedStatements;
+                            }
+
+                        });
+
+                        PieChartData data = new PieChartData();
+                        data.name = group.TenantName;
+                        data.y = publishedStatementOfGroup;
+                        pieChartDatas.Add(data);
+                        series.data = pieChartDatas;
+                        userCount.Add(totalUsers);
+                        generatedStmtCount.Add(generatedStmt);
+
+                    }
+                });
+                usersByGroup.series.Add(new ChartSeries
+                {
+                    name = "Groups",
+                    data = userCount,
+                    type = "bar"
+                });
+
+                generatedStmtByGroup.series.Add(new ChartSeries
+                {
+                    name = "Groups",
+                    data = generatedStmtCount,
+                    type = "bar"
+                });
+
+                instanceManagerReport.UsersByGroup = usersByGroup;
+                instanceManagerReport.StatementByGroup = generatedStmtByGroup;
+
+                instanceManagerReport.PublishedStatementByGroup.series = new List<PieChartSeries>();
+                instanceManagerReport.PublishedStatementByGroup.series.Add(series);
+
+            }
+            instanceManagerReport.TotalTenant = totalTenants;
+
+            return instanceManagerReport;
+        }
+
+        public GroupManagerReport GetGroupManagerDashboard(string tenantCode)
+        {
+            GroupManagerReport groupManagerReport = new GroupManagerReport();
+
+            return groupManagerReport;
+        }
+
+        #endregion
+
         #endregion
 
         #region Private Methods

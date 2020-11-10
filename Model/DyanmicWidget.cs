@@ -8,6 +8,8 @@ namespace nIS
     #region References
 
     using System;
+    using System.Collections.Generic;
+
     using System.ComponentModel;
 
     #endregion
@@ -49,6 +51,8 @@ namespace nIS
         public string TenantCode { get; set; }
         public string APIPath { get; set; }
         public string RequestType { get; set; }
+
+        public IList<PageType> PageTypes = new List<PageType>();
 
         #endregion
 

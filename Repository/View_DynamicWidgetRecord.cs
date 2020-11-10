@@ -33,13 +33,12 @@ namespace nIS
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public string TenantCode { get; set; }
-        public string PublishedByName { get; set; }
-        public string CreatedByName { get; set; }
-        public string PageTypeName { get; set; }
-        public string EntityName { get; set; }
         public Nullable<long> CloneOfWidgetId { get; set; }
         public string Version { get; set; }
         public string PreviewData { get; set; }
+        public string PublishedByName { get; set; }
+        public string CreatedByName { get; set; }
+        public string EntityName { get; set; }
         public string APIPath { get; set; }
         public string RequestType { get; set; }
     }

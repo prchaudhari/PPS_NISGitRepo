@@ -87,4 +87,5 @@ namespace nIS
         public string PieValue;
         public string PieSeriesName;
     }
+
 }

@@ -108,9 +108,10 @@ namespace nIS
                         IsActive = true,
                         IsDeleted = false,
                         Version = "1",
-                        PreviewData=dynamicWidget.PreviewData,
+                        PreviewData = dynamicWidget.PreviewData,
                         TenantCode = tenantCode
                     });
+
                 });
 
                 if (dynamicWidgetRecords.Count > 0)
@@ -131,7 +132,25 @@ namespace nIS
                                 nISEntitiesDataContext.DynamicWidgetFilterDetails.AddRange(details);
                                 nISEntitiesDataContext.SaveChanges();
                             }
+
                         });
+                        IList<WidgetPageTypeMap> widgetPageTypeMaps = new List<WidgetPageTypeMap>();
+                        dynamicWidgets.ToList().ForEach(item =>
+                        {
+
+                            item.PageTypes.ToList().ForEach(pgType =>
+                            {
+                                widgetPageTypeMaps.Add(new WidgetPageTypeMap
+                                {
+                                    WidgetId = dynamicWidgetRecords.FirstOrDefault().Id,
+                                    PageTypeId = pgType.Identifier,
+                                    IsDynamicWidget = true,
+                                    TenantCode = tenantCode
+                                });
+                            });
+                        });
+                        nISEntitiesDataContext.WidgetPageTypeMaps.AddRange(widgetPageTypeMaps);
+                        nISEntitiesDataContext.SaveChanges();
                     }
 
                 }
@@ -213,7 +232,29 @@ namespace nIS
                             nISEntitiesDataContext.DynamicWidgetFilterDetails.AddRange(details);
                             nISEntitiesDataContext.SaveChanges();
                         }
+
                     });
+                    IList<WidgetPageTypeMap> widgetPageTypeMaps = new List<WidgetPageTypeMap>();
+                    dynamicWidgets.ToList().ForEach(item =>
+                    {
+                        List<WidgetPageTypeMap> existingDetails = new List<WidgetPageTypeMap>();
+                        existingDetails = nISEntitiesDataContext.WidgetPageTypeMaps.Where(d => d.WidgetId == item.Identifier).ToList();
+                        nISEntitiesDataContext.WidgetPageTypeMaps.RemoveRange(existingDetails);
+
+                        item.PageTypes.ToList().ForEach(pgType =>
+                        {
+                            widgetPageTypeMaps.Add(new WidgetPageTypeMap
+                            {
+                                WidgetId = dynamicWidgetRecords.FirstOrDefault().Id,
+                                PageTypeId = pgType.Identifier,
+                                IsDynamicWidget = true,
+                                TenantCode = tenantCode
+                            });
+                        });
+
+                    });
+                    nISEntitiesDataContext.WidgetPageTypeMaps.AddRange(widgetPageTypeMaps);
+                    nISEntitiesDataContext.SaveChanges();
                 }
 
                 result = true;
@@ -263,6 +304,10 @@ namespace nIS
                             nISEntitiesDataContext.DynamicWidgetFilterDetails.RemoveRange(existingDetails);
 
                         }
+                        List<WidgetPageTypeMap> widgetPageTypeMaps = new List<WidgetPageTypeMap>();
+                        widgetPageTypeMaps = nISEntitiesDataContext.WidgetPageTypeMaps.Where(d => d.WidgetId == dynamicWidgetRecord.Id).ToList();
+                        nISEntitiesDataContext.WidgetPageTypeMaps.RemoveRange(widgetPageTypeMaps);
+
                     }
 
                     result = true;
@@ -341,16 +386,50 @@ namespace nIS
                                 PublishedBy = item.PublishedBy,
                                 PublishedByName = item.PublishedByName,
                                 EntityName = item.EntityName,
-                                PageTypeName = item.PageTypeName,
+                                //PageTypeName = item.PageTypeName,
                                 PublishedDate = item.PublishedDate,
                                 IsActive = true,
                                 IsDeleted = false,
-                                Version=item.Version,
+                                Version = item.Version,
                                 TenantCode = tenantCode,
-                                PreviewData=item.PreviewData,
+                                PreviewData = item.PreviewData,
                                 APIPath = item.APIPath,
                                 RequestType = item.RequestType
                             });
+                        });
+                        StringBuilder queryString = new StringBuilder();
+
+                        queryString.Append(string.Join("or ", dynamicWidgetRecords.Select(item => string.Format("WidgetId.Equals({0}) ", item.Id))));
+                        queryString.Append(" and IsDynamicWidget.Equals(true)");
+
+                        List<WidgetPageTypeMap> pageWidgetMapRecords = new List<WidgetPageTypeMap>();
+                        pageWidgetMapRecords = nISEntitiesDataContext.WidgetPageTypeMaps.Where(queryString.ToString()).ToList();
+
+                        queryString = new StringBuilder();
+                        List<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
+
+                        queryString.Append(string.Join("or ", pageWidgetMapRecords.Select(item => string.Format("Id.Equals({0}) ", item.PageTypeId))));
+                        queryString.Append(" and IsDeleted.Equals(false)");
+                        pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(queryString.ToString()).ToList();
+
+
+                        dynamicWidgets.ToList().ForEach(item =>
+                        {
+                            IList<PageType> pageTypes = new List<PageType>();
+
+                            IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = pageWidgetMapRecords.Where(map => map.WidgetId == item.Identifier).ToList();
+                            currentWidgetPageTypeMaps.ToList().ForEach(map =>
+                            {
+                                pageTypes.Add(new PageType
+                                {
+                                    Identifier = map.PageTypeId,
+                                    PageTypeName = pageTypeRecords.Where(pg => pg.Id == map.PageTypeId).FirstOrDefault().Name,
+                                });
+                            });
+                            item.PageTypes = pageTypes;
+                            item.PageTypeName = string.Join(",", pageTypes.Select(pg => pg.PageTypeName));
+
+
                         });
                     }
                 }
@@ -476,8 +555,8 @@ namespace nIS
                         version = Int64.Parse(cloneOfDynamicWidget.FirstOrDefault().Version) + 1 + "";
                     }
                     else
-                    { 
-                        version="2";
+                    {
+                        version = "2";
                     }
                     IList<DynamicWidgetRecord> dynamicWidgetRecordsForClone = new List<DynamicWidgetRecord>();
                     dynamicWidgetRecordsForClone.Add(new DynamicWidgetRecord()
@@ -497,8 +576,8 @@ namespace nIS
                         LastUpdatedBy = dynamicWidgetRecord.CreatedBy,
                         IsActive = true,
                         IsDeleted = false,
-                        Version= version,
-                        CloneOfWidgetId=dynamicWidgetIdentifier,
+                        Version = version,
+                        CloneOfWidgetId = dynamicWidgetIdentifier,
                         TenantCode = tenantCode,
                         PreviewData = dynamicWidgetRecord.PreviewData
                     });

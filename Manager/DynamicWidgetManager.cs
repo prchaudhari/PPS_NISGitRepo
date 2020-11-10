@@ -286,7 +286,6 @@ namespace nIS
             return tenantEntities;
         }
 
-
         public IList<EntityFieldMap> GetEntityFields(long entityIdentfier, string tenantCode)
         {
             IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
@@ -537,7 +536,7 @@ namespace nIS
                                 string settings = dynamicWidget.WidgetSettings;
                                 IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
                                 entityFieldMaps = this.GetEntityFields(dynamicWidget.EntityId, tenantCode);
-                                string data = this.GetHTMLPreviewData(entity, entityFieldMaps, dynamicWidget.WidgetSettings);
+                                string data = this.GetHTMLPreviewData(entity, entityFieldMaps, dynamicWidget.PreviewData);
                                 StringBuilder tableHeader = new StringBuilder();
                                 html = html.Replace("{{FormData}}", data);
                                 htmlString.Append(html);
@@ -1046,7 +1045,6 @@ namespace nIS
             return obj;
         }
 
-
         public string GetPreviewData(TenantEntity entity, string chartTitle, string widgetSettings, string widgetType, string theme, IList<EntityFieldMap> fieldMaps)
         {
             string previewData = string.Empty;
@@ -1060,10 +1058,7 @@ namespace nIS
                 List<DynamicWidgetFormEntity> formEntity = JsonConvert.DeserializeObject<List<DynamicWidgetFormEntity>>(widgetSettings);
                 previewData = this.GetFormPreviewData(entity, formEntity);
             }
-            else if (widgetType == HtmlConstants.HTML_DYNAMICWIDGET)
-            {
-
-            }
+          
             else if (widgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
             {
                 DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(widgetSettings);

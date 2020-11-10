@@ -173,7 +173,7 @@ namespace nIS
                             Identifier = widgetRecord.Id,
                             WidgetName = widgetRecord.WidgetName,
                             WidgetDescription = widgetRecord.Description,
-                            DisplayName=widgetRecord.DisplayName,
+                            DisplayName = widgetRecord.DisplayName,
                             IsActive = widgetRecord.IsActive,
                             IsConfigurable = widgetRecord.IsConfigurable,
                             Instantiable = widgetRecord.Instantiable,
@@ -201,27 +201,38 @@ namespace nIS
 
                         if (widgetSearchParameter.IsPageTypeDetailsRequired != null && widgetSearchParameter.IsPageTypeDetailsRequired == true)
                         {
-                            widgets.ToList().ForEach(widget =>
+                            StringBuilder queryString = new StringBuilder();
+
+                            queryString.Append(string.Join("or ", widgets.Select(item => string.Format("WidgetId.Equals({0}) ", item.Identifier))));
+                            queryString.Append(" and IsDynamicWidget.Equals(true)");
+
+                            List<WidgetPageTypeMap> pageWidgetMapRecords = new List<WidgetPageTypeMap>();
+                            pageWidgetMapRecords = nISEntitiesDataContext.WidgetPageTypeMaps.Where(queryString.ToString()).ToList();
+
+                            queryString = new StringBuilder();
+                            List<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
+
+                            queryString.Append(string.Join("or ", pageWidgetMapRecords.Select(item => string.Format("Id.Equals({0}) ", item.PageTypeId))));
+                            queryString.Append(" and IsDeleted.Equals(true)");
+                            pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(queryString.ToString()).ToList();
+
+
+                            widgets.ToList().ForEach(item =>
                             {
-                                if (!string.IsNullOrEmpty(widget.PageTypeIds))
+                                IList<PageType> pageTypes = new List<PageType>();
+
+                                IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = pageWidgetMapRecords.Where(map => map.WidgetId == item.Identifier).ToList();
+                                currentWidgetPageTypeMaps.ToList().ForEach(map =>
                                 {
-                                    StringBuilder pageIdentifier = new StringBuilder();
-                                    pageIdentifier.Append("(" + string.Join(" or ", widget.PageTypeIds.Split(',').Select(item => string.Format("Id.Equals({0})", item))) + ")");
-                                    List<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
-                                    pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(pageIdentifier.ToString()).ToList();
-
-                                    widget.PageTypes = pageTypeRecords?.Select(item => new PageType
+                                    pageTypes.Add(new PageType
                                     {
-                                        PageTypeName = item.Name,
-                                        Identifier = item.Id,
-                                        IsActive = item.IsActive,
-                                        IsDeleted = item.IsDeleted
-                                    }).ToList();
-                                    widget.PageTypeNames = string.Join(",  ", widget.PageTypes.Select(item => item.PageTypeName).ToList());
-                                }
-
+                                        Identifier = map.PageTypeId,
+                                        PageTypeName = pageTypeRecords.Where(pg => pg.Id == map.PageTypeId).FirstOrDefault().Name,
+                                    });
+                                });
+                                item.PageTypes = pageTypes;
+                                item.PageTypeNames = string.Join(",", pageTypes.Select(pg => pg.PageTypeName));
                             });
-
                         }
                     }
                 }

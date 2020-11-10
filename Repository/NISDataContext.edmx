@@ -951,7 +951,6 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
             <PropertyRef Name="TenantCode" />
             <PropertyRef Name="PreviewData" />
             <PropertyRef Name="CreatedByName" />
-            <PropertyRef Name="PageTypeName" />
             <PropertyRef Name="EntityName" />
             <PropertyRef Name="APIPath" />
             <PropertyRef Name="RequestType" />
@@ -980,7 +979,6 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
           <Property Name="PreviewData" Type="nvarchar(max)" Nullable="false" />
           <Property Name="PublishedByName" Type="nvarchar" MaxLength="201" />
           <Property Name="CreatedByName" Type="nvarchar" MaxLength="201" Nullable="false" />
-          <Property Name="PageTypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="EntityName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="APIPath" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RequestType" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -1385,7 +1383,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_DynamicWidget].[PreviewData] AS [PreviewData], 
     [View_DynamicWidget].[PublishedByName] AS [PublishedByName], 
     [View_DynamicWidget].[CreatedByName] AS [CreatedByName], 
-    [View_DynamicWidget].[PageTypeName] AS [PageTypeName], 
     [View_DynamicWidget].[EntityName] AS [EntityName], 
     [View_DynamicWidget].[APIPath] AS [APIPath], 
     [View_DynamicWidget].[RequestType] AS [RequestType]
@@ -1602,7 +1599,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="EntityFieldMapRecords" EntityType="NISModel.EntityFieldMapRecord" />
           <EntitySet Name="TenantEntityRecords" EntityType="NISModel.TenantEntityRecord" />
           <EntitySet Name="DynamicWidgetFilterDetails" EntityType="NISModel.DynamicWidgetFilterDetail" />
-          <EntitySet Name="View_DynamicWidgetRecord" EntityType="NISModel.View_DynamicWidgetRecord" />
           <FunctionImport Name="FnGetStaticAndDynamicWidgets" IsComposable="true" ReturnType="Collection(NISModel.FnGetStaticAndDynamicWidgets_Result)">
             <Parameter Name="PageTypeId" Mode="In" Type="Int64" />
             <Parameter Name="TenantCode" Mode="In" Type="String" />
@@ -1618,6 +1614,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TTD_UserSubscriptionsRecord" EntityType="NISModel.TTD_UserSubscriptionsRecord" />
           <EntitySet Name="TTD_VendorSubscriptionRecord" EntityType="NISModel.TTD_VendorSubscriptionRecord" />
           <EntitySet Name="WidgetPageTypeMaps" EntityType="NISModel.WidgetPageTypeMap" />
+          <EntitySet Name="View_DynamicWidgetRecord" EntityType="NISModel.View_DynamicWidgetRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2667,58 +2664,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="Sequence" Type="Int64" Nullable="false" />
           <Property Name="Value" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="View_DynamicWidgetRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="WidgetName" />
-            <PropertyRef Name="WidgetType" />
-            <PropertyRef Name="PageTypeId" />
-            <PropertyRef Name="EntityId" />
-            <PropertyRef Name="Title" />
-            <PropertyRef Name="ThemeType" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="CreatedBy" />
-            <PropertyRef Name="CreatedOn" />
-            <PropertyRef Name="LastUpdatedBy" />
-            <PropertyRef Name="IsActive" />
-            <PropertyRef Name="IsDeleted" />
-            <PropertyRef Name="TenantCode" />
-            <PropertyRef Name="CreatedByName" />
-            <PropertyRef Name="PageTypeName" />
-            <PropertyRef Name="EntityName" />
-            <PropertyRef Name="PreviewData" />
-            <PropertyRef Name="APIPath" />
-            <PropertyRef Name="RequestType" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="WidgetName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="WidgetType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PageTypeId" Type="Int64" Nullable="false" />
-          <Property Name="EntityId" Type="Int64" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ThemeType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ThemeCSS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WidgetSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WidgetFilterSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
-          <Property Name="PublishedBy" Type="Int64" />
-          <Property Name="PublishedDate" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PublishedByName" Type="String" MaxLength="201" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedByName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
-          <Property Name="PageTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EntityName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CloneOfWidgetId" Type="Int64" />
-          <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PreviewData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="APIPath" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RequestType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <ComplexType Name="FnGetStaticAndDynamicWidgets_Result">
           <Property Type="Int64" Name="ID" Nullable="false" />
           <Property Type="String" Name="WidgetName" Nullable="false" MaxLength="100" />
@@ -2870,6 +2815,56 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="PageTypeId" Type="Int64" Nullable="false" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDynamicWidget" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="View_DynamicWidgetRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="WidgetName" />
+            <PropertyRef Name="WidgetType" />
+            <PropertyRef Name="PageTypeId" />
+            <PropertyRef Name="EntityId" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="ThemeType" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="CreatedBy" />
+            <PropertyRef Name="CreatedOn" />
+            <PropertyRef Name="LastUpdatedBy" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="PreviewData" />
+            <PropertyRef Name="CreatedByName" />
+            <PropertyRef Name="EntityName" />
+            <PropertyRef Name="APIPath" />
+            <PropertyRef Name="RequestType" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="WidgetName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PageTypeId" Type="Int64" Nullable="false" />
+          <Property Name="EntityId" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ThemeType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ThemeCSS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetFilterSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
+          <Property Name="PublishedBy" Type="Int64" />
+          <Property Name="PublishedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CloneOfWidgetId" Type="Int64" />
+          <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PreviewData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PublishedByName" Type="String" MaxLength="201" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedByName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+          <Property Name="EntityName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="APIPath" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RequestType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3924,40 +3919,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="View_DynamicWidgetRecord">
-            <EntityTypeMapping TypeName="NISModel.View_DynamicWidgetRecord">
-              <MappingFragment StoreEntitySet="View_DynamicWidget">
-                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
-                <ScalarProperty Name="APIPath" ColumnName="APIPath" />
-                <ScalarProperty Name="PreviewData" ColumnName="PreviewData" />
-                <ScalarProperty Name="Version" ColumnName="Version" />
-                <ScalarProperty Name="CloneOfWidgetId" ColumnName="CloneOfWidgetId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="PageTypeName" ColumnName="PageTypeName" />
-                <ScalarProperty Name="CreatedByName" ColumnName="CreatedByName" />
-                <ScalarProperty Name="PublishedByName" ColumnName="PublishedByName" />
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
-                <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
-                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="WidgetFilterSettings" ColumnName="WidgetFilterSettings" />
-                <ScalarProperty Name="WidgetSettings" ColumnName="WidgetSettings" />
-                <ScalarProperty Name="ThemeCSS" ColumnName="ThemeCSS" />
-                <ScalarProperty Name="ThemeType" ColumnName="ThemeType" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
-                <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
-                <ScalarProperty Name="WidgetType" ColumnName="WidgetType" />
-                <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="FnGetStaticAndDynamicWidgets" FunctionName="NISModel.Store.FnGetStaticAndDynamicWidgets">
             <ResultMapping>
               <ComplexTypeMapping TypeName="NISModel.FnGetStaticAndDynamicWidgets_Result">
@@ -4121,6 +4082,39 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
                 <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_DynamicWidgetRecord">
+            <EntityTypeMapping TypeName="NISModel.View_DynamicWidgetRecord">
+              <MappingFragment StoreEntitySet="View_DynamicWidget">
+                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+                <ScalarProperty Name="APIPath" ColumnName="APIPath" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="CreatedByName" ColumnName="CreatedByName" />
+                <ScalarProperty Name="PublishedByName" ColumnName="PublishedByName" />
+                <ScalarProperty Name="PreviewData" ColumnName="PreviewData" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="CloneOfWidgetId" ColumnName="CloneOfWidgetId" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PublishedDate" ColumnName="PublishedDate" />
+                <ScalarProperty Name="PublishedBy" ColumnName="PublishedBy" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="WidgetFilterSettings" ColumnName="WidgetFilterSettings" />
+                <ScalarProperty Name="WidgetSettings" ColumnName="WidgetSettings" />
+                <ScalarProperty Name="ThemeCSS" ColumnName="ThemeCSS" />
+                <ScalarProperty Name="ThemeType" ColumnName="ThemeType" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="PageTypeId" ColumnName="PageTypeId" />
+                <ScalarProperty Name="WidgetType" ColumnName="WidgetType" />
+                <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
