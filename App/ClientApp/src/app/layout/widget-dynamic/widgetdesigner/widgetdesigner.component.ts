@@ -319,7 +319,7 @@ export class WidgetdesignerComponent implements OnInit {
 
       var settings;
       if (this.dynamicWidgetDetails.WidgetType != 'Html') {
-        settings = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
+        settings = JSON.parse(this.dynamicWidgetDetails.PreviewData);
       }
 
       if (this.dynamicWidgetDetails.WidgetType == 'Form') {
@@ -349,7 +349,8 @@ export class WidgetdesignerComponent implements OnInit {
         //var div = document.createElement('div');
         //div.innerHTML = this.dynamicWidgetDetails.WidgetSettings
         //this.rteObj.executeCommand('insertHTML', div);
-        this.editorValue = this.dynamicWidgetDetails.WidgetSettings;
+        this.editorValue = this.dynamicWidgetDetails.PreviewData;
+        this.htmlFieldsMappinng = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
       }
     }
 
@@ -567,7 +568,7 @@ export class WidgetdesignerComponent implements OnInit {
     this.DynamicWidgetForm.patchValue({
       HTMLEntityField: 0,
     });
-    this.htmlFieldsMappinng.push({ "Key": entityField.Name, "Value": text});;
+    this.htmlFieldsMappinng.push({ "Key": entityField.Name, "Value": text });;
   }
 
   public AddAsset() {
