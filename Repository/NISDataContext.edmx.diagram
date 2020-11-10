@@ -74,8 +74,8 @@
         <EntityTypeShape EntityType="NISModel.TTD_SubscriptionUsageRecord" Width="1.5" PointX="9" PointY="2" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TTD_UserSubscriptionsRecord" Width="1.5" PointX="8.625" PointY="9.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TTD_VendorSubscriptionRecord" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.WidgetPageTypeMap" Width="1.5" PointX="11.375" PointY="0.75" />
-        <EntityTypeShape EntityType="NISModel.View_DynamicWidgetRecord" Width="1.5" PointX="8.875" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.WidgetPageTypeMap" Width="1.5" PointX="9" PointY="3.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_DynamicWidgetRecord" Width="1.5" PointX="9" PointY="2.625" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

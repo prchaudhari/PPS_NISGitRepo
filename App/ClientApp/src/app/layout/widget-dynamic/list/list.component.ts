@@ -165,7 +165,7 @@ export class ListComponent implements OnInit {
     //['Name', 'Product', 'Entity', 'Widget', 'Owner', 'PublishedBy', 'PublishedDate', 'Status', 'actions'];
     switch (sort.active) {
       case 'WidgetName': this.sortColumn = "WidgetName"; break;
-      case 'Product': this.sortColumn = "PageTypeName"; break;
+      //case 'Product': this.sortColumn = "PageTypeName"; break;
       case 'Entity': this.sortColumn = "EntityName"; break;
       case 'Widget': this.sortColumn = "WidgetType"; break;
       case 'Owner': this.sortColumn = "CreatedByName"; break;
@@ -216,12 +216,11 @@ export class ListComponent implements OnInit {
     }
     if (this.filterPublishStartDate != null && this.filterPublishStartDate != '') {
       searchParameter.StartDate = new Date(this.filterPublishStartDate.setHours(0, 0, 0));
-      //searchParameter.SortParameter.SortColumn = 'PublishedOn';
     }
     if (this.filterPublishEndDate != null && this.filterPublishEndDate != '') {
       searchParameter.EndDate = new Date(this.filterPublishEndDate.setHours(23, 59, 59));
-      //searchParameter.SortParameter.SortColumn = 'PublishedOn';
     }
+    this.templateList = [];
     var response = await dynamicWidgetService.getDynamicWidgets(searchParameter);
     this.templateList = response.List;
     this.totalRecordCount = response.RecordCount;

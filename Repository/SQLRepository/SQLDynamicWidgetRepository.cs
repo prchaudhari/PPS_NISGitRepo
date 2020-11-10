@@ -348,13 +348,13 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     string result = this.WhereClauseGenerator(dynamicWidgetSearchParameter, tenantCode);
-
                     if (dynamicWidgetSearchParameter.PagingParameter.PageIndex != 0 && dynamicWidgetSearchParameter.PagingParameter.PageSize != 0)
                     {
-                        dynamicWidgetRecords = nISEntitiesDataContext.View_DynamicWidgetRecord.Where(result).
+                        dynamicWidgetRecords = nISEntitiesDataContext.View_DynamicWidgetRecord.
                         OrderBy(dynamicWidgetSearchParameter.SortParameter.SortColumn + " " + dynamicWidgetSearchParameter.SortParameter.SortOrder)
-                       .Skip(dynamicWidgetSearchParameter.PagingParameter.PageSize * (dynamicWidgetSearchParameter.PagingParameter.PageIndex - 1))
-                       .Take(dynamicWidgetSearchParameter.PagingParameter.PageIndex * dynamicWidgetSearchParameter.PagingParameter.PageSize).ToList();
+                        .Where(result)
+                        .Skip((dynamicWidgetSearchParameter.PagingParameter.PageIndex - 1) * dynamicWidgetSearchParameter.PagingParameter.PageSize)
+                        .Take(dynamicWidgetSearchParameter.PagingParameter.PageSize).ToList();
                     }
                     else
                     {
@@ -371,17 +371,17 @@ namespace nIS
                                 Identifier = item.Id,
                                 WidgetName = item.WidgetName,
                                 WidgetType = item.WidgetType,
-                                PageTypeId = item.PageTypeId,
-                                EntityId = item.EntityId,
+                                PageTypeId = item.PageTypeId ?? 0,
+                                EntityId = item.EntityId ?? 0,
                                 Title = item.Title,
                                 ThemeType = item.ThemeType,
                                 ThemeCSS = item.ThemeCSS,
                                 WidgetSettings = item.WidgetSettings,
                                 WidgetFilterSettings = item.WidgetFilterSettings,
                                 Status = item.Status,
-                                CreatedBy = item.CreatedBy,
-                                CreatedOn = item.CreatedOn,
-                                LastUpdatedBy = item.LastUpdatedBy,
+                                CreatedBy = item.CreatedBy ?? 0,
+                                CreatedOn = item.CreatedOn ?? DateTime.Now,
+                                LastUpdatedBy = item.LastUpdatedBy ?? 0,
                                 CreatedByName = item.CreatedByName,
                                 PublishedBy = item.PublishedBy,
                                 PublishedByName = item.PublishedByName,
@@ -397,8 +397,8 @@ namespace nIS
                                 RequestType = item.RequestType
                             });
                         });
-                        StringBuilder queryString = new StringBuilder();
 
+                        StringBuilder queryString = new StringBuilder();
                         queryString.Append(string.Join("or ", dynamicWidgetRecords.Select(item => string.Format("WidgetId.Equals({0}) ", item.Id))));
                         queryString.Append(" and IsDynamicWidget.Equals(true)");
 
@@ -412,11 +412,9 @@ namespace nIS
                         queryString.Append(" and IsDeleted.Equals(false)");
                         pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(queryString.ToString()).ToList();
 
-
                         dynamicWidgets.ToList().ForEach(item =>
                         {
                             IList<PageType> pageTypes = new List<PageType>();
-
                             IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = pageWidgetMapRecords.Where(map => map.WidgetId == item.Identifier).ToList();
                             currentWidgetPageTypeMaps.ToList().ForEach(map =>
                             {
@@ -428,8 +426,6 @@ namespace nIS
                             });
                             item.PageTypes = pageTypes;
                             item.PageTypeName = string.Join(",", pageTypes.Select(pg => pg.PageTypeName));
-
-
                         });
                     }
                 }

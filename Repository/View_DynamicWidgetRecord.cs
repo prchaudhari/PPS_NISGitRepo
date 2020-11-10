@@ -17,17 +17,16 @@ namespace nIS
         public long Id { get; set; }
         public string WidgetName { get; set; }
         public string WidgetType { get; set; }
-        public long PageTypeId { get; set; }
-        public long EntityId { get; set; }
+        public Nullable<long> EntityId { get; set; }
         public string Title { get; set; }
         public string ThemeType { get; set; }
         public string ThemeCSS { get; set; }
         public string WidgetSettings { get; set; }
         public string WidgetFilterSettings { get; set; }
         public string Status { get; set; }
-        public long CreatedBy { get; set; }
-        public System.DateTime CreatedOn { get; set; }
-        public long LastUpdatedBy { get; set; }
+        public Nullable<long> CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public Nullable<long> LastUpdatedBy { get; set; }
         public Nullable<long> PublishedBy { get; set; }
         public Nullable<System.DateTime> PublishedDate { get; set; }
         public bool IsActive { get; set; }
@@ -41,5 +40,6 @@ namespace nIS
         public string EntityName { get; set; }
         public string APIPath { get; set; }
         public string RequestType { get; set; }
+        public Nullable<long> PageTypeId { get; set; }
     }
 }
