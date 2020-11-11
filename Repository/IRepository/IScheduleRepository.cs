@@ -73,7 +73,6 @@ namespace nIS
         /// <returns></returns>
         bool DeActivateSchedule(long roleIdentifier, string tenantCode);
 
-
         /// <summary>
         /// This method adds the specified list of roles in role repository.
         /// </summary>
@@ -83,7 +82,6 @@ namespace nIS
         /// Returns true if roles are added successfully, else false.
         /// </returns>
         bool AddScheduleRunHistorys(IList<ScheduleRunHistory> roles, string tenantCode);
-
 
         /// <summary>
         /// This method gets the specified list of roles from role repository.
@@ -110,6 +108,14 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
         bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount);
+
+        /// <summary>
+        /// This method helps to run the schedule
+        /// </summary>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount);
 
         IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
 

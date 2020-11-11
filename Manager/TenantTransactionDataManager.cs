@@ -90,7 +90,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of statements
         /// </returns>
-        public IList<SubscriptionMaster> Get_TTD_SubscriptionMasters(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<SubscriptionMaster> Get_TTD_SubscriptionMasters(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of subscription usage
         /// </returns>
-        public IList<SubscriptionUsage> Get_TTD_SubscriptionUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<SubscriptionUsage> Get_TTD_SubscriptionUsages(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of subscription summeries
         /// </returns>
-        public IList<SubscriptionSummary> Get_TTD_SubscriptionSummaries(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<SubscriptionSummary> Get_TTD_SubscriptionSummaries(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of subscription spends
         /// </returns>
-        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -170,7 +170,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of user subscriptions
         /// </returns>
-        public IList<UserSubscription> Get_TTD_UserSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<UserSubscription> Get_TTD_UserSubscriptions(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -190,7 +190,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of vendor subscriptions
         /// </returns>
-        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -210,7 +210,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of data usages
         /// </returns>
-        public IList<DataUsage> Get_TTD_DataUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<DataUsage> Get_TTD_DataUsages(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -230,7 +230,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of meeting usages
         /// </returns>
-        public IList<MeetingUsage> Get_TTD_MeetingUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<MeetingUsage> Get_TTD_MeetingUsages(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -250,7 +250,7 @@ namespace nIS
         /// <returns>
         /// Returns the list of emails by subscription
         /// </returns>
-        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode)
         {
             try
             {
@@ -315,6 +315,26 @@ namespace nIS
             try
             {
                 return this.tenantTransactionDataRepository.Get_AccountTransaction(accountSearchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer account saving and spending trend from tenant transaction data repository.
+        /// </summary>
+        /// <param name="accountSearchParameter">The account search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account saving and spending trend
+        /// </returns>
+        public IList<SavingTrend> Get_SavingTrend(CustomerAccountSearchParameter accountSearchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.Get_SavingTrend(accountSearchParameter, tenantCode);
             }
             catch (Exception ex)
             {

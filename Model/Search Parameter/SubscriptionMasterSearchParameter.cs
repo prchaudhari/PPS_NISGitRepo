@@ -39,6 +39,7 @@ namespace nIS
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
         public string EmailId { get; set; }
+        public string WidgetFilterSetting { get; set; }
 
         /// <summary>
         /// Determines whether this instance of subscription search parameter is valid.

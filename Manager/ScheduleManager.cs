@@ -334,7 +334,7 @@ namespace nIS
             try
             {
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
-                return this.scheduleRepository.RunSchedule(baseURL, outputLocation, tenantCode, parallelThreadCount);
+                return this.scheduleRepository.RunScheduleNew(baseURL, outputLocation, tenantCode, parallelThreadCount);
             }
             catch (Exception ex)
             {

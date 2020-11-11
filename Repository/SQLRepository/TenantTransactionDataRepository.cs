@@ -68,32 +68,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of customer master
         /// </returns>
-        public IList<CustomerMaster> Get_TTD_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode)
+        public IList<CustomerMaster> Get_TTD_CustomerMasters(CustomerSearchParameter searchParameter, string tenantCode)
         {
             IList<CustomerMaster> customerMasters = new List<CustomerMaster>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGeneratorForCustomer(customerSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomer(searchParameter, tenantCode);
                 var customerMasterRecords = new List<TTD_CustomerMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (customerSearchParameter.PagingParameter.PageIndex > 0 && customerSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (customerSearchParameter.PagingParameter.PageIndex > 0 && customerSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord
+                    //    .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((customerSearchParameter.PagingParameter.PageIndex - 1) * customerSearchParameter.PagingParameter.PageSize)
+                    //    .Take(customerSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord
-                        .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((customerSearchParameter.PagingParameter.PageIndex - 1) * customerSearchParameter.PagingParameter.PageSize)
-                        .Take(customerSearchParameter.PagingParameter.PageSize)
+                        //.OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord
-                        .Where(whereClause)
-                        .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (customerMasterRecords != null && customerMasterRecords.Count > 0)
                     {
@@ -136,32 +136,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of subscription master
         /// </returns>
-        public IList<SubscriptionMaster> Get_TTD_SubscriptionMasters(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<SubscriptionMaster> Get_TTD_SubscriptionMasters(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<SubscriptionMaster> subscriptionMasters = new List<SubscriptionMaster>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var subscriptionMasterRecords = new List<TTD_SubscriptionMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    subscriptionMasterRecords = nISEntitiesDataContext.TTD_SubscriptionMasterRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else 
+                    //{
                         subscriptionMasterRecords = nISEntitiesDataContext.TTD_SubscriptionMasterRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                      //  .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else 
-                    {
-                        subscriptionMasterRecords = nISEntitiesDataContext.TTD_SubscriptionMasterRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (subscriptionMasterRecords != null && subscriptionMasterRecords.Count > 0)
                     {
@@ -199,32 +199,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of subscription usage
         /// </returns>
-        public IList<SubscriptionUsage> Get_TTD_SubscriptionUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<SubscriptionUsage> Get_TTD_SubscriptionUsages(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<SubscriptionUsage> subscriptionUsages = new List<SubscriptionUsage>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var subscriptionUsageRecords = new List<TTD_SubscriptionUsageRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    subscriptionUsageRecords = nISEntitiesDataContext.TTD_SubscriptionUsageRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         subscriptionUsageRecords = nISEntitiesDataContext.TTD_SubscriptionUsageRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        subscriptionUsageRecords = nISEntitiesDataContext.TTD_SubscriptionUsageRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                   // }
 
                     if (subscriptionUsageRecords != null && subscriptionUsageRecords.Count > 0)
                     {
@@ -262,32 +262,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of subscription summeries
         /// </returns>
-        public IList<SubscriptionSummary> Get_TTD_SubscriptionSummaries(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<SubscriptionSummary> Get_TTD_SubscriptionSummaries(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<SubscriptionSummary> subscriptionSummaries = new List<SubscriptionSummary>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var subscriptionSummaryRecords = new List<TTD_SubscriptionSummaryRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    subscriptionSummaryRecords = nISEntitiesDataContext.TTD_SubscriptionSummaryRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         subscriptionSummaryRecords = nISEntitiesDataContext.TTD_SubscriptionSummaryRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                     //   .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        subscriptionSummaryRecords = nISEntitiesDataContext.TTD_SubscriptionSummaryRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (subscriptionSummaryRecords != null && subscriptionSummaryRecords.Count > 0)
                     {
@@ -323,32 +323,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of subscription spends
         /// </returns>
-        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<SubscriptionSpend> subscriptionSpends = new List<SubscriptionSpend>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var subscriptionSpendRecords = new List<TTD_SubscriptionSpendRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (subscriptionSpendRecords != null && subscriptionSpendRecords.Count > 0)
                     {
@@ -384,32 +384,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of user subscriptions
         /// </returns>
-        public IList<UserSubscription> Get_TTD_UserSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<UserSubscription> Get_TTD_UserSubscriptions(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<UserSubscription> userSubscriptions = new List<UserSubscription>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var userSubscriptionRecords = new List<TTD_UserSubscriptionsRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (userSubscriptionRecords != null && userSubscriptionRecords.Count > 0)
                     {
@@ -442,32 +442,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of vendor subscriptions
         /// </returns>
-        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<VendorSubscription> vendorSubscriptions = new List<VendorSubscription>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var vendorSubscriptionRecords = new List<TTD_VendorSubscriptionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    vendorSubscriptionRecords = nISEntitiesDataContext.TTD_VendorSubscriptionRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         vendorSubscriptionRecords = nISEntitiesDataContext.TTD_VendorSubscriptionRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                   //     .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        vendorSubscriptionRecords = nISEntitiesDataContext.TTD_VendorSubscriptionRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (vendorSubscriptionRecords != null && vendorSubscriptionRecords.Count > 0)
                     {
@@ -501,32 +501,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of data usages
         /// </returns>
-        public IList<DataUsage> Get_TTD_DataUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<DataUsage> Get_TTD_DataUsages(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<DataUsage> dataUsages = new List<DataUsage>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var dataUsageRecords = new List<TTD_DataUsageRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (dataUsageRecords != null && dataUsageRecords.Count > 0)
                     {
@@ -562,32 +562,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of meeting usages
         /// </returns>
-        public IList<MeetingUsage> Get_TTD_MeetingUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<MeetingUsage> Get_TTD_MeetingUsages(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<MeetingUsage> meetingUsages = new List<MeetingUsage>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var meetingUsageRecords = new List<TTD_MeetingUsageRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (meetingUsageRecords != null && meetingUsageRecords.Count > 0)
                     {
@@ -623,32 +623,32 @@ namespace nIS
         /// <returns>
         /// Returns the list of emails by subscription
         /// </returns>
-        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter, string tenantCode)
+        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             IList<EmailsBySubscription> emailsBySubscriptions = new List<EmailsBySubscription>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(subscriptionMasterSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
                 var emailsBySubscriptionRecords = new List<TTD_EmailsBySubscriptionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                        .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord
-                        .Where(whereClause)
-                        .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (emailsBySubscriptionRecords != null && emailsBySubscriptionRecords.Count > 0)
                     {
@@ -692,22 +692,22 @@ namespace nIS
                 var customerMasterRecords = new List<CustomerMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (customerSearchParameter.PagingParameter.PageIndex > 0 && customerSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (customerSearchParameter.PagingParameter.PageIndex > 0 && customerSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords
+                    //    .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((customerSearchParameter.PagingParameter.PageIndex - 1) * customerSearchParameter.PagingParameter.PageSize)
+                    //    .Take(customerSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords
-                        .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((customerSearchParameter.PagingParameter.PageIndex - 1) * customerSearchParameter.PagingParameter.PageSize)
-                        .Take(customerSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords
-                        .Where(whereClause)
-                        .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (customerMasterRecords != null && customerMasterRecords.Count > 0)
                     {
@@ -762,22 +762,22 @@ namespace nIS
                 var accountMasterRecords = new List<AccountMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords
+                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
+                    //    .Take(accountSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords
-                        .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
-                        .Take(accountSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords
-                        .Where(whereClause)
-                        .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (accountMasterRecords != null && accountMasterRecords.Count > 0)
                     {
@@ -830,22 +830,22 @@ namespace nIS
                 var accountTransactionRecords = new List<AccountTransactionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
-                    {
+                    //if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords
+                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
+                    //    .Take(accountSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
                         accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords
-                        .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
                         .Where(whereClause)
-                        .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
-                        .Take(accountSearchParameter.PagingParameter.PageSize)
+                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                         .ToList();
-                    }
-                    else
-                    {
-                        accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords
-                        .Where(whereClause)
-                        .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                        .ToList();
-                    }
+                    //}
 
                     if (accountTransactionRecords != null && accountTransactionRecords.Count > 0)
                     {
@@ -876,6 +876,69 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of customer account saving and spending trend from tenant transaction data repository.
+        /// </summary>
+        /// <param name="accountSearchParameter">The account search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account saving and spending trend
+        /// </returns>
+        public IList<SavingTrend> Get_SavingTrend(CustomerAccountSearchParameter accountSearchParameter, string tenantCode)
+        {
+            IList<SavingTrend> savingTrends = new List<SavingTrend>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerAccount(accountSearchParameter, tenantCode);
+                var savingTrendRecords = new List<SavingTrendRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    //if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
+                    //{
+                    //    savingTrendRecords = nISEntitiesDataContext.SavingTrendRecords
+                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
+                    //    .Where(whereClause)
+                    //    .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
+                    //    .Take(accountSearchParameter.PagingParameter.PageSize)
+                    //    .ToList();
+                    //}
+                    //else
+                    //{
+                    savingTrendRecords = nISEntitiesDataContext.SavingTrendRecords
+                    .Where(whereClause)
+                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                    .ToList();
+                    //}
+
+                    if (savingTrendRecords != null && savingTrendRecords.Count > 0)
+                    {
+                        savingTrendRecords.ForEach(item =>
+                        {
+                            savingTrends.Add(new SavingTrend()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                AccountId = item.AccountId,
+                                Income = item.Income ?? 0,
+                                IncomePercentage = item.IncomePercentage ?? 0,
+                                Month = item.Month,
+                                SpendAmount = item.SpendAmount,
+                                SpendPercentage = item.SpendPercentage ?? 0,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return savingTrends;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -887,38 +950,27 @@ namespace nIS
         /// <returns>
         /// Returns a string.
         /// </returns>
-        private string WhereClauseGenerator(SubscriptionMasterSearchParameter searchParameter, string tenantCode)
+        private string WhereClauseGenerator(TransactionDataSearchParameter searchParameter, string tenantCode)
         {
             StringBuilder queryString = new StringBuilder();
-
-            if (searchParameter.SearchMode == SearchMode.Equals)
-            {
-                if (validationEngine.IsValidLong(searchParameter.Identifier))
-                {
-                    queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-                }
-            }
             if (validationEngine.IsValidLong(searchParameter.BatchId))
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
             }
             if (validationEngine.IsValidLong(searchParameter.CustomerId))
             {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
             }
-            if (validationEngine.IsValidText(searchParameter.VendorName))
+            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
             {
-                queryString.Append(string.Format("VendorName.Contains(\"{0}\") and ", searchParameter.VendorName));
+                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                filterEntities.ForEach(filterEntity =>
+                {
+                    queryString.Append(this.QueryGenerator(filterEntity));
+                });
             }
-            if (validationEngine.IsValidText(searchParameter.Subscription))
-            {
-                queryString.Append(string.Format("Subscription.Contains(\"{0}\") and ", searchParameter.Subscription));
-            }
-            if (validationEngine.IsValidText(searchParameter.EmailId))
-            {
-                queryString.Append(string.Format("Email.Contains(\"{0}\") and ", searchParameter.EmailId));
-            }
-            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            
+            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
 
@@ -932,9 +984,17 @@ namespace nIS
             }
             if (validationEngine.IsValidLong(searchParameter.BatchId))
             {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
             }
-            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+            {
+                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                filterEntities.ForEach(filterEntity =>
+                {
+                    queryString.Append(this.QueryGenerator(filterEntity));
+                });
+            }
+            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
 
@@ -958,15 +1018,27 @@ namespace nIS
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
             }
-            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            if (validationEngine.IsValidLong(searchParameter.CustomerId) && validationEngine.IsValidText(searchParameter.AccountType))
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
             }
+            if (validationEngine.IsValidLong(searchParameter.CustomerId) && !validationEngine.IsValidText(searchParameter.AccountType))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
+            }
             if (validationEngine.IsValidText(searchParameter.AccountType))
             {
-                queryString.Append(string.Format("AccountType.Contains(\"{0}\") and ", searchParameter.AccountType));
+                queryString.Append(string.Format("AccountType.Contains(\"{0}\") ", searchParameter.AccountType));
             }
-            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+            {
+                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                filterEntities.ForEach(filterEntity =>
+                {
+                    queryString.Append(this.QueryGenerator(filterEntity));
+                });
+            }
+            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
 
@@ -990,6 +1062,37 @@ namespace nIS
             {
                 throw ex;
             }
+        }
+
+        private string QueryGenerator(DynamicWidgetFilterEntity filterEntity)
+        {
+            var queryString = string.Empty;
+            var condtionalOp = filterEntity.ConditionalOperator != null && filterEntity.ConditionalOperator != string.Empty ? filterEntity.ConditionalOperator : " and ";
+            if (filterEntity.Operator == "EqualsTo")
+            {
+                queryString = queryString + condtionalOp + (string.Format(filterEntity.FieldName + ".Equals(\"{0}\") ", filterEntity.Value));
+            }
+            else if (filterEntity.Operator == "NotEqualsTo")
+            {
+                queryString = queryString + condtionalOp + (string.Format("!" + filterEntity.FieldName + ".Equals(\"{0}\") ", filterEntity.Value));
+            }
+            else if (filterEntity.Operator == "Contains")
+            {
+                queryString = queryString + condtionalOp + (string.Format(filterEntity.FieldName + ".Contains(\"{0}\") ", filterEntity.Value));
+            }
+            else if (filterEntity.Operator == "NotContains")
+            {
+                queryString = queryString + condtionalOp + (string.Format("!" + filterEntity.FieldName + ".Contains(\"{0}\") ", filterEntity.Value));
+            }
+            else if (filterEntity.Operator == "LessThan")
+            {
+                queryString = queryString + condtionalOp + (string.Format(filterEntity.FieldName + " < " + filterEntity.Value + " "));
+            }
+            else if (filterEntity.Operator == "GreaterThan")
+            {
+                queryString = queryString + condtionalOp + (string.Format(filterEntity.FieldName + " > " + filterEntity.Value + " "));
+            }
+            return queryString;
         }
 
         #endregion

@@ -24,5 +24,6 @@ namespace nIS
         public decimal SpendPercentage { get; set; }
         public decimal Income { get; set; }
         public decimal IncomePercentage { get; set; }
+        public string TenantCode { get; set; }
     }
 }

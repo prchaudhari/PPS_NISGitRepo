@@ -17,7 +17,7 @@ namespace nIS
     /// <summary>
     /// This class represents customer search parameter
     /// </summary>
-    public class CustomerSearchParameter: BaseSearchEntity
+    public class CustomerSearchParameter
     {
         /// <summary>
         /// The utility object
@@ -31,6 +31,7 @@ namespace nIS
 
         public long Identifier { get; set; }
         public long BatchId { get; set; }
+        public string WidgetFilterSetting { get; set; }
 
         /// <summary>
         /// Determines whether this instance of subscription search parameter is valid.
@@ -49,16 +50,6 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("Customer Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_CUSTOMER_ID);
                 }
-                if (!this.PagingParameter.IsValid())
-                {
-                    exception.Data.Add(this.utility.GetDescription("Paging parameter", typeof(State)), ModelConstant.COMMON_SECTION + "~" + ModelConstant.INVALID_PAGING_PARAMETER);
-                }
-
-                if (!this.SortParameter.IsValid())
-                {
-                    exception.Data.Add(this.utility.GetDescription("Sort parameter", typeof(Country)), ModelConstant.COMMON_SECTION + "~" + ModelConstant.INVALID_SORT_PARAMETER);
-                }
-
                 if (exception.Data.Count > 0)
                 {
                     throw exception;

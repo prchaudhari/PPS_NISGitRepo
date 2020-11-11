@@ -152,8 +152,7 @@ export class AddComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
   public DynamicWidgetForm: FormGroup;
-  public pageTypeList: any[] = [{ "PageTypeName": "Usage", "Identifier": 16 },
-    { "PageTypeName": "Billing", "Identifier": 17 }];
+  public pageTypeList: any[] = [{ "PageTypeName": "Home", "Identifier": 10 }, { "PageTypeName": "Saving Account", "Identifier": 11 }, { "PageTypeName": "Current Account", "Identifier": 12 }];
 
   public entityList: any[] = [{ "Name": "Select Entity", "Identifier": 0 }];
   public entityFieldList: any[] = [{ "Name": "Select", "Identifier": 0 }];

@@ -75,7 +75,7 @@ namespace nIS
         /// Returns the list of statements
         /// </returns>
         [HttpPost]
-        public IList<SubscriptionMaster> Get_TTD_SubscriptionMasters(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter)
+        public IList<SubscriptionMaster> Get_TTD_SubscriptionMasters(TransactionDataSearchParameter subscriptionMasterSearchParameter)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace nIS
         /// Returns the list of subscription usage
         /// </returns>
         [HttpPost]
-        public IList<SubscriptionUsage> Get_TTD_SubscriptionUsages(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter)
+        public IList<SubscriptionUsage> Get_TTD_SubscriptionUsages(TransactionDataSearchParameter subscriptionMasterSearchParameter)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace nIS
         /// Returns the list of subscription summeries
         /// </returns>
         [HttpPost]
-        public IList<SubscriptionSummary> Get_TTD_SubscriptionSummaries(SubscriptionMasterSearchParameter subscriptionMasterSearchParameter)
+        public IList<SubscriptionSummary> Get_TTD_SubscriptionSummaries(TransactionDataSearchParameter subscriptionMasterSearchParameter)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace nIS
         /// Returns the list of subscription spends
         /// </returns>
         [HttpPost]
-        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(SubscriptionMasterSearchParameter searchParameter)
+        public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(TransactionDataSearchParameter searchParameter)
         {
             try
             {
@@ -159,7 +159,7 @@ namespace nIS
         /// Returns the list of user subscriptions
         /// </returns>
         [HttpPost]
-        public IList<UserSubscription> Get_TTD_UserSubscriptions(SubscriptionMasterSearchParameter searchParameter)
+        public IList<UserSubscription> Get_TTD_UserSubscriptions(TransactionDataSearchParameter searchParameter)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace nIS
         /// Returns the list of vendor subscriptions
         /// </returns>
         [HttpPost]
-        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(SubscriptionMasterSearchParameter searchParameter)
+        public IList<VendorSubscription> Get_TTD_VendorSubscriptions(TransactionDataSearchParameter searchParameter)
         {
             try
             {
@@ -201,7 +201,7 @@ namespace nIS
         /// Returns the list of data usages
         /// </returns>
         [HttpPost]
-        public IList<DataUsage> Get_TTD_DataUsages(SubscriptionMasterSearchParameter searchParameter)
+        public IList<DataUsage> Get_TTD_DataUsages(TransactionDataSearchParameter searchParameter)
         {
             try
             {
@@ -222,7 +222,7 @@ namespace nIS
         /// Returns the list of meeting usages
         /// </returns>
         [HttpPost]
-        public IList<MeetingUsage> Get_TTD_MeetingUsages(SubscriptionMasterSearchParameter searchParameter)
+        public IList<MeetingUsage> Get_TTD_MeetingUsages(TransactionDataSearchParameter searchParameter)
         {
             try
             {
@@ -243,7 +243,7 @@ namespace nIS
         /// Returns the list of emails by subscription
         /// </returns>
         [HttpPost]
-        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(SubscriptionMasterSearchParameter searchParameter)
+        public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(TransactionDataSearchParameter searchParameter)
         {
             try
             {
@@ -313,6 +313,27 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 return this.tenantTransactionDataManager.Get_AccountTransaction(accountSearchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer account saving and spending trend from tenant transaction data repository.
+        /// </summary>
+        /// <param name="accountSearchParameter">The account search parameter</param>
+        /// <returns>
+        /// Returns the list of customer account saving and spending trend
+        /// </returns>
+        [HttpPost]
+        public IList<SavingTrend> Get_SavingTrend(CustomerAccountSearchParameter accountSearchParameter)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.tenantTransactionDataManager.Get_SavingTrend(accountSearchParameter, tenantCode);
             }
             catch (Exception ex)
             {

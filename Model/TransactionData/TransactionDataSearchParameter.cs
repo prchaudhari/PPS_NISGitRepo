@@ -1,11 +1,10 @@
-﻿// <copyright file="CustomerAccountSearchParameter.cs" company="Websym Solutions Pvt Ltd">
+﻿// <copyright file="TransactionDataSearchParameter.cs" company="Websym Solutions Pvt Ltd">
 // Copyright (c) 2018 Websym Solutions Pvt Ltd.
 // </copyright>
 // -----------------------------------------------------------------------  
 
 namespace nIS
 {
-
     #region References
     using System;
     using System.Collections.Generic;
@@ -16,10 +15,11 @@ namespace nIS
     #endregion
 
     /// <summary>
-    /// This class represents customer account search parameter
+    /// This class represents transaction data search parameter
     /// </summary>
     /// 
-    public class CustomerAccountSearchParameter
+
+    public class TransactionDataSearchParameter
     {
         /// <summary>
         /// The utility object
@@ -31,16 +31,12 @@ namespace nIS
         /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
 
-        public long Identifier { get; set; } //send account id value to this property when account master data fetching
         public long BatchId { get; set; }
         public long CustomerId { get; set; }
-        public long AccountId { get; set; } //send account id value to this property when account transaction data fetching
-        public string AccountType { get; set; }
         public string WidgetFilterSetting { get; set; }
 
-
         /// <summary>
-        /// Determines whether this instance of customer account search parameter is valid.
+        /// Determines whether this instance of transaction dta search parameter is valid.
         /// </summary>
         public void IsValid()
         {
@@ -55,6 +51,10 @@ namespace nIS
                 if (validationEngine.IsValidLong(this.CustomerId))
                 {
                     exception.Data.Add(this.utility.GetDescription("Customer Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_CUSTOMER_ID);
+                }
+                if (exception.Data.Count > 0)
+                {
+                    throw exception;
                 }
             }
             catch (Exception ex)

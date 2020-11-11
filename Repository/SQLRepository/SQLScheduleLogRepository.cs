@@ -61,6 +61,11 @@ namespace nIS
         /// </summary>
         private IPageRepository pageRepository = null;
 
+        /// <summary>
+        /// The Tenant configuration repository.
+        /// </summary>
+        private ITenantConfigurationRepository tenantConfigurationRepository = null;
+
         #endregion
 
         #region Constructor
@@ -73,6 +78,7 @@ namespace nIS
             this.configurationutility = new ConfigurationUtility(this.unityContainer);
             this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
+            this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
         }
 
         #endregion
@@ -322,6 +328,8 @@ namespace nIS
                     var batchDetails = new List<BatchDetailRecord>();
                     var renderEngine = new RenderEngineRecord();
 
+                    var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == firstScheduleLogDetailRecord.ScheduleId && item.TenantCode == tenantCode)?.FirstOrDefault();
@@ -368,7 +376,7 @@ namespace nIS
                             parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                             Parallel.ForEach(scheduleLogDetailRecords, parallelOptions, scheduleLogDetail =>
                             {
-                                this.ReGenerateFailedCustomerStatements(scheduleLogDetail, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, renderEngine);
+                                this.ReGenerateFailedCustomerStatements(scheduleLogDetail, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, renderEngine, tenantConfiguration);
                             });
                         }
                     }
@@ -653,7 +661,7 @@ namespace nIS
             }
         }
 
-        private bool ReGenerateFailedCustomerStatements(ScheduleLogDetailRecord scheduleLogDetail, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation, RenderEngineRecord renderEngine)
+        private bool ReGenerateFailedCustomerStatements(ScheduleLogDetailRecord scheduleLogDetail, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation, RenderEngineRecord renderEngine, TenantConfiguration tenantConfiguration)
         {
             try
             {
@@ -678,7 +686,7 @@ namespace nIS
                         TabClassName = it.TabClassName
                     }));
 
-                    var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, newStatementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation);
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, newStatementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration);
                     if (logDetailRecord != null)
                     {
                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))

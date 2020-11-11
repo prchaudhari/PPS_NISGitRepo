@@ -5,16 +5,20 @@
 
 namespace nIS
 {
+    using Microsoft.Practices.ObjectBuilder2;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     #region References
     using System;
     using System.Collections.Generic;
     using System.Drawing.Imaging;
+    using System.Dynamic;
     using System.IO;
     using System.Linq;
     using System.Linq.Dynamic;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Security.Claims;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -664,7 +668,7 @@ namespace nIS
                                                     }
 
                                                     var divLength = mergedlst[x].Width;
-                                                    var divHeight = mergedlst[i].Height * 103 + "px";
+                                                    var divHeight = mergedlst[x].Height * 103 + "px";
                                                     tempRowWidth = tempRowWidth + divLength;
 
                                                     // If current col-lg class length is greater than 12, 
@@ -679,7 +683,7 @@ namespace nIS
                                                     }
                                                     pageHtmlContent.Append("<div class='col-lg-" + divLength + "'>");
 
-                                                    if (mergedlst[x].IsDynamicWidget)
+                                                    if (!mergedlst[x].IsDynamicWidget)
                                                     {
                                                         if (mergedlst[x].WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME)
                                                         {
@@ -873,31 +877,34 @@ namespace nIS
                                                             else if (dynawidget.WidgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
                                                             {
                                                                 var htmlWidget = HtmlConstants.LINE_GRAPH_FOR_STMT;
-                                                                htmlWidget = htmlWidget.Replace("lineGraphcontainer", "{{lineGraphcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                                htmlWidget = htmlWidget.Replace("lineGraphcontainer", "lineGraphcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "");
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                                 htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
+                                                                htmlWidget = htmlWidget + "<input type='hidden' id='hiddenLineGraphData_" + page.Identifier + "_" + mergedlst[x].Identifier + "' value='hiddenLineGraphValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "'>";
                                                                 pageHtmlContent.Append(htmlWidget);
                                                             }
                                                             else if (dynawidget.WidgetType == HtmlConstants.BARGRAPH_DYNAMICWIDGET)
                                                             {
                                                                 var htmlWidget = HtmlConstants.BAR_GRAPH_FOR_STMT;
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = htmlWidget.Replace("barGraphcontainer", "barGraphcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                                htmlWidget = htmlWidget.Replace("barGraphcontainer", "barGraphcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "");
                                                                 htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
+                                                                htmlWidget = htmlWidget + "<input type='hidden' id='hiddenBarGraphData_" + page.Identifier + "_" + mergedlst[x].Identifier + "' value='hiddenBarGraphValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "'>";
                                                                 pageHtmlContent.Append(htmlWidget);
                                                             }
                                                             else if (dynawidget.WidgetType == HtmlConstants.PICHART_DYNAMICWIDGET)
                                                             {
                                                                 var htmlWidget = HtmlConstants.PIE_CHART_FOR_STMT;
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = htmlWidget.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
+                                                                htmlWidget = htmlWidget.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "");
                                                                 htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
+                                                                htmlWidget = htmlWidget + "<input type='hidden' id='hiddenPieChartData_" + page.Identifier + "_" + mergedlst[x].Identifier + "' value='hiddenPieChartValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "'>";
                                                                 pageHtmlContent.Append(htmlWidget);
                                                             }
                                                             else if (dynawidget.WidgetType == HtmlConstants.HTMLWIDGETPREVIEW)
@@ -1388,22 +1395,22 @@ namespace nIS
                                 }
                             }
                         }
+                    }
 
-                        if (linegraphIds.Count > 0)
-                        {
-                            var ids = string.Join(",", linegraphIds.Select(item => item).ToList());
-                            pageContent.Append("<input type = 'hidden' id = 'hiddenLineChartIds' value = '" + ids + "'>");
-                        }
-                        if (bargraphIds.Count > 0)
-                        {
-                            var ids = string.Join(",", bargraphIds.Select(item => item).ToList());
-                            pageContent.Append("<input type = 'hidden' id = 'hiddenBarChartIds' value = '" + ids + "'>");
-                        }
-                        if (piechartIds.Count > 0)
-                        {
-                            var ids = string.Join(",", piechartIds.Select(item => item).ToList());
-                            pageContent.Append("<input type = 'hidden' id = 'hiddenPieChartIds' value = '" + ids + "'>");
-                        }
+                    if (linegraphIds.Count > 0)
+                    {
+                        var ids = string.Join(",", linegraphIds.Select(item => item).ToList());
+                        pageContent.Append("<input type = 'hidden' id = 'hiddenLineChartIds' value = '" + ids + "'>");
+                    }
+                    if (bargraphIds.Count > 0)
+                    {
+                        var ids = string.Join(",", bargraphIds.Select(item => item).ToList());
+                        pageContent.Append("<input type = 'hidden' id = 'hiddenBarChartIds' value = '" + ids + "'>");
+                    }
+                    if (piechartIds.Count > 0)
+                    {
+                        var ids = string.Join(",", piechartIds.Select(item => item).ToList());
+                        pageContent.Append("<input type = 'hidden' id = 'hiddenPieChartIds' value = '" + ids + "'>");
                     }
 
                     newPageContent.Append(pageContent);
@@ -1449,7 +1456,7 @@ namespace nIS
         /// <param name="statement"> the statement object </param>
         /// <param name="statementPageContents"> the statement page html content list</param>
         /// <param name="tenantCode"> the tenant code </param>
-        public StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, string tenantCode)
+        public StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             try
             {
@@ -1803,27 +1810,50 @@ namespace nIS
                             if (dynaWidgets.Count > 0)
                             {
                                 var dynawidget = dynaWidgets.FirstOrDefault();
+                                TenantEntity entity = new TenantEntity();
+                                entity.Identifier = dynawidget.EntityId;
+                                entity.Name = dynawidget.EntityName;
+                                CustomeTheme themeDetails = new CustomeTheme();
+                                if (dynawidget.ThemeType == "Default")
+                                {
+                                    themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(tenantConfiguration.WidgetThemeSetting);
+                                }
+                                else
+                                {
+                                    themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
+                                }
+
                                 if (dynawidget.WidgetType == HtmlConstants.TABLE_DYNAMICWIDGET)
                                 {
+                                    pageContent.Replace("{{tableBody_" + page.Identifier + "_" + widget.Identifier + "}}", dynawidget.PreviewData);
                                 }
                                 else if (dynawidget.WidgetType == HtmlConstants.FORM_DYNAMICWIDGET)
                                 {
+                                    pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", dynawidget.PreviewData);
                                 }
                                 else if (dynawidget.WidgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
                                 {
+                                    pageContent.Replace("hiddenLineGraphValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
+                                    scriptHtmlRenderer.Append(HtmlConstants.LINE_GRAPH_WIDGET_SCRIPT.Replace("linechartcontainer", "lineGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenLineGraphData", "hiddenLineGraphData_" + page.Identifier + "_" + widget.Identifier));
                                 }
                                 else if (dynawidget.WidgetType == HtmlConstants.BARGRAPH_DYNAMICWIDGET)
                                 {
+                                    pageContent.Replace("hiddenBarGraphValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
+                                    scriptHtmlRenderer.Append(HtmlConstants.BAR_GRAPH_WIDGET_SCRIPT.Replace("barchartcontainer", "barGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenBarGraphData", "hiddenBarGraphData_" + page.Identifier + "_" + widget.Identifier));
                                 }
                                 else if (dynawidget.WidgetType == HtmlConstants.PICHART_DYNAMICWIDGET)
                                 {
+                                    pageContent.Replace("hiddenPieChartValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
+                                    scriptHtmlRenderer.Append(HtmlConstants.PIE_CHART_WIDGET_SCRIPT.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenPieChartData", "hiddenPieChartData_" + page.Identifier + "_" + widget.Identifier));
                                 }
                                 else if (dynawidget.WidgetType == HtmlConstants.HTMLWIDGETPREVIEW)
                                 {
+                                    var entityFieldMaps = this.dynamicWidgetRepository.GetEntityFields(dynawidget.EntityId, tenantCode);
+                                    string data = this.GetHTMLPreviewData(entity, entityFieldMaps, dynawidget.PreviewData);
+                                    pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", data);
                                 }
                             }
                         }
-                        
                     }
 
                     newPageContent.Append(pageContent);
@@ -1875,11 +1905,12 @@ namespace nIS
         /// <param name="batchMaster"> the batch master object </param>
         /// <param name="batchDetails"> the list of batch details records </param>
         /// <param name="baseURL"> the base URL of API </param>
-        public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation)
+        public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation, TenantConfiguration tenantConfiguration)
         {
             ScheduleLogDetailRecord logDetailRecord = new ScheduleLogDetailRecord();
             StringBuilder ErrorMessages = new StringBuilder();
             bool IsFailed = false;
+            bool IsSavingOrCurrentAccountPagePresent = false;
             IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
             try
             {
@@ -1891,37 +1922,45 @@ namespace nIS
                     IList<AccountMasterRecord> curerntaccountrecords = new List<AccountMasterRecord>();
                     IList<CustomerMediaRecord> customerMedias = new List<CustomerMediaRecord>();
 
+                    var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
-                        customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
-                    }
-                    if (accountrecords == null || accountrecords.Count == 0)
-                    {
-                        ErrorMessages.Append("<li>Account master data is not available for this customer..!!</li>");
-                        IsFailed = true;
-                    }
-                    else
-                    {
-                        var records = accountrecords.Where(item => item.AccountType.Equals(string.Empty)).ToList();
-                        if (records.Count > 0)
+                        var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
+                        IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
+                        if (IsSavingOrCurrentAccountPagePresent)
                         {
-                            ErrorMessages.Append("<li>Invalid account master data for this customer..!!</li>");
-                            IsFailed = true;
+                            accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
+                            if ((accountrecords == null || accountrecords.Count == 0))
+                            {
+                                ErrorMessages.Append("<li>Account master data is not available for this customer..!!</li>");
+                                IsFailed = true;
+                            }
+                            else
+                            {
+                                var records = accountrecords.Where(item => item.AccountType.Equals(string.Empty)).ToList();
+                                if (records.Count > 0)
+                                {
+                                    ErrorMessages.Append("<li>Invalid account master data for this customer..!!</li>");
+                                    IsFailed = true;
+                                }
+                            }
                         }
+
+                        customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
                     }
 
                     StringBuilder htmlbody = new StringBuilder();
-                    currency = accountrecords[0].Currency;
+                    currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
                     string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/logo.png");
                     navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
-                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
+                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
                     //start to render actual html content data
                     StringBuilder scriptHtmlRenderer = new StringBuilder();
                     StringBuilder navbar = new StringBuilder();
-                    int accountCount = 0;
+                    int subPageCount = 0;
                     string accountNumber = string.Empty;
                     string accountType = string.Empty;
                     long accountId = 0;
@@ -1930,7 +1969,7 @@ namespace nIS
                     string AnalyticsChartJson = string.Empty;
                     string SavingTransactionGridJson = string.Empty;
                     string CurrentTransactionGridJson = string.Empty;
-                    WebClient webClient = new WebClient();
+                    HttpClient httpClient = null;
 
                     var newStatementPageContents = new List<StatementPageContent>();
                     statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
@@ -1951,29 +1990,29 @@ namespace nIS
                         var page = statement.Pages[i];
                         StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
 
-                        if (page.PageTypeName == HtmlConstants.HOME_PAGE)
+                        subPageCount = 1;
+                        if (IsSavingOrCurrentAccountPagePresent)
                         {
-                            accountCount = 1;
-                        }
-                        else if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
-                        {
-                            savingaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving"))?.ToList();
-                            if (savingaccountrecords == null || savingaccountrecords.Count == 0)
+                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                             {
-                                ErrorMessages.Append("<li>Saving account master data is not available for this customer..!!</li>");
-                                IsFailed = true;
+                                savingaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving"))?.ToList();
+                                if (savingaccountrecords == null || savingaccountrecords.Count == 0)
+                                {
+                                    ErrorMessages.Append("<li>Saving account master data is not available for this customer..!!</li>");
+                                    IsFailed = true;
+                                }
+                                subPageCount = savingaccountrecords.Count;
                             }
-                            accountCount = savingaccountrecords.Count;
-                        }
-                        else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
-                        {
-                            curerntaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current"))?.ToList();
-                            if (curerntaccountrecords == null || curerntaccountrecords.Count == 0)
+                            else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                             {
-                                ErrorMessages.Append("<li>Current account master data is not available for this customer..!!</li>");
-                                IsFailed = true;
+                                curerntaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current"))?.ToList();
+                                if (curerntaccountrecords == null || curerntaccountrecords.Count == 0)
+                                {
+                                    ErrorMessages.Append("<li>Current account master data is not available for this customer..!!</li>");
+                                    IsFailed = true;
+                                }
+                                subPageCount = curerntaccountrecords.Count;
                             }
-                            accountCount = curerntaccountrecords.Count;
                         }
 
                         StringBuilder SubTabs = new StringBuilder();
@@ -1988,50 +2027,53 @@ namespace nIS
                         StringBuilder newPageContent = new StringBuilder();
                         newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
 
-                        for (int x = 0; x < accountCount; x++)
+                        for (int x = 0; x < subPageCount; x++)
                         {
-                            accountNumber = string.Empty;
-                            accountType = string.Empty;
-                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
+                            accountNumber = string.Empty; //also use for Subscription
+                            accountType = string.Empty; //also use for vendor name
+                            if (IsSavingOrCurrentAccountPagePresent)
                             {
-                                accountNumber = savingaccountrecords[x].AccountNumber;
-                                accountId = savingaccountrecords[x].Id;
-                                accountType = savingaccountrecords[x].AccountType;
-                            }
-                            if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
-                            {
-                                accountNumber = curerntaccountrecords[x].AccountNumber;
-                                accountId = curerntaccountrecords[x].Id;
-                                accountType = curerntaccountrecords[x].AccountType;
-                            }
-
-                            string lastFourDigisOfAccountNumber = accountNumber.Length > 4 ? accountNumber.Substring(Math.Max(0, accountNumber.Length - 4)) : accountNumber;
-                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
-                            {
-                                if (x == 0)
-                                {
-                                    SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
-                                }
-
-                                SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " +
-                                    " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
-
-                                newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") +
-                                    "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "")
-                                    + "'>");
-
                                 if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                                 {
-                                    newPageContent.Append("<input type='hidden' id='SavingAccountId' name='SavingAccountId' value='" + accountId + "'>");
+                                    accountNumber = savingaccountrecords[x].AccountNumber;
+                                    accountId = savingaccountrecords[x].Id;
+                                    accountType = savingaccountrecords[x].AccountType;
                                 }
-                                else
+                                else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                                 {
-                                    newPageContent.Append("<input type='hidden' id='CurrentAccountId' name='CurrentAccountId' value='" + accountId + "'>");
+                                    accountNumber = curerntaccountrecords[x].AccountNumber;
+                                    accountId = curerntaccountrecords[x].Id;
+                                    accountType = curerntaccountrecords[x].AccountType;
                                 }
 
-                                if (x == accountCount - 1)
+                                string lastFourDigisOfAccountNumber = accountNumber.Length > 4 ? accountNumber.Substring(Math.Max(0, accountNumber.Length - 4)) : accountNumber;
+                                if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                                 {
-                                    SubTabs.Append("</ul>");
+                                    if (x == 0)
+                                    {
+                                        SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
+                                    }
+
+                                    SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " +
+                                        " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
+
+                                    newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") +
+                                        "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "")
+                                        + "'>");
+
+                                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
+                                    {
+                                        newPageContent.Append("<input type='hidden' id='SavingAccountId' name='SavingAccountId' value='" + accountId + "'>");
+                                    }
+                                    else
+                                    {
+                                        newPageContent.Append("<input type='hidden' id='CurrentAccountId' name='CurrentAccountId' value='" + accountId + "'>");
+                                    }
+
+                                    if (x == subPageCount - 1)
+                                    {
+                                        SubTabs.Append("</ul>");
+                                    }
                                 }
                             }
 
@@ -2040,586 +2082,899 @@ namespace nIS
                             for (int j = 0; j < pagewidgets.Count; j++)
                             {
                                 var widget = pagewidgets[j];
-                                if (widget.WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME) //Customer Information Widget
+                                if (!widget.IsDynamicWidget)
                                 {
-                                    pageContent.Replace("{{CustomerName}}", (customer.FirstName.Trim() + " " + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim()));
-                                    pageContent.Replace("{{Address1}}", customer.AddressLine1);
-                                    string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
-                                    pageContent.Replace("{{Address2}}", address2);
+                                    if (widget.WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME) //Customer Information Widget
+                                    {
+                                        pageContent.Replace("{{CustomerName}}", (customer.FirstName.Trim() + " " + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim()));
+                                        pageContent.Replace("{{Address1}}", customer.AddressLine1);
+                                        string address2 = (customer.AddressLine2 != "" ? customer.AddressLine2 + ", " : "") + (customer.City != "" ? customer.City + ", " : "") + (customer.State != "" ? customer.State + ", " : "") + (customer.Country != "" ? customer.Country + ", " : "") + (customer.Zip != "" ? customer.Zip : "");
+                                        pageContent.Replace("{{Address2}}", address2);
 
-                                    var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
-                                    if (custMedia != null && custMedia.VideoURL != string.Empty)
-                                    {
-                                        pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", custMedia.VideoURL);
-                                    }
-                                    else
-                                    {
-                                        var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                                        if (batchDetail != null && batchDetail.VideoURL != string.Empty)
+                                        var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+                                        if (custMedia != null && custMedia.VideoURL != string.Empty)
                                         {
-                                            pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
-                                        }
-                                    }
-                                }
-                                else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
-                                {
-                                    StringBuilder AccDivData = new StringBuilder();
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Date" + "</div><label class='list-value mb-0'>" + Convert.ToDateTime(customer.StatementDate).ToShortDateString() + "</label></div></div>");
-
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Period" + "</div><label class='list-value mb-0'>" + customer.StatementPeriod + "</label></div></div>");
-
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Cusomer ID" + "</div><label class='list-value mb-0'>" + customer.CustomerCode + "</label></div></div>");
-
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Name" + "</div><label class='list-value mb-0'>" + customer.RmName + "</label></div></div>");
-
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number" + "</div><label class='list-value mb-0'>" + customer.RmContactNumber + "</label></div></div>");
-                                    pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
-                                }
-                                else if (widget.WidgetName == HtmlConstants.IMAGE_WIDGET_NAME) //Image Widget
-                                {
-                                    var imgAssetFilepath = string.Empty;
-                                    if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
-                                    {
-                                        dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                                        if (widgetSetting.isPersonalize == false) //Is not dynamic image, then assign selected image from asset library
-                                        {
-                                            var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
-                                            if (asset != null)
-                                            {
-                                                var path = asset.FilePath.ToString();
-                                                var fileName = asset.Name;
-                                                var imagePath = outputLocation + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
-                                                if (File.Exists(path) && !File.Exists(imagePath + "\\" + fileName))
-                                                {
-                                                    File.Copy(path, Path.Combine(imagePath, fileName));
-                                                }
-                                                imgAssetFilepath = "./" + fileName;
-                                            }
-                                            else
-                                            {
-                                                ErrorMessages.Append("<li>Image asset file not found in asset library for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for image widget..!!</li>");
-                                                IsFailed = true;
-                                            }
-                                        }
-                                        else //Is dynamic image, then assign it from database 
-                                        {
-                                            var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
-                                            if (custMedia != null && custMedia.ImageURL != string.Empty)
-                                            {
-                                                imgAssetFilepath = custMedia.ImageURL;
-                                            }
-                                            else
-                                            {
-                                                var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                                                if (batchDetail != null && batchDetail.ImageURL != string.Empty)
-                                                {
-                                                    imgAssetFilepath = batchDetail.ImageURL;
-                                                }
-                                                else
-                                                {
-                                                    ErrorMessages.Append("<li>Image not found for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for image widget..!!</li>");
-                                                    IsFailed = true;
-                                                }
-                                            }
-                                        }
-                                        pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgAssetFilepath);
-                                    }
-                                    else
-                                    {
-                                        ErrorMessages.Append("<li>Image widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!</li>");
-                                        IsFailed = true;
-                                    }
-                                }
-                                else if (widget.WidgetName == HtmlConstants.VIDEO_WIDGET_NAME) //Video widget
-                                {
-                                    var vdoAssetFilepath = string.Empty;
-                                    if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
-                                    {
-                                        dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                                        if (widgetSetting.isEmbedded == true)//If embedded then assigned it it from widget config json source url
-                                        {
-                                            vdoAssetFilepath = widgetSetting.SourceUrl;
-                                        }
-                                        else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false) //If not dynamic video, then assign selected video from asset library
-                                        {
-                                            var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
-                                            if (asset != null)
-                                            {
-                                                var path = asset.FilePath.ToString();
-                                                var fileName = asset.Name;
-                                                var videoPath = outputLocation + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
-                                                if (File.Exists(path) && !File.Exists(videoPath + "\\" + fileName))
-                                                {
-                                                    File.Copy(path, Path.Combine(videoPath, fileName));
-                                                }
-                                                vdoAssetFilepath = "./" + fileName;
-                                            }
-                                            else
-                                            {
-                                                ErrorMessages.Append("<li>Video asset file not found in asset library for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for video widget..!!</li>");
-                                                IsFailed = true;
-                                            }
-                                        }
-                                        else //If dynamic video, then assign it from database 
-                                        {
-                                            var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
-                                            if (custMedia != null && custMedia.VideoURL != string.Empty)
-                                            {
-                                                vdoAssetFilepath = custMedia.VideoURL;
-                                            }
-                                            else
-                                            {
-                                                var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                                                if (batchDetail != null && batchDetail.VideoURL != string.Empty)
-                                                {
-                                                    vdoAssetFilepath = batchDetail.VideoURL;
-                                                }
-                                                else
-                                                {
-                                                    ErrorMessages.Append("<li>Video not found for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for video widget..!!</li>");
-                                                    IsFailed = true;
-                                                }
-                                            }
-                                        }
-                                        pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", vdoAssetFilepath);
-                                    }
-                                    else
-                                    {
-                                        ErrorMessages.Append("<li>Video widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!</li>");
-                                        IsFailed = true;
-                                    }
-                                }
-                                else if (widget.WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME) //Summary at Glance Widget
-                                {
-                                    if (accountrecords != null && accountrecords.Count > 0)
-                                    {
-                                        StringBuilder accSummary = new StringBuilder();
-                                        var accRecords = accountrecords.GroupBy(item => item.AccountType).ToList();
-                                        accRecords.ToList().ForEach(acc =>
-                                        {
-                                            accSummary.Append("<tr><td>" + acc.FirstOrDefault().AccountType + "</td><td>" + acc.FirstOrDefault().Currency + "</td><td>" + acc.Sum(it => it.Balance).ToString() + "</td></tr>");
-                                        });
-                                        pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
-                                    }
-                                    else
-                                    {
-                                        ErrorMessages.Append("<li>Account master data is not available related to Summary at Glance widget..!!</li>");
-                                        IsFailed = true;
-                                    }
-                                }
-                                else if (widget.WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
-                                {
-                                    if (accountrecords != null && accountrecords.Count > 0)
-                                    {
-                                        var currentAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current") && item.Id == accountId)?.ToList();
-                                        if (currentAccountRecords != null && currentAccountRecords.Count > 0)
-                                        {
-                                            var records = currentAccountRecords.GroupBy(item => item.AccountType).ToList();
-                                            records?.ToList().ForEach(acc =>
-                                            {
-                                                var accountIndicatorClass = acc.FirstOrDefault().Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
-                                                pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
-                                                pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.GrandTotal).ToString()));
-                                                pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalDeposit).ToString()));
-                                                pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalSpend).ToString()));
-                                                pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.ProfitEarned).ToString()));
-                                            });
+                                            pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", custMedia.VideoURL);
                                         }
                                         else
                                         {
-                                            ErrorMessages.Append("<li>Current Account master data is not available related to Current Available Balance widget..!!</li>");
-                                            IsFailed = true;
+                                            var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
+                                            if (batchDetail != null && batchDetail.VideoURL != string.Empty)
+                                            {
+                                                pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", batchDetail.VideoURL);
+                                            }
                                         }
                                     }
-                                    else
+                                    else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME) //Account Information Widget
                                     {
-                                        ErrorMessages.Append("<li>Account master data is not available related to Current Available Balance widget..!!</li>");
-                                        IsFailed = true;
+                                        StringBuilder AccDivData = new StringBuilder();
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Date" + "</div><label class='list-value mb-0'>" + Convert.ToDateTime(customer.StatementDate).ToShortDateString() + "</label></div></div>");
+
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Statement Period" + "</div><label class='list-value mb-0'>" + customer.StatementPeriod + "</label></div></div>");
+
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>Cusomer ID" + "</div><label class='list-value mb-0'>" + customer.CustomerCode + "</label></div></div>");
+
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Name" + "</div><label class='list-value mb-0'>" + customer.RmName + "</label></div></div>");
+
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number" + "</div><label class='list-value mb-0'>" + customer.RmContactNumber + "</label></div></div>");
+                                        pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
                                     }
-                                }
-                                else if (widget.WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
-                                {
-                                    if (accountrecords != null && accountrecords.Count > 0)
+                                    else if (widget.WidgetName == HtmlConstants.IMAGE_WIDGET_NAME) //Image Widget
                                     {
-                                        var savingAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving") && item.Id == accountId)?.ToList();
-                                        if (savingAccountRecords != null && savingAccountRecords.Count > 0)
+                                        var imgAssetFilepath = string.Empty;
+                                        if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                                         {
-                                            var records = savingAccountRecords.GroupBy(item => item.AccountType).ToList();
-                                            records?.ToList().ForEach(acc =>
+                                            dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                                            if (widgetSetting.isPersonalize == false) //Is not dynamic image, then assign selected image from asset library
                                             {
-                                                var accountIndicatorClass = acc.FirstOrDefault().Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
-                                                pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
-                                                pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.GrandTotal).ToString()));
-                                                pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalDeposit).ToString()));
-                                                pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalSpend).ToString()));
-                                                pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.ProfitEarned).ToString()));
-                                            });
+                                                var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                                if (asset != null)
+                                                {
+                                                    var path = asset.FilePath.ToString();
+                                                    var fileName = asset.Name;
+                                                    var imagePath = outputLocation + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+                                                    if (File.Exists(path) && !File.Exists(imagePath + "\\" + fileName))
+                                                    {
+                                                        File.Copy(path, Path.Combine(imagePath, fileName));
+                                                    }
+                                                    imgAssetFilepath = "./" + fileName;
+                                                }
+                                                else
+                                                {
+                                                    ErrorMessages.Append("<li>Image asset file not found in asset library for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for image widget..!!</li>");
+                                                    IsFailed = true;
+                                                }
+                                            }
+                                            else //Is dynamic image, then assign it from database 
+                                            {
+                                                var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+                                                if (custMedia != null && custMedia.ImageURL != string.Empty)
+                                                {
+                                                    imgAssetFilepath = custMedia.ImageURL;
+                                                }
+                                                else
+                                                {
+                                                    var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
+                                                    if (batchDetail != null && batchDetail.ImageURL != string.Empty)
+                                                    {
+                                                        imgAssetFilepath = batchDetail.ImageURL;
+                                                    }
+                                                    else
+                                                    {
+                                                        ErrorMessages.Append("<li>Image not found for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for image widget..!!</li>");
+                                                        IsFailed = true;
+                                                    }
+                                                }
+                                            }
+                                            pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgAssetFilepath);
                                         }
                                         else
                                         {
-                                            ErrorMessages.Append("<li>Saving Account master data is not available related to Saving Available Balance widget..!!</li>");
+                                            ErrorMessages.Append("<li>Image widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!</li>");
                                             IsFailed = true;
                                         }
                                     }
-                                    else
+                                    else if (widget.WidgetName == HtmlConstants.VIDEO_WIDGET_NAME) //Video widget
                                     {
-                                        ErrorMessages.Append("<li>Account master data is not available related to Saving Available Balance widget..!!</li>");
-                                        IsFailed = true;
-                                    }
-                                }
-                                else if (widget.WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
-                                {
-                                    IList<AccountTransactionRecord> accountTransactions = new List<AccountTransactionRecord>();
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                    {
-                                        accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving") && item.AccountId == accountId && item.TenantCode == tenantCode)?.OrderByDescending(item => item.TransactionDate)?.ToList();
-
-                                        StringBuilder transaction = new StringBuilder();
-                                        StringBuilder selectOption = new StringBuilder();
-                                        if (accountTransactions != null && accountTransactions.Count > 0)
+                                        var vdoAssetFilepath = string.Empty;
+                                        if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                                         {
-                                            IList<AccountTransaction> transactions = new List<AccountTransaction>();
-                                            pageContent.Replace("{{Currency}}", currency);
-                                            accountTransactions.ToList().ForEach(trans =>
+                                            dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                                            if (widgetSetting.isEmbedded == true)//If embedded then assigned it it from widget config json source url
                                             {
-                                                AccountTransaction accountTransaction = new AccountTransaction();
-                                                accountTransaction.AccountType = trans.AccountType;
-                                                accountTransaction.TransactionDate = Convert.ToDateTime(trans.TransactionDate).ToShortDateString();
-                                                accountTransaction.TransactionType = trans.TransactionType;
-                                                accountTransaction.FCY = trans.FCY;
-                                                accountTransaction.Narration = trans.Narration;
-                                                accountTransaction.LCY = trans.LCY;
-                                                accountTransaction.CurrentRate = trans.CurrentRate;
-                                                transactions.Add(accountTransaction);
-                                            });
-                                            string savingtransactionjson = JsonConvert.SerializeObject(transactions);
-                                            if (savingtransactionjson != null && savingtransactionjson != string.Empty)
+                                                vdoAssetFilepath = widgetSetting.SourceUrl;
+                                            }
+                                            else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false) //If not dynamic video, then assign selected video from asset library
                                             {
-                                                var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
-                                                distinctNaration.ToList().ForEach(item =>
+                                                var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                                if (asset != null)
                                                 {
-                                                    selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                    var path = asset.FilePath.ToString();
+                                                    var fileName = asset.Name;
+                                                    var videoPath = outputLocation + "\\Statements\\" + batchMaster.Id + "\\" + customer.Id;
+                                                    if (File.Exists(path) && !File.Exists(videoPath + "\\" + fileName))
+                                                    {
+                                                        File.Copy(path, Path.Combine(videoPath, fileName));
+                                                    }
+                                                    vdoAssetFilepath = "./" + fileName;
+                                                }
+                                                else
+                                                {
+                                                    ErrorMessages.Append("<li>Video asset file not found in asset library for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for video widget..!!</li>");
+                                                    IsFailed = true;
+                                                }
+                                            }
+                                            else //If dynamic video, then assign it from database 
+                                            {
+                                                var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+                                                if (custMedia != null && custMedia.VideoURL != string.Empty)
+                                                {
+                                                    vdoAssetFilepath = custMedia.VideoURL;
+                                                }
+                                                else
+                                                {
+                                                    var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
+                                                    if (batchDetail != null && batchDetail.VideoURL != string.Empty)
+                                                    {
+                                                        vdoAssetFilepath = batchDetail.VideoURL;
+                                                    }
+                                                    else
+                                                    {
+                                                        ErrorMessages.Append("<li>Video not found for Page: " + page.Identifier + " and Widget: " + widget.Identifier + " for video widget..!!</li>");
+                                                        IsFailed = true;
+                                                    }
+                                                }
+                                            }
+                                            pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", vdoAssetFilepath);
+                                        }
+                                        else
+                                        {
+                                            ErrorMessages.Append("<li>Video widget configuration is missing for Page: " + page.Identifier + " and Widget: " + widget.Identifier + "!!</li>");
+                                            IsFailed = true;
+                                        }
+                                    }
+                                    else if (widget.WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME) //Summary at Glance Widget
+                                    {
+                                        if (accountrecords != null && accountrecords.Count > 0)
+                                        {
+                                            StringBuilder accSummary = new StringBuilder();
+                                            var accRecords = accountrecords.GroupBy(item => item.AccountType).ToList();
+                                            accRecords.ToList().ForEach(acc =>
+                                            {
+                                                accSummary.Append("<tr><td>" + acc.FirstOrDefault().AccountType + "</td><td>" + acc.FirstOrDefault().Currency + "</td><td>" + acc.Sum(it => it.Balance).ToString() + "</td></tr>");
+                                            });
+                                            pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
+                                        }
+                                        else
+                                        {
+                                            ErrorMessages.Append("<li>Account master data is not available related to Summary at Glance widget..!!</li>");
+                                            IsFailed = true;
+                                        }
+                                    }
+                                    else if (widget.WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
+                                    {
+                                        if (accountrecords != null && accountrecords.Count > 0)
+                                        {
+                                            var currentAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current") && item.Id == accountId)?.ToList();
+                                            if (currentAccountRecords != null && currentAccountRecords.Count > 0)
+                                            {
+                                                var records = currentAccountRecords.GroupBy(item => item.AccountType).ToList();
+                                                records?.ToList().ForEach(acc =>
+                                                {
+                                                    var accountIndicatorClass = acc.FirstOrDefault().Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
+                                                    pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
+                                                    pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.GrandTotal).ToString()));
+                                                    pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalDeposit).ToString()));
+                                                    pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalSpend).ToString()));
+                                                    pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.ProfitEarned).ToString()));
                                                 });
+                                            }
+                                            else
+                                            {
+                                                ErrorMessages.Append("<li>Current Account master data is not available related to Current Available Balance widget..!!</li>");
+                                                IsFailed = true;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            ErrorMessages.Append("<li>Account master data is not available related to Current Available Balance widget..!!</li>");
+                                            IsFailed = true;
+                                        }
+                                    }
+                                    else if (widget.WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
+                                    {
+                                        if (accountrecords != null && accountrecords.Count > 0)
+                                        {
+                                            var savingAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving") && item.Id == accountId)?.ToList();
+                                            if (savingAccountRecords != null && savingAccountRecords.Count > 0)
+                                            {
+                                                var records = savingAccountRecords.GroupBy(item => item.AccountType).ToList();
+                                                records?.ToList().ForEach(acc =>
+                                                {
+                                                    var accountIndicatorClass = acc.FirstOrDefault().Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
+                                                    pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
+                                                    pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.GrandTotal).ToString()));
+                                                    pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalDeposit).ToString()));
+                                                    pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.TotalSpend).ToString()));
+                                                    pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (currency + " " + acc.Sum(it => it.ProfitEarned).ToString()));
+                                                });
+                                            }
+                                            else
+                                            {
+                                                ErrorMessages.Append("<li>Saving Account master data is not available related to Saving Available Balance widget..!!</li>");
+                                                IsFailed = true;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            ErrorMessages.Append("<li>Account master data is not available related to Saving Available Balance widget..!!</li>");
+                                            IsFailed = true;
+                                        }
+                                    }
+                                    else if (widget.WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
+                                    {
+                                        IList<AccountTransactionRecord> accountTransactions = new List<AccountTransactionRecord>();
+                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                        {
+                                            accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving") && item.AccountId == accountId && item.TenantCode == tenantCode)?.OrderByDescending(item => item.TransactionDate)?.ToList();
 
-                                                SavingTransactionGridJson = "savingtransactiondata" + accountId + page.Identifier + "=" + savingtransactionjson;
-                                                this.utility.WriteToJsonFile(SavingTransactionGridJson, "savingtransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
-                                                scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtransactiondetail" + accountId + page.Identifier + ".json'></script>");
+                                            StringBuilder transaction = new StringBuilder();
+                                            StringBuilder selectOption = new StringBuilder();
+                                            if (accountTransactions != null && accountTransactions.Count > 0)
+                                            {
+                                                IList<AccountTransaction> transactions = new List<AccountTransaction>();
+                                                pageContent.Replace("{{Currency}}", currency);
+                                                accountTransactions.ToList().ForEach(trans =>
+                                                {
+                                                    AccountTransaction accountTransaction = new AccountTransaction();
+                                                    accountTransaction.AccountType = trans.AccountType;
+                                                    accountTransaction.TransactionDate = Convert.ToDateTime(trans.TransactionDate).ToShortDateString();
+                                                    accountTransaction.TransactionType = trans.TransactionType;
+                                                    accountTransaction.FCY = trans.FCY;
+                                                    accountTransaction.Narration = trans.Narration;
+                                                    accountTransaction.LCY = trans.LCY;
+                                                    accountTransaction.CurrentRate = trans.CurrentRate;
+                                                    transactions.Add(accountTransaction);
+                                                });
+                                                string savingtransactionjson = JsonConvert.SerializeObject(transactions);
+                                                if (savingtransactionjson != null && savingtransactionjson != string.Empty)
+                                                {
+                                                    var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
+                                                    distinctNaration.ToList().ForEach(item =>
+                                                    {
+                                                        selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                    });
 
-                                                StringBuilder scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
-                                                scriptval.Replace("SavingTransactionTable", "SavingTransactionTable" + accountId + page.Identifier);
-                                                scriptval.Replace("savingtransactiondata", "savingtransactiondata" + accountId + page.Identifier);
-                                                scriptval.Replace("savingShowAll", "savingShowAll" + accountId + page.Identifier);
-                                                scriptval.Replace("filterStatus", "filterStatus" + accountId + page.Identifier);
-                                                scriptval.Replace("ResetGrid", "ResetGrid" + accountId + page.Identifier);
-                                                scriptval.Replace("PrintGrid", "PrintGrid" + accountId + page.Identifier);
-                                                scriptval.Replace("savingtransactionRadio", "savingtransactionRadio" + accountId + page.Identifier);
-                                                scriptHtmlRenderer.Append(scriptval);
+                                                    SavingTransactionGridJson = "savingtransactiondata" + accountId + page.Identifier + "=" + savingtransactionjson;
+                                                    this.utility.WriteToJsonFile(SavingTransactionGridJson, "savingtransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
+                                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtransactiondetail" + accountId + page.Identifier + ".json'></script>");
 
-                                                pageContent.Replace("savingtransactiondata", "savingtransactiondata" + accountId + page.Identifier);
-                                                pageContent.Replace("savingShowAll", "savingShowAll" + accountId + page.Identifier);
-                                                pageContent.Replace("filterStatus", "filterStatus" + accountId + page.Identifier);
-                                                pageContent.Replace("ResetGrid", "ResetGrid" + accountId + page.Identifier);
-                                                pageContent.Replace("PrintGrid", "PrintGrid" + accountId + page.Identifier);
-                                                pageContent.Replace("savingtransactionRadio", "savingtransactionRadio" + accountId + page.Identifier);
-                                                pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
-                                                pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + accountId + page.Identifier);
+                                                    StringBuilder scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
+                                                    scriptval.Replace("SavingTransactionTable", "SavingTransactionTable" + accountId + page.Identifier);
+                                                    scriptval.Replace("savingtransactiondata", "savingtransactiondata" + accountId + page.Identifier);
+                                                    scriptval.Replace("savingShowAll", "savingShowAll" + accountId + page.Identifier);
+                                                    scriptval.Replace("filterStatus", "filterStatus" + accountId + page.Identifier);
+                                                    scriptval.Replace("ResetGrid", "ResetGrid" + accountId + page.Identifier);
+                                                    scriptval.Replace("PrintGrid", "PrintGrid" + accountId + page.Identifier);
+                                                    scriptval.Replace("savingtransactionRadio", "savingtransactionRadio" + accountId + page.Identifier);
+                                                    scriptHtmlRenderer.Append(scriptval);
+
+                                                    pageContent.Replace("savingtransactiondata", "savingtransactiondata" + accountId + page.Identifier);
+                                                    pageContent.Replace("savingShowAll", "savingShowAll" + accountId + page.Identifier);
+                                                    pageContent.Replace("filterStatus", "filterStatus" + accountId + page.Identifier);
+                                                    pageContent.Replace("ResetGrid", "ResetGrid" + accountId + page.Identifier);
+                                                    pageContent.Replace("PrintGrid", "PrintGrid" + accountId + page.Identifier);
+                                                    pageContent.Replace("savingtransactionRadio", "savingtransactionRadio" + accountId + page.Identifier);
+                                                    pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+                                                    pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + accountId + page.Identifier);
+                                                }
+                                                else
+                                                {
+                                                    transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
+                                                }
                                             }
                                             else
                                             {
                                                 transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
                                             }
-                                        }
-                                        else
-                                        {
-                                            transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
-                                        }
 
-                                        pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
+                                            pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
+                                        }
                                     }
-                                }
-                                else if (widget.WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
-                                {
-                                    IList<AccountTransactionRecord> accountTransactions = new List<AccountTransactionRecord>();
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                    else if (widget.WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
                                     {
-                                        accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current") && item.AccountId == accountId && item.TenantCode == tenantCode)?.OrderByDescending(item => item.TransactionDate)?.ToList();
-
-                                        StringBuilder transaction = new StringBuilder();
-                                        StringBuilder selectOption = new StringBuilder();
-                                        if (accountTransactions != null && accountTransactions.Count > 0)
+                                        IList<AccountTransactionRecord> accountTransactions = new List<AccountTransactionRecord>();
+                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                         {
-                                            IList<AccountTransaction> transactions = new List<AccountTransaction>();
-                                            pageContent.Replace("{{Currency}}", currency);
-                                            accountTransactions.ToList().ForEach(trans =>
+                                            accountTransactions = nISEntitiesDataContext.AccountTransactionRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("current") && item.AccountId == accountId && item.TenantCode == tenantCode)?.OrderByDescending(item => item.TransactionDate)?.ToList();
+
+                                            StringBuilder transaction = new StringBuilder();
+                                            StringBuilder selectOption = new StringBuilder();
+                                            if (accountTransactions != null && accountTransactions.Count > 0)
                                             {
-                                                AccountTransaction accountTransaction = new AccountTransaction();
-                                                accountTransaction.AccountType = trans.AccountType;
-                                                accountTransaction.TransactionDate = Convert.ToDateTime(trans.TransactionDate).ToShortDateString();
-                                                accountTransaction.TransactionType = trans.TransactionType;
-                                                accountTransaction.FCY = trans.FCY;
-                                                accountTransaction.Narration = trans.Narration;
-                                                accountTransaction.LCY = trans.LCY;
-                                                accountTransaction.CurrentRate = trans.CurrentRate;
-                                                transactions.Add(accountTransaction);
-                                            });
-                                            string currenttransactionjson = JsonConvert.SerializeObject(transactions);
-                                            if (currenttransactionjson != null && currenttransactionjson != string.Empty)
-                                            {
-                                                var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
-                                                distinctNaration.ToList().ForEach(item =>
+                                                IList<AccountTransaction> transactions = new List<AccountTransaction>();
+                                                pageContent.Replace("{{Currency}}", currency);
+                                                accountTransactions.ToList().ForEach(trans =>
                                                 {
-                                                    selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                    AccountTransaction accountTransaction = new AccountTransaction();
+                                                    accountTransaction.AccountType = trans.AccountType;
+                                                    accountTransaction.TransactionDate = Convert.ToDateTime(trans.TransactionDate).ToShortDateString();
+                                                    accountTransaction.TransactionType = trans.TransactionType;
+                                                    accountTransaction.FCY = trans.FCY;
+                                                    accountTransaction.Narration = trans.Narration;
+                                                    accountTransaction.LCY = trans.LCY;
+                                                    accountTransaction.CurrentRate = trans.CurrentRate;
+                                                    transactions.Add(accountTransaction);
                                                 });
+                                                string currenttransactionjson = JsonConvert.SerializeObject(transactions);
+                                                if (currenttransactionjson != null && currenttransactionjson != string.Empty)
+                                                {
+                                                    var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
+                                                    distinctNaration.ToList().ForEach(item =>
+                                                    {
+                                                        selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                                    });
 
-                                                CurrentTransactionGridJson = "currenttransactiondata" + accountId + page.Identifier + "=" + currenttransactionjson;
-                                                this.utility.WriteToJsonFile(CurrentTransactionGridJson, "currenttransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
-                                                scriptHtmlRenderer.Append("<script type='text/javascript' src='./currenttransactiondetail" + accountId + page.Identifier + ".json'></script>");
+                                                    CurrentTransactionGridJson = "currenttransactiondata" + accountId + page.Identifier + "=" + currenttransactionjson;
+                                                    this.utility.WriteToJsonFile(CurrentTransactionGridJson, "currenttransactiondetail" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
+                                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./currenttransactiondetail" + accountId + page.Identifier + ".json'></script>");
 
-                                                StringBuilder scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
-                                                scriptval.Replace("CurrentTransactionTable", "CurrentTransactionTable" + accountId + page.Identifier);
-                                                scriptval.Replace("currenttransactiondata", "currenttransactiondata" + accountId + page.Identifier);
-                                                scriptval.Replace("currentShowAll", "currentShowAll" + accountId + page.Identifier);
-                                                scriptval.Replace("filterStatus", "filterStatus" + accountId + page.Identifier);
-                                                scriptval.Replace("ResetGrid", "ResetGrid" + accountId + page.Identifier);
-                                                scriptval.Replace("PrintGrid", "PrintGrid" + accountId + page.Identifier);
-                                                scriptval.Replace("currenttransactionRadio", "currenttransactionRadio" + accountId + page.Identifier);
-                                                scriptHtmlRenderer.Append(scriptval);
+                                                    StringBuilder scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
+                                                    scriptval.Replace("CurrentTransactionTable", "CurrentTransactionTable" + accountId + page.Identifier);
+                                                    scriptval.Replace("currenttransactiondata", "currenttransactiondata" + accountId + page.Identifier);
+                                                    scriptval.Replace("currentShowAll", "currentShowAll" + accountId + page.Identifier);
+                                                    scriptval.Replace("filterStatus", "filterStatus" + accountId + page.Identifier);
+                                                    scriptval.Replace("ResetGrid", "ResetGrid" + accountId + page.Identifier);
+                                                    scriptval.Replace("PrintGrid", "PrintGrid" + accountId + page.Identifier);
+                                                    scriptval.Replace("currenttransactionRadio", "currenttransactionRadio" + accountId + page.Identifier);
+                                                    scriptHtmlRenderer.Append(scriptval);
 
-                                                pageContent.Replace("currentShowAll", "currentShowAll" + accountId + page.Identifier);
-                                                pageContent.Replace("filterStatus", "filterStatus" + accountId + page.Identifier);
-                                                pageContent.Replace("ResetGrid", "ResetGrid" + accountId + page.Identifier);
-                                                pageContent.Replace("PrintGrid", "PrintGrid" + accountId + page.Identifier);
-                                                pageContent.Replace("currenttransactionRadio", "currenttransactionRadio" + accountId + page.Identifier);
-                                                pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
-                                                pageContent.Replace("CurrentTransactionTable", "CurrentTransactionTable" + accountId + page.Identifier);
+                                                    pageContent.Replace("currentShowAll", "currentShowAll" + accountId + page.Identifier);
+                                                    pageContent.Replace("filterStatus", "filterStatus" + accountId + page.Identifier);
+                                                    pageContent.Replace("ResetGrid", "ResetGrid" + accountId + page.Identifier);
+                                                    pageContent.Replace("PrintGrid", "PrintGrid" + accountId + page.Identifier);
+                                                    pageContent.Replace("currenttransactionRadio", "currenttransactionRadio" + accountId + page.Identifier);
+                                                    pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+                                                    pageContent.Replace("CurrentTransactionTable", "CurrentTransactionTable" + accountId + page.Identifier);
+                                                }
+                                                else
+                                                {
+                                                    transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
+                                                }
                                             }
                                             else
                                             {
                                                 transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
                                             }
+                                            pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
+                                        }
+                                    }
+                                    else if (widget.WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
+                                    {
+                                        IList<Top4IncomeSourcesRecord> top4IncomeSources = new List<Top4IncomeSourcesRecord>();
+                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                        {
+                                            top4IncomeSources = nISEntitiesDataContext.Top4IncomeSourcesRecord.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.OrderByDescending(item => item.CurrentSpend)?.Take(4)?.ToList();
+                                        }
+
+                                        StringBuilder incomeSources = new StringBuilder();
+                                        if (top4IncomeSources != null && top4IncomeSources.Count > 0)
+                                        {
+                                            top4IncomeSources.ToList().ForEach(src =>
+                                            {
+                                                var tdstring = string.Empty;
+                                                if (src.CurrentSpend > src.AverageSpend)
+                                                {
+                                                    tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" +
+                                                    src.AverageSpend + "</span>";
+                                                }
+                                                else
+                                                {
+                                                    tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " +
+                                                    "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + src.AverageSpend + "</span>";
+                                                }
+                                                incomeSources.Append("<tr><td class='float-left'>" + src.Source + "</td>" + "<td> " + src.CurrentSpend + "</td><td>" +
+                                                    tdstring + "</td></tr>");
+                                            });
                                         }
                                         else
                                         {
-                                            transaction.Append("<tr><td colspan='7' class='text-danger text-center'><span>No data available</span></td></tr>");
+                                            incomeSources.Append("<tr><td colspan='3' class='text-danger text-center'><div style='margin-top: 20px;'>No data available</div>" +
+                                                "</td></tr>");
                                         }
-                                        pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", transaction.ToString());
+                                        pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomeSources.ToString());
                                     }
-                                }
-                                else if (widget.WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
-                                {
-                                    IList<Top4IncomeSourcesRecord> top4IncomeSources = new List<Top4IncomeSourcesRecord>();
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                    else if (widget.WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
                                     {
-                                        top4IncomeSources = nISEntitiesDataContext.Top4IncomeSourcesRecord.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.OrderByDescending(item => item.CurrentSpend)?.Take(4)?.ToList();
-                                    }
-
-                                    StringBuilder incomeSources = new StringBuilder();
-                                    if (top4IncomeSources != null && top4IncomeSources.Count > 0)
-                                    {
-                                        top4IncomeSources.ToList().ForEach(src =>
+                                        if (accountrecords.Count > 0)
                                         {
-                                            var tdstring = string.Empty;
-                                            if (src.CurrentSpend > src.AverageSpend)
+                                            IList<AccountMasterRecord> accounts = new List<AccountMasterRecord>();
+                                            var records = accountrecords.GroupBy(item => item.AccountType).ToList();
+                                            records.ToList().ForEach(acc => accounts.Add(new AccountMasterRecord()
                                             {
-                                                tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" +
-                                                src.AverageSpend + "</span>";
+                                                AccountType = acc.FirstOrDefault().AccountType,
+                                                Percentage = acc.Average(item => item.Percentage == null ? 0 : item.Percentage)
+                                            }));
+
+                                            string accountsJson = JsonConvert.SerializeObject(accounts);
+                                            if (accountsJson != null && accountsJson != string.Empty)
+                                            {
+                                                AnalyticsChartJson = "analyticsdata=" + accountsJson;
                                             }
                                             else
                                             {
-                                                tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " +
-                                                "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + src.AverageSpend + "</span>";
+                                                AnalyticsChartJson = "analyticsdata=[]";
                                             }
-                                            incomeSources.Append("<tr><td class='float-left'>" + src.Source + "</td>" + "<td> " + src.CurrentSpend + "</td><td>" +
-                                                tdstring + "</td></tr>");
-                                        });
-                                    }
-                                    else
-                                    {
-                                        incomeSources.Append("<tr><td colspan='3' class='text-danger text-center'><div style='margin-top: 20px;'>No data available</div>" +
-                                            "</td></tr>");
-                                    }
-                                    pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomeSources.ToString());
-                                }
-                                else if (widget.WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
-                                {
-                                    if (accountrecords.Count > 0)
-                                    {
-                                        IList<AccountMasterRecord> accounts = new List<AccountMasterRecord>();
-                                        var records = accountrecords.GroupBy(item => item.AccountType).ToList();
-                                        records.ToList().ForEach(acc => accounts.Add(new AccountMasterRecord()
-                                        {
-                                            AccountType = acc.FirstOrDefault().AccountType,
-                                            Percentage = acc.Average(item => item.Percentage == null ? 0 : item.Percentage)
-                                        }));
-
-                                        string accountsJson = JsonConvert.SerializeObject(accounts);
-                                        if (accountsJson != null && accountsJson != string.Empty)
-                                        {
-                                            AnalyticsChartJson = "analyticsdata=" + accountsJson;
                                         }
                                         else
                                         {
                                             AnalyticsChartJson = "analyticsdata=[]";
                                         }
-                                    }
-                                    else
-                                    {
-                                        AnalyticsChartJson = "analyticsdata=[]";
-                                    }
 
-                                    this.utility.WriteToJsonFile(AnalyticsChartJson, "analyticschartdata.json", batchMaster.Id, customer.Id, outputLocation);
-                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./analyticschartdata.json'></script>");
-                                    pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
-                                    scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
-                                }
-                                else if (widget.WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
-                                {
-                                    IList<SavingTrendRecord> savingtrends = new List<SavingTrendRecord>();
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                    {
-                                        savingtrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountId == accountId && item.TenantCode == tenantCode).ToList();
+                                        this.utility.WriteToJsonFile(AnalyticsChartJson, "analyticschartdata.json", batchMaster.Id, customer.Id, outputLocation);
+                                        scriptHtmlRenderer.Append("<script type='text/javascript' src='./analyticschartdata.json'></script>");
+                                        pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
+                                        scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
                                     }
-                                    if (savingtrends != null && savingtrends.Count > 0)
+                                    else if (widget.WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
                                     {
-                                        IList<SavingTrend> savingTrendRecords = new List<SavingTrend>();
-                                        int mnth = DateTime.Now.Month - 1;  //To start month validation of consecutive month data from previous month
-                                        for (int t = savingtrends.Count; t > 0; t--)
+                                        IList<SavingTrendRecord> savingtrends = new List<SavingTrendRecord>();
+                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                         {
-                                            string month = this.utility.getMonth(mnth);
-                                            var lst = savingtrends.Where(it => it.Month.ToLower().Contains(month.ToLower()))?.ToList();
-                                            if (lst != null && lst.Count > 0)
+                                            savingtrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountId == accountId && item.TenantCode == tenantCode).ToList();
+                                        }
+                                        if (savingtrends != null && savingtrends.Count > 0)
+                                        {
+                                            IList<SavingTrend> savingTrendRecords = new List<SavingTrend>();
+                                            int mnth = DateTime.Now.Month - 1;  //To start month validation of consecutive month data from previous month
+                                            for (int t = savingtrends.Count; t > 0; t--)
                                             {
-                                                SavingTrend trend = new SavingTrend();
-                                                trend.Month = lst[0].Month;
-                                                trend.NumericMonth = mnth;
-                                                trend.Income = lst[0].Income ?? 0;
-                                                trend.IncomePercentage = lst[0].IncomePercentage ?? 0;
-                                                trend.SpendAmount = lst[0].SpendAmount;
-                                                trend.SpendPercentage = lst[0].SpendPercentage ?? 0;
-                                                savingTrendRecords.Add(trend);
+                                                string month = this.utility.getMonth(mnth);
+                                                var lst = savingtrends.Where(it => it.Month.ToLower().Contains(month.ToLower()))?.ToList();
+                                                if (lst != null && lst.Count > 0)
+                                                {
+                                                    SavingTrend trend = new SavingTrend();
+                                                    trend.Month = lst[0].Month;
+                                                    trend.NumericMonth = mnth;
+                                                    trend.Income = lst[0].Income ?? 0;
+                                                    trend.IncomePercentage = lst[0].IncomePercentage ?? 0;
+                                                    trend.SpendAmount = lst[0].SpendAmount;
+                                                    trend.SpendPercentage = lst[0].SpendPercentage ?? 0;
+                                                    savingTrendRecords.Add(trend);
+                                                }
+                                                else
+                                                {
+                                                    ErrorMessages.Append("<li>Invalid consecutive month data for Saving trend widget..!!</li>");
+                                                    IsFailed = true;
+                                                }
+                                                mnth = mnth - 1 == 0 ? 12 : mnth - 1;
+                                            }
+
+                                            var records = savingTrendRecords.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
+                                            string savingtrendjson = JsonConvert.SerializeObject(records);
+                                            if (savingtrendjson != null && savingtrendjson != string.Empty)
+                                            {
+                                                SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=" + savingtrendjson;
                                             }
                                             else
                                             {
-                                                ErrorMessages.Append("<li>Invalid consecutive month data for Saving trend widget..!!</li>");
-                                                IsFailed = true;
+                                                SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=[]";
                                             }
-                                            mnth = mnth - 1 == 0 ? 12 : mnth - 1;
-                                        }
-
-                                        var records = savingTrendRecords.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
-                                        string savingtrendjson = JsonConvert.SerializeObject(records);
-                                        if (savingtrendjson != null && savingtrendjson != string.Empty)
-                                        {
-                                            SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=" + savingtrendjson;
                                         }
                                         else
                                         {
                                             SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=[]";
                                         }
-                                    }
-                                    else
-                                    {
-                                        SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=[]";
-                                    }
 
-                                    this.utility.WriteToJsonFile(SavingTrendChartJson, "savingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
-                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtrenddata" + accountId + page.Identifier + ".json'></script>");
+                                        this.utility.WriteToJsonFile(SavingTrendChartJson, "savingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
+                                        scriptHtmlRenderer.Append("<script type='text/javascript' src='./savingtrenddata" + accountId + page.Identifier + ".json'></script>");
 
-                                    pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + accountId + page.Identifier);
-                                    var scriptval = HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + accountId + page.Identifier).Replace("savingdata", "savingdata" + accountId + page.Identifier);
-                                    scriptHtmlRenderer.Append(scriptval);
-                                }
-                                else if (widget.WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
-                                {
-                                    IList<SavingTrendRecord> spendingtrends = new List<SavingTrendRecord>();
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                    {
-                                        spendingtrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountId == accountId && item.TenantCode == tenantCode).ToList();
+                                        pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + accountId + page.Identifier);
+                                        var scriptval = HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + accountId + page.Identifier).Replace("savingdata", "savingdata" + accountId + page.Identifier);
+                                        scriptHtmlRenderer.Append(scriptval);
                                     }
-                                    if (spendingtrends != null && spendingtrends.Count > 0)
+                                    else if (widget.WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
                                     {
-                                        IList<SavingTrend> trends = new List<SavingTrend>();
-                                        int mnth = DateTime.Now.Month - 1; //To start month validation of consecutive month data from previous month
-                                        for (int t = spendingtrends.Count; t > 0; t--)
+                                        IList<SavingTrendRecord> spendingtrends = new List<SavingTrendRecord>();
+                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                         {
-                                            string month = this.utility.getMonth(mnth);
-                                            var lst = spendingtrends.Where(it => it.Month.ToLower().Contains(month.ToLower()))?.ToList();
-                                            if (lst != null && lst.Count > 0)
+                                            spendingtrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountId == accountId && item.TenantCode == tenantCode).ToList();
+                                        }
+                                        if (spendingtrends != null && spendingtrends.Count > 0)
+                                        {
+                                            IList<SavingTrend> trends = new List<SavingTrend>();
+                                            int mnth = DateTime.Now.Month - 1; //To start month validation of consecutive month data from previous month
+                                            for (int t = spendingtrends.Count; t > 0; t--)
                                             {
-                                                SavingTrend trend = new SavingTrend();
-                                                trend.Month = lst[0].Month;
-                                                trend.NumericMonth = mnth;
-                                                trend.Income = lst[0].Income ?? 0;
-                                                trend.IncomePercentage = lst[0].IncomePercentage ?? 0;
-                                                trend.SpendAmount = lst[0].SpendAmount;
-                                                trend.SpendPercentage = lst[0].SpendPercentage ?? 0;
-                                                trends.Add(trend);
+                                                string month = this.utility.getMonth(mnth);
+                                                var lst = spendingtrends.Where(it => it.Month.ToLower().Contains(month.ToLower()))?.ToList();
+                                                if (lst != null && lst.Count > 0)
+                                                {
+                                                    SavingTrend trend = new SavingTrend();
+                                                    trend.Month = lst[0].Month;
+                                                    trend.NumericMonth = mnth;
+                                                    trend.Income = lst[0].Income ?? 0;
+                                                    trend.IncomePercentage = lst[0].IncomePercentage ?? 0;
+                                                    trend.SpendAmount = lst[0].SpendAmount;
+                                                    trend.SpendPercentage = lst[0].SpendPercentage ?? 0;
+                                                    trends.Add(trend);
+                                                }
+                                                else
+                                                {
+                                                    ErrorMessages.Append("<li>Invalid consecutive month data for Spending trend widget..!!</li>");
+                                                    IsFailed = true;
+                                                }
+                                                mnth = mnth - 1 == 0 ? 12 : mnth - 1;
+                                            }
+
+                                            var records = trends.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
+                                            string spendingtrendjson = JsonConvert.SerializeObject(records);
+                                            if (spendingtrendjson != null && spendingtrendjson != string.Empty)
+                                            {
+                                                SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=" + spendingtrendjson;
                                             }
                                             else
                                             {
-                                                ErrorMessages.Append("<li>Invalid consecutive month data for Spending trend widget..!!</li>");
-                                                IsFailed = true;
+                                                SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=[]";
                                             }
-                                            mnth = mnth - 1 == 0 ? 12 : mnth - 1;
-                                        }
-
-                                        var records = trends.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
-                                        string spendingtrendjson = JsonConvert.SerializeObject(records);
-                                        if (spendingtrendjson != null && spendingtrendjson != string.Empty)
-                                        {
-                                            SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=" + spendingtrendjson;
                                         }
                                         else
                                         {
                                             SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=[]";
                                         }
-                                    }
-                                    else
-                                    {
-                                        SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=[]";
-                                    }
 
-                                    this.utility.WriteToJsonFile(SpendingTrendChartJson, "spendingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
-                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./spendingtrenddata" + accountId + page.Identifier + ".json'></script>");
+                                        this.utility.WriteToJsonFile(SpendingTrendChartJson, "spendingtrenddata" + accountId + page.Identifier + ".json", batchMaster.Id, customer.Id, outputLocation);
+                                        scriptHtmlRenderer.Append("<script type='text/javascript' src='./spendingtrenddata" + accountId + page.Identifier + ".json'></script>");
 
-                                    pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + accountId + page.Identifier);
-                                    var scriptval = HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + accountId + page.Identifier).Replace("spendingdata", "spendingdata" + accountId + page.Identifier);
-                                    scriptHtmlRenderer.Append(scriptval);
-                                }
-                                else if (widget.WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
-                                {
-                                    IList<ReminderAndRecommendationRecord> reminderAndRecommendations = new List<ReminderAndRecommendationRecord>();
-                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                    {
-                                        reminderAndRecommendations = nISEntitiesDataContext.ReminderAndRecommendationRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
+                                        pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + accountId + page.Identifier);
+                                        var scriptval = HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + accountId + page.Identifier).Replace("spendingdata", "spendingdata" + accountId + page.Identifier);
+                                        scriptHtmlRenderer.Append(scriptval);
                                     }
-
-                                    StringBuilder reminderstr = new StringBuilder();
-                                    if (reminderAndRecommendations != null && reminderAndRecommendations.Count > 0)
+                                    else if (widget.WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
                                     {
-                                        reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
-                                        reminderAndRecommendations.ToList().ForEach(item =>
+                                        IList<ReminderAndRecommendationRecord> reminderAndRecommendations = new List<ReminderAndRecommendationRecord>();
+                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                         {
-                                            string targetlink = item.TargetURL != null && item.TargetURL != string.Empty ? item.TargetURL : "javascript:void(0)";
-                                            reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" +
-                                                item.Description + " </p></div><div class='col-lg-3 text-left'><a href='" + targetlink +
-                                                "' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-danger'></i><span class='mt-2 d-inline-block ml-2'>" +
-                                                item.LabelText + "</span></a></div></div>");
-                                        });
+                                            reminderAndRecommendations = nISEntitiesDataContext.ReminderAndRecommendationRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
+                                        }
+
+                                        StringBuilder reminderstr = new StringBuilder();
+                                        if (reminderAndRecommendations != null && reminderAndRecommendations.Count > 0)
+                                        {
+                                            reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
+                                            reminderAndRecommendations.ToList().ForEach(item =>
+                                            {
+                                                string targetlink = item.TargetURL != null && item.TargetURL != string.Empty ? item.TargetURL : "javascript:void(0)";
+                                                reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" +
+                                                    item.Description + " </p></div><div class='col-lg-3 text-left'><a href='" + targetlink +
+                                                    "' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-danger'></i><span class='mt-2 d-inline-block ml-2'>" +
+                                                    item.LabelText + "</span></a></div></div>");
+                                            });
+                                        }
+                                        else
+                                        {
+                                            reminderstr.Append("<div class='row text-danger text-center' style='margin-top: 20px;'>No data available</div>");
+                                        }
+                                        pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
                                     }
-                                    else
+                                }
+                                else
+                                {
+                                    DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
                                     {
-                                        reminderstr.Append("<div class='row text-danger text-center' style='margin-top: 20px;'>No data available</div>");
+                                        Identifier = Convert.ToString(widget.WidgetId),
+                                        PageTypeId = Convert.ToString(page.PageTypeId),
+                                        PagingParameter = new PagingParameter
+                                        {
+                                            PageIndex = 0,
+                                            PageSize = 0,
+                                        },
+                                        SortParameter = new SortParameter()
+                                        {
+                                            SortOrder = SortOrder.Ascending,
+                                            SortColumn = "Title",
+                                        },
+                                        SearchMode = SearchMode.Equals
+                                    };
+                                    var dynaWidgets = this.dynamicWidgetRepository.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
+                                    if (dynaWidgets.Count > 0)
+                                    {
+                                        var dynawidget = dynaWidgets.FirstOrDefault();
+                                        CustomeTheme themeDetails = new CustomeTheme();
+                                        if (dynawidget.ThemeType == "Default")
+                                        {
+                                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(tenantConfiguration.WidgetThemeSetting);
+                                        }
+                                        else
+                                        {
+                                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
+                                        }
+
+                                        //Get data from database for widget
+                                        httpClient = new HttpClient();
+                                        httpClient.BaseAddress = new Uri(tenantConfiguration.BaseUrlForTransactionData);
+                                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                                        httpClient.DefaultRequestHeaders.Add("TenantCode", tenantCode);
+
+                                        //API search parameter
+                                        JObject searchParameter = new JObject();
+                                        searchParameter["BatchId"] = batchMaster.Id;
+                                        searchParameter["CustomerId"] = customer.Id;
+                                        if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
+                                        {
+                                            searchParameter["AccountId"] = accountId;
+                                            var tenantEntity = tenantEntities.Where(item => item.Identifier == dynawidget.EntityId)?.ToList()?.FirstOrDefault();
+                                            if (tenantEntity != null && tenantEntity.Name == "Account Transaction")
+                                            {
+                                                searchParameter["AccountType"] = page.PageTypeName;
+                                            }
+                                        }
+                                        searchParameter["WidgetFilterSetting"] = dynawidget.WidgetFilterSettings;
+
+                                        if (dynawidget.WidgetType == HtmlConstants.TABLE_DYNAMICWIDGET)
+                                        {
+
+                                            List<DynamicWidgetTableEntity> tableEntities = JsonConvert.DeserializeObject<List<DynamicWidgetTableEntity>>(dynawidget.WidgetSettings);
+                                            var tr = new StringBuilder();
+
+                                            //API call
+                                            var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                                            if (response.StatusCode == HttpStatusCode.OK)
+                                            {
+                                                var result = response.Content.ReadAsStringAsync().Result;
+                                                var apiOutputArr = JArray.Parse(result);
+                                                if (apiOutputArr.Count > 0)
+                                                {
+                                                    apiOutputArr.ToList().ForEach(op =>
+                                                    {
+                                                        tr.Append("<tr>");
+                                                        tableEntities.ForEach(field =>
+                                                        {
+                                                            tr.Append("<td> " + op[field.FieldName] + " </td>");
+                                                        });
+                                                        tr.Append("</tr>");
+                                                    });
+                                                }
+                                                else
+                                                {
+                                                    tr.Append("<tr><td colspan='" + (tableEntities.Count + 1) + "'> No record found </td></tr>)");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                tr.Append("<tr><td colspan='" + (tableEntities.Count + 1) + "'> No record found </td></tr>");
+                                            }
+                                            pageContent.Replace("{{tableBody_" + page.Identifier + "_" + widget.Identifier + "}}", tr.ToString());
+                                        }
+                                        else if (dynawidget.WidgetType == HtmlConstants.FORM_DYNAMICWIDGET)
+                                        {
+                                            var formEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFormEntity>>(dynawidget.WidgetSettings);
+                                            var formdata = new StringBuilder();
+
+                                            //API call
+                                            var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                                            if (response.StatusCode == HttpStatusCode.OK)
+                                            {
+                                                var result = response.Content.ReadAsStringAsync().Result;
+                                                var apiOutputArr = JArray.Parse(result);
+                                                if (apiOutputArr.Count > 0)
+                                                {
+                                                    apiOutputArr.ToList().ForEach(op =>
+                                                    {
+                                                        formEntities.ForEach(field =>
+                                                        {
+                                                            formdata.Append("<div class='row'><div class='col-sm-6'><label>" + field.DisplayName + "</label></div><div class='col-sm-6'>" + op[field.FieldName] + "</div></div>");
+                                                        });
+                                                    });
+                                                }
+                                                else
+                                                {
+                                                    formdata.Append("<div class='row'> No record found </div>");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                formdata.Append("<div class='row'> No record found </div>");
+                                            }
+
+                                            pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", formdata.ToString());
+                                        }
+                                        else if (dynawidget.WidgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
+                                        {
+                                            var chartDataVal = string.Empty;
+
+                                            //API call
+                                            var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                                            if (response.StatusCode == HttpStatusCode.OK)
+                                            {
+                                                var result = response.Content.ReadAsStringAsync().Result;
+                                                var apiOutputArr = JArray.Parse(result);
+                                                if (apiOutputArr.Count > 0)
+                                                {
+                                                    var graphEntity = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynawidget.WidgetSettings);
+                                                    GraphChartData chartData = new GraphChartData();
+                                                    chartData.title = new ChartTitle { text = dynawidget.Title };
+
+                                                    //To get chart x-axis list
+                                                    var xAxis = apiOutputArr.ToList().Select(item => item[graphEntity.XAxis].ToString()).ToList();
+                                                    chartData.xAxis = xAxis;
+
+                                                    //To get chart series data
+                                                    IList<ChartSeries> chartSeries = new List<ChartSeries>();
+                                                    graphEntity.Details.ForEach(field =>
+                                                    {
+                                                        ChartSeries series = new ChartSeries();
+                                                        series.name = field.DisplayName;
+                                                        var res = apiOutputArr.ToList().Select(item => item[field.FieldName]).ToList();
+                                                        var seriesdata = new List<decimal>();
+                                                        res.ForEach(r => {
+                                                            seriesdata.Add(Convert.ToDecimal(r.ToString()));
+                                                        });
+                                                        series.data = seriesdata;
+                                                        series.type = "line";
+                                                        chartSeries.Add(series);
+                                                    });
+                                                    chartData.series = chartSeries;
+
+                                                    //To get chart theme
+                                                    string theme = string.Empty;
+                                                    if (themeDetails != null)
+                                                    {
+                                                        if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
+                                                        {
+                                                            theme = themeDetails.ChartColorTheme;
+                                                        }
+                                                        else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
+                                                        {
+                                                            theme = themeDetails.ColorTheme;
+                                                        }
+                                                    }
+                                                    chartData.color = this.GetChartColorTheme(theme);
+                                                    chartDataVal = JsonConvert.SerializeObject(chartData);
+                                                }
+                                            }
+
+                                            pageContent.Replace("hiddenLineGraphValue_" + page.Identifier + "_" + widget.Identifier + "", chartDataVal);
+                                            scriptHtmlRenderer.Append(HtmlConstants.LINE_GRAPH_WIDGET_SCRIPT.Replace("linechartcontainer", "lineGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenLineGraphData", "hiddenLineGraphData_" + page.Identifier + "_" + widget.Identifier));
+                                        }
+                                        else if (dynawidget.WidgetType == HtmlConstants.BARGRAPH_DYNAMICWIDGET)
+                                        {
+                                            var chartDataVal = string.Empty;
+
+                                            //API call
+                                            var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                                            if (response.StatusCode == HttpStatusCode.OK)
+                                            {
+                                                var result = response.Content.ReadAsStringAsync().Result;
+                                                var apiOutputArr = JArray.Parse(result);
+                                                if (apiOutputArr.Count > 0)
+                                                {
+                                                    var graphEntity = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynawidget.WidgetSettings);
+                                                    GraphChartData chartData = new GraphChartData();
+                                                    chartData.title = new ChartTitle { text = dynawidget.Title };
+
+                                                    //To get chart x-axis list
+                                                    var xAxis = apiOutputArr.ToList().Select(item => item[graphEntity.XAxis].ToString()).ToList();
+                                                    chartData.xAxis = xAxis;
+
+                                                    //To get chart series data
+                                                    IList<ChartSeries> chartSeries = new List<ChartSeries>();
+                                                    graphEntity.Details.ForEach(field =>
+                                                    {
+                                                        ChartSeries series = new ChartSeries();
+                                                        series.name = field.DisplayName;
+                                                        var res = apiOutputArr.ToList().Select(item => item[field.FieldName]).ToList();
+                                                        var seriesdata = new List<decimal>();
+                                                        res.ForEach(r => {
+                                                            seriesdata.Add(Convert.ToDecimal(r.ToString()));
+                                                        });
+                                                        series.data = seriesdata;
+                                                        series.type = "column";
+                                                        chartSeries.Add(series);
+                                                    });
+                                                    chartData.series = chartSeries;
+
+                                                    //To get chart theme
+                                                    string theme = string.Empty;
+                                                    if (themeDetails != null)
+                                                    {
+                                                        if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
+                                                        {
+                                                            theme = themeDetails.ChartColorTheme;
+                                                        }
+                                                        else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
+                                                        {
+                                                            theme = themeDetails.ColorTheme;
+                                                        }
+                                                    }
+                                                    chartData.color = this.GetChartColorTheme(theme);
+                                                    chartDataVal = JsonConvert.SerializeObject(chartData);
+                                                }
+                                            }
+
+
+                                            pageContent.Replace("hiddenBarGraphValue_" + page.Identifier + "_" + widget.Identifier + "", chartDataVal);
+                                            scriptHtmlRenderer.Append(HtmlConstants.BAR_GRAPH_WIDGET_SCRIPT.Replace("barchartcontainer", "barGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenBarGraphData", "hiddenBarGraphData_" + page.Identifier + "_" + widget.Identifier));
+                                        }
+                                        else if (dynawidget.WidgetType == HtmlConstants.PICHART_DYNAMICWIDGET)
+                                        {
+                                            var chartDataVal = string.Empty;
+
+                                            //API call
+                                            var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                                            if (response.StatusCode == HttpStatusCode.OK)
+                                            {
+                                                var result = response.Content.ReadAsStringAsync().Result;
+                                                var apiOutputArr = JArray.Parse(result);
+                                                if (apiOutputArr.Count > 0)
+                                                {
+                                                    PieChartSettingDetails pieChartSetting = JsonConvert.DeserializeObject<PieChartSettingDetails>(dynawidget.WidgetSettings);
+                                                    var entityFields = this.dynamicWidgetRepository.GetEntityFields(dynawidget.EntityId, tenantCode);
+                                                    var seriesfor = entityFields.Where(it => it.Identifier == Convert.ToInt32(pieChartSetting.PieSeries))?.ToList()?.FirstOrDefault().Name;
+                                                    var seriesdatafor = entityFields.Where(it => it.Identifier == Convert.ToInt32(pieChartSetting.PieValue))?.ToList()?.FirstOrDefault().Name;
+
+                                                    PiChartGraphData chartData = new PiChartGraphData();
+                                                    chartData.title = new ChartTitle { text = dynawidget.Title };
+
+                                                    //To get series data
+                                                    var chartseries = new List<PieChartSeries>();
+                                                    var datas = new List<PieChartData>();
+                                                    apiOutputArr.ToList().ForEach(item =>
+                                                    {
+                                                        PieChartData pie = new PieChartData
+                                                        {
+                                                            name = item[seriesfor].ToString(),
+                                                            y = Convert.ToDecimal(item[seriesdatafor])
+                                                        };
+                                                        datas.Add(pie);
+                                                    });
+
+                                                    PieChartSeries series = new PieChartSeries();
+                                                    series.name = seriesfor;
+                                                    series.data = datas;
+                                                    chartseries.Add(series);
+                                                    chartData.series = chartseries;
+
+                                                    //To get chart theme
+                                                    string theme = string.Empty;
+                                                    if (themeDetails != null)
+                                                    {
+                                                        if (themeDetails.ChartColorTheme != null && themeDetails.ChartColorTheme != "")
+                                                        {
+                                                            theme = themeDetails.ChartColorTheme;
+                                                        }
+                                                        else if (themeDetails.ColorTheme != null && themeDetails.ColorTheme != "")
+                                                        {
+                                                            theme = themeDetails.ColorTheme;
+                                                        }
+                                                    }
+                                                    chartData.color = this.GetChartColorTheme(theme);
+                                                    chartDataVal = JsonConvert.SerializeObject(chartData);
+                                                }
+                                            }
+
+                                            pageContent.Replace("hiddenPieChartValue_" + page.Identifier + "_" + widget.Identifier + "", chartDataVal);
+                                            scriptHtmlRenderer.Append(HtmlConstants.PIE_CHART_WIDGET_SCRIPT.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenPieChartData", "hiddenPieChartData_" + page.Identifier + "_" + widget.Identifier));
+                                        }
+                                        else if (dynawidget.WidgetType == HtmlConstants.HTMLWIDGETPREVIEW)
+                                        {
+                                            //Here need to generate html widget data for each customer from DB
+                                            TenantEntity entity = new TenantEntity();
+                                            entity.Identifier = dynawidget.EntityId;
+                                            entity.Name = dynawidget.EntityName;
+                                            var entityFieldMaps = this.dynamicWidgetRepository.GetEntityFields(dynawidget.EntityId, tenantCode);
+                                            string data = this.GetHTMLPreviewData(entity, entityFieldMaps, dynawidget.PreviewData);
+                                            pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", data);
+                                        }
                                     }
-                                    pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
                                 }
                             }
 
                             if (accountNumber != string.Empty)
                             {
                                 StatementMetadataRecord statementMetadataRecord = new StatementMetadataRecord();
-                                statementMetadataRecord.AccountNumber = accountNumber;
-                                statementMetadataRecord.AccountType = accountType;
+                                statementMetadataRecord.AccountNumber = accountNumber; //Subscription
+                                statementMetadataRecord.AccountType = accountType; //Vendor
                                 statementMetadataRecord.CustomerId = customer.Id;
                                 statementMetadataRecord.CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName;
                                 statementMetadataRecord.StatementPeriod = customer.StatementPeriod;
@@ -2633,7 +2988,7 @@ namespace nIS
                                 newPageContent.Append(HtmlConstants.END_DIV_TAG);
                             }
 
-                            if (x == accountCount - 1)
+                            if (x == subPageCount - 1)
                             {
                                 newPageContent.Append(HtmlConstants.END_DIV_TAG);
                             }
@@ -2995,6 +3350,45 @@ namespace nIS
             }
             html = html.Replace("{{TitleStyle}}", style.ToString());
             return html;
+        }
+
+        private string GetChartColorTheme(string theme)
+        {
+            string colorTheme = string.Empty;
+            if (theme == "Theme1")
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme == "Theme2")
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme == "Theme3")
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
+            else if (theme == "Theme4")
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            else if (theme.ToLower() == "ChartTheme1".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme.ToLower() == "ChartTheme2".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme.ToLower() == "ChartTheme3".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            else if (theme.ToLower() == "ChartTheme4".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
+
+            return colorTheme;
         }
 
         private string GetHTMLPreviewData(TenantEntity entity, IList<EntityFieldMap> fieldMaps, string widgetSettings)

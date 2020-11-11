@@ -936,17 +936,20 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
         <EntityType Name="View_DynamicWidget">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="EntityId" />
+            <PropertyRef Name="LastUpdatedBy" />
             <PropertyRef Name="IsActive" />
             <PropertyRef Name="IsDeleted" />
             <PropertyRef Name="CreatedByName" />
             <PropertyRef Name="EntityName" />
             <PropertyRef Name="APIPath" />
             <PropertyRef Name="RequestType" />
+            <PropertyRef Name="PageTypeId" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="WidgetName" Type="nvarchar" MaxLength="100" />
           <Property Name="WidgetType" Type="nvarchar" MaxLength="50" />
-          <Property Name="EntityId" Type="bigint" />
+          <Property Name="EntityId" Type="bigint" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="100" />
           <Property Name="ThemeType" Type="nvarchar" MaxLength="50" />
           <Property Name="ThemeCSS" Type="nvarchar(max)" />
@@ -955,7 +958,7 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedBy" Type="bigint" />
           <Property Name="CreatedOn" Type="datetime" />
-          <Property Name="LastUpdatedBy" Type="bigint" />
+          <Property Name="LastUpdatedBy" Type="bigint" Nullable="false" />
           <Property Name="PublishedBy" Type="bigint" />
           <Property Name="PublishedDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -969,7 +972,7 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
           <Property Name="EntityName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="APIPath" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RequestType" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="PageTypeId" Type="bigint" />
+          <Property Name="PageTypeId" Type="bigint" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2807,17 +2810,20 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
         <EntityType Name="View_DynamicWidgetRecord">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="EntityId" />
+            <PropertyRef Name="LastUpdatedBy" />
             <PropertyRef Name="IsActive" />
             <PropertyRef Name="IsDeleted" />
             <PropertyRef Name="CreatedByName" />
             <PropertyRef Name="EntityName" />
             <PropertyRef Name="APIPath" />
             <PropertyRef Name="RequestType" />
+            <PropertyRef Name="PageTypeId" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="WidgetName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="WidgetType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EntityId" Type="Int64" />
+          <Property Name="EntityId" Type="Int64" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ThemeType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ThemeCSS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -2826,7 +2832,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedBy" Type="Int64" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdatedBy" Type="Int64" />
+          <Property Name="LastUpdatedBy" Type="Int64" Nullable="false" />
           <Property Name="PublishedBy" Type="Int64" />
           <Property Name="PublishedDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
@@ -2840,7 +2846,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="EntityName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="APIPath" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="RequestType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PageTypeId" Type="Int64" />
+          <Property Name="PageTypeId" Type="Int64" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
