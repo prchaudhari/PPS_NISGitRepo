@@ -10,6 +10,7 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Unity;
 
     #endregion
@@ -350,16 +351,18 @@ namespace nIS
             ClientSearchParameter clientSearchPaarmeter = new ClientSearchParameter();
             clientSearchPaarmeter.SortParameter = new SortParameter();
             clientSearchPaarmeter.SortParameter.SortColumn = "TenantCode";
-            clientSearchPaarmeter.ParentTenantCode = tenantCode;
+            //clientSearchPaarmeter.ParentTenantCode = tenantCode;
             clientSearchPaarmeter.TenantType = "Group";
 
             instanceManagerReport.UsersByGroup = new GraphChartData();
             PieChartSeries series = new PieChartSeries();
+            series.name = "Groups";
             // instanceManagerReport.PublishedStatementByGroup.
             var tenantGroups = new ClientManager(this.unityContainer).GetClients(clientSearchPaarmeter, ModelConstant.DEFAULT_TENANT_CODE);
             int totalTenants = 0;
             if (tenantGroups?.Count > 0)
             {
+
                 instanceManagerReport.TotalGroup = tenantGroups.Count;
                 IList<PieChartData> pieChartDatas = new List<PieChartData>();
 
@@ -398,37 +401,44 @@ namespace nIS
                         totalTenants = totalTenants + tenants.Count;
                         tenants.ToList().ForEach(tenant =>
                         {
-
-                            StatementManager statementManager = new StatementManager(this.unityContainer);
-                            var publishedStatements = statementManager.GetStatementCount(new StatementSearchParameter
+                            List<Task> tasks = new List<Task>();
+                            tasks.Add(Task.Factory.StartNew(() =>
                             {
-                                Status = "Published",
+                                StatementManager statementManager = new StatementManager(this.unityContainer);
+                                var publishedStatements = statementManager.GetStatementCount(new StatementSearchParameter
+                                {
+                                    Status = "Published",
 
-                                SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
-                            }, tenant.TenantCode);
-                            publishedStatementOfGroup = publishedStatementOfGroup + publishedStatements;
-
-                            UserManager userManager = new UserManager(this.unityContainer);
-                            var createdUser = userManager.GetUserCount(new UserSearchParameter
+                                    SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                                }, tenant.TenantCode);
+                                publishedStatementOfGroup = publishedStatementOfGroup + publishedStatements;
+                            }));
+                            tasks.Add(Task.Factory.StartNew(() =>
                             {
-                                SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
-                            }, tenant.TenantCode);
-                            if (createdUser > 0)
-                            {
-                                totalUsers = totalUsers + createdUser;
-                            }
-
-                            ScheduleLogManager scheduleLogManager = new ScheduleLogManager(this.unityContainer);
-                            var generatedStatements = scheduleLogManager.GetScheduleLogDetailsCount(new ScheduleLogDetailSearchParameter
-                            {
-                                Status = "Completed",
-                                SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
-                            }, tenant.TenantCode);
-                            if (generatedStatements > 0)
-                            {
-                                generatedStmt = generatedStmt + generatedStatements;
-                            }
-
+                                UserManager userManager = new UserManager(this.unityContainer);
+                                var createdUser = userManager.GetUserCount(new UserSearchParameter
+                                {
+                                    SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                                }, tenant.TenantCode);
+                                if (createdUser > 0)
+                                {
+                                    totalUsers = totalUsers + createdUser;
+                                }
+                            }));
+                            tasks.Add(Task.Factory.StartNew(() =>
+                                {
+                                    ScheduleLogManager scheduleLogManager = new ScheduleLogManager(this.unityContainer);
+                                    var generatedStatements = scheduleLogManager.GetScheduleLogDetailsCount(new ScheduleLogDetailSearchParameter
+                                    {
+                                        Status = "Completed",
+                                        SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                                    }, tenant.TenantCode);
+                                    if (generatedStatements > 0)
+                                    {
+                                        generatedStmt = generatedStmt + generatedStatements;
+                                    }
+                                }));
+                            Task.WaitAll(tasks.ToArray());
                         });
 
                         PieChartData data = new PieChartData();
@@ -452,7 +462,7 @@ namespace nIS
                 {
                     name = "Groups",
                     data = generatedStmtCount,
-                    type = "bar"
+                    type = "column"
                 });
 
                 instanceManagerReport.UsersByGroup = usersByGroup;
@@ -470,6 +480,120 @@ namespace nIS
         public GroupManagerReport GetGroupManagerDashboard(string tenantCode)
         {
             GroupManagerReport groupManagerReport = new GroupManagerReport();
+            ClientSearchParameter clientSearchPaarmeter = new ClientSearchParameter();
+            clientSearchPaarmeter.SortParameter = new SortParameter();
+            clientSearchPaarmeter.SortParameter.SortColumn = "TenantCode";
+            clientSearchPaarmeter.ParentTenantCode = tenantCode;
+            clientSearchPaarmeter.TenantType = "Tenant";
+
+            groupManagerReport.UsersByGroup = new GraphChartData();
+            PieChartSeries series = new PieChartSeries();
+            series.name = "Groups";
+            groupManagerReport.PublishedStatementByGroup = new PiChartGraphData();
+            groupManagerReport.PublishedStatementByGroup.title = new ChartTitle();
+            groupManagerReport.PublishedStatementByGroup.title.text = "Published statement by Tenant Groups";
+            IList<PieChartData> pieChartDatas = new List<PieChartData>();
+
+            GraphChartData usersByGroup = new GraphChartData();
+            usersByGroup.title = new ChartTitle();
+            usersByGroup.title.text = "Users by Group";
+            usersByGroup.xAxis = new List<string>();
+            usersByGroup.series = new List<ChartSeries>();
+
+
+            GraphChartData generatedStmtByGroup = new GraphChartData();
+            generatedStmtByGroup.title = new ChartTitle();
+            generatedStmtByGroup.title.text = "Generated statement by Groups";
+            generatedStmtByGroup.series = new List<ChartSeries>();
+
+            IList<decimal> userCount = new List<decimal>();
+            IList<decimal> generatedStmtCount = new List<decimal>();
+            var tenants = new ClientManager(this.unityContainer).GetClients(clientSearchPaarmeter, ModelConstant.DEFAULT_TENANT_CODE);
+            int totalTenants = 0;
+            if (tenants?.Count > 0)
+            {
+
+                groupManagerReport.TotalTenant = tenants.Count;
+
+                tenants.ToList().ForEach(tenant =>
+                {
+                    usersByGroup.xAxis.Add(tenant.TenantName);
+                    generatedStmtByGroup.xAxis.Add(tenant.TenantName);
+
+                    int publishedStatementOfGroup = 0;
+                    int totalUsers = 0;
+                    int generatedStmt = 0;
+                    totalTenants = totalTenants + tenants.Count;
+
+                    List<Task> tasks = new List<Task>();
+                    tasks.Add(Task.Factory.StartNew(() =>
+                    {
+                        StatementManager statementManager = new StatementManager(this.unityContainer);
+                        var publishedStatements = statementManager.GetStatementCount(new StatementSearchParameter
+                        {
+                            Status = "Published",
+
+                            SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                        }, tenant.TenantCode);
+                        publishedStatementOfGroup = publishedStatementOfGroup + publishedStatements;
+                    }));
+                    tasks.Add(Task.Factory.StartNew(() =>
+                    {
+                        UserManager userManager = new UserManager(this.unityContainer);
+                        var createdUser = userManager.GetUserCount(new UserSearchParameter
+                        {
+                            SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                        }, tenant.TenantCode);
+                        if (createdUser > 0)
+                        {
+                            totalUsers = totalUsers + createdUser;
+                        }
+                    }));
+                    tasks.Add(Task.Factory.StartNew(() =>
+                    {
+                        ScheduleLogManager scheduleLogManager = new ScheduleLogManager(this.unityContainer);
+                        var generatedStatements = scheduleLogManager.GetScheduleLogDetailsCount(new ScheduleLogDetailSearchParameter
+                        {
+                            Status = "Completed",
+                            SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                        }, tenant.TenantCode);
+                        if (generatedStatements > 0)
+                        {
+                            generatedStmt = generatedStmt + generatedStatements;
+                        }
+                    }));
+                    Task.WaitAll(tasks.ToArray());
+
+                    PieChartData data = new PieChartData();
+                    data.name = tenant.TenantName;
+                    data.y = publishedStatementOfGroup;
+                    pieChartDatas.Add(data);
+                    series.data = pieChartDatas;
+                    userCount.Add(totalUsers);
+                    generatedStmtCount.Add(generatedStmt);
+
+                });
+                usersByGroup.series.Add(new ChartSeries
+                {
+                    name = "Groups",
+                    data = userCount,
+                    type = "bar"
+                });
+
+                generatedStmtByGroup.series.Add(new ChartSeries
+                {
+                    name = "Groups",
+                    data = generatedStmtCount,
+                    type = "column"
+                });
+
+                groupManagerReport.UsersByGroup = usersByGroup;
+                groupManagerReport.StatementByGroup = generatedStmtByGroup;
+
+                groupManagerReport.PublishedStatementByGroup.series = new List<PieChartSeries>();
+                groupManagerReport.PublishedStatementByGroup.series.Add(series);
+
+            }
 
             return groupManagerReport;
         }

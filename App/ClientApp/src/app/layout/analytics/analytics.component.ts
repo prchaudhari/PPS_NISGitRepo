@@ -45,9 +45,9 @@ export class AnalyticsComponent implements OnInit {
   }
 
   ngOnInit() {
-    var fromDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) 
+    var fromDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
     var toDate = new Date();
-    var visitorDate = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) 
+    var visitorDate = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
 
     this.AnalyticFilterForm = this.fb.group({
       filterFromDate: [fromDate],
@@ -59,7 +59,7 @@ export class AnalyticsComponent implements OnInit {
     this.PageWidgetVisitorForm = this.fb.group({
       pageType: [0]
     });
-    var searchParameter :any= {};
+    var searchParameter: any = {};
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
@@ -222,7 +222,7 @@ export class AnalyticsComponent implements OnInit {
         this.filterVisitorDateError = true;
         this.filterVisitorDateErrorMessage = ErrorMessageConstants.getEndDateLessThanCurrentDateMessage;
       }
-      
+
     }
     if (!this.filterVisitorDateError) {
       var visitorSearchParameter: any = {};
@@ -523,14 +523,14 @@ export class AnalyticsComponent implements OnInit {
     if (this.visitorData != undefined) {
       if (this.visitorData.dateTime) {
         this.visitorData.dateTime.forEach(item => {
-          var d = new Date(item );
+          var d = new Date(item);
           var newDate = this.datePipe.transform(d, 'h:mm a');
           listOfHour.push(newDate);
         })
       }
-      seriesData =this.visitorData.series[0].data
+      seriesData = this.visitorData.series[0].data
     }
-   
+
     this.options2 = {
       chart: {
         type: 'column'
@@ -567,7 +567,7 @@ export class AnalyticsComponent implements OnInit {
       series: [{
         data: seriesData,
         name: 'Visitor Count',
-    }]
+      }]
     }
 
     Highcharts.setOptions({

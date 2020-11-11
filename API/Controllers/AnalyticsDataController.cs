@@ -208,14 +208,14 @@ namespace nIS
                 IList<AnalyticExportData> analyticExports = new List<AnalyticExportData>();
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 IList<AnalyticsData> analyticsData = this.AnalyticsDataManager.GetAnalyticsData(searchParameter, tenantCode);
-                if(analyticsData.Count>0)
+                if (analyticsData.Count > 0)
                 {
                     analyticExports = analyticsData.Select(item => new AnalyticExportData
                     {
-                        CustomerName=item.CustomerName,
-                        PageName=item.PageName==string.Empty?"":item.PageName,
+                        CustomerName = item.CustomerName,
+                        PageName = item.PageName == string.Empty ? "" : item.PageName,
                         Widgetname = item.Widgetname == string.Empty ? "" : item.Widgetname,
-                        EventDate=item.EventDate,
+                        EventDate = item.EventDate,
                         //EventType=item.EventType
 
                     }).ToList();
@@ -277,6 +277,38 @@ namespace nIS
                     File.Delete(filePath);
                 }
             }
+        }
+
+        [HttpPost]
+        public InstanceManagerReport GetInstanceManagerDashboard(DashboardReportSearchParameter dashboardReportSearchParameter)
+        {
+            InstanceManagerReport instanceManagerReport = new InstanceManagerReport();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                instanceManagerReport = this.AnalyticsDataManager.GetInstanceManagerDashboard(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return instanceManagerReport;
+        }
+
+        [HttpPost]
+        public GroupManagerReport GetGroupManagerDashboard(DashboardReportSearchParameter dashboardReportSearchParameter)
+        {
+            GroupManagerReport instanceManagerReport = new GroupManagerReport();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                instanceManagerReport = this.AnalyticsDataManager.GetGroupManagerDashboard(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return instanceManagerReport;
         }
 
         #endregion
