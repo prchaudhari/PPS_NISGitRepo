@@ -56,7 +56,7 @@ export class InstancemanagerdashboardComponent implements OnInit {
       filterFromDate: [fromDate],
       filterToDate: [toDate],
     });
-var searchParameter: any = {};
+    var searchParameter: any = {};
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
@@ -89,7 +89,7 @@ var searchParameter: any = {};
       this.getDashboardReports(null);
       this.isFilter = !this.isFilter;
     }
-     else {
+    else {
       if (this.validateFilterDate()) {
         let searchParameter: any = {};
         searchParameter.PagingParameter = {};
@@ -115,7 +115,7 @@ var searchParameter: any = {};
     }
   }
 
- validateFilterDate(): boolean {
+  validateFilterDate(): boolean {
     if (this.AnalyticFilterForm.value.filterFromDate != null && this.AnalyticFilterForm.value.filterFromDate != '' &&
       this.AnalyticFilterForm.value.filterToDate != null && this.AnalyticFilterForm.value.filterToDate != '') {
       let startDate = this.AnalyticFilterForm.value.filterFromDate;
@@ -128,7 +128,26 @@ var searchParameter: any = {};
     return true;
   }
   resetPageFilterForm() {
+    var fromDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    var toDate = new Date();
+    var visitorDate = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
+
+    this.AnalyticFilterForm = this.fb.group({
+      filterFromDate: [fromDate],
+      filterToDate: [toDate],
+    });
+
     var searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = 'Id';
+    searchParameter.SortParameter.SortOrder = Constants.Descending;
+    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.StartDate = new Date(fromDate.setHours(0, 0, 0));
+    searchParameter.EndDate = new Date(toDate.setHours(23, 59, 59));
+
     this.getDashboardReports(searchParameter);
   }
 
@@ -205,7 +224,7 @@ var searchParameter: any = {};
     return this.AnalyticFilterForm.get('filterToDate');
   }
 
- disableSeacrhButton() {
+  disableSeacrhButton() {
     if (this.AnalyticFilterForm.value.filterFromDate === null || this.AnalyticFilterForm.value.filterFromDate == '') {
       return true;
     }

@@ -45,7 +45,7 @@ export class GroupmanagerdashboardComponent implements OnInit {
       filterFromDate: [fromDate],
       filterToDate: [toDate],
     });
-var searchParameter: any = {};
+    var searchParameter: any = {};
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
     searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
@@ -117,7 +117,26 @@ var searchParameter: any = {};
     return true;
   }
   resetPageFilterForm() {
+    var fromDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    var toDate = new Date();
+    var visitorDate = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
+
+    this.AnalyticFilterForm = this.fb.group({
+      filterFromDate: [fromDate],
+      filterToDate: [toDate],
+    });
+
     var searchParameter: any = {};
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = Constants.DefaultPageIndex;
+    searchParameter.PagingParameter.PageSize = Constants.DefaultPageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = 'Id';
+    searchParameter.SortParameter.SortOrder = Constants.Descending;
+    searchParameter.SearchMode = Constants.Contains;
+    searchParameter.StartDate = new Date(fromDate.setHours(0, 0, 0));
+    searchParameter.EndDate = new Date(toDate.setHours(23, 59, 59));
+
     this.getDashboardReports(searchParameter);
   }
 
@@ -132,7 +151,7 @@ var searchParameter: any = {};
       searchParameter.SortParameter.SortOrder = this.sortOrder;
       searchParameter.SearchMode = Constants.Contains;
     }
-    
+
     searchParameter.IsPrimaryTenant = false;
     searchParameter.IsCountryRequired = true;
     searchParameter.TenantType = "Group";
@@ -153,7 +172,7 @@ var searchParameter: any = {};
   }
 
   async getDashboardReports(searchParameter) {
-  
+
     let service = this.injector.get(DashboardReportService);
     if (searchParameter == null) {
       searchParameter = {};
@@ -165,7 +184,7 @@ var searchParameter: any = {};
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
     }
-  searchParameter.IsInstanceManager = false;
+    searchParameter.IsInstanceManager = false;
     var data: any = {};
     data = await service.getDashboardReport(searchParameter);
     this.reportData = data.List;
@@ -193,6 +212,7 @@ var searchParameter: any = {};
   get filterToDate() {
     return this.AnalyticFilterForm.get('filterToDate');
   }
+
   onPublishedFilterDateChange(event) {
     this.filterFromDateError = false;
     this.filterToDateError = false;
@@ -223,6 +243,7 @@ var searchParameter: any = {};
       }
     }
   }
+
   public UserChartOptions: any = {
     xAxis: {
     },
