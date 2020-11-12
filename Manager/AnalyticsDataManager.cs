@@ -357,7 +357,6 @@ namespace nIS
             instanceManagerReport.UsersByGroup = new GraphChartData();
             PieChartSeries series = new PieChartSeries();
             series.name = "Groups";
-            // instanceManagerReport.PublishedStatementByGroup.
             var tenantGroups = new ClientManager(this.unityContainer).GetClients(clientSearchPaarmeter, ModelConstant.DEFAULT_TENANT_CODE);
             int totalTenants = 0;
             if (tenantGroups?.Count > 0)
@@ -443,17 +442,29 @@ namespace nIS
                                 }));
                             Task.WaitAll(tasks.ToArray());
                         });
+                        if (publishedStatementOfGroup > 0)
+                        {
+                            PieChartData data = new PieChartData();
+                            data.name = group.TenantName;
+                            data.y = publishedStatementOfGroup;
+                            pieChartDatas.Add(data);
+                        }
 
-                        PieChartData data = new PieChartData();
-                        data.name = group.TenantName;
-                        data.y = publishedStatementOfGroup;
-                        pieChartDatas.Add(data);
-                        series.data = pieChartDatas;
-                        userCount.Add(totalUsers);
-                        generatedStmtCount.Add(generatedStmt);
+                        if (totalUsers > 0)
+                        {
+                            userCount.Add(totalUsers);
+
+                        }
+                        if (generatedStmt > 0)
+                        {
+                            generatedStmtCount.Add(generatedStmt);
+
+
+                        }
 
                     }
                 });
+                series.data = pieChartDatas;
                 usersByGroup.series.Add(new ChartSeries
                 {
                     name = "Groups",
@@ -550,8 +561,8 @@ namespace nIS
                         var publishedStatements = statementManager.GetStatementCount(new StatementSearchParameter
                         {
                             Status = "Published",
-                            StartDate= dashboardReportSearchParameter.StartDate,
-                            EndDate= dashboardReportSearchParameter.EndDate,
+                            StartDate = dashboardReportSearchParameter.StartDate,
+                            EndDate = dashboardReportSearchParameter.EndDate,
                             SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
                         }, tenant.TenantCode);
                         publishedStatementOfGroup = publishedStatementOfGroup + publishedStatements;

@@ -96,7 +96,43 @@ export class ListComponent implements OnInit {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     //this.iterator();
-    this.getDynamicWidgets(null);
+    let searchParameter: any = {};
+    searchParameter.IsActive = true;
+    searchParameter.PagingParameter = {};
+    searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
+    searchParameter.PagingParameter.PageSize = this.pageSize;
+    searchParameter.SortParameter = {};
+    searchParameter.SortParameter.SortColumn = this.sortColumn;
+    searchParameter.SortParameter.SortOrder = this.sortOrder;
+    searchParameter.SearchMode = Constants.Contains;
+    if (this.DynamicWidgetFilterForm.value.filterOwner != null && this.DynamicWidgetFilterForm.value.filterOwner != '') {
+      this.filterDynamicWidgetOwner = this.DynamicWidgetFilterForm.value.filterOwner.trim();
+      searchParameter.DynamicWidgetOwner = this.DynamicWidgetFilterForm.value.filterOwner.trim();
+    }
+    if (this.DynamicWidgetFilterForm.value.filterPageType != 0) {
+      this.filterPageTypeId = this.DynamicWidgetFilterForm.value.filterPageType;
+      searchParameter.PageTypeId = this.DynamicWidgetFilterForm.value.filterPageType;
+    }
+    if (this.DynamicWidgetFilterForm.value.filterEntity != 0) {
+
+      searchParameter.EntityId = this.DynamicWidgetFilterForm.value.filterEntity;
+    }
+    if (this.DynamicWidgetFilterForm.value.filterWidgetType != 0) {
+      searchParameter.DynamicWidgetType = this.DynamicWidgetFilterForm.value.filterWidgetType;
+    }
+    if (this.DynamicWidgetFilterForm.value.filterStatus != null && this.DynamicWidgetFilterForm.value.filterStatus != 0) {
+      this.filterDynamicWidgetStatus = this.DynamicWidgetFilterForm.value.filterStatus;
+      searchParameter.Status = this.DynamicWidgetFilterForm.value.filterStatus;
+    }
+    if (this.DynamicWidgetFilterForm.value.filterPublishedOnFromDate != null && this.DynamicWidgetFilterForm.value.filterPublishedOnFromDate != '') {
+      this.filterPublishStartDate = this.DynamicWidgetFilterForm.value.filterPublishedOnFromDate;
+      searchParameter.StartDate = new Date(this.DynamicWidgetFilterForm.value.filterPublishedOnFromDate.setHours(0, 0, 0));
+    }
+    if (this.DynamicWidgetFilterForm.value.filterPublishedOnToDate != null && this.DynamicWidgetFilterForm.value.filterPublishedOnToDate != '') {
+      this.filterPublishEndDate = this.DynamicWidgetFilterForm.value.filterPublishedOnToDate;
+      searchParameter.EndDate = new Date(this.DynamicWidgetFilterForm.value.filterPublishedOnToDate.setHours(23, 59, 59));
+    }
+    this.getDynamicWidgets(searchParameter);
   }
 
   get filterOwner() {
