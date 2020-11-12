@@ -31,6 +31,11 @@ namespace nIS
         /// </summary>
         IScheduleRepository scheduleRepository = null;
 
+        /// <summary>
+        /// The Client manager.
+        /// </summary>
+        private ClientManager clientManager = null;
+
         #endregion
 
         #region Constructor
@@ -46,6 +51,7 @@ namespace nIS
             {
                 this.unityContainer = unityContainer;
                 this.scheduleRepository = this.unityContainer.Resolve<IScheduleRepository>();
+                this.clientManager = this.unityContainer.Resolve<ClientManager>();
             }
             catch (Exception ex)
             {
@@ -333,8 +339,26 @@ namespace nIS
         {
             try
             {
+                ClientSearchParameter clientSearchParameter = new ClientSearchParameter
+                {
+                    TenantCode = tenantCode,
+                    IsCountryRequired = false,
+                    IsContactRequired = false,
+                    PagingParameter = new PagingParameter
+                    {
+                        PageIndex = 0,
+                        PageSize = 0,
+                    },
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = "Id",
+                    },
+                    SearchMode = SearchMode.Equals
+                };
+                var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
-                return this.scheduleRepository.RunScheduleNew(baseURL, outputLocation, tenantCode, parallelThreadCount);
+                return this.scheduleRepository.RunScheduleNew(baseURL, outputLocation, tenantCode, parallelThreadCount, client);
             }
             catch (Exception ex)
             {
@@ -353,8 +377,26 @@ namespace nIS
         {
             try
             {
+                ClientSearchParameter clientSearchParameter = new ClientSearchParameter
+                {
+                    TenantCode = tenantCode,
+                    IsCountryRequired = false,
+                    IsContactRequired = false,
+                    PagingParameter = new PagingParameter
+                    {
+                        PageIndex = 0,
+                        PageSize = 0,
+                    },
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = "Id",
+                    },
+                    SearchMode = SearchMode.Equals
+                };
+                var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
-                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode, parallelThreadCount);
+                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode, parallelThreadCount, client);
             }
             catch (Exception ex)
             {

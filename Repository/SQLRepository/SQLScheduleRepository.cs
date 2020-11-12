@@ -556,7 +556,7 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
+        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client)
         {
             bool scheduleRunStatus = false;
             IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
@@ -678,7 +678,7 @@ namespace nIS
                                             parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                                             Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                             {
-                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration);
+                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
                                             });
                                             //customerMasters.ToList().ForEach(customer =>
                                             //{
@@ -749,7 +749,7 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
+        public bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client)
         {
             bool scheduleRunStatus = false;
             var schedules = new List<ScheduleRecord>();
@@ -882,7 +882,7 @@ namespace nIS
                                             parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                                             Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                             {
-                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration);
+                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
                                             });
                                             //customerMasters.ToList().ForEach(customer =>
                                             //{
@@ -954,7 +954,7 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunScheduleNow(BatchMaster batch, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
+        public bool RunScheduleNow(BatchMaster batch, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client)
         {
             bool isScheduleSuccess = false;
             try
@@ -1076,7 +1076,7 @@ namespace nIS
                         //});
                         customerMasters.ForEach(customer =>
                         {
-                            this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration);
+                            this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
                         });
                     }
                     else
@@ -1974,7 +1974,7 @@ namespace nIS
             }
         }
 
-        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration)
+        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client)
         {
             IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
 
@@ -1983,7 +1983,7 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     var renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
-                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration);
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client);
                     if (logDetailRecord != null)
                     {
                         logDetailRecord.ScheduleLogId = scheduleLog.Id;

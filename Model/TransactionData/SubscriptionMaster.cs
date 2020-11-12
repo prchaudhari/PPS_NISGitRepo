@@ -13,6 +13,8 @@ namespace nIS
         public long BatchId { get; set; }
         public long CustomerId { get; set; }
         public string CustomerCode { get; set; }
+        public string EmployeeID { get; set; }
+        public string EmployeeName { get; set; }
         public string VendorName { get; set; }
         public string Subscription { get; set; }
         public string EmailId { get; set; }

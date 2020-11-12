@@ -373,7 +373,7 @@ namespace nIS
                                             isRowComplete = false;
                                         }
                                         int divLength = mergedlst[i].Width;
-                                        var divHeight = mergedlst[i].Height * 103 + "px";
+                                        var divHeight = mergedlst[i].Height * 110 + "px";
                                         tempRowWidth = tempRowWidth + divLength;
 
                                         // If current col-lg class length is greater than 12, 
@@ -705,6 +705,7 @@ namespace nIS
                                                 {
                                                     var tableWidgetHtml = HtmlConstants.TABLE_WIDEGT_FOR_PAGE_PREVIEW;
                                                     tableWidgetHtml = tableWidgetHtml.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    tableWidgetHtml = tableWidgetHtml.Replace("{{TableMaxHeight}}", (mergedlst[i].Height * 110) - 40 + "");
                                                     tableWidgetHtml = this.ApplyStyleCssForDynamicTableAndFormWidget(tableWidgetHtml, themeDetails);
                                                     tableWidgetHtml = tableWidgetHtml.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                     List<DynamicWidgetTableEntity> tableEntities = JsonConvert.DeserializeObject<List<DynamicWidgetTableEntity>>(dynawidget.WidgetSettings);

@@ -298,7 +298,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
+        public bool RetryStatementForFailedCustomerReocrds(IList<ScheduleLogDetail> scheduleLogDetails, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client)
         {
             bool retryStatementStatus = false;
             IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
@@ -376,7 +376,7 @@ namespace nIS
                             parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                             Parallel.ForEach(scheduleLogDetailRecords, parallelOptions, scheduleLogDetail =>
                             {
-                                this.ReGenerateFailedCustomerStatements(scheduleLogDetail, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, renderEngine, tenantConfiguration);
+                                this.ReGenerateFailedCustomerStatements(scheduleLogDetail, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, renderEngine, tenantConfiguration, client);
                             });
                         }
                     }
@@ -399,7 +399,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if statements generates successfully runs successfully, false otherwise</returns>
-        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount)
+        public bool ReRunScheduleForFailedCases(long scheduleLogIdentifier, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client)
         {
             bool scheduleRunStatus = false;
             try
@@ -423,7 +423,7 @@ namespace nIS
 
                 if (failedRecords.Count != 0)
                 {
-                    scheduleRunStatus = RetryStatementForFailedCustomerReocrds(failedRecords, baseURL, outputLocation, tenantCode, parallelThreadCount);
+                    scheduleRunStatus = RetryStatementForFailedCustomerReocrds(failedRecords, baseURL, outputLocation, tenantCode, parallelThreadCount, client);
                 }
             }
             catch (Exception ex)
@@ -661,7 +661,7 @@ namespace nIS
             }
         }
 
-        private bool ReGenerateFailedCustomerStatements(ScheduleLogDetailRecord scheduleLogDetail, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation, RenderEngineRecord renderEngine, TenantConfiguration tenantConfiguration)
+        private bool ReGenerateFailedCustomerStatements(ScheduleLogDetailRecord scheduleLogDetail, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation, RenderEngineRecord renderEngine, TenantConfiguration tenantConfiguration, Client client)
         {
             try
             {
@@ -686,7 +686,7 @@ namespace nIS
                         TabClassName = it.TabClassName
                     }));
 
-                    var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, newStatementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration);
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, newStatementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client);
                     if (logDetailRecord != null)
                     {
                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))

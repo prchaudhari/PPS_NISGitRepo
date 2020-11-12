@@ -663,12 +663,12 @@ namespace nIS
                                                 {
                                                     if (tempRowWidth == 0)
                                                     {
-                                                        pageHtmlContent.Append(HtmlConstants.START_ROW_DIV_TAG);
+                                                        pageHtmlContent.Append("<div class='row pt-2'>");
                                                         isRowComplete = false;
                                                     }
 
                                                     var divLength = mergedlst[x].Width;
-                                                    var divHeight = mergedlst[x].Height * 103 + "px";
+                                                    var divHeight = mergedlst[x].Height * 110 + "px";
                                                     tempRowWidth = tempRowWidth + divLength;
 
                                                     // If current col-lg class length is greater than 12, 
@@ -677,11 +677,12 @@ namespace nIS
                                                     {
                                                         tempRowWidth = divLength;
                                                         pageHtmlContent.Append(HtmlConstants.END_DIV_TAG); // to end row class div
-                                                        pageHtmlContent.Append(HtmlConstants.START_ROW_DIV_TAG); // to start new row class div
-
+                                                        pageHtmlContent.Append("<div class='row pt-2'>"); // to start new row class div
                                                         isRowComplete = false;
                                                     }
-                                                    pageHtmlContent.Append("<div class='col-lg-" + divLength + "'>");
+
+                                                    var leftPaddingClass = i != 0 ? " pl-0" : string.Empty;
+                                                    pageHtmlContent.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
 
                                                     if (!mergedlst[x].IsDynamicWidget)
                                                     {
@@ -854,6 +855,7 @@ namespace nIS
                                                             {
                                                                 var htmlWidget = HtmlConstants.TABLE_WIDEGT_FOR_STMT;
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                htmlWidget = htmlWidget.Replace("{{TableMaxHeight}}", (mergedlst[x].Height * 110) - 40 + "px");
                                                                 htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
@@ -1465,9 +1467,9 @@ namespace nIS
 
                 //start to render common html content data
                 StringBuilder htmlbody = new StringBuilder();
-                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/logo.png");
-                navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
-                navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
+                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{logo}}", "../common/images/nisLogo.png");
+                navbarHtml = navbarHtml.Replace("{{BrandLogo}}", "../common/images/logo.png");
+                navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
                 //start to render actual html content data
@@ -1905,7 +1907,7 @@ namespace nIS
         /// <param name="batchMaster"> the batch master object </param>
         /// <param name="batchDetails"> the list of batch details records </param>
         /// <param name="baseURL"> the base URL of API </param>
-        public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation, TenantConfiguration tenantConfiguration)
+        public ScheduleLogDetailRecord GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, string outputLocation, TenantConfiguration tenantConfiguration, Client client)
         {
             ScheduleLogDetailRecord logDetailRecord = new ScheduleLogDetailRecord();
             StringBuilder ErrorMessages = new StringBuilder();
@@ -1952,9 +1954,11 @@ namespace nIS
 
                     StringBuilder htmlbody = new StringBuilder();
                     currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
-                    string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{BrandLogo}}", "../common/images/logo.png");
-                    navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
+                    string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
+                    //navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
+                    var clientlogo = client.TenantLogo != null ? client.TenantLogo : "";
+                    navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo +"'>";
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
                     //start to render actual html content data
@@ -3015,6 +3019,7 @@ namespace nIS
                     finalHtml.Append(navbarHtml);
                     finalHtml.Append(htmlbody.ToString());
                     finalHtml.Append(HtmlConstants.HTML_FOOTER);
+                    scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
                     finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
                     finalHtml.Replace("{{CustomerNumber}}", customer.Id.ToString());
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
