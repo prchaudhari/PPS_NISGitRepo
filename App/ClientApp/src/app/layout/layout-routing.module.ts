@@ -15,6 +15,8 @@ import { CountryComponent } from './country/country.component';
 import { ThemeConfigurationComponent } from './theme-configuration/theme-configuration.component';
 import { ContacttypeComponent} from './contacttype/contacttype.component'
 import { MultiTenantUserAccessMapComponent } from './multi-tenant-user-access-map/multi-tenant-user-access-map.component';
+import { InstancemanagerdashboardComponent } from './instancemanagerdashboard/instancemanagerdashboard.component';
+import { GroupmanagerdashboardComponent } from './groupmanagerdashboard/groupmanagerdashboard.component';
 
 const routes: Routes = [
   {
@@ -48,6 +50,9 @@ const routes: Routes = [
       { path: 'themeConfiguration', component: ThemeConfigurationComponent },
       { path: 'contacttype', component: ContacttypeComponent },
       { path: 'multiTenantUserAccess', component: MultiTenantUserAccessMapComponent },
+      { path: 'groupManagerDashboard', component: GroupmanagerdashboardComponent },
+      { path: 'instanceManagerDashboard', component: InstancemanagerdashboardComponent },
+
     ]
   }
 ];

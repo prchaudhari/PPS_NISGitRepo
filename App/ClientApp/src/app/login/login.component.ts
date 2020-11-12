@@ -286,26 +286,26 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("DateFormat", data.DateFormat);
         localStorage.setItem("StatePrivilegeMap", JSON.stringify(this.statePrivilegeMap));
 
-        if(data.IsPasswordResetByAdmin != null && data.IsPasswordResetByAdmin.toLocaleLowerCase() == 'true') {
+        if (data.IsPasswordResetByAdmin != null && data.IsPasswordResetByAdmin.toLocaleLowerCase() == 'true') {
           localStorage.setItem('userClaims', JSON.stringify(userData));
           this.route.navigate(['changepassword']);
         }
         else {
-          
+
           //conditional code for theme
           this.handleTheme(userData.UserTheme);
 
-          if(userData.IsInstanceTenantManager != null && userData.IsInstanceTenantManager.toLocaleLowerCase() == 'true') {
+          if (userData.IsInstanceTenantManager != null && userData.IsInstanceTenantManager.toLocaleLowerCase() == 'true') {
             localStorage.setItem('userClaims', JSON.stringify(userData));
-            this.route.navigate(['tenantgroups']);
+            this.route.navigate(['instanceManagerDashboard']);
           }
-          else if(userData.IsUserHaveMultiTenantAccess != null && userData.IsUserHaveMultiTenantAccess.toLocaleLowerCase() == 'true') {
+          else if (userData.IsUserHaveMultiTenantAccess != null && userData.IsUserHaveMultiTenantAccess.toLocaleLowerCase() == 'true') {
             localStorage.setItem('userClaims', JSON.stringify(userData));
             this.route.navigate(['selectTenant']);
           }
-          else if(userData.IsTenantGroupManager != null && userData.IsTenantGroupManager.toLocaleLowerCase() == 'true') {
+          else if (userData.IsTenantGroupManager != null && userData.IsTenantGroupManager.toLocaleLowerCase() == 'true') {
             localStorage.setItem('userClaims', JSON.stringify(userData));
-            this.route.navigate(['tenants']);
+            this.route.navigate(['groupManagerDashboard']);
           }
           else {
             userData.Privileges = await this.getUserRoles(userData.RoleIdentifier);
@@ -343,7 +343,7 @@ export class LoginComponent implements OnInit {
             }
           }
         }
-        
+
       }
     }, (error: HttpResponse<any>) => {
       this.spinner.stop();

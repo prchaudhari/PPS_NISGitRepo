@@ -64,6 +64,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\core\services\window-ref.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\contacttype\contacttype.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\country\country.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\instancemanagerdashboard\dashboard.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\logs-details\logs-details.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\logs\schedulelog.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\roles\role.ts" />

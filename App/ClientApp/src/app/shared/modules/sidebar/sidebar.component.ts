@@ -128,6 +128,16 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/schedulemanagement']);
   }
+  navigateTogroupManagerDashboard() {
+    this.URL = '/groupManagerDashboard';
+    this.hideSidebar();
+    this.route.navigate(['/groupManagerDashboard']);
+  }
+  navigateToinstanceManagerDashboard() {
+    this.URL = '/instanceManagerDashboard';
+    this.hideSidebar();
+    this.route.navigate(['/instanceManagerDashboard']);
+  }
   navigateToTenants() {
     this.URL = '/tenants';
     this.hideSidebar();
@@ -285,7 +295,7 @@ export class SidebarComponent implements OnInit {
       this.URL = this.route.url;
       if(this.isInstanceTenantManager == true || this.isTenantGroupManager == true || this.isTenantAdminUser) {
         if (this.URL.includes('/tenants') || this.URL.includes('/tenantConfiguration') ||this.URL.includes('/settings') || this.URL.includes('/country') || 
-        this.URL.includes('/tenantgroups') || this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype') || this.URL.includes('/multiTenantUserAccess')
+          this.URL.includes('/tenantgroups') || this.URL.includes('/instanceManagerDashboard') || this.URL.includes('/groupManagerDashboard')|| this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype') || this.URL.includes('/multiTenantUserAccess')
         || this.URL.includes('/tenantusers') || this.URL.includes('/tenantgroupusers')) {
           this.IsMainMenu = false;
         }
@@ -355,13 +365,13 @@ export class SidebarComponent implements OnInit {
 
   navigateToRespectiveUserLandingPage() {
     if(this.isInstanceTenantManager == true) {
-      this.URL = '/tenantgroups';
-      this.route.navigate(['/tenantgroups']);
+      this.URL = '/instanceManagerDashboard';
+      this.route.navigate(['/instanceManagerDashboard']);
     }
     else if(this.isTenantGroupManager == true) {
       if(this.isUserHaveMultiTenantAccess == true && this.userRoleName == 'Group Manager') {
-        this.URL = '/tenants';
-        this.route.navigate(['/tenants']);
+        this.URL = '/groupManagerDashboard';
+        this.route.navigate(['/groupManagerDashboard']);
       }else {
         this.routeNavigate();
       }  

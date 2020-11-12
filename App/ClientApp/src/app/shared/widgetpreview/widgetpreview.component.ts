@@ -179,16 +179,14 @@ export class WidgetPreviewComponent extends DialogComponent<WidgetPreviewModel, 
 
   public LineGraphChartOptions: any = {
     xAxis: {
-      //categories: this.ChartData.xAxis
+     
     },
-    //series: this.ChartData.series
+  
   }
 
   public BarGraphChartOptions: any = {
     xAxis: {
-      //categories: this.ChartData.xAxis
     },
-    //series: this.ChartData.series
   }
 
   public PieChartOptions: any = {

@@ -627,7 +627,24 @@ namespace nIS
                         queryString.Append("(" + string.Join("or ", logDetailSearchParameter.Status.ToString().Split(',').Select(item => string.Format("Status.Contains(\"{0}\") ", item))) + ") and ");
                     }
                 }
+                if (this.validationEngine.IsValidDate(logDetailSearchParameter.StartDate) && !this.validationEngine.IsValidDate(logDetailSearchParameter.EndDate))
+                {
+                    DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logDetailSearchParameter.StartDate), DateTimeKind.Utc);
+                    queryString.Append("CreationDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
+                }
+                if (this.validationEngine.IsValidDate(logDetailSearchParameter.EndDate) && !this.validationEngine.IsValidDate(logDetailSearchParameter.StartDate))
+                {
+                    DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logDetailSearchParameter.EndDate), DateTimeKind.Utc);
+                    queryString.Append("CreationDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+                }
+                if (this.validationEngine.IsValidDate(logDetailSearchParameter.StartDate) && this.validationEngine.IsValidDate(logDetailSearchParameter.EndDate))
+                {
+                    DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logDetailSearchParameter.StartDate), DateTimeKind.Utc);
+                    DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logDetailSearchParameter.EndDate), DateTimeKind.Utc);
 
+                    queryString.Append("CreationDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                                   "and CreationDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+                }
                 queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
                 return queryString.ToString();
             }

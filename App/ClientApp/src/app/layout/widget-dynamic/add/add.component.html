@@ -9,40 +9,17 @@
       <div class="card-body position-relative">
 
         <div class="row">
-          <div class="col-sm-7">
+          <div class="col-sm-10">
             <div class="row">
-              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 form-group">
                 <label>Widget Name</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" formControlName="WidgetName" />
               </div>
-              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 form-group">
                 <label>Title</label><span class="text-danger ml-2">*</span>
                 <input type="text" class="form-control" formControlName="WidgetTitle" />
               </div>
-            </div>
-            <div class="row">
-              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
-                <label>Page Type</label><span class="text-danger ml-2">*</span>
-
-                <ng-multiselect-dropdown [data]="pageTypeList" [attr.disabled]="updateOperationMode?'':null"
-                                         [settings]="pageTypedropdownSettings"
-                                         (onSelect)="onItemSelectPageType($event)"
-                                         (onSelectAll)="onSelectAllPageType($event)"
-                                         [(ngModel)]="pageTypeselectedItems"
-                                         formControlName="PageType"
-                                         (onDeSelect)="onItemDeSelectPageType($event)"
-                                         (onDeSelectAll)="onItemDeSelectAllPageType($event)"
-                                         name="fieldName" ngDefaultControl >
-                </ng-multiselect-dropdown>
-                <div class="validation-msg" style="color:red">
-                  <ul *ngIf="isPageTypeFileDropdownError" style="list-style-type:none">
-                    <li class="text-danger">
-                      Please select page type
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 form-group">
                 <label>Entity</label><span class="text-danger ml-2">*</span>
                 <select formControlName="Entity" [attr.disabled]="updateOperationMode?'':null" (change)="onEntitySelected($event)" class="form-control">
                   <option *ngFor="let pt of entityList" [value]="pt.Identifier">{{pt.Name}}</option>
@@ -124,6 +101,42 @@
                 <!--repeat end-->
               </div>
             </div>
+            <div class="row">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+                <label>Page Type</label><span class="text-danger ml-2">*</span>
+                <div *ngFor="let pageType of pageTypeList" class="d-flex justify-content-between">
+                  <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input"  [ngModelOptions]="{standalone: true}"
+                         [disabled]="updateOperationMode"
+                           type="checkbox" name="pageType"
+                           (change)="onPageSelected($event,pageType)"
+                           [(ngModel)]="pageType.IsChecked"
+                           [checked]="pageType.IsChecked" />
+                    <label class="custom-control-label">{{pageType.PageTypeName}}</label>
+                  </div>
+                </div>
+                <!--<ng-multiselect-dropdown [data]="pageTypeList"
+                               [settings]="pageTypedropdownSettings"
+                               (onSelect)="onItemSelectPageType($event)"
+                               (onSelectAll)="onSelectAllPageType($event)"
+                               [(ngModel)]="pageTypeselectedItems"
+                               formControlName="PageType"
+                               (onDeSelect)="onItemDeSelectPageType($event)"
+                               (onDeSelectAll)="onItemDeSelectAllPageType($event)"
+                               name="fieldName" ngDefaultControl >
+      </ng-multiselect-dropdown>-->
+
+                <div class="validation-msg" style="color:red">
+                  <ul *ngIf="isPageTypeFileDropdownError" style="list-style-type:none">
+                    <li class="text-danger">
+                      Please select page type
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+
           </div>
         </div>
       </div>

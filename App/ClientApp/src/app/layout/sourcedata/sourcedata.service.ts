@@ -4,7 +4,7 @@ import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfigurati
 import { Observable } from 'rxjs';
 import { HttpEvent, HttpEventType, HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Constants } from 'src/app/shared/constants/constants';
-import { SourceData, WidgetVisitorPieChartData, PageWidgetVistorData, VisitorForDay} from './sourcedata';
+import { SourceData, WidgetVisitorPieChartData, PageWidgetVistorData, VisitorForDay } from './sourcedata';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
@@ -37,7 +37,7 @@ export class SourceDataService {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = "AnalyticsData/List";
     this.uiLoader.start();
-    var response : any = {};
+    var response: any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
@@ -93,7 +93,7 @@ export class SourceDataService {
           }
         }
       }, (error: HttpResponse<any>) => {
-          this.pieChartList = [];
+        this.pieChartList = [];
         this.isRecordFound = false;
         this.uiLoader.stop();
       });
@@ -155,7 +155,7 @@ export class SourceDataService {
           }
         }
       }, (error: HttpResponse<any>) => {
-          this.VisitorForDay = [];
+        this.VisitorForDay = [];
         this.isRecordFound = false;
         this.uiLoader.stop();
       });
@@ -186,7 +186,7 @@ export class SourceDataService {
           }
         }
       }, (error: HttpResponse<any>) => {
-          this.DateWiseVisitorData = [];
+        this.DateWiseVisitorData = [];
         this.isRecordFound = false;
         this.uiLoader.stop();
       });

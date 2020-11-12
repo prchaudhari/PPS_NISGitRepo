@@ -35,17 +35,7 @@ const List_Data: ListElement[] = [
 export class AddComponent implements OnInit {
   //html editor code
   htmlContent = '';
-  public pageTypedropdownSettings: IDropdownSettings = {
-    singleSelection: false,
-    idField: 'Identifier',
-    textField: 'PageTypeName',
-    selectAllText: 'Select All',
-    unSelectAllText: 'Un Select All',
-    itemsShowLimit: 3,
-    allowSearchFilter: false,
-    
-  };
-  public pageTypeselectedItems: any[] = [];
+ 
   public isPageTypeFileDropdownError = false;
 
   onItemSelectPageType(item: any) {
@@ -152,7 +142,8 @@ export class AddComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
   public DynamicWidgetForm: FormGroup;
-  public pageTypeList: any[] = [{ "PageTypeName": "Home", "Identifier": 10 }, { "PageTypeName": "Saving Account", "Identifier": 11 }, { "PageTypeName": "Current Account", "Identifier": 12 }];
+  public pageTypeList: any[] = [];
+
 
   public entityList: any[] = [{ "Name": "Select Entity", "Identifier": 0 }];
   public entityFieldList: any[] = [{ "Name": "Select", "Identifier": 0 }];
@@ -161,7 +152,8 @@ export class AddComponent implements OnInit {
   public widgetFilterlist: any[] = [];
   public displayWidgetFilterlist: any[] = [];
 
-
+  public pageTypedropdownSettings;
+  public pageTypeselectedItems;
   public conditionList: any[] = [
     { "Name": "Select", "Identifier": "0" },
     { "Name": "Equals To", "Identifier": "EqualsTo" },
@@ -178,7 +170,7 @@ export class AddComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
   public handlePage(e: any) {
@@ -243,7 +235,6 @@ export class AddComponent implements OnInit {
         }
       }
     });
-
     _router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         if (e.url.includes('/dynamicwidget')) {
@@ -273,7 +264,7 @@ export class AddComponent implements OnInit {
   ngOnInit() {
     this.DynamicWidgetForm = this.fb.group({
       WidgetName: [null],
-      PageType: [null],
+     // PageType: [null],
       Entity: [0],
       WidgetTitle: [null],
       FormEntityField: [0],
@@ -382,6 +373,13 @@ export class AddComponent implements OnInit {
     //  }
     //});
     this.pageTypeselectedItems = this.dynamicWidgetDetails.PageTypes;
+this.pageTypeList.forEach(item => {
+ var items=this.pageTypeselectedItems.filter(pgItem=>item.Identifier==pgItem.Identifier);
+  if(items.length>0 && items!=null)
+{
+item.IsChecked=true;
+}
+    });
     this.DynamicWidgetForm.patchValue({
       WidgetName: this.dynamicWidgetDetails.WidgetName,
       PageType: this.pageTypeselectedItems,
@@ -395,13 +393,24 @@ export class AddComponent implements OnInit {
     let dynamicWidgetService = this.injector.get(TemplateService);
     var data = await dynamicWidgetService.getPageTypes();
     data.forEach(item => {
+item.IsChecked=false;
       this.pageTypeList.push(item);
-    })
-    if (localStorage.getItem('dynamicWidgetEditRouteparams')) {
+    });
+  if (localStorage.getItem('dynamicWidgetEditRouteparams')) {
       this.updateOperationMode = true;
       this.dynamicWidgetDetails.Identifier = this.params.Routeparams.passingparams.DynamicWidgetIdentifier;
       this.getWidgetDetails();
     }
+else if(localStorage.getItem('dynamicWidgetAddRouteparams'))
+{
+  this.pageTypeList.forEach(item => {
+ var items=this.pageTypeselectedItems.filter(pgItem=>item.Identifier==pgItem.Identifier);
+  if(items.length>0 && items!=null)
+{
+item.IsChecked=true;
+}
+    });
+}
     if (this.pageTypeList.length == 0) {
       let message = ErrorMessageConstants.getNoRecordFoundMessage;
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
@@ -549,52 +558,30 @@ export class AddComponent implements OnInit {
     object.FieldName = this.entityFieldList.filter(item => item.Identifier == object.FieldId)[0];
     this.displayWidgetFilterlist.push(object);
   }
+onPageSelected(event,page)
+{
 
+this.pageTypeList.forEach(item=>{
+  if(item.Identifier==page.Identifier)
+{
+item.IsChecked=event.target.checked
+}
+})
+
+}
   async saveWidgetDetails() {
     var widget: DynamicWidget;
     widget = this.dynamicWidgetDetails;
     widget.WidgetName = this.DynamicWidgetForm.value.WidgetName;
     widget.WidgetType = this.selectedLink;
+this.pageTypeselectedItems= this.pageTypeList.filter(item=>item.IsChecked==true);
     widget.PageTypes = this.pageTypeselectedItems;;
     //widget.PageTypeId = 0;
     widget.EntityId = this.DynamicWidgetForm.value.Entity;
     widget.ThemeType = this.isDefault == true ? "Default" : "Custome";
     widget.Title = this.DynamicWidgetForm.value.WidgetTitle;
     widget.EntityName = this.entityList.filter(item => item.Identifier == this.DynamicWidgetForm.value.Entity)[0].Name;
-    //widget.Identifier = this.dynamicWidgetDetails.Identifier;
-    //if (this.selectedLink == 'Form') {
-    //  widget.WidgetSettings = JSON.stringify(this.formList);
-    //}
-    //else if (this.selectedLink == 'Table') {
-    //  widget.WidgetSettings = JSON.stringify(this.tableHeader);
-    //}
-    //else if (this.selectedLink == 'LineBarGraph') {
-    //  widget.WidgetSettings = JSON.stringify(this.lineBarGraphList);
-    //}
-    //else if (this.selectedLink == 'Pie') {
 
-    //}
-    //else if (this.selectedLink == 'Html') {
-
-    //}
-
-    //widget.ThemeCSS = '';
-    //var themeObject = {
-    //  "FontColor": this.DynamicWidgetForm.value.FontColor,
-    //  "FontSize": this.DynamicWidgetForm.value.FontSize,
-    //  "FontWeight": this.DynamicWidgetForm.value.FontWeight,
-    //  "FontType": this.DynamicWidgetForm.value.FontType,
-    //  "HeaderColor": this.DynamicWidgetForm.value.HeaderColor,
-    //  "HeaderSize": this.DynamicWidgetForm.value.HeaderSize,
-    //  "HeaderWeight": this.DynamicWidgetForm.value.HeaderWeight,
-    //  "HeaderType": this.DynamicWidgetForm.value.HeaderType,
-    //  "DataColor": this.DynamicWidgetForm.value.DataColor,
-    //  "DataSize": this.DynamicWidgetForm.value.DataSize,
-    //  "DataWeight": this.DynamicWidgetForm.value.DataWeight,
-    //  "DataType": this.DynamicWidgetForm.value.DataType
-    //}
-    //widget.ThemeCSS = JSON.stringify(themeObject);
-    //widget.WidgetFilterSettings = '';
 
     var userid = localStorage.getItem('UserId');
     widget.CreatedBy = Number(userid);
@@ -619,9 +606,11 @@ export class AddComponent implements OnInit {
     if (this.DynamicWidgetForm.value.WidgetTitle == null || this.DynamicWidgetForm.value.WidgetTitle == '') {
       return true;
     }
-    if (this.DynamicWidgetForm.value.PageType == null || this.DynamicWidgetForm.value.PageType == 0) {
-      return true;
-    }
+    var selectedPages= this.pageTypeList.filter(item=>item.IsChecked==true);
+if(selectedPages.length== 0 || selectedPages==null)
+{
+return true;
+} 
     if (this.DynamicWidgetForm.value.Entity == null || this.DynamicWidgetForm.value.Entity == 0) {
       return true;
     }
@@ -630,6 +619,8 @@ export class AddComponent implements OnInit {
 
   navigationToDesigner() {
     var pagetype: any = {}
+this.pageTypeselectedItems= this.pageTypeList.filter(item=>item.IsChecked==true);
+
     pagetype = this.pageTypeList.filter(item => { return item.Identifier == this.DynamicWidgetForm.value.PageType });
     var entity: any = {}
     entity = this.entityList.filter(item => { return item.Identifier == this.DynamicWidgetForm.value.Entity });

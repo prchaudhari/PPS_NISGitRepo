@@ -39,8 +39,8 @@ namespace nIS
     public class GraphChartData
     {
         public ChartTitle title;
-        public IList<ChartSeries> series;
-        public IList<string> xAxis;
+        public IList<ChartSeries> series=new List<ChartSeries>();
+        public IList<string> xAxis=new List<string>();
         public string color;
 
     }
