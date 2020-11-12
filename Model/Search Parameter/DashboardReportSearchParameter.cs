@@ -31,6 +31,16 @@ namespace nIS
         private string tenantTenantCode = string.Empty;
 
         /// <summary>
+        /// the start date
+        /// </summary>
+        private DateTime startDate;
+
+        /// <summary>
+        /// the end date
+        /// </summary>
+        private DateTime endDate;
+
+        /// <summary>
         /// The utility object
         /// </summary>
         private IUtility utility = new Utility();
@@ -71,7 +81,35 @@ namespace nIS
                 this.tenantTenantCode = value;
             }
         }
+        /// <summary>
+        /// The start date
+        /// </summary>
+        public DateTime StartDate
+        {
+            get
+            {
+                return this.startDate;
+            }
+            set
+            {
+                this.startDate = value;
+            }
+        }
 
+        /// <summary>
+        /// The end date
+        /// </summary>
+        public DateTime EndDate
+        {
+            get
+            {
+                return this.endDate;
+            }
+            set
+            {
+                this.endDate = value;
+            }
+        }
         #endregion
 
         #region Public Methods

@@ -286,7 +286,7 @@ namespace nIS
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                instanceManagerReport = this.AnalyticsDataManager.GetInstanceManagerDashboard(tenantCode);
+                instanceManagerReport = this.AnalyticsDataManager.GetInstanceManagerDashboard(dashboardReportSearchParameter,tenantCode);
             }
             catch (Exception ex)
             {
@@ -302,7 +302,7 @@ namespace nIS
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                instanceManagerReport = this.AnalyticsDataManager.GetGroupManagerDashboard(tenantCode);
+                instanceManagerReport = this.AnalyticsDataManager.GetGroupManagerDashboard(dashboardReportSearchParameter,tenantCode);
             }
             catch (Exception ex)
             {

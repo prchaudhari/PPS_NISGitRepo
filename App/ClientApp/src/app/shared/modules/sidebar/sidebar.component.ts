@@ -128,6 +128,16 @@ export class SidebarComponent implements OnInit {
     this.hideSidebar();
     this.route.navigate(['/schedulemanagement']);
   }
+  navigateTogroupManagerDashboard() {
+    this.URL = '/groupManagerDashboard';
+    this.hideSidebar();
+    this.route.navigate(['/groupManagerDashboard']);
+  }
+  navigateToinstanceManagerDashboard() {
+    this.URL = '/instanceManagerDashboard';
+    this.hideSidebar();
+    this.route.navigate(['/instanceManagerDashboard']);
+  }
   navigateToTenants() {
     this.URL = '/tenants';
     this.hideSidebar();

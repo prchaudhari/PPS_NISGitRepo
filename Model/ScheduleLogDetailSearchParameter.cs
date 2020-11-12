@@ -38,6 +38,15 @@ namespace nIS
         public string Status { get; set; }
 
         /// <summary>
+        /// The start date
+        /// </summary>
+        public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// The end date
+        /// </summary>
+        public DateTime EndDate { get; set; }
+        /// <summary>
         /// Determines whether this instance of schedule log detail search parameter is valid.
         /// </summary>
         /// <returns>

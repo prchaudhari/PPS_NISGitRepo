@@ -345,7 +345,7 @@ namespace nIS
         #endregion
 
         #region Group and Instance Manager Report
-        public InstanceManagerReport GetInstanceManagerDashboard(string tenantCode)
+        public InstanceManagerReport GetInstanceManagerDashboard(DashboardReportSearchParameter dashboardReportSearchParameter, string tenantCode)
         {
             InstanceManagerReport instanceManagerReport = new InstanceManagerReport();
             ClientSearchParameter clientSearchPaarmeter = new ClientSearchParameter();
@@ -408,7 +408,8 @@ namespace nIS
                                 var publishedStatements = statementManager.GetStatementCount(new StatementSearchParameter
                                 {
                                     Status = "Published",
-
+                                    StartDate = dashboardReportSearchParameter.StartDate,
+                                    EndDate = dashboardReportSearchParameter.EndDate,
                                     SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
                                 }, tenant.TenantCode);
                                 publishedStatementOfGroup = publishedStatementOfGroup + publishedStatements;
@@ -431,7 +432,9 @@ namespace nIS
                                     var generatedStatements = scheduleLogManager.GetScheduleLogDetailsCount(new ScheduleLogDetailSearchParameter
                                     {
                                         Status = "Completed",
-                                        SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                                        SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN },
+                                        StartDate = dashboardReportSearchParameter.StartDate,
+                                        EndDate = dashboardReportSearchParameter.EndDate
                                     }, tenant.TenantCode);
                                     if (generatedStatements > 0)
                                     {
@@ -477,7 +480,7 @@ namespace nIS
             return instanceManagerReport;
         }
 
-        public GroupManagerReport GetGroupManagerDashboard(string tenantCode)
+        public GroupManagerReport GetGroupManagerDashboard(DashboardReportSearchParameter dashboardReportSearchParameter, string tenantCode)
         {
             GroupManagerReport groupManagerReport = new GroupManagerReport();
             ClientSearchParameter clientSearchPaarmeter = new ClientSearchParameter();
@@ -526,13 +529,29 @@ namespace nIS
                     totalTenants = totalTenants + tenants.Count;
 
                     List<Task> tasks = new List<Task>();
+                    StatementSearchParameter statementSearchParameter = new StatementSearchParameter
+                    {
+                        Status = "Published",
+
+                        SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                    };
+
+                    //if (dashboardReportSearchParameter.StartDate != null)
+                    //{
+                    //    statementSearchParameter.StartDate = dashboardReportSearchParameter.StartDate;
+                    //}
+                    //if (dashboardReportSearchParameter.EndDate != null)
+                    //{
+                    //    statementSearchParameter.StartDate = dashboardReportSearchParameter.EndDate;
+                    //}
                     tasks.Add(Task.Factory.StartNew(() =>
                     {
                         StatementManager statementManager = new StatementManager(this.unityContainer);
                         var publishedStatements = statementManager.GetStatementCount(new StatementSearchParameter
                         {
                             Status = "Published",
-
+                            StartDate= dashboardReportSearchParameter.StartDate,
+                            EndDate= dashboardReportSearchParameter.EndDate,
                             SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
                         }, tenant.TenantCode);
                         publishedStatementOfGroup = publishedStatementOfGroup + publishedStatements;
@@ -555,7 +574,9 @@ namespace nIS
                         var generatedStatements = scheduleLogManager.GetScheduleLogDetailsCount(new ScheduleLogDetailSearchParameter
                         {
                             Status = "Completed",
-                            SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN }
+                            SortParameter = new SortParameter { SortColumn = ModelConstant.SORT_COLUMN },
+                            StartDate = dashboardReportSearchParameter.StartDate,
+                            EndDate = dashboardReportSearchParameter.EndDate
                         }, tenant.TenantCode);
                         if (generatedStatements > 0)
                         {

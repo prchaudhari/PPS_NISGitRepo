@@ -1,0 +1,139 @@
+<div class="main-container position-relative">
+  <div class="page-title d-flex justify-content-md-between justify-content-end">
+    <div class="xs-title">
+      <span class="mr-2"> Analytics</span>
+      <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
+    </div>
+    <div>
+
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6 form-group">
+      <div class="card border-0 mb-3 card-shadow" style="height:100%">
+
+        <div class="card-header bg-white d-flex justify-content-between">
+          <label class="m-0">Total Groups and Tenants</label>
+        </div>
+        <div class="card-body d-flex text-center  justify-content-center flex-column">
+         
+          <div class="row">
+            <div class="col-sm-6">
+              <h5>Total Tenants</h5>
+            </div>
+            <div class="col-sm-6">
+              <h4 class="text-success">{{reportData.TotalTenant}}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 form-group">
+      <div class="card border-0 mb-3 card-shadow" style="height:100%">
+        <div class="card-header bg-white d-flex justify-content-between">
+          <label class="m-0">
+            Sum of Published Statements
+          </label>
+        </div>
+        <div class="card-body">
+          <div id="pieChartcontainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 form-group">
+      <div class="card border-0 mb-3 card-shadow" style="height:100%">
+        <div class="card-header bg-white d-flex justify-content-between">
+          <div>
+            <label class="m-0">Sum of number of Users</label>
+          </div>
+
+        </div>
+        <div class="card-body">
+          <div id="userChartcontainer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 form-group">
+      <div class="card border-0 mb-3 card-shadow" style="height:100%">
+        <div class="card-header bg-white d-flex justify-content-between">
+          <div>
+            <label class="m-0">Sum of Generated Statements</label>
+          </div>
+
+        </div>
+        <div class="card-body">
+          <div id="generatedStmtChartcontainer"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!--desktop view end-->
+
+  <form [formGroup]="AnalyticFilterForm">
+    <div class="filter-popup" [ngClass]="!isFilter? 'filter-popup':'filter-popup-show'">
+      <div class="filter-head">
+        <label class="m-0">Apply Filter</label>
+      </div>
+      <div class="filter-body-left d-flex flex-column stylescrollbar">
+        <div class="form-group">
+          <label>Start Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt" class="form-control" id="inputFromDate" formControlName="filterFromDate"
+                   placeholder="Please select start date" readonly (ngModelChange)="onPublishedFilterDateChange($event)">
+            <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="text-danger" *ngIf="filterFromDateError">
+            {{filterFromDateErrorMessage}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <div class="position-relative">
+            <input [owlDateTime]="dt1" class="form-control" id="inputToDate" formControlName="filterToDate"
+                   placeholder="Please select end date" readonly (ngModelChange)="onPublishedFilterDateChange($event)">
+            <span [owlDateTimeTrigger]="dt1" class="datetime-icon">
+              <i class="fa fa-calendar"></i>
+            </span>
+            <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="text-danger" *ngIf="filterToDateError">
+            {{filterToDateErrorMessage}}
+          </div>
+        </div>
+
+
+      </div>
+      <!--[ngClass]="filterClass"-->
+      <div class="filter-footer">
+        <ul class="nav">
+          <li class="nav-item width33" title="Search">
+            <button class="btn-footer-fill btn-block rounded-0 height100" (click)="searchDashboardReportRecordFilter('search')">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width33" title="Reset" (click)="searchDashboardReportRecordFilter('reset')">
+            <a class="nav-link p-0">
+              <span class="fa fa-refresh"></span>
+            </a>
+          </li>
+          <li class="nav-item width33" title="Close" (click)="closeFilter()">
+            <a class="nav-link p-0">
+              <span class="fa fa-close"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="overlay" [ngClass]="!isFilter? 'hide':'show'"></div>
+
