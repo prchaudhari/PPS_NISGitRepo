@@ -255,7 +255,7 @@ namespace nIS
 
                 IList<View_PageRecord> view_PageRecords = new List<View_PageRecord>();
                 IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
-                IList<DynamicWidgetRecord> dynamicWidgetRecords = new List<DynamicWidgetRecord>();
+                IList<View_DynamicWidgetRecord> dynamicWidgetRecords = new List<View_DynamicWidgetRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString)) 
                 {
                     if (pageSearchParameter.PagingParameter.PageIndex > 0 && pageSearchParameter.PagingParameter.PageSize > 0)
@@ -279,11 +279,8 @@ namespace nIS
                     {
                         view_PageRecords.ToList().ForEach(pageRecord =>
                         {
-                            pageRecord.PageWidgetMapRecords = nISEntitiesDataContext.PageWidgetMapRecords.Where(itm => itm.PageId == pageRecord.Id && itm.TenantCode == tenantCode).ToList();
+                            pageRecord.PageWidgetMapRecords = nISEntitiesDataContext.View_PageWidgetMapRecord.Where(itm => itm.PageId == pageRecord.Id && itm.TenantCode == tenantCode).ToList();
                         });
-
-                        widgetRecords = nISEntitiesDataContext.WidgetRecords.Where(item => item.TenantCode == tenantCode).ToList();
-                        dynamicWidgetRecords = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.TenantCode == tenantCode).ToList();
                     }
                 }
                 
@@ -302,7 +299,7 @@ namespace nIS
                                     PageId = pageWidgetRecord.PageId,
                                     Height = pageWidgetRecord.Height,
                                     WidgetId = pageWidgetRecord.ReferenceWidgetId,
-                                    WidgetName = pageWidgetRecord.IsDynamicWidget == true ? dynamicWidgetRecords.Where(item => item.Id == pageWidgetRecord.ReferenceWidgetId).FirstOrDefault()?.WidgetName : widgetRecords.Where(item => item.Id == pageWidgetRecord.ReferenceWidgetId).FirstOrDefault()?.WidgetName,
+                                    WidgetName = pageWidgetRecord.WidgetName,
                                     Width = pageWidgetRecord.Width,
                                     Xposition = pageWidgetRecord.Xposition,
                                     Yposition = pageWidgetRecord.Yposition,

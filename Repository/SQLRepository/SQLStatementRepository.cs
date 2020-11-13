@@ -647,6 +647,25 @@ namespace nIS
                                     if (page.PageWidgets.Count > 0)
                                     {
                                         var completelst = new List<PageWidget>(page.PageWidgets);
+                                        var dynamicwidgetids = string.Join(", ", completelst.Where(item => item.IsDynamicWidget).ToList().Select(item => item.WidgetId));
+                                        DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
+                                        {
+                                            Identifier = dynamicwidgetids,
+                                            PagingParameter = new PagingParameter
+                                            {
+                                                PageIndex = 0,
+                                                PageSize = 0,
+                                            },
+                                            SortParameter = new SortParameter()
+                                            {
+                                                SortOrder = SortOrder.Ascending,
+                                                SortColumn = "Title",
+                                            },
+                                            SearchMode = SearchMode.Contains
+                                        };
+                                        IList<DynamicWidget> dynawidgets = this.dynamicWidgetRepository.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
+                                        statementPageContent.DynamicWidgets = dynawidgets;
+
                                         int currentYPosition = 0;
                                         var isRowComplete = false;
 
@@ -818,26 +837,9 @@ namespace nIS
                                                     }
                                                     else
                                                     {
-                                                        DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
-                                                        {
-                                                            Identifier = Convert.ToString(mergedlst[x].WidgetId),
-                                                            PageTypeId = Convert.ToString(page.PageTypeId),
-                                                            PagingParameter = new PagingParameter
-                                                            {
-                                                                PageIndex = 0,
-                                                                PageSize = 0,
-                                                            },
-                                                            SortParameter = new SortParameter()
-                                                            {
-                                                                SortOrder = SortOrder.Ascending,
-                                                                SortColumn = "Title",
-                                                            },
-                                                            SearchMode = SearchMode.Equals
-                                                        };
-                                                        var dynawidgets = this.dynamicWidgetRepository.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
                                                         if (dynawidgets.Count > 0)
                                                         {
-                                                            var dynawidget = dynawidgets.FirstOrDefault();
+                                                            var dynawidget = dynawidgets.Where(item => item.Identifier == mergedlst[x].WidgetId).ToList().FirstOrDefault();
                                                             TenantEntity entity = new TenantEntity();
                                                             entity.Identifier = dynawidget.EntityId;
                                                             entity.Name = dynawidget.EntityName;
@@ -909,7 +911,7 @@ namespace nIS
                                                                 htmlWidget = htmlWidget + "<input type='hidden' id='hiddenPieChartData_" + page.Identifier + "_" + mergedlst[x].Identifier + "' value='hiddenPieChartValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "'>";
                                                                 pageHtmlContent.Append(htmlWidget);
                                                             }
-                                                            else if (dynawidget.WidgetType == HtmlConstants.HTMLWIDGETPREVIEW)
+                                                            else if (dynawidget.WidgetType == HtmlConstants.HTML_DYNAMICWIDGET)
                                                             {
                                                                 var htmlWidget = HtmlConstants.HTML_WIDGET_FOR_STMT;
                                                                 htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
@@ -1486,13 +1488,15 @@ namespace nIS
                     PageHeaderContent = it.PageHeaderContent,
                     PageFooterContent = it.PageFooterContent,
                     DisplayName = it.DisplayName,
-                    TabClassName = it.TabClassName
+                    TabClassName = it.TabClassName,
+                    DynamicWidgets = it.DynamicWidgets
                 }));
                 for (int i = 0; i < statement.Pages.Count; i++)
                 {
                     var page = statement.Pages[i];
                     StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
                     StringBuilder pageContent = new StringBuilder(statementPageContent.HtmlContent);
+                    var dynamicWidgets = statementPageContent.DynamicWidgets;
 
                     StringBuilder SubTabs = new StringBuilder();
                     StringBuilder PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
@@ -1792,23 +1796,7 @@ namespace nIS
                         }
                         else
                         {
-                            DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
-                            {
-                                Identifier = Convert.ToString(widget.WidgetId),
-                                PageTypeId = Convert.ToString(page.PageTypeId),
-                                PagingParameter = new PagingParameter
-                                {
-                                    PageIndex = 0,
-                                    PageSize = 0,
-                                },
-                                SortParameter = new SortParameter()
-                                {
-                                    SortOrder = SortOrder.Ascending,
-                                    SortColumn = "Title",
-                                },
-                                SearchMode = SearchMode.Equals
-                            };
-                            var dynaWidgets = this.dynamicWidgetRepository.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
+                            var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId && item.PageTypeId == page.PageTypeId).ToList();
                             if (dynaWidgets.Count > 0)
                             {
                                 var dynawidget = dynaWidgets.FirstOrDefault();
@@ -1848,7 +1836,7 @@ namespace nIS
                                     pageContent.Replace("hiddenPieChartValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
                                     scriptHtmlRenderer.Append(HtmlConstants.PIE_CHART_WIDGET_SCRIPT.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenPieChartData", "hiddenPieChartData_" + page.Identifier + "_" + widget.Identifier));
                                 }
-                                else if (dynawidget.WidgetType == HtmlConstants.HTMLWIDGETPREVIEW)
+                                else if (dynawidget.WidgetType == HtmlConstants.HTML_DYNAMICWIDGET)
                                 {
                                     var entityFieldMaps = this.dynamicWidgetRepository.GetEntityFields(dynawidget.EntityId, tenantCode);
                                     string data = this.GetHTMLPreviewData(entity, entityFieldMaps, dynawidget.PreviewData);
@@ -1958,7 +1946,7 @@ namespace nIS
                     //navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
                     var clientlogo = client.TenantLogo != null ? client.TenantLogo : "";
-                    navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo +"'>";
+                    navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
                     //start to render actual html content data
@@ -1985,7 +1973,8 @@ namespace nIS
                         PageHeaderContent = it.PageHeaderContent,
                         PageFooterContent = it.PageFooterContent,
                         DisplayName = it.DisplayName,
-                        TabClassName = it.TabClassName
+                        TabClassName = it.TabClassName,
+                        DynamicWidgets = it.DynamicWidgets
                     }));
 
                     long FirstPageId = statement.Pages[0].Identifier;
@@ -2021,6 +2010,7 @@ namespace nIS
 
                         StringBuilder SubTabs = new StringBuilder();
                         StringBuilder PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
+                        var dynamicWidgets = statementPageContent.DynamicWidgets;
 
                         string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                         navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
@@ -2664,23 +2654,7 @@ namespace nIS
                                 }
                                 else
                                 {
-                                    DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
-                                    {
-                                        Identifier = Convert.ToString(widget.WidgetId),
-                                        PageTypeId = Convert.ToString(page.PageTypeId),
-                                        PagingParameter = new PagingParameter
-                                        {
-                                            PageIndex = 0,
-                                            PageSize = 0,
-                                        },
-                                        SortParameter = new SortParameter()
-                                        {
-                                            SortOrder = SortOrder.Ascending,
-                                            SortColumn = "Title",
-                                        },
-                                        SearchMode = SearchMode.Equals
-                                    };
-                                    var dynaWidgets = this.dynamicWidgetRepository.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
+                                    var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId && item.PageTypeId == page.PageTypeId).ToList();
                                     if (dynaWidgets.Count > 0)
                                     {
                                         var dynawidget = dynaWidgets.FirstOrDefault();
@@ -2717,7 +2691,6 @@ namespace nIS
 
                                         if (dynawidget.WidgetType == HtmlConstants.TABLE_DYNAMICWIDGET)
                                         {
-
                                             List<DynamicWidgetTableEntity> tableEntities = JsonConvert.DeserializeObject<List<DynamicWidgetTableEntity>>(dynawidget.WidgetSettings);
                                             var tr = new StringBuilder();
 
@@ -2811,7 +2784,8 @@ namespace nIS
                                                         series.name = field.DisplayName;
                                                         var res = apiOutputArr.ToList().Select(item => item[field.FieldName]).ToList();
                                                         var seriesdata = new List<decimal>();
-                                                        res.ForEach(r => {
+                                                        res.ForEach(r =>
+                                                        {
                                                             seriesdata.Add(Convert.ToDecimal(r.ToString()));
                                                         });
                                                         series.data = seriesdata;
@@ -2869,7 +2843,8 @@ namespace nIS
                                                         series.name = field.DisplayName;
                                                         var res = apiOutputArr.ToList().Select(item => item[field.FieldName]).ToList();
                                                         var seriesdata = new List<decimal>();
-                                                        res.ForEach(r => {
+                                                        res.ForEach(r =>
+                                                        {
                                                             seriesdata.Add(Convert.ToDecimal(r.ToString()));
                                                         });
                                                         series.data = seriesdata;
@@ -2927,8 +2902,8 @@ namespace nIS
                                                     {
                                                         PieChartData pie = new PieChartData
                                                         {
-                                                            name = item[seriesfor].ToString(),
-                                                            y = Convert.ToDecimal(item[seriesdatafor])
+                                                            name = item[seriesfor] != null ? item[seriesfor].ToString() : "",
+                                                            y = Convert.ToDecimal(item[seriesdatafor] != null ? item[seriesdatafor] : 0)
                                                         };
                                                         datas.Add(pie);
                                                     });
@@ -2960,15 +2935,33 @@ namespace nIS
                                             pageContent.Replace("hiddenPieChartValue_" + page.Identifier + "_" + widget.Identifier + "", chartDataVal);
                                             scriptHtmlRenderer.Append(HtmlConstants.PIE_CHART_WIDGET_SCRIPT.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenPieChartData", "hiddenPieChartData_" + page.Identifier + "_" + widget.Identifier));
                                         }
-                                        else if (dynawidget.WidgetType == HtmlConstants.HTMLWIDGETPREVIEW)
+                                        else if (dynawidget.WidgetType == HtmlConstants.HTML_DYNAMICWIDGET)
                                         {
-                                            //Here need to generate html widget data for each customer from DB
-                                            TenantEntity entity = new TenantEntity();
-                                            entity.Identifier = dynawidget.EntityId;
-                                            entity.Name = dynawidget.EntityName;
-                                            var entityFieldMaps = this.dynamicWidgetRepository.GetEntityFields(dynawidget.EntityId, tenantCode);
-                                            string data = this.GetHTMLPreviewData(entity, entityFieldMaps, dynawidget.PreviewData);
-                                            pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", data);
+                                            var _lstHtmlWidgetSettings = JsonConvert.DeserializeObject<List<HtmlWidgetSettings>>(dynawidget.WidgetSettings);
+                                            var htmlWidgetContent = new StringBuilder(dynawidget.PreviewData);
+                                            if (_lstHtmlWidgetSettings.Count > 0)
+                                            {
+                                                //API call
+                                                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                                                if (response.StatusCode == HttpStatusCode.OK)
+                                                {
+                                                    var result = response.Content.ReadAsStringAsync().Result;
+                                                    var apiOutputArr = JArray.Parse(result);
+                                                    if (apiOutputArr.Count > 0)
+                                                    {
+                                                        var apidata = apiOutputArr.FirstOrDefault();
+                                                        _lstHtmlWidgetSettings.ForEach(setting =>
+                                                        {
+                                                            if (setting.Value != null && setting.Value != string.Empty && setting.Key != null && setting.Key != string.Empty
+                                                            && apidata[setting.Key] != null)
+                                                            {
+                                                                htmlWidgetContent.Replace(setting.Value, apidata[setting.Key].ToString());
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                            pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", htmlWidgetContent.ToString());
                                         }
                                     }
                                 }
@@ -3400,35 +3393,10 @@ namespace nIS
         {
             string obj = string.Empty;
             JObject item = new JObject();
-            if (entity.Name == "Customer Information")
+            fieldMaps.ToList().ForEach(field =>
             {
-                #region  Set Data
-                item["CutomerCode"] = "RMP4563";
-                item["FirstName"] = "Robert";
-                item["LastName"] = "Pattinson";
-                item["RMName"] = "Mr.Shown Andrew";
-                item["RMContactNo"] = "4487345353";
-                #endregion
-            }
-            else if (entity.Name == "Account Balalnce")
-            {
-                #region  Set Data
-                item["AccountNumber"] = "RMP4563";
-                item["AccountType"] = "Current Account";
-                item["Balance"] = "15432.00";
-                item["TotalDeposit"] = "6235.34";
-                item["TotalSpend"] = "5760.00";
-                #endregion
-            }
-            else if (entity.Name == "Account Transaction")
-            {
-                item["TransactionDate"] = "2020-07-15 00:00:00.000";
-                item["TransactionType"] = "CR";
-                item["Narration"] = "NXT TXN: IIFL IIFL8965435";
-                item["AccountType"] = "Saving Account";
-                item["FCY"] = "1666.67";
-                item["LCY"] = "1771.42";
-            }
+                item[field.Name] = field.Name + "1";
+            });
             StringBuilder tableBody = new StringBuilder();
 
             fieldMaps.ToList().ForEach(field =>

@@ -1034,6 +1034,7 @@ namespace nIS
                 }
 
                 var statement = statements[0];
+                var pages = statement.Pages;
                 var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
                 if (statementPageContents.Count > 0)
                 {

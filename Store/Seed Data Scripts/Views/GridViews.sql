@@ -139,13 +139,40 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [NIS].View_DynamicWidget
 AS
-SELECT s.*, usr1.FirstName+' '+usr1.LastName AS PublishedByName, usr2.FirstName+' '+usr2.LastName AS CreatedByName ,
-pg.Name as PageTypeName,ent.Name as EntityName, ent.APIPath, ent.RequestType
+
+SELECT DISTINCT(s.Id) AS Id, MAX(s.WidgetName) AS WidgetName, MAX(s.WidgetType) AS WidgetType, s.EntityId,
+MAX(s.Title) AS Title, MAX(s.ThemeType) AS ThemeType, MAX(s.ThemeCSS) AS ThemeCSS, MAX(s.WidgetSettings) AS WidgetSettings,
+MAX(s.WidgetFilterSettings) AS WidgetFilterSettings, MAX(s.Status) AS Status, MAX(s.CreatedBy) AS CreatedBy, MAX(s.CreatedOn) AS CreatedOn,
+s.LastUpdatedBy, s.PublishedBy,MAX(s.PublishedDate) AS PublishedDate, s.IsActive, s.IsDeleted,
+MAX(s.TenantCode) AS TenantCode, s.CloneOfWidgetId, MAX(s.Version) As Version, 
+MAX(s.PreviewData) AS PreviewData,usr1.FirstName+' '+usr1.LastName AS PublishedByName, usr2.FirstName+' '+usr2.LastName AS CreatedByName,
+ent.Name as EntityName, ent.APIPath, ent.RequestType, (SELECT TOP 1 PageTypeId From [NIS].[WidgetPageTypeMap] WHERE WidgetId = s.Id) AS PageTypeId
 FROM NIS.DynamicWidget s 
 LEFT JOIN NIS.[User] usr1 ON s.PublishedBy = usr1.Id
 INNER JOIN NIS.[User] usr2 ON s.CreatedBy = usr2.Id
 INNER JOIN NIS.TenantEntity ent ON s.EntityId = ent.Id
-INNER JOIN NIS.PageType pg ON s.PageTypeId = pg.Id
+INNER JOIN [NIS].[WidgetPageTypeMap] wpt ON wpt.WidgetId = s.Id
+WHERE wpt.IsDynamicWidget = 1
+GROUP BY s.Id, s.EntityId, s.PublishedBy, s.CloneOfWidgetId, s.LastUpdatedBy,
+usr1.FirstName, usr1.LastName, usr2.FirstName, usr2.LastName, ent.Name, ent.APIPath, ent.RequestType, s.IsActive, s.IsDeleted 
+
+GO
+
+
+/****** Object:  View [NIS].[View_PageWidgetMap] Script Date: 2020-09-29 14:33:01 ******/
+IF OBJECT_ID (N'NIS.View_PageWidgetMap', N'V') IS NOT NULL 
+DROP VIEW [NIS].View_PageWidgetMap
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [NIS].View_PageWidgetMap
+AS
+SELECT pw.*, CASE WHEN pw.IsDynamicWidget = 0 THEN w.WidgetName ELSE dw.WidgetName END AS WidgetName
+FROM [NIS].[PageWidgetMap] pw 
+LEFT JOIN [NIS].[Widget] w ON pw.ReferenceWidgetid = w.id AND pw.IsDynamicWidget = 0
+LEFT JOIN [NIS].[DynamicWidget] dw ON pw.ReferenceWidgetid = dw.id AND pw.IsDynamicWidget = 1
 
 GO
 

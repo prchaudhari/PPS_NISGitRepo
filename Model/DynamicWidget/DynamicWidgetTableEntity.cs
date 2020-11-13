@@ -88,4 +88,10 @@ namespace nIS
         public string PieSeriesName;
     }
 
+    public class HtmlWidgetSettings
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
+    }
+
 }

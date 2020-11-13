@@ -7,6 +7,7 @@ namespace nIS
 {
     #region References
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     #endregion
 
@@ -23,5 +24,6 @@ namespace nIS
         public string TabClassName { get; set; }
         public string PageHeaderContent { get; set; }
         public string PageFooterContent { get; set; }
+        public IList<DynamicWidget> DynamicWidgets { get; set; }
     }
 }

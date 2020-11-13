@@ -1052,6 +1052,33 @@ warning 6002: The table/view 'NIS.NIS.View_Page' does not have a primary key def
           <Property Name="BackgroundImageAssetLibraryId" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_PageWidgetMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_PageWidgetMap">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ReferenceWidgetId" />
+            <PropertyRef Name="Height" />
+            <PropertyRef Name="Width" />
+            <PropertyRef Name="Xposition" />
+            <PropertyRef Name="Yposition" />
+            <PropertyRef Name="PageId" />
+            <PropertyRef Name="WidgetSetting" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="IsDynamicWidget" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="ReferenceWidgetId" Type="bigint" Nullable="false" />
+          <Property Name="Height" Type="int" Nullable="false" />
+          <Property Name="Width" Type="int" Nullable="false" />
+          <Property Name="Xposition" Type="int" Nullable="false" />
+          <Property Name="Yposition" Type="int" Nullable="false" />
+          <Property Name="PageId" Type="bigint" Nullable="false" />
+          <Property Name="WidgetSetting" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDynamicWidget" Type="bit" Nullable="false" />
+          <Property Name="WidgetName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_Schedule">
           <Key>
@@ -1425,6 +1452,21 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_Page].[BackgroundImageAssetLibraryId] AS [BackgroundImageAssetLibraryId]
     FROM [NIS].[View_Page] AS [View_Page]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="View_PageWidgetMap" EntityType="Self.View_PageWidgetMap" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_PageWidgetMap].[Id] AS [Id], 
+    [View_PageWidgetMap].[ReferenceWidgetId] AS [ReferenceWidgetId], 
+    [View_PageWidgetMap].[Height] AS [Height], 
+    [View_PageWidgetMap].[Width] AS [Width], 
+    [View_PageWidgetMap].[Xposition] AS [Xposition], 
+    [View_PageWidgetMap].[Yposition] AS [Yposition], 
+    [View_PageWidgetMap].[PageId] AS [PageId], 
+    [View_PageWidgetMap].[WidgetSetting] AS [WidgetSetting], 
+    [View_PageWidgetMap].[TenantCode] AS [TenantCode], 
+    [View_PageWidgetMap].[IsDynamicWidget] AS [IsDynamicWidget], 
+    [View_PageWidgetMap].[WidgetName] AS [WidgetName]
+    FROM [NIS].[View_PageWidgetMap] AS [View_PageWidgetMap]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="View_Schedule" EntityType="Self.View_Schedule" store:Type="Views" store:Schema="NIS">
             <DefiningQuery>SELECT 
     [View_Schedule].[Id] AS [Id], 
@@ -1606,6 +1648,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TTD_VendorSubscriptionRecord" EntityType="NISModel.TTD_VendorSubscriptionRecord" />
           <EntitySet Name="WidgetPageTypeMaps" EntityType="NISModel.WidgetPageTypeMap" />
           <EntitySet Name="View_DynamicWidgetRecord" EntityType="NISModel.View_DynamicWidgetRecord" />
+          <EntitySet Name="View_PageWidgetMapRecord" EntityType="NISModel.View_PageWidgetMapRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2847,6 +2890,31 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="APIPath" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="RequestType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PageTypeId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="View_PageWidgetMapRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ReferenceWidgetId" />
+            <PropertyRef Name="Height" />
+            <PropertyRef Name="Width" />
+            <PropertyRef Name="Xposition" />
+            <PropertyRef Name="Yposition" />
+            <PropertyRef Name="PageId" />
+            <PropertyRef Name="WidgetSetting" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="IsDynamicWidget" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="ReferenceWidgetId" Type="Int64" Nullable="false" />
+          <Property Name="Height" Type="Int32" Nullable="false" />
+          <Property Name="Width" Type="Int32" Nullable="false" />
+          <Property Name="Xposition" Type="Int32" Nullable="false" />
+          <Property Name="Yposition" Type="Int32" Nullable="false" />
+          <Property Name="PageId" Type="Int64" Nullable="false" />
+          <Property Name="WidgetSetting" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDynamicWidget" Type="Boolean" Nullable="false" />
+          <Property Name="WidgetName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4097,6 +4165,23 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="EntityId" ColumnName="EntityId" />
                 <ScalarProperty Name="WidgetType" ColumnName="WidgetType" />
                 <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_PageWidgetMapRecord">
+            <EntityTypeMapping TypeName="NISModel.View_PageWidgetMapRecord">
+              <MappingFragment StoreEntitySet="View_PageWidgetMap">
+                <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
+                <ScalarProperty Name="IsDynamicWidget" ColumnName="IsDynamicWidget" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="WidgetSetting" ColumnName="WidgetSetting" />
+                <ScalarProperty Name="PageId" ColumnName="PageId" />
+                <ScalarProperty Name="Yposition" ColumnName="Yposition" />
+                <ScalarProperty Name="Xposition" ColumnName="Xposition" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="ReferenceWidgetId" ColumnName="ReferenceWidgetId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

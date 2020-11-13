@@ -349,9 +349,27 @@ namespace nIS
                         htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
                         int tempRowWidth = 0;
                         int max = 0;
-                        if (pages[y].PageWidgets.Count > 0)
+                        if (page.PageWidgets.Count > 0)
                         {
-                            var completelst = pages[y].PageWidgets;
+                            var completelst = new List<PageWidget>(page.PageWidgets);
+                            var dynamicwidgetids = string.Join(", ", completelst.Where(item => item.IsDynamicWidget).ToList().Select(item => item.WidgetId));
+                            DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
+                            {
+                                Identifier = dynamicwidgetids,
+                                PagingParameter = new PagingParameter
+                                {
+                                    PageIndex = 0,
+                                    PageSize = 0,
+                                },
+                                SortParameter = new SortParameter()
+                                {
+                                    SortOrder = SortOrder.Ascending,
+                                    SortColumn = "Title",
+                                },
+                                SearchMode = SearchMode.Contains
+                            };
+                            var dynaWidgets = this.dynamicWidgetManager.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
+
                             int currentYPosition = 0;
                             var isRowComplete = false;
 
@@ -668,26 +686,9 @@ namespace nIS
                                         }
                                         else
                                         {
-                                            DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
-                                            {
-                                                Identifier = Convert.ToString(mergedlst[i].WidgetId),
-                                                PageTypeId = Convert.ToString(page.PageTypeId),
-                                                PagingParameter = new PagingParameter
-                                                {
-                                                    PageIndex = 0,
-                                                    PageSize = 0,
-                                                },
-                                                SortParameter = new SortParameter()
-                                                {
-                                                    SortOrder = SortOrder.Ascending,
-                                                    SortColumn = "Title",
-                                                },
-                                                SearchMode = SearchMode.Equals
-                                            };
-                                            var dynaWidgets = this.dynamicWidgetManager.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
                                             if (dynaWidgets.Count > 0)
                                             {
-                                                var dynawidget = dynaWidgets.FirstOrDefault();
+                                                var dynawidget = dynaWidgets.Where(item => item.Identifier == mergedlst[i].WidgetId).ToList().FirstOrDefault();
                                                 TenantEntity entity = new TenantEntity();
                                                 entity.Identifier = dynawidget.EntityId;
                                                 entity.Name = dynawidget.EntityName;
@@ -814,7 +815,7 @@ namespace nIS
                                                     string settings = dynawidget.WidgetSettings;
                                                     IList<EntityFieldMap> entityFieldMaps = new List<EntityFieldMap>();
                                                     entityFieldMaps = this.dynamicWidgetManager.GetEntityFields(dynawidget.EntityId, tenantCode);
-                                                    string data = this.dynamicWidgetManager.GetHTMLPreviewData(entity, entityFieldMaps, dynawidget.WidgetSettings);
+                                                    string data = this.dynamicWidgetManager.GetHTMLPreviewData(entity, entityFieldMaps, dynawidget.PreviewData);
                                                     htmlWidget = htmlWidget.Replace("{{FormData}}", data);
                                                     htmlString.Append(htmlWidget);
                                                 }
