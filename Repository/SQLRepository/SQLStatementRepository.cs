@@ -1796,7 +1796,7 @@ namespace nIS
                         }
                         else
                         {
-                            var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId && item.PageTypeId == page.PageTypeId).ToList();
+                            var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId).ToList();
                             if (dynaWidgets.Count > 0)
                             {
                                 var dynawidget = dynaWidgets.FirstOrDefault();
@@ -2654,7 +2654,7 @@ namespace nIS
                                 }
                                 else
                                 {
-                                    var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId && item.PageTypeId == page.PageTypeId).ToList();
+                                    var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId).ToList();
                                     if (dynaWidgets.Count > 0)
                                     {
                                         var dynawidget = dynaWidgets.FirstOrDefault();
