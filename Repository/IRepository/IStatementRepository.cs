@@ -94,7 +94,7 @@ namespace nIS
         /// <returns>
         /// Returns list of statement page content object.
         /// </returns>
-        IList<StatementPageContent> GenerateHtmlFormatOfStatement(Statement statement, string tenantCode);
+        IList<StatementPageContent> GenerateHtmlFormatOfStatement(Statement statement, string tenantCode, TenantConfiguration tenantConfiguration);
 
         /// <summary>
         /// This method help to bind preview dara to statement
@@ -121,6 +121,6 @@ namespace nIS
         /// <param name="statement"> the statement object </param>
         /// <param name="statementPageContents"> the statement page html content list</param>
         /// <param name="tenantCode"> the tenant code </param>
-        StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, TenantConfiguration tenantConfiguration, string tenantCode);
+        StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, TenantConfiguration tenantConfiguration, string tenantCode, Client client);
     }
 }

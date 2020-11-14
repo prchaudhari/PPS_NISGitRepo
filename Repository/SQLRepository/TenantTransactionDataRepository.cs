@@ -162,7 +162,7 @@ namespace nIS
                                 EmployeeName = customermaster.FirstName + " " + customermaster.LastName,
                                 VendorName = item.VendorName,
                                 Subscription = item.Subscription,
-                                EmailId = item.Email,
+                                Email = item.Email,
                                 StartDate = item.StartDate,
                                 EndDate = item.EndDate,
                                 TenantCode = item.TenantCode

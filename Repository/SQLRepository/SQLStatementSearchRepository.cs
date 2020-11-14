@@ -63,6 +63,11 @@ namespace nIS
         /// </summary>
         private IAssetLibraryRepository assetLibraryRepository = null;
 
+        /// <summary>
+        /// The Tenant configuration repository.
+        /// </summary>
+        private ITenantConfigurationRepository tenantConfigurationRepository = null;
+
         #endregion
 
         #region Constructor
@@ -76,6 +81,7 @@ namespace nIS
             this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
             this.assetLibraryRepository = this.unityContainer.Resolve<IAssetLibraryRepository>();
+            this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
         }
 
         #endregion
@@ -295,6 +301,7 @@ namespace nIS
             string outputlocation = string.Empty;
             try
             {
+                var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
@@ -328,7 +335,7 @@ namespace nIS
                         if (statements.Count > 0)
                         {
                             var statement = statements.FirstOrDefault();
-                            var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
+                            var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                             outputlocation = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\temp"+ DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
                             if (!Directory.Exists(outputlocation))
                             {

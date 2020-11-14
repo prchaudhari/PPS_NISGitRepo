@@ -634,12 +634,12 @@ namespace nIS
                                 if (statements.Count > 0)
                                 {
                                     Statement statement = statements[0];
-                                    IList<StatementPageContent> statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
+                                    IList<StatementPageContent> statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                                     if (statementPageContents.Count > 0)
                                     {
                                         IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
 
-                                        var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode);
+                                        var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
                                         string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
                                         var filesDict = new Dictionary<string, string>();
@@ -838,12 +838,12 @@ namespace nIS
                                 if (statements.Count > 0)
                                 {
                                     Statement statement = statements[0];
-                                    IList<StatementPageContent> statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
+                                    IList<StatementPageContent> statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                                     if (statementPageContents.Count > 0)
                                     {
                                         IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
 
-                                        var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode);
+                                        var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
                                         string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
                                         var filesDict = new Dictionary<string, string>();
@@ -1035,10 +1035,10 @@ namespace nIS
 
                 var statement = statements[0];
                 var pages = statement.Pages;
-                var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
+                var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                 if (statementPageContents.Count > 0)
                 {
-                    var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode);
+                    var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
                     string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
                     var filesDict = new Dictionary<string, string>();

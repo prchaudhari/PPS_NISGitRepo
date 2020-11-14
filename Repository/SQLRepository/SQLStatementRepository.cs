@@ -549,6 +549,7 @@ namespace nIS
         public string PreviewStatement(long statementIdentifier, string baseURL, string tenantCode)
         {
             string finalHtml = "";
+            var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
             StatementSearchParameter statementSearchParameter = new StatementSearchParameter
             {
                 Identifier = statementIdentifier,
@@ -572,7 +573,7 @@ namespace nIS
             {
                 statement = statements.ToList().FirstOrDefault();
 
-                var statementPageContents = this.GenerateHtmlFormatOfStatement(statement, tenantCode);
+                var statementPageContents = this.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                 finalHtml = this.BindPreviewDataToStatement(statement, statementPageContents, baseURL, tenantCode);
             }
 
@@ -587,7 +588,7 @@ namespace nIS
         /// <returns>
         /// Returns list of statement page content object.
         /// </returns>
-        public IList<StatementPageContent> GenerateHtmlFormatOfStatement(Statement statement, string tenantCode)
+        public IList<StatementPageContent> GenerateHtmlFormatOfStatement(Statement statement, string tenantCode, TenantConfiguration tenantConfiguration)
         {
             try
             {
@@ -596,7 +597,6 @@ namespace nIS
                 {
                     //Start to generate common html string
                     var statementPages = statement.StatementPages.OrderBy(it => it.SequenceNumber).ToList();
-                    var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                     if (statementPages.Count > 0)
                     {
                         int counter = 0;
@@ -1460,7 +1460,7 @@ namespace nIS
         /// <param name="statement"> the statement object </param>
         /// <param name="statementPageContents"> the statement page html content list</param>
         /// <param name="tenantCode"> the tenant code </param>
-        public StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, TenantConfiguration tenantConfiguration, string tenantCode)
+        public StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, TenantConfiguration tenantConfiguration, string tenantCode, Client client)
         {
             try
             {
@@ -1469,9 +1469,11 @@ namespace nIS
 
                 //start to render common html content data
                 StringBuilder htmlbody = new StringBuilder();
-                string navbarHtml = HtmlConstants.NAVBAR_HTML.Replace("{{logo}}", "../common/images/nisLogo.png");
-                navbarHtml = navbarHtml.Replace("{{BrandLogo}}", "../common/images/logo.png");
+                string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
+                //navbarHtml = navbarHtml.Replace("{{BrandLogo}}", "../common/images/logo.png");
                 navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
+                var clientlogo = client.TenantLogo != null ? client.TenantLogo : "";
+                navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
                 //start to render actual html content data
@@ -1874,6 +1876,7 @@ namespace nIS
                 finalHtml.Append(navbarHtml);
                 finalHtml.Append(htmlbody.ToString());
                 finalHtml.Append(HtmlConstants.HTML_FOOTER);
+                scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
                 finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
 
                 statementPreviewData.SampleFiles = SampleFiles;
@@ -1953,8 +1956,8 @@ namespace nIS
                     StringBuilder scriptHtmlRenderer = new StringBuilder();
                     StringBuilder navbar = new StringBuilder();
                     int subPageCount = 0;
-                    string accountNumber = string.Empty;
-                    string accountType = string.Empty;
+                    string accountNumber = string.Empty; //also use for Subscription
+                    string accountType = string.Empty; //also use for vendor name
                     long accountId = 0;
                     string SavingTrendChartJson = string.Empty;
                     string SpendingTrendChartJson = string.Empty;
@@ -2023,8 +2026,8 @@ namespace nIS
 
                         for (int x = 0; x < subPageCount; x++)
                         {
-                            accountNumber = string.Empty; //also use for Subscription
-                            accountType = string.Empty; //also use for vendor name
+                            accountNumber = string.Empty;
+                            accountType = string.Empty;
                             if (IsSavingOrCurrentAccountPagePresent)
                             {
                                 if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
@@ -2040,9 +2043,9 @@ namespace nIS
                                     accountType = curerntaccountrecords[x].AccountType;
                                 }
 
-                                string lastFourDigisOfAccountNumber = accountNumber.Length > 4 ? accountNumber.Substring(Math.Max(0, accountNumber.Length - 4)) : accountNumber;
                                 if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                                 {
+                                    string lastFourDigisOfAccountNumber = accountNumber.Length > 4 ? accountNumber.Substring(Math.Max(0, accountNumber.Length - 4)) : accountNumber;
                                     if (x == 0)
                                     {
                                         SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
@@ -2071,7 +2074,7 @@ namespace nIS
                                 }
                             }
 
-                            var pagewidgets = page.PageWidgets;
+                            var pagewidgets = new List<PageWidget>(page.PageWidgets);
                             StringBuilder pageContent = new StringBuilder(statementPageContent.HtmlContent);
                             for (int j = 0; j < pagewidgets.Count; j++)
                             {
@@ -2969,14 +2972,39 @@ namespace nIS
 
                             if (accountNumber != string.Empty)
                             {
-                                StatementMetadataRecord statementMetadataRecord = new StatementMetadataRecord();
-                                statementMetadataRecord.AccountNumber = accountNumber; //Subscription
-                                statementMetadataRecord.AccountType = accountType; //Vendor
-                                statementMetadataRecord.CustomerId = customer.Id;
-                                statementMetadataRecord.CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName;
-                                statementMetadataRecord.StatementPeriod = customer.StatementPeriod;
-                                statementMetadataRecord.StatementId = statement.Identifier;
-                                statementMetadataRecords.Add(statementMetadataRecord);
+                                statementMetadataRecords.Add(new StatementMetadataRecord
+                                {
+                                    AccountNumber = accountNumber,
+                                    AccountType = accountType,
+                                    CustomerId = customer.Id,
+                                    CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
+                                    StatementPeriod = customer.StatementPeriod,
+                                    StatementId = statement.Identifier,
+                                });
+                            }
+                            else
+                            {
+                                //To add statement metadata records for subscription master tenant
+                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                {
+                                    var subscriptionmasters = nISEntitiesDataContext.TTD_SubscriptionMasterRecord.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
+                                    subscriptionmasters.ForEach(sub =>
+                                    {
+                                        var records = statementMetadataRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.AccountNumber == sub.Subscription && item.AccountType == sub.VendorName).ToList();
+                                        if (records.Count <= 0)
+                                        {
+                                            statementMetadataRecords.Add(new StatementMetadataRecord
+                                            {
+                                                AccountNumber = sub.Subscription,
+                                                AccountType = sub.VendorName,
+                                                CustomerId = customer.Id,
+                                                CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
+                                                StatementPeriod = customer.StatementPeriod,
+                                                StatementId = statement.Identifier,
+                                            });
+                                        }
+                                    });
+                                }
                             }
 
                             newPageContent.Append(pageContent);

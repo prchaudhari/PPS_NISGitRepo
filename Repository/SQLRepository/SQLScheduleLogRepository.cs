@@ -366,7 +366,7 @@ namespace nIS
                         if (statements.Count > 0)
                         {
                             var statement = statements.ToList().FirstOrDefault();
-                            var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode);
+                            var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                             {
                                 renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();

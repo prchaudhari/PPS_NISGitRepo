@@ -17,7 +17,7 @@ namespace nIS
         public string EmployeeName { get; set; }
         public string VendorName { get; set; }
         public string Subscription { get; set; }
-        public string EmailId { get; set; }
+        public string Email { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string TenantCode { get; set; }
