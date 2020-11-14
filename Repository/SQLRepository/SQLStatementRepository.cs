@@ -1521,7 +1521,7 @@ namespace nIS
                         newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-6789' class='tab-pane fade in active show'>");
                     }
 
-                    var pagewidgets = page.PageWidgets;
+                    var pagewidgets = new List<PageWidget>(page.PageWidgets);
                     for (int j = 0; j < pagewidgets.Count; j++)
                     {
                         var widget = pagewidgets[j];

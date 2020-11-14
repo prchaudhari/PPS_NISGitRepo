@@ -759,30 +759,23 @@ namespace nIS
 
             try
             {
+                var query = new StringBuilder();
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var queryString = new StringBuilder();
-                    queryString.Append("BatchExecutionDate >= DateTime(" + currentDate.Year + "," + currentDate.Month + "," + currentDate.Day + "," + 0 + "," +0 + "," + 0 + ") " +
-                               "and BatchExecutionDate <= DateTime(" + +tomorrow.Year + "," + tomorrow.Month + "," + tomorrow.Day + "," + 0 + "," + 0 + "," + 0 + ") and IsExecuted.Equals(false) and Status.Equals("+BatchStatus.New.ToString()+")");
-
-                    batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(queryString.ToString()).ToList();
-
-                    //schedules = nISEntitiesDataContext.ScheduleRecords.Where(item => item.StartDate <= currentDate && (item.EndDate == null || item.EndDate >= currentDate) && item.DayOfMonth == currentDate.Day && currentDate.Hour == item.HourOfDay && currentDate.Minute == item.MinuteOfDay && item.IsActive && !item.IsDeleted).ToList();
+                    query.Append("BatchExecutionDate >= DateTime(" + currentDate.Year + "," + currentDate.Month + "," + currentDate.Day + "," + 0 + "," +0 + "," + 0 + ") and BatchExecutionDate <= DateTime(" + +tomorrow.Year + "," + tomorrow.Month + "," + tomorrow.Day + "," + 0 + "," + 0 + "," + 0 + ") and IsExecuted.Equals(false) ");
+                    query.Append(string.Format(" and Status.Equals(\"{0}\") ", BatchStatus.New.ToString()));
+                    query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+                    batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(query.ToString()).ToList();
                 }
                 if (batchMasterRecords.Count != 0)
                 {
-                    var query = new StringBuilder();
-                    query.Append("(" + string.Join("or ", string.Join(",", batchMasterRecords.Select(item => item.ScheduleId).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
-
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
+                        query = new StringBuilder();
+                        query.Append("(" + string.Join("or ", string.Join(",", batchMasterRecords.Select(item => item.ScheduleId).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+                        query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
                         schedules = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-                        //schedules.ToList().ForEach(item =>
-                        //{
-                        //    item.Status = ScheduleStatus.InProgress.ToString();
-                        //});
-                        //nISEntitiesDataContext.SaveChanges();
                     }
 
                     var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
@@ -837,12 +830,11 @@ namespace nIS
                                 var statements = this.statementRepository.GetStatements(statementSearchParameter, tenantCode);
                                 if (statements.Count > 0)
                                 {
-                                    Statement statement = statements[0];
+                                    Statement statement = statements.FirstOrDefault();
                                     IList<StatementPageContent> statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                                     if (statementPageContents.Count > 0)
                                     {
-                                        IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
-
+                                        var customerMasters = new List<CustomerMasterRecord>();
                                         var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
                                         string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
@@ -886,7 +878,7 @@ namespace nIS
                                             });
                                             //customerMasters.ToList().ForEach(customer =>
                                             //{
-                                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
+                                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, client);
                                             //});
                                         }
                                         else
@@ -1071,14 +1063,14 @@ namespace nIS
                     {
                         ParallelOptions parallelOptions = new ParallelOptions();
                         parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                        //Parallel.ForEach(customerMasters, parallelOptions, customer =>
-                        //{
-                        //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration);
-                        //});
-                        customerMasters.ForEach(customer =>
+                        Parallel.ForEach(customerMasters, parallelOptions, customer =>
                         {
                             this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
                         });
+                        //customerMasters.ForEach(customer =>
+                        //{
+                        //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
+                        //});
                     }
                     else
                     {
