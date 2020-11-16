@@ -29,12 +29,20 @@ namespace nIS
         /// </summary>
         IStatementSearchRepository StatementSearchRepository = null;
 
+        /// <summary>
+        /// The page repository.
+        /// </summary>
         IPageRepository pageRepository = null;
 
         /// <summary>
         /// The validation engine object
         /// </summary>
         IValidationEngine validationEngine = null;
+
+        /// <summary>
+        /// The Client manager.
+        /// </summary>
+        private ClientManager clientManager = null;
 
         #endregion
 
@@ -52,6 +60,7 @@ namespace nIS
                 this.unityContainer = unityContainer;
                 this.StatementSearchRepository = this.unityContainer.Resolve<IStatementSearchRepository>();
                 this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
+                this.clientManager = this.unityContainer.Resolve<ClientManager>();
                 this.validationEngine = new ValidationEngine();
             }
             catch (Exception ex)
@@ -157,7 +166,25 @@ namespace nIS
         {
             try
             {
-                return this.StatementSearchRepository.GenerateStatement(identifier, tenantCode);
+                ClientSearchParameter clientSearchParameter = new ClientSearchParameter
+                {
+                    TenantCode = tenantCode,
+                    IsCountryRequired = false,
+                    IsContactRequired = false,
+                    PagingParameter = new PagingParameter
+                    {
+                        PageIndex = 0,
+                        PageSize = 0,
+                    },
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = "Id",
+                    },
+                    SearchMode = SearchMode.Equals
+                };
+                var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
+                return this.StatementSearchRepository.GenerateStatement(identifier, tenantCode, client);
             }
             catch (Exception ex)
             {

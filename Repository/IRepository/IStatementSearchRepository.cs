@@ -45,6 +45,6 @@ namespace nIS
         /// <param name="identifier"></param>
         /// <param name="tenantCode"></param>
         /// <returns>output location of html statmeent file</returns>
-        string GenerateStatement(long identifier, string tenantCode);
+        string GenerateStatement(long identifier, string tenantCode, Client client);
     }
 }

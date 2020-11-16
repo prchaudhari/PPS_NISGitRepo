@@ -122,5 +122,9 @@ namespace nIS
         /// <param name="statementPageContents"> the statement page html content list</param>
         /// <param name="tenantCode"> the tenant code </param>
         StatementPreviewData BindDataToCommonStatement(Statement statement, IList<StatementPageContent> statementPageContents, TenantConfiguration tenantConfiguration, string tenantCode, Client client);
+
+        string ApplyStyleCssForDynamicTableAndFormWidget(string html, CustomeTheme themeDetails);
+        string ApplyStyleCssForDynamicGraphAndChartWidgets(string html, CustomeTheme themeDetails);
+        string GetChartColorTheme(string theme);
     }
 }

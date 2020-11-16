@@ -3070,6 +3070,134 @@ namespace nIS
             }
         }
 
+        public string ApplyStyleCssForDynamicTableAndFormWidget(string html, CustomeTheme themeDetails)
+        {
+            StringBuilder style = new StringBuilder();
+            style.Append(HtmlConstants.STYLE);
+
+            if (themeDetails.TitleColor != null)
+            {
+                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
+            }
+            if (themeDetails.TitleSize != null)
+            {
+                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
+            }
+            if (themeDetails.TitleWeight != null)
+            {
+                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+            }
+            if (themeDetails.TitleType != null)
+            {
+                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+            }
+            html = html.Replace("{{TitleStyle}}", style.ToString());
+
+            style = new StringBuilder();
+            style.Append(HtmlConstants.STYLE);
+            if (themeDetails.HeaderColor != null)
+            {
+                style = style.Replace("{{COLOR}}", themeDetails.HeaderColor);
+            }
+            if (themeDetails.HeaderSize != null)
+            {
+                style = style.Replace("{{SIZE}}", themeDetails.HeaderSize);
+            }
+            if (themeDetails.HeaderWeight != null)
+            {
+                style = style.Replace("{{WEIGHT}}", themeDetails.HeaderWeight);
+            }
+            if (themeDetails.HeaderType != null)
+            {
+                style = style.Replace("{{TYPE}}", themeDetails.HeaderType);
+            }
+            html = html.Replace("{{HeaderStyle}}", style.ToString());
+
+            style = new StringBuilder();
+            style.Append(HtmlConstants.STYLE);
+            if (themeDetails.DataColor != null)
+            {
+                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
+            }
+            if (themeDetails.DataSize != null)
+            {
+                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
+            }
+            if (themeDetails.DataWeight != null)
+            {
+                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
+            }
+            if (themeDetails.DataType != null)
+            {
+                style = style.Replace("{{TYPE}}", themeDetails.DataType);
+            }
+            html = html.Replace("{{BodyStyle}}", style.ToString());
+            return html;
+        }
+
+        public string ApplyStyleCssForDynamicGraphAndChartWidgets(string html, CustomeTheme themeDetails)
+        {
+            StringBuilder style = new StringBuilder();
+            style.Append(HtmlConstants.STYLE);
+            if (themeDetails.TitleColor != null)
+            {
+                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
+            }
+            if (themeDetails.TitleSize != null)
+            {
+                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
+            }
+            if (themeDetails.TitleWeight != null)
+            {
+                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
+            }
+            if (themeDetails.TitleType != null)
+            {
+                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
+            }
+            html = html.Replace("{{TitleStyle}}", style.ToString());
+            return html;
+        }
+
+        public string GetChartColorTheme(string theme)
+        {
+            string colorTheme = string.Empty;
+            if (theme == "Theme1")
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme == "Theme2")
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme == "Theme3")
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
+            else if (theme == "Theme4")
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            else if (theme.ToLower() == "ChartTheme1".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme.ToLower() == "ChartTheme2".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme.ToLower() == "ChartTheme3".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            else if (theme.ToLower() == "ChartTheme4".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
+
+            return colorTheme;
+        }
+
         #endregion
 
         #region Private Methods
@@ -3287,134 +3415,6 @@ namespace nIS
 
             return result;
 
-        }
-
-        private string ApplyStyleCssForDynamicTableAndFormWidget(string html, CustomeTheme themeDetails)
-        {
-            StringBuilder style = new StringBuilder();
-            style.Append(HtmlConstants.STYLE);
-
-            if (themeDetails.TitleColor != null)
-            {
-                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-            }
-            if (themeDetails.TitleSize != null)
-            {
-                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-            }
-            if (themeDetails.TitleWeight != null)
-            {
-                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-            }
-            if (themeDetails.TitleType != null)
-            {
-                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-            }
-            html = html.Replace("{{TitleStyle}}", style.ToString());
-
-            style = new StringBuilder();
-            style.Append(HtmlConstants.STYLE);
-            if (themeDetails.HeaderColor != null)
-            {
-                style = style.Replace("{{COLOR}}", themeDetails.HeaderColor);
-            }
-            if (themeDetails.HeaderSize != null)
-            {
-                style = style.Replace("{{SIZE}}", themeDetails.HeaderSize);
-            }
-            if (themeDetails.HeaderWeight != null)
-            {
-                style = style.Replace("{{WEIGHT}}", themeDetails.HeaderWeight);
-            }
-            if (themeDetails.HeaderType != null)
-            {
-                style = style.Replace("{{TYPE}}", themeDetails.HeaderType);
-            }
-            html = html.Replace("{{HeaderStyle}}", style.ToString());
-
-            style = new StringBuilder();
-            style.Append(HtmlConstants.STYLE);
-            if (themeDetails.DataColor != null)
-            {
-                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
-            }
-            if (themeDetails.DataSize != null)
-            {
-                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
-            }
-            if (themeDetails.DataWeight != null)
-            {
-                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
-            }
-            if (themeDetails.DataType != null)
-            {
-                style = style.Replace("{{TYPE}}", themeDetails.DataType);
-            }
-            html = html.Replace("{{BodyStyle}}", style.ToString());
-            return html;
-        }
-
-        private string ApplyStyleCssForDynamicGraphAndChartWidgets(string html, CustomeTheme themeDetails)
-        {
-            StringBuilder style = new StringBuilder();
-            style.Append(HtmlConstants.STYLE);
-            if (themeDetails.TitleColor != null)
-            {
-                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-            }
-            if (themeDetails.TitleSize != null)
-            {
-                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-            }
-            if (themeDetails.TitleWeight != null)
-            {
-                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-            }
-            if (themeDetails.TitleType != null)
-            {
-                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-            }
-            html = html.Replace("{{TitleStyle}}", style.ToString());
-            return html;
-        }
-
-        private string GetChartColorTheme(string theme)
-        {
-            string colorTheme = string.Empty;
-            if (theme == "Theme1")
-            {
-                colorTheme = HtmlConstants.THEME1;
-            }
-            else if (theme == "Theme2")
-            {
-                colorTheme = HtmlConstants.THEME2;
-            }
-            else if (theme == "Theme3")
-            {
-                colorTheme = HtmlConstants.THEME3;
-            }
-            else if (theme == "Theme4")
-            {
-                colorTheme = HtmlConstants.THEME4;
-            }
-            else if (theme.ToLower() == "ChartTheme1".ToLower())
-            {
-                colorTheme = HtmlConstants.THEME1;
-            }
-            else if (theme.ToLower() == "ChartTheme2".ToLower())
-            {
-                colorTheme = HtmlConstants.THEME2;
-            }
-            else if (theme.ToLower() == "ChartTheme3".ToLower())
-            {
-                colorTheme = HtmlConstants.THEME4;
-            }
-            else if (theme.ToLower() == "ChartTheme4".ToLower())
-            {
-                colorTheme = HtmlConstants.THEME3;
-            }
-
-            return colorTheme;
         }
 
         private string GetHTMLPreviewData(TenantEntity entity, IList<EntityFieldMap> fieldMaps, string widgetSettings)
