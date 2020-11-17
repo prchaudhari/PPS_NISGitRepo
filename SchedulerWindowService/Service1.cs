@@ -30,9 +30,9 @@ namespace SchedulerWindowService
 
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
 
-            timer.Interval = 5000; //number in milisecinds  
+            timer.Interval = 60000; //number in milisecinds  
             ApiBaseAddress = ConfigurationManager.AppSettings["ApiBaseAddress"];
-            RunStatementGenerationSchedule();
+         
             timer.Enabled = true;
         }
 
@@ -44,7 +44,7 @@ namespace SchedulerWindowService
         {
 
             WriteToFile("Service is recall at " + DateTime.Now);
-
+            RunStatementGenerationSchedule();
         }
         public static void WriteToFile(string Message)
         {
@@ -72,6 +72,7 @@ namespace SchedulerWindowService
         }
         public static void RunStatementGenerationSchedule()
         {
+            WriteToFile("RunStatementGenerationSchedule is called " + DateTime.Now);
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ApiBaseAddress);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -88,6 +89,8 @@ namespace SchedulerWindowService
                 WriteToFile("Exception at RunSchedule: " + ex);
                 throw ex;
             }
+            WriteToFile("RunStatementGenerationSchedule is completed " + DateTime.Now);
+
         }
     }
 }
