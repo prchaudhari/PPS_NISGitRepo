@@ -102,12 +102,18 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+              <div class="col-sm-12">
                 <label>Page Type</label><span class="text-danger ml-2">*</span>
-                <div *ngFor="let pageType of pageTypeList" class="d-flex justify-content-between">
+
+              </div>
+            </div>
+            <div class="row">
+
+              <div *ngFor="let pageType of pageTypeList" class="col-xl-3 col-lg-3 col-md-4 col-sm-4 form-group">
+                <div class="d-flex justify-content-between">
                   <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input"  [ngModelOptions]="{standalone: true}"
-                         [disabled]="updateOperationMode"
+                    <input class="custom-control-input" [ngModelOptions]="{standalone: true}"
+                           [disabled]="updateOperationMode"
                            type="checkbox" name="pageType"
                            (change)="onPageSelected($event,pageType)"
                            [(ngModel)]="pageType.IsChecked"
@@ -116,15 +122,15 @@
                   </div>
                 </div>
                 <!--<ng-multiselect-dropdown [data]="pageTypeList"
-                               [settings]="pageTypedropdownSettings"
-                               (onSelect)="onItemSelectPageType($event)"
-                               (onSelectAll)="onSelectAllPageType($event)"
-                               [(ngModel)]="pageTypeselectedItems"
-                               formControlName="PageType"
-                               (onDeSelect)="onItemDeSelectPageType($event)"
-                               (onDeSelectAll)="onItemDeSelectAllPageType($event)"
-                               name="fieldName" ngDefaultControl >
-      </ng-multiselect-dropdown>-->
+                                         [settings]="pageTypedropdownSettings"
+                                         (onSelect)="onItemSelectPageType($event)"
+                                         (onSelectAll)="onSelectAllPageType($event)"
+                                         [(ngModel)]="pageTypeselectedItems"
+                                         formControlName="PageType"
+                                         (onDeSelect)="onItemDeSelectPageType($event)"
+                                         (onDeSelectAll)="onItemDeSelectAllPageType($event)"
+                                         name="fieldName" ngDefaultControl >
+                </ng-multiselect-dropdown>-->
 
                 <div class="validation-msg" style="color:red">
                   <ul *ngIf="isPageTypeFileDropdownError" style="list-style-type:none">
