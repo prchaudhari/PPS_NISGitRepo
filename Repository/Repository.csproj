@@ -214,6 +214,12 @@
     <Compile Include="SavingTrendRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ScheduleLogArchiveRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScheduleLogDetailArchiveRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ScheduleLogDetailRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -249,6 +255,9 @@
     <Compile Include="SQLRepository\SQLRoleRepository.cs" />
     <Compile Include="SQLRepository\TenantTransactionDataRepository.cs" />
     <Compile Include="StatementAnalyticRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StatementMetadataArchiveRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="StatementMetadataRecord.cs">

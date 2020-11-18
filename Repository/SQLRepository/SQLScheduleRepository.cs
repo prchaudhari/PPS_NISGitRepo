@@ -2002,6 +2002,7 @@ namespace nIS
                                     metarec.ScheduleId = scheduleLog.ScheduleId;
                                     metarec.StatementDate = DateTime.UtcNow;
                                     metarec.StatementURL = logDetailRecord.StatementFilePath;
+                                    metarec.TenantCode = tenantCode;
                                     statementMetadataRecords.Add(metarec);
                                 });
                                 nISEntitiesDataContext.StatementMetadataRecords.AddRange(statementMetadataRecords);

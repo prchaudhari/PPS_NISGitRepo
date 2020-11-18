@@ -452,6 +452,20 @@
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="ScheduleLogArchive">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumberOfRetry" Type="int" Nullable="false" />
+          <Property Name="LogFilePath" Type="nvarchar(max)" />
+          <Property Name="LogCreationDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ArchivalDate" Type="datetime" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="ScheduleLogDetail">
           <Key>
             <PropertyRef Name="Id" />
@@ -470,6 +484,26 @@
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="StatementFilePath" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ScheduleLogDetailArchive">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleLogArchiveId" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="250" />
+          <Property Name="RenderEngineId" Type="bigint" Nullable="false" />
+          <Property Name="RenderEngineName" Type="nvarchar" MaxLength="100" />
+          <Property Name="RenderEngineURL" Type="nvarchar(max)" />
+          <Property Name="NumberOfRetry" Type="int" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" />
+          <Property Name="LogMessage" Type="nvarchar(max)" />
+          <Property Name="LogDetailCreationDate" Type="datetime" Nullable="false" />
+          <Property Name="PdfStatementPath" Type="nvarchar(max)" />
+          <Property Name="ArchivalDate" Type="datetime" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="ScheduleRunHistory">
           <Key>
@@ -543,6 +577,25 @@
           <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="StatementURL" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatementMetadataArchive">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleLogArchiveId" Type="bigint" Nullable="false" />
+          <Property Name="StatementId" Type="bigint" Nullable="false" />
+          <Property Name="StatementDate" Type="datetime" />
+          <Property Name="StatementPeriod" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="500" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StatementURL" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ArchivalDate" Type="datetime" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="StatementPageMap">
           <Key>
@@ -1343,12 +1396,15 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="SavingTrend" EntityType="Self.SavingTrend" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="ScheduleLog" EntityType="Self.ScheduleLog" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="ScheduleLogArchive" EntityType="Self.ScheduleLogArchive" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="ScheduleLogDetail" EntityType="Self.ScheduleLogDetail" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="ScheduleLogDetailArchive" EntityType="Self.ScheduleLogDetailArchive" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="ScheduleRunHistory" EntityType="Self.ScheduleRunHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="State" EntityType="Self.State" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Statement" EntityType="Self.Statement" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementAnalytics" EntityType="Self.StatementAnalytics" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementMetadata" EntityType="Self.StatementMetadata" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="StatementMetadataArchive" EntityType="Self.StatementMetadataArchive" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementPageMap" EntityType="Self.StatementPageMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantConfiguration" EntityType="Self.TenantConfiguration" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantContact" EntityType="Self.TenantContact" Schema="NIS" store:Type="Tables" />
@@ -1607,7 +1663,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
           <EntitySet Name="TenantConfigurationRecords" EntityType="NISModel.TenantConfigurationRecord" />
           <EntitySet Name="StatementAnalyticRecords" EntityType="NISModel.StatementAnalyticRecord" />
-          <EntitySet Name="StatementMetadataRecords" EntityType="NISModel.StatementMetadataRecord" />
           <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
           <EntitySet Name="AnalyticsDataRecords" EntityType="NISModel.AnalyticsDataRecord" />
           <EntitySet Name="View_ScheduleRecord" EntityType="NISModel.View_ScheduleRecord" />
@@ -1649,6 +1704,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="WidgetPageTypeMaps" EntityType="NISModel.WidgetPageTypeMap" />
           <EntitySet Name="View_DynamicWidgetRecord" EntityType="NISModel.View_DynamicWidgetRecord" />
           <EntitySet Name="View_PageWidgetMapRecord" EntityType="NISModel.View_PageWidgetMapRecord" />
+          <EntitySet Name="ScheduleLogArchiveRecords" EntityType="NISModel.ScheduleLogArchiveRecord" />
+          <EntitySet Name="ScheduleLogDetailArchiveRecords" EntityType="NISModel.ScheduleLogDetailArchiveRecord" />
+          <EntitySet Name="StatementMetadataRecords" EntityType="NISModel.StatementMetadataRecord" />
+          <EntitySet Name="StatementMetadataArchiveRecords" EntityType="NISModel.StatementMetadataArchiveRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2244,22 +2303,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Hour" Type="Int32" Nullable="false" />
           <Property Name="Minute" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="StatementMetadataRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
-          <Property Name="ScheduleLogId" Type="Int64" Nullable="false" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="StatementDate" Type="DateTime" Precision="3" />
-          <Property Name="StatementPeriod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StatementURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="BatchMasterRecord">
           <Key>
@@ -2916,6 +2959,75 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsDynamicWidget" Type="Boolean" Nullable="false" />
           <Property Name="WidgetName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="ScheduleLogArchiveRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfRetry" Type="Int32" Nullable="false" />
+          <Property Name="LogFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogCreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ScheduleLogDetailArchiveRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleLogArchiveId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RenderEngineId" Type="Int64" Nullable="false" />
+          <Property Name="RenderEngineName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RenderEngineURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfRetry" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LogMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogDetailCreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PdfStatementPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="StatementMetadataRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleLogId" Type="Int64" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="StatementDate" Type="DateTime" Precision="3" />
+          <Property Name="StatementPeriod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatementURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="StatementMetadataArchiveRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleLogArchiveId" Type="Int64" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="StatementDate" Type="DateTime" Precision="3" />
+          <Property Name="StatementPeriod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatementURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3557,23 +3669,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="StatementMetadataRecords">
-            <EntityTypeMapping TypeName="NISModel.StatementMetadataRecord">
-              <MappingFragment StoreEntitySet="StatementMetadata">
-                <ScalarProperty Name="StatementURL" ColumnName="StatementURL" />
-                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
-                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="StatementPeriod" ColumnName="StatementPeriod" />
-                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
-                <ScalarProperty Name="ScheduleLogId" ColumnName="ScheduleLogId" />
-                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BatchMasterRecords">
             <EntityTypeMapping TypeName="NISModel.BatchMasterRecord">
               <MappingFragment StoreEntitySet="BatchMaster">
@@ -4182,6 +4277,79 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="Width" ColumnName="Width" />
                 <ScalarProperty Name="Height" ColumnName="Height" />
                 <ScalarProperty Name="ReferenceWidgetId" ColumnName="ReferenceWidgetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleLogArchiveRecords">
+            <EntityTypeMapping TypeName="NISModel.ScheduleLogArchiveRecord">
+              <MappingFragment StoreEntitySet="ScheduleLogArchive">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ArchivalDate" ColumnName="ArchivalDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LogCreationDate" ColumnName="LogCreationDate" />
+                <ScalarProperty Name="LogFilePath" ColumnName="LogFilePath" />
+                <ScalarProperty Name="NumberOfRetry" ColumnName="NumberOfRetry" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleLogDetailArchiveRecords">
+            <EntityTypeMapping TypeName="NISModel.ScheduleLogDetailArchiveRecord">
+              <MappingFragment StoreEntitySet="ScheduleLogDetailArchive">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ArchivalDate" ColumnName="ArchivalDate" />
+                <ScalarProperty Name="PdfStatementPath" ColumnName="PdfStatementPath" />
+                <ScalarProperty Name="LogDetailCreationDate" ColumnName="LogDetailCreationDate" />
+                <ScalarProperty Name="LogMessage" ColumnName="LogMessage" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="NumberOfRetry" ColumnName="NumberOfRetry" />
+                <ScalarProperty Name="RenderEngineURL" ColumnName="RenderEngineURL" />
+                <ScalarProperty Name="RenderEngineName" ColumnName="RenderEngineName" />
+                <ScalarProperty Name="RenderEngineId" ColumnName="RenderEngineId" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="ScheduleLogArchiveId" ColumnName="ScheduleLogArchiveId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatementMetadataRecords">
+            <EntityTypeMapping TypeName="NISModel.StatementMetadataRecord">
+              <MappingFragment StoreEntitySet="StatementMetadata">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="StatementURL" ColumnName="StatementURL" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="StatementPeriod" ColumnName="StatementPeriod" />
+                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="ScheduleLogId" ColumnName="ScheduleLogId" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatementMetadataArchiveRecords">
+            <EntityTypeMapping TypeName="NISModel.StatementMetadataArchiveRecord">
+              <MappingFragment StoreEntitySet="StatementMetadataArchive">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ArchivalDate" ColumnName="ArchivalDate" />
+                <ScalarProperty Name="StatementURL" ColumnName="StatementURL" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="StatementPeriod" ColumnName="StatementPeriod" />
+                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="ScheduleLogArchiveId" ColumnName="ScheduleLogArchiveId" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

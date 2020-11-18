@@ -264,6 +264,7 @@ namespace nIS
                             AccountNumber = statementRecord.AccountNumber,
                             AccountType = statementRecord.AccountType,
                             StatementURL = statementRecord.StatementURL,
+                            TenantCode = statementRecord.TenantCode
                         });
                     });
                 }

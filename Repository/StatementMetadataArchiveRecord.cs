@@ -12,11 +12,11 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class StatementMetadataRecord
+    public partial class StatementMetadataArchiveRecord
     {
         public long Id { get; set; }
         public long ScheduleId { get; set; }
-        public long ScheduleLogId { get; set; }
+        public long ScheduleLogArchiveId { get; set; }
         public long StatementId { get; set; }
         public Nullable<System.DateTime> StatementDate { get; set; }
         public string StatementPeriod { get; set; }
@@ -25,6 +25,7 @@ namespace nIS
         public string AccountNumber { get; set; }
         public string AccountType { get; set; }
         public string StatementURL { get; set; }
+        public System.DateTime ArchivalDate { get; set; }
         public string TenantCode { get; set; }
     }
 }

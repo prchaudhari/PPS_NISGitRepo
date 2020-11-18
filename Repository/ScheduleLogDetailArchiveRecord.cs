@@ -12,19 +12,22 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class StatementMetadataRecord
+    public partial class ScheduleLogDetailArchiveRecord
     {
         public long Id { get; set; }
+        public long ScheduleLogArchiveId { get; set; }
         public long ScheduleId { get; set; }
-        public long ScheduleLogId { get; set; }
-        public long StatementId { get; set; }
-        public Nullable<System.DateTime> StatementDate { get; set; }
-        public string StatementPeriod { get; set; }
         public long CustomerId { get; set; }
         public string CustomerName { get; set; }
-        public string AccountNumber { get; set; }
-        public string AccountType { get; set; }
-        public string StatementURL { get; set; }
+        public long RenderEngineId { get; set; }
+        public string RenderEngineName { get; set; }
+        public string RenderEngineURL { get; set; }
+        public int NumberOfRetry { get; set; }
+        public string Status { get; set; }
+        public string LogMessage { get; set; }
+        public System.DateTime LogDetailCreationDate { get; set; }
+        public string PdfStatementPath { get; set; }
+        public System.DateTime ArchivalDate { get; set; }
         public string TenantCode { get; set; }
     }
 }

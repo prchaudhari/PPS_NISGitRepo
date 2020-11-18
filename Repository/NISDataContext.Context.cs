@@ -70,7 +70,6 @@ namespace nIS
         public virtual DbSet<AccountMasterRecord> AccountMasterRecords { get; set; }
         public virtual DbSet<TenantConfigurationRecord> TenantConfigurationRecords { get; set; }
         public virtual DbSet<StatementAnalyticRecord> StatementAnalyticRecords { get; set; }
-        public virtual DbSet<StatementMetadataRecord> StatementMetadataRecords { get; set; }
         public virtual DbSet<BatchMasterRecord> BatchMasterRecords { get; set; }
         public virtual DbSet<AnalyticsDataRecord> AnalyticsDataRecords { get; set; }
         public virtual DbSet<View_ScheduleRecord> View_ScheduleRecord { get; set; }
@@ -102,6 +101,10 @@ namespace nIS
         public virtual DbSet<WidgetPageTypeMap> WidgetPageTypeMaps { get; set; }
         public virtual DbSet<View_DynamicWidgetRecord> View_DynamicWidgetRecord { get; set; }
         public virtual DbSet<View_PageWidgetMapRecord> View_PageWidgetMapRecord { get; set; }
+        public virtual DbSet<ScheduleLogArchiveRecord> ScheduleLogArchiveRecords { get; set; }
+        public virtual DbSet<ScheduleLogDetailArchiveRecord> ScheduleLogDetailArchiveRecords { get; set; }
+        public virtual DbSet<StatementMetadataRecord> StatementMetadataRecords { get; set; }
+        public virtual DbSet<StatementMetadataArchiveRecord> StatementMetadataArchiveRecords { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

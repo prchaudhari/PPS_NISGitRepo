@@ -735,6 +735,7 @@ namespace nIS
                                         metarec.ScheduleId = logDetailRecord.ScheduleLogId;
                                         metarec.StatementDate = DateTime.UtcNow;
                                         metarec.StatementURL = logDetailRecord.StatementFilePath;
+                                        metarec.TenantCode = tenantCode;
                                         statementMetadataRecords.Add(metarec);
                                     });
                                 }
