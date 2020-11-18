@@ -754,8 +754,10 @@ namespace nIS
             bool scheduleRunStatus = false;
             var schedules = new List<ScheduleRecord>();
             var batchMasterRecords = new List<BatchMasterRecord>();
+            
             var currentDate = DateTime.Now;
-            var tomorrow = currentDate.AddDays(1);
+            var dueDate = currentDate.AddMinutes(30);
+            this.WriteToFile("Current Date: "+currentDate + " Due Date: " + dueDate);
 
             try
             {
@@ -763,168 +765,159 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    query.Append("BatchExecutionDate >= DateTime(" + currentDate.Year + "," + currentDate.Month + "," + currentDate.Day + "," + 0 + "," +0 + "," + 0 + ") and BatchExecutionDate <= DateTime(" + +tomorrow.Year + "," + tomorrow.Month + "," + tomorrow.Day + "," + 0 + "," + 0 + "," + 0 + ") and IsExecuted.Equals(false) ");
+                    query.Append("BatchExecutionDate >= DateTime(" + currentDate.Year + "," + currentDate.Month + "," + currentDate.Day + "," + currentDate.Hour + "," + currentDate.Minute + "," + currentDate.Second + ") and BatchExecutionDate <= DateTime(" + +dueDate.Year + "," + dueDate.Month + "," + dueDate.Day + "," + dueDate.Hour + "," + dueDate.Minute + "," + dueDate.Second + ") and IsExecuted.Equals(false) ");
                     query.Append(string.Format(" and Status.Equals(\"{0}\") ", BatchStatus.New.ToString()));
                     query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+                    this.WriteToFile("Batch Records: " + query);
                     batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(query.ToString()).ToList();
                 }
-                if (batchMasterRecords.Count != 0)
+                if (batchMasterRecords.Count > 0)
                 {
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         query = new StringBuilder();
                         query.Append("(" + string.Join("or ", string.Join(",", batchMasterRecords.Select(item => item.ScheduleId).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
                         query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+                        this.WriteToFile("Schedule Records: " + query);
                         schedules = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
                     }
-
-                    var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                    var batchMaster = new BatchMasterRecord();
-                    var batchDetails = new List<BatchDetailRecord>();
-                    schedules.ToList().ForEach(schedule =>
+                    
+                    if (schedules != null && schedules.Count > 0)
                     {
-                        ScheduleLogRecord scheduleLog = new ScheduleLogRecord();
-                        scheduleLog.ScheduleId = schedule.Id;
-                        scheduleLog.ScheduleName = schedule.Name;
-                        scheduleLog.NumberOfRetry = 1;
-                        scheduleLog.CreationDate = DateTime.UtcNow;
-                        scheduleLog.TenantCode = tenantCode;
-
-                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                        var batchMaster = new BatchMasterRecord();
+                        var batchDetails = new List<BatchDetailRecord>();
+                        schedules.ToList().ForEach(schedule =>
                         {
-                            schedule.Status = ScheduleStatus.InProgress.ToString();
-                            nISEntitiesDataContext.SaveChanges();
+                            ScheduleLogRecord scheduleLog = new ScheduleLogRecord();
+                            scheduleLog.ScheduleId = schedule.Id;
+                            scheduleLog.ScheduleName = schedule.Name;
+                            scheduleLog.NumberOfRetry = 1;
+                            scheduleLog.CreationDate = DateTime.UtcNow;
+                            scheduleLog.TenantCode = tenantCode;
 
-                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString() && item.BatchExecutionDate <= currentDate)?.ToList()?.FirstOrDefault();
-                        }
-
-                        if (batchMaster != null)
-                        {
-                            if (batchMaster.IsDataReady)
+                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                             {
-                                batchMaster.Status = BatchStatus.Running.ToString();
-                                scheduleLog.Status = ScheduleLogStatus.InProgress.ToString();
-                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                {
-                                    nISEntitiesDataContext.ScheduleLogRecords.Add(scheduleLog);
-                                    nISEntitiesDataContext.SaveChanges();
-                                }
+                                schedule.Status = ScheduleStatus.InProgress.ToString();
+                                nISEntitiesDataContext.SaveChanges();
 
-                                StatementSearchParameter statementSearchParameter = new StatementSearchParameter
-                                {
-                                    Identifier = schedule.StatementId,
-                                    IsActive = true,
-                                    IsStatementPagesRequired = true,
-                                    PagingParameter = new PagingParameter
-                                    {
-                                        PageIndex = 0,
-                                        PageSize = 0,
-                                    },
-                                    SortParameter = new SortParameter()
-                                    {
-                                        SortOrder = SortOrder.Ascending,
-                                        SortColumn = "Name",
-                                    },
-                                    SearchMode = SearchMode.Equals
-                                };
-                                var statements = this.statementRepository.GetStatements(statementSearchParameter, tenantCode);
-                                if (statements.Count > 0)
-                                {
-                                    Statement statement = statements.FirstOrDefault();
-                                    IList<StatementPageContent> statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
-                                    if (statementPageContents.Count > 0)
-                                    {
-                                        var customerMasters = new List<CustomerMasterRecord>();
-                                        var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
-                                        string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+                                batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString())?.ToList()?.FirstOrDefault();
+                            }
 
-                                        var filesDict = new Dictionary<string, string>();
-                                        if (statementPreviewData.SampleFiles != null && statementPreviewData.SampleFiles.Count > 0)
+                            if (batchMaster != null)
+                            {
+                                if (batchMaster.IsDataReady)
+                                {
+                                    batchMaster.Status = BatchStatus.Running.ToString();
+                                    scheduleLog.Status = ScheduleLogStatus.InProgress.ToString();
+                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                    {
+                                        nISEntitiesDataContext.ScheduleLogRecords.Add(scheduleLog);
+                                        nISEntitiesDataContext.SaveChanges();
+                                    }
+
+                                    StatementSearchParameter statementSearchParameter = new StatementSearchParameter
+                                    {
+                                        Identifier = schedule.StatementId,
+                                        IsActive = true,
+                                        IsStatementPagesRequired = true,
+                                        PagingParameter = new PagingParameter
                                         {
-                                            statementPreviewData.SampleFiles.ToList().ForEach(file =>
+                                            PageIndex = 0,
+                                            PageSize = 0,
+                                        },
+                                        SortParameter = new SortParameter()
+                                        {
+                                            SortOrder = SortOrder.Ascending,
+                                            SortColumn = "Name",
+                                        },
+                                        SearchMode = SearchMode.Equals
+                                    };
+                                    var statements = this.statementRepository.GetStatements(statementSearchParameter, tenantCode);
+                                    if (statements.Count > 0)
+                                    {
+                                        Statement statement = statements.FirstOrDefault();
+                                        IList<StatementPageContent> statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                                        if (statementPageContents.Count > 0)
+                                        {
+                                            var customerMasters = new List<CustomerMasterRecord>();
+                                            var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
+                                            string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+
+                                            var filesDict = new Dictionary<string, string>();
+                                            if (statementPreviewData.SampleFiles != null && statementPreviewData.SampleFiles.Count > 0)
                                             {
-                                                if (!filesDict.ContainsKey(file.FileName))
+                                                statementPreviewData.SampleFiles.ToList().ForEach(file =>
                                                 {
-                                                    filesDict.Add(file.FileName, file.FileUrl);
-                                                }
-                                            });
-                                        }
-                                        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, outputLocation, filesDict);
+                                                    if (!filesDict.ContainsKey(file.FileName))
+                                                    {
+                                                        filesDict.Add(file.FileName, file.FileUrl);
+                                                    }
+                                                });
+                                            }
+                                            string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, outputLocation, filesDict);
 
-                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                        {
-                                            ScheduleRunHistoryRecord runHistory = new ScheduleRunHistoryRecord();
-                                            runHistory.StartDate = DateTime.UtcNow;
-                                            runHistory.TenantCode = tenantCode;
-                                            runHistory.ScheduleId = schedule.Id;
-                                            runHistory.StatementId = statement.Identifier;
-                                            runHistory.ScheduleLogId = scheduleLog.Id;
-                                            runHistory.EndDate = DateTime.UtcNow;
-                                            runHistory.FilePath = CommonStatementZipFilePath;
-                                            nISEntitiesDataContext.ScheduleRunHistoryRecords.Add(runHistory);
-                                            nISEntitiesDataContext.SaveChanges();
-
-                                            batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.TenantCode == tenantCode)?.ToList();
-                                            customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
-                                        }
-
-                                        if (customerMasters.Count > 0)
-                                        {
-                                            ParallelOptions parallelOptions = new ParallelOptions();
-                                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                                            Parallel.ForEach(customerMasters, parallelOptions, customer =>
-                                            {
-                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
-                                            });
-                                            //customerMasters.ToList().ForEach(customer =>
-                                            //{
-                                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, client);
-                                            //});
-                                        }
-                                        else
-                                        {
                                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                             {
-                                                nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = BatchStatus.BatchDataNotAvailable.ToString());
-                                                nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString());
-                                                nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.EndDate = DateTime.UtcNow);
-                                                nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = ScheduleStatus.BatchDataNotAvailable.ToString());
+                                                ScheduleRunHistoryRecord runHistory = new ScheduleRunHistoryRecord();
+                                                runHistory.StartDate = DateTime.UtcNow;
+                                                runHistory.TenantCode = tenantCode;
+                                                runHistory.ScheduleId = schedule.Id;
+                                                runHistory.StatementId = statement.Identifier;
+                                                runHistory.ScheduleLogId = scheduleLog.Id;
+                                                runHistory.EndDate = DateTime.UtcNow;
+                                                runHistory.FilePath = CommonStatementZipFilePath;
+                                                nISEntitiesDataContext.ScheduleRunHistoryRecords.Add(runHistory);
                                                 nISEntitiesDataContext.SaveChanges();
+
+                                                batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.TenantCode == tenantCode)?.ToList();
+                                                customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
+                                            }
+
+                                            if (customerMasters.Count > 0)
+                                            {
+                                                ParallelOptions parallelOptions = new ParallelOptions();
+                                                parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                                                Parallel.ForEach(customerMasters, parallelOptions, customer =>
+                                                {
+                                                    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
+                                                });
+                                                //customerMasters.ToList().ForEach(customer =>
+                                                //{
+                                                //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
+                                                //});
+                                            }
+                                            else
+                                            {
+                                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                                {
+                                                    nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = BatchStatus.BatchDataNotAvailable.ToString());
+                                                    nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString());
+                                                    nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id && item.TenantCode == tenantCode).ToList().ForEach(item => item.EndDate = DateTime.UtcNow);
+                                                    nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId && item.TenantCode == tenantCode).ToList().ForEach(item => item.Status = ScheduleStatus.BatchDataNotAvailable.ToString());
+                                                    nISEntitiesDataContext.SaveChanges();
+                                                }
                                             }
                                         }
                                     }
-                                }
 
-                            }
-                            else
-                            {
-                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                }
+                                else
                                 {
-                                    batchMaster.Status = BatchStatus.BatchDataNotAvailable.ToString();
-                                    scheduleLog.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString();
-                                    nISEntitiesDataContext.ScheduleLogRecords.Add(scheduleLog);
-                                    var scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == schedule.Id && item.TenantCode == tenantCode).FirstOrDefault();
-                                    scheduleRecord.Status = ScheduleStatus.BatchDataNotAvailable.ToString();
-                                    nISEntitiesDataContext.SaveChanges();
+                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                    {
+                                        batchMaster.Status = BatchStatus.BatchDataNotAvailable.ToString();
+                                        scheduleLog.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString();
+                                        nISEntitiesDataContext.ScheduleLogRecords.Add(scheduleLog);
+                                        var scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == schedule.Id && item.TenantCode == tenantCode).FirstOrDefault();
+                                        scheduleRecord.Status = ScheduleStatus.BatchDataNotAvailable.ToString();
+                                        nISEntitiesDataContext.SaveChanges();
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                            {
-                                batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && item.BatchExecutionDate.Day == schedule.DayOfMonth && item.BatchExecutionDate.Hour == schedule.HourOfDay && item.BatchExecutionDate.Minute == schedule.MinuteOfDay && item.TenantCode == tenantCode)?.ToList()?.FirstOrDefault();
-                                if (!batchMaster.IsExecuted)
-                                {
-                                    scheduleLog.Status = ScheduleLogStatus.BatchDataNotAvailable.ToString();
-                                    nISEntitiesDataContext.ScheduleLogRecords.Add(scheduleLog);
-                                    var scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == schedule.Id && item.TenantCode == tenantCode).FirstOrDefault();
-                                    scheduleRecord.Status = ScheduleStatus.BatchDataNotAvailable.ToString();
-                                    nISEntitiesDataContext.SaveChanges();
-                                }
-                            }
-                        }
-                    });
+                        });
+                    }
+                    
                 }
                 scheduleRunStatus = true;
             }

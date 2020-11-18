@@ -2940,27 +2940,30 @@ namespace nIS
                                         }
                                         else if (dynawidget.WidgetType == HtmlConstants.HTML_DYNAMICWIDGET)
                                         {
-                                            var _lstHtmlWidgetSettings = JsonConvert.DeserializeObject<List<HtmlWidgetSettings>>(dynawidget.WidgetSettings);
                                             var htmlWidgetContent = new StringBuilder(dynawidget.PreviewData);
-                                            if (_lstHtmlWidgetSettings.Count > 0)
+                                            if (dynawidget.WidgetSettings != null)
                                             {
-                                                //API call
-                                                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
-                                                if (response.StatusCode == HttpStatusCode.OK)
+                                                var _lstHtmlWidgetSettings = JsonConvert.DeserializeObject<List<HtmlWidgetSettings>>(dynawidget.WidgetSettings);
+                                                if (_lstHtmlWidgetSettings.Count > 0)
                                                 {
-                                                    var result = response.Content.ReadAsStringAsync().Result;
-                                                    var apiOutputArr = JArray.Parse(result);
-                                                    if (apiOutputArr.Count > 0)
+                                                    //API call
+                                                    var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                                                    if (response.StatusCode == HttpStatusCode.OK)
                                                     {
-                                                        var apidata = apiOutputArr.FirstOrDefault();
-                                                        _lstHtmlWidgetSettings.ForEach(setting =>
+                                                        var result = response.Content.ReadAsStringAsync().Result;
+                                                        var apiOutputArr = JArray.Parse(result);
+                                                        if (apiOutputArr.Count > 0)
                                                         {
-                                                            if (setting.Value != null && setting.Value != string.Empty && setting.Key != null && setting.Key != string.Empty
-                                                            && apidata[setting.Key] != null)
+                                                            var apidata = apiOutputArr.FirstOrDefault();
+                                                            _lstHtmlWidgetSettings.ForEach(setting =>
                                                             {
-                                                                htmlWidgetContent.Replace(setting.Value, apidata[setting.Key].ToString());
-                                                            }
-                                                        });
+                                                                if (setting.Value != null && setting.Value != string.Empty && setting.Key != null && setting.Key != string.Empty
+                                                                && apidata[setting.Key] != null)
+                                                                {
+                                                                    htmlWidgetContent.Replace(setting.Value, apidata[setting.Key].ToString());
+                                                                }
+                                                            });
+                                                        }
                                                     }
                                                 }
                                             }

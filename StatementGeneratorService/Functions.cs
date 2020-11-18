@@ -35,7 +35,7 @@ namespace StatementGeneratorService
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ApiBaseAddress);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("TenantCode", "00000000-0000-0000-0000-000000000000");
+            client.DefaultRequestHeaders.Add("TenantCode", ConfigurationManager.AppSettings["TenantCode"]);
 
             try
             {
