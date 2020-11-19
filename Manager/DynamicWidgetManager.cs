@@ -356,7 +356,7 @@ namespace nIS
                     {
 
                         var dynamicWidget = dynamicWidgets[index];
-                        if (dynamicWidget.WidgetSettings == null || dynamicWidget.WidgetSettings == string.Empty)
+                        if ((dynamicWidget.WidgetSettings == null || dynamicWidget.WidgetSettings == string.Empty) && dynamicWidget.WidgetType != HtmlConstants.HTML_DYNAMICWIDGET)
                         {
                             throw new WidgetSettingsNotFoundException(tenantCode);
                         }
@@ -1066,7 +1066,7 @@ namespace nIS
                 List<DynamicWidgetFormEntity> formEntity = JsonConvert.DeserializeObject<List<DynamicWidgetFormEntity>>(widgetSettings);
                 previewData = this.GetFormPreviewData(entity, formEntity);
             }
-            
+
             else if (widgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
             {
                 DynamicWidgetLineGraph lineGraphDetails = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(widgetSettings);

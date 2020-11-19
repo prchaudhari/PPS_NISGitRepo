@@ -353,7 +353,11 @@ export class WidgetdesignerComponent implements OnInit {
         this.htmlFieldsMappinng = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
       }
     }
-
+    if (this.dynamicWidgetDetails.WidgetType == 'Html') {
+      
+      this.editorValue = this.dynamicWidgetDetails.PreviewData;
+      this.htmlFieldsMappinng = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
+    }
     this.DynamicWidgetForm.patchValue({
       WidgetName: this.dynamicWidgetDetails.WidgetName,
       PageType: this.dynamicWidgetDetails.PageTypeId,
