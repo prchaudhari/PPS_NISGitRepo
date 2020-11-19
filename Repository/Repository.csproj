@@ -61,6 +61,7 @@
     <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
@@ -146,6 +147,7 @@
     <Compile Include="ImageRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\IArchivalProcessRepository.cs" />
     <Compile Include="IRepository\IContactTypeRepository.cs" />
     <Compile Include="IRepository\IDynamicWidgetRepository.cs" />
     <Compile Include="IRepository\IMultiTenantUserRoleAccessRepository.cs" />
@@ -233,6 +235,7 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLRepository\SQLAnalyticsDataRepository.cs" />
+    <Compile Include="SQLRepository\SQLArchivalProcessRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureCityRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureStateRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureTenantUserRepository.cs" />

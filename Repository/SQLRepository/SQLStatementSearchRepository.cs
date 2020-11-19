@@ -318,13 +318,13 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var statementrecords = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.Id == identifier)?.ToList();
-                    if (statementrecords.Count != 0)
+                    var statementmetadatarecords = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.Id == identifier && item.TenantCode == tenantCode)?.ToList();
+                    if (statementmetadatarecords.Count > 0)
                     {
-                        var statementrecord = statementrecords.FirstOrDefault();
-                        var schedulerecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == statementrecord.ScheduleId && item.TenantCode == tenantCode).ToList().FirstOrDefault();
-                        var batchrecord = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedulerecord.Id && item.TenantCode == tenantCode).ToList().FirstOrDefault();
-                        var customerrecord = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == statementrecord.CustomerId && item.BatchId == batchrecord.Id && item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                        var statementmetadatarecord = statementmetadatarecords.FirstOrDefault();
+                        var schedulerecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == statementmetadatarecord.ScheduleId && item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                        var customerrecord = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == statementmetadatarecord.CustomerId && item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                        var batchrecord = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == customerrecord.BatchId && item.ScheduleId == schedulerecord.Id && item.TenantCode == tenantCode).ToList().FirstOrDefault();
                         var batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchrecord.Id && item.TenantCode == tenantCode)?.ToList();
 
                         StatementSearchParameter statementSearchParameter = new StatementSearchParameter
@@ -349,7 +349,7 @@ namespace nIS
                         {
                             var statement = statements.FirstOrDefault();
                             var statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
-                            outputlocation = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\temp"+ DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                            outputlocation = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\temp_"+ DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
                             if (!Directory.Exists(outputlocation))
                             {
                                 Directory.CreateDirectory(outputlocation);
@@ -358,7 +358,7 @@ namespace nIS
                             this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\js", outputlocation, false);
                             this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\images", outputlocation, false);
                             this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\fonts", outputlocation, false);
-                            this.GenerateStatements(customerrecord, statement, statementPageContents, batchrecord, batchDetails, tenantCode, outputlocation, client, tenantConfiguration);
+                            this.GenerateHtmlStatementForPdfGeneration(customerrecord, statement, statementPageContents, batchrecord, batchDetails, tenantCode, outputlocation, client, tenantConfiguration);
                         }
                     }
                 }
@@ -374,103 +374,6 @@ namespace nIS
             return outputlocation;
         }
 
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Generate string for dynamic linq.
-        /// </summary>
-        /// <param name="searchParameter">Role search Parameters</param>
-        /// <returns>
-        /// Returns a string.
-        /// </returns>
-        private string WhereClauseGenerator(StatementSearchSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
-
-            if (searchParameter.SearchMode == SearchMode.Equals)
-            {
-                if (validationEngine.IsValidText(searchParameter.Identifier))
-                {
-                    queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-                }
-                if (validationEngine.IsValidText(searchParameter.Name))
-                {
-                    queryString.Append(string.Format("Name.Equals(\"{0}\") and ", searchParameter.Name));
-                }
-                if (validationEngine.IsValidText(searchParameter.StatementCustomer))
-                {
-                    queryString.Append(string.Format("CustomerName.Equals(\"{0}\") and ", searchParameter.StatementCustomer));
-                }
-                if (validationEngine.IsValidText(searchParameter.StatementAccount))
-                {
-                    queryString.Append(string.Format("AccountNumber.Contains(\"{0}\") and ", searchParameter.StatementAccount));
-                }
-                if (validationEngine.IsValidText(searchParameter.StatementPeriod))
-                {
-                    queryString.Append(string.Format("StatementPeriod.Contains(\"{0}\") and ", searchParameter.StatementPeriod));
-                }
-            }
-            if (searchParameter.SearchMode == SearchMode.Contains)
-            {
-                if (validationEngine.IsValidText(searchParameter.Name))
-                {
-                    queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
-                }
-                if (validationEngine.IsValidText(searchParameter.StatementCustomer))
-                {
-                    queryString.Append(string.Format("CustomerName.Contains(\"{0}\") and ", searchParameter.StatementCustomer));
-                }
-                if (validationEngine.IsValidText(searchParameter.StatementAccount))
-                {
-                    queryString.Append(string.Format("AccountNumber.Contains(\"{0}\") and ", searchParameter.StatementAccount));
-                }
-                if (validationEngine.IsValidText(searchParameter.StatementPeriod))
-                {
-                    queryString.Append(string.Format("StatementPeriod.Contains(\"{0}\") and ", searchParameter.StatementPeriod));
-                }
-            }
-            if (this.validationEngine.IsValidDate(searchParameter.StatementStartDate))
-            {
-                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementStartDate), DateTimeKind.Utc);
-                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementEndDate), DateTimeKind.Utc);
-                //DateTime fromDateTime = searchParameter.StatementStartDate;
-                //DateTime toDateTime = searchParameter.StatementEndDate;
-
-                queryString.Append("StatementDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
-                               "and StatementDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
-            }
-            if (queryString.ToString() != string.Empty)
-            {
-                queryString.Remove(queryString.Length - 4, 4);
-            }
-            //queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false)", tenantCode));
-            return queryString.ToString();
-        }
-
-        /// <summary>
-        /// This method help to set and validate connection string
-        /// </summary>
-        /// <param name="tenantCode">
-        /// The tenant code
-        /// </param>
-        private void SetAndValidateConnectionString(string tenantCode)
-        {
-            try
-            {
-                this.connectionString = validationEngine.IsValidText(this.connectionString) ? this.connectionString : this.configurationutility.GetConnectionString(ModelConstant.COMMON_SECTION, ModelConstant.NIS_CONNECTION_STRING, ModelConstant.CONFIGURATON_BASE_URL, ModelConstant.TENANT_CODE_KEY, tenantCode);
-                if (!this.validationEngine.IsValidText(this.connectionString))
-                {
-                    throw new ConnectionStringNotFoundException(tenantCode);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         /// <summary>
         /// This method help to generate statement for customer
         /// </summary>
@@ -480,7 +383,10 @@ namespace nIS
         /// <param name="batchMaster"> the batch master object </param>
         /// <param name="batchDetails"> the list of batch details records </param>
         /// <param name="outputLocation"> the output file path </param>
-        private string GenerateStatements(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string tenantCode, string outputLocation, Client client, TenantConfiguration tenantConfiguration)
+        /// <param name="client"> the client object </param>
+        /// <param name="tenantConfiguration"> the tenant configuration object </param>
+        /// <param name="tenantCode"> the tenant code </param>
+        public string GenerateHtmlStatementForPdfGeneration(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string tenantCode, string outputLocation, Client client, TenantConfiguration tenantConfiguration)
         {
             string filePath = string.Empty;
             bool IsSavingOrCurrentAccountPagePresent = false;
@@ -494,18 +400,21 @@ namespace nIS
                     IList<AccountMasterRecord> savingaccountrecords = new List<AccountMasterRecord>();
                     IList<AccountMasterRecord> curerntaccountrecords = new List<AccountMasterRecord>();
                     IList<CustomerMediaRecord> customerMedias = new List<CustomerMediaRecord>();
-
                     var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
 
+                    if (this.connectionString == string.Empty) 
+                    { 
+                        this.SetAndValidateConnectionString(tenantCode);
+                    }
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                         IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
-                        if (IsSavingOrCurrentAccountPagePresent) 
+                        if (IsSavingOrCurrentAccountPagePresent)
                         {
                             accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
                         }
-                        
+
                         customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
                     }
 
@@ -571,7 +480,7 @@ namespace nIS
                         var dynamicWidgets = statementPageContent.DynamicWidgets;
 
                         string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
-                        navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='#"+ tabClassName + "' >" + statementPageContent.DisplayName + "</a> </li> ");
+                        navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='#" + tabClassName + "' >" + statementPageContent.DisplayName + "</a> </li> ");
                         //string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
                         PageHeaderContent.Replace("{{ExtraClass}}", tabClassName);
                         PageHeaderContent.Replace("{{DivId}}", tabClassName);
@@ -1506,6 +1415,103 @@ namespace nIS
                 }
 
                 return filePath;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="searchParameter">Role search Parameters</param>
+        /// <returns>
+        /// Returns a string.
+        /// </returns>
+        private string WhereClauseGenerator(StatementSearchSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            if (searchParameter.SearchMode == SearchMode.Equals)
+            {
+                if (validationEngine.IsValidText(searchParameter.Identifier))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidText(searchParameter.Name))
+                {
+                    queryString.Append(string.Format("Name.Equals(\"{0}\") and ", searchParameter.Name));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementCustomer))
+                {
+                    queryString.Append(string.Format("CustomerName.Equals(\"{0}\") and ", searchParameter.StatementCustomer));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementAccount))
+                {
+                    queryString.Append(string.Format("AccountNumber.Contains(\"{0}\") and ", searchParameter.StatementAccount));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementPeriod))
+                {
+                    queryString.Append(string.Format("StatementPeriod.Contains(\"{0}\") and ", searchParameter.StatementPeriod));
+                }
+            }
+            if (searchParameter.SearchMode == SearchMode.Contains)
+            {
+                if (validationEngine.IsValidText(searchParameter.Name))
+                {
+                    queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementCustomer))
+                {
+                    queryString.Append(string.Format("CustomerName.Contains(\"{0}\") and ", searchParameter.StatementCustomer));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementAccount))
+                {
+                    queryString.Append(string.Format("AccountNumber.Contains(\"{0}\") and ", searchParameter.StatementAccount));
+                }
+                if (validationEngine.IsValidText(searchParameter.StatementPeriod))
+                {
+                    queryString.Append(string.Format("StatementPeriod.Contains(\"{0}\") and ", searchParameter.StatementPeriod));
+                }
+            }
+            if (this.validationEngine.IsValidDate(searchParameter.StatementStartDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementStartDate), DateTimeKind.Utc);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementEndDate), DateTimeKind.Utc);
+                //DateTime fromDateTime = searchParameter.StatementStartDate;
+                //DateTime toDateTime = searchParameter.StatementEndDate;
+
+                queryString.Append("StatementDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                               "and StatementDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+            if (queryString.ToString() != string.Empty)
+            {
+                queryString.Remove(queryString.Length - 4, 4);
+            }
+            //queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false)", tenantCode));
+            return queryString.ToString();
+        }
+
+        /// <summary>
+        /// This method help to set and validate connection string
+        /// </summary>
+        /// <param name="tenantCode">
+        /// The tenant code
+        /// </param>
+        private void SetAndValidateConnectionString(string tenantCode)
+        {
+            try
+            {
+                this.connectionString = validationEngine.IsValidText(this.connectionString) ? this.connectionString : this.configurationutility.GetConnectionString(ModelConstant.COMMON_SECTION, ModelConstant.NIS_CONNECTION_STRING, ModelConstant.CONFIGURATON_BASE_URL, ModelConstant.TENANT_CODE_KEY, tenantCode);
+                if (!this.validationEngine.IsValidText(this.connectionString))
+                {
+                    throw new ConnectionStringNotFoundException(tenantCode);
+                }
             }
             catch (Exception ex)
             {

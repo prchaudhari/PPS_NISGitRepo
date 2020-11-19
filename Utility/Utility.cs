@@ -1049,6 +1049,41 @@
             }
         }
 
+        /// <summary>
+        /// This method executes pdf crowd tool web request to convert HTML file to PDF.
+        /// </summary>
+        /// <param name="htmlStatementPath">The statement statement path.</param>
+        /// <param name="outPdfPath">The output pdf path.</param>
+        /// <returns>
+        /// Returns the true if pdf generated successfully, otherwise false
+        /// </returns>
+        public bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath)
+        {
+            var isPdfSuccess = false;
+            try
+            {
+                var client = new pdfcrowd.HtmlToPdfClient("demo", "ce544b6ea52a5621fb9d55f8b542d14d");
+                client.setPageWidth("12in");
+                client.setPageHeight("10in");
+                client.setRenderingMode("viewport");
+                client.setSmartScalingMode("content-fit");
+                client.setJpegQuality(80);
+                client.setConvertImagesToJpeg("all");
+                client.setImageDpi(340);
+                client.convertFileToFile(htmlStatementPath, outPdfPath);
+                isPdfSuccess = true;
+            }
+            catch (pdfcrowd.Error why)
+            {
+                throw why;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return isPdfSuccess;
+        }
+
 
         #endregion
 

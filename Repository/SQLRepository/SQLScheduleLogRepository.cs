@@ -335,7 +335,8 @@ namespace nIS
                         scheduleRecord = nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == firstScheduleLogDetailRecord.ScheduleId && item.TenantCode == tenantCode)?.FirstOrDefault();
                         if (scheduleRecord != null)
                         {
-                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == scheduleRecord.Id && item.TenantCode == tenantCode)?.FirstOrDefault();
+                            var customer = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == firstScheduleLogDetailRecord.CustomerId && item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                            batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == customer.BatchId && item.ScheduleId == scheduleRecord.Id && item.TenantCode == tenantCode)?.FirstOrDefault();
                             if (batchMaster != null)
                             {
                                 batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();

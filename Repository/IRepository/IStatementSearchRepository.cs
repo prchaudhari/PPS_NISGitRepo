@@ -46,5 +46,19 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns>output location of html statmeent file</returns>
         string GenerateStatement(long identifier, string tenantCode, Client client);
+
+        /// <summary>
+        /// This method help to generate statement for customer
+        /// </summary>
+        /// <param name="customer"> the customer object </param>
+        /// <param name="statement"> the statement object </param>
+        /// <param name="statementPageContents"> the statement page html content list</param>
+        /// <param name="batchMaster"> the batch master object </param>
+        /// <param name="batchDetails"> the list of batch details records </param>
+        /// <param name="outputLocation"> the output file path </param>
+        /// <param name="client"> the client object </param>
+        /// <param name="tenantConfiguration"> the tenant configuration object </param>
+        /// <param name="tenantCode"> the tenant code </param>
+        string GenerateHtmlStatementForPdfGeneration(CustomerMasterRecord customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string tenantCode, string outputLocation, Client client, TenantConfiguration tenantConfiguration);
     }
 }

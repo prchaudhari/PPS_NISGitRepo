@@ -107,7 +107,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client);
+        bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client);
 
         /// <summary>
         /// This method helps to run the schedule
@@ -115,7 +115,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client);
+        bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client);
 
         IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
 
@@ -126,7 +126,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client);
+        bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client);
 
     }
 }

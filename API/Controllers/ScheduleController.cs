@@ -238,7 +238,7 @@ namespace nIS
                     baseURL = tenantConfiguration.OutputHTMLPath;
                     outputLocation = tenantConfiguration.OutputHTMLPath;
                 }
-                return this.scheduleManager.RunSchedule(baseURL, outputLocation, tenantCode);
+                return this.scheduleManager.RunSchedule(baseURL, outputLocation, tenantConfiguration, tenantCode);
             }
             catch (Exception ex)
             {
@@ -269,7 +269,7 @@ namespace nIS
                     baseURL = tenantConfiguration.OutputHTMLPath;
                     outputLocation = tenantConfiguration.OutputHTMLPath;
                 }
-                return this.scheduleManager.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode);
+                return this.scheduleManager.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantConfiguration, tenantCode);
             }
             catch (Exception ex)
             {

@@ -59,16 +59,6 @@ namespace nIS
         /// </summary>
         private IStatementRepository statementRepository = null;
 
-        /// <summary>
-        /// The Page repository.
-        /// </summary>
-        private IPageRepository pageRepository = null;
-
-        /// <summary>
-        /// The Tenant configuration repository.
-        /// </summary>
-        private ITenantConfigurationRepository tenantConfigurationRepository = null;
-
         #endregion
 
         #region Constructor
@@ -79,9 +69,7 @@ namespace nIS
             this.validationEngine = new ValidationEngine();
             this.utility = new Utility();
             this.configurationutility = new ConfigurationUtility(this.unityContainer);
-            this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
-            this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
         }
 
         #endregion
@@ -556,7 +544,7 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client)
+        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client)
         {
             bool scheduleRunStatus = false;
             IList<ScheduleRecord> schedules = new List<ScheduleRecord>();
@@ -584,7 +572,6 @@ namespace nIS
                         nISEntitiesDataContext.SaveChanges();
                     }
 
-                    var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                     BatchMasterRecord batchMaster = new BatchMasterRecord();
                     IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
                     schedules.ToList().ForEach(schedule =>
@@ -749,7 +736,7 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client)
+        public bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client)
         {
             bool scheduleRunStatus = false;
             var schedules = new List<ScheduleRecord>();
@@ -784,7 +771,6 @@ namespace nIS
                     
                     if (schedules != null && schedules.Count > 0)
                     {
-                        var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                         var batchMaster = new BatchMasterRecord();
                         var batchDetails = new List<BatchDetailRecord>();
                         schedules.ToList().ForEach(schedule =>
@@ -939,7 +925,7 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunScheduleNow(BatchMaster batch, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, Client client)
+        public bool RunScheduleNow(BatchMaster batch, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client)
         {
             bool isScheduleSuccess = false;
             try
@@ -994,7 +980,6 @@ namespace nIS
                     }
                 }
 
-                var tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                 StatementSearchParameter statementSearchParameter = new StatementSearchParameter
                 {
                     Identifier = scheduleRecord.StatementId,
@@ -1593,7 +1578,7 @@ namespace nIS
 
                 if (schedule.EndDate != null)
                 {
-                    while (DateTime.Compare(newstartdate, schedule.EndDate ?? DateTime.Now) < 0)
+                    while (DateTime.Compare(newstartdate, schedule.EndDate ?? DateTime.Now) <= 0)
                     {
                         int DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
                         if (schedule.DayOfMonth > 28)

@@ -227,7 +227,7 @@ namespace nIS
                 zipFile = AppDomain.CurrentDomain.BaseDirectory + "\\Resources" + "\\" + "tempStatementZip" + identifier + ".zip";
                 ZipFile.CreateFromDirectory(outputpath, zipFile);
                 var pdfName = "Statement" + DateTime.Now.ToShortDateString().Replace(" - ", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
-                this.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName);
+                this.utility.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName);
                 using (MemoryStream ms = new MemoryStream())
                 {
                     using (FileStream file = new FileStream((outputpath + "\\" + pdfName), FileMode.Open, FileAccess.Read))
@@ -264,32 +264,6 @@ namespace nIS
                     Directory.Delete(outputpath, true);
                 }
             }
-        }
-
-        private bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath)
-        {
-            var isPdfSuccess = false;
-            try
-            {
-                var client = new pdfcrowd.HtmlToPdfClient("demo", "ce544b6ea52a5621fb9d55f8b542d14d");
-                client.setPageWidth("12in");
-                client.setPageHeight("10in");
-                client.setRenderingMode("viewport");
-                client.setSmartScalingMode("content-fit");
-                client.setJpegQuality(80);
-                client.setConvertImagesToJpeg("all");
-                client.setImageDpi(340);
-                client.convertFileToFile(htmlStatementPath, outPdfPath);
-            }
-            catch (pdfcrowd.Error why)
-            {
-                throw why;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return isPdfSuccess;
         }
 
         #endregion

@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalyticsDataManager.cs" />
+    <Compile Include="ArchivalProcessManager.cs" />
     <Compile Include="CityManager.cs" />
     <Compile Include="ClientManager.cs" />
     <Compile Include="ContactTypeManager.cs" />

@@ -335,7 +335,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunSchedule(string baseURL, string outputLocation, string tenantCode)
+        public bool RunSchedule(string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             try
             {
@@ -358,7 +358,7 @@ namespace nIS
                 };
                 var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
-                return this.scheduleRepository.RunScheduleNew(baseURL, outputLocation, tenantCode, parallelThreadCount, client);
+                return this.scheduleRepository.RunScheduleNew(baseURL, outputLocation, tenantCode, parallelThreadCount,tenantConfiguration, client);
             }
             catch (Exception ex)
             {
@@ -373,7 +373,7 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
-        public bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, string tenantCode)
+        public bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             try
             {
@@ -396,7 +396,7 @@ namespace nIS
                 };
                 var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
-                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode, parallelThreadCount, client);
+                return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode, parallelThreadCount, tenantConfiguration, client);
             }
             catch (Exception ex)
             {

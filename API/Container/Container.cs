@@ -51,6 +51,7 @@ namespace nIS
             unityContainer.RegisterType<IMultiTenantUserRoleAccessRepository, SQLMultiTenantUserRoleAccessRepository>();
             unityContainer.RegisterType<IDynamicWidgetRepository, SQLDynamicWidgetRepository>();
             unityContainer.RegisterType<ITenantTransactionDataRepository, TenantTransactionDataRepository>();
+            unityContainer.RegisterType<IArchivalProcessRepository, SQLArchivalProcessRepository>();
             return unityContainer;
         }
     }
