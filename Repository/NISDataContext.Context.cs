@@ -99,12 +99,12 @@ namespace nIS
         public virtual DbSet<TTD_UserSubscriptionsRecord> TTD_UserSubscriptionsRecord { get; set; }
         public virtual DbSet<TTD_VendorSubscriptionRecord> TTD_VendorSubscriptionRecord { get; set; }
         public virtual DbSet<WidgetPageTypeMap> WidgetPageTypeMaps { get; set; }
-        public virtual DbSet<View_DynamicWidgetRecord> View_DynamicWidgetRecord { get; set; }
         public virtual DbSet<View_PageWidgetMapRecord> View_PageWidgetMapRecord { get; set; }
         public virtual DbSet<ScheduleLogArchiveRecord> ScheduleLogArchiveRecords { get; set; }
         public virtual DbSet<ScheduleLogDetailArchiveRecord> ScheduleLogDetailArchiveRecords { get; set; }
         public virtual DbSet<StatementMetadataRecord> StatementMetadataRecords { get; set; }
         public virtual DbSet<StatementMetadataArchiveRecord> StatementMetadataArchiveRecords { get; set; }
+        public virtual DbSet<View_DynamicWidgetRecord> View_DynamicWidgetRecord { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

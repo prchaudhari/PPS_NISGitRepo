@@ -348,18 +348,22 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     string result = this.WhereClauseGenerator(dynamicWidgetSearchParameter, tenantCode);
+
+                    var viewDynaWidgetRecords = nISEntitiesDataContext.View_DynamicWidgetRecord.Where(result).ToList().
+                        GroupBy(it => it.Id, (key, dw) => new { Id = key, dws = dw.ToList()}).Select(it => it.dws.FirstOrDefault()).ToList();
+
                     if (dynamicWidgetSearchParameter.PagingParameter.PageIndex != 0 && dynamicWidgetSearchParameter.PagingParameter.PageSize != 0)
                     {
-                        dynamicWidgetRecords = nISEntitiesDataContext.View_DynamicWidgetRecord.
-                        OrderBy(dynamicWidgetSearchParameter.SortParameter.SortColumn + " " + dynamicWidgetSearchParameter.SortParameter.SortOrder)
-                        .Where(result)
-                        .Skip((dynamicWidgetSearchParameter.PagingParameter.PageIndex - 1) * dynamicWidgetSearchParameter.PagingParameter.PageSize)
-                        .Take(dynamicWidgetSearchParameter.PagingParameter.PageSize).ToList();
+                        dynamicWidgetRecords = viewDynaWidgetRecords.
+                        OrderBy(dynamicWidgetSearchParameter.SortParameter.SortColumn + " " + dynamicWidgetSearchParameter.SortParameter.SortOrder).
+                        Skip((dynamicWidgetSearchParameter.PagingParameter.PageIndex - 1) * dynamicWidgetSearchParameter.PagingParameter.PageSize).
+                        Take(dynamicWidgetSearchParameter.PagingParameter.PageSize).ToList();
                     }
                     else
                     {
-                        dynamicWidgetRecords = nISEntitiesDataContext.View_DynamicWidgetRecord.Where(result).
-                        OrderBy(dynamicWidgetSearchParameter.SortParameter.SortColumn + " " + dynamicWidgetSearchParameter.SortParameter.SortOrder).ToList();
+                        dynamicWidgetRecords = viewDynaWidgetRecords.
+                        OrderBy(dynamicWidgetSearchParameter.SortParameter.SortColumn + " " + dynamicWidgetSearchParameter.SortParameter.SortOrder).
+                        ToList();
                     }
 
                     if (dynamicWidgetRecords?.Count > 0)
@@ -386,10 +390,9 @@ namespace nIS
                                 PublishedBy = item.PublishedBy,
                                 PublishedByName = item.PublishedByName,
                                 EntityName = item.EntityName,
-                                //PageTypeName = item.PageTypeName,
                                 PublishedDate = item.PublishedDate,
-                                IsActive = true,
-                                IsDeleted = false,
+                                IsActive = item.IsActive,
+                                IsDeleted = item.IsDeleted,
                                 Version = item.Version,
                                 TenantCode = tenantCode,
                                 PreviewData = item.PreviewData,
@@ -399,23 +402,24 @@ namespace nIS
                         });
 
                         StringBuilder queryString = new StringBuilder();
-                        queryString.Append(string.Join("or ", dynamicWidgetRecords.Select(item => string.Format("WidgetId.Equals({0}) ", item.Id))));
+                        //dynamicWidgetRecords.Select(it => it.Id).Distinct().Select(item => string.Format("WidgetId.Equals({0}) ", item));
+                        queryString.Append(string.Join("or ", dynamicWidgetRecords.Select(it => it.Id).Distinct().ToList().Select(item => string.Format("WidgetId.Equals({0}) ", item))));
                         queryString.Append(" and IsDynamicWidget.Equals(true)");
 
-                        List<WidgetPageTypeMap> pageWidgetMapRecords = new List<WidgetPageTypeMap>();
-                        pageWidgetMapRecords = nISEntitiesDataContext.WidgetPageTypeMaps.Where(queryString.ToString()).ToList();
+                        List<WidgetPageTypeMap> widgetPageTypeMaps = new List<WidgetPageTypeMap>();
+                        widgetPageTypeMaps = nISEntitiesDataContext.WidgetPageTypeMaps.Where(queryString.ToString()).ToList();
 
                         queryString = new StringBuilder();
                         List<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
 
-                        queryString.Append(string.Join("or ", pageWidgetMapRecords.Select(item => string.Format("Id.Equals({0}) ", item.PageTypeId))));
+                        queryString.Append(string.Join("or ", widgetPageTypeMaps.Select(item => string.Format("Id.Equals({0}) ", item.PageTypeId))));
                         queryString.Append(" and IsDeleted.Equals(false)");
                         pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(queryString.ToString()).ToList();
 
                         dynamicWidgets.ToList().ForEach(item =>
                         {
                             IList<PageType> pageTypes = new List<PageType>();
-                            IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = pageWidgetMapRecords.Where(map => map.WidgetId == item.Identifier).ToList();
+                            IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = widgetPageTypeMaps.Where(map => map.WidgetId == item.Identifier).ToList();
                             currentWidgetPageTypeMaps.ToList().ForEach(map =>
                             {
                                 pageTypes.Add(new PageType
@@ -430,7 +434,7 @@ namespace nIS
                     }
                 }
             }
-            catch (SqlException)
+            catch (SqlException sqe)
             {
                 throw new RepositoryStoreNotAccessibleException(tenantCode);
             }
