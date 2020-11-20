@@ -743,7 +743,7 @@ namespace nIS
             var batchMasterRecords = new List<BatchMasterRecord>();
             
             var currentDate = DateTime.Now;
-            var dueDate = currentDate.AddMinutes(30);
+            var dueDate = currentDate.AddMinutes(60);
             this.WriteToFile("Current Date: "+currentDate + " Due Date: " + dueDate);
 
             try

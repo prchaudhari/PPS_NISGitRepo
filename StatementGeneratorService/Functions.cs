@@ -22,8 +22,8 @@ namespace StatementGeneratorService
         static string ApiBaseAddress;
         static string TenantCode;
 
-        // This function will get triggered/executed immediately on startup, and then every 15 minutes thereafter.
-        public static void ProcessQueueBasedOnTimer([TimerTrigger("0 */15 * * * *", RunOnStartup = true)] TimerInfo timer)
+        // This function will get triggered/executed immediately on startup, and then every 30 minutes thereafter.
+        public static void ProcessQueueBasedOnTimer([TimerTrigger("0 */30 * * * *", RunOnStartup = true)] TimerInfo timer)
         {
             Console.WriteLine("This should run every 15 minutes");
             ApiBaseAddress = ConfigurationManager.AppSettings["ApiBaseAddress"];

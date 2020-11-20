@@ -34,7 +34,7 @@ namespace SchedulerWindowService
             TenantCode = ConfigurationManager.AppSettings["TenantCode"];
 
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            timer.Interval = 1000 * 60 * 15; //number in milisecinds  -- 15 minutes
+            timer.Interval = 1000 * 60 * 30; //number in milisecinds  -- 30 minutes
             timer.Enabled = true;
         }
 
