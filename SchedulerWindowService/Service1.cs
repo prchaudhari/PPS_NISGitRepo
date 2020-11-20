@@ -19,6 +19,8 @@ namespace SchedulerWindowService
     {
         Timer timer = new Timer(); // name space(using System.Timers;)  
         static string ApiBaseAddress;
+        static string TenantCode;
+
         public Service1()
         {
             InitializeComponent();
@@ -28,11 +30,11 @@ namespace SchedulerWindowService
         {
             WriteToFile("Service is started at " + DateTime.Now);
 
-            timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-
-            timer.Interval = 60000; //number in milisecinds  
             ApiBaseAddress = ConfigurationManager.AppSettings["ApiBaseAddress"];
-         
+            TenantCode = ConfigurationManager.AppSettings["TenantCode"];
+
+            timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
+            timer.Interval = 1000 * 60 * 15; //number in milisecinds  -- 15 minutes
             timer.Enabled = true;
         }
 
@@ -42,7 +44,6 @@ namespace SchedulerWindowService
         }
         private void OnElapsedTime(object source, ElapsedEventArgs e)
         {
-
             WriteToFile("Service is recall at " + DateTime.Now);
             RunStatementGenerationSchedule();
         }
@@ -76,7 +77,7 @@ namespace SchedulerWindowService
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ApiBaseAddress);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("TenantCode", "00000000-0000-0000-0000-000000000000");
+            client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
 
             try
             {
@@ -90,7 +91,6 @@ namespace SchedulerWindowService
                 throw ex;
             }
             WriteToFile("RunStatementGenerationSchedule is completed " + DateTime.Now);
-
         }
     }
 }

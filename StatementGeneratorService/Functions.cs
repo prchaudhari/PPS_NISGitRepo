@@ -20,12 +20,14 @@ namespace StatementGeneratorService
     public class Functions
     {
         static string ApiBaseAddress;
+        static string TenantCode;
 
-        // This function will get triggered/executed immediately on startup, and then every 1 minute thereafter.
-        public static void ProcessQueueBasedOnTimer([TimerTrigger("0 */1 * * * *", RunOnStartup = true)] TimerInfo timer)
+        // This function will get triggered/executed immediately on startup, and then every 15 minutes thereafter.
+        public static void ProcessQueueBasedOnTimer([TimerTrigger("0 */15 * * * *", RunOnStartup = true)] TimerInfo timer)
         {
-            Console.WriteLine("This should run every 1 minute");
+            Console.WriteLine("This should run every 15 minutes");
             ApiBaseAddress = ConfigurationManager.AppSettings["ApiBaseAddress"];
+            TenantCode = ConfigurationManager.AppSettings["TenantCode"];
             RunStatementGenerationSchedule();
             Console.WriteLine("Execution done..!! ");
         }
@@ -35,7 +37,7 @@ namespace StatementGeneratorService
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ApiBaseAddress);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("TenantCode", ConfigurationManager.AppSettings["TenantCode"]);
+            client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
 
             try
             {
