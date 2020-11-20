@@ -89,7 +89,7 @@ namespace nIS
                 };
                 var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
                 var ParallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"] ?? "10");
-                var MinimumArchivalPeriodDays = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"] ?? "30");
+                var MinimumArchivalPeriodDays = int.Parse(ConfigurationManager.AppSettings["MinimumArchivalPeriodDays"] ?? "30");
                 return this.archivalProcessRepository.RunArchivalProcess(client, ParallelThreadCount, MinimumArchivalPeriodDays, pdfStatementFilepath, htmlStatementFilepath, tenantConfiguration, tenantCode);
             }
             catch (Exception ex)
