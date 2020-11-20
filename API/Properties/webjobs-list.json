@@ -3,6 +3,9 @@
   "WebJobs": [
     {
       "filePath": "../StatementGeneratorService/StatementGeneratorService.csproj"
+    },
+    {
+      "filePath": "../ArchivalProcessService/ArchivalProcessService.csproj"
     }
   ]
 }
