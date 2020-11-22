@@ -2,7 +2,7 @@ import { NgModule, Optional, SkipSelf, ModuleWithProviders } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { WindowRef } from 'services/window-ref.service';
+import { WindowRef } from '../services/window-ref.service';
 
 @NgModule({
   declarations: [],

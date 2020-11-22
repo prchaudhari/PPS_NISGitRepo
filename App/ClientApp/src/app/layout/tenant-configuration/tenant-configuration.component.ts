@@ -13,7 +13,7 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { TenantConfiguration } from './tenatconfiguration';
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
 import * as $ from 'jquery';
-
+import { AppSettings } from '../../appsettings';
 @Component({
   selector: 'app-tenant-configuration',
   templateUrl: './tenant-configuration.component.html',
@@ -30,7 +30,7 @@ export class TenantConfigurationComponent implements OnInit {
   public ConcurrencyCount: number = 0;
   public params;
   public TenantConfigurationIdentifier: number = 0;
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
   public AssetPathToolTip: string = '';
   public OutputPathToolTip: string = '';
   public isArchivalPathRequired = false;

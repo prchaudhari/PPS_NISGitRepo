@@ -1,3 +1,4 @@
+import { AppSettings } from '../../appsettings';
 import { Component, OnInit, Injector, SecurityContext } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType } from 'angular-gridster2';
 import { Location } from '@angular/common';
@@ -41,7 +42,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
     public PageName;    
     public options: GridsterConfig;
     public dashboard: Array<GridsterItem>;
-    public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
 
     public templateList: Template[] = [];
     public imgAssetLibraryId: number;

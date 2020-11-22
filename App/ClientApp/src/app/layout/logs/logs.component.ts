@@ -16,6 +16,7 @@ import { ConfigConstants } from '../../shared/constants/configConstants';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 import { PreviewDialogService } from './../../shared/services/preview-dialog.service';
+import { AppSettings } from '../../appsettings';
 
 @Component({
   selector: 'app-logs',
@@ -46,7 +47,7 @@ export class LogsComponent implements OnInit {
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
   public userClaimsRolePrivilegeOperations: any[] = [];
-  public baseURL = ConfigConstants.BaseURL;
+  public baseURL = AppSettings.baseURL;
 
   public totalRecordCount = 0;
   public filterScheduleNameValue = '';

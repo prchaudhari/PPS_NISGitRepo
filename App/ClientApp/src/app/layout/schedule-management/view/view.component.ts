@@ -1,3 +1,4 @@
+import { AppSettings } from '../../../appsettings';
 import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
@@ -247,7 +248,7 @@ export class ViewComponent implements OnInit {
   }
 
   public batchmasterList: any = [];
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
   async getBatchMaster() {
     this.isCollapsedBatch = !this.isCollapsedBatch;
     if (this.IsBatchDetailsGet == false) {

@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,6 +32,8 @@ import { SafeHtmlPipee } from './shared/modules/multiple-messagebox/multiple-mes
 import { ErrorLogsViewComponent } from './shared/error-logs-view/error-logs-view.component';
 import { SelectTenantComponent } from './select-tenant/select-tenant.component';
 import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { EnvironmentSpecificResolver } from './core/services/env-specific/environment-specific-resolver.service';
+import { EnvironmentSpecificService } from './core/services/env-specific/environment-specific.service';
 
 @NgModule({
   declarations: [
@@ -66,7 +69,8 @@ import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
       multi: true
     },
     AuthGuard, UnAuthorisedUrlGuard
-    , BnNgIdleService, DynamicGlobalVariable
+    , BnNgIdleService, DynamicGlobalVariable, EnvironmentSpecificResolver,
+    EnvironmentSpecificService
   ],
   bootstrap: [AppComponent],
   //Common component for alert message.

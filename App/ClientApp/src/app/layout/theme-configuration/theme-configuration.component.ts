@@ -1,17 +1,18 @@
+/// <reference path="../../shared/constants/configconstants.ts" />
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router, NavigationEnd } from '@angular/router';
-import { Constants } from 'src/app/shared/constants/constants';
+import { Constants } from '../../shared/constants/constants';
 import { TenantConfigurationService } from '../tenant-configuration/tenantConfiguration.service';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
-import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
+import { MessageDialogService } from '../../shared/services/mesage-dialog.service';
+import { ConfigConstants } from '../../shared/constants/configConstants';
 import { TenantConfiguration } from '../tenant-configuration/tenatconfiguration';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import * as $ from 'jquery';
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
-
+import { AppSettings } from '../../appsettings';
 @Component({
   selector: 'app-theme-configuration',
   templateUrl: './theme-configuration.component.html',
@@ -39,7 +40,7 @@ export class ThemeConfigurationComponent implements OnInit {
   public typeHeaderLabelFont;
   public weightDataLabelFont;
   public typeDataLabelFont;
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
   public TenantConfiguration:any = {};
   public fontWeightArr = [{Id: 0, Name: 'Select', Value: 'Select'}, {Id: 1, Name: 'Normal', Value: 'Normal'}, {Id: 2, Name: 'Italic', Value: 'Italic'}, {Id: 3, Name: 'Bold', Value: 'Bold'}];
   public fontTypeArr = [{Id: 0, Name: 'Select', Value: 'Select'}, {Id: 1, Name: 'sans-serif', Value: 'sans-serif'}, {Id: 2, Name: 'Tahoma', Value: 'Tahoma'}, {Id: 3, Name: 'Times Roman', Value: 'Times Roman'}];

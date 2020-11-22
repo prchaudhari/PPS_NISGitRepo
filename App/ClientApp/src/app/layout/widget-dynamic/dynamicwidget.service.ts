@@ -8,7 +8,7 @@ import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfigurati
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import { DynamicWidget } from './dynamicWidget';
-
+import { AppSettings } from '../../appsettings';
 @Injectable({
   providedIn: 'root'
 })

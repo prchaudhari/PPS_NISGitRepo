@@ -55,6 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Remove="ClientApp\src\app\AppSettings.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication-routing.module.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.component.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.module.ts" />
@@ -62,6 +63,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\authentication\authentication.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\core\core.module.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\core\services\window-ref.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\EnvSpecific.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\contacttype\contacttype.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\country\country.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\instancemanagerdashboard\dashboard.service.ts" />
@@ -103,6 +105,10 @@
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\mesage-dialog.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\resource.service.spec.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\shared\services\resource.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\env-specific.json" />
   </ItemGroup>
 
   <ItemGroup>

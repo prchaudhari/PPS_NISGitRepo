@@ -6,7 +6,7 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants'
 import { Constants } from 'src/app/shared/constants/constants';
 import * as $ from 'jquery';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-
+import { AppSettings } from '../appsettings';
 @Component({
   selector: 'app-confirm-user',
   templateUrl: './confirm-user.component.html',
@@ -17,7 +17,7 @@ export class ConfirmUserComponent implements OnInit {
   newPassword: string = '';
   confirmPassword: string = '';
   encryptedText: any;
-  baseURL: string = ConfigConstants.BaseURL;
+  baseURL: string = AppSettings.baseURL;
   public hideNewPwd = true;
   public hideConfirmPwd = true;
   public passwordRegex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z0-9])(?=.*?[#?!@$%^&*-]).{8,}$");

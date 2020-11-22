@@ -1,4 +1,4 @@
-
+import { AppSettings } from '../../appsettings';
 import { Component, OnInit, Injector } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import * as $ from 'jquery';
@@ -24,7 +24,7 @@ export class AssetSettingsComponent implements OnInit {
   public isUploadAssets: boolean = false;
   public isCollapsedImage: boolean = true;
   public isCollapsedVideo: boolean = true;
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
   //public onlyNumbers = '^[1-9]$';
   public onlyNumbers = "^(?=.*[1-9])[+]?([0-9]+(?:[\\.]\\d{1,2})?|\\.[0-9])$";
   imageForm: FormGroup;

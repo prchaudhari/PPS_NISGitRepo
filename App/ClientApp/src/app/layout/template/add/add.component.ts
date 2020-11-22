@@ -2,6 +2,7 @@ import { Component, OnInit, Injector, ChangeDetectorRef } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Constants } from 'src/app/shared/constants/constants';
+import { AppSettings } from '../../../appsettings';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
@@ -40,7 +41,7 @@ export class AddComponent implements OnInit {
   public PageTypeIdBeforeChange: number = 0;
   public PageWidgetArrayStringBeforePageTypeChange: string = "";
   public isPageTypeChangeActionByClickingPreviousButton: boolean = false;
-  public baseURL = ConfigConstants.BaseURL;
+  public baseURL = AppSettings.baseURL;
   public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
   public assets: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset' }];
 

@@ -1,4 +1,3 @@
-
 import { Injectable, Injector } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
@@ -9,11 +8,12 @@ import { URLConfiguration } from 'src/app/shared/urlConfiguration/urlconfigurati
 import { HttpClientService } from 'src/app/core/services/httpClient.service';
 import { Constants } from 'src/app/shared/constants/constants';
 import { Role } from 'src/app/layout/roles/role';
-
+import { AppSettings } from '../appsettings';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class LoginService {
 
   public accessToken;
@@ -25,7 +25,8 @@ export class LoginService {
     private localstorageservice: LocalStorageService,
     private injector: Injector,
     private uiLoader: NgxUiLoaderService,
-    private _messageDialogService: MessageDialogService) { }
+    private _messageDialogService: MessageDialogService) {
+  }
 
   getLoginDetails(loginObj) {
     function ObjectsToParams(loginObj) {
@@ -36,7 +37,7 @@ export class LoginService {
       return p.join('&');
     }
     return this.http.post(
-      ConfigConstants.BaseURL + "login",
+      AppSettings.baseURL + "login",
       ObjectsToParams(loginObj),
       {
         headers: {

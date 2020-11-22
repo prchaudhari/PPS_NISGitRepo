@@ -18,7 +18,7 @@ import { ConfigConstants } from '../../../shared/constants/configConstants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AssetLibraryService } from '../../asset-libraries/asset-library.service';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { AppSettings } from '../../../appsettings';
 @Component({
   selector: 'app-widgetdesigner',
   templateUrl: './widgetdesigner.component.html',
@@ -126,7 +126,7 @@ export class WidgetdesignerComponent implements OnInit {
   dataSource = new MatTableDataSource<any>(this.lineBarGraphList);
   public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
   public assets: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset' }];
-  public baseURL = ConfigConstants.BaseURL;
+  public baseURL = AppSettings.baseURL;
   public pieChartSeriesEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
   public pieChartValueEntityFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
   public lineBarGraphFields: any[] = [{ "Name": "Select", "Identifier": 0 }];
@@ -580,7 +580,7 @@ export class WidgetdesignerComponent implements OnInit {
     var fileType = asset.Name.split('.').pop();
     var isImage;
     var source;
-    var filePath = ConfigConstants.BaseURL + "assets" + "/" + asset.AssetLibraryIdentifier + "/" + asset.Name;
+    var filePath = AppSettings.baseURL + "assets" + "/" + asset.AssetLibraryIdentifier + "/" + asset.Name;
     if (fileType == 'png' || fileType == 'jpeg' || fileType == 'jpg') {
       isImage = true;
       var url = filePath;

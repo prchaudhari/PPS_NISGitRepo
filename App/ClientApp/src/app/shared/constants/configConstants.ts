@@ -1,8 +1,9 @@
-import { environment } from '../../../environments/environment.prod'
-//import { environment } from '../../../environments/environment'
+//import { environment } from '../../../environments/environment.prod'
+import { environment } from '../../../environments/environment'
+import { AppSettings } from '../../appsettings'
 
 export const ConfigConstants = {
-  BaseURL: environment.baseURL,
+  BaseURL: AppSettings.baseURL,
   ResourceUrl: "https://localhost:44347/LocaleResource/Get",
   TenantCode: "00000000-0000-0000-0000-000000000000",
 

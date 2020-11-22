@@ -1,3 +1,4 @@
+/// <reference path="../../appsettings.ts" />
 import { Component, ViewChild, Output, Input, EventEmitter, SecurityContext } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -13,7 +14,7 @@ let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
 let More = require('highcharts/highcharts-more');
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-
+import { AppSettings } from '../../appsettings';
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
@@ -101,7 +102,7 @@ export class ImageComponent {
   @Input() imgItem: any;
 
   public ImageSrc: any;
-  public baseURL = ConfigConstants.BaseURL;
+  public baseURL = AppSettings.baseURL;
 
   constructor(private _http: HttpClient,
     private sanitizer: DomSanitizer) {}
@@ -167,7 +168,7 @@ export class VideoComponent {
   public videoSrc;
   public videoWidgetDivId;
   public videoControlTagId;
-  public baseURL = ConfigConstants.BaseURL;
+  public baseURL = AppSettings.baseURL;
 
   constructor(private _http: HttpClient,
     private sanitizer: DomSanitizer) {}

@@ -1,3 +1,4 @@
+import { AppSettings } from '../../appsettings';
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -52,7 +53,7 @@ export class StatementSearchComponent implements OnInit {
   public filterToDateError: boolean = false;
   public filterToDateErrorMessage: string = "";
   public userClaimsRolePrivilegeOperations: any[] = [];
-  public baseURL = ConfigConstants.BaseURL;
+  public baseURL = AppSettings.baseURL;
   
   public totalRecordCount = 0;
   public filterCustomerName = '';

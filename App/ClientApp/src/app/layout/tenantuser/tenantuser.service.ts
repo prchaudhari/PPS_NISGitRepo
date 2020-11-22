@@ -9,6 +9,7 @@ import { User } from '../users/user';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
+import { AppSettings } from '../../appsettings';
 
 @Injectable({
   providedIn: 'root'
@@ -96,7 +97,7 @@ export class TenantUserService {
     if (userEditModeOn) {
       requestUrl = URLConfiguration.userUpdateUrl;
     }
-    var baseUrl = ConfigConstants.BaseURL;
+    var baseUrl = AppSettings.baseURL;
     var fullURL = baseUrl + requestUrl;
     return this.http.post(fullURL, postData);
   }

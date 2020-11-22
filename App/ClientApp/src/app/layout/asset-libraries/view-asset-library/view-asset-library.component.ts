@@ -16,6 +16,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { AssetLibraryService } from '../asset-library.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AppSettings } from '../../../appsettings';
 
 export interface ListElement {
   name: string;
@@ -46,7 +47,7 @@ export class ViewAssetLibraryComponent implements OnInit {
   public image;
   public isImage = true;
   public params;
-  public baseURL = ConfigConstants.BaseURL;
+  public baseURL = AppSettings.baseURL;
   displayedColumns: string[] = ['name', 'updatedby', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
 

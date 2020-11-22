@@ -1,3 +1,4 @@
+import { AppSettings } from '../appsettings';
 import { Component, OnInit, Injector } from '@angular/core';
 import { Constants, DynamicGlobalVariable } from 'src/app/shared/constants/constants';
 import { LoginService } from './../login/login.service';
@@ -23,7 +24,7 @@ export class SelectTenantComponent implements OnInit {
   public roleDetail;
   public userData;
   public DefaultTenantCode = ConfigConstants.TenantCode;
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
   public statePrivilegeMap;
 
   constructor(private injector: Injector,

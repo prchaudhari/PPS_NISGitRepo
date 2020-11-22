@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 import { Router } from '@angular/router';
-
+import { AppSettings } from '../../appsettings';
 @Component({
   selector: 'app-multi-tenant-user-access-map',
   templateUrl: './multi-tenant-user-access-map.component.html'
@@ -45,7 +45,7 @@ export class MultiTenantUserAccessMapComponent implements OnInit {
   public array: any;
   public updateOperationMode: boolean = false;
   public multiTenantUserRoleAccessId: number = 0;
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
 
   selectedPrimaryTenantCode: string = '';
   selectedTenantUserId: number = 0;

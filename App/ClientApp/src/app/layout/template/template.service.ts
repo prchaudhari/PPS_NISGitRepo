@@ -1,3 +1,4 @@
+import { AppSettings } from '../../appsettings';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';

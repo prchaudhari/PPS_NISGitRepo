@@ -5,6 +5,7 @@ import * as Highcharts from 'highcharts';
 import { BrowserModule, DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { AppSettings } from '../../appsettings';
 import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 
 @Pipe({
@@ -38,7 +39,7 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
   analyticschart;
   savingchart;
   spendingchart;
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
 
   constructor(dialogService: DialogService,
     private sanitizer: DomSanitizer,

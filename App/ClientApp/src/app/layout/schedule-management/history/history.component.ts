@@ -1,3 +1,4 @@
+/// <reference path="../../../appsettings.ts" />
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -18,6 +19,9 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpRequest }
 import * as $ from 'jquery';
 import { map } from 'rxjs/operators';
 import { ConfigConstants } from '../../../shared/constants/configConstants';
+import { AppSettings } from '../../../appsettings';
+
+
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
@@ -37,7 +41,7 @@ export class HistoryComponent implements OnInit {
   public filterToDateErrorMessage: string = "";
   public isFilterDone = false;
   public array: any;
-  public baseURL = ConfigConstants.BaseURL;
+  public baseURL = AppSettings.baseURL;
   public userClaimsRolePrivilegeOperations: any[] = [];
   closeFilter() {
     this.isFilter = !this.isFilter;

@@ -4,15 +4,15 @@ import { LoginService } from './login.service';
 import { DialogService } from '@tomblue/ng2-bootstrap-modal';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HttpClient, HttpResponse, HttpHeaders, HttpEvent, HttpParams } from '@angular/common/http';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { LocalStorageService } from '../shared/services/local-storage.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { MessageDialogService } from 'src/app/shared/services/mesage-dialog.service';
-import { ConfigConstants } from 'src/app/shared/constants/configConstants';
-import { Constants, DynamicGlobalVariable } from 'src/app/shared/constants/constants';
-import { ResourceService } from 'src/app/shared/services/resource.service';
-import { AuthenticationService } from 'src/app/authentication/authentication.service';
+import { MessageDialogService } from '../shared/services/mesage-dialog.service';
+import { ConfigConstants } from '../shared/constants/configConstants';
+import { Constants, DynamicGlobalVariable } from '../shared/constants/constants';
+import { ResourceService } from '../shared/services/resource.service';
+import { AuthenticationService } from '../authentication/authentication.service';
 import { TenantService } from '../layout/tenants/tenant.service';
-
+import { AppSettings } from '../appsettings';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html'
@@ -124,6 +124,7 @@ export class LoginComponent implements OnInit {
     private dynamicGlobalVariable: DynamicGlobalVariable
 
   ) {
+    console.log(AppSettings.baseURL)
     //this.getResources();
   }
   isForgotPassswordForm() {
@@ -234,7 +235,7 @@ export class LoginComponent implements OnInit {
     let params = new HttpParams();
     params = params.append('userEmail', this.userEmail);
 
-    let operationUrl = ConfigConstants.BaseURL + 'User/ResetPassword';
+    let operationUrl = AppSettings.baseURL + 'User/ResetPassword';
     this.spinner.start();
     this.http.get(operationUrl, { params })
       .subscribe(data => {

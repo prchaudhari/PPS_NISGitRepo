@@ -1,3 +1,4 @@
+import { AppSettings } from '../../appsettings';
 import { Component, Pipe, PipeTransform, ElementRef, SecurityContext } from '@angular/core';
 import { DialogComponent, DialogService } from '@tomblue/ng2-bootstrap-modal';
 import * as $ from 'jquery';
@@ -35,7 +36,7 @@ export class WidgetPreviewComponent extends DialogComponent<WidgetPreviewModel, 
   barGraph;
   pieChart;
   spendingchart;
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
 
   constructor(dialogService: DialogService,
     private sanitizer: DomSanitizer,

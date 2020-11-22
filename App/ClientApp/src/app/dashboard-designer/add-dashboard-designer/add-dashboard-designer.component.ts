@@ -1,3 +1,4 @@
+import { AppSettings } from '../../appsettings';
 import { Component, OnInit, Injector, SecurityContext } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType, GridsterItemComponentInterface, GridsterComponentInterface } from 'angular-gridster2';
 import { Location } from '@angular/common';
@@ -56,7 +57,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   public PageTypeId;
   public PageTypeName;
   public pageEditModeOn: boolean = false;
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
   public validUrlRegexPattern = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
   public templateList: Template[] = [];

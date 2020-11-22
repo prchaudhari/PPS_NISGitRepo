@@ -1,4 +1,4 @@
-
+import { AppSettings } from '../../../appsettings';
 import { Component, OnInit, Injector, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy, SecurityContext } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as $ from 'jquery';
@@ -55,7 +55,7 @@ export class AddAssetLibraryComponent implements OnInit {
   public FileExtension = [];
   public tab: number;
   public mode: string = "Add";
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
   public uploadAssetContainer: boolean;
   public overrideAssetContainer: boolean;
   public isUploadAssets: boolean = false;

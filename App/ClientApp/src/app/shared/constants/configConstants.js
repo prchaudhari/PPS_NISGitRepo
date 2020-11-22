@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfigConstants = void 0;
-//import { environment } from '../../../environments/environment.prod'
-var environment_1 = require("../../../environments/environment");
+var appsettings_1 = require("../../appsettings");
 exports.ConfigConstants = {
-    BaseURL: environment_1.environment.baseURL,
+    BaseURL: appsettings_1.AppSettings.baseURL,
     ResourceUrl: "https://localhost:44347/LocaleResource/Get",
     TenantCode: "00000000-0000-0000-0000-000000000000",
     UserListUISection: 'UserList',

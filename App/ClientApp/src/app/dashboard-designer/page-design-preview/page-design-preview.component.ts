@@ -10,7 +10,7 @@ import { SummaryAtGlanceComponent, AccountInformationComponent,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
   DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent } from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
-
+import { AppSettings } from '../../appsettings';
 //If you change dashboard-container class in below HTML template, 
 //then you can also need to change in applyBackgroundImage to replace new class name over there.
 @Component({
@@ -55,7 +55,7 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
   public options: GridsterConfig;
   dashboard: Array<GridsterItem>;
   item: any[];
-  public baseURL: string = ConfigConstants.BaseURL;
+  public baseURL: string = AppSettings.baseURL;
 
   constructor(dialogService: DialogService,
     private _http: HttpClient,
