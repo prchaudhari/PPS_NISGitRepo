@@ -25,11 +25,12 @@ namespace StatementGeneratorService
         // This function will get triggered/executed immediately on startup, and then every 30 minutes thereafter.
         public static void ProcessQueueBasedOnTimer([TimerTrigger("0 */30 * * * *", RunOnStartup = true)] TimerInfo timer)
         {
-            Console.WriteLine("This should run every 15 minutes");
+            WriteToFile("This should run every 30 minutes");
             ApiBaseAddress = ConfigurationManager.AppSettings["ApiBaseAddress"];
             TenantCode = ConfigurationManager.AppSettings["TenantCode"];
+            WriteToFile("App Base Address: "+ ApiBaseAddress + " TenantCode: "+ TenantCode);
             RunStatementGenerationSchedule();
-            Console.WriteLine("Execution done..!! ");
+            WriteToFile("Execution done..!! ");
         }
 
         public static void RunStatementGenerationSchedule()
@@ -44,6 +45,7 @@ namespace StatementGeneratorService
                 var response = client.PostAsync("Schedule/RunSchedule", null).Result;
                 Console.WriteLine("Response from RunSchedule: " + response);
                 WriteToFile("Response from RunSchedule: " + response);
+                WriteToFile("Response Contenat from RunSchedule: " + response.Content);
             }
             catch (Exception ex)
             {

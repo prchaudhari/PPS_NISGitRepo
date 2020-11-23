@@ -754,7 +754,7 @@ namespace nIS
                 {
                     query.Append("BatchExecutionDate >= DateTime(" + currentDate.Year + "," + currentDate.Month + "," + currentDate.Day + "," + currentDate.Hour + "," + currentDate.Minute + "," + currentDate.Second + ") and BatchExecutionDate <= DateTime(" + +dueDate.Year + "," + dueDate.Month + "," + dueDate.Day + "," + dueDate.Hour + "," + dueDate.Minute + "," + dueDate.Second + ") and IsExecuted.Equals(false) ");
                     query.Append(string.Format(" and Status.Equals(\"{0}\") ", BatchStatus.New.ToString()));
-                    query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+                    //query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
                     this.WriteToFile("Batch Records: " + query);
                     batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(query.ToString()).ToList();
                 }
@@ -764,7 +764,7 @@ namespace nIS
                     {
                         query = new StringBuilder();
                         query.Append("(" + string.Join("or ", string.Join(",", batchMasterRecords.Select(item => item.ScheduleId).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
-                        query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+                        //query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
                         this.WriteToFile("Schedule Records: " + query);
                         schedules = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
                     }
@@ -775,6 +775,8 @@ namespace nIS
                         var batchDetails = new List<BatchDetailRecord>();
                         schedules.ToList().ForEach(schedule =>
                         {
+                            tenantCode = schedule.TenantCode;
+
                             ScheduleLogRecord scheduleLog = new ScheduleLogRecord();
                             scheduleLog.ScheduleId = schedule.Id;
                             scheduleLog.ScheduleName = schedule.Name;
@@ -787,7 +789,7 @@ namespace nIS
                                 schedule.Status = ScheduleStatus.InProgress.ToString();
                                 nISEntitiesDataContext.SaveChanges();
 
-                                batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString())?.ToList()?.FirstOrDefault();
+                                batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString() && item.TenantCode == tenantCode)?.ToList()?.FirstOrDefault();
                             }
 
                             if (batchMaster != null)

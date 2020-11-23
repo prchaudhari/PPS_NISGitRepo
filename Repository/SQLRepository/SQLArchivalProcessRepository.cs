@@ -96,7 +96,7 @@ namespace nIS
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         var dueDate = DateTime.UtcNow.AddDays(-archivalPeriod);
-                        statementmetadatarecords = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.StatementDate < dueDate && item.TenantCode == tenantCode).ToList();
+                        statementmetadatarecords = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.StatementDate < dueDate).ToList();
                     }
 
                     if (statementmetadatarecords.Count > 0)
@@ -113,6 +113,7 @@ namespace nIS
                             {
                                 if (res.GroupedStatementMetadataRecords.Count > 0)
                                 {
+                                    tenantCode = res.GroupedStatementMetadataRecords.FirstOrDefault().TenantCode;
                                     StatementSearchParameter statementSearchParameter = new StatementSearchParameter
                                     {
                                         Identifier = res.StatementId,
