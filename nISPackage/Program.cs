@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -23,7 +22,7 @@ namespace nISPackage
                 SqlScript sqlScript;
 
                 var project =
-                new Project("nIS",
+                new ManagedProject("nIS",
                     new Dir(@"%ProgramFiles%\nIS",
                         new Dir("Service",
                         service = new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe"),
@@ -51,11 +50,8 @@ namespace nISPackage
                         ),
                     new User(new Id("sa"), "sa") { CreateUser = false, Password = "Admin@123" },
                     new Binary(new Id("script"), "script.sql"),
-                        sqlDatabase = new SqlDatabase("NIS", ".", SqlDbOption.CreateOnInstall,
-                            sqlScript = new SqlScript("script", ExecuteSql.OnInstall)));
-                //CustomActionRef customActionRef = new CustomActionRef("DBName",When.Before,Step.WriteEnvironmentStrings);
-                //customActionRef.
-
+                sqlDatabase = new SqlDatabase("NIS", ".", SqlDbOption.CreateOnInstall,
+                sqlScript = new SqlScript("script", ExecuteSql.OnInstall)));
                 sqlDatabase.User = "sa";
                 sqlScript.User = "sa";
 
@@ -85,16 +81,64 @@ namespace nISPackage
                 project.GUID = new Guid("6fe30b47-2577-43ad-9195-1861ba25889b");
                 //project.UI = WUI.WixUI_ProgressOnly;
                 project.OutFileName = "setup";
-               
+
+                project.ManagedUI = new ManagedUI();
+                project.ManagedUI.InstallDialogs.Add<WelcomeDialog>()
+                                                .Add<WixSharpSetup.SettingsDialog>()
+                                                .Add<ProgressDialog>()
+                                                .Add<ExitDialog>();
+
+                project.ManagedUI.ModifyDialogs.Add<ProgressDialog>()
+                                               .Add<ExitDialog>();
+
+                project.UILoaded += msi_UILoaded;
+                project.BeforeInstall += msi_BeforeInstall;
+                project.AfterInstall += Project_AfterInstall;
+
                 project.PreserveTempFiles = true;
+
                 project.BuildMsi();
-              
+
             }
             catch (System.Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
+        static void msi_UILoaded(SetupEventArgs e)
+        {
+            //If required you can
+            // - set the size of the shell view window
+            // - scale the whole shell window and its content
+            // - reposition controls on the current dialog
+            // - subscribe to the current dialog changed event
 
+            //e.ManagedUIShell.SetSize(700, 500);
+            //e.ManagedUIShell.OnCurrentDialogChanged += ManagedUIShell_OnCurrentDialogChanged;
+            //(e.ManagedUIShell.CurrentDialog as Form).Controls....
+        }
+
+        //private static void ManagedUIShell_OnCurrentDialogChanged(IManagedDialog dialog)
+        //{
+        //}
+
+        static void Project_AfterInstall(SetupEventArgs e)
+        {
+            ////Debug.Assert(false);
+            //MessageBox.Show(e.Data["test"], "Project_AfterInstall");
+            //if (e.IsInstalling)
+            //{
+            //    System.IO.Directory.CreateDirectory(@"C:\Program Files\ttt");
+            //    MessageBox.Show($"User '{Defaults.UserName}' with password '{e.Session.Property("PASSWORD")}' has been created");
+            //}
+        }
+
+        static void msi_BeforeInstall(SetupEventArgs e)
+        {
+            //    MessageBox.Show(e.Session.Property("PASSWORD"), "msi_BeforeInstall");
+            //    //Note: the property will not be from UserNameDialog if MSI UI is suppressed
+            //    if (e.Session["DOMAIN"] == null)
+            //        e.Session["DOMAIN"] = Environment.MachineName;
+        }
     }
 }
