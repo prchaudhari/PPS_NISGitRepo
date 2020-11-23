@@ -268,7 +268,7 @@
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "SettingsDialog";
-            this.Text = "[UserNameDlg_Title]";
+            this.Text = "Settings";
             this.Load += new System.EventHandler(this.dialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.banner)).EndInit();
             this.panel2.ResumeLayout(false);
