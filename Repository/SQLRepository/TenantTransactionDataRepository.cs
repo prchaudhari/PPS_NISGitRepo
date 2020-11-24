@@ -78,23 +78,7 @@ namespace nIS
                 var customerMasterRecords = new List<TTD_CustomerMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (customerSearchParameter.PagingParameter.PageIndex > 0 && customerSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord
-                    //    .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((customerSearchParameter.PagingParameter.PageIndex - 1) * customerSearchParameter.PagingParameter.PageSize)
-                    //    .Take(customerSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord
-                    .Where(whereClause)
-                    //.OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord.Where(whereClause).ToList();
                     if (customerMasterRecords != null && customerMasterRecords.Count > 0)
                     {
                         customerMasterRecords.ForEach(item =>
@@ -196,23 +180,7 @@ namespace nIS
                 var subscriptionUsageRecords = new List<TTD_SubscriptionUsageRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    subscriptionUsageRecords = nISEntitiesDataContext.TTD_SubscriptionUsageRecord
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    subscriptionUsageRecords = nISEntitiesDataContext.TTD_SubscriptionUsageRecord
-                    .Where(whereClause)
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    // }
-
+                    subscriptionUsageRecords = nISEntitiesDataContext.TTD_SubscriptionUsageRecord.Where(whereClause).ToList();
                     if (subscriptionUsageRecords != null && subscriptionUsageRecords.Count > 0)
                     {
                         subscriptionUsageRecords.ForEach(item =>
@@ -304,23 +272,7 @@ namespace nIS
                 var subscriptionSpendRecords = new List<TTD_SubscriptionSpendRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord
-                    .Where(whereClause)
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord.Where(whereClause).ToList();
                     if (subscriptionSpendRecords != null && subscriptionSpendRecords.Count > 0)
                     {
                         subscriptionSpendRecords.ForEach(item =>
@@ -365,23 +317,7 @@ namespace nIS
                 var userSubscriptionRecords = new List<TTD_UserSubscriptionsRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord
-                    .Where(whereClause)
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord.Where(whereClause).ToList();
                     if (userSubscriptionRecords != null && userSubscriptionRecords.Count > 0)
                     {
                         userSubscriptionRecords.ForEach(item =>
@@ -466,23 +402,7 @@ namespace nIS
                 var dataUsageRecords = new List<TTD_DataUsageRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord
-                    .Where(whereClause)
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord.Where(whereClause).ToList();
                     if (dataUsageRecords != null && dataUsageRecords.Count > 0)
                     {
                         dataUsageRecords.ForEach(item =>
@@ -527,23 +447,7 @@ namespace nIS
                 var meetingUsageRecords = new List<TTD_MeetingUsageRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord
-                    .Where(whereClause)
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord.Where(whereClause).ToList();
                     if (meetingUsageRecords != null && meetingUsageRecords.Count > 0)
                     {
                         meetingUsageRecords.ForEach(item =>
@@ -588,23 +492,7 @@ namespace nIS
                 var emailsBySubscriptionRecords = new List<TTD_EmailsBySubscriptionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (subscriptionMasterSearchParameter.PagingParameter.PageIndex > 0 && subscriptionMasterSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((subscriptionMasterSearchParameter.PagingParameter.PageIndex - 1) * subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .Take(subscriptionMasterSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord
-                    .Where(whereClause)
-                    //    .OrderBy(subscriptionMasterSearchParameter.SortParameter.SortColumn + " " + subscriptionMasterSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord.Where(whereClause).ToList();
                     if (emailsBySubscriptionRecords != null && emailsBySubscriptionRecords.Count > 0)
                     {
                         emailsBySubscriptionRecords.ForEach(item =>
@@ -647,23 +535,7 @@ namespace nIS
                 var customerMasterRecords = new List<CustomerMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (customerSearchParameter.PagingParameter.PageIndex > 0 && customerSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords
-                    //    .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((customerSearchParameter.PagingParameter.PageIndex - 1) * customerSearchParameter.PagingParameter.PageSize)
-                    //    .Take(customerSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords
-                    .Where(whereClause)
-                    //    .OrderBy(customerSearchParameter.SortParameter.SortColumn + " " + customerSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(whereClause).ToList();
                     if (customerMasterRecords != null && customerMasterRecords.Count > 0)
                     {
                         customerMasterRecords.ForEach(item =>
@@ -717,23 +589,7 @@ namespace nIS
                 var accountMasterRecords = new List<AccountMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords
-                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
-                    //    .Take(accountSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords
-                    .Where(whereClause)
-                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    accountMasterRecords = nISEntitiesDataContext.AccountMasterRecords.Where(whereClause).ToList();
                     if (accountMasterRecords != null && accountMasterRecords.Count > 0)
                     {
                         accountMasterRecords.ForEach(item =>
@@ -785,23 +641,7 @@ namespace nIS
                 var accountTransactionRecords = new List<AccountTransactionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords
-                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
-                    //    .Take(accountSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords
-                    .Where(whereClause)
-                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
-
+                    accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords.Where(whereClause).ToList();
                     if (accountTransactionRecords != null && accountTransactionRecords.Count > 0)
                     {
                         accountTransactionRecords.ForEach(item =>
@@ -846,45 +686,43 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGeneratorForCustomerAccount(accountSearchParameter, tenantCode);
-                var savingTrendRecords = new List<SavingTrendRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    //if (accountSearchParameter.PagingParameter.PageIndex > 0 && accountSearchParameter.PagingParameter.PageSize > 0)
-                    //{
-                    //    savingTrendRecords = nISEntitiesDataContext.SavingTrendRecords
-                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString())
-                    //    .Where(whereClause)
-                    //    .Skip((accountSearchParameter.PagingParameter.PageIndex - 1) * accountSearchParameter.PagingParameter.PageSize)
-                    //    .Take(accountSearchParameter.PagingParameter.PageSize)
-                    //    .ToList();
-                    //}
-                    //else
-                    //{
-                    savingTrendRecords = nISEntitiesDataContext.SavingTrendRecords
-                    .Where(whereClause)
-                    //    .OrderBy(accountSearchParameter.SortParameter.SortColumn + " " + accountSearchParameter.SortParameter.SortOrder.ToString().ToLower())
-                    .ToList();
-                    //}
+                    var query = (from st in nISEntitiesDataContext.SavingTrendRecords
+                                 join am in nISEntitiesDataContext.AccountMasterRecords on st.AccountId equals am.Id
+                                 select new
+                                 {
+                                     st.Id,
+                                     st.AccountId,
+                                     st.CustomerId,
+                                     am.AccountNumber,
+                                     am.AccountType,
+                                     st.Month,
+                                     st.Income,
+                                     st.IncomePercentage,
+                                     st.SpendAmount,
+                                     st.SpendPercentage,
+                                     st.BatchId,
+                                     st.TenantCode
+                                 }).Where(whereClause).ToList();
 
-                    if (savingTrendRecords != null && savingTrendRecords.Count > 0)
-                    {
-                        savingTrendRecords.ForEach(item =>
+                    query.ForEach(q => {
+                        savingTrends.Add(new SavingTrend
                         {
-                            savingTrends.Add(new SavingTrend()
-                            {
-                                Identifier = item.Id,
-                                BatchId = item.BatchId,
-                                CustomerId = item.CustomerId,
-                                AccountId = item.AccountId,
-                                Income = item.Income ?? 0,
-                                IncomePercentage = item.IncomePercentage ?? 0,
-                                Month = item.Month,
-                                SpendAmount = item.SpendAmount,
-                                SpendPercentage = item.SpendPercentage ?? 0,
-                                TenantCode = item.TenantCode
-                            });
+                            Identifier = q.Id,
+                            AccountId = q.AccountId,
+                            CustomerId = q.CustomerId,
+                            BatchId = q.BatchId,
+                            AccountNumber = q.AccountNumber,
+                            AccountType = q.AccountType,
+                            Income = q.Income ?? 0,
+                            IncomePercentage = q.IncomePercentage ?? 0,
+                            Month = q.Month,
+                            SpendAmount = q.SpendAmount,
+                            SpendPercentage = q.SpendPercentage ?? 0,
+                            TenantCode = q.TenantCode
                         });
-                    }
+                    });
                 }
                 return savingTrends;
             }
