@@ -7,10 +7,10 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder" Name="ProgramFilesFolder">
         <Directory Id="INSTALLDIR" Name="nIS">
-          <Directory Id="INSTALLDIR.Service" Name="Service">
+          <Directory Id="INSTALLDIR.StatementGenerationService" Name="StatementGenerationService">
 
-            <Component Id="Component.SchedulerWindowService.exe_3679878997" Guid="6fe30b47-2577-43ad-9195-18613b70948c">
-              <File Id="SchedulerWindowService.exe_3679878997" Source="..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe" />
+            <Component Id="Component.SchedulerWindowService.exe_1986992726" Guid="6fe30b47-2577-43ad-9195-1861b6e9067d">
+              <File Id="SchedulerWindowService.exe_1986992726" Source="..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe" />
 
               <ServiceInstall Id="Statment_Generation_Service" Name="Statment Generation Service" DisplayName="Statment Generation Service" Description="Statment Generation Service" Type="ownProcess" Start="auto" ErrorControl="normal">
                 <ServiceDependency Id="Dnscache" />
@@ -25,23 +25,45 @@
               <ServiceControl Id="RemoveStatment_Generation_Service" Name="Statment Generation Service" Remove="uninstall" Wait="yes" />
             </Component>
 
-            <Component Id="Component.SchedulerWindowService.exe.config_393113434" Guid="6fe30b47-2577-43ad-9195-1861a2983ca5">
-              <File Id="SchedulerWindowService.exe.config_393113434" Source="..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config" />
+            <Component Id="Component.SchedulerWindowService.exe.config_1046163462" Guid="6fe30b47-2577-43ad-9195-1861f1accfcf">
+              <File Id="SchedulerWindowService.exe.config_1046163462" Source="..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config" />
             </Component>
 
             <Component Id="sa" Guid="6fe30b47-2577-43ad-9195-1861870e3f68" KeyPath="yes">
               <User Id="sa" Name="sa" CreateUser="no" Password="Admin@123" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
 
               <CreateFolder />
-              <RemoveFolder Id="INSTALLDIR.Service" On="uninstall" />
+              <RemoveFolder Id="INSTALLDIR.StatementGenerationService" On="uninstall" />
             </Component>
 
             <Component Id="NIS" Guid="6fe30b47-2577-43ad-9195-18615ae983c8" KeyPath="yes">
-              <SqlDatabase Id="NIS" CreateOnInstall="yes" Database="NIS" Server="." User="sa" xmlns="http://schemas.microsoft.com/wix/SqlExtension">
-                <SqlScript Id="script" BinaryKey="script" ExecuteOnInstall="yes" User="sa" />
-              </SqlDatabase>
+              <SqlDatabase Id="NIS" CreateOnInstall="yes" Database="NIS" Server="." User="sa" xmlns="http://schemas.microsoft.com/wix/SqlExtension" />
 
               <CreateFolder />
+            </Component>
+
+          </Directory>
+
+          <Directory Id="INSTALLDIR.ArchivalService" Name="ArchivalService">
+
+            <Component Id="Component.SchedulerWindowService.exe_2785709561" Guid="6fe30b47-2577-43ad-9195-1861d222b1da">
+              <File Id="SchedulerWindowService.exe_2785709561" Source="..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe" />
+
+              <ServiceInstall Id="Archival_Process_Service" Name="Archival Process Service" DisplayName="Archival Process Service" Description="Archival Process Service" Type="ownProcess" Start="auto" ErrorControl="normal">
+                <ServiceDependency Id="Dnscache" />
+                <ServiceDependency Id="Dhcp" />
+
+                <ServiceConfig DelayedAutoStart="yes" PreShutdownDelay="180000" ServiceSid="none" OnInstall="yes" OnReinstall="no" OnUninstall="no" />
+                <ServiceConfig FirstFailureActionType="restart" SecondFailureActionType="restart" ThirdFailureActionType="runCommand" ProgramCommandLine="ArchivalProcessService -run" RebootMessage="Failure actions do not specify reboot" ResetPeriodInDays="1" RestartServiceDelayInSeconds="30" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
+              </ServiceInstall>
+
+              <ServiceControl Id="StopArchival_Process_Service" Name="Archival Process Service" Stop="both" Wait="yes" />
+              <ServiceControl Id="StartArchival_Process_Service" Name="Archival Process Service" Start="install" Wait="no" />
+              <ServiceControl Id="RemoveArchival_Process_Service" Name="Archival Process Service" Remove="uninstall" Wait="yes" />
+            </Component>
+
+            <Component Id="Component.SchedulerWindowService.exe.config_511830207" Guid="6fe30b47-2577-43ad-9195-1861013e5a24">
+              <File Id="SchedulerWindowService.exe.config_511830207" Source="..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config" />
             </Component>
 
           </Directory>
@@ -2163,8 +2185,10 @@
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
       <ComponentRef Id="sa" />
       <ComponentRef Id="NIS" />
-      <ComponentRef Id="Component.SchedulerWindowService.exe_3679878997" />
-      <ComponentRef Id="Component.SchedulerWindowService.exe.config_393113434" />
+      <ComponentRef Id="Component.SchedulerWindowService.exe_1986992726" />
+      <ComponentRef Id="Component.SchedulerWindowService.exe.config_1046163462" />
+      <ComponentRef Id="Component.SchedulerWindowService.exe_2785709561" />
+      <ComponentRef Id="Component.SchedulerWindowService.exe.config_511830207" />
       <ComponentRef Id="Component.Global.asax_3920819104" />
       <ComponentRef Id="Component.libman.json_1445757982" />
       <ComponentRef Id="Component.Web.config_38401690" />

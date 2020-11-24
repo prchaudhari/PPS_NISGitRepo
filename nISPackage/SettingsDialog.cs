@@ -39,55 +39,55 @@ namespace WixSharpSetup
             //..\APP\\wwwroot\env-specific.json
             //script.sql
 
-            #region Update sql connection string;
-            string dbConnectionString = "Data Source={{InstanceName}};Initial Catalog={{DataBaseName}};User ID={{UserName}};Password={{Password}}";
+            //#region Update sql connection string;
+            //string dbConnectionString = "Data Source={{InstanceName}};Initial Catalog={{DataBaseName}};User ID={{UserName}};Password={{Password}}";
 
-            dbConnectionString = dbConnectionString.Replace("{{InstanceName}}", txtInstanceName.Text);
-            dbConnectionString = dbConnectionString.Replace("{{DataBaseName}}", txtDBName.Text);
-            dbConnectionString = dbConnectionString.Replace("{{UserName}}", txtUserName.Text);
-            dbConnectionString = dbConnectionString.Replace("{{Password}}", txtPassword.Text);
+            //dbConnectionString = dbConnectionString.Replace("{{InstanceName}}", txtInstanceName.Text);
+            //dbConnectionString = dbConnectionString.Replace("{{DataBaseName}}", txtDBName.Text);
+            //dbConnectionString = dbConnectionString.Replace("{{UserName}}", txtUserName.Text);
+            //dbConnectionString = dbConnectionString.Replace("{{Password}}", txtPassword.Text);
 
-            StreamReader reader = new StreamReader(@"script.sql");
-            string readedData = reader.ReadToEnd();
-            reader.Close();
-            //modify what you want
-            readedData.Replace("{{DataBaseConnectionString}}", dbConnectionString);
+            //StreamReader reader = new StreamReader(@"script.sql");
+            //string readedData = reader.ReadToEnd();
+            //reader.Close();
+            ////modify what you want
+            //readedData.Replace("{{DataBaseConnectionString}}", dbConnectionString);
 
-            //Write new file or append on existing file
-            StreamWriter writer = new StreamWriter(@"script.sql", false);
-            writer.Write(readedData);
-            writer.Close();
-            #endregion
+            ////Write new file or append on existing file
+            //StreamWriter writer = new StreamWriter(@"script.sql", false);
+            //writer.Write(readedData);
+            //writer.Close();
+            //#endregion
 
-            #region Update API Webconfig File
-            reader = new StreamReader(@"..\API\bin\app.publish\Web.config");
-            readedData = reader.ReadToEnd();
-            reader.Close();
-            //modify what you want
-            readedData.Replace("{{DataBaseConnectionString}}", dbConnectionString);
-            readedData.Replace("{{APPPORTNO}}", txtAPPPort.Text);
-            //Write new file or append on existing file
-            writer = new StreamWriter(@"..\API\bin\app.publish\Web.config", false);
-            writer.Write(readedData);
-            writer.Close();
+            //#region Update API Webconfig File
+            //reader = new StreamReader(@"..\API\bin\app.publish\Web.config");
+            //readedData = reader.ReadToEnd();
+            //reader.Close();
+            ////modify what you want
+            //readedData.Replace("{{DataBaseConnectionString}}", dbConnectionString);
+            //readedData.Replace("{{APPPORTNO}}", txtAPPPort.Text);
+            ////Write new file or append on existing file
+            //writer = new StreamWriter(@"..\API\bin\app.publish\Web.config", false);
+            //writer.Write(readedData);
+            //writer.Close();
 
-            #endregion
+            //#endregion
 
-            #region Update APP Env Setting JSON File
+            //#region Update APP Env Setting JSON File
 
-            reader = new StreamReader(@"..\APP\\wwwroot\env-specific.json");
-            readedData = reader.ReadToEnd();
-            reader.Close();
+            //reader = new StreamReader(@"..\APP\\wwwroot\env-specific.json");
+            //readedData = reader.ReadToEnd();
+            //reader.Close();
 
-            //modify what you want
-            readedData.Replace("{{APIPORTNO}}", txtAPIPort.Text);
+            ////modify what you want
+            //readedData.Replace("{{APIPORTNO}}", txtAPIPort.Text);
 
-            //Write new file or append on existing file
-            writer = new StreamWriter(@"..\APP\\wwwroot\env-specific.json", false);
-            writer.Write(readedData);
-            writer.Close();
+            ////Write new file or append on existing file
+            //writer = new StreamWriter(@"..\APP\\wwwroot\env-specific.json", false);
+            //writer.Write(readedData);
+            //writer.Close();
 
-            #endregion
+            //#endregion
             Shell.GoNext();
         }
 
