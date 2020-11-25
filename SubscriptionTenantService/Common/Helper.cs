@@ -3,7 +3,7 @@
 // </copyright>
 // ----------------------------------------------------------------------- 
 
-namespace FinancialTenantService
+namespace SubscriptionTenantService
 {
     using nIS;
     #region References

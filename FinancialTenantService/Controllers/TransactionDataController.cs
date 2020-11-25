@@ -13,6 +13,9 @@ namespace FinancialTenantService
     using Unity;
     #endregion
 
+    /// <summary>
+    /// This class represent api controller for tenant transaction data
+    /// </summary>
     public class TransactionDataController : ApiController
     {
         #region Private Members

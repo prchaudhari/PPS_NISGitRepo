@@ -860,30 +860,30 @@ namespace nIS
         private string QueryGenerator(DynamicWidgetFilterEntity filterEntity)
         {
             var queryString = string.Empty;
-            var condtionalOp = filterEntity.ConditionalOperator != null && filterEntity.ConditionalOperator != string.Empty ? filterEntity.ConditionalOperator : " and ";
+            var condtionalOp = filterEntity.ConditionalOperator != null && filterEntity.ConditionalOperator != string.Empty && filterEntity.ConditionalOperator != "0" ? filterEntity.ConditionalOperator : " and ";
             if (filterEntity.Operator == "EqualsTo")
             {
-                queryString = queryString + condtionalOp + (string.Format(filterEntity.FieldName + ".Equals(\"{0}\") ", filterEntity.Value));
+                queryString = queryString + condtionalOp + " " + (string.Format(filterEntity.FieldName + ".Equals(\"{0}\") ", filterEntity.Value));
             }
             else if (filterEntity.Operator == "NotEqualsTo")
             {
-                queryString = queryString + condtionalOp + (string.Format("!" + filterEntity.FieldName + ".Equals(\"{0}\") ", filterEntity.Value));
+                queryString = queryString + condtionalOp + " " + (string.Format("!" + filterEntity.FieldName + ".Equals(\"{0}\") ", filterEntity.Value));
             }
             else if (filterEntity.Operator == "Contains")
             {
-                queryString = queryString + condtionalOp + (string.Format(filterEntity.FieldName + ".Contains(\"{0}\") ", filterEntity.Value));
+                queryString = queryString + condtionalOp + " " + (string.Format(filterEntity.FieldName + ".Contains(\"{0}\") ", filterEntity.Value));
             }
             else if (filterEntity.Operator == "NotContains")
             {
-                queryString = queryString + condtionalOp + (string.Format("!" + filterEntity.FieldName + ".Contains(\"{0}\") ", filterEntity.Value));
+                queryString = queryString + condtionalOp + " " + (string.Format("!" + filterEntity.FieldName + ".Contains(\"{0}\") ", filterEntity.Value));
             }
             else if (filterEntity.Operator == "LessThan")
             {
-                queryString = queryString + condtionalOp + (string.Format(filterEntity.FieldName + " < " + filterEntity.Value + " "));
+                queryString = queryString + condtionalOp + " " + (string.Format(filterEntity.FieldName + " < " + filterEntity.Value + " "));
             }
             else if (filterEntity.Operator == "GreaterThan")
             {
-                queryString = queryString + condtionalOp + (string.Format(filterEntity.FieldName + " > " + filterEntity.Value + " "));
+                queryString = queryString + condtionalOp + " " + (string.Format(filterEntity.FieldName + " > " + filterEntity.Value + " "));
             }
             return queryString;
         }
