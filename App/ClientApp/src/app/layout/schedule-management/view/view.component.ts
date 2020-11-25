@@ -84,7 +84,6 @@ export class ViewComponent implements OnInit {
           this.params = JSON.parse(localStorage.getItem('scheduleparams'));
           if (localStorage.getItem('scheduleparams')) {
             this.schedule.Identifier = this.params.Routeparams.passingparams.ScheduleIdentifier;
-            this.getScheduleRecords();
           }
         } else {
           localStorage.removeItem("scheduleparams");
@@ -103,7 +102,9 @@ export class ViewComponent implements OnInit {
     else {
       this.userClaimsRolePrivilegeOperations = [];
     }
+    this.getScheduleRecords();
   }
+
   async getScheduleRecords() {
     let scheduleService = this.injector.get(ScheduleService);
     let searchParameter: any = {};

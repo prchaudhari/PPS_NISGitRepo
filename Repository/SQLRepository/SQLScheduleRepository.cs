@@ -1390,7 +1390,9 @@ namespace nIS
                 int dayDiff = 0;
                 if (schedule.EndDate != null)
                 {
-                    dayDiff = this.utility.DayDifference(schedule.EndDate ?? DateTime.Now, scheduleStartDate) + 1;
+                    //var newenddate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
+                    var newenddate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    dayDiff = this.utility.DayDifference(newenddate, scheduleStartDate) + 1;
                 }
                 else
                 {
@@ -1457,7 +1459,9 @@ namespace nIS
                 //var scheduleStartDate = schedule.StartDate ?? DateTime.Now;
                 if (schedule.EndDate != null)
                 {
-                    dayDiff = this.utility.DayDifference(schedule.EndDate ?? DateTime.Now, scheduleStartDate) + 1;
+                    //var newenddate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
+                    var newenddate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    dayDiff = this.utility.DayDifference(newenddate, scheduleStartDate) + 1;
                 }
                 else
                 {
@@ -1572,20 +1576,25 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
 
-                var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                //var newendate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
+                var newstartdate = scheduleStartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                var newendate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                
                 if (schedule.DayOfMonth < newstartdate.Day)
                 {
                     newstartdate = newstartdate.AddMonths(1);
                 }
 
-                if (schedule.EndDate != null)
+                var scheduleExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, Convert.ToInt32(schedule.DayOfMonth), 0, 0, 0);
+                if (newendate != null)
                 {
-                    while (DateTime.Compare(newstartdate, schedule.EndDate ?? DateTime.Now) <= 0)
+                    while (DateTime.Compare(scheduleExecutionDate, newendate) <= 0)
                     {
                         int DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
                         if (schedule.DayOfMonth > 28)
                         {
-                            int lastDayOfMonth = DateTime.DaysInMonth(newstartdate.Year, newstartdate.Month);
+                            int lastDayOfMonth = DateTime.DaysInMonth(scheduleExecutionDate.Year, scheduleExecutionDate.Month);
                             if (lastDayOfMonth < DayOfMonth)
                             {
                                 DayOfMonth = lastDayOfMonth;
@@ -1600,12 +1609,12 @@ namespace nIS
                         record.ScheduleId = schedule.Id;
                         record.IsExecuted = false;
                         record.IsDataReady = false;
-                        var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, DayOfMonth, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                        var batchExecutionDate = new DateTime(scheduleExecutionDate.Year, scheduleExecutionDate.Month, DayOfMonth, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
                         record.BatchExecutionDate = batchExecutionDate;
                         record.DataExtractionDate = batchExecutionDate.AddDays(-1);
                         record.Status = BatchStatus.New.ToString();
                         batchMasterRecords.Add(record);
-                        newstartdate = newstartdate.AddMonths(repeatEveryMonths);
+                        scheduleExecutionDate = scheduleExecutionDate.AddMonths(repeatEveryMonths);
                         batchIndex++;
                     }
                 }
@@ -1672,7 +1681,8 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
 
-                var startdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                //var startdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                var startdate = scheduleStartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                 if (this.utility.getNumericMonth(schedule.MonthOfYear) < startdate.Month
                     || (this.utility.getNumericMonth(schedule.MonthOfYear) == startdate.Month && startdate.Day > schedule.DayOfMonth))
                 {
@@ -1691,11 +1701,13 @@ namespace nIS
                 
                 var newstartdate = new DateTime(startdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear), DayOfMonth, 0, 0, 0);
                 newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
+                //var newenddate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
+                var newenddate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
 
                 var yearDiff = 0;
-                if (schedule.EndDate != null)
+                if (newenddate != null)
                 {
-                    yearDiff = this.utility.YearDifference(newstartdate, schedule.EndDate ?? DateTime.Now) + 1;
+                    yearDiff = this.utility.YearDifference(newstartdate, newenddate) + 1;
                 }
                 else
                 {
