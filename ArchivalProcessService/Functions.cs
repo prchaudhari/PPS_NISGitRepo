@@ -14,6 +14,7 @@ namespace ArchivalProcessService
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Azure.WebJobs;
+    using Newtonsoft.Json;
 
     #endregion
 
@@ -42,10 +43,8 @@ namespace ArchivalProcessService
 
             try
             {
-                var response = client.PostAsync("ArchivalProcess/RunArchivalProcess", null).Result;
-                Console.WriteLine("Response from Run Archival Process API: " + response);
-                WriteToFile("Response from Run Archival Process API: " + response);
-                WriteToFile("Response Content from Run Archival Process API: " + response.Content);
+                var response = client.PostAsync("ArchivalProcess/RunArchivalProcess", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json")).Result;
+                WriteToFile("Response Content from Run Archival Process API: " + response.Content.ReadAsStringAsync().Result);
             }
             catch (Exception ex)
             {

@@ -14,9 +14,10 @@ namespace StatementGeneratorService
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Azure.WebJobs;
+    using Newtonsoft.Json;
 
     #endregion
-    
+
     public class Functions
     {
         static string ApiBaseAddress;
@@ -42,10 +43,8 @@ namespace StatementGeneratorService
 
             try
             {
-                var response = client.PostAsync("Schedule/RunSchedule", null).Result;
-                Console.WriteLine("Response from RunSchedule: " + response);
-                WriteToFile("Response from RunSchedule: " + response);
-                WriteToFile("Response Contenat from RunSchedule: " + response.Content);
+                var response = client.PostAsync("Schedule/RunSchedule", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json")).Result;
+                WriteToFile("Response Contenat from RunSchedule: " + response.Content.ReadAsStringAsync().Result);
             }
             catch (Exception ex)
             {
