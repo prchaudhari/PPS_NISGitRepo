@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.ServiceProcess;
+using System.Text;
 using System.Timers;
 
 namespace SchedulerWindowService
@@ -37,7 +39,7 @@ namespace SchedulerWindowService
         }
         private void OnElapsedTime(object source, ElapsedEventArgs e)
         {
-            WriteToFile("Service is recall at " + DateTime.Now);
+            WriteToFile("Service is recall start at " + DateTime.Now);
             RunStatementGenerationSchedule();
         }
         public static void WriteToFile(string Message)
@@ -71,12 +73,12 @@ namespace SchedulerWindowService
             client.BaseAddress = new Uri(ApiBaseAddress);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
+            WriteToFile("App Base Address: " + ApiBaseAddress + " TenantCode: " + TenantCode);
 
             try
             {
-                var response = client.PostAsync("Schedule/RunSchedule", null).Result;
-                Console.WriteLine("Response from RunSchedule: " + response);
-                WriteToFile("Response from RunSchedule: " + response);
+                var response = client.PostAsync("Schedule/RunSchedule", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json")).Result;
+                WriteToFile("Response Content from RunSchedule API: " + response.Content.ReadAsStringAsync().Result);
             }
             catch (Exception ex)
             {

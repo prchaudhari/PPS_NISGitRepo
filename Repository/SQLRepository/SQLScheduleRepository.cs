@@ -721,9 +721,9 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                WriteToFile(ex.Message);
-                WriteToFile(ex.InnerException.Message);
-                WriteToFile(ex.StackTrace.ToString());
+                //WriteToFile(ex.Message);
+                //WriteToFile(ex.InnerException.Message);
+                //WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
             return scheduleRunStatus;
@@ -744,7 +744,7 @@ namespace nIS
             
             var currentDate = DateTime.Now;
             var dueDate = currentDate.AddMinutes(60);
-            this.WriteToFile("Current Date: "+currentDate + " Due Date: " + dueDate);
+            //this.WriteToFile("Current Date: "+currentDate + " Due Date: " + dueDate);
 
             try
             {
@@ -755,7 +755,7 @@ namespace nIS
                     query.Append("BatchExecutionDate >= DateTime(" + currentDate.Year + "," + currentDate.Month + "," + currentDate.Day + "," + currentDate.Hour + "," + currentDate.Minute + "," + currentDate.Second + ") and BatchExecutionDate <= DateTime(" + +dueDate.Year + "," + dueDate.Month + "," + dueDate.Day + "," + dueDate.Hour + "," + dueDate.Minute + "," + dueDate.Second + ") and IsExecuted.Equals(false) ");
                     query.Append(string.Format(" and Status.Equals(\"{0}\") ", BatchStatus.New.ToString()));
                     //query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-                    this.WriteToFile("Batch Records: " + query);
+                    //this.WriteToFile("Batch Records: " + query);
                     batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(query.ToString()).ToList();
                 }
                 if (batchMasterRecords.Count > 0)
@@ -765,7 +765,7 @@ namespace nIS
                         query = new StringBuilder();
                         query.Append("(" + string.Join("or ", string.Join(",", batchMasterRecords.Select(item => item.ScheduleId).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
                         //query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-                        this.WriteToFile("Schedule Records: " + query);
+                        //this.WriteToFile("Schedule Records: " + query);
                         schedules = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
                     }
                     
@@ -911,9 +911,9 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                WriteToFile(ex.Message);
-                WriteToFile(ex.InnerException.Message);
-                WriteToFile(ex.StackTrace.ToString());
+                //WriteToFile(ex.Message);
+                //WriteToFile(ex.InnerException.Message);
+                //WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
             return scheduleRunStatus;
@@ -1069,9 +1069,9 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                WriteToFile(ex.Message);
-                WriteToFile(ex.InnerException.Message);
-                WriteToFile(ex.StackTrace.ToString());
+                //WriteToFile(ex.Message);
+                //WriteToFile(ex.InnerException.Message);
+                //WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
             return isScheduleSuccess;

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.ServiceProcess;
+using System.Text;
 using System.Timers;
 
 namespace ArchivalProcessWindowsService
@@ -74,16 +76,16 @@ namespace ArchivalProcessWindowsService
         }
         public static void RunArchivalProcessSchedule()
         {
+            WriteToFile("RunArchivalProcessSchedule is called" + DateTime.Now);
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ApiBaseAddress);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
-            WriteToFile("RunArchivalProcessSchedule is called" + DateTime.Now);
+            WriteToFile("App Base Address: " + ApiBaseAddress + " TenantCode: " + TenantCode);
             try
             {
-                var response = client.PostAsync("ArchivalProcess/RunArchivalProcess", null).Result;
-                Console.WriteLine("Response from Run Archival Process API: " + response);
-                WriteToFile("Response from Run Archival Process API: " + response);
+                var response = client.PostAsync("ArchivalProcess/RunArchivalProcess", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json")).Result;
+                WriteToFile("Response Content from Run Archival Process API: " + response.Content.ReadAsStringAsync().Result);
             }
             catch (Exception ex)
             {

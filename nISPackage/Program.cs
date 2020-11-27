@@ -27,17 +27,22 @@ namespace nISPackage
                     new Dir(@"%ProgramFiles%\nIS",
                         new Dir("StatementGenerationService",
                         schedulerService = new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe"),
-                        new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config")),
+                        new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config"),
+                        new File(@"..\SchedulerWindowService\bin\Debug\Newtonsoft.Json.xml"),
+                        new File(@"..\SchedulerWindowService\bin\Debug\Newtonsoft.Json.dll")
+                        ),
                         new Dir("ArchivalService",
-                        archivalService = new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe"),
-                        new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config")),
+                        archivalService = new File(@"..\ArchivalProcessWindowsService\bin\Debug\ArchivalProcessWindowsService.exe"),
+                        new File(@"..\ArchivalProcessWindowsService\bin\Debug\ArchivalProcessWindowsService.exe.config"),
+                        new File(@"..\ArchivalProcessWindowsService\bin\Debug\Newtonsoft.Json.xml"),
+                        new File(@"..\ArchivalProcessWindowsService\bin\Debug\Newtonsoft.Json.dll")),
                         new Dir("Application",
                             new Dir("API",
                                     new IISVirtualDir
                                     {
                                         Name = "nis-api",
                                         AppName = "nis-api",
-                                        WebSite = new WebSite("nis-api", "*:8082") { InstallWebSite = true },
+                                        WebSite = new WebSite("nis-api", "*:8062") { InstallWebSite = true },
                                         WebAppPool = new WebAppPool("nis-api", "Identity=applicationPoolIdentity")
                                     },
                                     new Files(@"..\API\bin\app.publish\*")),
@@ -46,19 +51,19 @@ namespace nISPackage
                                     {
                                         Name = "nis-app",
                                         AppName = "nis-app",
-                                        WebSite = new WebSite("nis-app", "*:8083") { InstallWebSite = true },
+                                        WebSite = new WebSite("nis-app", "*:8063") { InstallWebSite = true },
                                         WebAppPool = new WebAppPool("nis-app", "Identity=applicationPoolIdentity")
                                     },
                                     new Files(@"..\APP\ClientApp\dist\*"))
                                 )
                         ),
-                    new User(new Id("sa"), "sa") { CreateUser = false, Password = "Admin@123" },
+                    new User(new Id("sa"), "nis_admin") { CreateUser = false, Password = "Admin@123" },
                     new Binary(new Id("script"), "script.sql"),
-                sqlDatabase = new SqlDatabase("NIS", ".", SqlDbOption.CreateOnInstall
-                // ,sqlScript = new SqlScript("script", ExecuteSql.OnInstall)
+                sqlDatabase = new SqlDatabase("NIS", @".\SQLEXPRESS", SqlDbOption.CreateOnInstall,
+                sqlScript = new SqlScript("script", ExecuteSql.OnInstall)
                 ));
                 sqlDatabase.User = "sa";
-                //sqlScript.User = "sa";
+                sqlScript.User = "sa";
 
                 schedulerService.ServiceInstaller = new ServiceInstaller
                 {
