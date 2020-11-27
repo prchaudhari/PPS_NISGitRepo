@@ -40,15 +40,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.txtInstanceName = new System.Windows.Forms.TextBox();
             this.txtDBName = new System.Windows.Forms.TextBox();
             this.txtUserName = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtAPPPort = new System.Windows.Forms.TextBox();
-            this.txtAPIPort = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.txtAPIPortNo = new System.Windows.Forms.TextBox();
+            this.txtAPPPortNo = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.banner)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -112,7 +112,7 @@
             // next
             // 
             this.next.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.next.Location = new System.Drawing.Point(308, 12);
+            this.next.Location = new System.Drawing.Point(298, 12);
             this.next.Name = "next";
             this.next.Size = new System.Drawing.Size(75, 23);
             this.next.TabIndex = 0;
@@ -144,7 +144,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(39, 105);
+            this.label4.Location = new System.Drawing.Point(39, 108);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(79, 13);
             this.label4.TabIndex = 12;
@@ -153,7 +153,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(39, 137);
+            this.label5.Location = new System.Drawing.Point(274, 108);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(83, 13);
             this.label5.TabIndex = 13;
@@ -162,7 +162,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(274, 137);
+            this.label6.Location = new System.Drawing.Point(274, 153);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 13);
             this.label6.TabIndex = 14;
@@ -171,40 +171,11 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(274, 105);
+            this.label7.Location = new System.Drawing.Point(39, 153);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(59, 13);
             this.label7.TabIndex = 15;
             this.label7.Text = "User Name";
-            // 
-            // txtInstanceName
-            // 
-            this.txtInstanceName.Location = new System.Drawing.Point(143, 105);
-            this.txtInstanceName.Name = "txtInstanceName";
-            this.txtInstanceName.Size = new System.Drawing.Size(100, 21);
-            this.txtInstanceName.TabIndex = 16;
-            this.txtInstanceName.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // txtDBName
-            // 
-            this.txtDBName.Location = new System.Drawing.Point(143, 137);
-            this.txtDBName.Name = "txtDBName";
-            this.txtDBName.Size = new System.Drawing.Size(100, 21);
-            this.txtDBName.TabIndex = 17;
-            // 
-            // txtUserName
-            // 
-            this.txtUserName.Location = new System.Drawing.Point(378, 105);
-            this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(100, 21);
-            this.txtUserName.TabIndex = 18;
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(378, 137);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(100, 21);
-            this.txtPassword.TabIndex = 19;
             // 
             // label8
             // 
@@ -214,20 +185,6 @@
             this.label8.Size = new System.Drawing.Size(117, 13);
             this.label8.TabIndex = 20;
             this.label8.Text = "Application Port Details";
-            // 
-            // txtAPPPort
-            // 
-            this.txtAPPPort.Location = new System.Drawing.Point(378, 223);
-            this.txtAPPPort.Name = "txtAPPPort";
-            this.txtAPPPort.Size = new System.Drawing.Size(100, 21);
-            this.txtAPPPort.TabIndex = 24;
-            // 
-            // txtAPIPort
-            // 
-            this.txtAPIPort.Location = new System.Drawing.Point(143, 223);
-            this.txtAPIPort.Name = "txtAPIPort";
-            this.txtAPIPort.Size = new System.Drawing.Size(100, 21);
-            this.txtAPIPort.TabIndex = 23;
             // 
             // label9
             // 
@@ -247,18 +204,60 @@
             this.label10.TabIndex = 21;
             this.label10.Text = "API Port No";
             // 
+            // txtInstanceName
+            // 
+            this.txtInstanceName.Location = new System.Drawing.Point(124, 108);
+            this.txtInstanceName.Name = "txtInstanceName";
+            this.txtInstanceName.Size = new System.Drawing.Size(100, 21);
+            this.txtInstanceName.TabIndex = 23;
+            // 
+            // txtDBName
+            // 
+            this.txtDBName.Location = new System.Drawing.Point(363, 108);
+            this.txtDBName.Name = "txtDBName";
+            this.txtDBName.Size = new System.Drawing.Size(100, 21);
+            this.txtDBName.TabIndex = 24;
+            // 
+            // txtUserName
+            // 
+            this.txtUserName.Location = new System.Drawing.Point(124, 150);
+            this.txtUserName.Name = "txtUserName";
+            this.txtUserName.Size = new System.Drawing.Size(100, 21);
+            this.txtUserName.TabIndex = 25;
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(363, 150);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(100, 21);
+            this.txtPassword.TabIndex = 26;
+            // 
+            // txtAPIPortNo
+            // 
+            this.txtAPIPortNo.Location = new System.Drawing.Point(124, 215);
+            this.txtAPIPortNo.Name = "txtAPIPortNo";
+            this.txtAPIPortNo.Size = new System.Drawing.Size(100, 21);
+            this.txtAPIPortNo.TabIndex = 27;
+            // 
+            // txtAPPPortNo
+            // 
+            this.txtAPPPortNo.Location = new System.Drawing.Point(363, 215);
+            this.txtAPPPortNo.Name = "txtAPPPortNo";
+            this.txtAPPPortNo.Size = new System.Drawing.Size(100, 21);
+            this.txtAPPPortNo.TabIndex = 28;
+            // 
             // SettingsDialog
             // 
             this.ClientSize = new System.Drawing.Size(500, 363);
-            this.Controls.Add(this.txtAPPPort);
-            this.Controls.Add(this.txtAPIPort);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label8);
+            this.Controls.Add(this.txtAPPPortNo);
+            this.Controls.Add(this.txtAPIPortNo);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtUserName);
             this.Controls.Add(this.txtDBName);
             this.Controls.Add(this.txtInstanceName);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -293,14 +292,14 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtInstanceName;
         private System.Windows.Forms.TextBox txtDBName;
         private System.Windows.Forms.TextBox txtUserName;
         private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtAPPPort;
-        private System.Windows.Forms.TextBox txtAPIPort;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtAPIPortNo;
+        private System.Windows.Forms.TextBox txtAPPPortNo;
     }
 }
