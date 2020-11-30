@@ -1,7 +1,7 @@
 
 Go
 /****** Object:  Schema [ConfigurationManager]    Script Date: 19-11-2020 15:12:18 ******/
-CREATE SCHEMA [ConfigurationManager]
+--CREATE SCHEMA [ConfigurationManager]
 GO
 /****** Object:  Schema [EntityManager]    Script Date: 19-11-2020 15:12:18 ******/
 CREATE SCHEMA [EntityManager]
@@ -10,23 +10,23 @@ GO
 CREATE SCHEMA [NIS]
 GO
 /****** Object:  Schema [TenantManager]    Script Date: 19-11-2020 15:12:18 ******/
-CREATE SCHEMA [TenantManager]
+--CREATE SCHEMA [TenantManager]
 GO
 /****** Object:  Table [ConfigurationManager].[ConfigurationManager]    Script Date: 19-11-2020 15:12:18 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [ConfigurationManager].[ConfigurationManager](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[PartionKey] [nvarchar](100) NOT NULL,
-	[RowKey] [nvarchar](100) NOT NULL,
-	[Value] [nvarchar](100) NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+--GO
+--CREATE TABLE [ConfigurationManager].[ConfigurationManager](
+--	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+--	[PartionKey] [nvarchar](100) NOT NULL,
+--	[RowKey] [nvarchar](100) NOT NULL,
+--	[Value] [nvarchar](100) NOT NULL,
+--PRIMARY KEY CLUSTERED 
+--(
+--	[Id] ASC
+--)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+--) ON [PRIMARY]
 
 GO
 /****** Object:  Table [EntityManager].[DependentOperations]    Script Date: 19-11-2020 15:12:19 ******/
@@ -1473,56 +1473,55 @@ GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [TenantManager].[Tenant](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[TenantCode] [nvarchar](max) NOT NULL,
-	[TenantName] [nvarchar](max) NOT NULL,
-	[TenantDescription] [nvarchar](max) NULL,
-	[TenantType] [nvarchar](max) NULL,
-	[TenantImage] [nvarchar](max) NULL,
-	[TenantDomainName] [nvarchar](max) NOT NULL,
-	[FirstName] [nvarchar](max) NULL,
-	[LastName] [nvarchar](max) NULL,
-	[ContactNumber] [nvarchar](max) NOT NULL,
-	[EmailAddress] [nvarchar](max) NOT NULL,
-	[SecondaryContactName] [nvarchar](max) NULL,
-	[SecondaryContactNumber] [nvarchar](max) NULL,
-	[SecondaryEmailAddress] [nvarchar](max) NULL,
-	[AddressLine1] [nvarchar](max) NULL,
-	[AddressLine2] [nvarchar](max) NULL,
-	[TenantCity] [nvarchar](max) NULL,
-	[TenantState] [nvarchar](max) NULL,
-	[TenantCountry] [nvarchar](max) NULL,
-	[PinCode] [nvarchar](max) NULL,
-	[StartDate] [date] NULL,
-	[EndDate] [date] NULL,
-	[StorageAccount] [nvarchar](max) NOT NULL,
-	[AccessToken] [nvarchar](max) NOT NULL,
-	[ApplicationURL] [nvarchar](max) NULL,
-	[ApplicationModules] [nvarchar](max) NULL,
-	[BillingEmailAddress] [nvarchar](max) NULL,
-	[SecondaryLastName] [nvarchar](max) NULL,
-	[BillingFirstName] [nvarchar](max) NULL,
-	[BillingLastName] [nvarchar](max) NULL,
-	[BillingContactNumber] [nvarchar](max) NULL,
-	[PanNumber] [nvarchar](max) NULL,
-	[ServiceTax] [nvarchar](max) NULL,
-	[IsPrimaryTenant] [bit] NULL,
-	[ManageType] [nvarchar](max) NULL,
-	[ExternalCode] [nvarchar](max) NULL,
-	[AutheticationMode] [nvarchar](max) NULL,
-	[IsActive] [bit] NOT NULL CONSTRAINT [DF__Tenant__IsActive__6C190EBB]  DEFAULT ((1)),
-	[IsDeleted] [bit] NOT NULL CONSTRAINT [DF__Tenant__IsDelete__6D0D32F4]  DEFAULT ((0)),
-	[ParentTenantCode] [nvarchar](max) NULL,
-	[IsTenantConfigured] [bit] NOT NULL,
- CONSTRAINT [PK__Tenant__3214EC073F2DE561] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
-GO
+--GO
+--CREATE TABLE [TenantManager].[Tenant](
+--	[Id] [int] IDENTITY(1,1) NOT NULL,
+--	[TenantCode] [nvarchar](max) NOT NULL,
+--	[TenantName] [nvarchar](max) NOT NULL,
+--	[TenantDescription] [nvarchar](max) NULL,
+--	[TenantType] [nvarchar](max) NULL,
+--	[TenantImage] [nvarchar](max) NULL,
+--	[TenantDomainName] [nvarchar](max) NOT NULL,
+--	[FirstName] [nvarchar](max) NULL,
+--	[LastName] [nvarchar](max) NULL,
+--	[ContactNumber] [nvarchar](max) NOT NULL,
+--	[EmailAddress] [nvarchar](max) NOT NULL,
+--	[SecondaryContactName] [nvarchar](max) NULL,
+--	[SecondaryContactNumber] [nvarchar](max) NULL,
+--	[SecondaryEmailAddress] [nvarchar](max) NULL,
+--	[AddressLine1] [nvarchar](max) NULL,
+--	[AddressLine2] [nvarchar](max) NULL,
+--	[TenantCity] [nvarchar](max) NULL,
+--	[TenantState] [nvarchar](max) NULL,
+--	[TenantCountry] [nvarchar](max) NULL,
+--	[PinCode] [nvarchar](max) NULL,
+--	[StartDate] [date] NULL,
+--	[EndDate] [date] NULL,
+--	[StorageAccount] [nvarchar](max) NOT NULL,
+--	[AccessToken] [nvarchar](max) NOT NULL,
+--	[ApplicationURL] [nvarchar](max) NULL,
+--	[ApplicationModules] [nvarchar](max) NULL,
+--	[BillingEmailAddress] [nvarchar](max) NULL,
+--	[SecondaryLastName] [nvarchar](max) NULL,
+--	[BillingFirstName] [nvarchar](max) NULL,
+--	[BillingLastName] [nvarchar](max) NULL,
+--	[BillingContactNumber] [nvarchar](max) NULL,
+--	[PanNumber] [nvarchar](max) NULL,
+--	[ServiceTax] [nvarchar](max) NULL,
+--	[IsPrimaryTenant] [bit] NULL,
+--	[ManageType] [nvarchar](max) NULL,
+--	[ExternalCode] [nvarchar](max) NULL,
+--	[AutheticationMode] [nvarchar](max) NULL,
+--	[IsActive] [bit] NOT NULL CONSTRAINT [DF__Tenant__IsActive__6C190EBB]  DEFAULT ((1)),
+--	[IsDeleted] [bit] NOT NULL CONSTRAINT [DF__Tenant__IsDelete__6D0D32F4]  DEFAULT ((0)),
+--	[ParentTenantCode] [nvarchar](max) NULL,
+--	[IsTenantConfigured] [bit] NOT NULL,
+-- CONSTRAINT [PK__Tenant__3214EC073F2DE561] PRIMARY KEY CLUSTERED 
+--(
+--	[Id] ASC
+--)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+--)
+--GO
 /****** Object:  UserDefinedFunction [NIS].[FnGetParentAndChildTenant]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
 GO
@@ -1745,11 +1744,11 @@ INNER JOIN NIS.Role r ON urm.RoleId = r.Id
 GO
 SET IDENTITY_INSERT [ConfigurationManager].[ConfigurationManager] ON 
 
-INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (1, N'nIS', N'nISConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
-INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (2, N'EntityManager', N'EntityManagerConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
-INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (3, N'EventManager', N'EventManagerConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
-INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (4, N'SubscriptionManager', N'SubscriptionManagerConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
-INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (5, N'TemplateManager', N'NotificationEngineConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
+--INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (1, N'nIS', N'nISConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
+--INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (2, N'EntityManager', N'EntityManagerConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
+--INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (3, N'EventManager', N'EventManagerConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
+--INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (4, N'SubscriptionManager', N'SubscriptionManagerConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
+--INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (5, N'TemplateManager', N'NotificationEngineConnectionString', N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]')
 INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (6, N'EmailConfiguration', N'EnableSSL', N'false')
 INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (7, N'EmailConfiguration', N'PortNumber', N'587')
 INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (8, N'EmailConfiguration', N'PrimaryFromEmail', N'nis@n4mative.net')
@@ -2207,14 +2206,14 @@ INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], 
 INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (23, 3, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
 INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (24, 3, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
 SET IDENTITY_INSERT [NIS].[WidgetPageTypeMap] OFF
-SET IDENTITY_INSERT [TenantManager].[Tenant] ON 
+--SET IDENTITY_INSERT [TenantManager].[Tenant] ON 
 
-INSERT [TenantManager].[Tenant] ([Id], [TenantCode], [TenantName], [TenantDescription], [TenantType], [TenantImage], [TenantDomainName], [FirstName], [LastName], [ContactNumber], [EmailAddress], [SecondaryContactName], [SecondaryContactNumber], [SecondaryEmailAddress], [AddressLine1], [AddressLine2], [TenantCity], [TenantState], [TenantCountry], [PinCode], [StartDate], [EndDate], [StorageAccount], [AccessToken], [ApplicationURL], [ApplicationModules], [BillingEmailAddress], [SecondaryLastName], [BillingFirstName], [BillingLastName], [BillingContactNumber], [PanNumber], [ServiceTax], [IsPrimaryTenant], [ManageType], [ExternalCode], [AutheticationMode], [IsActive], [IsDeleted], [ParentTenantCode], [IsTenantConfigured]) VALUES (1, N'00000000-0000-0000-0000-000000000000', N'nIS SuperAdmin', N'', N'Instance', N'', N'default.com', N'Super', N'Admin', N'+91-1234567890', N'instancemanager@nis.com', N'', N'', N'', N'Mumbai', N'', N'1', N'1', N'1', N'123456', CAST(N'2015-12-31' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, N'Self', NULL, NULL, 1, 0, NULL, 1)
-INSERT [TenantManager].[Tenant] ([Id], [TenantCode], [TenantName], [TenantDescription], [TenantType], [TenantImage], [TenantDomainName], [FirstName], [LastName], [ContactNumber], [EmailAddress], [SecondaryContactName], [SecondaryContactNumber], [SecondaryEmailAddress], [AddressLine1], [AddressLine2], [TenantCity], [TenantState], [TenantCountry], [PinCode], [StartDate], [EndDate], [StorageAccount], [AccessToken], [ApplicationURL], [ApplicationModules], [BillingEmailAddress], [SecondaryLastName], [BillingFirstName], [BillingLastName], [BillingContactNumber], [PanNumber], [ServiceTax], [IsPrimaryTenant], [ManageType], [ExternalCode], [AutheticationMode], [IsActive], [IsDeleted], [ParentTenantCode], [IsTenantConfigured]) VALUES (2, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', N'Tenant Group 05102020', N'', N'Group', N'', N'', N'pramod', N'shinde', N'+91-9876567834', N'pramod.shinde45123@gmail.com', N'', N'', N'', N'', N'', N'', N'', N'', N'', CAST(N'2020-10-05' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, NULL, 1)
-INSERT [TenantManager].[Tenant] ([Id], [TenantCode], [TenantName], [TenantDescription], [TenantType], [TenantImage], [TenantDomainName], [FirstName], [LastName], [ContactNumber], [EmailAddress], [SecondaryContactName], [SecondaryContactNumber], [SecondaryEmailAddress], [AddressLine1], [AddressLine2], [TenantCity], [TenantState], [TenantCountry], [PinCode], [StartDate], [EndDate], [StorageAccount], [AccessToken], [ApplicationURL], [ApplicationModules], [BillingEmailAddress], [SecondaryLastName], [BillingFirstName], [BillingLastName], [BillingContactNumber], [PanNumber], [ServiceTax], [IsPrimaryTenant], [ManageType], [ExternalCode], [AutheticationMode], [IsActive], [IsDeleted], [ParentTenantCode], [IsTenantConfigured]) VALUES (3, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Tenant UK', N'', N'Tenant', N'', N'domain.com', N'tenant', N'UK', N'+44-7867868767', N'tenantuk@demo.com', N'', N'', N'', N'test tenant', N'', N'London', N'London', N'18', N'545342', CAST(N'2020-10-06' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', 1)
-INSERT [TenantManager].[Tenant] ([Id], [TenantCode], [TenantName], [TenantDescription], [TenantType], [TenantImage], [TenantDomainName], [FirstName], [LastName], [ContactNumber], [EmailAddress], [SecondaryContactName], [SecondaryContactNumber], [SecondaryEmailAddress], [AddressLine1], [AddressLine2], [TenantCity], [TenantState], [TenantCountry], [PinCode], [StartDate], [EndDate], [StorageAccount], [AccessToken], [ApplicationURL], [ApplicationModules], [BillingEmailAddress], [SecondaryLastName], [BillingFirstName], [BillingLastName], [BillingContactNumber], [PanNumber], [ServiceTax], [IsPrimaryTenant], [ManageType], [ExternalCode], [AutheticationMode], [IsActive], [IsDeleted], [ParentTenantCode], [IsTenantConfigured]) VALUES (4, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', N'SS_Group', N'Group Created for Testing', N'Group', N'', N'', N'SSGroup', N'manager', N'+91-1254632589', N'ss_group@mailinator.com', N'', N'', N'', N'', N'', N'', N'', N'', N'', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'', 1)
-INSERT [TenantManager].[Tenant] ([Id], [TenantCode], [TenantName], [TenantDescription], [TenantType], [TenantImage], [TenantDomainName], [FirstName], [LastName], [ContactNumber], [EmailAddress], [SecondaryContactName], [SecondaryContactNumber], [SecondaryEmailAddress], [AddressLine1], [AddressLine2], [TenantCity], [TenantState], [TenantCountry], [PinCode], [StartDate], [EndDate], [StorageAccount], [AccessToken], [ApplicationURL], [ApplicationModules], [BillingEmailAddress], [SecondaryLastName], [BillingFirstName], [BillingLastName], [BillingContactNumber], [PanNumber], [ServiceTax], [IsPrimaryTenant], [ManageType], [ExternalCode], [AutheticationMode], [IsActive], [IsDeleted], [ParentTenantCode], [IsTenantConfigured]) VALUES (5, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'SS_Websym1', N'', N'Tenant', N'', N'websym1.com', N'ss', N'websym', N'+91-2342342321', N'sswebsym@mailinator.com', N'', N'', N'', N'123', N'', N'PN', N'MH', N'36', N'57', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', 1)
-SET IDENTITY_INSERT [TenantManager].[Tenant] OFF
+--INSERT [TenantManager].[Tenant] VALUES ( N'00000000-0000-0000-0000-000000000000', N'nIS SuperAdmin', N'', N'Instance', N'', N'default.com', N'Super', N'Admin', N'+91-1234567890', N'instancemanager@nis.com', N'', N'', N'', N'Mumbai', N'', N'1', N'1', N'1', N'123456', CAST(N'2015-12-31' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, N'Self', NULL, NULL, 1, 0, NULL, 1)
+--INSERT [TenantManager].[Tenant] VALUES ( N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', N'Tenant Group 05102020', N'', N'Group', N'', N'', N'pramod', N'shinde', N'+91-9876567834', N'pramod.shinde45123@gmail.com', N'', N'', N'', N'', N'', N'', N'', N'', N'', CAST(N'2020-10-05' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, NULL, 1)
+--INSERT [TenantManager].[Tenant] VALUES ( N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Tenant UK', N'', N'Tenant', N'', N'domain.com', N'tenant', N'UK', N'+44-7867868767', N'tenantuk@demo.com', N'', N'', N'', N'test tenant', N'', N'London', N'London', N'18', N'545342', CAST(N'2020-10-06' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', 1)
+--INSERT [TenantManager].[Tenant] VALUES ( N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', N'SS_Group', N'Group Created for Testing', N'Group', N'', N'', N'SSGroup', N'manager', N'+91-1254632589', N'ss_group@mailinator.com', N'', N'', N'', N'', N'', N'', N'', N'', N'', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'', 1)
+--INSERT [TenantManager].[Tenant] VALUES ( N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'SS_Websym1', N'', N'Tenant', N'', N'websym1.com', N'ss', N'websym', N'+91-2342342321', N'sswebsym@mailinator.com', N'', N'', N'', N'123', N'', N'PN', N'MH', N'36', N'57', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', 1)
+--SET IDENTITY_INSERT [TenantManager].[Tenant] OFF
 USE [master]
 GO
 ALTER DATABASE [NIS] SET  READ_WRITE 

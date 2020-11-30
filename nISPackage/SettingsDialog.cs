@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using WixSharp;
 using WixSharp.UI.Forms;
+using System.Windows.Forms;
 
 namespace WixSharpSetup
 {
@@ -29,14 +30,26 @@ namespace WixSharpSetup
 
         void next_Click(object sender, EventArgs e)
         {
-            MsiRuntime.Session["INSTANCENAME"] = txtInstanceName.Text;
-            MsiRuntime.Session["DBNAME"] = txtDBName.Text;
-            MsiRuntime.Session["PASSWORD"] = txtPassword.Text;
-            MsiRuntime.Session["USERNAME"] = txtUserName.Text;
-            MsiRuntime.Session["APIPORT"] = txtAPIPortNo.Text;
-            MsiRuntime.Session["APPPORT"] = txtAPPPortNo.Text;
+            if (txtInstanceName.Text.Equals("")
+              || txtInstanceName.Text.Equals("")
+              || txtInstanceName.Text.Equals("")
+              || txtInstanceName.Text.Equals("")
+              || txtInstanceName.Text.Equals("")
+              )
+            {
+                MessageBox.Show("Please enter all details");
+            }
+            else {
+                MsiRuntime.Session["INSTANCENAME"] = txtInstanceName.Text;
+                MsiRuntime.Session["DBNAME"] = txtDBName.Text;
+                MsiRuntime.Session["PASSWORD"] = txtPassword.Text;
+                MsiRuntime.Session["USERNAME"] = txtUserName.Text;
+                MsiRuntime.Session["APIPORT"] = txtAPIPortNo.Text;
+                MsiRuntime.Session["APPPORT"] = txtAPPPortNo.Text;
 
-            Shell.GoNext();
+                Shell.GoNext();
+            }
+           
         }
 
         void cancel_Click(object sender, EventArgs e)
