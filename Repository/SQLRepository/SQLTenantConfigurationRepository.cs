@@ -102,7 +102,8 @@ namespace nIS
                         DateFormat = item.DateFormat,
                         ApplicationTheme = item.ApplicationTheme,
                         WidgetThemeSetting = item.WidgetThemeSetting,
-                        BaseUrlForTransactionData = item.BaseUrlForTransactionData
+                        BaseUrlForTransactionData = item.BaseUrlForTransactionData,
+                        TenantCode = item.TenantCode
                     }).ToList();
 
                     if (tenantConfigurations?.Count > 0)

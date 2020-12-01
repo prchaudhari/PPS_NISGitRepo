@@ -1946,7 +1946,6 @@ namespace nIS
                     StringBuilder htmlbody = new StringBuilder();
                     currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
                     string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
-                    //navbarHtml = navbarHtml.Replace("{{logo}}", "../common/images/nisLogo.png");
                     navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
                     var clientlogo = client.TenantLogo != null ? client.TenantLogo : "";
                     navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
@@ -2683,11 +2682,21 @@ namespace nIS
                                         searchParameter["CustomerId"] = customer.Id;
                                         if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                                         {
-                                            searchParameter["AccountId"] = accountId;
                                             var tenantEntity = tenantEntities.Where(item => item.Identifier == dynawidget.EntityId)?.ToList()?.FirstOrDefault();
                                             if (tenantEntity != null && tenantEntity.Name == "Account Transaction")
                                             {
                                                 searchParameter["AccountType"] = page.PageTypeName;
+                                            }
+
+                                            //send account id value to this property when account master data fetching
+                                            if (tenantEntity != null && tenantEntity.Name == "Account Balalnce")
+                                            {
+                                                searchParameter["Identifier"] = accountId;
+                                            }
+                                            //send account id value to this property when account transaction data fetching
+                                            else
+                                            {
+                                                searchParameter["AccountId"] = accountId;
                                             }
                                         }
                                         searchParameter["WidgetFilterSetting"] = dynawidget.WidgetFilterSettings;

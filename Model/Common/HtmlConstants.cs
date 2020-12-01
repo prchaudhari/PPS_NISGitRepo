@@ -144,7 +144,7 @@ namespace nIS
         " <div class='float-right'><div class='float-left mr-2'><select class='form-control float-left' id='filterStatus'><option value = '0'> Search Item</option>" +
         "{{SelectOption}} </select></div>" + "<a href='javascript:void(0)' class='btn btn-light btn-sm' id='ResetGrid'>Reset</a>&nbsp;" +
         "<a href='javascript:void(0)' class='btn btn-light btn-sm' id='PrintGrid'>Print</a> </div>" + "<div class='table-responsive stylescrollbar' " +
-        "style='max-height:350px;overflow-x:hidden;overflow-y:auto;'><table id='SavingTransactionTable' class='table m-1 table-hover'><thead><tr>" +
+        "style='max-height:320px;overflow-x:hidden;overflow-y:auto;'><table id='SavingTransactionTable' class='table m-1 table-hover'><thead><tr>" +
         "<th class='width12'>Date</th><th class='width8'>Type</th class='width30'><th>Narration</th><th class='width12 text-right'>FCY</th><th class='width13 text-right'>" +
         "Current Rate</th> <th class='width13 text-right'>LCY</th><th class='width12'>Action</th></tr></thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 
@@ -154,7 +154,7 @@ namespace nIS
         " <div class='float-right'><div class='float-left mr-2'><select class='form-control float-left' id='filterStatus'><option value = '0'> Search Item</option>" +
         "{{SelectOption}} </select></div>" + "<a href='javascript:void(0)' class='btn btn-light btn-sm' id='ResetGrid'>Reset</a>&nbsp;" +
          "<a href='javascript:void(0)' class='btn btn-light btn-sm' id='PrintGrid'>Print</a> </div>" + "<div class='table-responsive stylescrollbar' " +
-         "style='max-height:350px;overflow-x:hidden;overflow-y:auto;'><table id='CurrentTransactionTable' class='table m-1 table-hover'><thead><tr>" +
+         "style='max-height:320px;overflow-x:hidden;overflow-y:auto;'><table id='CurrentTransactionTable' class='table m-1 table-hover'><thead><tr>" +
         "<th class='width12'>Date</th><th class='width8'>Type</th class='width30'><th>Narration</th><th class='width12 text-right'>FCY</th><th class='width13 text-right'>" +
          "Current Rate</th> <th class='width13 text-right'>LCY</th><th class='width12'>Action</th></tr></thead><tbody>{{AccountTransactionDetails}}</tbody></table></div></div></div>";
 

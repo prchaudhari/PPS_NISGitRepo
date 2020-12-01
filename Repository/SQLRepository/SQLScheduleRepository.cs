@@ -59,6 +59,11 @@ namespace nIS
         /// </summary>
         private IStatementRepository statementRepository = null;
 
+        /// <summary>
+        /// The tenant configuration repository.
+        /// </summary>
+        private ITenantConfigurationRepository tenantConfigurationRepository = null;
+
         #endregion
 
         #region Constructor
@@ -70,6 +75,7 @@ namespace nIS
             this.utility = new Utility();
             this.configurationutility = new ConfigurationUtility(this.unityContainer);
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
+            this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
         }
 
         #endregion
@@ -742,9 +748,8 @@ namespace nIS
             var schedules = new List<ScheduleRecord>();
             var batchMasterRecords = new List<BatchMasterRecord>();
             
-            var currentDate = DateTime.Now;
-            var dueDate = currentDate.AddMinutes(60);
-            //this.WriteToFile("Current Date: "+currentDate + " Due Date: " + dueDate);
+            var fromdate = DateTime.Now;
+            var todate = fromdate.AddMinutes(60);
 
             try
             {
@@ -752,10 +757,8 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    query.Append("BatchExecutionDate >= DateTime(" + currentDate.Year + "," + currentDate.Month + "," + currentDate.Day + "," + currentDate.Hour + "," + currentDate.Minute + "," + currentDate.Second + ") and BatchExecutionDate <= DateTime(" + +dueDate.Year + "," + dueDate.Month + "," + dueDate.Day + "," + dueDate.Hour + "," + dueDate.Minute + "," + dueDate.Second + ") and IsExecuted.Equals(false) ");
+                    query.Append("BatchExecutionDate >= DateTime(" + fromdate.Year + "," + fromdate.Month + "," + fromdate.Day + "," + fromdate.Hour + "," + fromdate.Minute + "," + fromdate.Second + ") and BatchExecutionDate <= DateTime(" + +todate.Year + "," + todate.Month + "," + todate.Day + "," + todate.Hour + "," + todate.Minute + "," + todate.Second + ") and IsExecuted.Equals(false) ");
                     query.Append(string.Format(" and Status.Equals(\"{0}\") ", BatchStatus.New.ToString()));
-                    //query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-                    //this.WriteToFile("Batch Records: " + query);
                     batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(query.ToString()).ToList();
                 }
                 if (batchMasterRecords.Count > 0)
@@ -764,8 +767,6 @@ namespace nIS
                     {
                         query = new StringBuilder();
                         query.Append("(" + string.Join("or ", string.Join(",", batchMasterRecords.Select(item => item.ScheduleId).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
-                        //query.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-                        //this.WriteToFile("Schedule Records: " + query);
                         schedules = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
                     }
                     
@@ -776,6 +777,19 @@ namespace nIS
                         schedules.ToList().ForEach(schedule =>
                         {
                             tenantCode = schedule.TenantCode;
+
+                            //If it is on-premise deployment than schedule run api will called with respective tenant code.. So in this case tenant configuration will fetch here itself
+                            //If it is cloud based then, schedule run api will be called with default tenant code.. So in this case tenant configuration will be replace in repository level
+                            if (tenantConfiguration.TenantCode == string.Empty || tenantConfiguration.TenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE))
+                            {
+                                //To set HTML statement output path as per tenant configuration
+                                tenantConfiguration = this.tenantConfigurationRepository.GetTenantConfigurations(tenantCode).FirstOrDefault();
+                                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                                {
+                                    baseURL = tenantConfiguration.OutputHTMLPath;
+                                    outputLocation = tenantConfiguration.OutputHTMLPath;
+                                }
+                            }
 
                             ScheduleLogRecord scheduleLog = new ScheduleLogRecord();
                             scheduleLog.ScheduleId = schedule.Id;
@@ -911,8 +925,6 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                //WriteToFile(ex.Message);
-                //WriteToFile(ex.InnerException.Message);
                 //WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
@@ -1975,9 +1987,9 @@ namespace nIS
                         logDetailRecord.CustomerId = customer.Id;
                         logDetailRecord.CustomerName = customer.FirstName.Trim() + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim();
                         logDetailRecord.ScheduleId = scheduleLog.ScheduleId;
-                        logDetailRecord.RenderEngineId = renderEngine.Id; //To be change once render engine implmentation start
-                        logDetailRecord.RenderEngineName = renderEngine.Name;
-                        logDetailRecord.RenderEngineURL = renderEngine.URL;
+                        logDetailRecord.RenderEngineId = renderEngine != null ? renderEngine.Id : 0; //To be change once render engine implmentation start
+                        logDetailRecord.RenderEngineName = renderEngine != null ? renderEngine.Name : "";
+                        logDetailRecord.RenderEngineURL = renderEngine != null ? renderEngine.URL : "";
                         logDetailRecord.NumberOfRetry = 1;
                         logDetailRecord.CreationDate = DateTime.UtcNow;
                         logDetailRecord.TenantCode = tenantCode;

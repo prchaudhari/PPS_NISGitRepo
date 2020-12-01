@@ -232,12 +232,26 @@ namespace nIS
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
                 var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
-                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+
+                //If it is on-premise deployment than schedule run api will called with respective tenant code.. So in this case tenant configuration will fetch here itself
+                //If it is cloud based then, schedule run api will be called with default tenant code.. So in this case tenant configuration will be replace in repository level
+                var tenantConfiguration = new TenantConfiguration();
+                if (!tenantCode.Equals(ModelConstant.DEFAULT_TENANT_CODE))
                 {
-                    baseURL = tenantConfiguration.OutputHTMLPath;
-                    outputLocation = tenantConfiguration.OutputHTMLPath;
+                    //Means on-premise schedule run call
+                    tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                    if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
+                    {
+                        baseURL = tenantConfiguration.OutputHTMLPath;
+                        outputLocation = tenantConfiguration.OutputHTMLPath;
+                    }
                 }
+                else
+                {
+                    //Means cloud based schedule run call
+                    tenantConfiguration.TenantCode = ModelConstant.DEFAULT_TENANT_CODE;
+                }
+                
                 return this.scheduleManager.RunSchedule(baseURL, outputLocation, tenantConfiguration, tenantCode);
             }
             catch (Exception ex)

@@ -64,6 +64,9 @@ namespace nIS
         [Description("BaseUrlForTransactionData")]
         public string BaseUrlForTransactionData { get; set; }
 
+        [Description("TenantCode")]
+        public string TenantCode { get; set; }
+
         /// <summary>
         /// The utility object
         /// </summary>
