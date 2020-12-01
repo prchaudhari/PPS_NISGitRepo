@@ -490,12 +490,15 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var schedulelog = nISEntitiesDataContext.ScheduleLogRecords.OrderByDescending(item => item.CreationDate).ToList().FirstOrDefault();
-                    dashboardData.LastSCheduleRunDate = schedulelog.CreationDate;
-                    var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == schedulelog.Id).ToList();
-                    dashboardData.GeneratedStatementsOfLastscheduleRun = schedulelogdetails.Where(item => item.Status == ScheduleLogStatus.Completed.ToString()).ToList().Count;
-                    dashboardData.ActiveExceptionsOfLastscheduleRun = schedulelogdetails.Where(item => item.Status == ScheduleLogStatus.Failed.ToString()).ToList().Count;
-                    dashboardData.TotalGeneratedStatements = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Status == ScheduleLogStatus.Completed.ToString()).ToList().Count;
+                    var schedulelog = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.TenantCode == tenantCode).ToList()?.OrderByDescending(item => item.CreationDate).ToList()?.FirstOrDefault();
+                    if (schedulelog != null)
+                    {
+                        dashboardData.LastSCheduleRunDate = schedulelog.CreationDate;
+                        var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == schedulelog.Id).ToList();
+                        dashboardData.GeneratedStatementsOfLastscheduleRun = schedulelogdetails.Where(item => item.Status == ScheduleLogStatus.Completed.ToString()).ToList().Count;
+                        dashboardData.ActiveExceptionsOfLastscheduleRun = schedulelogdetails.Where(item => item.Status == ScheduleLogStatus.Failed.ToString()).ToList().Count;
+                        dashboardData.TotalGeneratedStatements = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.Status == ScheduleLogStatus.Completed.ToString()).ToList().Count;
+                    }
                 }
             }
             catch (Exception ex)

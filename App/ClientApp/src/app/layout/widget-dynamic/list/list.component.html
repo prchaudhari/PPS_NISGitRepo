@@ -21,92 +21,87 @@
           </mat-paginator>
         </div>
       </div>
-      <div class="widget-area-grid padding-0">
-        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
-          <!-- Position Column -->
-          <ng-container matColumnDef="WidgetName">
-            <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let dynamicwidget">{{dynamicwidget.WidgetName}}</td>
-          </ng-container>
-          <!--<ng-container matColumnDef="Version">
-            <th class="width5 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Version </th>
-            <td mat-cell *matCellDef="let dynamicwidget">V{{dynamicwidget.Version}}.0 </td>
-          </ng-container>-->
-          <ng-container matColumnDef="Product">
-            <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef> Page Type </th>
-            <td mat-cell *matCellDef="let dynamicwidget">{{dynamicwidget.PageTypeName}}</td>
-          </ng-container>
 
-          <ng-container matColumnDef="Entity">
-            <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Entity Type </th>
-            <td mat-cell *matCellDef="let dynamicwidget">
-              <span *ngIf="dynamicwidget.EntityName==null">-</span>
-              <span *ngIf="dynamicwidget.EntityName!=null">{{dynamicwidget.EntityName}} </span>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="Widget">
-            <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header> Widget Type </th>
-            <td mat-cell *matCellDef="let dynamicwidget">
-              <span *ngIf="dynamicwidget.WidgetType==null">-</span>
-              <span *ngIf="dynamicwidget.WidgetType!=null">{{dynamicwidget.WidgetType}} </span>
-            </td>
-          </ng-container>
-          <!--<ng-container matColumnDef="Owner">
-    <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Owner </th>
-    <td mat-cell *matCellDef="let dynamicwidget">
-      <span *ngIf="dynamicwidget.CreatedByName==null">-</span>
-      <span *ngIf="dynamicwidget.CreatedByName!=null">{{dynamicwidget.CreatedByName}} </span>
-    </td>
-  </ng-container>-->
-          <ng-container matColumnDef="PublishedBy">
-            <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Published By </th>
-            <td mat-cell *matCellDef="let dynamicwidget">
-              <span *ngIf="dynamicwidget.PublishedByName==null">-</span>
-              <span *ngIf="dynamicwidget.PublishedByName!=null">{{dynamicwidget.PublishedByName}} </span>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="PublishedDate">
-            <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header>  Published Date </th>
-            <td mat-cell *matCellDef="let dynamicwidget">
-              <span *ngIf="dynamicwidget.PublishedDate==null">-</span>
-              <span *ngIf="dynamicwidget.PublishedDate!=null">{{dynamicwidget.PublishedDate  | date:DataFormat}} </span>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="Status">
-            <th class="width5 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header>Status </th>
-            <td mat-cell *matCellDef="let dynamicwidget">
-              <span class="badge badge-primary p-1" *ngIf="dynamicwidget.Status=='New'">{{dynamicwidget.Status}}</span>
-              <span class="badge badge-success p-1" *ngIf="dynamicwidget.Status=='Published'">{{dynamicwidget.Status}}</span>
-            </td>
-          </ng-container>
+      <div *ngIf='templateList!=undefined'>
+        <div class="widget-area-grid padding-0" *ngIf='templateList.length!=0'>
+          <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+            <!-- Position Column -->
+            <ng-container matColumnDef="WidgetName">
+              <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+              <td mat-cell *matCellDef="let dynamicwidget">{{dynamicwidget.WidgetName}}</td>
+            </ng-container>
+            <ng-container matColumnDef="Product">
+              <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef> Page Type </th>
+              <td mat-cell *matCellDef="let dynamicwidget">{{dynamicwidget.PageTypeName}}</td>
+            </ng-container>
 
-          <ng-container matColumnDef="actions">
-            <th class="width15 ip-w-25" mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let dynamicwidget">
-              <div class="action-btns btn-tbl-action">
-                <button type="button" id="btnViewRole" title="View" (click)="navigateToView(dynamicwidget)" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'View' }))">
-                  <span class="fa fa-file-text-o"></span>
-                </button>
-                <button type="button" id="btnUpdateRole" *ngIf="dynamicwidget.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Edit' }))" title="Edit" (click)="navigationToEditDynamicWidget(dynamicwidget)">
-                  <span class="fa fa-pencil-square-o"></span>
-                </button>
-                <button type="button" id="btnUpdateRole" title="Delete" *ngIf="(userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Delete' })" (click)="DeleteDynamicWidget(dynamicwidget)">
-                  <span class="fa fa-trash"></span>
-                </button>
-                <button type="button" title="Publish" id="btnPublish" *ngIf="dynamicwidget.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Publish' }))" (click)="PublishDynamicWidget(dynamicwidget)"><span class="fa fa-share"></span></button>
-                <button type="button" title="Clone" id="btnClone" *ngIf="dynamicwidget.Status!='New' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Create' }))" (click)="CloneDynamicWidget(dynamicwidget)">
-                  <span class="fa fa-clone"></span>
-                </button>
-                <button type="button" title="Preview" id="btnPreview" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'View' }))" (click)="PreviewDynamicWidget(dynamicwidget)" >
-                  <span class="fa fa-eye"></span>
-                </button>
-              </div>
-            </td>
-          </ng-container>
+            <ng-container matColumnDef="Entity">
+              <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Entity Type </th>
+              <td mat-cell *matCellDef="let dynamicwidget">
+                <span *ngIf="dynamicwidget.EntityName==null">-</span>
+                <span *ngIf="dynamicwidget.EntityName!=null">{{dynamicwidget.EntityName}} </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Widget">
+              <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header> Widget Type </th>
+              <td mat-cell *matCellDef="let dynamicwidget">
+                <span *ngIf="dynamicwidget.WidgetType==null">-</span>
+                <span *ngIf="dynamicwidget.WidgetType!=null">{{dynamicwidget.WidgetType}} </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="PublishedBy">
+              <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Published By </th>
+              <td mat-cell *matCellDef="let dynamicwidget">
+                <span *ngIf="dynamicwidget.PublishedByName==null">-</span>
+                <span *ngIf="dynamicwidget.PublishedByName!=null">{{dynamicwidget.PublishedByName}} </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="PublishedDate">
+              <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header>  Published Date </th>
+              <td mat-cell *matCellDef="let dynamicwidget">
+                <span *ngIf="dynamicwidget.PublishedDate==null">-</span>
+                <span *ngIf="dynamicwidget.PublishedDate!=null">{{dynamicwidget.PublishedDate  | date:DataFormat}} </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Status">
+              <th class="width5 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header>Status </th>
+              <td mat-cell *matCellDef="let dynamicwidget">
+                <span class="badge badge-primary p-1" *ngIf="dynamicwidget.Status=='New'">{{dynamicwidget.Status}}</span>
+                <span class="badge badge-success p-1" *ngIf="dynamicwidget.Status=='Published'">{{dynamicwidget.Status}}</span>
+              </td>
+            </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+            <ng-container matColumnDef="actions">
+              <th class="width15 ip-w-25" mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let dynamicwidget">
+                <div class="action-btns btn-tbl-action">
+                  <button type="button" id="btnViewRole" title="View" (click)="navigateToView(dynamicwidget)" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'View' }))">
+                    <span class="fa fa-file-text-o"></span>
+                  </button>
+                  <button type="button" id="btnUpdateRole" *ngIf="dynamicwidget.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Edit' }))" title="Edit" (click)="navigationToEditDynamicWidget(dynamicwidget)">
+                    <span class="fa fa-pencil-square-o"></span>
+                  </button>
+                  <button type="button" id="btnUpdateRole" title="Delete" *ngIf="(userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Delete' })" (click)="DeleteDynamicWidget(dynamicwidget)">
+                    <span class="fa fa-trash"></span>
+                  </button>
+                  <button type="button" title="Publish" id="btnPublish" *ngIf="dynamicwidget.Status!='Published' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Publish' }))" (click)="PublishDynamicWidget(dynamicwidget)"><span class="fa fa-share"></span></button>
+                  <button type="button" title="Clone" id="btnClone" *ngIf="dynamicwidget.Status!='New' && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'Create' }))" (click)="CloneDynamicWidget(dynamicwidget)">
+                    <span class="fa fa-clone"></span>
+                  </button>
+                  <button type="button" title="Preview" id="btnPreview" *ngIf="((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Dynamic Widget',Operation: 'View' }))" (click)="PreviewDynamicWidget(dynamicwidget)">
+                    <span class="fa fa-eye"></span>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+      <div class="widget-area-grid padding-0 text-center" *ngIf='templateList.length==0'>
+        No Record found
       </div>
     </div>
   </div>

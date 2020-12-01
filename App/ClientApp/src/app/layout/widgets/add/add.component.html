@@ -9,39 +9,47 @@
   </div>
   <div class="card border-0 mb-2 card-shadow">
     <div class="card-body position-relative">
-      <div class="row">
-        <div class="col-sm-7">
 
-            <div class="widget-card" *ngFor="let widget of widgetList">
-              <div class="hide-radio widget-icons">
-                <label>
-                  <input type="radio" name="widgetType" id="inputWidgetImage" (click)="setWidgetType(widget)"[checked]="widget.Checked">
-                  <span class="{{widget.WidgetIcon}}"></span>
-                </label>
+      <div *ngIf="widgetList!=undefined">
+        <div class="row">
+
+          <div *ngIf='widgetList.length!=0'>
+            <div class="col-sm-7">
+              <div class="widget-card" *ngFor="let widget of widgetList">
+                <div class="hide-radio widget-icons">
+                  <label>
+                    <input type="radio" name="widgetType" id="inputWidgetImage" (click)="setWidgetType(widget)" [checked]="widget.Checked">
+                    <span class="{{widget.WidgetIcon}}"></span>
+                  </label>
+                </div>
+                <label class="text-center width100 pt-2 m-0 widget-name">{{widget.DisplayName}}</label>
               </div>
-              <label class="text-center width100 pt-2 m-0 widget-name">{{widget.DisplayName}}</label>
             </div>
+            <div class="col-sm-5">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="mb-3">
+                    <h6 class="mb-1" *ngIf='selectedLink!=undefined'>{{selectedLink.DisplayName}}</h6>
 
-        </div>
-        <div class="col-sm-5">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="mb-3">
-                <h6 class="mb-1" *ngIf='selectedLink!=undefined'>{{selectedLink.DisplayName}}</h6>
-
-                <div *ngIf='selectedLink!=undefined'><label class="mb-0">Description : </label><span class="ml-1">{{selectedLink.WidgetDescription}}</span></div>
-                <div *ngIf='selectedLink!=undefined'><label class="mb-0">Page Types :</label> <h6 class="badge badge-secondary p-1 ml-1 mb-0">{{selectedLink.PageTypeNames}}</h6></div>
-              </div>
-              <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
-                <div class="card-body d-flex justify-content-center align-items-center" *ngIf='selectedLink!=undefined'>
-                  <img src="{{selectedLink.ImageSource}}" class="img-fluid" id="imgWidget" />
+                    <div *ngIf='selectedLink!=undefined'><label class="mb-0">Description : </label><span class="ml-1">{{selectedLink.WidgetDescription}}</span></div>
+                    <div *ngIf='selectedLink!=undefined'><label class="mb-0">Page Types :</label> <h6 class="badge badge-secondary p-1 ml-1 mb-0">{{selectedLink.PageTypeNames}}</h6></div>
+                  </div>
+                  <div class="card card-shadow preview-container float-right width100" style="position:initial;right:0;">
+                    <div class="card-body d-flex justify-content-center align-items-center" *ngIf='selectedLink!=undefined'>
+                      <img src="{{selectedLink.ImageSource}}" class="img-fluid" id="imgWidget" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="col-lg-12 text-center" *ngIf='widgetList.length==0'>
+            No record found
+          </div>
 
         </div>
       </div>
+      
     </div>
   </div>
 

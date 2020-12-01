@@ -8,8 +8,9 @@
     <div class="card card-bg-1 card-tile">
       <div class="icon-production-plan-line2 dash-icon-bg-1 dash-icon"></div>
       <div class="dash-in">
-        <h5 class="mb-0">{{DashboardData.LastSCheduleRunDate| date:DataFormat}}</h5>
-        <div class="font20">Last Schedule Run</div>
+        <h5 class="mb-0" *ngIf="DashboardData.LastSCheduleRunDate!='0001-01-01T00:00:00'">{{DashboardData.LastSCheduleRunDate| date:DataFormat}}</h5>
+        <h5 class="mb-0" *ngIf="DashboardData.LastSCheduleRunDate=='0001-01-01T00:00:00'">No schedule created yet</h5>
+        <div class="font20" *ngIf="DashboardData.LastSCheduleRunDate!='0001-01-01T00:00:00'">Last Schedule Run</div>
       </div>
     </div>
     <div class="card card-bg-2 card-tile">

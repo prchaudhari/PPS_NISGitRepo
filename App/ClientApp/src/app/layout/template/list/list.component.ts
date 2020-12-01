@@ -101,9 +101,18 @@ export class ListComponent implements OnInit {
   //End getter methods
   public DataFormat;
   ngOnInit() {
+
+    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
+    if (userClaimsDetail) {
+      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
+    }
+    else {
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
+    }
+
     this.DataFormat = localStorage.getItem('DateFormat');
     this.getTemplates(null);
-    //this.getPageTypes();
     this.TemplateFilterForm = this.fb.group({
       filterDisplayName: [null],
       filterOwner: [null],
@@ -112,14 +121,6 @@ export class ListComponent implements OnInit {
       filterPublishedOnFromDate: [null],
       filterPublishedOnToDate: [null],
     });
-
-    var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
-    if (userClaimsDetail) {
-      this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
-    }
-    else {
-      this.userClaimsRolePrivilegeOperations = [];
-    }
   }
 
   sortData(sort: MatSort) {
@@ -216,14 +217,14 @@ export class ListComponent implements OnInit {
   async getPageTypes() {
     let templateService = this.injector.get(TemplateService);
     this.pageTypeList = await templateService.getPageTypes();
-    if (this.pageTypeList.length == 0) {
-      let message = ErrorMessageConstants.getNoRecordFoundMessage;
-      this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
-        if (data == true) {
-          this.getPageTypes();
-        }
-      });
-    }
+    //if (this.pageTypeList.length == 0) {
+    //  let message = ErrorMessageConstants.getNoRecordFoundMessage;
+    //  this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
+    //    if (data == true) {
+    //      //this.getPageTypes();
+    //    }
+    //  });
+    //}
   }
 
   validateFilterDate(): boolean {
