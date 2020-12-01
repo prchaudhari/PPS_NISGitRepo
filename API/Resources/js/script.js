@@ -33,7 +33,7 @@ $(document).ready(function () {
         data.push(object);
         //console.log(object);
         $.ajax({
-            url: 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save',
+            url: 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save',
             type: 'POST',
             dataType: 'json',
             contentType: "application/json",
@@ -94,7 +94,7 @@ function checkElement(element) {
                 data.push(object);
 
                 $.ajax({
-                    url: 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save',
+                    url: 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save',
                     type: 'POST',
                     dataType: 'json',
                     contentType: "application/json",
@@ -155,7 +155,7 @@ function onPageLoad() {
     data.push(object);
     //console.log(object);
     $.ajax({
-        url: 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save',
+        url: 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save',
         type: 'POST',
         dataType: 'json',
         contentType: "application/json",

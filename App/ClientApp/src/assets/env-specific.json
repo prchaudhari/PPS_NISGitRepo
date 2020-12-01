@@ -1,4 +1,6 @@
 {
-  "baseURL": "http://localhost/API/",
+  //"baseURL": "http://localhost/API/",
+  "baseURL": "http://localhost:{{APIPORTNO}}/",
+
   "appVersion": "2.1.5"
 }
