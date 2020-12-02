@@ -319,7 +319,7 @@ export class WidgetdesignerComponent implements OnInit {
 
       var settings;
       if (this.dynamicWidgetDetails.WidgetType != 'Html') {
-        settings = JSON.parse(this.dynamicWidgetDetails.PreviewData);
+        settings = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
       }
 
       if (this.dynamicWidgetDetails.WidgetType == 'Form') {

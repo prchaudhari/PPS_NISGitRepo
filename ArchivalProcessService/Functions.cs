@@ -26,12 +26,12 @@ namespace ArchivalProcessService
         // This function will get triggered/executed every day (daily) at 00.00.
         public static void ProcessQueueBasedOnTimer([TimerTrigger("0 0 0 * * *", RunOnStartup = false)] TimerInfo timer)
         {
-            WriteToFile("This should run every day (daily) at 00.00");
+            Console.WriteLine("This should run every day (daily) at 00.00 :" +DateTime.UtcNow);
             ApiBaseAddress = ConfigurationManager.AppSettings["ApiBaseAddress"];
             TenantCode = ConfigurationManager.AppSettings["TenantCode"];
-            WriteToFile("App Base Address: " + ApiBaseAddress + " TenantCode: " + TenantCode);
+            Console.WriteLine("App Base Address: " + ApiBaseAddress + " TenantCode: " + TenantCode);
             RunArchivalProcessSchedule();
-            WriteToFile("Execution done..!! ");
+            Console.WriteLine("Execution done..!! ");
         }
 
         public static void RunArchivalProcessSchedule()
@@ -44,11 +44,11 @@ namespace ArchivalProcessService
             try
             {
                 var response = client.PostAsync("ArchivalProcess/RunArchivalProcess", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json")).Result;
-                WriteToFile("Response Content from Run Archival Process API: " + response.Content.ReadAsStringAsync().Result);
+                Console.WriteLine("Response Content from Run Archival Process API: " + response.Content.ReadAsStringAsync().Result);
             }
             catch (Exception ex)
             {
-                WriteToFile("Exception at Run Archival Process Schedule: " + ex);
+                Console.WriteLine("Exception at Run Archival Process Schedule: " + ex);
                 throw ex;
             }
         }

@@ -547,6 +547,8 @@ namespace nIS
                     {
                         throw new DynamicWidgetNotFoundException(tenantCode);
                     }
+
+                    //To decide dynamic widget version
                     string version = "";
                     var cloneOfDynamicWidget = nISEntitiesDataContext.DynamicWidgetRecords.Where(item => item.CloneOfWidgetId == dynamicWidgetIdentifier).ToList();
                     if (cloneOfDynamicWidget?.Count() > 0)
@@ -558,8 +560,8 @@ namespace nIS
                     {
                         version = "2";
                     }
-                    IList<DynamicWidgetRecord> dynamicWidgetRecordsForClone = new List<DynamicWidgetRecord>();
-                    dynamicWidgetRecordsForClone.Add(new DynamicWidgetRecord()
+
+                    var clonedDynamicWidget = new DynamicWidgetRecord()
                     {
                         WidgetName = dynamicWidgetRecord.WidgetName,
                         WidgetType = dynamicWidgetRecord.WidgetType,
@@ -580,10 +582,41 @@ namespace nIS
                         CloneOfWidgetId = dynamicWidgetIdentifier,
                         TenantCode = tenantCode,
                         PreviewData = dynamicWidgetRecord.PreviewData
-                    });
+                    };
 
-                    nISEntitiesDataContext.DynamicWidgetRecords.AddRange(dynamicWidgetRecordsForClone);
+                    nISEntitiesDataContext.DynamicWidgetRecords.Add(clonedDynamicWidget);
                     nISEntitiesDataContext.SaveChanges();
+
+                    if (clonedDynamicWidget.WidgetFilterSettings != null && clonedDynamicWidget.WidgetFilterSettings != "")
+                    {
+                        List<DynamicWidgetFilterDetail> details = JsonConvert.DeserializeObject<List<DynamicWidgetFilterDetail>>(clonedDynamicWidget.WidgetFilterSettings);
+                        details.ToList().ForEach(d =>
+                        {
+                            d.DynamicWidgetId = clonedDynamicWidget.Id;
+                        });
+                        nISEntitiesDataContext.DynamicWidgetFilterDetails.AddRange(details);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
+
+                    //To add widget page type mapping
+                    var _lstWidgetPageTypeMap = nISEntitiesDataContext.WidgetPageTypeMaps.Where(it => it.WidgetId == dynamicWidgetIdentifier && it.IsDynamicWidget && it.TenantCode == dynamicWidgetRecord.TenantCode).ToList();
+                    IList<WidgetPageTypeMap> widgetPageTypeMaps = new List<WidgetPageTypeMap>();
+                    if (_lstWidgetPageTypeMap.Count > 0)
+                    {
+                        _lstWidgetPageTypeMap.ForEach(oldMap =>
+                        {
+                            widgetPageTypeMaps.Add(new WidgetPageTypeMap
+                            {
+                                PageTypeId = oldMap.PageTypeId,
+                                IsDynamicWidget = oldMap.IsDynamicWidget,
+                                WidgetId = clonedDynamicWidget.Id,
+                                TenantCode = clonedDynamicWidget.TenantCode
+                            });
+                        });
+
+                        nISEntitiesDataContext.WidgetPageTypeMaps.AddRange(widgetPageTypeMaps);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
                 }
 
                 result = true;
