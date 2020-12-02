@@ -1,3 +1,6 @@
+var apiUrl = 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save';
+//var apiUrl = 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save';
+
 $(document).ready(function () {
     $(".mainNav").on('click', function (e) {
         $('.tabDivClass').hide();
@@ -33,7 +36,7 @@ $(document).ready(function () {
         data.push(object);
         //console.log(object);
         $.ajax({
-            url: 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save',
+            url: apiUrl,
             type: 'POST',
             dataType: 'json',
             contentType: "application/json",
@@ -94,7 +97,7 @@ function checkElement(element) {
                 data.push(object);
 
                 $.ajax({
-                    url: 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save',
+                    url: apiUrl,
                     type: 'POST',
                     dataType: 'json',
                     contentType: "application/json",
@@ -155,7 +158,7 @@ function onPageLoad() {
     data.push(object);
     //console.log(object);
     $.ajax({
-        url: 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save',
+        url: apiUrl,
         type: 'POST',
         dataType: 'json',
         contentType: "application/json",
