@@ -11,9 +11,10 @@
     <div class="card-body position-relative">
 
       <div *ngIf="widgetList!=undefined">
-        <div class="row">
 
-          <div *ngIf='widgetList.length!=0'>
+
+        <div *ngIf='widgetList.length!=0'>
+          <div class="row">
             <div class="col-sm-7">
               <div class="widget-card" *ngFor="let widget of widgetList">
                 <div class="hide-radio widget-icons">
@@ -43,14 +44,14 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-lg-12 text-center" *ngIf='widgetList.length==0'>
             No record found
           </div>
-
         </div>
       </div>
-      
     </div>
-  </div>
 
+  </div>
 </div>

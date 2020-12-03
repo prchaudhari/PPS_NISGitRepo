@@ -419,7 +419,7 @@ namespace nIS
                         dynamicWidgets.ToList().ForEach(item =>
                         {
                             IList<PageType> pageTypes = new List<PageType>();
-                            IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = widgetPageTypeMaps.Where(map => map.WidgetId == item.Identifier).ToList();
+                            IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = widgetPageTypeMaps.Where(map => map.WidgetId == item.Identifier && item.TenantCode==map.TenantCode).ToList();
                             currentWidgetPageTypeMaps.ToList().ForEach(map =>
                             {
                                 pageTypes.Add(new PageType

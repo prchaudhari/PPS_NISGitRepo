@@ -237,7 +237,7 @@ namespace nIS
         public const string LINEGRAPH_WIDGETPREVIEW = "<div class='card border-0' style='height:600px'><div class='p-1 bg-light border-0 text-left'> " +
             "<h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"lineGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
 
-        public const string PIECHART_WIDGETPREVIEW = "<div class='card border-0' style='height:600px'><div class='p-1 bg-light border-0 text-left'> h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"pieChartcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
+        public const string PIECHART_WIDGETPREVIEW = "<div class='card border-0' style='height:600px'><div class='p-1 bg-light border-0 text-left'> <h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"pieChartcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
 
         public const string BARGRAPH_WIDGETPREVIEW = "<div class='card border-0' style='height:600px'><div class='p-1 bg-light border-0 text-left'> <h5 class='m-0' style={{TitleStyle}}>{{WidgetTitle}}</h5></div><div class='card-body'> <div id=\"barGraphcontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
 

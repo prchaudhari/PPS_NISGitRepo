@@ -1,6 +1,6 @@
 <div class="main-container">
   <div class="page-title d-flex justify-content-between">
-    <span class="xs-title">Dynamic Widgets</span>
+    <span class="xs-title">Dynamic Widgets - {{WidgetType}} </span>
   </div>
   <div class="card border-0 mb-2 card-shadow">
     <form [formGroup]="DynamicWidgetForm">
@@ -399,7 +399,7 @@
                     <input class="custom-control-input" type="radio"
                            name="themeoption" id="Custome" value="option1" [checked]="isCustome" (click)="isCustomeClicked()">
                     <label class="custom-control-label dir-rtl" for="Custome">
-                      Custome
+                      Custom
                     </label>
                   </div>
                 </div>
