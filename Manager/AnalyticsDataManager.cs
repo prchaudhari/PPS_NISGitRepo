@@ -103,19 +103,18 @@ namespace nIS
         }
 
         /// <summary>
-        /// This method will call add asset library method of repository.
+        /// This method will call add analytic data to repository.
         /// </summary>
-        /// <param name="assetLibraries">Asset library are to be add.</param>
-        /// <param name="tenantCode">Tenant code of asset library.</param>
+        /// <param name="_lstAnalyticData">Analytics data are to be add.</param>
         /// <returns>
         /// Returns true if entities added successfully, false otherwise.
         /// </returns>
-        public bool Save(IList<AnalyticsData> settings, string tenantCode)
+        public bool Save(IList<AnalyticsData> _lstAnalyticData)
         {
             bool result = false;
             try
             {
-                result = AnalyticsDataRepository.Save(settings, tenantCode);
+                result = AnalyticsDataRepository.Save(_lstAnalyticData);
 
 
                 return result;

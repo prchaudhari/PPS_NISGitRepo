@@ -66,6 +66,11 @@ namespace nIS
         /// </summary>
         private ITenantConfigurationRepository tenantConfigurationRepository = null;
 
+        /// <summary>
+        /// The Dynamic widget repository.
+        /// </summary>
+        private IDynamicWidgetRepository dynamicWidgetRepository = null;
+
         #endregion
 
         #region Constructor
@@ -79,6 +84,7 @@ namespace nIS
             this.pageRepository = this.unityContainer.Resolve<IPageRepository>();
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
             this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
+            this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
         }
 
         #endregion
@@ -707,7 +713,9 @@ namespace nIS
                         TabClassName = it.TabClassName
                     }));
 
-                    var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, newStatementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client);
+                    var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customerMaster, statement, newStatementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client, tenantEntities);
                     if (logDetailRecord != null)
                     {
                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))

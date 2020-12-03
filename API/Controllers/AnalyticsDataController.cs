@@ -169,20 +169,19 @@ namespace nIS
         }
 
         /// <summary>
-        /// This method helps to get asset libraries list based on the search parameters.
+        /// This method helps to save analytic data.
         /// </summary>
-        /// <param name="AnalyticsDataSearchParameter"></param>
-        /// <returns>List of asset libraries</returns>
+        /// <param name="_lstAnalyticData"></param>
+        /// <returns>true if save successfully, otherwise false</returns>
         [HttpPost]
         [AllowAnonymous]
-        public bool Save(IList<AnalyticsData> setting)
+        public bool Save(IList<AnalyticsData> _lstAnalyticData)
         {
             bool result;
             try
             {
 
-                // string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                result = this.AnalyticsDataManager.Save(setting, ModelConstant.DEFAULT_TENANT_CODE);
+                result = this.AnalyticsDataManager.Save(_lstAnalyticData);
             }
             catch (Exception exception)
             {

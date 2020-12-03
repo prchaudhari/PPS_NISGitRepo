@@ -64,6 +64,11 @@ namespace nIS
         /// </summary>
         private ITenantConfigurationRepository tenantConfigurationRepository = null;
 
+        /// <summary>
+        /// The Dynamic widget repository.
+        /// </summary>
+        private IDynamicWidgetRepository dynamicWidgetRepository = null;
+
         #endregion
 
         #region Constructor
@@ -76,6 +81,7 @@ namespace nIS
             this.configurationutility = new ConfigurationUtility(this.unityContainer);
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
             this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
+            this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
         }
 
         #endregion
@@ -667,11 +673,13 @@ namespace nIS
 
                                         if (customerMasters.Count > 0)
                                         {
+                                            var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+
                                             ParallelOptions parallelOptions = new ParallelOptions();
                                             parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                                             Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                             {
-                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
+                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
                                             });
                                             //customerMasters.ToList().ForEach(customer =>
                                             //{
@@ -878,15 +886,17 @@ namespace nIS
 
                                             if (customerMasters.Count > 0)
                                             {
+                                                var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+
                                                 ParallelOptions parallelOptions = new ParallelOptions();
                                                 parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                                                 Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                                 {
-                                                    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
+                                                    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
                                                 });
                                                 //customerMasters.ToList().ForEach(customer =>
                                                 //{
-                                                //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
+                                                //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
                                                 //});
                                             }
                                             else
@@ -1053,15 +1063,17 @@ namespace nIS
 
                     if (customerMasters.Count > 0)
                     {
+                        var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+
                         ParallelOptions parallelOptions = new ParallelOptions();
                         parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                         Parallel.ForEach(customerMasters, parallelOptions, customer =>
                         {
-                            this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
+                            this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
                         });
                         //customerMasters.ForEach(customer =>
                         //{
-                        //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client);
+                        //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
                         //});
                     }
                     else
@@ -1971,7 +1983,7 @@ namespace nIS
             }
         }
 
-        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client)
+        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client, IList<TenantEntity> tenantEntities)
         {
             IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
 
@@ -1980,7 +1992,7 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     var renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
-                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client);
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client, tenantEntities);
                     if (logDetailRecord != null)
                     {
                         logDetailRecord.ScheduleLogId = scheduleLog.Id;

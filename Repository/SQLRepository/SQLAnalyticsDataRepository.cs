@@ -167,54 +167,55 @@ namespace nIS
         /// <summary>
         /// This is responsible to save analytics data
         /// </summary>
-        /// <param name="settings"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns></returns>
-        public bool Save(IList<AnalyticsData> settings, string tenantCode)
+        /// <param name="_lstAnalyticData"></param>
+        /// <returns>return true if records saved successfully, otherwise false</returns>
+        public bool Save(IList<AnalyticsData> _lstAnalyticData)
         {
             IList<AnalyticsDataRecord> records = new List<AnalyticsDataRecord>();
-            bool result;
+            bool result = false;
+
             try
             {
-
-                this.SetAndValidateConnectionString(tenantCode);
-                StringBuilder queryString = new StringBuilder();
-                queryString.Append(string.Join("or ", settings.Where(item => item.PageWidgetId > 0).Select(item => string.Format("Id.Equals({0}) ", item.PageWidgetId))));
-
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                if (_lstAnalyticData.Count > 0 && _lstAnalyticData.FirstOrDefault().TenantCode != null && _lstAnalyticData.FirstOrDefault().TenantCode != string.Empty)
                 {
-                    IList<PageWidgetMapRecord> pageWidgeMap = new List<PageWidgetMapRecord>();
-                    if (!string.IsNullOrEmpty(queryString.ToString()))
+                    var tenantCode = _lstAnalyticData.FirstOrDefault().TenantCode;
+                    this.SetAndValidateConnectionString(tenantCode);
+                    StringBuilder queryString = new StringBuilder();
+                    queryString.Append(string.Join("or ", _lstAnalyticData.Where(item => item.PageWidgetId > 0).Select(item => string.Format("Id.Equals({0}) ", item.PageWidgetId))));
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        pageWidgeMap = nISEntitiesDataContext.PageWidgetMapRecords.Where(queryString.ToString()).ToList();
-                    }
-                    settings.ToList().ForEach(setting =>
-                    {
-                        AnalyticsDataRecord record = new AnalyticsDataRecord();
-                        PageWidgetMapRecord map = new PageWidgetMapRecord();
-                        if (setting.PageWidgetId > 0)
+                        IList<PageWidgetMapRecord> pageWidgeMap = new List<PageWidgetMapRecord>();
+                        if (!string.IsNullOrEmpty(queryString.ToString()))
                         {
-                            map = pageWidgeMap.Where(page => page.Id == setting.PageWidgetId)?.FirstOrDefault();
-                            setting.PageId = map.PageId;
-                            setting.WidgetId = map.ReferenceWidgetId;
-
+                            pageWidgeMap = nISEntitiesDataContext.PageWidgetMapRecords.Where(queryString.ToString()).ToList();
                         }
-                        record.StatementId = setting.StatementId;
-                        record.CustomerId = setting.CustomerId;
-                        record.AccountId = setting.AccountId != null ? setting.AccountId : "";
-                        record.PageWidgetId = setting.PageWidgetId;
-                        record.PageId = setting.PageId;
-                        record.WidgetId = setting.WidgetId;
-                        record.EventDate = setting.EventDate;
-                        record.EventType = setting.EventType;
-                        record.TenantCode = ModelConstant.DEFAULT_TENANT_CODE;
-                        records.Add(record);
+                        _lstAnalyticData.ToList().ForEach(setting =>
+                        {
+                            AnalyticsDataRecord record = new AnalyticsDataRecord();
+                            PageWidgetMapRecord map = new PageWidgetMapRecord();
+                            if (setting.PageWidgetId > 0)
+                            {
+                                map = pageWidgeMap.Where(page => page.Id == setting.PageWidgetId)?.FirstOrDefault();
+                                setting.PageId = map.PageId;
+                                setting.WidgetId = map.ReferenceWidgetId;
 
-                    });
+                            }
+                            record.StatementId = setting.StatementId;
+                            record.CustomerId = setting.CustomerId;
+                            record.AccountId = setting.AccountId != null ? setting.AccountId : "";
+                            record.PageWidgetId = setting.PageWidgetId;
+                            record.PageId = setting.PageId;
+                            record.WidgetId = setting.WidgetId;
+                            record.EventDate = setting.EventDate;
+                            record.EventType = setting.EventType;
+                            record.TenantCode = tenantCode;
+                            records.Add(record);
+                        });
 
-                    nISEntitiesDataContext.AnalyticsDataRecords.AddRange(records);
-                    nISEntitiesDataContext.SaveChanges();
-                    result = true;
+                        nISEntitiesDataContext.AnalyticsDataRecords.AddRange(records);
+                        nISEntitiesDataContext.SaveChanges();
+                        result = true;
+                    }
                 }
             }
 
@@ -224,6 +225,7 @@ namespace nIS
             }
 
             return result;
+
         }
         #endregion
 

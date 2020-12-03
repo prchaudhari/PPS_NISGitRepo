@@ -29,7 +29,8 @@ $(document).ready(function () {
             "WidgetId": 0,
             "EventDate": new Date(),
             "EventType": "PageLoad",
-            "AccountId": ""
+            "AccountId": "",
+            "TenantCode": TenantCode
         };
         //console.log(object);
         var data = [];
@@ -56,6 +57,7 @@ var statementId = 15;
 var pageId = 0;
 var widgetId = 0;
 var accountId = 0;
+var TenantCode = '';
 function click_event(event) {
     // console.log(event);
     //console.log(customer);
@@ -90,7 +92,7 @@ function checkElement(element) {
                     "WidgetId": 0,
                     "EventDate": new Date(),
                     "EventType": "Click",
-                    "TenantCode": ""
+                    "TenantCode": TenantCode
                 };
                 //console.log(object);
                 var data = [];
@@ -134,6 +136,7 @@ function onPageLoad() {
     pageId = document.getElementById("FirstPageId").value;
     customer = document.getElementById("CustomerId").value;
     statementId = document.getElementById("StatementId").value;
+    TenantCode = document.getElementById("TenantCode").value;
     var object = {
         "StatementId": statementId,
         "CustomerId": customer,
@@ -141,7 +144,8 @@ function onPageLoad() {
         "WidgetId": 0,
         "EventDate": new Date(),
         "EventType": "StatementOpen",
-        "AccountId": 0
+        "AccountId": 0,
+        "TenantCode": TenantCode
     };
     //console.log(object);
     var data = [];
@@ -153,7 +157,8 @@ function onPageLoad() {
         "WidgetId": 0,
         "EventDate": new Date(),
         "EventType": "PageLoad",
-        "AccountId": 0
+        "AccountId": 0,
+        "TenantCode": TenantCode
     };
     data.push(object);
     //console.log(object);

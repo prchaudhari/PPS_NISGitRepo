@@ -41,18 +41,14 @@ namespace nIS
         int GetAnalyticsDataCount(AnalyticsSearchParameter searchParameter, string tenantCode);
 
         /// <summary>
-        /// This method reference to get roles based on serach parameter.
+        /// This method reference to add analytic data.
         /// </summary>
-        /// <param name="assetLibrarySearchParameter">
-        /// The search parameter for product
-        /// </param>
-        /// <param name="tenantCode">
-        /// The tenant code
-        /// </param>
+        /// <param name="_lstAnalyticData">
+        /// The list of analytic data
         /// <returns>
-        /// It returns list of roles.
+        /// It returns true if record saved successfully, otherwise false.
         /// </returns>
-        bool Save(IList<AnalyticsData> settings, string tenantCode);
+        bool Save(IList<AnalyticsData> _lstAnalyticData);
 
 
         #endregion
