@@ -1,0 +1,1 @@
+﻿App URL is http://localhost:{{APPURL}}/

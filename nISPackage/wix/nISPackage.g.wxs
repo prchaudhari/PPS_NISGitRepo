@@ -13,6 +13,11 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder" Name="ProgramFilesFolder">
         <Directory Id="INSTALLDIR" Name="nISApp1">
+
+          <Component Id="Component.readme.txt_1599642591" Guid="6fe30b47-2577-43ad-9195-1861123547a6">
+            <File Id="readme.txt_1599642591" Source="readme.txt" />
+          </Component>
+
           <Directory Id="INSTALLDIR.SchedulerWindowService" Name="SchedulerWindowService">
 
             <Component Id="Component.SchedulerWindowService.exe_79577613" Guid="6fe30b47-2577-43ad-9195-186119559424">
@@ -33,30 +38,6 @@
 
             <Component Id="Component.SchedulerWindowService.exe.config_1807190602" Guid="6fe30b47-2577-43ad-9195-1861ca41730a">
               <File Id="SchedulerWindowService.exe.config_1807190602" Source="..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config" />
-            </Component>
-
-            <Component Id="dbUser" Guid="6fe30b47-2577-43ad-9195-1861d819344b" KeyPath="yes">
-              <User Id="dbUser" Name="[USERNAME]" CreateUser="no" Password="[PASSWORD]" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
-
-              <CreateFolder />
-              <RemoveFolder Id="INSTALLDIR.SchedulerWindowService" On="uninstall" />
-            </Component>
-
-            <Component Id="_DBNAME_" Guid="6fe30b47-2577-43ad-9195-1861bbdcc97a" KeyPath="yes">
-              <SqlDatabase Id="_DBNAME_" CreateOnInstall="yes" Database="[DBNAME]" Server="[INSTANCENAME]" User="dbUser" xmlns="http://schemas.microsoft.com/wix/SqlExtension">
-                <SqlScript Id="script" BinaryKey="script" ExecuteOnInstall="yes" User="dbUser" />
-
-                <SqlString Id="SqlString" ExecuteOnInstall="yes" SQL="CREATE SCHEMA ConfigurationManager" />
-                <SqlString Id="SqlString.1" ExecuteOnInstall="yes" SQL="CREATE TABLE ConfigurationManager.ConfigurationManager(    Id bigint IDENTITY(1,1) NOT NULL,    PartionKey nvarchar(100) NOT NULL,    RowKey nvarchar(100) NOT NULL,    Value nvarchar(500) NOT NULL,PRIMARY KEY CLUSTERED (    Id ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON))" />
-                <SqlString Id="SqlString.2" ExecuteOnInstall="yes" SQL="SET IDENTITY_INSERT ConfigurationManager.ConfigurationManager ON INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (1, N'nIS', N'nISConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (2, N'EntityManager', N'EntityManagerConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (3, N'EventManager', N'EventManagerConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (4, N'SubscriptionManager', N'SubscriptionManagerConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (5, N'TemplateManager', N'NotificationEngineConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') " />
-                <SqlString Id="SqlString.3" ExecuteOnInstall="yes" SQL="Update ConfigurationManager.ConfigurationManager set Value='Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]'; " />
-                <SqlString Id="SqlString.4" ExecuteOnInstall="yes" SQL="CREATE SCHEMA TenantManager " />
-                <SqlString Id="SqlString.5" ExecuteOnInstall="yes" SQL="CREATE TABLE TenantManager.Tenant(Id int IDENTITY(1,1) NOT NULL,TenantCode nvarchar(max) NOT NULL,TenantName nvarchar(max) NOT NULL,TenantDescription nvarchar(max) NULL,TenantType nvarchar(max) NULL,TenantImage nvarchar(max) NULL,TenantDomainName nvarchar(max) NOT NULL,FirstName nvarchar(max) NULL,LastName nvarchar(max) NULL,ContactNumber nvarchar(max) NOT NULL,EmailAddress nvarchar(max) NOT NULL,SecondaryContactName nvarchar(max) NULL,SecondaryContactNumber nvarchar(max) NULL,SecondaryEmailAddress nvarchar(max) NULL,AddressLine1 nvarchar(max) NULL,AddressLine2 nvarchar(max) NULL,TenantCity nvarchar(max) NULL,TenantState nvarchar(max) NULL,TenantCountry nvarchar(max) NULL,PinCode nvarchar(max) NULL,StartDate date NULL,EndDate date NULL,StorageAccount nvarchar(max) NOT NULL,AccessToken nvarchar(max) NOT NULL,ApplicationURL nvarchar(max) NULL,ApplicationModules nvarchar(max) NULL,BillingEmailAddress nvarchar(max) NULL,SecondaryLastName nvarchar(max) NULL,BillingFirstName nvarchar(max) NULL,BillingLastName nvarchar(max) NULL,BillingContactNumber nvarchar(max) NULL,PanNumber nvarchar(max) NULL,ServiceTax nvarchar(max) NULL,IsPrimaryTenant bit NULL,ManageType nvarchar(max) NULL,ExternalCode nvarchar(max) NULL,AutheticationMode nvarchar(max) NULL,IsActive bit NOT NULL CONSTRAINT DF__Tenant__IsActive__6C190EBB  DEFAULT ((1)),IsDeleted bit NOT NULL CONSTRAINT DF__Tenant__IsDelete__6D0D32F4  DEFAULT ((0)),ParentTenantCode nvarchar(max) NULL,IsTenantConfigured bit NOT NULL,CONSTRAINT PK__Tenant__3214EC073F2DE561 PRIMARY KEY CLUSTERED (Id ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF,IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) )" />
-                <SqlString Id="SqlString.6" ExecuteOnInstall="yes" SQL="INSERT TenantManager.Tenant VALUES ( N'00000000-0000-0000-0000-000000000000', N'nIS SuperAdmin', N'', N'Instance', N'', N'default.com', N'Super', N'Admin', N'+91-1234567890', N'instancemanager@nis.com', N'', N'', N'', N'Mumbai', N'', N'1', N'1', N'1', N'123456', CAST(N'2015-12-31' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, N'Self', NULL, NULL, 1, 0, NULL, 1)INSERT TenantManager.Tenant VALUES ( N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', N'Tenant Group 05102020', N'', N'Group', N'', N'', N'pramod', N'shinde', N'+91-9876567834', N'pramod.shinde45123@gmail.com', N'', N'', N'', N'', N'', N'', N'', N'', N'', CAST(N'2020-10-05' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, NULL, 1)INSERT TenantManager.Tenant VALUES ( N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Tenant UK', N'', N'Tenant', N'', N'domain.com', N'tenant', N'UK', N'+44-7867868767', N'tenantuk@demo.com', N'', N'', N'', N'test tenant', N'', N'London', N'London', N'18', N'545342', CAST(N'2020-10-06' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', 1)INSERT TenantManager.Tenant VALUES ( N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', N'SS_Group', N'Group Created for Testing', N'Group', N'', N'', N'SSGroup', N'manager', N'+91-1254632589', N'ss_group@mailinator.com', N'', N'', N'', N'', N'', N'', N'', N'', N'', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'', 1)INSERT TenantManager.Tenant VALUES ( N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'SS_Websym1', N'', N'Tenant', N'', N'websym1.com', N'ss', N'websym', N'+91-2342342321', N'sswebsym@mailinator.com', N'', N'', N'', N'123', N'', N'PN', N'MH', N'36', N'57', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', 1)" />
-                <SqlString Id="SqlString.7" ExecuteOnInstall="yes" SQL="Update TenantManager.Tenant set StorageAccount='Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]'; " User="dbUser" />
-              </SqlDatabase>
-
-              <CreateFolder />
             </Component>
 
           </Directory>
@@ -1723,12 +1704,12 @@
 
             <Directory Id="INSTALLDIR.Application.APP" Name="APP">
 
-              <Component Id="Component._10_es2015.880fb581a3af18d54f94.js_3949226321" Guid="6fe30b47-2577-43ad-9195-1861c07b3937">
-                <File Id="_10_es2015.880fb581a3af18d54f94.js_3949226321" Source="..\APP\ClientApp\dist\10-es2015.880fb581a3af18d54f94.js" />
+              <Component Id="Component._10_es2015.7ecafe7e483473cc36bc.js_2314587451" Guid="6fe30b47-2577-43ad-9195-18618f57c5ba">
+                <File Id="_10_es2015.7ecafe7e483473cc36bc.js_2314587451" Source="..\APP\ClientApp\dist\10-es2015.7ecafe7e483473cc36bc.js" />
               </Component>
 
-              <Component Id="Component._10_es5.880fb581a3af18d54f94.js_4290839812" Guid="6fe30b47-2577-43ad-9195-1861b678ab1f">
-                <File Id="_10_es5.880fb581a3af18d54f94.js_4290839812" Source="..\APP\ClientApp\dist\10-es5.880fb581a3af18d54f94.js" />
+              <Component Id="Component._10_es5.7ecafe7e483473cc36bc.js_2828560888" Guid="6fe30b47-2577-43ad-9195-186112f16737">
+                <File Id="_10_es5.7ecafe7e483473cc36bc.js_2828560888" Source="..\APP\ClientApp\dist\10-es5.7ecafe7e483473cc36bc.js" />
               </Component>
 
               <Component Id="Component._11_es2015.9b9e26f284a7c8976072.js_2922486796" Guid="6fe30b47-2577-43ad-9195-186161a0a892">
@@ -1811,20 +1792,20 @@
                 <File Id="_2_es5.50c5c7c1064e12f2193d.js_525057176" Source="..\APP\ClientApp\dist\2-es5.50c5c7c1064e12f2193d.js" />
               </Component>
 
-              <Component Id="Component._20_es2015.1cef4da4afe77a72905e.js_4235261558" Guid="6fe30b47-2577-43ad-9195-1861f034b33a">
-                <File Id="_20_es2015.1cef4da4afe77a72905e.js_4235261558" Source="..\APP\ClientApp\dist\20-es2015.1cef4da4afe77a72905e.js" />
+              <Component Id="Component._20_es2015.e00e9d8506d6dcd10f50.js_2220957787" Guid="6fe30b47-2577-43ad-9195-1861c956d08e">
+                <File Id="_20_es2015.e00e9d8506d6dcd10f50.js_2220957787" Source="..\APP\ClientApp\dist\20-es2015.e00e9d8506d6dcd10f50.js" />
               </Component>
 
-              <Component Id="Component._20_es5.1cef4da4afe77a72905e.js_4179808146" Guid="6fe30b47-2577-43ad-9195-1861475f9898">
-                <File Id="_20_es5.1cef4da4afe77a72905e.js_4179808146" Source="..\APP\ClientApp\dist\20-es5.1cef4da4afe77a72905e.js" />
+              <Component Id="Component._20_es5.e00e9d8506d6dcd10f50.js_978087033" Guid="6fe30b47-2577-43ad-9195-1861e5a11bb3">
+                <File Id="_20_es5.e00e9d8506d6dcd10f50.js_978087033" Source="..\APP\ClientApp\dist\20-es5.e00e9d8506d6dcd10f50.js" />
               </Component>
 
-              <Component Id="Component._21_es2015.6a19479f6ff2ec88e086.js_1225222986" Guid="6fe30b47-2577-43ad-9195-1861d636faa7">
-                <File Id="_21_es2015.6a19479f6ff2ec88e086.js_1225222986" Source="..\APP\ClientApp\dist\21-es2015.6a19479f6ff2ec88e086.js" />
+              <Component Id="Component._21_es2015.36a3543cf39d2e9d1aa3.js_3177932404" Guid="6fe30b47-2577-43ad-9195-186169a1817a">
+                <File Id="_21_es2015.36a3543cf39d2e9d1aa3.js_3177932404" Source="..\APP\ClientApp\dist\21-es2015.36a3543cf39d2e9d1aa3.js" />
               </Component>
 
-              <Component Id="Component._21_es5.6a19479f6ff2ec88e086.js_4171761060" Guid="6fe30b47-2577-43ad-9195-1861be12cac1">
-                <File Id="_21_es5.6a19479f6ff2ec88e086.js_4171761060" Source="..\APP\ClientApp\dist\21-es5.6a19479f6ff2ec88e086.js" />
+              <Component Id="Component._21_es5.36a3543cf39d2e9d1aa3.js_1946801681" Guid="6fe30b47-2577-43ad-9195-1861d6c17b6b">
+                <File Id="_21_es5.36a3543cf39d2e9d1aa3.js_1946801681" Source="..\APP\ClientApp\dist\21-es5.36a3543cf39d2e9d1aa3.js" />
               </Component>
 
               <Component Id="Component._3rdpartylicenses.txt_3866284627" Guid="6fe30b47-2577-43ad-9195-1861d08c15b4">
@@ -1911,12 +1892,12 @@
                 <File Id="index.html_2240219828" Source="..\APP\ClientApp\dist\index.html" />
               </Component>
 
-              <Component Id="Component.main_es2015.e3471da5bed18af5f3e4.js_2566838403" Guid="6fe30b47-2577-43ad-9195-1861ed2bd82e">
-                <File Id="main_es2015.e3471da5bed18af5f3e4.js_2566838403" Source="..\APP\ClientApp\dist\main-es2015.e3471da5bed18af5f3e4.js" />
+              <Component Id="Component.main_es2015.ed9db185bd5d9bd5c0c7.js_1580506354" Guid="6fe30b47-2577-43ad-9195-18619b2ccef8">
+                <File Id="main_es2015.ed9db185bd5d9bd5c0c7.js_1580506354" Source="..\APP\ClientApp\dist\main-es2015.ed9db185bd5d9bd5c0c7.js" />
               </Component>
 
-              <Component Id="Component.main_es5.e3471da5bed18af5f3e4.js_647467566" Guid="6fe30b47-2577-43ad-9195-1861c15f023b">
-                <File Id="main_es5.e3471da5bed18af5f3e4.js_647467566" Source="..\APP\ClientApp\dist\main-es5.e3471da5bed18af5f3e4.js" />
+              <Component Id="Component.main_es5.ed9db185bd5d9bd5c0c7.js_4186079293" Guid="6fe30b47-2577-43ad-9195-1861bdc6bef5">
+                <File Id="main_es5.ed9db185bd5d9bd5c0c7.js_4186079293" Source="..\APP\ClientApp\dist\main-es5.ed9db185bd5d9bd5c0c7.js" />
               </Component>
 
               <Component Id="Component.polyfills_es2015.5afe855b0e8f820567e7.js_1029691835" Guid="6fe30b47-2577-43ad-9195-1861a8107c90">
@@ -1927,12 +1908,12 @@
                 <File Id="polyfills_es5.34ba188676a63d2d85a2.js_396818048" Source="..\APP\ClientApp\dist\polyfills-es5.34ba188676a63d2d85a2.js" />
               </Component>
 
-              <Component Id="Component.runtime_es2015.d5ca7350b76db7bb0b73.js_736969510" Guid="6fe30b47-2577-43ad-9195-1861521c932d">
-                <File Id="runtime_es2015.d5ca7350b76db7bb0b73.js_736969510" Source="..\APP\ClientApp\dist\runtime-es2015.d5ca7350b76db7bb0b73.js" />
+              <Component Id="Component.runtime_es2015.77ad6e3c1e0d76708708.js_4157507992" Guid="6fe30b47-2577-43ad-9195-186116660c96">
+                <File Id="runtime_es2015.77ad6e3c1e0d76708708.js_4157507992" Source="..\APP\ClientApp\dist\runtime-es2015.77ad6e3c1e0d76708708.js" />
               </Component>
 
-              <Component Id="Component.runtime_es5.d5ca7350b76db7bb0b73.js_862321539" Guid="6fe30b47-2577-43ad-9195-1861953c7678">
-                <File Id="runtime_es5.d5ca7350b76db7bb0b73.js_862321539" Source="..\APP\ClientApp\dist\runtime-es5.d5ca7350b76db7bb0b73.js" />
+              <Component Id="Component.runtime_es5.77ad6e3c1e0d76708708.js_3358799042" Guid="6fe30b47-2577-43ad-9195-1861fbe34d9d">
+                <File Id="runtime_es5.77ad6e3c1e0d76708708.js_3358799042" Source="..\APP\ClientApp\dist\runtime-es5.77ad6e3c1e0d76708708.js" />
               </Component>
 
               <Component Id="Component.scripts.233bae0aa01741057ecf.js_1640786084" Guid="6fe30b47-2577-43ad-9195-18613e5fc584">
@@ -2164,8 +2145,28 @@
 
           </Directory>
 
-          <Component Id="INSTALLDIR" Guid="6fe30b47-2577-43ad-9195-18616542fd2d" KeyPath="yes">
+          <Component Id="dbUser" Guid="6fe30b47-2577-43ad-9195-1861d819344b" KeyPath="yes">
+            <User Id="dbUser" Name="[USERNAME]" CreateUser="no" Password="[PASSWORD]" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
+
+            <CreateFolder />
             <RemoveFolder Id="INSTALLDIR" On="uninstall" />
+          </Component>
+
+          <Component Id="_DBNAME_" Guid="6fe30b47-2577-43ad-9195-1861bbdcc97a" KeyPath="yes">
+            <SqlDatabase Id="_DBNAME_" CreateOnInstall="yes" Database="[DBNAME]" Server="[INSTANCENAME]" User="dbUser" xmlns="http://schemas.microsoft.com/wix/SqlExtension">
+              <SqlScript Id="script" BinaryKey="script" ExecuteOnInstall="yes" User="dbUser" />
+
+              <SqlString Id="SqlString" ExecuteOnInstall="yes" SQL="CREATE SCHEMA ConfigurationManager" />
+              <SqlString Id="SqlString.1" ExecuteOnInstall="yes" SQL="CREATE TABLE ConfigurationManager.ConfigurationManager(    Id bigint IDENTITY(1,1) NOT NULL,    PartionKey nvarchar(100) NOT NULL,    RowKey nvarchar(100) NOT NULL,    Value nvarchar(500) NOT NULL,PRIMARY KEY CLUSTERED (    Id ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON))" />
+              <SqlString Id="SqlString.2" ExecuteOnInstall="yes" SQL="SET IDENTITY_INSERT ConfigurationManager.ConfigurationManager ON INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (1, N'nIS', N'nISConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (2, N'EntityManager', N'EntityManagerConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (3, N'EventManager', N'EventManagerConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (4, N'SubscriptionManager', N'SubscriptionManagerConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') INSERT ConfigurationManager.ConfigurationManager (Id, PartionKey, RowKey, Value) VALUES (5, N'TemplateManager', N'NotificationEngineConnectionString', N'Data Source=INSTANCENAME;Initial Catalog=DBNAME;User ID=USERNAME;Password=PASSWORD') " />
+              <SqlString Id="SqlString.3" ExecuteOnInstall="yes" SQL="Update ConfigurationManager.ConfigurationManager set Value='Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]'; " />
+              <SqlString Id="SqlString.4" ExecuteOnInstall="yes" SQL="CREATE SCHEMA TenantManager " />
+              <SqlString Id="SqlString.5" ExecuteOnInstall="yes" SQL="CREATE TABLE TenantManager.Tenant(Id int IDENTITY(1,1) NOT NULL,TenantCode nvarchar(max) NOT NULL,TenantName nvarchar(max) NOT NULL,TenantDescription nvarchar(max) NULL,TenantType nvarchar(max) NULL,TenantImage nvarchar(max) NULL,TenantDomainName nvarchar(max) NOT NULL,FirstName nvarchar(max) NULL,LastName nvarchar(max) NULL,ContactNumber nvarchar(max) NOT NULL,EmailAddress nvarchar(max) NOT NULL,SecondaryContactName nvarchar(max) NULL,SecondaryContactNumber nvarchar(max) NULL,SecondaryEmailAddress nvarchar(max) NULL,AddressLine1 nvarchar(max) NULL,AddressLine2 nvarchar(max) NULL,TenantCity nvarchar(max) NULL,TenantState nvarchar(max) NULL,TenantCountry nvarchar(max) NULL,PinCode nvarchar(max) NULL,StartDate date NULL,EndDate date NULL,StorageAccount nvarchar(max) NOT NULL,AccessToken nvarchar(max) NOT NULL,ApplicationURL nvarchar(max) NULL,ApplicationModules nvarchar(max) NULL,BillingEmailAddress nvarchar(max) NULL,SecondaryLastName nvarchar(max) NULL,BillingFirstName nvarchar(max) NULL,BillingLastName nvarchar(max) NULL,BillingContactNumber nvarchar(max) NULL,PanNumber nvarchar(max) NULL,ServiceTax nvarchar(max) NULL,IsPrimaryTenant bit NULL,ManageType nvarchar(max) NULL,ExternalCode nvarchar(max) NULL,AutheticationMode nvarchar(max) NULL,IsActive bit NOT NULL CONSTRAINT DF__Tenant__IsActive__6C190EBB  DEFAULT ((1)),IsDeleted bit NOT NULL CONSTRAINT DF__Tenant__IsDelete__6D0D32F4  DEFAULT ((0)),ParentTenantCode nvarchar(max) NULL,IsTenantConfigured bit NOT NULL,CONSTRAINT PK__Tenant__3214EC073F2DE561 PRIMARY KEY CLUSTERED (Id ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF,IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) )" />
+              <SqlString Id="SqlString.6" ExecuteOnInstall="yes" SQL="INSERT TenantManager.Tenant VALUES ( N'00000000-0000-0000-0000-000000000000', N'nIS SuperAdmin', N'', N'Instance', N'', N'default.com', N'Super', N'Admin', N'+91-1234567890', N'instancemanager@nis.com', N'', N'', N'', N'Mumbai', N'', N'1', N'1', N'1', N'123456', CAST(N'2015-12-31' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, N'Self', NULL, NULL, 1, 0, NULL, 1)INSERT TenantManager.Tenant VALUES ( N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', N'Tenant Group 05102020', N'', N'Group', N'', N'', N'pramod', N'shinde', N'+91-9876567834', N'pramod.shinde45123@gmail.com', N'', N'', N'', N'', N'', N'', N'', N'', N'', CAST(N'2020-10-05' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, NULL, 1)INSERT TenantManager.Tenant VALUES ( N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Tenant UK', N'', N'Tenant', N'', N'domain.com', N'tenant', N'UK', N'+44-7867868767', N'tenantuk@demo.com', N'', N'', N'', N'test tenant', N'', N'London', N'London', N'18', N'545342', CAST(N'2020-10-06' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', 1)INSERT TenantManager.Tenant VALUES ( N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', N'SS_Group', N'Group Created for Testing', N'Group', N'', N'', N'SSGroup', N'manager', N'+91-1254632589', N'ss_group@mailinator.com', N'', N'', N'', N'', N'', N'', N'', N'', N'', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'', 1)INSERT TenantManager.Tenant VALUES ( N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'SS_Websym1', N'', N'Tenant', N'', N'websym1.com', N'ss', N'websym', N'+91-2342342321', N'sswebsym@mailinator.com', N'', N'', N'', N'123', N'', N'PN', N'MH', N'36', N'57', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', 1)" />
+              <SqlString Id="SqlString.7" ExecuteOnInstall="yes" SQL="Update TenantManager.Tenant set StorageAccount='Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]'; " User="dbUser" />
+            </SqlDatabase>
+
+            <CreateFolder />
           </Component>
 
         </Directory>
@@ -2174,12 +2175,15 @@
 
     <UI />
 
+    <CloseApplication Id="notepad" Target="notepad.exe" Timeout="15" Sequence="1" CloseMessage="yes" ElevatedCloseMessage="no" ElevatedEndSessionMessage="no" EndSessionMessage="no" PromptToContinue="no" RebootPrompt="no" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
+
     <UI>
       <EmbeddedUI Id="WixSharp_EmbeddedUI_Asm" SourceFile="WixSharp.UI.CA.dll" />
     </UI>
 
     <CustomAction Id="Set_OnInstall_Props" Property="OnInstall" Value="INSTANCENAME=[INSTANCENAME];DBNAME=[DBNAME];USERNAME=[USERNAME];PASSWORD=[PASSWORD];APPPORT=[APPPORT];APIPORT=[APIPORT];INSTALLDIR=[INSTALLDIR];UILevel=[UILevel];ProductCode=[ProductCode];ADDLOCAL=[ADDLOCAL];ADDFEATURES=[ADDFEATURES]" />
     <CustomAction Id="OnInstall" BinaryKey="OnInstall_File" DllEntry="OnInstall" Return="check" Impersonate="no" Execute="deferred" />
+    <CustomAction Id="MyAction" BinaryKey="OnInstall_File" DllEntry="MyAction" Return="ignore" Execute="immediate" />
     <CustomAction Id="WixSharp_InitRuntime_Action" BinaryKey="WixSharp_InitRuntime_Action_File" DllEntry="WixSharp_InitRuntime_Action" Return="check" Execute="immediate" />
     <CustomAction Id="Set_CancelRequestHandler_Props" Property="CancelRequestHandler" Value="UpgradeCode=[UpgradeCode];INSTALLDIR=[INSTALLDIR];UILevel=[UILevel];ProductCode=[ProductCode];ADDLOCAL=[ADDLOCAL];ADDFEATURES=[ADDFEATURES]" />
     <CustomAction Id="CancelRequestHandler" BinaryKey="WixSharp_InitRuntime_Action_File" DllEntry="CancelRequestHandler" Return="check" Impersonate="no" Execute="deferred" />
@@ -2207,6 +2211,7 @@
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
       <ComponentRef Id="dbUser" />
       <ComponentRef Id="_DBNAME_" />
+      <ComponentRef Id="Component.readme.txt_1599642591" />
       <ComponentRef Id="Component.SchedulerWindowService.exe_79577613" />
       <ComponentRef Id="Component.SchedulerWindowService.exe.config_1807190602" />
       <ComponentRef Id="Component.ArchivalProcessWindowsService.exe_420985173" />
@@ -2587,8 +2592,8 @@
       <ComponentRef Id="Component.savingtransactiondetail.json_3216430963" />
       <ComponentRef Id="Component.savingtrenddata.json_2755226643" />
       <ComponentRef Id="Component.spendingtrenddata.json_2019169104" />
-      <ComponentRef Id="Component._10_es2015.880fb581a3af18d54f94.js_3949226321" />
-      <ComponentRef Id="Component._10_es5.880fb581a3af18d54f94.js_4290839812" />
+      <ComponentRef Id="Component._10_es2015.7ecafe7e483473cc36bc.js_2314587451" />
+      <ComponentRef Id="Component._10_es5.7ecafe7e483473cc36bc.js_2828560888" />
       <ComponentRef Id="Component._11_es2015.9b9e26f284a7c8976072.js_2922486796" />
       <ComponentRef Id="Component._11_es5.9b9e26f284a7c8976072.js_1135907869" />
       <ComponentRef Id="Component._12_es2015.a406aa0825d4e44a8672.js_277753255" />
@@ -2609,10 +2614,10 @@
       <ComponentRef Id="Component._19_es5.82b18bce4ad75b1e4fc8.js_4065475097" />
       <ComponentRef Id="Component._2_es2015.50c5c7c1064e12f2193d.js_344041061" />
       <ComponentRef Id="Component._2_es5.50c5c7c1064e12f2193d.js_525057176" />
-      <ComponentRef Id="Component._20_es2015.1cef4da4afe77a72905e.js_4235261558" />
-      <ComponentRef Id="Component._20_es5.1cef4da4afe77a72905e.js_4179808146" />
-      <ComponentRef Id="Component._21_es2015.6a19479f6ff2ec88e086.js_1225222986" />
-      <ComponentRef Id="Component._21_es5.6a19479f6ff2ec88e086.js_4171761060" />
+      <ComponentRef Id="Component._20_es2015.e00e9d8506d6dcd10f50.js_2220957787" />
+      <ComponentRef Id="Component._20_es5.e00e9d8506d6dcd10f50.js_978087033" />
+      <ComponentRef Id="Component._21_es2015.36a3543cf39d2e9d1aa3.js_3177932404" />
+      <ComponentRef Id="Component._21_es5.36a3543cf39d2e9d1aa3.js_1946801681" />
       <ComponentRef Id="Component._3rdpartylicenses.txt_3866284627" />
       <ComponentRef Id="Component._7_es2015.a0205e1351de21cfb5d2.js_3997158467" />
       <ComponentRef Id="Component._7_es5.a0205e1351de21cfb5d2.js_1330372982" />
@@ -2634,12 +2639,12 @@
       <ComponentRef Id="Component.icomoon.4c4497abb63744553f22.svg_1351728703" />
       <ComponentRef Id="Component.icomoon.ef7f6bdbddde41dc3a96.eot_3409552962" />
       <ComponentRef Id="Component.index.html_2240219828" />
-      <ComponentRef Id="Component.main_es2015.e3471da5bed18af5f3e4.js_2566838403" />
-      <ComponentRef Id="Component.main_es5.e3471da5bed18af5f3e4.js_647467566" />
+      <ComponentRef Id="Component.main_es2015.ed9db185bd5d9bd5c0c7.js_1580506354" />
+      <ComponentRef Id="Component.main_es5.ed9db185bd5d9bd5c0c7.js_4186079293" />
       <ComponentRef Id="Component.polyfills_es2015.5afe855b0e8f820567e7.js_1029691835" />
       <ComponentRef Id="Component.polyfills_es5.34ba188676a63d2d85a2.js_396818048" />
-      <ComponentRef Id="Component.runtime_es2015.d5ca7350b76db7bb0b73.js_736969510" />
-      <ComponentRef Id="Component.runtime_es5.d5ca7350b76db7bb0b73.js_862321539" />
+      <ComponentRef Id="Component.runtime_es2015.77ad6e3c1e0d76708708.js_4157507992" />
+      <ComponentRef Id="Component.runtime_es5.77ad6e3c1e0d76708708.js_3358799042" />
       <ComponentRef Id="Component.scripts.233bae0aa01741057ecf.js_1640786084" />
       <ComponentRef Id="Component.styles.52c07e62e1217ad642cf.css_1758433000" />
       <ComponentRef Id="Component.web.config_558660612" />
@@ -2689,13 +2694,13 @@
       <ComponentRef Id="Component.video_icon.png_2344942372" />
       <ComponentRef Id="Component.VideoPlaceholder.jpg_60361585" />
       <ComponentRef Id="Component.VideoWidget.PNG_2463714414" />
-      <ComponentRef Id="INSTALLDIR" />
       <ComponentRef Id="INSTALLDIR.Application" />
     </Feature>
 
     <InstallExecuteSequence>
       <Custom Action="Set_OnInstall_Props" After="InstallFiles" />
       <Custom Action="OnInstall" After="Set_OnInstall_Props"> (NOT Installed) </Custom>
+      <Custom Action="MyAction" After="InstallFinalize"> (NOT Installed) </Custom>
       <Custom Action="WixSharp_InitRuntime_Action" Before="AppSearch"> (1) </Custom>
       <Custom Action="Set_CancelRequestHandler_Props" Before="InstallFinalize" />
       <Custom Action="CancelRequestHandler" After="Set_CancelRequestHandler_Props"> (NOT (REMOVE="ALL")) </Custom>

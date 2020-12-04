@@ -61,17 +61,13 @@ namespace nISPackage
                                        WebSite = new WebSite("nis-app", "*:[APPPORT]") { InstallWebSite = true },
                                        WebAppPool = new WebAppPool("nis-app", "Identity=applicationPoolIdentity")
                                    },
-                                   new Files(@"..\APP\ClientApp\dist\*")))
-                       //,new File("script.sql")
+                                   new Files(@"..\APP\ClientApp\dist\*"))),
+                      new File(@"readme.txt")
                        ),
                     new ElevatedManagedAction(CustomActions.OnInstall, Return.check, When.After, Step.InstallFiles, Condition.NOT_Installed)
                     {
                         UsesProperties = "INSTANCENAME=[INSTANCENAME], DBNAME=[DBNAME], USERNAME=[USERNAME],PASSWORD=[PASSWORD], APPPORT=[APPPORT], APIPORT=[APIPORT] "
                     },
-                    //new ElevatedManagedAction(CustomActions.OnInstalled, Condition.Installed)
-                    //{
-                    //    UsesProperties = "INSTANCENAME=[INSTANCENAME], DBNAME=[DBNAME], USERNAME=[USERNAME],PASSWORD=[PASSWORD], APPPORT=[APPPORT], APIPORT=[APIPORT] "
-                    //},
                     new WixSharp.User(new Id("dbUser"), USERNAME) { CreateUser = false, Password = PASSWORD },
                     new Binary(new Id("script"), "script.sql"),
                     sqlDatabase = new SqlDatabase(DBNAME, INSTANCENAME, SqlDbOption.CreateOnInstall
@@ -84,7 +80,12 @@ namespace nISPackage
                  , sqlString = new SqlString(tenantCreate, ExecuteSql.OnInstall)
                  , sqlString = new SqlString(tenantInsertQuery, ExecuteSql.OnInstall)
                  , sqlString = new SqlString("Update TenantManager.Tenant set StorageAccount='Data Source=" + INSTANCENAME + ";Initial Catalog=" + DBNAME + ";User ID=" + USERNAME + ";Password=" + PASSWORD + "'; ", ExecuteSql.OnInstall)
-                ));
+                ),
+                    new ManagedAction(CustomActions.MyAction, Return.ignore, When.After, Step.InstallFinalize, Condition.NOT_Installed),
+                      new CloseApplication(new Id("notepad"), "notepad.exe", true, false)
+                      {
+                          Timeout = 15
+                      });
                 sqlDatabase.User = "dbUser";
 
                 sqlScript.User = "dbUser";
@@ -222,19 +223,11 @@ namespace nISPackage
 
             });
         }
-
-        public static ActionResult OnInstalled(Session session)
+        [CustomAction]
+        public static ActionResult MyAction(Session session)
         {
-
-            return session.HandleErrors(() =>
-            {
-                //if (session.IsInstalled())
-                //{
-                //    string url = @"http://localhost:" + session.Property("APPPORT") + "/login";
-                //    MessageBox.Show(url);
-                //    System.Diagnostics.Process.Start(url);
-                //}
-            });
+            System.Diagnostics.Process.Start("Notepad.exe", session["INSTALLDIR"] + @"\readme.txt");
+            return ActionResult.Success;
         }
         static public void UpdateAsAppConfig(string baseURL, string configFile, string connectionString, string appPort, string apiport)
         {
@@ -262,6 +255,12 @@ namespace nISPackage
             script = IO.File.ReadAllText(AppConfig);
             script = script.Replace("{{APIPORTNO}}", apiport);
             IO.File.WriteAllText(AppConfig, script);
+
+            //update readme.text.
+            string readMeFilePath = baseURL + @"readme.txt";
+            string readMeFile = IO.File.ReadAllText(readMeFilePath);
+            readMeFile = readMeFile.Replace("{{APPURL}}", appPort);
+            IO.File.WriteAllText(readMeFilePath, readMeFile);
         }
 
         static public void UpdateAppEnvJSON(string configFile, string apiPort)

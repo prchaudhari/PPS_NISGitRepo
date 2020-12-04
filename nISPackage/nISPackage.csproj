@@ -229,6 +229,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="readme.txt" />
     <Content Include="script.sql" />
   </ItemGroup>
   <ItemGroup>
