@@ -90,6 +90,17 @@ namespace nIS
                 IList<DynamicWidgetRecord> dynamicWidgetRecords = new List<DynamicWidgetRecord>();
                 dynamicWidgets.ToList().ForEach(dynamicWidget =>
                 {
+                    StringBuilder queryString = new StringBuilder();
+
+                    if (dynamicWidget.WidgetFilterSettings != null && dynamicWidget.WidgetFilterSettings != string.Empty)
+                    {
+                        var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(dynamicWidget.WidgetFilterSettings);
+                        for (int i = 0; i < filterEntities.Count(); i++)
+                        {
+                            queryString.Append(this.QueryGenerator(filterEntities[i]));
+                        }
+
+                    }
                     dynamicWidgetRecords.Add(new DynamicWidgetRecord()
                     {
                         WidgetName = dynamicWidget.WidgetName,
@@ -101,6 +112,7 @@ namespace nIS
                         ThemeCSS = dynamicWidget.ThemeCSS,
                         WidgetSettings = dynamicWidget.WidgetSettings,
                         WidgetFilterSettings = dynamicWidget.WidgetFilterSettings,
+                        FilterCondition = queryString.ToString(),
                         Status = "New",
                         CreatedBy = dynamicWidget.CreatedBy,
                         CreatedOn = DateTime.UtcNow,
@@ -196,12 +208,25 @@ namespace nIS
 
                     dynamicWidgets.ToList().ForEach(dynamicWidget =>
                     {
+                        StringBuilder queryString = new StringBuilder();
+
+                        if (dynamicWidget.WidgetFilterSettings != null && dynamicWidget.WidgetFilterSettings != string.Empty)
+                        {
+                            var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(dynamicWidget.WidgetFilterSettings);
+                            for (int i = 0; i < filterEntities.Count(); i++)
+                            {
+                                queryString.Append(this.QueryGenerator(filterEntities[i]));
+                            }
+
+                        }
                         DynamicWidgetRecord dynamicWidgetRecord = dynamicWidgetRecords.Single(item => item.Id == dynamicWidget.Identifier);
                         dynamicWidgetRecord.WidgetName = dynamicWidget.WidgetName;
                         dynamicWidgetRecord.WidgetType = dynamicWidget.WidgetType;
                         dynamicWidgetRecord.PageTypeId = dynamicWidget.PageTypeId;
                         dynamicWidgetRecord.EntityId = dynamicWidget.EntityId;
                         dynamicWidgetRecord.Title = dynamicWidget.Title;
+                        dynamicWidgetRecord.FilterCondition = queryString.ToString();
+
                         dynamicWidgetRecord.ThemeType = dynamicWidget.ThemeType;
                         dynamicWidgetRecord.ThemeCSS = dynamicWidget.ThemeCSS;
                         dynamicWidgetRecord.WidgetSettings = dynamicWidget.WidgetSettings;
@@ -350,7 +375,7 @@ namespace nIS
                     string result = this.WhereClauseGenerator(dynamicWidgetSearchParameter, tenantCode);
 
                     var viewDynaWidgetRecords = nISEntitiesDataContext.View_DynamicWidgetRecord.Where(result).ToList().
-                        GroupBy(it => it.Id, (key, dw) => new { Id = key, dws = dw.ToList()}).Select(it => it.dws.FirstOrDefault()).ToList();
+                        GroupBy(it => it.Id, (key, dw) => new { Id = key, dws = dw.ToList() }).Select(it => it.dws.FirstOrDefault()).ToList();
 
                     if (dynamicWidgetSearchParameter.PagingParameter.PageIndex != 0 && dynamicWidgetSearchParameter.PagingParameter.PageSize != 0)
                     {
@@ -382,6 +407,7 @@ namespace nIS
                                 ThemeCSS = item.ThemeCSS,
                                 WidgetSettings = item.WidgetSettings,
                                 WidgetFilterSettings = item.WidgetFilterSettings,
+                                FilterCondition = item.FilterCondition,
                                 Status = item.Status,
                                 CreatedBy = item.CreatedBy ?? 0,
                                 CreatedOn = item.CreatedOn ?? DateTime.Now,
@@ -419,7 +445,7 @@ namespace nIS
                         dynamicWidgets.ToList().ForEach(item =>
                         {
                             IList<PageType> pageTypes = new List<PageType>();
-                            IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = widgetPageTypeMaps.Where(map => map.WidgetId == item.Identifier && item.TenantCode==map.TenantCode).ToList();
+                            IList<WidgetPageTypeMap> currentWidgetPageTypeMaps = widgetPageTypeMaps.Where(map => map.WidgetId == item.Identifier && item.TenantCode == map.TenantCode).ToList();
                             currentWidgetPageTypeMaps.ToList().ForEach(map =>
                             {
                                 pageTypes.Add(new PageType
@@ -863,6 +889,37 @@ namespace nIS
             {
                 throw exception;
             }
+        }
+
+        private string QueryGenerator(DynamicWidgetFilterEntity filterEntity)
+        {
+            var queryString = string.Empty;
+            var condtionalOp = filterEntity.ConditionalOperator != null && filterEntity.ConditionalOperator != string.Empty && filterEntity.ConditionalOperator != "0" ? filterEntity.ConditionalOperator : " ";
+            if (filterEntity.Operator == "EqualsTo")
+            {
+                queryString = queryString + condtionalOp + " " + (string.Format(filterEntity.FieldName + ".Equals(\"{0}\") ", filterEntity.Value));
+            }
+            else if (filterEntity.Operator == "NotEqualsTo")
+            {
+                queryString = queryString + condtionalOp + " " + (string.Format("!" + filterEntity.FieldName + ".Equals(\"{0}\") ", filterEntity.Value));
+            }
+            else if (filterEntity.Operator == "Contains")
+            {
+                queryString = queryString + condtionalOp + " " + (string.Format(filterEntity.FieldName + ".Contains(\"{0}\") ", filterEntity.Value));
+            }
+            else if (filterEntity.Operator == "NotContains")
+            {
+                queryString = queryString + condtionalOp + " " + (string.Format("!" + filterEntity.FieldName + ".Contains(\"{0}\") ", filterEntity.Value));
+            }
+            else if (filterEntity.Operator == "LessThan")
+            {
+                queryString = queryString + condtionalOp + " " + (string.Format(filterEntity.FieldName + " < " + filterEntity.Value + " "));
+            }
+            else if (filterEntity.Operator == "GreaterThan")
+            {
+                queryString = queryString + condtionalOp + " " + (string.Format(filterEntity.FieldName + " > " + filterEntity.Value + " "));
+            }
+            return queryString;
         }
         #endregion
 

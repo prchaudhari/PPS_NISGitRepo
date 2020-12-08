@@ -23,6 +23,7 @@ namespace nIS
         public string ThemeCSS { get; set; }
         public string WidgetSettings { get; set; }
         public string WidgetFilterSettings { get; set; }
+        public string FilterCondition { get; set; }
         public string Status { get; set; }
         public Nullable<long> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }

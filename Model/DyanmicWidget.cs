@@ -36,6 +36,7 @@ namespace nIS
         public string PreviewData = string.Empty;
         public string WidgetSettings { get; set; }
         public string WidgetFilterSettings { get; set; }
+        public string FilterCondition { get; set; }
         public string Status { get; set; }
         public long CreatedBy { get; set; }
         public string CreatedByName { get; set; }
@@ -66,7 +67,7 @@ namespace nIS
             try
             {
                 Exception exception = new Exception();
-               
+
 
                 if (exception.Data.Count > 0)
                 {

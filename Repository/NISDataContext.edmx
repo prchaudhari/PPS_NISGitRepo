@@ -242,6 +242,7 @@
           <Property Name="CloneOfWidgetId" Type="bigint" />
           <Property Name="Version" Type="nvarchar" MaxLength="100" />
           <Property Name="PreviewData" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FilterCondition" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="DynamicWidgetFilterDetail">
           <Key>
@@ -1008,6 +1009,7 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
           <Property Name="ThemeCSS" Type="nvarchar(max)" />
           <Property Name="WidgetSettings" Type="nvarchar(max)" />
           <Property Name="WidgetFilterSettings" Type="nvarchar(max)" />
+          <Property Name="FilterCondition" Type="nvarchar(max)" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatedBy" Type="bigint" />
           <Property Name="CreatedOn" Type="datetime" />
@@ -1442,6 +1444,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_DynamicWidget].[ThemeCSS] AS [ThemeCSS], 
     [View_DynamicWidget].[WidgetSettings] AS [WidgetSettings], 
     [View_DynamicWidget].[WidgetFilterSettings] AS [WidgetFilterSettings], 
+    [View_DynamicWidget].[FilterCondition] AS [FilterCondition], 
     [View_DynamicWidget].[Status] AS [Status], 
     [View_DynamicWidget].[CreatedBy] AS [CreatedBy], 
     [View_DynamicWidget].[CreatedOn] AS [CreatedOn], 
@@ -2699,6 +2702,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="CloneOfWidgetId" Type="Int64" />
           <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PreviewData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FilterCondition" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="EntityFieldMapRecord">
           <Key>
@@ -3009,6 +3013,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ThemeCSS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="WidgetSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="WidgetFilterSettings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FilterCondition" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatedBy" Type="Int64" />
           <Property Name="CreatedOn" Type="DateTime" Precision="3" />
@@ -3995,6 +4000,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="DynamicWidgetRecords">
             <EntityTypeMapping TypeName="NISModel.DynamicWidgetRecord">
               <MappingFragment StoreEntitySet="DynamicWidget">
+                <ScalarProperty Name="FilterCondition" ColumnName="FilterCondition" />
                 <ScalarProperty Name="PreviewData" ColumnName="PreviewData" />
                 <ScalarProperty Name="Version" ColumnName="Version" />
                 <ScalarProperty Name="CloneOfWidgetId" ColumnName="CloneOfWidgetId" />
@@ -4342,6 +4348,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="FilterCondition" ColumnName="FilterCondition" />
                 <ScalarProperty Name="WidgetFilterSettings" ColumnName="WidgetFilterSettings" />
                 <ScalarProperty Name="WidgetSettings" ColumnName="WidgetSettings" />
                 <ScalarProperty Name="ThemeCSS" ColumnName="ThemeCSS" />
