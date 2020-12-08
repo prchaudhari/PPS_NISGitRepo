@@ -313,6 +313,8 @@ INSERT EntityManager.Entities ([Id], [EntityName], [Keys], [AssemblyName], [Name
 INSERT EntityManager.Entities ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (9, N'Log', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'Log')
 INSERT EntityManager.Entities ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (10, N'Analytics', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'Analytics')
 INSERT EntityManager.Entities ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (11, N'Statement Search', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'Statement Search')
+INSERT EntityManager.Entities ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (12, N'Dynamic Widget', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'Dynamic Widget')
+
 SET IDENTITY_INSERT EntityManager.Entities OFF
 
 SET IDENTITY_INSERT EntityManager.Operations ON 
@@ -349,6 +351,12 @@ INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCod
 INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (30, N'00000000-0000-0000-0000-000000000000', N'Log', N'nIS', N'View')
 INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (31, N'00000000-0000-0000-0000-000000000000', N'Analytics', N'nIS', N'View')
 INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (32, N'00000000-0000-0000-0000-000000000000', N'Statement Search', N'nIS', N'View')
+INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (33, N'00000000-0000-0000-0000-000000000000', N'Dynamic Widget', N'nIS', N'Create')
+INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (34, N'00000000-0000-0000-0000-000000000000', N'Dynamic Widget', N'nIS', N'Edit')
+INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (35, N'00000000-0000-0000-0000-000000000000', N'Dynamic Widget', N'nIS', N'Delete')
+INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (36, N'00000000-0000-0000-0000-000000000000', N'Dynamic Widget', N'nIS', N'View')
+INSERT EntityManager.Operations ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (37, N'00000000-0000-0000-0000-000000000000', N'Dynamic Widget', N'nIS', N'Publish')
+
 
 SET IDENTITY_INSERT EntityManager.Operations OFF
 

@@ -169,8 +169,8 @@ export class ViewComponent implements OnInit {
     this.dynamicWidgetDetails = response.List[0];
 
 
-    this.setWidgetType(this.dynamicWidgetDetails.WidgetType);
-
+    //this.setWidgetType(this.dynamicWidgetDetails.WidgetType);
+    this.selectedLink = this.dynamicWidgetDetails.WidgetType;
     // this.getEntityField(this.dynamicWidgetDetails.EntityId);
     if (this.dynamicWidgetDetails.ThemeCSS != null && this.dynamicWidgetDetails.ThemeCSS != '') {
       this.themeCSS = JSON.parse(this.dynamicWidgetDetails.ThemeCSS);

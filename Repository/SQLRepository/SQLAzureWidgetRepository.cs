@@ -144,9 +144,17 @@ namespace nIS
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGenerator(widgetSearchParameter, tenantCode);
+
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    if (validationEngine.IsValidText(widgetSearchParameter.PageTypeId))
+                    {
+                        IList<WidgetPageTypeMap> widgetPageTypeMaps = new List<WidgetPageTypeMap>();
+                        widgetPageTypeMaps = nISEntitiesDataContext.WidgetPageTypeMaps.Where(item => item.PageTypeId.ToString() == widgetSearchParameter.PageTypeId
+                         && item.IsDynamicWidget == false && item.TenantCode == tenantCode).ToList();
+                        widgetSearchParameter.Identifier = string.Join(",", widgetPageTypeMaps.Select(item => item.WidgetId).ToList());
+                    }
+                    string whereClause = this.WhereClauseGenerator(widgetSearchParameter, tenantCode);
                     IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
                     if (widgetSearchParameter.PagingParameter.PageIndex > 0 && widgetSearchParameter.PagingParameter.PageSize > 0)
                     {
@@ -202,20 +210,18 @@ namespace nIS
                         if (widgetSearchParameter.IsPageTypeDetailsRequired != null && widgetSearchParameter.IsPageTypeDetailsRequired == true)
                         {
                             StringBuilder queryString = new StringBuilder();
-
-                            queryString.Append(string.Join("or ", widgets.Select(item => string.Format("WidgetId.Equals({0}) ", item.Identifier))));
-                            queryString.Append(" and IsDynamicWidget.Equals(true)");
-
+                            queryString.Append("("+string.Join("or ", widgets.Select(item => string.Format("WidgetId.Equals({0}) ", item.Identifier)))+")");
+                            queryString.Append(" and IsDynamicWidget.Equals(false)");
+                            queryString.Append(string.Format("and TenantCode.Equals(\"{0}\") ", tenantCode));
                             List<WidgetPageTypeMap> pageWidgetMapRecords = new List<WidgetPageTypeMap>();
                             pageWidgetMapRecords = nISEntitiesDataContext.WidgetPageTypeMaps.Where(queryString.ToString()).ToList();
 
-                            queryString = new StringBuilder();
                             List<PageTypeRecord> pageTypeRecords = new List<PageTypeRecord>();
-
-                            queryString.Append(string.Join("or ", pageWidgetMapRecords.Select(item => string.Format("Id.Equals({0}) ", item.PageTypeId))));
-                            queryString.Append(" and IsDeleted.Equals(true)");
+                            queryString = new StringBuilder();
+                            queryString.Append("(" + string.Join("or ", pageWidgetMapRecords.Select(item => string.Format("Id.Equals({0}) ", item.PageTypeId))) + ")");
+                            queryString.Append(" and IsDeleted.Equals(false)");
+                            queryString.Append(string.Format("and TenantCode.Equals(\"{0}\") ", tenantCode));
                             pageTypeRecords = nISEntitiesDataContext.PageTypeRecords.Where(queryString.ToString()).ToList();
-
 
                             widgets.ToList().ForEach(item =>
                             {
@@ -307,9 +313,9 @@ namespace nIS
                     queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
                 }
             }
-            if (validationEngine.IsValidText(searchParameter.PageTypeId))
+            if (validationEngine.IsValidText(searchParameter.Identifier))
             {
-                queryString.Append(string.Format("PageTypeId.Contains(\"{0}\") and ", searchParameter.PageTypeId));
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
             }
             if (searchParameter.IsActive == null || searchParameter.IsActive == true)
             {

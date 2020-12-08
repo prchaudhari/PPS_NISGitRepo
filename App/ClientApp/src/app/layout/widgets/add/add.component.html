@@ -3,7 +3,7 @@
     <span class="xs-title">Available Widgets</span>
 
     <select formControlName="pageType" (change)='onPageTypeSelected($event)' class="form-control width20 mt-2 xs-w-100">
-      <option *ngFor="let type of pageTypeList" [value]="type.Identifier">{{type.Name}}</option>
+      <option *ngFor="let type of pageTypeList" [value]="type.Identifier">{{type.PageTypeName}}</option>
     </select>
 
   </div>

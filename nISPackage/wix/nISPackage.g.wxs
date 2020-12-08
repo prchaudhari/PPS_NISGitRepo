@@ -40,6 +40,14 @@
               <File Id="SchedulerWindowService.exe.config_1807190602" Source="..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config" />
             </Component>
 
+            <Component Id="Component.Newtonsoft.Json.xml_3388882672" Guid="6fe30b47-2577-43ad-9195-1861e8536d00">
+              <File Id="Newtonsoft.Json.xml_3388882672" Source="..\SchedulerWindowService\bin\Debug\Newtonsoft.Json.xml" />
+            </Component>
+
+            <Component Id="Component.Newtonsoft.Json.dll_3758166364" Guid="6fe30b47-2577-43ad-9195-1861385e232a">
+              <File Id="Newtonsoft.Json.dll_3758166364" Source="..\SchedulerWindowService\bin\Debug\Newtonsoft.Json.dll" />
+            </Component>
+
           </Directory>
 
           <Directory Id="INSTALLDIR.ArchivalProcessWindowsService" Name="ArchivalProcessWindowsService">
@@ -62,6 +70,14 @@
 
             <Component Id="Component.ArchivalProcessWindowsService.exe.config_2857424429" Guid="6fe30b47-2577-43ad-9195-18619e635d75">
               <File Id="ArchivalProcessWindowsService.exe.config_2857424429" Source="..\ArchivalProcessWindowsService\bin\Debug\ArchivalProcessWindowsService.exe.config" />
+            </Component>
+
+            <Component Id="Component.Newtonsoft.Json.xml_3820591415" Guid="6fe30b47-2577-43ad-9195-1861344b0e24">
+              <File Id="Newtonsoft.Json.xml_3820591415" Source="..\ArchivalProcessWindowsService\bin\Debug\Newtonsoft.Json.xml" />
+            </Component>
+
+            <Component Id="Component.Newtonsoft.Json.dll_3820656979" Guid="6fe30b47-2577-43ad-9195-186171fcfa3b">
+              <File Id="Newtonsoft.Json.dll_3820656979" Source="..\ArchivalProcessWindowsService\bin\Debug\Newtonsoft.Json.dll" />
             </Component>
 
           </Directory>
@@ -1792,20 +1808,20 @@
                 <File Id="_2_es5.50c5c7c1064e12f2193d.js_525057176" Source="..\APP\ClientApp\dist\2-es5.50c5c7c1064e12f2193d.js" />
               </Component>
 
-              <Component Id="Component._20_es2015.e00e9d8506d6dcd10f50.js_2220957787" Guid="6fe30b47-2577-43ad-9195-1861c956d08e">
-                <File Id="_20_es2015.e00e9d8506d6dcd10f50.js_2220957787" Source="..\APP\ClientApp\dist\20-es2015.e00e9d8506d6dcd10f50.js" />
+              <Component Id="Component._20_es2015.86e4d440330e0b478043.js_412413823" Guid="6fe30b47-2577-43ad-9195-18610f3169c3">
+                <File Id="_20_es2015.86e4d440330e0b478043.js_412413823" Source="..\APP\ClientApp\dist\20-es2015.86e4d440330e0b478043.js" />
               </Component>
 
-              <Component Id="Component._20_es5.e00e9d8506d6dcd10f50.js_978087033" Guid="6fe30b47-2577-43ad-9195-1861e5a11bb3">
-                <File Id="_20_es5.e00e9d8506d6dcd10f50.js_978087033" Source="..\APP\ClientApp\dist\20-es5.e00e9d8506d6dcd10f50.js" />
+              <Component Id="Component._20_es5.86e4d440330e0b478043.js_609462616" Guid="6fe30b47-2577-43ad-9195-18611a865559">
+                <File Id="_20_es5.86e4d440330e0b478043.js_609462616" Source="..\APP\ClientApp\dist\20-es5.86e4d440330e0b478043.js" />
               </Component>
 
-              <Component Id="Component._21_es2015.36a3543cf39d2e9d1aa3.js_3177932404" Guid="6fe30b47-2577-43ad-9195-186169a1817a">
-                <File Id="_21_es2015.36a3543cf39d2e9d1aa3.js_3177932404" Source="..\APP\ClientApp\dist\21-es2015.36a3543cf39d2e9d1aa3.js" />
+              <Component Id="Component._21_es2015.3551bb47b85cb34f69cc.js_3544302510" Guid="6fe30b47-2577-43ad-9195-18614b5decd3">
+                <File Id="_21_es2015.3551bb47b85cb34f69cc.js_3544302510" Source="..\APP\ClientApp\dist\21-es2015.3551bb47b85cb34f69cc.js" />
               </Component>
 
-              <Component Id="Component._21_es5.36a3543cf39d2e9d1aa3.js_1946801681" Guid="6fe30b47-2577-43ad-9195-1861d6c17b6b">
-                <File Id="_21_es5.36a3543cf39d2e9d1aa3.js_1946801681" Source="..\APP\ClientApp\dist\21-es5.36a3543cf39d2e9d1aa3.js" />
+              <Component Id="Component._21_es5.3551bb47b85cb34f69cc.js_3454265182" Guid="6fe30b47-2577-43ad-9195-18617c3add2a">
+                <File Id="_21_es5.3551bb47b85cb34f69cc.js_3454265182" Source="..\APP\ClientApp\dist\21-es5.3551bb47b85cb34f69cc.js" />
               </Component>
 
               <Component Id="Component._3rdpartylicenses.txt_3866284627" Guid="6fe30b47-2577-43ad-9195-1861d08c15b4">
@@ -1892,12 +1908,12 @@
                 <File Id="index.html_2240219828" Source="..\APP\ClientApp\dist\index.html" />
               </Component>
 
-              <Component Id="Component.main_es2015.ed9db185bd5d9bd5c0c7.js_1580506354" Guid="6fe30b47-2577-43ad-9195-18619b2ccef8">
-                <File Id="main_es2015.ed9db185bd5d9bd5c0c7.js_1580506354" Source="..\APP\ClientApp\dist\main-es2015.ed9db185bd5d9bd5c0c7.js" />
+              <Component Id="Component.main_es2015.f1fb373d2886871d2af8.js_2497761012" Guid="6fe30b47-2577-43ad-9195-1861dc95b9b9">
+                <File Id="main_es2015.f1fb373d2886871d2af8.js_2497761012" Source="..\APP\ClientApp\dist\main-es2015.f1fb373d2886871d2af8.js" />
               </Component>
 
-              <Component Id="Component.main_es5.ed9db185bd5d9bd5c0c7.js_4186079293" Guid="6fe30b47-2577-43ad-9195-1861bdc6bef5">
-                <File Id="main_es5.ed9db185bd5d9bd5c0c7.js_4186079293" Source="..\APP\ClientApp\dist\main-es5.ed9db185bd5d9bd5c0c7.js" />
+              <Component Id="Component.main_es5.f1fb373d2886871d2af8.js_7445267" Guid="6fe30b47-2577-43ad-9195-1861a52c53a0">
+                <File Id="main_es5.f1fb373d2886871d2af8.js_7445267" Source="..\APP\ClientApp\dist\main-es5.f1fb373d2886871d2af8.js" />
               </Component>
 
               <Component Id="Component.polyfills_es2015.5afe855b0e8f820567e7.js_1029691835" Guid="6fe30b47-2577-43ad-9195-1861a8107c90">
@@ -1908,12 +1924,12 @@
                 <File Id="polyfills_es5.34ba188676a63d2d85a2.js_396818048" Source="..\APP\ClientApp\dist\polyfills-es5.34ba188676a63d2d85a2.js" />
               </Component>
 
-              <Component Id="Component.runtime_es2015.77ad6e3c1e0d76708708.js_4157507992" Guid="6fe30b47-2577-43ad-9195-186116660c96">
-                <File Id="runtime_es2015.77ad6e3c1e0d76708708.js_4157507992" Source="..\APP\ClientApp\dist\runtime-es2015.77ad6e3c1e0d76708708.js" />
+              <Component Id="Component.runtime_es2015.c3c59459d971267f33b9.js_2544132861" Guid="6fe30b47-2577-43ad-9195-18619d29d483">
+                <File Id="runtime_es2015.c3c59459d971267f33b9.js_2544132861" Source="..\APP\ClientApp\dist\runtime-es2015.c3c59459d971267f33b9.js" />
               </Component>
 
-              <Component Id="Component.runtime_es5.77ad6e3c1e0d76708708.js_3358799042" Guid="6fe30b47-2577-43ad-9195-1861fbe34d9d">
-                <File Id="runtime_es5.77ad6e3c1e0d76708708.js_3358799042" Source="..\APP\ClientApp\dist\runtime-es5.77ad6e3c1e0d76708708.js" />
+              <Component Id="Component.runtime_es5.c3c59459d971267f33b9.js_3402129070" Guid="6fe30b47-2577-43ad-9195-1861476775c8">
+                <File Id="runtime_es5.c3c59459d971267f33b9.js_3402129070" Source="..\APP\ClientApp\dist\runtime-es5.c3c59459d971267f33b9.js" />
               </Component>
 
               <Component Id="Component.scripts.233bae0aa01741057ecf.js_1640786084" Guid="6fe30b47-2577-43ad-9195-18613e5fc584">
@@ -2214,8 +2230,12 @@
       <ComponentRef Id="Component.readme.txt_1599642591" />
       <ComponentRef Id="Component.SchedulerWindowService.exe_79577613" />
       <ComponentRef Id="Component.SchedulerWindowService.exe.config_1807190602" />
+      <ComponentRef Id="Component.Newtonsoft.Json.xml_3388882672" />
+      <ComponentRef Id="Component.Newtonsoft.Json.dll_3758166364" />
       <ComponentRef Id="Component.ArchivalProcessWindowsService.exe_420985173" />
       <ComponentRef Id="Component.ArchivalProcessWindowsService.exe.config_2857424429" />
+      <ComponentRef Id="Component.Newtonsoft.Json.xml_3820591415" />
+      <ComponentRef Id="Component.Newtonsoft.Json.dll_3820656979" />
       <ComponentRef Id="Component.Global.asax_723923219" />
       <ComponentRef Id="Component.libman.json_1245807045" />
       <ComponentRef Id="Component.Web.config_871302803" />
@@ -2614,10 +2634,10 @@
       <ComponentRef Id="Component._19_es5.82b18bce4ad75b1e4fc8.js_4065475097" />
       <ComponentRef Id="Component._2_es2015.50c5c7c1064e12f2193d.js_344041061" />
       <ComponentRef Id="Component._2_es5.50c5c7c1064e12f2193d.js_525057176" />
-      <ComponentRef Id="Component._20_es2015.e00e9d8506d6dcd10f50.js_2220957787" />
-      <ComponentRef Id="Component._20_es5.e00e9d8506d6dcd10f50.js_978087033" />
-      <ComponentRef Id="Component._21_es2015.36a3543cf39d2e9d1aa3.js_3177932404" />
-      <ComponentRef Id="Component._21_es5.36a3543cf39d2e9d1aa3.js_1946801681" />
+      <ComponentRef Id="Component._20_es2015.86e4d440330e0b478043.js_412413823" />
+      <ComponentRef Id="Component._20_es5.86e4d440330e0b478043.js_609462616" />
+      <ComponentRef Id="Component._21_es2015.3551bb47b85cb34f69cc.js_3544302510" />
+      <ComponentRef Id="Component._21_es5.3551bb47b85cb34f69cc.js_3454265182" />
       <ComponentRef Id="Component._3rdpartylicenses.txt_3866284627" />
       <ComponentRef Id="Component._7_es2015.a0205e1351de21cfb5d2.js_3997158467" />
       <ComponentRef Id="Component._7_es5.a0205e1351de21cfb5d2.js_1330372982" />
@@ -2639,12 +2659,12 @@
       <ComponentRef Id="Component.icomoon.4c4497abb63744553f22.svg_1351728703" />
       <ComponentRef Id="Component.icomoon.ef7f6bdbddde41dc3a96.eot_3409552962" />
       <ComponentRef Id="Component.index.html_2240219828" />
-      <ComponentRef Id="Component.main_es2015.ed9db185bd5d9bd5c0c7.js_1580506354" />
-      <ComponentRef Id="Component.main_es5.ed9db185bd5d9bd5c0c7.js_4186079293" />
+      <ComponentRef Id="Component.main_es2015.f1fb373d2886871d2af8.js_2497761012" />
+      <ComponentRef Id="Component.main_es5.f1fb373d2886871d2af8.js_7445267" />
       <ComponentRef Id="Component.polyfills_es2015.5afe855b0e8f820567e7.js_1029691835" />
       <ComponentRef Id="Component.polyfills_es5.34ba188676a63d2d85a2.js_396818048" />
-      <ComponentRef Id="Component.runtime_es2015.77ad6e3c1e0d76708708.js_4157507992" />
-      <ComponentRef Id="Component.runtime_es5.77ad6e3c1e0d76708708.js_3358799042" />
+      <ComponentRef Id="Component.runtime_es2015.c3c59459d971267f33b9.js_2544132861" />
+      <ComponentRef Id="Component.runtime_es5.c3c59459d971267f33b9.js_3402129070" />
       <ComponentRef Id="Component.scripts.233bae0aa01741057ecf.js_1640786084" />
       <ComponentRef Id="Component.styles.52c07e62e1217ad642cf.css_1758433000" />
       <ComponentRef Id="Component.web.config_558660612" />

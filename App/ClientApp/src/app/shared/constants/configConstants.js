@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfigConstants = void 0;
+//import { environment } from '../../../environments/environment'
 var appsettings_1 = require("../../appsettings");
 exports.ConfigConstants = {
     BaseURL: appsettings_1.AppSettings.baseURL,

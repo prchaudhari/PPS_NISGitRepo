@@ -35,14 +35,20 @@ namespace nISPackage
                                     "INSERT TenantManager.Tenant VALUES ( N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'SS_Websym1', N'', N'Tenant', N'', N'websym1.com', N'ss', N'websym', N'+91-2342342321', N'sswebsym@mailinator.com', N'', N'', N'', N'123', N'', N'PN', N'MH', N'36', N'57', CAST(N'2020-11-02' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', N'', 0, N'Self', N'', N'', 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', 1)";
 
                 var project =
-                new ManagedProject("nISApp1",
-                   new Dir(@"%ProgramFiles%\nISApp1",
-                       new Dir("SchedulerWindowService",
-                       schedulerService = new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe"),
-                       new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config")),
+                new ManagedProject("nISApp1", 
+                new Dir(@"%ProgramFiles%\nISApp1",
+                   new Dir("SchedulerWindowService",
+                           schedulerService = new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe"),
+                           new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config"),
+                           new File(@"..\SchedulerWindowService\bin\Debug\Newtonsoft.Json.xml"),
+                           new File(@"..\SchedulerWindowService\bin\Debug\Newtonsoft.Json.dll")
+                       ),
                        new Dir("ArchivalProcessWindowsService",
-                       archivalService = new File(@"..\ArchivalProcessWindowsService\bin\Debug\ArchivalProcessWindowsService.exe"),
-                       new File(@"..\ArchivalProcessWindowsService\bin\Debug\ArchivalProcessWindowsService.exe.config")),
+                           archivalService = new File(@"..\ArchivalProcessWindowsService\bin\Debug\ArchivalProcessWindowsService.exe"),
+                           new File(@"..\ArchivalProcessWindowsService\bin\Debug\ArchivalProcessWindowsService.exe.config"),
+                           new File(@"..\ArchivalProcessWindowsService\bin\Debug\Newtonsoft.Json.xml"),
+                           new File(@"..\ArchivalProcessWindowsService\bin\Debug\Newtonsoft.Json.dll")
+                       ),
                        new Dir("Application",
                            new Dir("API",
                                    new IISVirtualDir

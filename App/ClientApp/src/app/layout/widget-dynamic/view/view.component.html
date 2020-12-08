@@ -114,7 +114,7 @@
               </div>
               <!--repeat end-->
               <!--repeat start-->
-              <div class="widget-card-small widget-card" [checked]="selectedLink=='Html'">
+              <div class="widget-card-small widget-card" *ngIf="selectedLink=='Html'">
                 <div class="hide-radio widget-icons">
                   <label>
                     <input type="radio" name="widgetType" id="inputWidgetHtml" [checked]="selectedLink=='Html'">

@@ -1,4 +1,3 @@
-/// <reference path="../../shared/constants/configconstants.ts" />
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -30,7 +29,7 @@ export class ThemeConfigurationComponent implements OnInit {
   public isTheme4Active: boolean = false;
   public isTheme5Active: boolean = false;
   public isTheme0Active: boolean = true;
-
+  public onlyNumbers = "^(?=.*[1-9])[+]?([0-9]+(?:[\\.]\\d{1,2})?|\\.[0-9])$";
   public ApplicationThemeName = '';
   public WidgetColorThemeName = '';
   public widgetThemeSetting: any = {};
@@ -41,10 +40,10 @@ export class ThemeConfigurationComponent implements OnInit {
   public weightDataLabelFont;
   public typeDataLabelFont;
   public baseURL: string = AppSettings.baseURL;
-  public TenantConfiguration:any = {};
-  public fontWeightArr = [{Id: 0, Name: 'Select', Value: 'Select'}, {Id: 1, Name: 'Normal', Value: 'Normal'}, {Id: 2, Name: 'Italic', Value: 'Italic'}, {Id: 3, Name: 'Bold', Value: 'Bold'}];
-  public fontTypeArr = [{Id: 0, Name: 'Select', Value: 'Select'}, {Id: 1, Name: 'sans-serif', Value: 'sans-serif'}, {Id: 2, Name: 'Tahoma', Value: 'Tahoma'}, {Id: 3, Name: 'Times Roman', Value: 'Times Roman'}];
-  
+  public TenantConfiguration: any = {};
+  public fontWeightArr = [{ Id: 0, Name: 'Select', Value: 'Select' }, { Id: 1, Name: 'Normal', Value: 'Normal' }, { Id: 2, Name: 'Italic', Value: 'Italic' }, { Id: 3, Name: 'Bold', Value: 'Bold' }];
+  public fontTypeArr = [{ Id: 0, Name: 'Select', Value: 'Select' }, { Id: 1, Name: 'sans-serif', Value: 'sans-serif' }, { Id: 2, Name: 'Tahoma', Value: 'Tahoma' }, { Id: 3, Name: 'Times Roman', Value: 'Times Roman' }];
+
   constructor(private formBuilder: FormBuilder,
     private spinner: NgxUiLoaderService,
     private router: Router,
@@ -108,20 +107,26 @@ export class ThemeConfigurationComponent implements OnInit {
 
     this.tenantThemeConfigurationForm = this.formBuilder.group({
       TitleFontColor: ['#000000'],
-      TitleFontSize: [16],
+      TitleFontSize: [16, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)
+      ])],
       TitleFontWeight: ['Bold'],
       TitleFontType: ['sans-serif'],
 
       HeaderLabelFontColor: ['#000000'],
-      HeaderLabelFontSize: [14],
+      HeaderLabelFontSize: [14, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)
+      ])],
       HeaderLabelFontWeight: ['Bold'],
       HeaderLabelFontType: ['sans-serif'],
 
       DataLabelFontColor: ['#000000'],
-      DataLabelFontSize: [13],
+      DataLabelFontSize: [13, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)
+      ])],
       DataLabelFontWeight: ['Normal'],
       DataLabelFontType: ['sans-serif'],
-    }); 
+    });
 
     this.WidgetColorThemeName = 'charttheme1';
     this.getTenantConfigurationDetails();
@@ -133,7 +138,7 @@ export class ThemeConfigurationComponent implements OnInit {
     this._http.post(this.baseURL + 'TenantConfiguration/list', searchParameter).subscribe(
       data => {
         let response = <TenantConfiguration>data[0];
-        if(response != undefined) {
+        if (response != undefined) {
           this.TenantConfiguration = response;
           this.ApplicationThemeName = this.TenantConfiguration.ApplicationTheme != null ? this.TenantConfiguration.ApplicationTheme.toLocaleLowerCase() : 'theme0';
           switch (this.ApplicationThemeName) {
@@ -157,21 +162,21 @@ export class ThemeConfigurationComponent implements OnInit {
               break;
           }
 
-          if(this.TenantConfiguration.WidgetThemeSetting != null && this.TenantConfiguration.WidgetThemeSetting != '') {
+          if (this.TenantConfiguration.WidgetThemeSetting != null && this.TenantConfiguration.WidgetThemeSetting != '') {
             this.widgetThemeSetting = JSON.parse(this.TenantConfiguration.WidgetThemeSetting);
-            
-            if(this.widgetThemeSetting.ColorTheme != null) {
+
+            if (this.widgetThemeSetting.ColorTheme != null) {
               this.WidgetColorThemeName = this.widgetThemeSetting.ColorTheme.toLocaleLowerCase();
-              if(this.WidgetColorThemeName != '') {
+              if (this.WidgetColorThemeName != '') {
                 setTimeout(() => {
-                  $('#'+this.WidgetColorThemeName).prop('checked', true);
+                  $('#' + this.WidgetColorThemeName).prop('checked', true);
                 }, 10);
               }
             }
 
             this.tenantThemeConfigurationForm.patchValue({
-              TitleFontColor : this.widgetThemeSetting.TitleColor != null ? this.widgetThemeSetting.TitleColor : "#000000",
-              TitleFontSize : this.widgetThemeSetting.TitleSize != null ? this.widgetThemeSetting.TitleSize : 16,
+              TitleFontColor: this.widgetThemeSetting.TitleColor != null ? this.widgetThemeSetting.TitleColor : "#000000",
+              TitleFontSize: this.widgetThemeSetting.TitleSize != null ? this.widgetThemeSetting.TitleSize : 16,
               TitleFontWeight: this.widgetThemeSetting.TitleWeight != null ? this.widgetThemeSetting.TitleWeight : "Bold",
               TitleFontType: this.widgetThemeSetting.TitleType != null ? this.widgetThemeSetting.TitleType : 'Select',
               HeaderLabelFontColor: this.widgetThemeSetting.HeaderColor != null ? this.widgetThemeSetting.HeaderColor : "#000000",
@@ -186,7 +191,7 @@ export class ThemeConfigurationComponent implements OnInit {
 
           }
         }
-        
+
         this.spinner.stop();
       },
       error => {
@@ -205,9 +210,9 @@ export class ThemeConfigurationComponent implements OnInit {
   isCustomeClicked() {
     this.isDefault = false;
     this.isWidgetTheme = true;
-    if(this.WidgetColorThemeName != '') {
+    if (this.WidgetColorThemeName != '') {
       setTimeout(() => {
-        $('#'+this.WidgetColorThemeName).prop('checked', true);
+        $('#' + this.WidgetColorThemeName).prop('checked', true);
       }, 10);
     }
   }
@@ -323,7 +328,7 @@ export class ThemeConfigurationComponent implements OnInit {
     const value = event.target.value;
     if (value == "Select") {
       this.weightTitleFont = '';
-    }else {
+    } else {
       this.weightTitleFont = value;
     }
   }
@@ -332,7 +337,7 @@ export class ThemeConfigurationComponent implements OnInit {
     const value = event.target.value;
     if (value == "Select") {
       this.typeTitleFont = '';
-    }else {
+    } else {
       this.typeTitleFont = value;
     }
   }
@@ -341,7 +346,7 @@ export class ThemeConfigurationComponent implements OnInit {
     const value = event.target.value;
     if (value == "Select") {
       this.weightHeaderLabelFont = '';
-    }else {
+    } else {
       this.weightHeaderLabelFont = value;
     }
   }
@@ -350,7 +355,7 @@ export class ThemeConfigurationComponent implements OnInit {
     const value = event.target.value;
     if (value == "Select") {
       this.typeHeaderLabelFont = '';
-    }else {
+    } else {
       this.typeHeaderLabelFont = value;
     }
   }
@@ -359,7 +364,7 @@ export class ThemeConfigurationComponent implements OnInit {
     const value = event.target.value;
     if (value == "Select") {
       this.weightDataLabelFont = '';
-    }else {
+    } else {
       this.weightDataLabelFont = value;
     }
   }
@@ -368,15 +373,22 @@ export class ThemeConfigurationComponent implements OnInit {
     const value = event.target.value;
     if (value == "0") {
       this.typeDataLabelFont = '';
-    }else {
+    } else {
       this.typeDataLabelFont = value;
     }
+  }
+
+  DisableSaveButton(): boolean {
+    if (this.tenantThemeConfigurationForm.invalid) {
+      return true;
+    }
+    return false;
   }
 
   onSubmit() {
     this.TenantConfiguration.ApplicationTheme = this.ApplicationThemeName;
     this.widgetThemeSetting.ColorTheme = this.WidgetColorThemeName != '' ? this.WidgetColorThemeName : null;
-    
+
     this.widgetThemeSetting.TitleColor = this.tenantThemeConfigurationForm.value.TitleFontColor != undefined ? this.tenantThemeConfigurationForm.value.TitleFontColor : null;
     this.widgetThemeSetting.TitleSize = this.tenantThemeConfigurationForm.value.TitleFontSize != undefined ? this.tenantThemeConfigurationForm.value.TitleFontSize : null;
     this.widgetThemeSetting.TitleWeight = this.tenantThemeConfigurationForm.value.TitleFontWeight != undefined ? this.tenantThemeConfigurationForm.value.TitleFontWeight : null;

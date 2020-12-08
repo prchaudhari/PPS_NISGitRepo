@@ -157,11 +157,17 @@
                 <div class="row">
                   <div class="col-md-3 col-sm-6">
                     <label> Color</label>
-                    <input type="color" class="form-control" formControlName="TitleFontColor" id="inputTitleFontColor"/>
+                    <input type="color" class="form-control" formControlName="TitleFontColor" id="inputTitleFontColor" />
                   </div>
                   <div class="col-md-3 col-sm-6">
                     <label> Size</label>
-                    <input type="number" class="form-control" formControlName="TitleFontSize" id="inputTitleFontSize"/>
+                    <input type="number" class="form-control" formControlName="TitleFontSize" id="inputTitleFontSize" />
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="TitleFontSize.touched && TitleFontSize.errors" style="list-style-type:none">
+                        <li class="text-danger" *ngIf="TitleFontSize.errors?.pattern">Inavid image height</li>
+                        <li class="text-danger" *ngIf="TitleFontSize.errors?.required">Image height required</li>
+                      </ul>
+                    </div>
                   </div>
                   <div class="col-md-3 col-sm-6">
                     <label> Weight</label>
@@ -191,11 +197,17 @@
                 <div class="row">
                   <div class="col-md-3 col-sm-6">
                     <label> Color</label>
-                    <input type="color" class="form-control" formControlName="HeaderLabelFontColor" id="inputHeaderLabelFontColor"/>
+                    <input type="color" class="form-control" formControlName="HeaderLabelFontColor" id="inputHeaderLabelFontColor" />
                   </div>
                   <div class="col-md-3 col-sm-6">
                     <label> Size</label>
-                    <input type="number" class="form-control" formControlName="HeaderLabelFontSize" id="inputHeaderLabelFontSize"/>
+                    <input type="number" class="form-control" formControlName="HeaderLabelFontSize" id="inputHeaderLabelFontSize" />
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="HeaderLabelFontSize.touched && HeaderLabelFontSize.errors" style="list-style-type:none">
+                        <li class="text-danger" *ngIf="HeaderLabelFontSize.errors?.pattern">Inavid image height</li>
+                        <li class="text-danger" *ngIf="HeaderLabelFontSize.errors?.required">Image height required</li>
+                      </ul>
+                    </div>
                   </div>
                   <div class="col-md-3 col-sm-6">
                     <label> Weight</label>
@@ -214,7 +226,7 @@
             </div>
           </div>
         </div>
-        <div class="row"  *ngIf="isWidgetTheme">
+        <div class="row" *ngIf="isWidgetTheme">
           <div class="col-sm-8">
             <div class="card bg-light border-card form-group">
               <div class="card-header bg-white">
@@ -224,11 +236,17 @@
                 <div class="row">
                   <div class="col-md-3 col-sm-6">
                     <label> Color</label>
-                    <input type="color" class="form-control" formControlName="DataLabelFontColor" id="inputDataLabelFontColor"/>
+                    <input type="color" class="form-control" formControlName="DataLabelFontColor" id="inputDataLabelFontColor" />
                   </div>
                   <div class="col-md-3 col-sm-6">
                     <label> Size</label>
-                    <input type="number" class="form-control" formControlName="DataLabelFontSize" id="inputDataLabelFontSize"/>
+                    <input type="number" class="form-control" formControlName="DataLabelFontSize" id="inputDataLabelFontSize" />
+                    <div class="validation-msg" style="color:red">
+                      <ul *ngIf="DataLabelFontSize.touched && DataLabelFontSize.errors" style="list-style-type:none">
+                        <li class="text-danger" *ngIf="DataLabelFontSize.errors?.pattern">Inavid image height</li>
+                        <li class="text-danger" *ngIf="DataLabelFontSize.errors?.required">Image height required</li>
+                      </ul>
+                    </div>
                   </div>
                   <div class="col-md-3 col-sm-6">
                     <label> Weight</label>
@@ -254,7 +272,7 @@
 
   <div class="card border-0 mt-4 mb-3 bg-transparent">
     <div class="card-body p-0">
-      <button class="btn-footer-fill mr-2" id="btnSave" (click)="onSubmit()">Save</button>
+      <button class="btn-footer-fill mr-2" id="btnSave"  [disabled]="DisableSaveButton()" (click)="onSubmit()">Save</button>
       <!-- <button class="btn-footer-outline" id="btnCancel">Cancel</button> -->
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Router, NavigationEnd } from '@angular/router';
 import { Constants, ErrorMessageConstants } from '../../../shared/constants/constants';
@@ -34,6 +34,7 @@ export class WidgetdesignerComponent implements OnInit {
   public editorValue: any = "";
   //html editor code
   htmlContent = '';
+  public onlyNumbers = "^(?=.*[1-9])[+]?([0-9]+(?:[\\.]\\d{1,2})?|\\.[0-9])$";
 
   public tools: object = {
     items: [
@@ -240,18 +241,24 @@ export class WidgetdesignerComponent implements OnInit {
       FilterField: [0],
       FilterOperator: [0],
       FilterValue: [null],
-      TitleColor: [null],
-      TitleSize: [null],
-      TitleWeight: [0],
-      TitleType: [0],
-      HeaderColor: [null],
-      HeaderSize: [null],
-      HeaderWeight: [0],
-      HeaderType: [0],
-      DataColor: [null],
-      DataSize: [null],
-      DataWeight: [0],
-      DataType: [0],
+      TitleColor: ['#000000'],
+      TitleSize: [16, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)
+      ])],
+      TitleWeight: ['Bold'],
+      TitleType: ['Sans-serif'],
+      HeaderColor: ['#000000'],
+      HeaderSize: [14, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)
+      ])],     
+      HeaderWeight: ['Bold'],
+      HeaderType: ['Sans-serif'],
+      DataColor: ['#000000'],
+      DataSize: [13, Validators.compose([Validators.required,
+      Validators.pattern(this.onlyNumbers)
+      ])],
+      DataWeight: ['Normal'],
+      DataType: ['Sans-serif'],
       HTMLEntityField: [0],
       HTMLAsset: [0],
       HTMLAssetLibrary: [0]
@@ -265,6 +272,55 @@ export class WidgetdesignerComponent implements OnInit {
 
   }
 
+  get TitleColor() {
+    return this.DynamicWidgetForm.get('TitleColor');
+  }
+
+  get TitleSize() {
+    return this.DynamicWidgetForm.get('TitleSize');
+  }
+
+  get TitleWeight() {
+    return this.DynamicWidgetForm.get('TitleWeight');
+  }
+
+  get TitleType() {
+    return this.DynamicWidgetForm.get('TitleType');
+  }
+
+  //Header label
+  get HeaderColor() {
+    return this.DynamicWidgetForm.get('HeaderColor');
+  }
+
+  get HeaderSize() {
+    return this.DynamicWidgetForm.get('HeaderSize');
+  }
+
+  get HeaderWeight() {
+    return this.DynamicWidgetForm.get('HeaderWeight');
+  }
+
+  get HeaderType() {
+    return this.DynamicWidgetForm.get('HeaderType');
+  }
+
+  //Data label
+  get DataColor() {
+    return this.DynamicWidgetForm.get('DataColor');
+  }
+
+  get DataSize() {
+    return this.DynamicWidgetForm.get('DataSize');
+  }
+
+  get DataWeight() {
+    return this.DynamicWidgetForm.get('DataWeight');
+  }
+
+  get DataType() {
+    return this.DynamicWidgetForm.get('DataType');
+  }
   async getWidgetDetails() {
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};

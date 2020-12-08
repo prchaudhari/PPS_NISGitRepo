@@ -103,6 +103,10 @@ export class AddComponent implements OnInit {
       "Count": 0,
     },
     {
+      "EntityName": "Dynamic Widget",
+      "Count": 0,
+    },
+    {
       "EntityName": "Page",
       "Count": 0,
     },
@@ -223,13 +227,13 @@ export class AddComponent implements OnInit {
       "EntityName": "Page",
       "Operation": "Create",
       "RelatedOperation": ["Edit", "Delete", "View"],
-      "OtherDependentEntity": ["Asset Library", "Widget"]
+      "OtherDependentEntity": ["Asset Library", "Widget","Dynamic Widget"]
     },
     {
       "EntityName": "Page",
       "Operation": "Edit",
       "RelatedOperation": ["Delete", "View"],
-      "OtherDependentEntity": ["Asset Library", "Widget"]
+      "OtherDependentEntity": ["Asset Library", "Widget", "Dynamic Widget"]
     },
     {
       "EntityName": "Page",
@@ -320,6 +324,36 @@ export class AddComponent implements OnInit {
       "Operation": "View",
       "RelatedOperation": [],
       "OtherDependentEntity": ["Statement Definition"]
+    },
+    {
+      "EntityName": "Dynamic Widget",
+      "Operation": "Create",
+      "RelatedOperation": ["Edit", "Delete", "View"],
+      "OtherDependentEntity": ["Asset Library",]
+    },
+    {
+      "EntityName": "Dynamic Widget",
+      "Operation": "Edit",
+      "RelatedOperation": ["Delete", "View"],
+      "OtherDependentEntity": ["Asset Library",]
+    },
+    {
+      "EntityName": "Dynamic Widget",
+      "Operation": "Delete",
+      "RelatedOperation": ["View"],
+      "OtherDependentEntity": []
+    },
+    {
+      "EntityName": "Dynamic Widget",
+      "Operation": "View",
+      "RelatedOperation": [],
+      "OtherDependentEntity": []
+    },
+    {
+      "EntityName": "Dynamic Widget",
+      "Operation": "Publish",
+      "RelatedOperation": ["View"],
+      "OtherDependentEntity": []
     },
   ];
 

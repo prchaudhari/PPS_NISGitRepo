@@ -1,5 +1,5 @@
-//import { environment } from '../../../environments/environment.prod'
-import { environment } from '../../../environments/environment'
+import { environment } from '../../../environments/environment.prod'
+//import { environment } from '../../../environments/environment'
 import { AppSettings } from '../../appsettings'
 
 export const ConfigConstants = {

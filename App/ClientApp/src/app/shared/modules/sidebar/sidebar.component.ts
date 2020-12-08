@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { LoginService } from '../../../login/login.service';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
-//import { environment } from '../../../../environments/environment.prod'
-import { environment } from '../../../../environments/environment'
+import { environment } from '../../../../environments/environment.prod'
+//import { environment } from '../../../../environments/environment'
 
 @Component({
   selector: 'app-sidebar',
