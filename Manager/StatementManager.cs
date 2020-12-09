@@ -299,12 +299,12 @@ namespace nIS
                         navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.Now.ToString("dd MMM yyyy"));
                         StringBuilder navItemList = new StringBuilder();
                         tempHtml.Append("<div class='bdy-scroll stylescrollbar'>");
+                        IList<string> linegraphIds = new List<string>();
+                        IList<string> bargraphIds = new List<string>();
+                        IList<string> piechartIds = new List<string>();
                         for (int x = 0; x < statementPages.Count; x++)
                         {
                             var htmlString = new StringBuilder();
-                            IList<string> linegraphIds = new List<string>();
-                            IList<string> bargraphIds = new List<string>();
-                            IList<string> piechartIds = new List<string>();
                             PageSearchParameter pageSearchParameter = new PageSearchParameter
                             {
                                 Identifier = statementPages[x].ReferencePageId,
@@ -892,28 +892,28 @@ namespace nIS
                                 htmlString.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
                             }
 
-                            if (linegraphIds.Count > 0)
-                            {
-                                var ids = string.Join(",", linegraphIds.Select(item => item).ToList());
-                                htmlString.Append("<input type = 'hidden' id = 'hiddenLineChartIds' value = '" + ids + "'>");
-                            }
-                            if (bargraphIds.Count > 0)
-                            {
-                                var ids = string.Join(",", bargraphIds.Select(item => item).ToList());
-                                htmlString.Append("<input type = 'hidden' id = 'hiddenBarChartIds' value = '" + ids + "'>");
-                            }
-                            if (piechartIds.Count > 0)
-                            {
-                                var ids = string.Join(",", piechartIds.Select(item => item).ToList());
-                                htmlString.Append("<input type = 'hidden' id = 'hiddenPieChartIds' value = '" + ids + "'>");
-                            }
-
                             //if (isBackgroundImage)
                             //{
                             //    htmlString.Replace("card border-0", "card border-0 bg-transparent");
                             //    htmlString.Replace("bg-light", "bg-transparent");
                             //}
                             tempHtml.Append(htmlString.ToString());
+                        }
+
+                        if (linegraphIds.Count > 0)
+                        {
+                            var ids = string.Join(",", linegraphIds.Select(item => item).ToList());
+                            tempHtml.Append("<input type = 'hidden' id = 'hiddenLineChartIds' value = '" + ids + "'>");
+                        }
+                        if (bargraphIds.Count > 0)
+                        {
+                            var ids = string.Join(",", bargraphIds.Select(item => item).ToList());
+                            tempHtml.Append("<input type = 'hidden' id = 'hiddenBarChartIds' value = '" + ids + "'>");
+                        }
+                        if (piechartIds.Count > 0)
+                        {
+                            var ids = string.Join(",", piechartIds.Select(item => item).ToList());
+                            tempHtml.Append("<input type = 'hidden' id = 'hiddenPieChartIds' value = '" + ids + "'>");
                         }
 
                         navbarHtml = navbarHtml.Replace("{{NavItemList}}", navItemList.ToString());
