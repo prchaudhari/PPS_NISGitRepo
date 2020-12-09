@@ -37,6 +37,8 @@
                 <!--<span class="badge badge-primary p-1">New</span>-->
                 <span class="badge badge-primary p-1" *ngIf="dynamicWidgetDetails.Status=='New'">{{dynamicWidgetDetails.Status}}</span>
                 <span class="badge badge-success p-1" *ngIf="dynamicWidgetDetails.Status=='Published'">{{dynamicWidgetDetails.Status}}</span>
+                <span class="badge badge-warning p-1 text-white" *ngIf="dynamicWidgetDetails.Status=='Ready To Publish'">{{dynamicWidgetDetails.Status}}</span>
+
               </div>
             </div>
           </div>
@@ -56,6 +58,7 @@
               <label>Widget Type</label>
             </div>
           </div>
+
           <div class="row">
             <div class="col-sm-12 form-group">
               <!--repeat start-->
@@ -126,32 +129,34 @@
               <!--repeat end-->
             </div>
           </div>
-          <!--if form-->
-          <div class="row" *ngIf="isSelected('Form')">
-            <div class="col-sm-12 form-group">
-              <div class="card bg-light border-card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <label class="mb-0">Field Name</label>
+          <div *ngIf="dynamicWidgetDetails.Status!='New'">
+            <!--if form-->
+            <div class="row" *ngIf="isSelected('Form')">
+              <div class="col-sm-12 form-group">
+                <div class="card bg-light border-card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label class="mb-0">Field Name</label>
+                      </div>
+                      <div class="col-sm-6 pl-0">
+                        <label class="mb-0">Display Name</label>
+                      </div>
                     </div>
-                    <div class="col-sm-6 pl-0">
-                      <label class="mb-0">Display Name</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-12 p-1">
-                      <div class="example-list" style="height:auto;background:transparent;">
-                        <div class="example-box p-2" *ngFor="let list of formList" style="cursor: default">
-                          <div class="row width100">
-                            <div class="col-sm-6">
-                              <span class="d-inline-block mt-1">{{list.FieldName}}</span>
+                    <div class="row">
+                      <div class="col-sm-12 p-1">
+                        <div class="example-list" style="height:auto;background:transparent;">
+                          <div class="example-box p-2" *ngFor="let list of formList" style="cursor: default">
+                            <div class="row width100">
+                              <div class="col-sm-6">
+                                <span class="d-inline-block mt-1">{{list.FieldName}}</span>
+                              </div>
+                              <div class="col-sm-6">
+                                <span class="d-inline-block mt-1">{{list.DisplayName}}</span>
+                              </div>
                             </div>
-                            <div class="col-sm-6">
-                              <span class="d-inline-block mt-1">{{list.DisplayName}}</span>
-                            </div>
-                          </div>
 
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -159,98 +164,56 @@
                 </div>
               </div>
             </div>
-          </div>
-          <!--if pie-->
-          <div class="row" *ngIf="isSelected('PieChart')">
-            <div class="col-sm-12 form-group">
-              <div class="card bg-light border-card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-6 col-lg-6 col-sm-6">
-                      <label>Series</label>
-                      <div>Series A</div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-sm-6">
-                      <label>Value</label>
-                      <div>Value A</div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--if line and bar-->
-          <div class="row" *ngIf="isSelected('LineGraph') || isSelected('BarGraph')">
-            <div class="col-sm-12 form-group">
-              <div class="card bg-light border-card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-7 col-lg-7 col-sm-7">
-                      <label>X-Axis</label>
-                      <div>Month</div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class=" col-sm-12 p-0">
-                      <div class="widget-area-grid p-0" style="height:auto">
-                        <table mat-table [dataSource]="dataSource" matSort class="table-cust">
-                          <!-- Position Column -->
-                          <ng-container matColumnDef="series">
-                            <th class="width50" mat-header-cell *matHeaderCellDef> Field Name </th>
-                            <td mat-cell *matCellDef="let list">{{list.FieldName}}</td>
-                          </ng-container>
-
-                          <ng-container matColumnDef="displayName">
-                            <th class="width50" mat-header-cell *matHeaderCellDef> Display Name </th>
-                            <td mat-cell *matCellDef="let list">{{list.DisplayName}}</td>
-                          </ng-container>
-
-
-                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
+            <!--if pie-->
+            <div class="row" *ngIf="isSelected('PieChart')">
+              <div class="col-sm-12 form-group">
+                <div class="card bg-light border-card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6 col-sm-6">
+                        <label>Series</label>
+                        <div>Series A</div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-sm-6">
+                        <label>Value</label>
+                        <div>Value A</div>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!--if table-->
-          <div class="row" *ngIf="isSelected('Table')">
-            <div class="col-sm-12 form-group">
-              <div class="card bg-light border-card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-5 col-lg-5 col-sm-5">
-                      <label>Field Name</label>
+            <!--if line and bar-->
+            <div class="row" *ngIf="isSelected('LineGraph') || isSelected('BarGraph')">
+              <div class="col-sm-12 form-group">
+                <div class="card bg-light border-card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-7 col-lg-7 col-sm-7">
+                        <label>X-Axis</label>
+                        <div>Month</div>
+                      </div>
                     </div>
-                    <div class="col-md-5 col-lg-5 col-sm-5 pl-0">
-                      <label>Header Name</label>
-                    </div>
-                    <div class="col-md-2 col-lg-2 col-sm-2 p-0">
-                      <label>Sorting</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-12 p-0">
-                      <div class="example-list" style="height:auto;background:transparent;"
-                           (cdkDropListDropped)="drop($event)">
-                        <div class="example-box p-2" *ngFor="let list of tableHeader" style="cursor:default">
-                          <div class="row width100">
-                            <div class="col-sm-5">
-                              <span class="d-inline-block mt-1">{{list.FieldName}}</span>
-                            </div>
-                            <div class="col-sm-5">
-                              <span class="d-inline-block mt-1">{{list.HeaderName}}</span>
-                            </div>
-                            <div class="col-sm-2 text-center">
-                              <span *ngIf="list.IsSorting==true" class="fa fa-toggle-on text-success" title="Yes"></span>
-                              <span *ngIf="list.IsSorting==false" class="fa fa-toggle-off text-danger" title="No"></span>
-                            </div>
-                          </div>
+                    <div class="row">
+                      <div class=" col-sm-12 p-0">
+                        <div class="widget-area-grid p-0" style="height:auto">
+                          <table mat-table [dataSource]="dataSource" matSort class="table-cust">
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="series">
+                              <th class="width50" mat-header-cell *matHeaderCellDef> Field Name </th>
+                              <td mat-cell *matCellDef="let list">{{list.FieldName}}</td>
+                            </ng-container>
 
+                            <ng-container matColumnDef="displayName">
+                              <th class="width50" mat-header-cell *matHeaderCellDef> Display Name </th>
+                              <td mat-cell *matCellDef="let list">{{list.DisplayName}}</td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          </table>
                         </div>
                       </div>
                     </div>
@@ -258,166 +221,220 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12 form-group">
-              <label>Filter</label>
-              <div class="card border-card bg-light">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-3 col-md-3 col-lg-3">
-                      <label>&nbsp;</label>
+            <!--if table-->
+            <div class="row" *ngIf="isSelected('Table')">
+              <div class="col-sm-12 form-group">
+                <div class="card bg-light border-card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-5 col-lg-5 col-sm-5">
+                        <label>Field Name</label>
+                      </div>
+                      <div class="col-md-5 col-lg-5 col-sm-5 pl-0">
+                        <label>Header Name</label>
+                      </div>
+                      <div class="col-md-2 col-lg-2 col-sm-2 p-0">
+                        <label>Sorting</label>
+                      </div>
                     </div>
-                    <div class="col-sm-3 col-md-3 col-lg-3">
-                      <label>Field</label>
-                    </div>
-                    <div class="col-sm-3 col-md-3 col-lg-3">
-                      <label>Operator</label>
-                    </div>
-                    <div class="col-sm-3 col-md-3 col-lg-3">
-                      <label>Value</label>
-                    </div>
-                  </div>
-                  <div class="row form-group" *ngFor="let list of displayWidgetFilterlist">
-                    <div class="col-sm-2 col-md-2 col-lg-2">
-                      <select class="form-control pl-1" *ngIf="list.Sequence>1" disabled>
-                        <option selected>{{list.ConditionalOperator}}</option>
-                      </select>
-                    </div>
-                    <div class="col-sm-3 col-md-3 col-lg-3">
-                      <select class="form-control" disabled>
-                        <option selected>{{list.FieldName}}</option>
-                      </select>
-                    </div>
-                    <div class="col-sm-3 col-md-3 col-lg-3">
-                      <select class="form-control" disabled>
-                        <option selected>{{list.OperatorName}}</option>
-                      </select>
-                    </div>
-                    <div class="col-sm-3 col-md-3 col-lg-3">
-                      <input type="text" class="form-control" [readonly]="true" value="{{list.Value}}" />
-                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 p-0">
+                        <div class="example-list" style="height:auto;background:transparent;"
+                             (cdkDropListDropped)="drop($event)">
+                          <div class="example-box p-2" *ngFor="let list of tableHeader" style="cursor:default">
+                            <div class="row width100">
+                              <div class="col-sm-5">
+                                <span class="d-inline-block mt-1">{{list.FieldName}}</span>
+                              </div>
+                              <div class="col-sm-5">
+                                <span class="d-inline-block mt-1">{{list.HeaderName}}</span>
+                              </div>
+                              <div class="col-sm-2 text-center">
+                                <span *ngIf="list.IsSorting==true" class="fa fa-toggle-on text-success" title="Yes"></span>
+                                <span *ngIf="list.IsSorting==false" class="fa fa-toggle-off text-danger" title="No"></span>
+                              </div>
+                            </div>
 
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <label>Select Theme</label>
-              <div class="width100 form-group d-flex justify-content-start">
-                <div class="custom-control custom-radio mr-2">
-                  <input class="custom-control-input" type="radio" disable
-                         name="themeoption" id="Default" value="option1" [checked]="isDefault">
-                  <label class="custom-control-label dir-rtl" for="Default">
-                    Default
-                  </label>
-                </div>
-                <div class="custom-control custom-radio mr-2">
-                  <input class="custom-control-input" type="radio" disabled
-                         name="themeoption" id="Custome" value="option1" [checked]="isCustome">
-                  <label class="custom-control-label dir-rtl" for="Custome">
-                    Custom
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card bg-light border-card form-group" *ngIf="dynamicWidgetDetails.ThemeType=='Custome'">
-            <div class="card-body">
-              <div class="row" *ngIf="isSelected('LineGraph') || isSelected('BarGraph') || isSelected('PieChart')">
-                <div class="col-sm-6">
-                  <label>Selected Color Theme</label>
-                  <div class="d-flex justify-content-start">
-                    <div class="clr-box" style="background-color:#342ead"></div>
-                    <div class="clr-box" style="background-color:#EA6227"></div>
-                    <div class="clr-box" style="background-color:#f2a51a"></div>
-                    <div class="clr-box" style="background-color:#b9ebcc"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="card bg-light border-card form-group" *ngIf="dynamicWidgetDetails.ThemeType=='Custome'">
-            <div class="card-header bg-white">
-              <label class="mb-0">Title Font</label>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-6">
-                  <label> Color</label>
-                  <input type="color" class="form-control" disabled />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Size</label>
-                  <div>
-                    {{themeCSS.TitleSize}}
+
+            <div class="row">
+              <div class="col-sm-12 form-group">
+                <label>Filter</label>
+                <div class="card border-card bg-light">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <label>&nbsp;</label>
+                      </div>
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <label>Field</label>
+                      </div>
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <label>Operator</label>
+                      </div>
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <label>Value</label>
+                      </div>
+                    </div>
+                    <div class="row form-group" *ngFor="let list of displayWidgetFilterlist">
+                      <div class="col-sm-2 col-md-2 col-lg-2">
+                        <select class="form-control pl-1" *ngIf="list.Sequence>1" disabled>
+                          <option selected>{{list.ConditionalOperator}}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <select class="form-control" disabled>
+                          <option selected>{{list.FieldName}}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <select class="form-control" disabled>
+                          <option selected>{{list.OperatorName}}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" class="form-control" [readonly]="true" value="{{list.Value}}" />
+                      </div>
+
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Weight</label>
-                  <div>{{themeCSS.TitleSize}}</div>
-                </div>
-                <div class="col-md-3 col-sm-6 form-group">
-                  <label> Type</label>
-                  <div>{{themeCSS.TitleType}}</div>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <label>Select Theme</label>
+                <div class="width100 form-group d-flex justify-content-start">
+                  <div class="custom-control custom-radio mr-2">
+                    <input class="custom-control-input" type="radio" disable
+                           name="themeoption" id="Default" value="option1" [checked]="isDefault">
+                    <label class="custom-control-label dir-rtl" for="Default">
+                      Default
+                    </label>
+                  </div>
+                  <div class="custom-control custom-radio mr-2">
+                    <input class="custom-control-input" type="radio" disabled
+                           name="themeoption" id="Custome" value="option1" [checked]="isCustome">
+                    <label class="custom-control-label dir-rtl" for="Custome">
+                      Custom
+                    </label>
+                  </div>
                 </div>
               </div>
+            </div>
 
+            <div class="card bg-light border-card form-group" *ngIf="dynamicWidgetDetails.ThemeType=='Custome'">
+              <div class="card-body">
+                <div class="row" *ngIf="isSelected('LineGraph') || isSelected('BarGraph') || isSelected('PieChart')">
+                  <div class="col-sm-6">
+                    <label>Selected Color Theme</label>
+                    <div class="d-flex justify-content-start">
+                      <div class="clr-box" style="background-color:#342ead"></div>
+                      <div class="clr-box" style="background-color:#EA6227"></div>
+                      <div class="clr-box" style="background-color:#f2a51a"></div>
+                      <div class="clr-box" style="background-color:#b9ebcc"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card bg-light border-card form-group" *ngIf="dynamicWidgetDetails.ThemeType=='Custome'">
+              <div class="card-header bg-white">
+                <label class="mb-0">Title Font</label>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3 col-sm-6">
+                    <label> Color</label>
+                    <input type="color" class="form-control" disabled />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Size</label>
+                    <div>
+                      {{themeCSS.TitleSize}}
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Weight</label>
+                    <div>{{themeCSS.TitleSize}}</div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 form-group">
+                    <label> Type</label>
+                    <div>{{themeCSS.TitleType}}</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="card bg-light border-card form-group" *ngIf="dynamicWidgetDetails.ThemeType=='Custome'">
+              <div class="card-header bg-white">
+                <label class="mb-0">Header/Label Font</label>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3 col-sm-6">
+                    <label> Color</label>
+                    <input type="color" class="form-control" disabled value="themeCSS.HeaderColor" />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Size</label>
+                    <div>{{themeCSS.HeaderType}}</div>
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Weight</label>
+                    <div>{{themeCSS.HeaderType}}</div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 form-group">
+                    <label> Type</label>
+                    <div>{{themeCSS.HeaderType}}</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="card bg-light border-card form-group" *ngIf="dynamicWidgetDetails.ThemeType=='Custome'">
+              <div class="card-header bg-white">
+                <label class="mb-0">Data Font</label>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-3 col-sm-6">
+                    <label> Color</label>
+                    <input type="color" class="form-control" disabled />
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Size</label>
+                    <div>{{themeCSS.DataType}}</div>
+                  </div>
+                  <div class="col-md-3 col-sm-6">
+                    <label> Weight</label>
+                    <div>{{themeCSS.DataType}}</div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 form-group">
+                    <label> Type</label>
+                    <div>{{themeCSS.DataType}}</div>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
-          <div class="card bg-light border-card form-group" *ngIf="dynamicWidgetDetails.ThemeType=='Custome'">
-            <div class="card-header bg-white">
-              <label class="mb-0">Header/Label Font</label>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-6">
-                  <label> Color</label>
-                  <input type="color" class="form-control" disabled value="themeCSS.HeaderColor" />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Size</label>
-                  <div>{{themeCSS.HeaderType}}</div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Weight</label>
-                  <div>{{themeCSS.HeaderType}}</div>
-                </div>
-                <div class="col-md-3 col-sm-6 form-group">
-                  <label> Type</label>
-                  <div>{{themeCSS.HeaderType}}</div>
-                </div>
+          <div *ngIf="dynamicWidgetDetails.Status=='New'">
+            <div class="row">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 form-group">
+                <label> No configuration set for widget</label>
+              
               </div>
-
-            </div>
-          </div>
-          <div class="card bg-light border-card form-group" *ngIf="dynamicWidgetDetails.ThemeType=='Custome'">
-            <div class="card-header bg-white">
-              <label class="mb-0">Data Font</label>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-6">
-                  <label> Color</label>
-                  <input type="color" class="form-control" disabled />
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Size</label>
-                  <div>{{themeCSS.DataType}}</div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <label> Weight</label>
-                  <div>{{themeCSS.DataType}}</div>
-                </div>
-                <div class="col-md-3 col-sm-6 form-group">
-                  <label> Type</label>
-                  <div>{{themeCSS.DataType}}</div>
-                </div>
-              </div>
-
+             
             </div>
           </div>
         </div>
