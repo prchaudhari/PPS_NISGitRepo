@@ -193,7 +193,7 @@ namespace nIS
                 {
                     if(!string.IsNullOrEmpty(whereClause))
                     {
-                        scheduleLogCount = nISEntitiesDataContext.ScheduleLogRecords.Where(whereClause.ToString()).Count();
+                        scheduleLogCount = nISEntitiesDataContext.View_ScheduleLog.Where(whereClause.ToString()).Count();
 
                     }
                     else
@@ -574,7 +574,7 @@ namespace nIS
                 if (this.validationEngine.IsValidDate(logSearchParameter.StartDate) && !this.validationEngine.IsValidDate(logSearchParameter.EndDate))
                 {
                     DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.StartDate), DateTimeKind.Utc);
-                    queryString.Append("CreationDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
+                    queryString.Append("ExecutionDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
                 }
                 //if (queryString.ToString() != string.Empty)
                 //{

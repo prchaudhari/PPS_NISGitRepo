@@ -481,11 +481,11 @@
                     </div>
                     <div class="col-md-3 col-sm-6">
                       <label> Size</label><span class="text-danger ml-2">*</span>
-                      <input type="number" formControlName="TitleSize" class="form-control" />
+                      <input type="number"  min="1" formControlName="TitleSize" class="form-control" />
                       <div class="validation-msg" style="color:red">
                         <ul *ngIf="TitleSize.touched && TitleSize.errors" style="list-style-type:none">
-                          <li class="text-danger" *ngIf="TitleSize.errors?.pattern">Inavid image height</li>
-                          <li class="text-danger" *ngIf="TitleSize.errors?.required">Image height required</li>
+                          <li class="text-danger" *ngIf="TitleSize.errors?.pattern">Invalid font size</li>
+                          <li class="text-danger" *ngIf="TitleSize.errors?.required">Font size required</li>
                         </ul>
                       </div>
                     </div>
@@ -520,11 +520,11 @@
                     </div>
                     <div class="col-md-3 col-sm-6">
                       <label> Size</label><span class="text-danger ml-2">*</span>
-                      <input type="number" class="form-control" formControlName="HeaderSize" />
+                      <input type="number"  min="1" class="form-control" formControlName="HeaderSize" />
                       <div class="validation-msg" style="color:red">
                         <ul *ngIf="HeaderSize.touched && HeaderSize.errors" style="list-style-type:none">
-                          <li class="text-danger" *ngIf="HeaderSize.errors?.pattern">Inavid image height</li>
-                          <li class="text-danger" *ngIf="HeaderSize.errors?.required">Image height required</li>
+                          <li class="text-danger" *ngIf="HeaderSize.errors?.pattern">Invalid font size</li>
+                          <li class="text-danger" *ngIf="HeaderSize.errors?.required">Font size required</li>
                         </ul>
                       </div>
                     </div>
@@ -559,11 +559,11 @@
                     </div>
                     <div class="col-md-3 col-sm-6">
                       <label> Size</label><span class="text-danger ml-2">*</span>
-                      <input type="number" class="form-control" formControlName="DataSize" />
+                      <input type="number"  min="1" class="form-control" formControlName="DataSize" />
                       <div class="validation-msg" style="color:red">
                         <ul *ngIf="DataSize.touched && DataSize.errors" style="list-style-type:none">
-                          <li class="text-danger" *ngIf="DataSize.errors?.pattern">Inavid image height</li>
-                          <li class="text-danger" *ngIf="DataSize.errors?.required">Image height required</li>
+                          <li class="text-danger" *ngIf="DataSize.errors?.pattern">Invalid font size</li>
+                          <li class="text-danger" *ngIf="DataSize.errors?.required">Font size required</li>
                         </ul>
                       </div>
                     </div>

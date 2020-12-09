@@ -101,6 +101,14 @@ namespace nIS
                         }
 
                     }
+                    if (dynamicWidget.WidgetSettings == null || dynamicWidget.WidgetSettings == string.Empty)
+                    {
+                        dynamicWidget.Status = "New";
+                    }
+                    else
+                    {
+                        dynamicWidget.Status = "Ready To Publish";
+                    }
                     dynamicWidgetRecords.Add(new DynamicWidgetRecord()
                     {
                         WidgetName = dynamicWidget.WidgetName,
@@ -113,7 +121,7 @@ namespace nIS
                         WidgetSettings = dynamicWidget.WidgetSettings,
                         WidgetFilterSettings = dynamicWidget.WidgetFilterSettings,
                         FilterCondition = queryString.ToString(),
-                        Status = "New",
+                        Status = dynamicWidget.Status,
                         CreatedBy = dynamicWidget.CreatedBy,
                         CreatedOn = DateTime.UtcNow,
                         LastUpdatedBy = dynamicWidget.CreatedBy,
@@ -218,6 +226,14 @@ namespace nIS
                                 queryString.Append(this.QueryGenerator(filterEntities[i]));
                             }
 
+                        }
+                        if (dynamicWidget.WidgetSettings == null || dynamicWidget.WidgetSettings == string.Empty)
+                        {
+                            dynamicWidget.Status = "New";
+                        }
+                        else
+                        {
+                            dynamicWidget.Status = "Ready To Publish";
                         }
                         DynamicWidgetRecord dynamicWidgetRecord = dynamicWidgetRecords.Single(item => item.Id == dynamicWidget.Identifier);
                         dynamicWidgetRecord.WidgetName = dynamicWidget.WidgetName;
