@@ -654,6 +654,7 @@ namespace nIS
                                         }
                                         string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Id, baseURL, outputLocation, filesDict);
 
+                                        var renderEngine = new RenderEngineRecord();
                                         using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                         {
                                             ScheduleRunHistoryRecord runHistory = new ScheduleRunHistoryRecord();
@@ -669,6 +670,7 @@ namespace nIS
 
                                             batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.TenantCode == tenantCode)?.ToList();
                                             customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
+                                            renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
                                         }
 
                                         if (customerMasters.Count > 0)
@@ -679,11 +681,11 @@ namespace nIS
                                             parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                                             Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                             {
-                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
+                                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
                                             });
                                             //customerMasters.ToList().ForEach(customer =>
                                             //{
-                                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation);
+                                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
                                             //});
                                         }
                                         else
@@ -851,6 +853,7 @@ namespace nIS
                                         if (statementPageContents.Count > 0)
                                         {
                                             var customerMasters = new List<CustomerMasterRecord>();
+                                            var renderEngine = new RenderEngineRecord();
                                             var statementPreviewData = this.statementRepository.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
                                             string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Id + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
@@ -882,6 +885,7 @@ namespace nIS
 
                                                 batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.TenantCode == tenantCode)?.ToList();
                                                 customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
+                                                renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
                                             }
 
                                             if (customerMasters.Count > 0)
@@ -892,11 +896,11 @@ namespace nIS
                                                 parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                                                 Parallel.ForEach(customerMasters, parallelOptions, customer =>
                                                 {
-                                                    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
+                                                    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
                                                 });
                                                 //customerMasters.ToList().ForEach(customer =>
                                                 //{
-                                                //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
+                                                //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
                                                 //});
                                             }
                                             else
@@ -1044,6 +1048,7 @@ namespace nIS
 
                     IList<CustomerMasterRecord> customerMasters = new List<CustomerMasterRecord>();
                     IList<BatchDetailRecord> batchDetails = new List<BatchDetailRecord>();
+                    var renderEngine = new RenderEngineRecord();
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         ScheduleRunHistoryRecord runHistory = new ScheduleRunHistoryRecord();
@@ -1059,6 +1064,7 @@ namespace nIS
 
                         batchDetails = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == batchMaster.Id && item.StatementId == statement.Identifier && item.TenantCode == tenantCode)?.ToList();
                         customerMasters = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
+                        renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
                     }
 
                     if (customerMasters.Count > 0)
@@ -1069,11 +1075,11 @@ namespace nIS
                         parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
                         Parallel.ForEach(customerMasters, parallelOptions, customer =>
                         {
-                            this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
+                            this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
                         });
                         //customerMasters.ForEach(customer =>
                         //{
-                        //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities);
+                        //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, customerMasters.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
                         //});
                     }
                     else
@@ -1983,15 +1989,13 @@ namespace nIS
             }
         }
 
-        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client, IList<TenantEntity> tenantEntities)
+        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client, IList<TenantEntity> tenantEntities, RenderEngineRecord renderEngine)
         {
             IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
-
             try
             {
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var renderEngine = nISEntitiesDataContext.RenderEngineRecords.Where(item => item.Id == 1).FirstOrDefault();
                     var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client, tenantEntities);
                     if (logDetailRecord != null)
                     {
@@ -2006,7 +2010,6 @@ namespace nIS
                         logDetailRecord.CreationDate = DateTime.UtcNow;
                         logDetailRecord.TenantCode = tenantCode;
                         nISEntitiesDataContext.ScheduleLogDetailRecords.Add(logDetailRecord);
-                        nISEntitiesDataContext.SaveChanges();
 
                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))
                         {
@@ -2022,13 +2025,15 @@ namespace nIS
                                     statementMetadataRecords.Add(metarec);
                                 });
                                 nISEntitiesDataContext.StatementMetadataRecords.AddRange(statementMetadataRecords);
-                                nISEntitiesDataContext.SaveChanges();
                             }
                         }
-                        else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+                        nISEntitiesDataContext.SaveChanges();
+
+                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                         {
                             this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, outputLocation);
                         }
+
                     }
 
                     var logDetailsRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLog.Id)?.ToList();
