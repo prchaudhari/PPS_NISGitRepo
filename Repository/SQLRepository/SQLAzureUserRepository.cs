@@ -346,21 +346,28 @@ namespace nIS
                     }
                     if (userRecords?.Count() > 0)
                     {
-                        StringBuilder countryIdQuery = new StringBuilder();
-                        countryIdQuery = countryIdQuery.Append("(" + string.Join("or ", userRecords.Select(item => string.Format("Id.Equals({0}) ", item.CountryId))) + ")");
-                        countires = nISEntities.CountryRecords.Where(countryIdQuery.ToString()).ToList();
+                        if (userRecords.Where(item => item.CountryId != 0).Count() > 0)
+                        {
+                            StringBuilder countryIdQuery = new StringBuilder();
+                            countryIdQuery = countryIdQuery.Append("(" + string.Join("or ", userRecords.Select(item => string.Format("Id.Equals({0}) ", item.CountryId))) + ")");
+                            countires = nISEntities.CountryRecords.Where(countryIdQuery.ToString()).ToList();
+                        }
                     }
                 }
                 IList<User> tempUsers = new List<User>();
                 userRecords?.ToList().ForEach(userRecord =>
                 {
-                    //Country country = null;
-
-                    ///Get roles
+                    string contactnumber = string.Empty;
                     IList<Role> roles = this.GetRoles(userRecord.Id, userSearchParameter.IsRolePrivilegesRequired, userRecord.TenantCode);
-                    string contactnumber = countires.Where(i => i.Id == userRecord.CountryId).FirstOrDefault().DialingCode + "-" + userRecord.ContactNumber;
-                    //Get country
-                    //country = this.GetCountry(userRecord.CountryId, tenantCode);
+
+                    if (userRecord.CountryId == 0 || userRecord.CountryId == null)
+                    {
+                        contactnumber = "-";
+                    }
+                    else
+                    {
+                        contactnumber = countires.Where(i => i.Id == userRecord.CountryId).FirstOrDefault().DialingCode + "-" + userRecord.ContactNumber;
+                    }
                     tempUsers.Add(new User()
                     {
                         Identifier = userRecord.Id,
@@ -1224,7 +1231,7 @@ namespace nIS
                     queryString.Append(string.Format("IsActive.Equals({0}) and ", searchParameter.IsActive));
                 }
 
-                if (searchParameter.IsInstanceManager != null) 
+                if (searchParameter.IsInstanceManager != null)
                 {
                     queryString.Append(string.Format("IsInstanceManager.Equals({0}) and ", searchParameter.IsInstanceManager));
                 }

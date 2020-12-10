@@ -31,7 +31,7 @@ export class UserAddEditComponent implements OnInit {
   public emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]+[ ]{0,1}[a-zA-Z]*[ ]*$";
   public onlyCharacterswithInbetweenSpaceUpto50Characters = Constants.onlyCharacterswithInbetweenSpaceUpto50Characters;
-  public onlyNumbers = '[0-9]*';
+  public onlyNumbers = '[0-9]{10,10}';
   public errorMsg: boolean;
   public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
   public roleLists: any = [];
@@ -196,7 +196,7 @@ export class UserAddEditComponent implements OnInit {
 
     });
   }
-
+  public isCountryCodeRequired = false;
 
   //Initialization call--onlyNumbers
   ngOnInit() {
@@ -210,12 +210,14 @@ export class UserAddEditComponent implements OnInit {
       Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       email: ['', Validators.compose([Validators.required,
       Validators.pattern(this.emailRegex)])],
-      mobileNumber: ['', Validators.compose([Validators.required,
-      Validators.maxLength(10),
-      Validators.minLength(10),
-      Validators.pattern(this.onlyNumbers)])],
+      mobileNumber: ['', Validators.compose([
+      //Validators.required,
+      //Validators.maxLength(10),
+      //Validators.minLength(10),
+      Validators.pattern(this.onlyNumbers)
+      ])],
       UserRole: [0, Validators.compose([Validators.required])],
-      CountryCode: [0, Validators.compose([Validators.required])],
+      CountryCode: [0],
       Image: [null]
     })
 
@@ -396,10 +398,10 @@ export class UserAddEditComponent implements OnInit {
       this.userFormErrorObject.roleShowError = true;
       return false;
     }
-    if (this.User.CountryCode == 0) {
-      this.userFormErrorObject.showCountryCodeError = true;
-      return false;
-    }
+    //if (this.User.CountryCode == 0) {
+    //  this.userFormErrorObject.showCountryCodeError = true;
+    //  return false;
+    //}
     return true;
   }
 
@@ -425,17 +427,20 @@ export class UserAddEditComponent implements OnInit {
     if (this.userFormGroup.controls.email.invalid) {
       return true;
     }
-
-    if (this.userFormGroup.controls.mobileNumber.invalid) {
-      return true;
+    if (this.userFormGroup.value.mobileNumber != "" && this.userFormGroup.value.mobileNumber != null) {
+      this.isCountryCodeRequired = true;
+      if (this.User.CountryCode == 0) {
+        return true;
+      }
     }
+    else {
+      this.isCountryCodeRequired = false;
 
+    }
     if (this.User.RoleIdentifier == 0) {
       return true;
     }
-    if (this.User.CountryCode == 0) {
-      return true;
-    }
+   
     return false;
   }
 
@@ -458,8 +463,11 @@ export class UserAddEditComponent implements OnInit {
 
     const value = event.target.value;
     if (value == "") {
-      this.userFormErrorObject.showCountryCodeError = true;
-      this.User.CountryCode = 0
+      if (this.userFormGroup.value.mobileNumber != "" || this.userFormGroup.value.mobileNumber != null) {
+        this.userFormErrorObject.showCountryCodeError = true;
+        this.User.CountryCode = 0
+      }
+    
     }
     else {
       this.userFormErrorObject.showCountryCodeError = false;
@@ -484,13 +492,17 @@ export class UserAddEditComponent implements OnInit {
           });
         }
       })
+      var country=0
+      if (this.userFormGroup.value.mobileNumber != "" && this.userFormGroup.value.mobileNumber != null) {
+        country = this.userFormGroup.value.CountryCode;
+      }
       let userObject: any = {
         "FirstName": this.userFormGroup.value.firstName.trim(),
         "LastName": this.userFormGroup.value.lastName.trim(),
         "EmailAddress": this.userFormGroup.value.email,
         //"ContactNumber": this.userFormGroup.value.CountryCode + "-" + this.userFormGroup.value.mobileNumber,
         "ContactNumber": this.userFormGroup.value.mobileNumber,
-        "CountryId": this.userFormGroup.value.CountryCode,
+        "CountryId": country,
         "Roles": selectedroleArray,
         "Image": this.image,
       }

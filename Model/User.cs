@@ -355,10 +355,10 @@ namespace nIS
                     exception.Data.Add(this.utility.GetDescription("EmailAddress", typeof(User)), ModelConstant.USER_MODEL_SECTION + "~" + ModelConstant.INVALID_USER_EMAIL);
                 }
 
-                if (!this.validationEngine.IsValidText(this.ContactNumber))
-                {
-                    exception.Data.Add(this.utility.GetDescription("ContactNumber", typeof(User)), ModelConstant.USER_MODEL_SECTION + "~" + ModelConstant.INVALID_USER_CONTACT_NUMBER);
-                }
+                //if (!this.validationEngine.IsValidText(this.ContactNumber))
+                //{
+                //    exception.Data.Add(this.utility.GetDescription("ContactNumber", typeof(User)), ModelConstant.USER_MODEL_SECTION + "~" + ModelConstant.INVALID_USER_CONTACT_NUMBER);
+                //}
 
                 if (this.Roles?.Count == 0)
                 {

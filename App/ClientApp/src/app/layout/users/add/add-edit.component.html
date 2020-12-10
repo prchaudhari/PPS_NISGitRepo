@@ -107,7 +107,7 @@
               <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 form-group">
                 <div class="row">
                   <div class="col-5 col-md-5 col-sm-6 col-xs-5 p-rtl">
-                    <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2">*</span>
+                    <label for="inputCountryCode">Country Code</label><span class="text-danger ml-2" *ngIf="isCountryCodeRequired" >*</span>
                     <select formControlName="CountryCode" (change)='onCountrySelected($event)' class="form-control">
                       <option *ngFor="let role of countrycodeLists" [value]="role.Identifier">{{role.Code}} {{role.DialingCode}}</option>
                     </select>
@@ -120,7 +120,7 @@
                     </div>
                   </div>
                   <div class="col-7 col-md-7 col-sm-6 col-xs-7 pl-1">
-                    <label for="inputMobileNumber">Mobile No.</label><span class="text-danger ml-2">*</span>
+                    <label for="inputMobileNumber">Mobile No.</label>
                     <input type="text" class="form-control" formControlName="mobileNumber">
                     <div class="validation-msg" style="color:red" *ngIf="mobileNumber.touched && mobileNumber.errors">
                       <ul style="list-style-type:none">
