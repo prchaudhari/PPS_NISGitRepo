@@ -45,9 +45,9 @@ export class ListComponent implements OnInit {
   public userClaimsRolePrivilegeOperations: any[] = [];
   public totalRecordCount = 0;
   public filterTenantNameValue = '';
-  public filterTenantDomainName = '';
-  public filterTenantStartDate = null;
-  public filterTenantEndDate = null;
+  //public filterTenantDomainName = '';
+  //public filterTenantStartDate = null;
+  //public filterTenantEndDate = null;
   public sortOrder = Constants.Descending;
   public sortColumn = 'Id';
 
@@ -78,9 +78,9 @@ export class ListComponent implements OnInit {
 
     this.getTenant(null);
     this.TenantFilterForm = this.fb.group({
-      filterName: [null],
-      filterDomainName: [null],
-      filterCountry: [null],
+      filterName: [null]
+      //filterDomainName: [null],
+      //filterCountry: [null],
     });
   }
 
@@ -108,26 +108,26 @@ export class ListComponent implements OnInit {
     return this.TenantFilterForm.get('filterName');
   }
 
-  get filterDomainName() {
-    return this.TenantFilterForm.get('filterDomainName');
-  }
+  //get filterDomainName() {
+  //  return this.TenantFilterForm.get('filterDomainName');
+  //}
 
-  get filterCountry() {
-    return this.TenantFilterForm.get('filterCountry');
-  }
+  //get filterCountry() {
+  //  return this.TenantFilterForm.get('filterCountry');
+  //}
 
   resetFilterForm() {
     this.TenantFilterForm.patchValue({
-      filterName: null,
-      filterDomainName: null,
-      filterCountry: null
+      filterName: null
+      //filterDomainName: null,
+      //filterCountry: null
     });
 
     this.currentPage = 0;
     this.filterTenantNameValue = '';
-    this.filterTenantDomainName = '';
-    this.filterTenantStartDate = null;
-    this.filterTenantEndDate = null;
+    //this.filterTenantDomainName = '';
+    //this.filterTenantStartDate = null;
+    //this.filterTenantEndDate = null;
   }
 
   //This method has been used for fetching search records
@@ -153,10 +153,10 @@ export class ListComponent implements OnInit {
         this.filterTenantNameValue = this.TenantFilterForm.value.filterName.trim();
         searchParameter.TenantName = this.TenantFilterForm.value.filterName.trim();
       }
-      if (this.TenantFilterForm.value.filterDomainName != null && this.TenantFilterForm.value.filterDomainName != '') {
-        this.filterTenantDomainName = this.TenantFilterForm.value.filterDomainName.trim();
-        searchParameter.TenantDomainName = this.TenantFilterForm.value.filterDomainName.trim();
-      }
+      //if (this.TenantFilterForm.value.filterDomainName != null && this.TenantFilterForm.value.filterDomainName != '') {
+      //  this.filterTenantDomainName = this.TenantFilterForm.value.filterDomainName.trim();
+      //  searchParameter.TenantDomainName = this.TenantFilterForm.value.filterDomainName.trim();
+      //}
 
       this.currentPage = 0;
       this.getTenant(searchParameter);
@@ -180,9 +180,9 @@ export class ListComponent implements OnInit {
     if (this.filterTenantNameValue != null && this.filterTenantNameValue != '') {
       searchParameter.TenantName = this.filterTenantNameValue.trim();
     }
-    if (this.filterTenantDomainName != null && this.filterTenantDomainName != '') {
-      searchParameter.TenantDomainName = this.filterTenantDomainName.trim();
-    }
+    //if (this.filterTenantDomainName != null && this.filterTenantDomainName != '') {
+    //  searchParameter.TenantDomainName = this.filterTenantDomainName.trim();
+    //}
     var currentUser = this.localstorageservice.GetCurrentUser();
     searchParameter.IsPrimaryTenant = false;
     searchParameter.ParentTenantCode = currentUser.TenantCode;
