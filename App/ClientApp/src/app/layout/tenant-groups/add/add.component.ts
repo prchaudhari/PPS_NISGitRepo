@@ -439,7 +439,6 @@ export class AddComponent implements OnInit {
   }
 
   async UpdateTenantGroupUser() {
-    debugger
     var country = this.countryList.filter(c => this.tenantGroupUserEditFormGroup.value.EditCountryCode == c.Identifier);
     var tenantgroupuser = this.tenantGroupUserList.filter(s => this.TenantGroupUser.EmailAddress == s.EmailAddress)[0];
     var index = this.tenantGroupUserList.findIndex(s => this.TenantGroupUser.EmailAddress == s.EmailAddress);
