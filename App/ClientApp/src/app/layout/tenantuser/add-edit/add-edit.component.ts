@@ -29,7 +29,7 @@ export class AddEditComponent implements OnInit {
   public emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   public onlyAlphabetsWithSpaceQuoteHyphen = "[a-zA-Z]+[ ]{0,1}[a-zA-Z]*[ ]*$";
   public onlyCharacterswithInbetweenSpaceUpto50Characters = Constants.onlyCharacterswithInbetweenSpaceUpto50Characters;
-  public onlyNumbers = '[0-9]*';
+  public onlyNumbers = '[0-9]{10,10}';
   public errorMsg: boolean;
   public roleList = [{ "Name": "Select Role", "Identifier": 0 }];
   public roleLists: any = [];
@@ -189,7 +189,7 @@ export class AddEditComponent implements OnInit {
     });
   }
 
-
+  public isCountryCodeRequired = false;
   //Initialization call--onlyNumbers
   ngOnInit() {
     // TenantUser form validations.
@@ -202,11 +202,14 @@ export class AddEditComponent implements OnInit {
       Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       email: ['', Validators.compose([Validators.required,
       Validators.pattern(this.emailRegex)])],
-      mobileNumber: ['', Validators.compose([Validators.required,
-      Validators.maxLength(10),
-      Validators.minLength(10),
-      Validators.pattern(this.onlyNumbers)])],
-      CountryCode: [0, Validators.compose([Validators.required])],
+      mobileNumber: ['', Validators.compose([
+        //Validators.required,
+        //Validators.maxLength(10),
+        //Validators.minLength(10),
+        Validators.pattern(this.onlyNumbers)
+      ])],
+      UserRole: [0, Validators.compose([Validators.required])],
+      CountryCode: [0],
       Image: [null]
     })
     this.getCountries();
@@ -361,10 +364,10 @@ export class AddEditComponent implements OnInit {
       return false;
     }
 
-    if (this.TenantUser.CountryCode == 0) {
-      this.tenantuserFormErrorObject.showCountryCodeError = true;
-      return false;
-    }
+     //if (this.User.CountryCode == 0) {
+    //  this.userFormErrorObject.showCountryCodeError = true;
+    //  return false;
+    //}
     return true;
   }
 
@@ -387,12 +390,17 @@ export class AddEditComponent implements OnInit {
     if (this.tenantuserFormGroup.controls.email.invalid) {
       return true;
     }
-    if (this.tenantuserFormGroup.controls.mobileNumber.invalid) {
-      return true;
+    if (this.tenantuserFormGroup.value.mobileNumber != "" && this.tenantuserFormGroup.value.mobileNumber != null) {
+      this.isCountryCodeRequired = true;
+      if (this.TenantUser.CountryCode == 0) {
+        return true;
+      }
     }
-    if (this.TenantUser.CountryCode == 0) {
-      return true;
+    else {
+      this.isCountryCodeRequired = false;
+
     }
+    
     return false;
   }
 
@@ -409,15 +417,23 @@ export class AddEditComponent implements OnInit {
   }
 
   public onCountrySelected(event) {
+
     const value = event.target.value;
     if (value == "") {
-      this.tenantuserFormErrorObject.showCountryCodeError = true;
-      this.TenantUser.CountryCode = 0
+      if (this.tenantuserFormGroup.value.mobileNumber != "" || this.tenantuserFormGroup.value.mobileNumber != null) {
+        this.tenantuserFormErrorObject.showCountryCodeError = true;
+        this.TenantUser.CountryCode = 0
+      }
+
     }
     else {
       this.tenantuserFormErrorObject.showCountryCodeError = false;
+
       this.TenantUser.CountryCode = value
+
     }
+
+    console.log(value);
   }
 
   //Function to add tenantuser--
@@ -432,13 +448,17 @@ export class AddEditComponent implements OnInit {
           });
         }
       })
+      var country = 0
+      if (this.tenantuserFormGroup.value.mobileNumber != "" && this.tenantuserFormGroup.value.mobileNumber != null) {
+        country = this.tenantuserFormGroup.value.CountryCode;
+      }
       let tenantuserObject: any = {
         "FirstName": this.tenantuserFormGroup.value.firstName.trim(),
         "LastName": this.tenantuserFormGroup.value.lastName.trim(),
         "EmailAddress": this.tenantuserFormGroup.value.email,
         //"ContactNumber": this.tenantuserFormGroup.value.CountryCode + "-" + this.tenantuserFormGroup.value.mobileNumber,
         "ContactNumber": this.tenantuserFormGroup.value.mobileNumber,
-        "CountryId": this.tenantuserFormGroup.value.CountryCode,
+        "CountryId": country,
         "Roles": selectedroleArray,
         "Image": this.image,
       }
