@@ -225,9 +225,9 @@ export class AddComponent implements OnInit {
       firstName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       lastName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       email: ['', Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])],
-      mobileNumber: ['', Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
+      mobileNumber: ['', Validators.compose([Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
       ContactType: [0, Validators.compose([Validators.required])],
-      CountryCode: [0, Validators.compose([Validators.required])],
+      CountryCode: [0],
       Image: [null]
     });
 
@@ -235,9 +235,9 @@ export class AddComponent implements OnInit {
       EditfirstName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       EditlastName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       Editemail: ['', Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])],
-      EditmobileNumber: ['', Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
+      EditmobileNumber: ['', Validators.compose([Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
       EditcontactType: [0, Validators.compose([Validators.required])],
-      EditCountryCode: [0, Validators.compose([Validators.required])],
+      EditCountryCode: [0],
       EditImage: [null]
     });
 
@@ -432,9 +432,9 @@ export class AddComponent implements OnInit {
       if (this.contactEditFormGroup.controls.Editemail.invalid) {
         return true;
       }
-      if (this.contactEditFormGroup.controls.EditCountryCode.value == 0) {
-        return true;
-      }
+      //if (this.contactEditFormGroup.controls.EditCountryCode.value == 0) {
+      //  return true;
+      //}
       if (this.contactEditFormGroup.controls.EditmobileNumber.invalid) {
         return true;
       }
@@ -453,9 +453,9 @@ export class AddComponent implements OnInit {
       if (this.contactFormGroup.controls.email.invalid) {
         return true;
       }
-      if (this.contactFormGroup.controls.CountryCode.value == 0) {
-        return true;
-      }
+      //if (this.contactFormGroup.controls.CountryCode.value == 0) {
+      //  return true;
+      //}
       if (this.contactFormGroup.controls.mobileNumber.invalid) {
         return true;
       }
@@ -478,11 +478,11 @@ export class AddComponent implements OnInit {
   public onCountrySelected(event) {
     const value = event.target.value;
     if (value == "0") {
-      this.contactFormErrorObject.showCountryCodeError = true;
+      //this.contactFormErrorObject.showCountryCodeError = true;
       this.Contact.CountryCode = 0;
     }
     else {
-      this.contactFormErrorObject.showCountryCodeError = false;
+      //this.contactFormErrorObject.showCountryCodeError = false;
       this.Contact.CountryCode = value;
     }
   }

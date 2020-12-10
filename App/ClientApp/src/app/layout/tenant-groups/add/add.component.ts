@@ -184,16 +184,16 @@ export class AddComponent implements OnInit {
       firstName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       lastName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       email: ['', Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])],
-      mobileNumber: ['', Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
-      CountryCode: [0, Validators.compose([Validators.required])],
+      mobileNumber: ['', Validators.compose([Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
+      CountryCode: [0],
     });
 
     this.tenantGroupUserEditFormGroup = this.formbuilder.group({
       EditfirstName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       EditlastName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       Editemail: ['', Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])],
-      EditmobileNumber: ['', Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
-      EditCountryCode: [0, Validators.compose([Validators.required])],
+      EditmobileNumber: ['', Validators.compose([Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
+      EditCountryCode: [0],
     });
 
     if (this.updateOperationMode) {
@@ -322,7 +322,10 @@ export class AddComponent implements OnInit {
       if (this.tenantGroupUserEditFormGroup.controls.EditmobileNumber.invalid) {
         return true;
       }
-      if (this.TenantGroupUser.EditCountryCode == 0) {
+      if (this.TenantGroupUser.EditCountryCode == 0 && this.tenantGroupUserEditFormGroup.value.EditmobileNumber != '') {
+        return true;
+      }
+      if (this.TenantGroupUser.EditCountryCode != 0 && this.tenantGroupUserEditFormGroup.value.EditmobileNumber == '') {
         return true;
       }
       return false;
@@ -340,7 +343,10 @@ export class AddComponent implements OnInit {
       if (this.tenantGroupUserFormGroup.controls.mobileNumber.invalid) {
         return true;
       }
-      if (this.TenantGroupUser.CountryCode == 0) {
+      if (this.TenantGroupUser.CountryCode == 0 && this.tenantGroupUserFormGroup.value.mobileNumber != '') {
+        return true;
+      }
+      if (this.TenantGroupUser.CountryCode != 0 && this.tenantGroupUserFormGroup.value.mobileNumber == '') {
         return true;
       }
       return false;
@@ -350,11 +356,11 @@ export class AddComponent implements OnInit {
   public onCountrySelected(event) {
     const value = event.target.value;
     if (value == "0") {
-      this.tenantGroupUserFormErrorObject.showCountryCodeError = true;
+      //this.tenantGroupUserFormErrorObject.showCountryCodeError = true;
       this.TenantGroupUser.CountryCode = 0;
     }
     else {
-      this.tenantGroupUserFormErrorObject.showCountryCodeError = false;
+      //this.tenantGroupUserFormErrorObject.showCountryCodeError = false;
       this.TenantGroupUser.CountryCode = value;
     }
   }
@@ -382,7 +388,6 @@ export class AddComponent implements OnInit {
   }
 
   async onSubmitAddTenantGroupUser() {
-
     var country = this.countryList.filter(c => this.tenantGroupUserFormGroup.value.CountryCode == c.Identifier);
     let tenantGroupUserObject: any = {
       "FirstName": this.tenantGroupUserFormGroup.value.firstName.trim(),
@@ -395,7 +400,6 @@ export class AddComponent implements OnInit {
       "IsActive": true,
       "IsActivationLinkSent": false
     };
-
 
     if (this.updateOperationMode) {
       var data = [];
@@ -420,8 +424,8 @@ export class AddComponent implements OnInit {
       }
       else {
         this.tenantGroupUserList.push(tenantGroupUserObject);
-        let messageString = Constants.recordAddedMessage;
-        this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+        //let messageString = Constants.recordAddedMessage;
+        //this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
         this.dataSource = new MatTableDataSource<any>(this.tenantGroupUserList);
         this.dataSource.sort = this.sort;
         this.array = this.tenantGroupUserList;
@@ -435,6 +439,7 @@ export class AddComponent implements OnInit {
   }
 
   async UpdateTenantGroupUser() {
+    debugger
     var country = this.countryList.filter(c => this.tenantGroupUserEditFormGroup.value.EditCountryCode == c.Identifier);
     var tenantgroupuser = this.tenantGroupUserList.filter(s => this.TenantGroupUser.EmailAddress == s.EmailAddress)[0];
     var index = this.tenantGroupUserList.findIndex(s => this.TenantGroupUser.EmailAddress == s.EmailAddress);
@@ -502,8 +507,8 @@ export class AddComponent implements OnInit {
       let message = "Are you sure you want to delete this record?";
       this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
         if (isConfirmed) {
-var data=[];
-data.push(tenantgroup);
+          var data=[];
+          data.push(tenantgroup);
           let isDeleted = await this.service.deleteUser(data);
           if (isDeleted) {
             let messageString = Constants.recordDeletedMessage;

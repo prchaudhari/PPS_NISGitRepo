@@ -160,9 +160,8 @@ export class AddEditComponent implements OnInit {
       lastName: [null, Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(50),
       Validators.pattern(this.onlyCharacterswithInbetweenSpaceUpto50Characters)])],
       email: ['', Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])],
-      mobileNumber: ['', Validators.compose([Validators.required, Validators.maxLength(10), 
-        Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
-      CountryCode: [0, Validators.compose([Validators.required])],
+      mobileNumber: ['', Validators.compose([Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.onlyNumbers)])],
+      CountryCode: [0],
       Image: [null]
     })
     this.getCountries();
@@ -264,10 +263,10 @@ export class AddEditComponent implements OnInit {
       return false;
     }
 
-    if (this.TenantGroupUser.CountryCode == 0) {
-      this.tenantgroupuserFormErrorObject.showCountryCodeError = true;
-      return false;
-    }
+    //if (this.TenantGroupUser.CountryCode == 0) {
+    //  this.tenantgroupuserFormErrorObject.showCountryCodeError = true;
+    //  return false;
+    //}
     return true;
   }
 
@@ -293,20 +292,20 @@ export class AddEditComponent implements OnInit {
     if (this.tenantgroupuserFormGroup.controls.mobileNumber.invalid) {
       return true;
     }
-    if (this.TenantGroupUser.CountryCode == 0) {
-      return true;
-    }
+    //if (this.TenantGroupUser.CountryCode == 0) {
+    //  return true;
+    //}
     return false;
   }
 
   public onCountrySelected(event) {
     const value = event.target.value;
     if (value == "") {
-      this.tenantgroupuserFormErrorObject.showCountryCodeError = true;
+      //this.tenantgroupuserFormErrorObject.showCountryCodeError = true;
       this.TenantGroupUser.CountryCode = 0
     }
     else {
-      this.tenantgroupuserFormErrorObject.showCountryCodeError = false;
+      //this.tenantgroupuserFormErrorObject.showCountryCodeError = false;
       this.TenantGroupUser.CountryCode = value
     }
   }
