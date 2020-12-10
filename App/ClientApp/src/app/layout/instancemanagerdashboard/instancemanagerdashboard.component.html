@@ -121,7 +121,7 @@
       <div class="filter-footer">
         <ul class="nav">
           <li class="nav-item width33" title="Search">
-            <button class="btn-footer-fill btn-block rounded-0 height100" (click)="searchDashboardReportRecordFilter('search')">
+            <button class="btn-footer-fill btn-block rounded-0 height100"  [disabled]="disableSeacrhButton()" (click)="searchDashboardReportRecordFilter('search')">
               <span class="fa fa-check"></span>
             </button>
           </li>

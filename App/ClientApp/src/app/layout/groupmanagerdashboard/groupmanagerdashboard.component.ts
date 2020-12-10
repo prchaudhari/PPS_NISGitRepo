@@ -138,6 +138,12 @@ export class GroupmanagerdashboardComponent implements OnInit {
     searchParameter.EndDate = new Date(toDate.setHours(23, 59, 59));
 
     this.getDashboardReports(searchParameter);
+    this.filterFromDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateError = false;
+    this.filterToDateErrorMessage = "";
+    this.filterVisitorDateError = false;
+    this.filterVisitorDateErrorMessage = "";
   }
 
   async getTenantGroups(searchParameter) {
@@ -243,7 +249,18 @@ export class GroupmanagerdashboardComponent implements OnInit {
       }
     }
   }
-
+  disableSeacrhButton() {
+    if (this.AnalyticFilterForm.value.filterFromDate === null || this.AnalyticFilterForm.value.filterFromDate == '') {
+      return true;
+    }
+    if (this.AnalyticFilterForm.value.filterToDate === null || this.AnalyticFilterForm.value.filterToDate == '') {
+      return true;
+    }
+    if (this.filterToDateError || this.filterFromDateError) {
+      return true;
+    }
+    return false;
+  }
   public UserChartOptions: any = {
     xAxis: {
     },

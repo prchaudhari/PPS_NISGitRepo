@@ -149,6 +149,12 @@ export class InstancemanagerdashboardComponent implements OnInit {
     searchParameter.EndDate = new Date(toDate.setHours(23, 59, 59));
 
     this.getDashboardReports(searchParameter);
+    this.filterFromDateError = false;
+    this.filterFromDateErrorMessage = "";
+    this.filterToDateError = false;
+    this.filterToDateErrorMessage = "";
+    this.filterVisitorDateError = false;
+    this.filterVisitorDateErrorMessage = "";
   }
 
   async getTenantGroups(searchParameter) {
