@@ -1654,7 +1654,7 @@ namespace nIS
                     while (occurences != null && occurences > 0)
                     {
                         int DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
-                        if (schedule.DayOfMonth > 28)
+                        if (DayOfMonth > 28)
                         {
                             int lastDayOfMonth = DateTime.DaysInMonth(newstartdate.Year, newstartdate.Month);
                             if (lastDayOfMonth < DayOfMonth)
@@ -1720,7 +1720,7 @@ namespace nIS
                 }
 
                 int DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
-                if (schedule.DayOfMonth > 28)
+                if (DayOfMonth > 28)
                 {
                     int lastDayOfMonth = DateTime.DaysInMonth(startdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear));
                     if (lastDayOfMonth < DayOfMonth)
@@ -1728,7 +1728,7 @@ namespace nIS
                         DayOfMonth = lastDayOfMonth;
                     }
                 }
-                
+
                 var newstartdate = new DateTime(startdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear), DayOfMonth, 0, 0, 0);
                 newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
                 //var newenddate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
@@ -1749,6 +1749,16 @@ namespace nIS
                     int idx = 1;
                     while (idx <= yearDiff)
                     {
+                        DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
+                        if (DayOfMonth > 28)
+                        {
+                            int lastDayOfMonth = DateTime.DaysInMonth(newstartdate.Year, newstartdate.Month);
+                            if (lastDayOfMonth < DayOfMonth)
+                            {
+                                DayOfMonth = lastDayOfMonth;
+                            }
+                        }
+
                         BatchMasterRecord record = new BatchMasterRecord();
                         record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
                         record.TenantCode = tenantCode;
@@ -1757,7 +1767,7 @@ namespace nIS
                         record.ScheduleId = schedule.Id;
                         record.IsExecuted = false;
                         record.IsDataReady = false;
-                        var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                        var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, DayOfMonth, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
                         record.BatchExecutionDate = batchExecutionDate;
                         record.DataExtractionDate = batchExecutionDate.AddDays(-1);
                         record.Status = BatchStatus.New.ToString();

@@ -205,7 +205,7 @@ export class AddComponent implements OnInit {
       this.isWeekly = false;
       this.isMonthly = true;
       this.isYearly = false;
-      if(this.scheduleForm.value.CustomMonthDay==31) {
+      if(this.scheduleForm.value.CustomMonthDay >= 29) {
         this.monthlyWarningMessage = 'Some of the months have fewer days so schedule will be executed on the last day of month.';
       }
     }else if(repeatEveryByVal == 'Year') {
@@ -213,6 +213,9 @@ export class AddComponent implements OnInit {
       this.isWeekly = false;
       this.isMonthly = false;
       this.isYearly = true;
+      if (this.scheduleForm.value.CustomYearDay >= 29) {
+        this.monthlyWarningMessage = 'Some of the months have fewer days so schedule will be executed on the last day of month.';
+      }
     }
     this.setScheduleOccuranceMessage();
   }
@@ -231,7 +234,7 @@ export class AddComponent implements OnInit {
       this.scheduleForm.controls['CustomMonthDay'].setValue(31);
     }
     this.scheduleOccuranceDay = this.scheduleForm.value.CustomMonthDay;
-    if(this.scheduleForm.value.CustomMonthDay==31) {
+    if(this.scheduleForm.value.CustomMonthDay >= 29) {
       this.monthlyWarningMessage = 'Some of the months have fewer days so schedule will be executed on the last day of month.';
     }else {
       this.monthlyWarningMessage = '';
@@ -240,12 +243,19 @@ export class AddComponent implements OnInit {
   }
 
   onCustomYearDayChange() {
-    if(this.scheduleForm.value.CustomYearDay<=0) {
+    if (this.scheduleForm.value.CustomYearDay <= 0) {
       this.scheduleForm.controls['CustomYearDay'].setValue(1);
-    }else if(this.scheduleForm.value.CustomYearDay>31) {
+    } else if (this.scheduleForm.value.CustomYearDay > 31) {
       this.scheduleForm.controls['CustomYearDay'].setValue(31);
+    } else if (this.scheduleForm.value.CustomYearDay > 29 && this.scheduleForm.value.CustomYearMonth == 'February') {
+      this.scheduleForm.controls['CustomYearDay'].setValue(29);
     }
     this.scheduleOccuranceDay = this.scheduleForm.value.CustomYearDay;
+    if (this.scheduleForm.value.CustomYearDay >= 29) {
+      this.monthlyWarningMessage = 'Some of the months have fewer days so schedule will be executed on the last day of month.';
+    } else {
+      this.monthlyWarningMessage = '';
+    }
     this.setScheduleOccuranceMessage();
   }
 
@@ -259,6 +269,9 @@ export class AddComponent implements OnInit {
   onCustomYearMonthChange() {
     this.scheduleOccuranceMonth = this.scheduleForm.value.CustomYearMonth;
     this.setScheduleOccuranceMessage();
+    if (this.scheduleForm.value.CustomYearDay > 29 && this.scheduleForm.value.CustomYearMonth == 'February') {
+      this.scheduleForm.controls['CustomYearDay'].setValue(29);
+    }
   }
 
   weekdaySelection(event, day, Id) {
