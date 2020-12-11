@@ -403,14 +403,14 @@ namespace nIS
                         {
                             throw new DuplicateTenantContactEmailAddressFoundException(tenantCode);
                         }
-                        else
-                        {
-                            duplicateTenantContactCount = tenantContacts.GroupBy(p => p.ContactNumber).Where(g => g.Count() > 1).Count();
-                            if (duplicateTenantContactCount > 0)
-                            {
-                                throw new DuplicateTenantContactMobileNumberFoundException(tenantCode);
-                            }
-                        }
+                        //else
+                        //{
+                        //    duplicateTenantContactCount = tenantContacts.GroupBy(p => p.ContactNumber).Where(g => g.Count() > 1).Count();
+                        //    if (duplicateTenantContactCount > 0)
+                        //    {
+                        //        throw new DuplicateTenantContactMobileNumberFoundException(tenantCode);
+                        //    }
+                        //}
                     }
 
 

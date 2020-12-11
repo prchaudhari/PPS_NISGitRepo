@@ -370,12 +370,6 @@ namespace nIS
                 IList<TenantContact> tempTenantContacts = new List<TenantContact>();
                 tenantContactRecords?.ToList().ForEach(tenantContactRecord =>
                 {
-                    //Country country = null;
-
-                    ///Get roles
-                    string contactnumber = countires.Where(i => i.Id == tenantContactRecord.CountryId).FirstOrDefault().DialingCode + "-" + tenantContactRecord.ContactNumber;
-                    //Get country
-                    //country = this.GetCountry(tenantContactRecord.CountryId, tenantCode);
                     tempTenantContacts.Add(new TenantContact()
                     {
                         Identifier = tenantContactRecord.Id,
@@ -383,8 +377,8 @@ namespace nIS
                         LastName = tenantContactRecord.LastName,
                         EmailAddress = tenantContactRecord.EmailAddress,
                         ContactNumber = tenantContactRecord.ContactNumber,
-                        CountryCode = countires.Where(i => i.Id == tenantContactRecord.CountryId).FirstOrDefault().DialingCode,
-                        CountryId = (long)tenantContactRecord.CountryId,
+                        CountryCode = tenantContactRecord.CountryId != 0 ? countires.Where(i => i.Id == tenantContactRecord.CountryId).FirstOrDefault().DialingCode : "",
+                        CountryId = tenantContactRecord.CountryId != 0 ?(long)tenantContactRecord.CountryId : 0,
                         ContactTypeId = tenantContactRecord.ContactType,
                         ContactType = contactTypeRecords.Where(item => item.Id.ToString() == tenantContactRecord.ContactType).FirstOrDefault().Name,
                         Image = tenantContactRecord.Image,
