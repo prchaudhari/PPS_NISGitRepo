@@ -595,7 +595,7 @@ namespace nIS
                 List<StatementPageContent> statementPageContents = new List<StatementPageContent>();
                 if (statement != null)
                 {
-                    //Start to generate common html string
+                    //rearrange statement page with their user defined sequence
                     var statementPages = statement.StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                     if (statementPages.Count > 0)
                     {
@@ -646,7 +646,10 @@ namespace nIS
                                     int max = 0;
                                     if (page.PageWidgets.Count > 0)
                                     {
+                                        //get all widgets of current page
                                         var completelst = new List<PageWidget>(page.PageWidgets);
+                                        
+                                        //Get all dynamic widgets of current page and assign it to statement page content object for future use
                                         var dynamicwidgetids = string.Join(", ", completelst.Where(item => item.IsDynamicWidget).ToList().Select(item => item.WidgetId));
                                         DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
                                         {
@@ -666,27 +669,45 @@ namespace nIS
                                         IList<DynamicWidget> dynawidgets = this.dynamicWidgetRepository.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
                                         statementPageContent.DynamicWidgets = dynawidgets;
 
+                                        //current Y position variable to filter widgets, start with 0
                                         int currentYPosition = 0;
                                         var isRowComplete = false;
 
                                         while (completelst.Count != 0)
                                         {
+                                            //filter 1st row widgets from current page widgets..
+                                            //get widgets by current Y position
                                             var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
                                             if (lst.Count > 0)
                                             {
+                                                //find widget which has max height among them and assign it to max Y position variable
                                                 max = max + lst.Max(it => it.Height);
+
+                                                //filter widgets which are in between current Y Position and above max Y Position
                                                 var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
+
+                                                //merge 2 widgets into single list which are finds by current Y position and 
+                                                //then finds with in between current and max Y position
                                                 var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
+
+                                                //assign current Y position to new max Y position
                                                 currentYPosition = max;
+
+                                                //loop over current merge widget list and create empty HTML template
                                                 for (int x = 0; x < mergedlst.Count; x++)
                                                 {
+                                                    //if tempRowWidth equals to zero then create new div with bootstrap row class
                                                     if (tempRowWidth == 0)
                                                     {
                                                         pageHtmlContent.Append("<div class='row pt-2'>");
                                                         isRowComplete = false;
                                                     }
 
+                                                    //get current widget width
                                                     var divLength = mergedlst[x].Width;
+
+                                                    //get current widget height and multiple with 110 as per angular gridster implementation of each column height
+                                                    //to find actual height for current widget in pixel
                                                     var divHeight = mergedlst[x].Height * 110 + "px";
                                                     tempRowWidth = tempRowWidth + divLength;
 
@@ -700,9 +721,13 @@ namespace nIS
                                                         isRowComplete = false;
                                                     }
 
+                                                    //if rendering html for 1st page, then add padding zero current widget div, otherwise keep default padding
                                                     var leftPaddingClass = i != 0 ? " pl-0" : string.Empty;
+
+                                                    //create new div with col-lg with newly finded div length and above padding zero value
                                                     pageHtmlContent.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
 
+                                                    //check current widget is dynamic or static and start generating empty html template for current widget
                                                     if (!mergedlst[x].IsDynamicWidget)
                                                     {
                                                         if (mergedlst[x].WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME)
@@ -840,9 +865,9 @@ namespace nIS
                                                         if (dynawidgets.Count > 0)
                                                         {
                                                             var dynawidget = dynawidgets.Where(item => item.Identifier == mergedlst[x].WidgetId).ToList().FirstOrDefault();
-                                                            TenantEntity entity = new TenantEntity();
-                                                            entity.Identifier = dynawidget.EntityId;
-                                                            entity.Name = dynawidget.EntityName;
+
+                                                            //get theme for current dynamic widget, 
+                                                            //if it is default take theme setting from tenant configuration, otherwise from current widget theme setting
                                                             CustomeTheme themeDetails = new CustomeTheme();
                                                             if (dynawidget.ThemeType == "Default")
                                                             {
@@ -949,7 +974,6 @@ namespace nIS
                                                     currentYPosition = completelst.Min(it => it.Yposition);
                                                 }
                                             }
-                                            //counter++;
                                         }
                                         //If row class div end before complete col-lg-12 class
                                         if (isRowComplete == false)
@@ -968,7 +992,6 @@ namespace nIS
                             {
                                 pageHtmlContent.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
                             }
-                            //counter++;
                             statementPageContent.HtmlContent = pageHtmlContent.ToString();
                             statementPageContents.Add(statementPageContent);
                         }
@@ -1470,13 +1493,14 @@ namespace nIS
                 //start to render common html content data
                 StringBuilder htmlbody = new StringBuilder();
                 string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
-                //navbarHtml = navbarHtml.Replace("{{BrandLogo}}", "../common/images/logo.png");
-                navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
+                navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy")); //bind current date to html header
+                
+                //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
                 var clientlogo = client.TenantLogo != null ? client.TenantLogo : "";
                 navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
-                //start to render actual html content data
+                //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                 StringBuilder scriptHtmlRenderer = new StringBuilder();
                 StringBuilder navbar = new StringBuilder();
                 var newStatementPageContents = new List<StatementPageContent>();
@@ -1858,7 +1882,6 @@ namespace nIS
                     PageHeaderContent.Replace("{{SubTabs}}", SubTabs.ToString());
                     statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
                     statementPageContent.HtmlContent = newPageContent.ToString();
-                    //newStatementPageContents.Add(statementPageContent);
                 }
 
                 newStatementPageContents.ToList().ForEach(page =>
@@ -1922,6 +1945,8 @@ namespace nIS
                     {
                         var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
                         IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
+                        
+                        //collecting all required transaction required for static widgets in financial tenant html statement
                         if (IsSavingOrCurrentAccountPagePresent)
                         {
                             accountrecords = nISEntitiesDataContext.AccountMasterRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
@@ -1945,18 +1970,21 @@ namespace nIS
                             CustomerSavingTrends = nISEntitiesDataContext.SavingTrendRecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
                         }
 
+                        //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
                         customerMedias = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode)?.ToList();
                     }
 
                     StringBuilder htmlbody = new StringBuilder();
                     currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
                     string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
-                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
+                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy")); //bind current date to html header
+
+                    //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
                     var clientlogo = client.TenantLogo != null ? client.TenantLogo : "";
                     navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
-                    //start to render actual html content data
+                    //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                     StringBuilder scriptHtmlRenderer = new StringBuilder();
                     StringBuilder navbar = new StringBuilder();
                     int subPageCount = 0;
@@ -1990,9 +2018,12 @@ namespace nIS
                         var page = statement.Pages[i];
                         StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
 
+                        //sub page count under current page tab
                         subPageCount = 1;
                         if (IsSavingOrCurrentAccountPagePresent)
                         {
+                            //This will be applicable only for financial tenant
+                            //if cusomer have 2 saving or current account, then 2 tabs will be render to current page in html statement
                             if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                             {
                                 savingaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.AccountType.ToLower().Contains("saving"))?.ToList();
@@ -2032,6 +2063,8 @@ namespace nIS
                         {
                             accountNumber = string.Empty;
                             accountType = string.Empty;
+
+                            //Only for financial tenant
                             if (IsSavingOrCurrentAccountPagePresent)
                             {
                                 if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
@@ -2047,6 +2080,7 @@ namespace nIS
                                     accountType = curerntaccountrecords[x].AccountType;
                                 }
 
+                                //start creating sub tabs, append tab name with last 4 digits of account number
                                 if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                                 {
                                     string lastFourDigisOfAccountNumber = accountNumber.Length > 4 ? accountNumber.Substring(Math.Max(0, accountNumber.Length - 4)) : accountNumber;
@@ -2148,7 +2182,7 @@ namespace nIS
                                             }
                                             else //Is dynamic image, then assign it from database 
                                             {
-                                                var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+                                                var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault(); //error if multiple records
                                                 if (custMedia != null && custMedia.ImageURL != string.Empty)
                                                 {
                                                     imgAssetFilepath = custMedia.ImageURL;
@@ -2322,6 +2356,8 @@ namespace nIS
                                         {
                                             IList<AccountTransaction> transactions = new List<AccountTransaction>();
                                             pageContent.Replace("{{Currency}}", currency);
+                                            //get saving transaction data in the list and then convert it to json format string 
+                                            //and store it as file at same directory of html statement file
                                             accountTransactions.ToList().ForEach(trans =>
                                             {
                                                 AccountTransaction accountTransaction = new AccountTransaction();
@@ -2388,6 +2424,8 @@ namespace nIS
                                         {
                                             IList<AccountTransaction> transactions = new List<AccountTransaction>();
                                             pageContent.Replace("{{Currency}}", currency);
+                                            //get saving transaction data in the list and then convert it to json format string
+                                            //and store it as json file at same directory of html statement file
                                             accountTransactions.ToList().ForEach(trans =>
                                             {
                                                 AccountTransaction accountTransaction = new AccountTransaction();
@@ -2484,6 +2522,9 @@ namespace nIS
                                         {
                                             IList<AccountMasterRecord> accounts = new List<AccountMasterRecord>();
                                             var records = accountrecords.GroupBy(item => item.AccountType).ToList();
+
+                                            //get analytics chart widget data, convert it into json string format
+                                            //and store it as json file at same directory of html statement file
                                             records.ToList().ForEach(acc => accounts.Add(new AccountMasterRecord()
                                             {
                                                 AccountType = acc.FirstOrDefault().AccountType,
@@ -2540,6 +2581,8 @@ namespace nIS
                                                 mnth = mnth - 1 == 0 ? 12 : mnth - 1;
                                             }
 
+                                            //get saving trend chart widget data, convert it into json string format
+                                            //and store it as json file at same directory of html statement file
                                             var records = savingTrendRecords.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
                                             string savingtrendjson = JsonConvert.SerializeObject(records);
                                             if (savingtrendjson != null && savingtrendjson != string.Empty)
@@ -2593,6 +2636,8 @@ namespace nIS
                                                 mnth = mnth - 1 == 0 ? 12 : mnth - 1;
                                             }
 
+                                            //get spending trend chart widget data, convert it into json string format
+                                            //and store it as json file at same directory of html statement file
                                             var records = trends.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
                                             string spendingtrendjson = JsonConvert.SerializeObject(records);
                                             if (spendingtrendjson != null && spendingtrendjson != string.Empty)
@@ -2971,8 +3016,10 @@ namespace nIS
                                 }
                             }
 
+                            //if account number variable is not empty means, financial tenant
                             if (accountNumber != string.Empty)
                             {
+                                //generate statement metadata records in list format
                                 statementMetadataRecords.Add(new StatementMetadataRecord
                                 {
                                     AccountNumber = accountNumber,
@@ -3042,11 +3089,16 @@ namespace nIS
                     finalHtml.Append(htmlbody.ToString());
                     finalHtml.Append(HtmlConstants.HTML_FOOTER);
                     scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
+
+                    //replace below variable with actual data in final html string
                     finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
                     finalHtml.Replace("{{CustomerNumber}}", customer.Id.ToString());
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
                     finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
                     finalHtml.Replace("{{TenantCode}}", tenantCode);
+
+                    //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
+                    //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
                     if (IsFailed)
                     {
                         logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
@@ -3072,6 +3124,12 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method help to apply theme for dynamic table, form, and html widgets
+        /// </summary>
+        /// <param name="html"> the widget html string </param>
+        /// <param name="themeDetails"> the theme details for widget </param>
+        /// <returns>return new html after applying theme </returns>
         public string ApplyStyleCssForDynamicTableAndFormWidget(string html, CustomeTheme themeDetails)
         {
             StringBuilder style = new StringBuilder();
@@ -3137,6 +3195,12 @@ namespace nIS
             return html;
         }
 
+        /// <summary>
+        /// This method help to apply theme for dynamic line graph, bar graph, and pie chart widgets
+        /// </summary>
+        /// <param name="html"> the widget html string </param>
+        /// <param name="themeDetails"> the theme details for widget </param>
+        /// <returns>return new html after applying theme </returns>
         public string ApplyStyleCssForDynamicGraphAndChartWidgets(string html, CustomeTheme themeDetails)
         {
             StringBuilder style = new StringBuilder();
@@ -3161,6 +3225,11 @@ namespace nIS
             return html;
         }
 
+        /// <summary>
+        /// This method help to actaul color theme to show series data for dynamic line graph, bar graph, and pie chart widgets
+        /// </summary>
+        /// <param name="theme"> the widget theme </param>
+        /// <returns>return new color theme for graph and chart widgets </returns>
         public string GetChartColorTheme(string theme)
         {
             string colorTheme = string.Empty;

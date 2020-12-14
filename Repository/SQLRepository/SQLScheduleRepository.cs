@@ -2021,6 +2021,7 @@ namespace nIS
                         logDetailRecord.TenantCode = tenantCode;
                         nISEntitiesDataContext.ScheduleLogDetailRecords.Add(logDetailRecord);
 
+                        //if statement generated successfully, then save statement metadata with actual html statement file path
                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))
                         {
                             if (logDetailRecord.StatementMetadataRecords.Count > 0)
@@ -2039,13 +2040,15 @@ namespace nIS
                         }
                         nISEntitiesDataContext.SaveChanges();
 
+                        //If any error occurs during statement generation then delete all files from output directory of current customer
                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                         {
                             this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, outputLocation);
                         }
-
                     }
 
+                    //update status for respective schedule log, schedule log details entities
+                    //as well as update batch status if statement generation done for all customers of current batch
                     var logDetailsRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLog.Id)?.ToList();
                     if (customerCount == logDetailsRecords.Count)
                     {
