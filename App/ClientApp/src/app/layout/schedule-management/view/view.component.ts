@@ -146,7 +146,7 @@ export class ViewComponent implements OnInit {
 
   setScheduleOccuranceMessage() {
     var dt = new Date(this.schedule.StartDate);
-    var dayOfMonth = this.schedule.DayOfMonth == undefined || this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
+    var dayOfMonth = dt.getDate(); //this.schedule.DayOfMonth == undefined || this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
     var ssd = new Date(dt.getFullYear(), dt.getMonth(), dayOfMonth);
     var schedulestartdte = ssd.toLocaleDateString();
     var dte = ssd.getDate();

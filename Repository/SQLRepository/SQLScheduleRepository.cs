@@ -115,8 +115,11 @@ namespace nIS
                 IList<ScheduleRecord> scheduleRecords = new List<ScheduleRecord>();
                 schedules.ToList().ForEach(schedule =>
                 {
-                    DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(schedule.StartDate), DateTimeKind.Utc);
-                    DateTime? endDateTime = DateTime.SpecifyKind(Convert.ToDateTime(schedule.EndDate), DateTimeKind.Utc);
+                    //DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(schedule.StartDate), DateTimeKind.Utc);
+                    //DateTime? endDateTime = DateTime.SpecifyKind(Convert.ToDateTime(schedule.EndDate), DateTimeKind.Utc);
+
+                    var startDateTime = schedule.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    var endDateTime = schedule.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
 
                     scheduleRecords.Add(new ScheduleRecord()
                     {
@@ -223,8 +226,11 @@ namespace nIS
 
                     schedules.ToList().ForEach(item =>
                     {
-                        DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.StartDate), DateTimeKind.Utc);
-                        DateTime? endDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.EndDate), DateTimeKind.Utc);
+                        //DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.StartDate), DateTimeKind.Utc);
+                        //DateTime? endDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.EndDate), DateTimeKind.Utc);
+
+                        var startDateTime = item.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                        var endDateTime = item.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
 
                         ScheduleRecord scheduleRecord = scheduleRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
                         scheduleRecord.Name = item.Name;
@@ -939,7 +945,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                //WriteToFile(ex.StackTrace.ToString());
+                WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
             return scheduleRunStatus;
@@ -1099,9 +1105,9 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                //WriteToFile(ex.Message);
-                //WriteToFile(ex.InnerException.Message);
-                //WriteToFile(ex.StackTrace.ToString());
+                WriteToFile(ex.Message);
+                WriteToFile(ex.InnerException.Message);
+                WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
             return isScheduleSuccess;
