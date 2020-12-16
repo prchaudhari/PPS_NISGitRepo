@@ -285,6 +285,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("currentUserTheme", userData.UserTheme);
         localStorage.setItem("currentUserTheme", userData.UserTheme);
         localStorage.setItem("DateFormat", data.DateFormat);
+        localStorage.setItem("MinimumArchivalPeriodDays", data.MinimumArchivalPeriodDays);
         localStorage.setItem("StatePrivilegeMap", JSON.stringify(this.statePrivilegeMap));
 
         if (data.IsPasswordResetByAdmin != null && data.IsPasswordResetByAdmin.toLocaleLowerCase() == 'true') {

@@ -117,6 +117,7 @@
               <ul style="list-style-type:none">
                 <li class="text-danger" *ngIf="TenantConfigurationArchivalPeriod.errors?.pattern">Invalid archival period</li>
                 <li class="text-danger" *ngIf="archivalPeriodError">archival period required</li>
+                <li class="text-danger" *ngIf="minimumArchivalPeriod">archival period can not be less than {{MinimumArchivalPeriodDays}}</li>
               </ul>
             </div>
           </div>

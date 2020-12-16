@@ -168,7 +168,7 @@ namespace nIS
                     record.Name = setting.Name;
                     record.AssetPath = setting.AssetPath ?? string.Empty;
                     record.ArchivalPath = setting.ArchivalPath ?? string.Empty;
-                    record.ArchivalPeriod = setting.ArchivalPeriod == null ? 0 : setting.ArchivalPeriod;
+                    record.ArchivalPeriod = setting.ArchivalPeriod;
                     //record.ArchivalPeriodUnit = setting.ArchivalPeriodUnit.ToString();
                     record.DateFormat = setting.DateFormat;
                     record.ApplicationTheme = setting.ApplicationTheme ?? string.Empty;

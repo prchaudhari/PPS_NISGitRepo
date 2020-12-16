@@ -35,6 +35,7 @@ export class TenantConfigurationComponent implements OnInit {
   public OutputPathToolTip: string = '';
   public isArchivalPathRequired = false;
   public archivalPathError = false;
+  public minimumArchivalPeriod = false;
   public isArchivalPeriodRequired = false;
   public archivalPeriodError = false;
   // Object created to initlialize the error boolean value.
@@ -122,15 +123,15 @@ export class TenantConfigurationComponent implements OnInit {
       }
     });
   }
-
+  public MinimumArchivalPeriodDays;
   ngOnInit() {
 
     var userdata = this.localstorageservice.GetCurrentUser();
-    if(userdata == null || userdata.RoleName != 'Tenant Admin') {
+    if (userdata == null || userdata.RoleName != 'Tenant Admin') {
       this.localstorageservice.removeLocalStorageData();
       this.router.navigate(['login']);
     }
-
+    this.MinimumArchivalPeriodDays = localStorage.getItem('MinimumArchivalPeriodDays');
     // Render engine form validations.
     this.tenantConfigurationForm = this.formBuilder.group({
       TenantConfigurationName: [null, Validators.compose([Validators.required, ,
@@ -155,8 +156,10 @@ export class TenantConfigurationComponent implements OnInit {
       data => {
         this.setting = <TenantConfiguration>data[0];
         this.spinner.stop();
-        
-        if(this.setting != undefined) {
+        if (this.setting.ArchivalPeriod == 0) {
+          this.setting.ArchivalPeriod = null;;
+        }
+        if (this.setting != undefined) {
           this.tenantConfigurationForm.patchValue({
             TenantConfigurationName: this.setting.Name,
             TenantConfigurationDescription: this.setting.Description,
@@ -180,7 +183,7 @@ export class TenantConfigurationComponent implements OnInit {
           else {
             this.OutputPathToolTip = "If schedule is executed then you cannot change output HTML or PDF path";
           }
-        }else {
+        } else {
           this.setting = new TenantConfiguration
         }
       },
@@ -199,6 +202,9 @@ export class TenantConfigurationComponent implements OnInit {
     if (this.archivalPathError) {
       return true;
     }
+    if (this.minimumArchivalPeriod) {
+      return true;
+    }
     if (this.archivalPeriodError) {
       return true;
     }
@@ -206,6 +212,8 @@ export class TenantConfigurationComponent implements OnInit {
   }
 
   OnArchivalChange() {
+    var minPeriod = parseInt(this.MinimumArchivalPeriodDays);
+
     if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod > 0) {
       this.isArchivalPathRequired = true;
       if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPath == null || this.tenantConfigurationForm.value.TenantConfigurationArchivalPath == '') {
@@ -215,21 +223,36 @@ export class TenantConfigurationComponent implements OnInit {
         this.archivalPathError = false;
       }
     }
-    if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPath != null || this.tenantConfigurationForm.value.TenantConfigurationArchivalPath != '') {
+    if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod < minPeriod) {
+      this.minimumArchivalPeriod = true;
+    }
+    else {
+      this.minimumArchivalPeriod = false;
+
+    }
+    if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPath != null && this.tenantConfigurationForm.value.TenantConfigurationArchivalPath != '') {
       this.isArchivalPeriodRequired = true;
-      if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == 0 || this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == null) {
+      if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == null) {
         this.archivalPeriodError = true;
       }
       else {
         this.archivalPeriodError = false;
       }
+      if (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod < minPeriod) {
+        this.minimumArchivalPeriod = true;
+      }
+      else {
+        this.minimumArchivalPeriod = false;
+
+      }
     }
     if ((this.tenantConfigurationForm.value.TenantConfigurationArchivalPath == null || this.tenantConfigurationForm.value.TenantConfigurationArchivalPath == '')
-      && (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == 0 || this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == null)) {
+      && (this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod == null)) {
       this.archivalPeriodError = false;
       this.archivalPathError = false;
       this.isArchivalPathRequired = false;
       this.isArchivalPeriodRequired = false;
+      this.minimumArchivalPeriod = false;
     }
   }
 
@@ -262,16 +285,22 @@ export class TenantConfigurationComponent implements OnInit {
   }
 
   onSubmit() {
-    this.setting.Name = this.tenantConfigurationForm.value.TenantConfigurationName;
-    this.setting.OutputPDFPath = this.tenantConfigurationForm.value.TenantConfigurationDescription;
-    this.setting.Description = this.tenantConfigurationForm.value.TenantConfigurationOutputPDFPath;
-    this.setting.OutputHTMLPath = this.tenantConfigurationForm.value.TenantConfigurationOutputHTMLPath;
-    this.setting.InputDataSourcePath = this.tenantConfigurationForm.value.TenantConfigurationInputDataSourcePath;
-    this.setting.AssetPath = this.tenantConfigurationForm.value.TenantConfigurationAssetPath;
-    this.setting.ArchivalPath = this.tenantConfigurationForm.value.TenantConfigurationArchivalPath;
-    this.setting.ArchivalPeriod = this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod;
+   
+      this.setting.Name = this.tenantConfigurationForm.value.TenantConfigurationName;
+      this.setting.OutputPDFPath = this.tenantConfigurationForm.value.TenantConfigurationDescription;
+      this.setting.Description = this.tenantConfigurationForm.value.TenantConfigurationOutputPDFPath;
+      this.setting.OutputHTMLPath = this.tenantConfigurationForm.value.TenantConfigurationOutputHTMLPath;
+      this.setting.InputDataSourcePath = this.tenantConfigurationForm.value.TenantConfigurationInputDataSourcePath;
+      this.setting.AssetPath = this.tenantConfigurationForm.value.TenantConfigurationAssetPath;
+      this.setting.ArchivalPath = this.tenantConfigurationForm.value.TenantConfigurationArchivalPath;
+      this.setting.ArchivalPeriod = this.tenantConfigurationForm.value.TenantConfigurationArchivalPeriod;
     this.setting.DateFormat = this.tenantConfigurationForm.value.TenantConfigurationDateFormat;
-    this.saveTenantConfigurationRecord(this.setting);
+    if (this.setting.ArchivalPeriod == 0) {
+      this.setting.ArchivalPeriod = null;
+    }
+      this.saveTenantConfigurationRecord(this.setting);
+
+  
   }
 
   //Api called here to save render engine record

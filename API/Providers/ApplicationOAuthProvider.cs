@@ -12,6 +12,7 @@ namespace nIS
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -183,7 +184,9 @@ namespace nIS
             });
 
             //Add is asset connected value in claim
-            string[] propertyData = new string[13]
+            var MinimumArchivalPeriodDays = int.Parse(ConfigurationManager.AppSettings["MinimumArchivalPeriodDays"] ?? "30");
+
+            string[] propertyData = new string[14]
             {
                 user.Identifier.ToString(),
                 user.FirstName + " " + user.LastName,
@@ -197,7 +200,8 @@ namespace nIS
                 isTenantGroupManager.ToString(),
                 isUserHaveMultiTenantAccess.ToString(),
                 user.IsPasswordResetByAdmin.ToString(),
-                UserTheme
+                UserTheme,
+                MinimumArchivalPeriodDays.ToString()
             };
 
             AuthenticationTicket ticket = new AuthenticationTicket(claimIdentity, CreateProperties(propertyData));
@@ -296,64 +300,9 @@ namespace nIS
                 { "IsUserHaveMultiTenantAccess",stringData[10] },
                 { "IsPasswordResetByAdmin",stringData[11] },
                 { "UserTheme",stringData[12] },
+                { "MinimumArchivalPeriodDays",stringData[13] }
             };
             return new AuthenticationProperties(data);
-        }
-
-        #region Private Method
-
-        /// <summary>
-        /// Get Resources
-        /// </summary>
-        /// <param name="data">Input data</param>
-        /// <returns></returns>
-        private string GetResource(string data)
-        {
-            return ""
-;        //    string message = string.Empty;
-         //    //Get resources
-         //    var currentLocale = Thread.CurrentThread.CurrentUICulture;
-         //    IUtility utilty = new Utility();
-         //    IList<Websym.Core.ResourceManager.Resource> resourceList = new List<Websym.Core.ResourceManager.Resource>();
-         //    Websym.Core.ResourceManager.ResourceSearchParameter resourceSearchParameter = new Websym.Core.ResourceManager.ResourceSearchParameter();
-         //    resourceSearchParameter.Locale = currentLocale.ToString();
-
-            //    string innerData = data.ToString();
-            //    if (!string.IsNullOrWhiteSpace(innerData))
-            //    {
-            //        string[] value = innerData.Split('~');
-            //        if (value.Length == 2)
-            //        {
-            //            resourceSearchParameter.SectionName = value[0];
-            //            resourceSearchParameter.Key = value[1];
-
-            //            try
-            //            {
-            //                resourceList = utilty.GetResources(resourceSearchParameter, ModelConstant.RESOURCE_BASE_URL, ModelConstant.TENANT_CODE_KEY, ModelConstant.DEFAULT_TENANT_CODE);
-            //                if (resourceList.Count > 0)
-            //                {
-            //                    foreach (Websym.Core.ResourceManager.Resource resource in resourceList)
-            //                    {
-            //                        foreach (var section in resource.ResourceSections)
-            //                        {
-            //                            foreach (var item in section.ResourceItems)
-            //                            {
-            //                                message = item.Value;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                throw ex;
-            //            }
-            //        }
-            //    }
-            //    return message;
-            //}
-
-            #endregion
         }
     }
 }
