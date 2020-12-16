@@ -1,10 +1,12 @@
-﻿CREATE TABLE [NIS].[Top4IncomeSources]
-(
-	[Id] [bigint] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[CustomerId] [bigint] NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[Source] [nvarchar](100) NULL,
-	[CurrentSpend] [decimal](11, 2) NULL,
-	[AverageSpend] [decimal](11, 2) NULL,
-	[TenantCode] NVARCHAR(50) NOT NULL, 
-)
+﻿CREATE TABLE [NIS].[Top4IncomeSources] (
+    [Id]           BIGINT          IDENTITY (1, 1) NOT NULL,
+    [CustomerId]   BIGINT          NOT NULL,
+    [BatchId]      BIGINT          NOT NULL,
+    [Source]       NVARCHAR (100)  NULL,
+    [CurrentSpend] DECIMAL (11, 2) NULL,
+    [AverageSpend] DECIMAL (11, 2) NULL,
+    [TenantCode]   NVARCHAR (50)   NULL,
+    CONSTRAINT [PK_Top4IncomeSources] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+

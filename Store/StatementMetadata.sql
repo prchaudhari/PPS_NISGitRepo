@@ -1,14 +1,16 @@
-﻿CREATE TABLE [NIS].[StatementMetadata]
-(
-	[Id] [bigint] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[ScheduleId] [bigint] NOT NULL,
-	[ScheduleLogId] [bigint] NOT NULL,
-	[StatementId] [bigint] NOT NULL,
-	[StatementDate] [datetime] NULL,
-	[StatementPeriod] [nvarchar](50) NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[CustomerName] [nvarchar](500) NULL,
-	[AccountNumber] [nvarchar](50) NOT NULL,
-	[AccountType] [nvarchar](50) NOT NULL,
-	[StatementURL] [nvarchar](max) NOT NULL,
-)
+﻿CREATE TABLE [NIS].[StatementMetadata] (
+    [Id]              BIGINT         IDENTITY (1, 1) NOT NULL,
+    [ScheduleId]      BIGINT         NOT NULL,
+    [ScheduleLogId]   BIGINT         NOT NULL,
+    [StatementId]     BIGINT         NOT NULL,
+    [StatementDate]   DATETIME       NULL,
+    [StatementPeriod] NVARCHAR (50)  NULL,
+    [CustomerId]      BIGINT         NOT NULL,
+    [CustomerName]    NVARCHAR (500) NULL,
+    [AccountNumber]   NVARCHAR (50)  NOT NULL,
+    [AccountType]     NVARCHAR (50)  NOT NULL,
+    [StatementURL]    NVARCHAR (MAX) NOT NULL,
+    CONSTRAINT [PK_StatementMetadata] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+

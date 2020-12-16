@@ -1,11 +1,13 @@
-﻿CREATE TABLE [NIS].[ScheduleRunHistory]
-(
-	[Id] [bigint] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[ScheduleId] [bigint] NOT NULL,
-	[ScheduleLogId] [bigint] NOT NULL,
-	[StartDate] [datetime] NOT NULL,
-	[EndDate] [datetime] NOT NULL,
-	[TenantCode] [nvarchar](50) NULL,
-	[StatementId] [bigint] NOT NULL,
-	[FilePath] [nvarchar](max) NULL,
-)
+﻿CREATE TABLE [NIS].[ScheduleRunHistory] (
+    [Id]            BIGINT         IDENTITY (1, 1) NOT NULL,
+    [ScheduleId]    BIGINT         NOT NULL,
+    [ScheduleLogId] BIGINT         NOT NULL,
+    [StartDate]     DATETIME       NOT NULL,
+    [EndDate]       DATETIME       NOT NULL,
+    [TenantCode]    NVARCHAR (50)  NULL,
+    [StatementId]   BIGINT         NOT NULL,
+    [FilePath]      NVARCHAR (MAX) NULL,
+    CONSTRAINT [PK__Schedule__3214EC07A1641CE6] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+

@@ -1,13 +1,15 @@
-﻿CREATE TABLE [NIS].[StatementAnalytics]
-(
-	[Id] [bigint] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[StatementId] [bigint] NOT NULL,
-	[WidgetId] [bigint] NOT NULL,
-	[WidgetName] [nvarchar](200) NOT NULL,
-	[PageId] [bigint] NOT NULL,
-	[PageName] [nvarchar](500) NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[Date] [datetime] NOT NULL,
-	[Hour] [int] NOT NULL,
-	[Minute] [int] NOT NULL,
-)
+﻿CREATE TABLE [NIS].[StatementAnalytics] (
+    [Id]          BIGINT         IDENTITY (1, 1) NOT NULL,
+    [StatementId] BIGINT         NOT NULL,
+    [WidgetId]    BIGINT         NOT NULL,
+    [WidgetName]  NVARCHAR (200) NOT NULL,
+    [PageId]      BIGINT         NOT NULL,
+    [PageName]    NVARCHAR (500) NOT NULL,
+    [CustomerId]  BIGINT         NOT NULL,
+    [Date]        DATETIME       NOT NULL,
+    [Hour]        INT            NOT NULL,
+    [Minute]      INT            NOT NULL,
+    CONSTRAINT [PK_StatementAnalytics] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+

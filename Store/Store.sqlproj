@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{97cd0ae3-2361-4935-99b9-a93bf49acb19}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -61,7 +61,7 @@
     <Folder Include="Tenant Manager" />
     <Folder Include="Seed Data Scripts" />
     <Folder Include="Configuration Manager" />
-    <Folder Include="Entity Manager" />
+    <Folder Include="EntityManager\" />
     <Folder Include="Seed Data Scripts\Views" />
     <Folder Include="Seed Data Scripts\Functions" />
   </ItemGroup>
@@ -80,7 +80,6 @@
     <Build Include="UserRoleMap.sql" />
     <None Include="Seed Data Scripts\City.sql" />
     <None Include="Seed Data Scripts\State.sql" />
-    <None Include="Seed Data Scripts\Country.sql" />
     <Build Include="City.sql" />
     <Build Include="State.sql" />
     <Build Include="Country.sql" />
@@ -97,9 +96,6 @@
     <Build Include="ScheduleRunHistory.sql" />
     <Build Include="RenderEngine.sql" />
     <None Include="Seed Data Scripts\Entities.sql" />
-    <Build Include="Entity Manager\Entities.sql" />
-    <Build Include="Entity Manager\Operations.sql" />
-    <Build Include="Entity Manager\EntityManagerSchema.sql" />
     <Build Include="BatchDetails.sql" />
     <Build Include="BatchMaster.sql" />
     <Build Include="CustomerMaster.sql" />
@@ -116,13 +112,11 @@
     <Build Include="StatementMetadata.sql" />
     <Build Include="Top4IncomeSources.sql" />
     <Build Include="AnalyticsData.sql" />
-    <None Include="Seed Data Scripts\Views\GridViews.sql" />
     <Build Include="TenantContact.sql" />
     <Build Include="ContactType.sql" />
     <Build Include="TenantUser.sql" />
     <Build Include="MultiTenantUserAccessMap.sql" />
     <Build Include="DynamicWidget.sql" />
-    <Build Include="Entity.sql" />
     <Build Include="EntityFieldMap.sql" />
     <Build Include="DynamicWidgetFilterDetail.sql" />
     <Build Include="TTD_SubscriptionMaster.sql" />
@@ -136,6 +130,25 @@
     <Build Include="TTD_EmailsBySubscription.sql" />
     <Build Include="TTD_CustomerMaster.sql" />
     <Build Include="WidgetPageTypeMap.sql" />
+    <Build Include="TenantEntity.sql" />
+    <Build Include="Seed Data Scripts\Views\View_DynamicWidget.sql" />
+    <Build Include="Seed Data Scripts\Views\View_DynamicWidget1.sql" />
+    <Build Include="Seed Data Scripts\Views\View_MultiTenantUserAccessMap.sql" />
+    <Build Include="Seed Data Scripts\Views\View_Page.sql" />
+    <Build Include="Seed Data Scripts\Views\View_PageWidgetMap.sql" />
+    <Build Include="Seed Data Scripts\Views\View_Schedule.sql" />
+    <Build Include="Seed Data Scripts\Views\View_ScheduleLog.sql" />
+    <Build Include="Seed Data Scripts\Views\View_SourceData.sql" />
+    <Build Include="Seed Data Scripts\Views\View_StatementDefinition.sql" />
+    <Build Include="Seed Data Scripts\Views\View_User.sql" />
+    <Build Include="Seed Data Scripts\Functions\FnGetParentAndChildTenant.sql" />
+    <Build Include="Seed Data Scripts\Functions\FnGetStaticAndDynamicWidgets.sql" />
+    <Build Include="Seed Data Scripts\Functions\FnUserTenant.sql" />
+    <Build Include="EntityManager\DependentOperations.sql" />
+    <Build Include="EntityManager\Entities.sql" />
+    <Build Include="EntityManager\EntityManagerSchema.sql" />
+    <Build Include="EntityManager\Operations.sql" />
+    <PostDeploy Include="Seed Data Scripts\Script.PostDeployment1.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />
@@ -145,17 +158,14 @@
     <Build Include="Statement.sql" />
     <Build Include="StatementPageMap.sql" />
     <Build Include="Widget.sql" />
-    <Build Include="WidgetType.sql" />
     <Build Include="NISSchema.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Seed Data Scripts\Tenant.sql" />
     <None Include="Seed Data Scripts\Configuration.sql" />
     <Build Include="Configuration Manager\ConfigurationManagerSchema.sql" />
-    <None Include="Seed Data Scripts\Functions\Functions.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="Script.PostDeployment1.sql" />
+    <None Include="Seed Data Scripts\UserAndRole.sql" />
+    <None Include="Seed Data Scripts\TruncateTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Store.refactorlog" />
