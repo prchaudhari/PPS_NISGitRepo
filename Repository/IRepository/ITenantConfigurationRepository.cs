@@ -33,6 +33,14 @@ namespace nIS
         /// <returns></returns>
         bool Save(TenantConfiguration setting, string tenantCode);
 
+        /// <summary>
+        /// This method is used to save tenant subscription
+        /// </summary>
+        /// <param name="tenantSubscriptions"></param>
+        /// <param name="tenantcode"></param>
+        /// <returns></returns>
+        bool AddTenantSubscriptions(IList<TenantSubscription> tenantSubscriptions, string tenantcode);
+
 
         #endregion
 

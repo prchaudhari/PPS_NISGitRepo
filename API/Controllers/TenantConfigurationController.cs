@@ -121,7 +121,23 @@ namespace nIS
         }
 
         #endregion
+        [HttpPost]
+        public bool AddTenantSubscriptions(IList<TenantSubscription> tenantSubscriptions)
+        {
+            bool result;
+            try
+            {
 
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                result = this.tenantConfigurationManager.AddTenantSubscriptions(tenantSubscriptions, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
 
         #endregion
 

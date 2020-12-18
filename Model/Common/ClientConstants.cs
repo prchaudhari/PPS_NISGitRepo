@@ -960,6 +960,11 @@ namespace nIS
         public const string INVALIDPRIMARYADDRESSLINE1 = "InvalidPrimaryAddressLineOne";
 
         /// <summary>
+        /// The invalid primary address line1
+        /// </summary>
+        public const string INVALIDTENANTSUBSCRIPTION = "InvalidTenantSubscription";
+
+        /// <summary>
         /// The invalid primary pin code
         /// </summary>
         public const string INVALIDPRIMARYPINCODE = "InvalidPrimaryPinCode";

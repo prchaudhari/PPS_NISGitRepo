@@ -149,6 +149,7 @@
     <Build Include="EntityManager\EntityManagerSchema.sql" />
     <Build Include="EntityManager\Operations.sql" />
     <PostDeploy Include="Seed Data Scripts\Script.PostDeployment1.sql" />
+    <Build Include="TenantSubscription.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Page.sql" />

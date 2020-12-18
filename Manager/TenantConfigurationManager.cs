@@ -97,6 +97,19 @@ namespace nIS
             }
         }
 
+        public bool AddTenantSubscriptions(IList<TenantSubscription> tenantSubscriptions, string tenantCode)
+        {
+            try
+            {
+                this.IsValidTenantSubscription(tenantSubscriptions, tenantCode);
+                return tenantConfigurationRepository.AddTenantSubscriptions(tenantSubscriptions, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
 
@@ -134,6 +147,39 @@ namespace nIS
                 {
                     throw invalidAssetException;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method is responsible for validate asset subscription.
+        /// </summary>
+        /// <param name="assets"></param>
+        /// <param name="tenantCode"></param>
+        private void IsValidTenantSubscription(IList<TenantSubscription> tenantSubscriptions, string tenantCode)
+        {
+            try
+            {
+
+                InvalidAssetException invalidAssetException = new InvalidAssetException(tenantCode);
+                tenantSubscriptions.ToList().ForEach(item =>
+                {
+                    try
+                    {
+                        item.IsValid();
+                    }
+                    catch (Exception ex)
+                    {
+                        invalidAssetException.Data.Add(item.Identifier, ex.Data);
+                    }
+                    if (invalidAssetException.Data.Count > 0)
+                    {
+                        throw invalidAssetException;
+                    }
+                });
             }
             catch (Exception ex)
             {

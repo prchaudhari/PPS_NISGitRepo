@@ -322,6 +322,11 @@ namespace nIS
                             };
                             this.TenantConfigurationManager.Save(tenantConfiguration, client.TenantCode);
 
+
+                            #endregion
+
+                            #region Add Tenant subscription details
+                            
                             #endregion
                         }
                         if (client.TenantType == "Group")

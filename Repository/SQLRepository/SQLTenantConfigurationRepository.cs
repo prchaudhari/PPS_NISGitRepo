@@ -191,6 +191,45 @@ namespace nIS
 
             return result;
         }
+
+        /// <summary>
+        /// This is responsible for get tenant configuration
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        public bool AddTenantSubscriptions(IList<TenantSubscription> tenantSubscriptions, string tenantcode)
+        {
+            TenantConfigurationRecord record = new TenantConfigurationRecord();
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantcode);
+                IList<TenantSubscriptionRecord> tenantSubscriptionRecords = new List<TenantSubscriptionRecord>();
+                tenantSubscriptions.ToList().ForEach(item =>
+                {
+                    tenantSubscriptionRecords.Add(new TenantSubscriptionRecord()
+                    {
+                        TenantCode=item.TenantCode,
+                        SubscriptionEndDate=item.SubscriptionEndDate,
+                        SubscriptionStartDate=item.SubscriptionStartDate,
+                        LastModifiedBy=item.LastModifiedBy,
+                        LastModifiedOn=item.LastModifiedOn,
+                    });
+                });
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                   
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
         #endregion
 
         #endregion

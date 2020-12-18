@@ -228,6 +228,11 @@ namespace nIS
         /// </summary>
         private bool isTenantConfigured = false;
 
+        /// <summary>
+        /// The tenant subscription
+        /// </summary>
+        private IList<TenantSubscription> tenantSubscriptions = new List<TenantSubscription>();
+
         #endregion
 
         #region Public Members
@@ -931,6 +936,22 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Gets or sets is TenantSubscriptions.
+        /// </summary>
+        [Description("TenantSubscriptions")]
+        public IList<TenantSubscription> TenantSubscriptions
+        {
+            get
+            {
+                return this.tenantSubscriptions;
+            }
+            set
+            {
+                this.tenantSubscriptions = value;
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -962,6 +983,11 @@ namespace nIS
                 if (!this.validationEngine.IsValidText(this.PrimaryPinCode, true))
                 {
                     exception.Data.Add(this.utility.GetDescription("PrimaryPinCode", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDPRIMARYPINCODE);
+                }
+                if (this.tenantSubscriptions.Count > 0)
+                { 
+                    exception.Data.Add(this.utility.GetDescription("TenantSubscriptions", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDTENANTSUBSCRIPTION);
+
                 }
 
             }
