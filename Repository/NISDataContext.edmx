@@ -662,6 +662,18 @@
           <Property Name="APIPath" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RequestType" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="TenantSubscription">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenantCode" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SubscriptionStartDate" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionEndDate" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="bigint" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="TenantUser">
           <Key>
             <PropertyRef Name="Id" />
@@ -1411,6 +1423,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TenantConfiguration" EntityType="Self.TenantConfiguration" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantContact" EntityType="Self.TenantContact" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantEntity" EntityType="Self.TenantEntity" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="TenantSubscription" EntityType="Self.TenantSubscription" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantUser" EntityType="Self.TenantUser" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Top4IncomeSources" EntityType="Self.Top4IncomeSources" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="NIS" store:Type="Tables" />
@@ -1711,6 +1724,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="StatementMetadataRecords" EntityType="NISModel.StatementMetadataRecord" />
           <EntitySet Name="StatementMetadataArchiveRecords" EntityType="NISModel.StatementMetadataArchiveRecord" />
           <EntitySet Name="View_DynamicWidgetRecord" EntityType="NISModel.View_DynamicWidgetRecord" />
+          <EntitySet Name="TenantSubscriptionRecords" EntityType="NISModel.TenantSubscriptionRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -3032,6 +3046,18 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="APIPath" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="RequestType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PageTypeId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TenantSubscriptionRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenantCode" Type="Guid" Nullable="false" />
+          <Property Name="SubscriptionStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedBy" Type="Int64" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4357,6 +4383,19 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="EntityId" ColumnName="EntityId" />
                 <ScalarProperty Name="WidgetType" ColumnName="WidgetType" />
                 <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TenantSubscriptionRecords">
+            <EntityTypeMapping TypeName="NISModel.TenantSubscriptionRecord">
+              <MappingFragment StoreEntitySet="TenantSubscription">
+                <ScalarProperty Name="SubscriptionKey" ColumnName="SubscriptionKey" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="SubscriptionEndDate" ColumnName="SubscriptionEndDate" />
+                <ScalarProperty Name="SubscriptionStartDate" ColumnName="SubscriptionStartDate" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

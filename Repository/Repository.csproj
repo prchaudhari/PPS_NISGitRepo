@@ -287,6 +287,9 @@
     <Compile Include="TenantRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="TenantSubscriptionRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="TenantUserRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

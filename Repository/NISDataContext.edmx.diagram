@@ -80,6 +80,7 @@
         <EntityTypeShape EntityType="NISModel.StatementMetadataRecord" Width="1.5" PointX="2.75" PointY="6.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementMetadataArchiveRecord" Width="1.5" PointX="8.625" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_DynamicWidgetRecord" Width="1.5" PointX="9" PointY="2.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.TenantSubscriptionRecord" Width="1.5" PointX="10.875" PointY="0.75" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
