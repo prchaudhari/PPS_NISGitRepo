@@ -15,6 +15,7 @@ namespace nIS
         Running,
         Completed,
         Failed,
-        BatchDataNotAvailable
+        BatchDataNotAvailable,
+        Approved
     }
 }

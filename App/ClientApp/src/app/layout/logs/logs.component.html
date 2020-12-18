@@ -23,38 +23,41 @@
           <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
             <!-- Position Column -->
             <ng-container matColumnDef="schedule">
-              <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Schedule </th>
-              <td mat-cell *matCellDef="let element">{{element.ScheduleName}}</td>
+              <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Schedule </th>
+              <td mat-cell *matCellDef="let element"><span title="{{element.ScheduleName}}">{{element.ScheduleName}}</span></td>
             </ng-container>
-  
+
+            <ng-container matColumnDef="batch">
+              <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Batch </th>
+              <td mat-cell *matCellDef="let element"><span title="{{element.BatchName}}">{{element.BatchName}}</span></td>
+            </ng-container>
+
             <ng-container matColumnDef="time">
               <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Processing Time </th>
-              <td mat-cell *matCellDef="let element">{{element.ProcessingTime}} </td>
+              <td mat-cell *matCellDef="let element"><span title="{{element.ProcessingTime}}">{{element.ProcessingTime}}</span></td>
             </ng-container>
-  
+
+            <ng-container matColumnDef="record">
+              <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Record Processed </th>
+              <td mat-cell *matCellDef="let element"><span title="{{element.RecordProcessed}}">{{element.RecordProcessed}}</span></td>
+            </ng-container>
+
             <ng-container matColumnDef="status">
               <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
               <td mat-cell *matCellDef="let element">
-                <span class="badge badge-success p-1" *ngIf="element.ScheduleStatus=='Completed'">{{element.ScheduleStatus}}</span>
-                <span class="badge badge-danger p-1" *ngIf="element.ScheduleStatus=='Failed' || element.ScheduleStatus=='BatchDataNotAvailable'">{{element.ScheduleStatus}}</span>
-                <span class="badge badge-warning p-1 text-white" *ngIf="element.ScheduleStatus=='In Progress'">{{element.ScheduleStatus}}</span>
+                <span class="badge badge-success p-1" *ngIf="element.ScheduleStatus=='Completed'" title="{{element.ScheduleStatus}}">{{element.ScheduleStatus}}</span>
+                <span class="badge badge-danger p-1" *ngIf="element.ScheduleStatus=='Failed' || element.ScheduleStatus=='BatchDataNotAvailable'" title="{{element.ScheduleStatus}}">{{element.ScheduleStatus}}</span>
+                <span class="badge badge-warning p-1 text-white" *ngIf="element.ScheduleStatus=='In Progress'" title="{{element.ScheduleStatus}}">{{element.ScheduleStatus}}</span>
               </td>
             </ng-container>
-  
-            <ng-container matColumnDef="record">
-              <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Record Processed </th>
-              <td mat-cell *matCellDef="let element">
-                {{element.RecordProcessed}}
-              </td>
-            </ng-container>
-  
+
             <ng-container matColumnDef="date">
-              <th class="width20" mat-header-cell *matHeaderCellDef mat-sort-header> Execution Date </th>
-              <td mat-cell *matCellDef="let element"> <span>{{element.CreateDate  | date:DataFormat}}</span> {{element.CreateDate  | date:"h:mm a"}}</td>
+              <th class="width15" mat-header-cell *matHeaderCellDef mat-sort-header> Execution Date </th>
+              <td mat-cell *matCellDef="let element"> <span>{{element.CreateDate | date:DataFormat}} {{element.CreateDate | date:"h:mm a"}}</span></td>
             </ng-container>
-  
+
             <ng-container matColumnDef="actions">
-              <th class="width15" mat-header-cell *matHeaderCellDef> Actions </th>
+              <th class="width10" mat-header-cell *matHeaderCellDef> Actions </th>
               <td mat-cell *matCellDef="let element">
                 <div class="action-btns btn-tbl-action">
                   <button type="button" title="View" id="btnView" (click)="navigationLogDetails(element)"><span class="fa fa-file-text-o"></span></button>
@@ -64,7 +67,7 @@
                 </div>
               </td>
             </ng-container>
-  
+
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>

@@ -22,7 +22,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                                     : base(connectionString)
+                                               : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -61,7 +61,6 @@ namespace nIS
         public virtual DbSet<ImageRecord> ImageRecords { get; set; }
         public virtual DbSet<VideoRecord> VideoRecords { get; set; }
         public virtual DbSet<ReminderAndRecommendationRecord> ReminderAndRecommendationRecords { get; set; }
-        public virtual DbSet<ScheduleLogRecord> ScheduleLogRecords { get; set; }
         public virtual DbSet<ScheduleLogDetailRecord> ScheduleLogDetailRecords { get; set; }
         public virtual DbSet<AccountTransactionRecord> AccountTransactionRecords { get; set; }
         public virtual DbSet<SavingTrendRecord> SavingTrendRecords { get; set; }
@@ -83,7 +82,6 @@ namespace nIS
         public virtual DbSet<MultiTenantUserAccessMapRecord> MultiTenantUserAccessMapRecords { get; set; }
         public virtual DbSet<View_MultiTenantUserAccessMapRecord> View_MultiTenantUserAccessMapRecord { get; set; }
         public virtual DbSet<CountryRecord> CountryRecords { get; set; }
-        public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
         public virtual DbSet<DynamicWidgetRecord> DynamicWidgetRecords { get; set; }
         public virtual DbSet<EntityFieldMapRecord> EntityFieldMapRecords { get; set; }
         public virtual DbSet<TenantEntityRecord> TenantEntityRecords { get; set; }
@@ -106,6 +104,8 @@ namespace nIS
         public virtual DbSet<StatementMetadataArchiveRecord> StatementMetadataArchiveRecords { get; set; }
         public virtual DbSet<View_DynamicWidgetRecord> View_DynamicWidgetRecord { get; set; }
         public virtual DbSet<TenantSubscriptionRecord> TenantSubscriptionRecords { get; set; }
+        public virtual DbSet<ScheduleLogRecord> ScheduleLogRecords { get; set; }
+        public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

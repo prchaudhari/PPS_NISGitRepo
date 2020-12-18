@@ -31,6 +31,16 @@ namespace nIS
         public string ScheduleName { get; set; }
 
         /// <summary>
+        /// The batch identifier
+        /// </summary>
+        public long BatchId { get; set; }
+
+        /// <summary>
+        /// The batch name
+        /// </summary>
+        public string BatchName { get; set; }
+
+        /// <summary>
         /// The number of retry of schedule run attempt
         /// </summary>
         public int NumberOfRetry { get; set; }

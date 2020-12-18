@@ -146,14 +146,6 @@ namespace nIS
 
                 if (scheduleLogRecords != null && scheduleLogRecords.Count > 0)
                 {
-                    IList<ScheduleLogDetailRecord> logDetails = new List<ScheduleLogDetailRecord>();
-                    IList<ScheduleRunHistoryRecord> runHistoryRecords = new List<ScheduleRunHistoryRecord>();
-                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                    {
-                        logDetails = nISEntitiesDataContext.ScheduleLogDetailRecords.ToList();
-                        runHistoryRecords = nISEntitiesDataContext.ScheduleRunHistoryRecords.ToList();
-                    }
-
                     for (int i = 0; i < scheduleLogRecords.Count; i++)
                     {
                         ScheduleLog log = new ScheduleLog();
@@ -162,10 +154,11 @@ namespace nIS
                         log.RecordProcessed = scheduleLogRecords[i].RecordProccessed;
                         log.ScheduleStatus = scheduleLogRecords[i].Status;
                         log.ScheduleName = scheduleLogRecords[i].ScheduleName;
+                        log.BatchId = scheduleLogRecords[i].BatchId;
+                        log.BatchName = scheduleLogRecords[i].BatchName;
                         log.CreateDate = DateTime.SpecifyKind((DateTime)scheduleLogRecords[i].ExecutionDate, DateTimeKind.Utc);
                         scheduleLogs.Add(log);
                     }
-
                 }
             }
             catch (Exception ex)
@@ -194,12 +187,10 @@ namespace nIS
                     if(!string.IsNullOrEmpty(whereClause))
                     {
                         scheduleLogCount = nISEntitiesDataContext.View_ScheduleLog.Where(whereClause.ToString()).Count();
-
                     }
                     else
                     {
                         scheduleLogCount = nISEntitiesDataContext.ScheduleLogRecords.Count();
-
                     }
                 }
             }

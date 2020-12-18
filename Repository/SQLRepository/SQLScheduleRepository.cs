@@ -808,18 +808,21 @@ namespace nIS
                             }
 
                             ScheduleLogRecord scheduleLog = new ScheduleLogRecord();
-                            scheduleLog.ScheduleId = schedule.Id;
-                            scheduleLog.ScheduleName = schedule.Name;
-                            scheduleLog.NumberOfRetry = 1;
-                            scheduleLog.CreationDate = DateTime.UtcNow;
-                            scheduleLog.TenantCode = tenantCode;
 
                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                             {
+                                batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString() && item.TenantCode == tenantCode)?.ToList()?.FirstOrDefault();
+
+                                scheduleLog.ScheduleId = schedule.Id;
+                                scheduleLog.ScheduleName = schedule.Name;
+                                scheduleLog.BatchId = batchMaster.Id;
+                                scheduleLog.BatchName = batchMaster.BatchName;
+                                scheduleLog.NumberOfRetry = 1;
+                                scheduleLog.CreationDate = DateTime.UtcNow;
+                                scheduleLog.TenantCode = tenantCode;
+
                                 schedule.Status = ScheduleStatus.InProgress.ToString();
                                 nISEntitiesDataContext.SaveChanges();
-
-                                batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schedule.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString() && item.TenantCode == tenantCode)?.ToList()?.FirstOrDefault();
                             }
 
                             if (batchMaster != null)
@@ -976,13 +979,16 @@ namespace nIS
                         throw new ScheduleNotFoundException(tenantCode);
                     }
 
+                    batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batch.Identifier && item.ScheduleId == scheduleRecord.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString() && item.TenantCode == tenantCode)?.ToList().FirstOrDefault();
+
                     scheduleLog.ScheduleId = scheduleRecord.Id;
                     scheduleLog.ScheduleName = scheduleRecord.Name;
+                    scheduleLog.BatchId = batchMaster.Id;
+                    scheduleLog.BatchName = batchMaster.BatchName;
                     scheduleLog.NumberOfRetry = 1;
                     scheduleLog.CreationDate = DateTime.UtcNow;
                     scheduleLog.TenantCode = tenantCode;
-
-                    batchMaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batch.Identifier && item.ScheduleId == scheduleRecord.Id && !item.IsExecuted && item.Status == BatchStatus.New.ToString() && item.TenantCode == tenantCode)?.ToList().FirstOrDefault();
+                    
                     var IsDataAvail = false;
                     if (batchMaster != null)
                     {
@@ -1367,6 +1373,379 @@ namespace nIS
             }
         }
 
+        public IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            IList<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schdeuleIdentifier && item.TenantCode == tenantCode).ToList();
+                    if (batchMasterRecords?.Count() > 0)
+                    {
+                        batchMasterRecords.ToList().ForEach(item =>
+                        {
+                            batchMasters.Add(new BatchMaster
+                            {
+                                Identifier = item.Id,
+                                BatchName = item.BatchName,
+                                TenantCode = item.TenantCode == string.Empty ? tenantCode : item.TenantCode,
+                                CreatedBy = item.CreatedBy,
+                                CreatedDate = item.CreatedDate,
+                                ScheduleId = item.ScheduleId,
+                                IsExecuted = item.IsExecuted,
+                                IsDataReady = item.IsDataReady,
+                                BatchExecutionDate = item.BatchExecutionDate,
+                                DataExtractionDate = item.DataExtractionDate,
+                                Status = item.Status,
+                            });
+                        });
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return batchMasters;
+        }
+
+        /// <summary>
+        /// This method helps to approve batch of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+                    batchs.ForEach(batch =>
+                    {
+                        batch.Status = BatchStatus.Approved.ToString();
+                    });
+                    nISEntitiesDataContext.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to clean batch and related data of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool CleanScheduleBatch(long BatchIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var batch = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode)?.ToList().FirstOrDefault();
+                    //batch.Status = BatchStatus.New.ToString();
+
+                    var scheduleLog = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                    var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == scheduleLog.Id && item.TenantCode == tenantCode).ToList();
+                    nISEntitiesDataContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="searchParameter">Schedule search Parameters</param>
+        /// <returns>
+        /// Returns a string.
+        /// </returns>
+        private string WhereClauseGenerator(ScheduleSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+            if (searchParameter.SearchMode == SearchMode.Equals)
+            {
+                if (validationEngine.IsValidText(searchParameter.Identifier))
+                {
+                    queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+                }
+                if (validationEngine.IsValidText(searchParameter.Name))
+                {
+                    queryString.Append(string.Format("Name.Equals(\"{0}\") and ", searchParameter.Name));
+                }
+            }
+            if (searchParameter.SearchMode == SearchMode.Contains)
+            {
+                if (validationEngine.IsValidText(searchParameter.Name))
+                {
+                    queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
+                }
+            }
+            if (validationEngine.IsValidText(searchParameter.StatementDefinitionName))
+            {
+                queryString.Append(string.Format("StatementName.Contains(\"{0}\") and ", searchParameter.StatementDefinitionName));
+            }
+            if (searchParameter.IsActive == null || searchParameter.IsActive == true)
+            {
+                queryString.Append(string.Format("IsDeleted.Equals(false) and "));
+            }
+            else if (searchParameter.IsActive != null && searchParameter.IsActive == false)
+            {
+                queryString.Append(string.Format("IsDeleted.Equals(true) and "));
+            }
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
+            {
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+                queryString.Append("EndDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+
+                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                               "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="searchParameter">Schedule search Parameters</param>
+        /// <returns>
+        /// Returns a string.
+        /// </returns>
+        private string WhereClauseGeneratorHistory(ScheduleSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+            if (validationEngine.IsValidText(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("ScheduleId.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidText(searchParameter.ScheduleHistoryIdentifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.ScheduleHistoryIdentifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
+
+                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
+                               "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
+        /// <summary>
+        /// This method determines uniqueness of elements in repository.
+        /// </summary>
+        /// <param name="schedules">The schedules to save.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns name="result">
+        /// Returns true if all elements are not present in repository, false otherwise.
+        /// </returns>
+        private bool IsDuplicateSchedule(IList<Schedule> schedules, string operation, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+                StringBuilder query = new StringBuilder();
+
+                if (operation.Equals(ModelConstant.ADD_OPERATION))
+                {
+                    query.Append("(" + string.Join(" or ", schedules.Select(item => string.Format("Name.Equals(\"{0}\")", item.Name)).ToList()) + ") and IsDeleted.Equals(false) and TenantCode.Equals(\"" + tenantCode + "\")");
+                }
+
+                if (operation.Equals(ModelConstant.UPDATE_OPERATION))
+                {
+                    query.Append("(" + string.Join(" or ", schedules.Select(item => string.Format("(Name.Equals(\"{0}\") and !Id.Equals({1}))", item.Name, item.Identifier))) + ") and IsDeleted.Equals(false) and TenantCode.Equals(\"" + tenantCode + "\")");
+                }
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<ScheduleRecord> scheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    if (scheduleRecords.Count > 0)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        #region Get Connection String
+
+        /// <summary>
+        /// This method help to set and validate connection string
+        /// </summary>
+        /// <param name="tenantCode">
+        /// The tenant code
+        /// </param>
+        private void SetAndValidateConnectionString(string tenantCode)
+        {
+            try
+            {
+                this.connectionString = validationEngine.IsValidText(this.connectionString) ? this.connectionString : this.configurationutility.GetConnectionString(ModelConstant.COMMON_SECTION, ModelConstant.NIS_CONNECTION_STRING, ModelConstant.CONFIGURATON_BASE_URL, ModelConstant.TENANT_CODE_KEY, tenantCode);
+                if (!this.validationEngine.IsValidText(this.connectionString))
+                {
+                    throw new ConnectionStringNotFoundException(tenantCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client, IList<TenantEntity> tenantEntities, RenderEngineRecord renderEngine)
+        {
+            IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+            try
+            {
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client, tenantEntities);
+                    if (logDetailRecord != null)
+                    {
+                        logDetailRecord.ScheduleLogId = scheduleLog.Id;
+                        logDetailRecord.CustomerId = customer.Id;
+                        logDetailRecord.CustomerName = customer.FirstName.Trim() + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim();
+                        logDetailRecord.ScheduleId = scheduleLog.ScheduleId;
+                        logDetailRecord.RenderEngineId = renderEngine != null ? renderEngine.Id : 0; //To be change once render engine implmentation start
+                        logDetailRecord.RenderEngineName = renderEngine != null ? renderEngine.Name : "";
+                        logDetailRecord.RenderEngineURL = renderEngine != null ? renderEngine.URL : "";
+                        logDetailRecord.NumberOfRetry = 1;
+                        logDetailRecord.CreationDate = DateTime.UtcNow;
+                        logDetailRecord.TenantCode = tenantCode;
+                        nISEntitiesDataContext.ScheduleLogDetailRecords.Add(logDetailRecord);
+
+                        //if statement generated successfully, then save statement metadata with actual html statement file path
+                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))
+                        {
+                            if (logDetailRecord.StatementMetadataRecords.Count > 0)
+                            {
+                                logDetailRecord.StatementMetadataRecords.ToList().ForEach(metarec =>
+                                {
+                                    metarec.ScheduleLogId = scheduleLog.Id;
+                                    metarec.ScheduleId = scheduleLog.ScheduleId;
+                                    metarec.StatementDate = DateTime.UtcNow;
+                                    metarec.StatementURL = logDetailRecord.StatementFilePath;
+                                    metarec.TenantCode = tenantCode;
+                                    statementMetadataRecords.Add(metarec);
+                                });
+                                nISEntitiesDataContext.StatementMetadataRecords.AddRange(statementMetadataRecords);
+                            }
+                        }
+                        nISEntitiesDataContext.SaveChanges();
+
+                        //If any error occurs during statement generation then delete all files from output directory of current customer
+                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+                        {
+                            this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, outputLocation);
+                        }
+                    }
+
+                    //update status for respective schedule log, schedule log details entities
+                    //as well as update batch status if statement generation done for all customers of current batch
+                    var logDetailsRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLog.Id)?.ToList();
+                    if (customerCount == logDetailsRecords.Count)
+                    {
+                        var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+                        var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
+                        if (failedRecords != null && failedRecords.Count > 0)
+                        {
+                            scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+                        }
+                        nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).ToList().ForEach(item => item.Status = scheduleLogStatus);
+                        nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id).ToList().ForEach(item => item.EndDate = DateTime.UtcNow);
+
+                        nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId).ToList().ForEach(item => item.Status = ScheduleStatus.Completed.ToString());
+                        nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().ForEach(item =>
+                        {
+                            item.Status = BatchStatus.Completed.ToString();
+                            item.IsExecuted = true;
+                        });
+                        nISEntitiesDataContext.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        private void WriteToFile(string Message)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ScheduleLog_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
+            if (!File.Exists(filepath))
+            {
+                // Create a file to write to.   
+                using (StreamWriter sw = File.CreateText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+        }
+
+
+        #endregion
+
         /// <summary>
         /// This method helps to add batch with no repeat occurence.
         /// </summary>
@@ -1616,7 +1995,7 @@ namespace nIS
                 //var newendate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
                 var newstartdate = scheduleStartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
                 var newendate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
-                
+
                 if (schedule.DayOfMonth < newstartdate.Day)
                 {
                     newstartdate = newstartdate.AddMonths(1);
@@ -1636,7 +2015,7 @@ namespace nIS
                                 DayOfMonth = lastDayOfMonth;
                             }
                         }
-                        
+
                         BatchMasterRecord record = new BatchMasterRecord();
                         record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
                         record.TenantCode = tenantCode;
@@ -1796,321 +2175,6 @@ namespace nIS
             }
         }
 
-        public IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode)
-        {
-            IList<BatchMaster> batchMasters = new List<BatchMaster>();
-            IList<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
-
-            try
-            {
-                this.SetAndValidateConnectionString(tenantCode);
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schdeuleIdentifier && item.TenantCode == tenantCode).ToList();
-                    if (batchMasterRecords?.Count() > 0)
-                    {
-                        batchMasterRecords.ToList().ForEach(item =>
-                        {
-                            batchMasters.Add(new BatchMaster
-                            {
-                                Identifier = item.Id,
-                                BatchName = item.BatchName,
-                                TenantCode = item.TenantCode == string.Empty ? tenantCode : item.TenantCode,
-                                CreatedBy = item.CreatedBy,
-                                CreatedDate = item.CreatedDate,
-                                ScheduleId = item.ScheduleId,
-                                IsExecuted = item.IsExecuted,
-                                IsDataReady = item.IsDataReady,
-                                BatchExecutionDate = item.BatchExecutionDate,
-                                DataExtractionDate = item.DataExtractionDate,
-                                Status = item.Status,
-                            });
-                        });
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return batchMasters;
-        }
-        #endregion
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Generate string for dynamic linq.
-        /// </summary>
-        /// <param name="searchParameter">Schedule search Parameters</param>
-        /// <returns>
-        /// Returns a string.
-        /// </returns>
-        private string WhereClauseGenerator(ScheduleSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
-            if (searchParameter.SearchMode == SearchMode.Equals)
-            {
-                if (validationEngine.IsValidText(searchParameter.Identifier))
-                {
-                    queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-                }
-                if (validationEngine.IsValidText(searchParameter.Name))
-                {
-                    queryString.Append(string.Format("Name.Equals(\"{0}\") and ", searchParameter.Name));
-                }
-            }
-            if (searchParameter.SearchMode == SearchMode.Contains)
-            {
-                if (validationEngine.IsValidText(searchParameter.Name))
-                {
-                    queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
-                }
-            }
-            if (validationEngine.IsValidText(searchParameter.StatementDefinitionName))
-            {
-                queryString.Append(string.Format("StatementName.Contains(\"{0}\") and ", searchParameter.StatementDefinitionName));
-            }
-            if (searchParameter.IsActive == null || searchParameter.IsActive == true)
-            {
-                queryString.Append(string.Format("IsDeleted.Equals(false) and "));
-            }
-            else if (searchParameter.IsActive != null && searchParameter.IsActive == false)
-            {
-                queryString.Append(string.Format("IsDeleted.Equals(true) and "));
-            }
-            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && !this.validationEngine.IsValidDate(searchParameter.EndDate))
-            {
-                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
-                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
-            }
-
-            if (this.validationEngine.IsValidDate(searchParameter.EndDate) && !this.validationEngine.IsValidDate(searchParameter.StartDate))
-            {
-                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
-                queryString.Append("EndDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
-            }
-
-            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
-            {
-                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
-                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
-
-                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
-                               "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
-            }
-            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
-        }
-
-        /// <summary>
-        /// Generate string for dynamic linq.
-        /// </summary>
-        /// <param name="searchParameter">Schedule search Parameters</param>
-        /// <returns>
-        /// Returns a string.
-        /// </returns>
-        private string WhereClauseGeneratorHistory(ScheduleSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
-            if (validationEngine.IsValidText(searchParameter.Identifier))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("ScheduleId.Equals({0}) ", item))) + ") and ");
-            }
-            if (validationEngine.IsValidText(searchParameter.ScheduleHistoryIdentifier))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.ScheduleHistoryIdentifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
-            }
-            if (this.validationEngine.IsValidDate(searchParameter.StartDate) && this.validationEngine.IsValidDate(searchParameter.EndDate))
-            {
-                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StartDate), DateTimeKind.Utc);
-                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.EndDate), DateTimeKind.Utc);
-
-                queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
-                               "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
-            }
-            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
-        }
-
-
-        /// <summary>
-        /// This method determines uniqueness of elements in repository.
-        /// </summary>
-        /// <param name="schedules">The schedules to save.</param>
-        /// <param name="tenantCode">The tenant code.</param>
-        /// <returns name="result">
-        /// Returns true if all elements are not present in repository, false otherwise.
-        /// </returns>
-        private bool IsDuplicateSchedule(IList<Schedule> schedules, string operation, string tenantCode)
-        {
-            bool result = false;
-            try
-            {
-                this.SetAndValidateConnectionString(tenantCode);
-
-                StringBuilder query = new StringBuilder();
-
-                if (operation.Equals(ModelConstant.ADD_OPERATION))
-                {
-                    query.Append("(" + string.Join(" or ", schedules.Select(item => string.Format("Name.Equals(\"{0}\")", item.Name)).ToList()) + ") and IsDeleted.Equals(false) and TenantCode.Equals(\"" + tenantCode + "\")");
-                }
-
-                if (operation.Equals(ModelConstant.UPDATE_OPERATION))
-                {
-                    query.Append("(" + string.Join(" or ", schedules.Select(item => string.Format("(Name.Equals(\"{0}\") and !Id.Equals({1}))", item.Name, item.Identifier))) + ") and IsDeleted.Equals(false) and TenantCode.Equals(\"" + tenantCode + "\")");
-                }
-
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    IList<ScheduleRecord> scheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-                    if (scheduleRecords.Count > 0)
-                    {
-                        result = true;
-                    }
-                }
-            }
-            catch
-            {
-                throw;
-            }
-
-            return result;
-        }
-
-        #region Get Connection String
-
-        /// <summary>
-        /// This method help to set and validate connection string
-        /// </summary>
-        /// <param name="tenantCode">
-        /// The tenant code
-        /// </param>
-        private void SetAndValidateConnectionString(string tenantCode)
-        {
-            try
-            {
-                this.connectionString = validationEngine.IsValidText(this.connectionString) ? this.connectionString : this.configurationutility.GetConnectionString(ModelConstant.COMMON_SECTION, ModelConstant.NIS_CONNECTION_STRING, ModelConstant.CONFIGURATON_BASE_URL, ModelConstant.TENANT_CODE_KEY, tenantCode);
-                if (!this.validationEngine.IsValidText(this.connectionString))
-                {
-                    throw new ConnectionStringNotFoundException(tenantCode);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client, IList<TenantEntity> tenantEntities, RenderEngineRecord renderEngine)
-        {
-            IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
-            try
-            {
-                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                {
-                    var logDetailRecord = this.statementRepository.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client, tenantEntities);
-                    if (logDetailRecord != null)
-                    {
-                        logDetailRecord.ScheduleLogId = scheduleLog.Id;
-                        logDetailRecord.CustomerId = customer.Id;
-                        logDetailRecord.CustomerName = customer.FirstName.Trim() + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim();
-                        logDetailRecord.ScheduleId = scheduleLog.ScheduleId;
-                        logDetailRecord.RenderEngineId = renderEngine != null ? renderEngine.Id : 0; //To be change once render engine implmentation start
-                        logDetailRecord.RenderEngineName = renderEngine != null ? renderEngine.Name : "";
-                        logDetailRecord.RenderEngineURL = renderEngine != null ? renderEngine.URL : "";
-                        logDetailRecord.NumberOfRetry = 1;
-                        logDetailRecord.CreationDate = DateTime.UtcNow;
-                        logDetailRecord.TenantCode = tenantCode;
-                        nISEntitiesDataContext.ScheduleLogDetailRecords.Add(logDetailRecord);
-
-                        //if statement generated successfully, then save statement metadata with actual html statement file path
-                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))
-                        {
-                            if (logDetailRecord.StatementMetadataRecords.Count > 0)
-                            {
-                                logDetailRecord.StatementMetadataRecords.ToList().ForEach(metarec =>
-                                {
-                                    metarec.ScheduleLogId = scheduleLog.Id;
-                                    metarec.ScheduleId = scheduleLog.ScheduleId;
-                                    metarec.StatementDate = DateTime.UtcNow;
-                                    metarec.StatementURL = logDetailRecord.StatementFilePath;
-                                    metarec.TenantCode = tenantCode;
-                                    statementMetadataRecords.Add(metarec);
-                                });
-                                nISEntitiesDataContext.StatementMetadataRecords.AddRange(statementMetadataRecords);
-                            }
-                        }
-                        nISEntitiesDataContext.SaveChanges();
-
-                        //If any error occurs during statement generation then delete all files from output directory of current customer
-                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
-                        {
-                            this.utility.DeleteUnwantedDirectory(batchMaster.Id, customer.Id, outputLocation);
-                        }
-                    }
-
-                    //update status for respective schedule log, schedule log details entities
-                    //as well as update batch status if statement generation done for all customers of current batch
-                    var logDetailsRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLog.Id)?.ToList();
-                    if (customerCount == logDetailsRecords.Count)
-                    {
-                        var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
-                        var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
-                        if (failedRecords != null && failedRecords.Count > 0)
-                        {
-                            scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-                        }
-                        nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).ToList().ForEach(item => item.Status = scheduleLogStatus);
-                        nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id).ToList().ForEach(item => item.EndDate = DateTime.UtcNow);
-
-                        nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId).ToList().ForEach(item => item.Status = ScheduleStatus.Completed.ToString());
-                        nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().ForEach(item =>
-                        {
-                            item.Status = BatchStatus.Completed.ToString();
-                            item.IsExecuted = true;
-                        });
-                        nISEntitiesDataContext.SaveChanges();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-        }
-
-        private void WriteToFile(string Message)
-        {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ScheduleLog_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
-            if (!File.Exists(filepath))
-            {
-                // Create a file to write to.   
-                using (StreamWriter sw = File.CreateText(filepath))
-                {
-                    sw.WriteLine(Message);
-                }
-            }
-            else
-            {
-                using (StreamWriter sw = File.AppendText(filepath))
-                {
-                    sw.WriteLine(Message);
-                }
-            }
-        }
-
-
-        #endregion
 
         #endregion
     }

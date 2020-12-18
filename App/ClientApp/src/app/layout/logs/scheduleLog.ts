@@ -4,6 +4,8 @@ export class ScheduleLog {
   "Identifier": number;
   "ScheduleId": number;
   "ScheduleName": string;
+  "BatchId": number;
+  "BatchName": string;
   "RenderEngineId": number;
   "RenderEngineName": string;
   "RenderEngineURL": string;

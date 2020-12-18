@@ -36,7 +36,6 @@
         <EntityTypeShape EntityType="NISModel.ImageRecord" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.VideoRecord" Width="1.5" PointX="4.75" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ReminderAndRecommendationRecord" Width="1.5" PointX="0.875" PointY="5.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogRecord" Width="1.5" PointX="6.75" PointY="5.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ScheduleLogDetailRecord" Width="1.5" PointX="8.625" PointY="8.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AccountTransactionRecord" Width="1.5" PointX="2.75" PointY="6" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.SavingTrendRecord" Width="1.5" PointX="8.625" PointY="5.25" IsExpanded="false" />
@@ -58,7 +57,6 @@
         <EntityTypeShape EntityType="NISModel.MultiTenantUserAccessMapRecord" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_MultiTenantUserAccessMapRecord" Width="1.5" PointX="2.75" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.CountryRecord" Width="1.5" PointX="7" PointY="3.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.875" PointY="8.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.DynamicWidgetRecord" Width="1.5" PointX="4.875" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.EntityFieldMapRecord" Width="1.5" PointX="6.75" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantEntityRecord" Width="1.5" PointX="8.625" PointY="6.625" IsExpanded="false" />
@@ -81,6 +79,8 @@
         <EntityTypeShape EntityType="NISModel.StatementMetadataArchiveRecord" Width="1.5" PointX="8.625" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_DynamicWidgetRecord" Width="1.5" PointX="9" PointY="2.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantSubscriptionRecord" Width="1.5" PointX="10.875" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ScheduleLogRecord" Width="1.5" PointX="6.75" PointY="6" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

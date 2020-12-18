@@ -17,6 +17,8 @@ namespace nIS
         public long Id { get; set; }
         public long ScheduleId { get; set; }
         public string ScheduleName { get; set; }
+        public long BatchId { get; set; }
+        public string BatchName { get; set; }
         public int NumberOfRetry { get; set; }
         public string LogFilePath { get; set; }
         public System.DateTime CreationDate { get; set; }

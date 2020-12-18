@@ -128,5 +128,13 @@ namespace nIS
         /// <returns>True if schedules runs successfully, false otherwise</returns>
         bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client);
 
+        /// <summary>
+        /// This method helps to approve batch of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode);
+
     }
 }

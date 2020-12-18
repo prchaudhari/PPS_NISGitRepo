@@ -56,7 +56,7 @@ export class LogsComponent implements OnInit {
   public sortColumn = 'Name';
   public sortOrder = Constants.Ascending;
 
-  displayedColumns: string[] = ['schedule', 'time', 'record', 'status', 'date', 'actions'];
+  displayedColumns: string[] = ['schedule', 'batch', 'time', 'record', 'status', 'date', 'actions'];
   dataSource = new MatTableDataSource<any>();
   public DataFormat;
 
@@ -148,6 +148,9 @@ export class LogsComponent implements OnInit {
     }
     if (sort.active == 'schedule') {
       this.sortColumn = 'ScheduleName';
+    }
+    else if (sort.active == 'batch') {
+      this.sortColumn = 'BatchName';
     }
     else if (sort.active == 'time') {
       this.sortColumn = 'ProcessingTime';
