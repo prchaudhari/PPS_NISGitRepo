@@ -73,7 +73,6 @@
         <EntityTypeShape EntityType="NISModel.TTD_VendorSubscriptionRecord" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.WidgetPageTypeMap" Width="1.5" PointX="9" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_PageWidgetMapRecord" Width="1.5" PointX="9" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogArchiveRecord" Width="1.5" PointX="8.75" PointY="10.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ScheduleLogDetailArchiveRecord" Width="1.5" PointX="6.75" PointY="10.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementMetadataRecord" Width="1.5" PointX="2.75" PointY="6.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementMetadataArchiveRecord" Width="1.5" PointX="8.625" PointY="8.875" IsExpanded="false" />
@@ -81,6 +80,7 @@
         <EntityTypeShape EntityType="NISModel.TenantSubscriptionRecord" Width="1.5" PointX="10.875" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ScheduleLogRecord" Width="1.5" PointX="6.75" PointY="6" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ScheduleLogArchiveRecord" Width="1.5" PointX="8.625" PointY="10.625" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

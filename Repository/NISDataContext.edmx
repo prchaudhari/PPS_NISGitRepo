@@ -462,6 +462,8 @@
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScheduleId" Type="bigint" Nullable="false" />
           <Property Name="ScheduleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="BatchName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="NumberOfRetry" Type="int" Nullable="false" />
           <Property Name="LogFilePath" Type="nvarchar(max)" />
           <Property Name="LogCreationDate" Type="datetime" Nullable="false" />
@@ -1728,7 +1730,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TTD_VendorSubscriptionRecord" EntityType="NISModel.TTD_VendorSubscriptionRecord" />
           <EntitySet Name="WidgetPageTypeMaps" EntityType="NISModel.WidgetPageTypeMap" />
           <EntitySet Name="View_PageWidgetMapRecord" EntityType="NISModel.View_PageWidgetMapRecord" />
-          <EntitySet Name="ScheduleLogArchiveRecords" EntityType="NISModel.ScheduleLogArchiveRecord" />
           <EntitySet Name="ScheduleLogDetailArchiveRecords" EntityType="NISModel.ScheduleLogDetailArchiveRecord" />
           <EntitySet Name="StatementMetadataRecords" EntityType="NISModel.StatementMetadataRecord" />
           <EntitySet Name="StatementMetadataArchiveRecords" EntityType="NISModel.StatementMetadataArchiveRecord" />
@@ -1736,6 +1737,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TenantSubscriptionRecords" EntityType="NISModel.TenantSubscriptionRecord" />
           <EntitySet Name="ScheduleLogRecords" EntityType="NISModel.ScheduleLogRecord" />
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
+          <EntitySet Name="ScheduleLogArchiveRecords" EntityType="NISModel.ScheduleLogArchiveRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2918,20 +2920,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsDynamicWidget" Type="Boolean" Nullable="false" />
           <Property Name="WidgetName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="ScheduleLogArchiveRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
-          <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NumberOfRetry" Type="Int32" Nullable="false" />
-          <Property Name="LogFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LogCreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ArchivalDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="ScheduleLogDetailArchiveRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -3076,6 +3064,22 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="RecordProccessed" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ScheduleLogArchiveRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="BatchName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfRetry" Type="Int32" Nullable="false" />
+          <Property Name="LogFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogCreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
@@ -4272,21 +4276,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ScheduleLogArchiveRecords">
-            <EntityTypeMapping TypeName="NISModel.ScheduleLogArchiveRecord">
-              <MappingFragment StoreEntitySet="ScheduleLogArchive">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="ArchivalDate" ColumnName="ArchivalDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="LogCreationDate" ColumnName="LogCreationDate" />
-                <ScalarProperty Name="LogFilePath" ColumnName="LogFilePath" />
-                <ScalarProperty Name="NumberOfRetry" ColumnName="NumberOfRetry" />
-                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
-                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ScheduleLogDetailArchiveRecords">
             <EntityTypeMapping TypeName="NISModel.ScheduleLogDetailArchiveRecord">
               <MappingFragment StoreEntitySet="ScheduleLogDetailArchive">
@@ -4420,6 +4409,23 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="BatchName" ColumnName="BatchName" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleLogArchiveRecords">
+            <EntityTypeMapping TypeName="NISModel.ScheduleLogArchiveRecord">
+              <MappingFragment StoreEntitySet="ScheduleLogArchive">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ArchivalDate" ColumnName="ArchivalDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LogCreationDate" ColumnName="LogCreationDate" />
+                <ScalarProperty Name="LogFilePath" ColumnName="LogFilePath" />
+                <ScalarProperty Name="NumberOfRetry" ColumnName="NumberOfRetry" />
+                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

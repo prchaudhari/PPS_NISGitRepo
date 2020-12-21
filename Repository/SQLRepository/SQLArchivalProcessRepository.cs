@@ -123,7 +123,7 @@ namespace nIS
                                         batchmaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == schedulelog.BatchId && item.TenantCode == tenantCode).ToList()?.FirstOrDefault();
                                     }
 
-                                    //if batch is present and it's status is approved then only statement metadata should be archived.
+                                    //if batch is present and it's status is approved then only schedule log and statement metadata records should be archived.
                                     if (batchmaster != null && batchmaster.Status == BatchStatus.Approved.ToString())
                                     {
                                         StatementSearchParameter statementSearchParameter = new StatementSearchParameter
@@ -157,6 +157,8 @@ namespace nIS
                                             {
                                                 scheduleLogArchiveRecord.ScheduleId = schedulelog.ScheduleId;
                                                 scheduleLogArchiveRecord.ScheduleName = schedulelog.ScheduleName;
+                                                scheduleLogArchiveRecord.BatchId = schedulelog.BatchId;
+                                                scheduleLogArchiveRecord.BatchName = schedulelog.BatchName;
                                                 scheduleLogArchiveRecord.LogCreationDate = schedulelog.CreationDate;
                                                 scheduleLogArchiveRecord.LogFilePath = schedulelog.LogFilePath;
                                                 scheduleLogArchiveRecord.NumberOfRetry = schedulelog.NumberOfRetry;
