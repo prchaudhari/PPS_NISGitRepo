@@ -310,6 +310,44 @@ namespace nIS
             return batchMasters;
         }
 
+        /// <summary>
+        /// This method helps to approve batch of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <returns>True if success, otherwise false</returns>
+        [HttpPost]
+        public bool ApproveScheduleBatch(long BatchIdentifier)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.scheduleManager.ApproveScheduleBatch(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to clean batch and related data of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <returns>True if success, otherwise false</returns>
+        [HttpPost]
+        public bool CleanScheduleBatch(long BatchIdentifier)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.scheduleManager.CleanScheduleBatch(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #endregion

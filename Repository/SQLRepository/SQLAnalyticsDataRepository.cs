@@ -179,46 +179,61 @@ namespace nIS
                 if (_lstAnalyticData.Count > 0 && _lstAnalyticData.FirstOrDefault().TenantCode != null && _lstAnalyticData.FirstOrDefault().TenantCode != string.Empty)
                 {
                     var tenantCode = _lstAnalyticData.FirstOrDefault().TenantCode;
+                    
                     this.SetAndValidateConnectionString(tenantCode);
-                    StringBuilder queryString = new StringBuilder();
-                    queryString.Append(string.Join("or ", _lstAnalyticData.Where(item => item.PageWidgetId > 0).Select(item => string.Format("Id.Equals({0}) ", item.PageWidgetId))));
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
-                        IList<PageWidgetMapRecord> pageWidgeMap = new List<PageWidgetMapRecord>();
+                        var queryString = new StringBuilder();
+                        queryString.Append(string.Join("or ", _lstAnalyticData.Where(item => item.PageWidgetId > 0).Select(item => string.Format("Id.Equals({0}) ", item.PageWidgetId))));
+                        var pageWidgeMap = new List<PageWidgetMapRecord>();
                         if (!string.IsNullOrEmpty(queryString.ToString()))
                         {
                             pageWidgeMap = nISEntitiesDataContext.PageWidgetMapRecords.Where(queryString.ToString()).ToList();
                         }
+
                         _lstAnalyticData.ToList().ForEach(setting =>
                         {
-                            AnalyticsDataRecord record = new AnalyticsDataRecord();
-                            PageWidgetMapRecord map = new PageWidgetMapRecord();
-                            if (setting.PageWidgetId > 0)
+                            //get customer master data
+                            var customer = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == setting.CustomerId && item.TenantCode == setting.TenantCode).ToList()?.FirstOrDefault();
+                            if (customer != null)
                             {
-                                map = pageWidgeMap.Where(page => page.Id == setting.PageWidgetId)?.FirstOrDefault();
-                                setting.PageId = map.PageId;
-                                setting.WidgetId = map.ReferenceWidgetId;
+                                //get batch master data
+                                var batchmaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == customer.BatchId && item.TenantCode == setting.TenantCode).ToList()?.FirstOrDefault();
 
+                                //if batch is present and has Approved status then analytics data will be save
+                                if (batchmaster != null && batchmaster.Status == BatchStatus.Approved.ToString())
+                                {
+                                    AnalyticsDataRecord record = new AnalyticsDataRecord();
+                                    PageWidgetMapRecord map = new PageWidgetMapRecord();
+                                    if (setting.PageWidgetId > 0)
+                                    {
+                                        map = pageWidgeMap.Where(page => page.Id == setting.PageWidgetId)?.FirstOrDefault();
+                                        setting.PageId = map != null ? map.PageId : 0;
+                                        setting.WidgetId = map != null ? map.ReferenceWidgetId : 0;
+                                    }
+                                    record.StatementId = setting.StatementId;
+                                    record.CustomerId = setting.CustomerId;
+                                    record.AccountId = setting.AccountId != null ? setting.AccountId : "";
+                                    record.PageWidgetId = setting.PageWidgetId;
+                                    record.PageId = setting.PageId;
+                                    record.WidgetId = setting.WidgetId;
+                                    record.EventDate = setting.EventDate;
+                                    record.EventType = setting.EventType;
+                                    record.TenantCode = tenantCode;
+                                    records.Add(record);
+                                }
                             }
-                            record.StatementId = setting.StatementId;
-                            record.CustomerId = setting.CustomerId;
-                            record.AccountId = setting.AccountId != null ? setting.AccountId : "";
-                            record.PageWidgetId = setting.PageWidgetId;
-                            record.PageId = setting.PageId;
-                            record.WidgetId = setting.WidgetId;
-                            record.EventDate = setting.EventDate;
-                            record.EventType = setting.EventType;
-                            record.TenantCode = tenantCode;
-                            records.Add(record);
                         });
 
-                        nISEntitiesDataContext.AnalyticsDataRecords.AddRange(records);
-                        nISEntitiesDataContext.SaveChanges();
-                        result = true;
+                        if (records.Count > 0)
+                        {
+                            nISEntitiesDataContext.AnalyticsDataRecords.AddRange(records);
+                            nISEntitiesDataContext.SaveChanges();
+                            result = true;
+                        }
                     }
                 }
             }
-
             catch (Exception ex)
             {
                 throw ex;

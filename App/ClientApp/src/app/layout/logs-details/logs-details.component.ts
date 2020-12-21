@@ -50,6 +50,7 @@ export class LogsDetailsComponent implements OnInit {
   public scheduleName: string;
   public executionDate;
   public isAllRecordSuccess = true;
+  public BatchStatus: string;
 
   public totalRecordCount = 0;
   public filterUserIdValue = '';
@@ -112,7 +113,8 @@ export class LogsDetailsComponent implements OnInit {
           if (localStorage.getItem('scheduleLogParams')) {
             this.scheduleLogIdentifier = this.params.Routeparams.passingparams.SchdeuleLogIdetifiier;
             this.scheduleName = this.params.Routeparams.passingparams.SchdeuleName;
-            this.executionDate = this.params.Routeparams.passingparams.ExecutionDate
+            this.executionDate = this.params.Routeparams.passingparams.ExecutionDate;
+            this.BatchStatus = this.params.Routeparams.passingparams.BatchStatus;
           }
         } else {
           localStorage.removeItem("scheduleLogParams");

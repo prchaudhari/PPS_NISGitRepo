@@ -112,6 +112,8 @@ export class URLConfiguration {
   public static get scheduleDeactivate(): string { return "Schedule/Deactivate" };
   public static get scheduleHistoryGetUrl(): string { return "Schedule/GetScheduleRunHistories" };
   public static get RunScheduleNow(): string { return "Schedule/RunScheduleNow" };
+  public static get ApproveScheduleBatch(): string { return "Schedule/ApproveScheduleBatch" };
+  public static get CleanScheduleBatch(): string { return "Schedule/CleanScheduleBatch" };
 
   //Statement Url Method
   public static get statementGetUrl(): string { return "Statement/List" };

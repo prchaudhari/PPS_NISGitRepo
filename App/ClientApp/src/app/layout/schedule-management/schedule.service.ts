@@ -195,10 +195,10 @@ export class ScheduleService {
     return <boolean>this.isRecordDeleted;
   }
 
-  //method to call api of delete Schedule.
+  //method to call api of run schedule now.
   public RunScheduleNow(postData) {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.RunScheduleNow ;
+    let requestUrl = URLConfiguration.RunScheduleNow;
     httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
     .then((httpEvent: HttpEvent<any>) => {
 
@@ -206,6 +206,52 @@ export class ScheduleService {
         this.uiLoader.stop();
         this.isRecordDeleted = false;
       });     
+  }
+
+  public async ApproveBatch(BatchIdentifier): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.ApproveScheduleBatch + "?" + "BatchIdentifier=" + BatchIdentifier;
+    this.uiLoader.start();
+    var result = false;
+    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            result = true;
+          }
+          else {
+            result = false;
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+          result = false;
+      });
+    return <boolean>result;
+  }
+
+  public async CleanBatch(BatchIdentifier): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.CleanScheduleBatch + "?" + "BatchIdentifier=" + BatchIdentifier;
+    this.uiLoader.start();
+    var result = false;
+    await httpClientService.CallHttp("POST", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            result = true;
+          }
+          else {
+            result = false;
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+        result = false;
+      });
+    return <boolean>result;
   }
 
 }

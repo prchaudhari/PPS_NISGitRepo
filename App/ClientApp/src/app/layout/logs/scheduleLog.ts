@@ -15,4 +15,5 @@ export class ScheduleLog {
   "ProcessingTime": string;
   "RecordProcessed": string;
   "ScheduleStatus": string;
+  "BatchStatus": string;
 }

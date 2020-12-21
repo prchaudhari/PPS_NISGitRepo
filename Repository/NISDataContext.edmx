@@ -1200,6 +1200,7 @@ warning 6002: The table/view 'NIS.NIS.View_ScheduleLog' does not have a primary 
             <PropertyRef Name="ScheduleName" />
             <PropertyRef Name="BatchId" />
             <PropertyRef Name="BatchName" />
+            <PropertyRef Name="BatchStatus" />
             <PropertyRef Name="Status" />
             <PropertyRef Name="ExecutionDate" />
             <PropertyRef Name="TenantCode" />
@@ -1208,6 +1209,7 @@ warning 6002: The table/view 'NIS.NIS.View_ScheduleLog' does not have a primary 
           <Property Name="ScheduleName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
           <Property Name="BatchName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="BatchStatus" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ProcessingTime" Type="varchar" MaxLength="28" />
           <Property Name="RecordProccessed" Type="varchar" MaxLength="63" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -1580,6 +1582,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_ScheduleLog].[ScheduleName] AS [ScheduleName], 
     [View_ScheduleLog].[BatchId] AS [BatchId], 
     [View_ScheduleLog].[BatchName] AS [BatchName], 
+    [View_ScheduleLog].[BatchStatus] AS [BatchStatus], 
     [View_ScheduleLog].[ProcessingTime] AS [ProcessingTime], 
     [View_ScheduleLog].[RecordProccessed] AS [RecordProccessed], 
     [View_ScheduleLog].[Status] AS [Status], 
@@ -3059,6 +3062,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             <PropertyRef Name="ScheduleName" />
             <PropertyRef Name="BatchId" />
             <PropertyRef Name="BatchName" />
+            <PropertyRef Name="BatchStatus" />
             <PropertyRef Name="Status" />
             <PropertyRef Name="ExecutionDate" />
             <PropertyRef Name="TenantCode" />
@@ -3067,6 +3071,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BatchId" Type="Int64" Nullable="false" />
           <Property Name="BatchName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="BatchStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ProcessingTime" Type="String" MaxLength="28" FixedLength="false" Unicode="false" />
           <Property Name="RecordProccessed" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4411,6 +4416,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="RecordProccessed" ColumnName="RecordProccessed" />
                 <ScalarProperty Name="ProcessingTime" ColumnName="ProcessingTime" />
+                <ScalarProperty Name="BatchStatus" ColumnName="BatchStatus" />
                 <ScalarProperty Name="BatchName" ColumnName="BatchName" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />

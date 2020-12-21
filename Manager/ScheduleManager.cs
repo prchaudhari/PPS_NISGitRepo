@@ -407,6 +407,7 @@ namespace nIS
         #endregion
 
         #region Batch master
+        
         /// <summary>
         /// This method will call get schedules method of repository.
         /// </summary>
@@ -428,6 +429,43 @@ namespace nIS
             }
             return batchMasters;
         }
+
+        /// <summary>
+        /// This method helps to approve batch of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.ApproveScheduleBatch(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to clean batch and related data of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool CleanScheduleBatch(long BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.CleanScheduleBatch(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #endregion

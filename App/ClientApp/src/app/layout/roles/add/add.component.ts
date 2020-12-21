@@ -303,6 +303,12 @@ export class AddComponent implements OnInit {
     },
     {
       "EntityName": "Schedule Management",
+      "Operation": "Approval Workflow",
+      "RelatedOperation": ["View"],
+      "OtherDependentEntity": ["Log"]
+    },
+    {
+      "EntityName": "Schedule Management",
       "Operation": "View",
       "RelatedOperation": [],
       "OtherDependentEntity": []
@@ -691,6 +697,9 @@ export class AddComponent implements OnInit {
                   else if (opt.Operation == "View" && operation.Operation == "Publish") {
                     opt.IsDisabled = false;
                   }
+                  else if (opt.Operation == "View" && operation.Operation == "Approval Workflow") {
+                    opt.IsDisabled = false;
+                  }
                 }
               }
             });
@@ -821,6 +830,9 @@ export class AddComponent implements OnInit {
                         opt.IsDisabled = false;
                       }
                       else if (opt.Operation == "View" && operation.Operation == "Publish") {
+                        opt.IsDisabled = false;
+                      }
+                      else if (opt.Operation == "View" && operation.Operation == "Approval Workflow") {
                         opt.IsDisabled = false;
                       }
                       else if (opt.Operation == "View" && operation.Operation == "Delete") {
@@ -981,6 +993,9 @@ export class AddComponent implements OnInit {
                   }
                 }
                 else if (opt.Operation == "View" && operation.Operation == "Reset Password") {
+                  opt.IsDisabled = false;
+                }
+                else if (opt.Operation == "View" && operation.Operation == "Approval Workflow") {
                   opt.IsDisabled = false;
                 }
               }

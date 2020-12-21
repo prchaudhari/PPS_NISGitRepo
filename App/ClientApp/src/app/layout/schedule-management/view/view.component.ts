@@ -28,7 +28,7 @@ export class ViewComponent implements OnInit {
   public isCollapsedDetails: boolean = false;
   public isCollapsedBatch: boolean = true;
   public IsBatchDetailsGet = false;
-  displayedColumns: string[] = ['id', 'BatchName', 'IsExecuted', 'IsDataReady', 'DataExtractionDate', 'BatchExecutionDate','Actions'];
+  displayedColumns: string[] = ['id', 'BatchName', 'IsExecuted', 'IsDataReady', 'DataExtractionDate', 'BatchExecutionDate', 'BatchStatus', 'Actions'];
   dataSource = new MatTableDataSource<any>();
   public pageSize = 5;
   public currentPage = 0;
@@ -250,6 +250,7 @@ export class ViewComponent implements OnInit {
 
   public batchmasterList: any = [];
   public baseURL: string = AppSettings.baseURL;
+
   async getBatchMaster() {
     this.isCollapsedBatch = !this.isCollapsedBatch;
     if (this.IsBatchDetailsGet == false) {
@@ -308,13 +309,13 @@ export class ViewComponent implements OnInit {
       this.sortedscheduleList = data;
       return;
     }
-    // ['id', 'BatchName', 'IsExecuted', 'IsDataReady', 'DataExtractionDate', 'BatchExecutionDate', 'Actions'];
 
     this.sortedscheduleList = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'id': return compare(a.Identifier, b.Identifier, isAsc);
         case 'BatchName': return compareStr(a.BatchName, b.BatchName, isAsc);
+        case 'BatchStatus': return compareStr(a.Status, b.Status, isAsc);
         case 'IsExecuted': return compareStr(a.IsExecuted, b.IsExecuted, isAsc);
         case 'IsDataReady': return compareStr(a.IsDataReady, b.IsDataReady, isAsc);
         case 'DataExtractionDate': return compareDate(a.DataExtractionDate, b.DataExtractionDate, isAsc);
@@ -328,6 +329,42 @@ export class ViewComponent implements OnInit {
     this.totalSize = this.array.length;
     this.iterator();
   }
+
+  ApproveBatch(batch: any) {
+    let message = 'Are you sure, you want to approve this batch?';
+    if (batch.Status == 'Failed') {
+      message = "You cannot able to generate failed customer's statements once batch is approved. " + message;
+    }
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+        let result = await this.scheduleService.ApproveBatch(batch.Identifier);
+        if (result) {
+          let messageString = "Batch approved successfully";
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          this.isCollapsedBatch = !this.isCollapsedBatch;
+          this.IsBatchDetailsGet = false;
+          this.getBatchMaster();
+        }
+      }
+    });
+  }
+
+  CleanBatch(batch: any) {
+    let message = 'Are you sure, you want to clean for this batch?';
+    this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
+      if (isConfirmed) {
+        let result = await this.scheduleService.CleanBatch(batch.Identifier);
+        if (result) {
+          let messageString = "Batch data cleaned successfully";
+          this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
+          this.isCollapsedBatch = !this.isCollapsedBatch;
+          this.IsBatchDetailsGet = false;
+          this.getBatchMaster();
+        }
+      }
+    });
+  }
+
 }
 
 function compare(a: number, b: number, isAsc: boolean) {

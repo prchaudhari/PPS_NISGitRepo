@@ -18,6 +18,7 @@ namespace nIS
         public string ScheduleName { get; set; }
         public long BatchId { get; set; }
         public string BatchName { get; set; }
+        public string BatchStatus { get; set; }
         public string ProcessingTime { get; set; }
         public string RecordProccessed { get; set; }
         public string Status { get; set; }

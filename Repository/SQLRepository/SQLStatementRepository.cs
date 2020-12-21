@@ -2714,25 +2714,6 @@ namespace nIS
                                         JObject searchParameter = new JObject();
                                         searchParameter["BatchId"] = batchMaster.Id;
                                         searchParameter["CustomerId"] = customer.Id;
-                                        if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
-                                        {
-                                            var tenantEntity = tenantEntities.Where(item => item.Identifier == dynawidget.EntityId)?.ToList()?.FirstOrDefault();
-                                            if (tenantEntity != null && tenantEntity.Name == "Account Transaction")
-                                            {
-                                                searchParameter["AccountType"] = page.PageTypeName;
-                                            }
-
-                                            //send account id value to this property when account master data fetching
-                                            if (tenantEntity != null && tenantEntity.Name == "Account Balalnce")
-                                            {
-                                                searchParameter["Identifier"] = accountId;
-                                            }
-                                            //send account id value to this property when account transaction data fetching
-                                            else
-                                            {
-                                                searchParameter["AccountId"] = accountId;
-                                            }
-                                        }
                                         searchParameter["WidgetFilterSetting"] = dynawidget.WidgetFilterSettings;
 
                                         if (dynawidget.WidgetType == HtmlConstants.TABLE_DYNAMICWIDGET)

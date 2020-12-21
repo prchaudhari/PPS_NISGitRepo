@@ -69,5 +69,10 @@ namespace nIS
         /// The schedule run status
         /// </summary>
         public string ScheduleStatus { get; set; }
+
+        /// <summary>
+        /// The Batch status
+        /// </summary>
+        public string BatchStatus { get; set; }
     }
 }

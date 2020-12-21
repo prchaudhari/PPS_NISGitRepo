@@ -153,6 +153,7 @@ namespace nIS
                         log.ProcessingTime = scheduleLogRecords[i].ProcessingTime;
                         log.RecordProcessed = scheduleLogRecords[i].RecordProccessed;
                         log.ScheduleStatus = scheduleLogRecords[i].Status;
+                        log.BatchStatus = scheduleLogRecords[i].BatchStatus;
                         log.ScheduleName = scheduleLogRecords[i].ScheduleName;
                         log.BatchId = scheduleLogRecords[i].BatchId;
                         log.BatchName = scheduleLogRecords[i].BatchName;

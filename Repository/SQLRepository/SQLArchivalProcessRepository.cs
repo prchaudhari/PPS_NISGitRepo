@@ -114,86 +114,97 @@ namespace nIS
                                 if (res.GroupedStatementMetadataRecords.Count > 0)
                                 {
                                     tenantCode = res.GroupedStatementMetadataRecords.FirstOrDefault().TenantCode;
-                                    StatementSearchParameter statementSearchParameter = new StatementSearchParameter
+                                    var scheduleLogId = res.GroupedStatementMetadataRecords.FirstOrDefault().ScheduleLogId;
+                                    var schedulelog = new ScheduleLogRecord();
+                                    var batchmaster = new BatchMasterRecord();
+                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                     {
-                                        Identifier = res.StatementId,
-                                        IsActive = true,
-                                        IsStatementPagesRequired = true,
-                                        PagingParameter = new PagingParameter
-                                        {
-                                            PageIndex = 0,
-                                            PageSize = 0,
-                                        },
-                                        SortParameter = new SortParameter()
-                                        {
-                                            SortOrder = SortOrder.Ascending,
-                                            SortColumn = "Name",
-                                        },
-                                        SearchMode = SearchMode.Equals
-                                    };
-                                    var statements = this.statementRepository.GetStatements(statementSearchParameter, tenantCode);
-                                    if (statements.Count > 0)
+                                        schedulelog = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogId && item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                                        batchmaster = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == schedulelog.BatchId && item.TenantCode == tenantCode).ToList()?.FirstOrDefault();
+                                    }
+
+                                    //if batch is present and it's status is approved then only statement metadata should be archived.
+                                    if (batchmaster != null && batchmaster.Status == BatchStatus.Approved.ToString())
                                     {
-                                        statement = statements.FirstOrDefault();
-                                        statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
-                                        customerIds = res.GroupedStatementMetadataRecords.Select(item => item.CustomerId).Distinct().ToList();
-
-                                        //To insert archive schedule log record
-                                        var scheduleLogArchiveRecord = new ScheduleLogArchiveRecord();
-                                        var schedulelog = new ScheduleLogRecord();
-                                        var tempmetadata = res.GroupedStatementMetadataRecords.FirstOrDefault();
-                                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                        StatementSearchParameter statementSearchParameter = new StatementSearchParameter
                                         {
-                                            schedulelog = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.ScheduleId == tempmetadata.ScheduleId && item.Id == tempmetadata.ScheduleLogId && item.TenantCode == tempmetadata.TenantCode).ToList().FirstOrDefault();
-                                            
-                                            scheduleLogArchiveRecord.ScheduleId = schedulelog.ScheduleId;
-                                            scheduleLogArchiveRecord.ScheduleName = schedulelog.ScheduleName;
-                                            scheduleLogArchiveRecord.LogCreationDate = schedulelog.CreationDate;
-                                            scheduleLogArchiveRecord.LogFilePath = schedulelog.LogFilePath;
-                                            scheduleLogArchiveRecord.NumberOfRetry = schedulelog.NumberOfRetry;
-                                            scheduleLogArchiveRecord.Status = schedulelog.Status;
-                                            scheduleLogArchiveRecord.TenantCode = schedulelog.TenantCode;
-                                            scheduleLogArchiveRecord.ArchivalDate = DateTime.UtcNow;
-                                            nISEntitiesDataContext.ScheduleLogArchiveRecords.Add(scheduleLogArchiveRecord);
-                                            nISEntitiesDataContext.SaveChanges();
-                                        }
-
-                                        if (customerIds.Count > 0)
-                                        {
-                                            //customerIds.ForEach(customerid =>
-                                            //{
-                                            //    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                            //    {
-                                            //        customerRecord = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == customerid && item.TenantCode == tenantCode).ToList().FirstOrDefault();
-                                            //        statementmetadatarecord = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.CustomerId == customerid && item.TenantCode == tenantCode && item.StatementId == statement.Identifier).ToList().FirstOrDefault();
-                                            //    }
-                                            //    if (customerRecord != null && statementmetadatarecord != null)
-                                            //    {
-                                            //        this.RunArchivalForIndivualRecord(statement, statementmetadatarecord, customerRecord, statementPageContents, tenantConfiguration, pdfStatementFilepath, htmlStatementFilepath, client, tenantCode, scheduleLogArchiveRecord, schedulelog);
-                                            //    }
-                                            //});
-
-                                            ParallelOptions parallelOptions = new ParallelOptions();
-                                            parallelOptions.MaxDegreeOfParallelism = ParallelThreadCount;
-                                            Parallel.ForEach(customerIds, parallelOptions, customerid =>
+                                            Identifier = res.StatementId,
+                                            IsActive = true,
+                                            IsStatementPagesRequired = true,
+                                            PagingParameter = new PagingParameter
                                             {
+                                                PageIndex = 0,
+                                                PageSize = 0,
+                                            },
+                                            SortParameter = new SortParameter()
+                                            {
+                                                SortOrder = SortOrder.Ascending,
+                                                SortColumn = "Name",
+                                            },
+                                            SearchMode = SearchMode.Equals
+                                        };
+                                        var statements = this.statementRepository.GetStatements(statementSearchParameter, tenantCode);
+                                        if (statements.Count > 0)
+                                        {
+                                            statement = statements.FirstOrDefault();
+                                            statementPageContents = this.statementRepository.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                                            customerIds = res.GroupedStatementMetadataRecords.Select(item => item.CustomerId).Distinct().ToList();
+
+                                            //To insert archive schedule log record
+                                            var scheduleLogArchiveRecord = new ScheduleLogArchiveRecord();
+                                            var tempmetadata = res.GroupedStatementMetadataRecords.FirstOrDefault();
+                                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                            {
+                                                scheduleLogArchiveRecord.ScheduleId = schedulelog.ScheduleId;
+                                                scheduleLogArchiveRecord.ScheduleName = schedulelog.ScheduleName;
+                                                scheduleLogArchiveRecord.LogCreationDate = schedulelog.CreationDate;
+                                                scheduleLogArchiveRecord.LogFilePath = schedulelog.LogFilePath;
+                                                scheduleLogArchiveRecord.NumberOfRetry = schedulelog.NumberOfRetry;
+                                                scheduleLogArchiveRecord.Status = schedulelog.Status;
+                                                scheduleLogArchiveRecord.TenantCode = schedulelog.TenantCode;
+                                                scheduleLogArchiveRecord.ArchivalDate = DateTime.UtcNow;
+                                                nISEntitiesDataContext.ScheduleLogArchiveRecords.Add(scheduleLogArchiveRecord);
+                                                nISEntitiesDataContext.SaveChanges();
+                                            }
+
+                                            if (customerIds.Count > 0)
+                                            {
+                                                //customerIds.ForEach(customerid =>
+                                                //{
+                                                //    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                                //    {
+                                                //        customerRecord = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == customerid && item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                                                //        statementmetadatarecord = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.CustomerId == customerid && item.TenantCode == tenantCode && item.StatementId == statement.Identifier).ToList().FirstOrDefault();
+                                                //    }
+                                                //    if (customerRecord != null && statementmetadatarecord != null)
+                                                //    {
+                                                //        this.RunArchivalForIndivualRecord(statement, statementmetadatarecord, customerRecord, statementPageContents, tenantConfiguration, pdfStatementFilepath, htmlStatementFilepath, client, tenantCode, scheduleLogArchiveRecord, schedulelog);
+                                                //    }
+                                                //});
+
+                                                ParallelOptions parallelOptions = new ParallelOptions();
+                                                parallelOptions.MaxDegreeOfParallelism = ParallelThreadCount;
+                                                Parallel.ForEach(customerIds, parallelOptions, customerid =>
+                                                {
+                                                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                                    {
+                                                        customerRecord = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == customerid && item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                                                        statementmetadatarecord = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.CustomerId == customerid && item.TenantCode == tenantCode && item.StatementId == statement.Identifier).ToList().FirstOrDefault();
+                                                    }
+                                                    if (customerRecord != null && statementmetadatarecord != null)
+                                                    {
+                                                        this.RunArchivalForIndivualRecord(statement, statementmetadatarecord, customerRecord, statementPageContents, tenantConfiguration, pdfStatementFilepath, htmlStatementFilepath, client, tenantCode, scheduleLogArchiveRecord, schedulelog);
+                                                    }
+                                                });
+
                                                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                                 {
-                                                    customerRecord = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == customerid && item.TenantCode == tenantCode).ToList().FirstOrDefault();
-                                                    statementmetadatarecord = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.CustomerId == customerid && item.TenantCode == tenantCode && item.StatementId == statement.Identifier).ToList().FirstOrDefault();
+                                                    batchmaster.Status = BatchStatus.Archived.ToString();
+                                                    nISEntitiesDataContext.ScheduleLogRecords.Remove(schedulelog);
+                                                    nISEntitiesDataContext.SaveChanges();
                                                 }
-                                                if (customerRecord != null && statementmetadatarecord != null)
-                                                {
-                                                    this.RunArchivalForIndivualRecord(statement, statementmetadatarecord, customerRecord, statementPageContents, tenantConfiguration, pdfStatementFilepath, htmlStatementFilepath, client, tenantCode, scheduleLogArchiveRecord, schedulelog);
-                                                }
-                                            });
+                                            }
                                         }
-
-                                        //using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                        //{
-                                        //    nISEntitiesDataContext.ScheduleLogRecords.Remove(schedulelog);
-                                        //    nISEntitiesDataContext.SaveChanges();
-                                        //}
                                     }
                                 }
                             });

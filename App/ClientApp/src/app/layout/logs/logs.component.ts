@@ -314,13 +314,14 @@ export class LogsComponent implements OnInit {
 
   }
 
-  navigationLogDetails(template: ScheduleLog) {
+  navigationLogDetails(log: ScheduleLog) {
     let queryParams = {
       Routeparams: {
         passingparams: {
-          "SchdeuleName": template.ScheduleName,
-          "SchdeuleLogIdetifiier": template.Identifier,
-          "ExecutionDate": template.CreateDate,
+          "SchdeuleName": log.ScheduleName,
+          "SchdeuleLogIdetifiier": log.Identifier,
+          "ExecutionDate": log.CreateDate,
+          "BatchStatus": log.BatchStatus
         }
       }
     }
@@ -328,7 +329,7 @@ export class LogsComponent implements OnInit {
     this.route.navigate(['../logsDetails']);
   }
 
-  //function written to delete role
+  //function written to retry to generate HTML statements for failed customer records
   reTryLog(log: ScheduleLog) {
     let message = 'Are you sure, you want to run this schedule?';
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {

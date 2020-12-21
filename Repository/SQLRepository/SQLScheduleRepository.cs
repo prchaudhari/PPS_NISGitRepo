@@ -1432,6 +1432,7 @@ namespace nIS
                     {
                         batch.Status = BatchStatus.Approved.ToString();
                     });
+
                     nISEntitiesDataContext.SaveChanges();
                     return true;
                 }
@@ -1451,17 +1452,71 @@ namespace nIS
         public bool CleanScheduleBatch(long BatchIdentifier, string tenantCode)
         {
             bool result = false;
+            var HtmlFilePath = string.Empty;
+            long BatchId = 0;
+
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     var batch = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode)?.ToList().FirstOrDefault();
-                    //batch.Status = BatchStatus.New.ToString();
+                    if (batch != null)
+                    {
+                        BatchId = batch.Id;
 
-                    var scheduleLog = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.TenantCode == tenantCode).ToList().FirstOrDefault();
-                    var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == scheduleLog.Id && item.TenantCode == tenantCode).ToList();
-                    nISEntitiesDataContext.SaveChanges();
+                        //update batch status as NEW and IsExecuted flag to false to available it for re-run
+                        batch.Status = BatchStatus.New.ToString();
+                        batch.IsExecuted = false;
+
+                        //get schedule log
+                        var scheduleLogs = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.BatchId == batch.Id && item.TenantCode == tenantCode).ToList();
+                        scheduleLogs.ForEach(log =>
+                        {
+                            //get and delete schedule log details
+                            var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
+                            nISEntitiesDataContext.ScheduleLogDetailRecords.RemoveRange(schedulelogdetails);
+
+                            //get and delete schedule run history
+                            var scheduleRunHistories = nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
+                            HtmlFilePath = scheduleRunHistories[0].FilePath;
+
+                            nISEntitiesDataContext.ScheduleRunHistoryRecords.RemoveRange(scheduleRunHistories);
+
+                            //get and delete statement metadata
+                            var statementMetadatas = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
+                            nISEntitiesDataContext.StatementMetadataRecords.RemoveRange(statementMetadatas);
+                        });
+
+                        //delete schedule log
+                        nISEntitiesDataContext.ScheduleLogRecords.RemoveRange(scheduleLogs);
+                        
+                        //to save all above delete records in database
+                        nISEntitiesDataContext.SaveChanges();
+                        result = true;
+                    }
+                }
+
+                if (result && BatchId != 0 && HtmlFilePath != string.Empty)
+                {
+                    //get HTML statements and other related files directory path
+                    var filePathArr = HtmlFilePath.Split('\\').ToList();
+                    var HtmlFilesDir = new StringBuilder();
+                    for (int i = 0; i < filePathArr.Count; i++)
+                    {
+                        HtmlFilesDir = HtmlFilesDir.Append((HtmlFilesDir.ToString() != string.Empty ? "\\" : "") + filePathArr[i]);
+                        if (filePathArr[i].Equals("" + BatchId))
+                        {
+                            break;
+                        }
+                    }
+
+                    //delete all HTML statements and other related files directory from pyshical path
+                    DirectoryInfo directoryInfo = new DirectoryInfo(HtmlFilesDir.ToString());
+                    if (directoryInfo.Exists)
+                    {
+                        directoryInfo.Delete(true);
+                    }
                 }
             }
             catch (Exception ex)
