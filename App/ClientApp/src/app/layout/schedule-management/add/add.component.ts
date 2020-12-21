@@ -146,6 +146,10 @@ export class AddComponent implements OnInit {
       this.isCustom = false;
       this.isNoEndDate = false;
 
+      if (this.isEndDate == false && this.isEndAfter == false && RecurrancePatternVal != 'DoesNotRepeat') {
+        this.isEndDate = true;
+      }
+
       if(this.isEndDate == true) {
         setTimeout(() => {
           $('#enddate').prop('checked', true);
@@ -181,9 +185,11 @@ export class AddComponent implements OnInit {
       }else {
         this.isNoEndDate = true;
         this.ScheduleOccuranceMessage = '';
+        this.monthlyWarningMessage = '';
       }
-    }else {
+    } else {
       this.ScheduleOccuranceMessage = '';
+      this.monthlyWarningMessage = '';
     }
   }
 
@@ -285,6 +291,7 @@ export class AddComponent implements OnInit {
   }
 
   setScheduleOccuranceMessage() {
+    this.monthlyWarningMessage = '';
     var dt = new Date(this.scheduleStartDate);
     var dayOfMonth = this.schedule.DayOfMonth == undefined || this.schedule.DayOfMonth == 0 ? dt.getDate() : this.schedule.DayOfMonth;
     var ssd = new Date(dt.getFullYear(), dt.getMonth(), dayOfMonth);
@@ -292,8 +299,9 @@ export class AddComponent implements OnInit {
     var schedulestartdte = ssd.toLocaleDateString();
     var dte = this.scheduleOccuranceDay != 0 ? this.scheduleOccuranceDay : ssd.getDate();
     var month = this.scheduleOccuranceMonth != '' ? this.scheduleOccuranceMonth : this.monthArray[ssd.getMonth()];
+    let RecurrancePatternVal = this.scheduleForm.value.RecurrancePattern != null ? this.scheduleForm.value.RecurrancePattern : '';
 
-    if(this.schedule.RecurrancePattern == 'DoesNotRepeat') {
+    if (RecurrancePatternVal == 'DoesNotRepeat') {
       this.ScheduleOccuranceMessage = 'Occurs once on ' + schedulestartdte;
     }else {
       let scheduleRunUtilMessage = '';
@@ -352,6 +360,9 @@ export class AddComponent implements OnInit {
           occurance = repeatEvery+' months on day '+dte;
         }
         this.scheduleForm.get('CustomMonthDay').setValue(dte);
+        if (this.scheduleForm.value.CustomMonthDay >= 29) {
+          this.monthlyWarningMessage = 'Some of the months have fewer days so schedule will be executed on the last day of month.';
+        }
       }
       else if(repeatEveryByVal == 'Year') {
         if(repeatEvery == 1) {
@@ -361,6 +372,9 @@ export class AddComponent implements OnInit {
         }
         this.scheduleForm.get('CustomYearDay').setValue(dte);
         this.scheduleForm.get('CustomYearMonth').setValue(month);
+        if (this.scheduleForm.value.CustomYearDay >= 29) {
+          this.monthlyWarningMessage = 'Some of the months have fewer days so schedule will be executed on the last day of month.';
+        }
       }
       this.ScheduleOccuranceMessage = 'Occurs every '+occurance+' starting ' + schedulestartdte + scheduleRunUtilMessage;
     }
@@ -846,12 +860,12 @@ export class AddComponent implements OnInit {
       }
     }
 
-    if(this.isEndAfter != null && this.isEndAfter == true) {
+    if (this.isEndAfter != null && this.isEndAfter == true && this.schedule.RecurrancePattern != 'DoesNotRepeat') {
       this.schedule.IsEndsAfterNoOfOccurrences = this.isEndAfter;
       this.schedule.NoOfOccurrences = this.scheduleForm.value.scheduleEndAfterNoOccurences;
     }
 
-    this.schedule.EndDate = this.isEndDate ? this.scheduleForm.value.filtershiftenddate : null;
+    this.schedule.EndDate = this.isEndDate && this.schedule.RecurrancePattern != 'DoesNotRepeat' ? this.scheduleForm.value.filtershiftenddate : null;
     //console.log(this.schedule);
 
     let pageArray = [];
