@@ -1,36 +1,50 @@
 <div class="account-maincontainer">
   <div class="container text-center">
-      <div class="row">
-          <div class="col-sm-12 account-heading">
-              <h3>Select Tenant </h3>
-              <h6> Please choose from the below options </h6>
-          </div>
-      </div>
-      <div class="row">
-          <div class="col-sm-12">
-              <div class="account-container" *ngFor='let tenant of tenants'>
-                  <div class="account-innercontainer" (click)='onTenantSelect(tenant)'>
-                      <div class="account-logo">
-                          <div *ngIf="tenant.TenantImage!=null && tenant.TenantImage!=''">
-                            <img [src]="tenant.TenantImage"/>
-                          </div>
-                          <div *ngIf="tenant.TenantImage==null || tenant.TenantImage==''">
-                            <div class="account-img">
-                              <span>{{tenant.TenantName.charAt(0) | titlecase}}</span>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="account-title-box">
-                        <div class="account-title text-wrap"> {{tenant.TenantName}} </div>
-                      </div>
-                  </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12">
+        <div class="account-container">
+          <div class="account-innercontainer">
+            <div class="account-logo">
+              <div class="account-img">
+                <span>TG</span>
+                <!--<img [src]="tenant.TenantImage" *ngIf="tenant.TenantImage!=null && tenant.TenantImage!=''" />-->
               </div>
+            </div>
+            <div class="account-title-box">
+              <div class="account-title text-wrap"> Parent</div>
+            </div>
           </div>
+        </div>
       </div>
-      <div class="row">
-          <div class="col-sm-12 footer-row">
-              <button type="button" class=" btn btn-default" (click)='onCancelTenantSelection()'>  Cancel </button>
+    </div>
+    <div class="row form-group">
+      <div class="col-sm-12 account-heading">
+        <h5 class="mb-0">Select Tenant </h5>
+        <p> Please choose from the below options </p>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-sm-12">
+        <div class="account-container" *ngFor='let tenant of tenants'>
+          <div class="account-innercontainer" (click)='onTenantSelect(tenant)'>
+            <div class="account-logo">
+              <div class="account-img">
+                <span *ngIf="tenant.TenantImage==null || tenant.TenantImage==''">{{tenant.TenantName.charAt(0) | titlecase}}</span>
+                <img [src]="tenant.TenantImage" *ngIf="tenant.TenantImage!=null && tenant.TenantImage!=''" />
+              </div>
+            </div>
+            <div class="account-title-box">
+              <div class="account-title text-wrap"> {{tenant.TenantName}} </div>
+            </div>
           </div>
+        </div>
       </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 footer-row">
+        <button type="button" class=" btn btn-default" (click)='onCancelTenantSelection()'>  Cancel </button>
+      </div>
+    </div>
   </div>
 </div>

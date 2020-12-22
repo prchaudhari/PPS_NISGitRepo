@@ -1,5 +1,116 @@
 
 .site {
+  /*tenant start*/
+  .account-maincontainer {
+    width: 100%;
+    display: inline-block;
+   padding:15px;
+  }
+
+  .account-container {
+    width: 18%;
+    display: inline-block;
+    height: 160px;
+    margin: 5px 5px;
+  }
+
+  .account-innercontainer {
+    width: 100%;
+    height: 100%;
+    float: left;
+    background-color: #fff;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: solid thin rgba(22,30,38,0.2);
+    cursor: pointer;
+    box-shadow: 0px 0px 3px rgba(0,0,0,.10);
+    -moz-box-shadow: 0px 0px 3px rgba(0,0,0,.10);
+    padding:10px;
+  }
+
+  .active-account {
+    color: rgb(0,145,226);
+    border-color: rgb(0,145,226);
+  }
+
+  .selected-account {
+    border-color: rgb(0,145,226);
+  }
+
+  .account-inactive {
+    color: rgba(0,0,0,0.4);
+    border-color: rgba(0,0,0,0.1);
+    cursor: default !important;
+  }
+
+  .account-inactive .account-title {
+    color: rgba(0,0,0,0.4) !important;
+  }
+
+  .account-logo {
+    width: 100%;
+    text-align: center;
+    height: 80px;
+    display: inline-block;
+  }
+
+  .account-logo img {
+    width: 100%;
+    height: auto;
+  }
+
+  .account-title-box {
+    width: 100%;
+    height: auto;
+    display: inline-block;
+  }
+
+  .account-title {
+    width: 100%;
+    display: inline-block;
+    font-size: 14px;
+    color: rgba(0,0,0,0.9);
+    font-family: 'Roboto', sans-serif;
+    margin-top: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0px 8px;
+  }
+
+  .account-title-box p {
+    font-size: 14px;
+  }
+
+  /*.account-heading h5 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+  }*/
+
+  .account-heading p {
+    color: rgba(0,0,0,0.8);
+    font-size: 14px;
+  /*  font-family: 'Roboto', sans-serif;
+    font-weight: 400;*/
+  }
+
+  .account-img {
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid thin #e1e1e1;
+    font-size: 40px;
+    border-radius: 50%;
+    background: #e6e6e6;
+    color: #696868;
+    text-transform: uppercase;
+    overflow: hidden;
+    padding: 15px;
+  }
+  /*tenent end*/
   .ftr-vrsn {
     position: fixed;
     bottom: 0;
@@ -12,9 +123,9 @@
     line-height: 25px;
   }
 
-  .clr-box{
-      width:40px;
-      height:30px;
+  .clr-box {
+    width: 40px;
+    height: 30px;
   }
   /*html editor start*/
   .html {
