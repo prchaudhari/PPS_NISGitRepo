@@ -26,6 +26,7 @@ namespace nIS
         public string TenantImage { get; set; }
         public string TenantType { get; set; }
 
+        public bool IsSubscriptionExpire { get; set; }
         public DateTime LastDateOfSubscription
         {
             get;

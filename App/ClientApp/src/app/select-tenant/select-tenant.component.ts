@@ -61,11 +61,7 @@ export class SelectTenantComponent implements OnInit {
       tenantcode = this.DefaultTenantCode == undefined ? '00000000-0000-0000-0000-000000000000' : this.DefaultTenantCode;
     }
     if (tenant.TenantType == "Tenant") {
-      if (!tenant.IsSubscriptionPresent) {
-       
-        this._messageDialogService.openDialogBox('Error', "Tenant subscription is not available, please contact Admin.", Constants.msgBoxError);
-        this.onCancelTenantSelection();
-      }
+     
       if (tenant.IsSubscriptionExpire) {
         this._messageDialogService.openDialogBox('Error', "Tenant subscription is expired, please contact Admin.", Constants.msgBoxError);
         this.onCancelTenantSelection();

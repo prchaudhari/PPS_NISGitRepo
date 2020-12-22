@@ -40,6 +40,11 @@ namespace nIS
         /// The tenant configuration manager object
         /// </summary>
         private TenantConfigurationManager TenantConfigurationManager = null;
+
+        /// <summary>
+        /// The crypto manager
+        /// </summary>
+        private readonly ICryptoManager cryptoManager;
         #endregion
 
         #region Constructor
@@ -57,6 +62,7 @@ namespace nIS
                 this.multiTenantUserRoleAccessRepository = this.unityContainer.Resolve<IMultiTenantUserRoleAccessRepository>();
                 this.validationEngine = new ValidationEngine();
                 this.TenantConfigurationManager = new TenantConfigurationManager(this.unityContainer);
+                this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
 
             }
             catch (Exception ex)
@@ -273,7 +279,14 @@ namespace nIS
                 {
                     if (item.TenantType == "Tenant")
                     {
-                        item.LastDateOfSubscription = this.TenantConfigurationManager.GetTenantSubscription(tenantCode).SubscriptionEndDate;
+                        TenantSubscription tenantSubscription = new TenantSubscription();
+                        tenantSubscription = this.TenantConfigurationManager.GetTenantSubscription(item.TenantCode);
+                        string decryptedText = this.cryptoManager.Decrypt(tenantSubscription.SubscriptionKey);
+                        DateTime subscriptionDate = Convert.ToDateTime(decryptedText);
+                        if (subscriptionDate <= DateTime.UtcNow)
+                        {
+                            item.IsSubscriptionExpire = true;
+                        }
                     }
                 });
                 return userTenants;
