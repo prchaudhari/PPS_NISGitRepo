@@ -1748,10 +1748,13 @@ namespace nIS
                     if (customerCount == logDetailsRecords.Count)
                     {
                         var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+                        var batchStatus = BatchStatus.Completed.ToString();
+
                         var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
                         if (failedRecords != null && failedRecords.Count > 0)
                         {
                             scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+                            batchStatus = BatchStatus.Failed.ToString();
                         }
                         nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLog.Id).ToList().ForEach(item => item.Status = scheduleLogStatus);
                         nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == scheduleLog.Id).ToList().ForEach(item => item.EndDate = DateTime.UtcNow);
@@ -1759,9 +1762,10 @@ namespace nIS
                         nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == scheduleLog.ScheduleId).ToList().ForEach(item => item.Status = ScheduleStatus.Completed.ToString());
                         nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == batchMaster.Id).ToList().ForEach(item =>
                         {
-                            item.Status = BatchStatus.Completed.ToString();
+                            item.Status = batchStatus;
                             item.IsExecuted = true;
                         });
+
                         nISEntitiesDataContext.SaveChanges();
                     }
                 }

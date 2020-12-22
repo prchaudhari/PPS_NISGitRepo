@@ -702,7 +702,8 @@ namespace nIS
                         PageHeaderContent = it.PageHeaderContent,
                         PageFooterContent = it.PageFooterContent,
                         DisplayName = it.DisplayName,
-                        TabClassName = it.TabClassName
+                        TabClassName = it.TabClassName,
+                        DynamicWidgets = it.DynamicWidgets
                     }));
 
                     var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
@@ -721,9 +722,9 @@ namespace nIS
                             {
                                 scheduleLogDetailRecord.CustomerId = customerMaster.Id;
                                 scheduleLogDetailRecord.CustomerName = customerMaster.FirstName.Trim() + (customerMaster.MiddleName == string.Empty ? string.Empty : " " + customerMaster.MiddleName.Trim()) + " " + customerMaster.LastName.Trim();
-                                scheduleLogDetailRecord.RenderEngineId = renderEngine.Id; //To be change once render engine implmentation start
-                                scheduleLogDetailRecord.RenderEngineName = renderEngine.Name;
-                                scheduleLogDetailRecord.RenderEngineURL = renderEngine.URL;
+                                scheduleLogDetailRecord.RenderEngineId = renderEngine != null ? renderEngine.Id : 0; //To be change once render engine implmentation start
+                                scheduleLogDetailRecord.RenderEngineName = renderEngine != null ? renderEngine.Name : "";
+                                scheduleLogDetailRecord.RenderEngineURL = renderEngine != null ? renderEngine.URL : "";
                                 scheduleLogDetailRecord.LogMessage = logDetailRecord.LogMessage;
                                 scheduleLogDetailRecord.Status = logDetailRecord.Status;
                                 scheduleLogDetailRecord.NumberOfRetry++;
@@ -744,17 +745,30 @@ namespace nIS
                                     });
                                 }
 
-                                nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId && item.TenantCode == tenantCode)?.ToList().ForEach(scheduleLog =>
+                                var schedulelogs = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId && item.TenantCode == tenantCode)?.ToList();
+
+                                schedulelogs.ForEach(scheduleLog =>
                                 {
+                                    //get batch master record
+                                    var batchmaster = nISEntitiesDataContext.BatchMasterRecords.Where(it => it.Id == scheduleLog.BatchId && it.TenantCode == scheduleLog.TenantCode).ToList().FirstOrDefault();
+
+                                    //get total no. of schedule log details for current schedule log
                                     var _lstScheduleLogDetail = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == scheduleLogDetail.ScheduleLogId && item.ScheduleId == scheduleLogDetail.ScheduleId && item.TenantCode == tenantCode).ToList();
+                                    
+                                    //get no of success schedule log details of current schedule log
                                     var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString() && item.TenantCode == tenantCode)?.ToList();
+
+                                    //check success schedule log details count is equal to total no. of schedule log details for current schedule log
+                                    //if equals then update schedule log and batch status as completed otherwise failed
                                     if (successRecords != null && successRecords.Count == _lstScheduleLogDetail.Count)
                                     {
                                         scheduleLog.Status = ScheduleLogStatus.Completed.ToString();
+                                        batchmaster.Status = BatchStatus.Completed.ToString();
                                     }
                                     else
                                     {
                                         scheduleLog.Status = ScheduleLogStatus.Failed.ToString();
+                                        batchmaster.Status = BatchStatus.Failed.ToString();
                                     }
                                 });
 
