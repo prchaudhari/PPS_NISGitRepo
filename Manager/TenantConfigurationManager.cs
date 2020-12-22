@@ -11,6 +11,7 @@ namespace nIS
     using System.Collections.Generic;
     using System.Linq;
     using Unity;
+    using Websym.Core.TenantManager;
 
     #endregion
 
@@ -31,6 +32,15 @@ namespace nIS
         /// </summary>
         ITenantConfigurationRepository tenantConfigurationRepository = null;
 
+        /// <summary>
+        /// The utility object
+        /// </summary>
+        private IConfigurationUtility configurationUtility = null;
+
+        /// <summary>
+        /// The crypto manager
+        /// </summary>
+        private readonly ICryptoManager cryptoManager;
 
         #endregion
 
@@ -46,6 +56,8 @@ namespace nIS
             try
             {
                 this.unityContainer = unityContainer;
+                this.configurationUtility = new ConfigurationUtility(this.unityContainer);
+                this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
                 this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
             }
             catch (Exception ex)
@@ -76,6 +88,72 @@ namespace nIS
                 throw exception;
             }
         }
+
+        /// <summary>
+        /// This method is used to get tenant configuration
+        /// </summary>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        public IList<TenantSubscription> GetTenantSubscriptions(ClientSearchParameter clientSearchParameter, string tenantCode)
+        {
+            try
+            {
+                IList<TenantSubscription> tenantSubscriptions = new List<TenantSubscription>();
+
+                tenantSubscriptions = this.tenantConfigurationRepository.GetTenantSubscriptions(tenantCode);
+                TenantSearchParameter tenantSearchParameter = new TenantSearchParameter();
+                tenantSearchParameter.SortingParameter = new Websym.Core.TenantManager.SortParameter();
+                tenantSearchParameter.SortingParameter.SortColumn = "TenantCode";
+                tenantSearchParameter.TenantType = "Tenant";
+                tenantSearchParameter.IsActive = true;
+                tenantSearchParameter.ParentTenantCode = clientSearchParameter.ParentTenantCode;
+                var tenants = this.configurationUtility.GetTenant(tenantSearchParameter);
+                IList<TenantSubscription> newTenantSubscriptions = new List<TenantSubscription>();
+                tenants.ToList().ForEach(item =>
+                {
+                    TenantSubscription tenantSubscription = new TenantSubscription();
+                    tenantSubscription.TenantCode = new Guid(item.TenantCode);
+                    tenantSubscription.TenantName = item.TenantName;
+                    var data = tenantSubscriptions.Where(i => i.TenantCode.ToString() == item.TenantCode).ToList();
+                    if (data.Count > 0)
+                    {
+                        tenantSubscription.SubscriptionEndDate = data[0].SubscriptionEndDate;
+                        tenantSubscription.SubscriptionStartDate = data[0].SubscriptionStartDate;
+                        tenantSubscription.SubscriptionKey = data[0].SubscriptionKey;
+                    }
+                    newTenantSubscriptions.Add(tenantSubscription);
+                });
+
+                return newTenantSubscriptions;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        /// <summary>
+        /// This method is used to get tenant configuration
+        /// </summary>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        public TenantSubscription GetTenantSubscription(string tenantCode)
+        {
+            try
+            {
+                TenantSubscription tenantSubscriptions = new TenantSubscription();
+
+                tenantSubscriptions = this.tenantConfigurationRepository.GetTenantSubscription(tenantCode);
+
+                return tenantSubscriptions;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+
         /// <summary>
         /// This method will call add save tenant configuration method of repository.
         /// </summary>
@@ -102,6 +180,27 @@ namespace nIS
             try
             {
                 this.IsValidTenantSubscription(tenantSubscriptions, tenantCode);
+                Guid guid = new Guid();
+                tenantSubscriptions.ToList().ForEach(item =>
+                {
+                    //var bytes = BitConverter.GetBytes(item.SubscriptionEndDate.Ticks);
+                    //Array.Resize(ref bytes, 16);
+                    //guid = new Guid(bytes);
+                    //item.SubscriptionKey = guid.ToString();
+
+                    string encryptedText = this.cryptoManager.Encrypt(item.SubscriptionEndDate.ToString());
+                    item.SubscriptionKey = encryptedText;
+                    //string decryptedText= this.cryptoManager.Decrypt(encryptedText);
+
+
+                });
+                ////var dateBytes = guid.ToByteArray();
+
+                ////Array.Resize(ref dateBytes, 8);
+
+                ////var date = new DateTime((long)BitConverter.ToUInt64(dateBytes, 0));
+
+
                 return tenantConfigurationRepository.AddTenantSubscriptions(tenantSubscriptions, tenantCode);
             }
             catch (Exception ex)

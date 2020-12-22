@@ -25,5 +25,11 @@ namespace nIS
         public long RoleId { get; set; }
         public string TenantImage { get; set; }
         public string TenantType { get; set; }
+
+        public DateTime LastDateOfSubscription
+        {
+            get;
+            set;
+        }
     }
 }

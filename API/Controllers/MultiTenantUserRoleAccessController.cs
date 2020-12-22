@@ -25,7 +25,7 @@ namespace nIS
     /// This class represent api controller for multi-tenant user role access
     /// </summary>
     [RoutePrefix("MultiTenantUserRoleAccess")]
-    public class MultiTenantUserRoleAccessController: ApiController
+    public class MultiTenantUserRoleAccessController : ApiController
     {
         #region Private Members
 
@@ -229,7 +229,11 @@ namespace nIS
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                return this.multiTenantUserRoleAccessManager.GetUserTenants(userId, tenantCode);
+                IList<UserTenant> userTenants = new List<UserTenant>();
+                userTenants = this.multiTenantUserRoleAccessManager.GetUserTenants(userId, tenantCode);
+
+                return userTenants;
+
             }
             catch (Exception ex)
             {

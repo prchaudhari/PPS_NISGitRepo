@@ -36,6 +36,10 @@ namespace nIS
         /// </summary>
         IValidationEngine validationEngine = null;
 
+        /// <summary>
+        /// The tenant configuration manager object
+        /// </summary>
+        private TenantConfigurationManager TenantConfigurationManager = null;
         #endregion
 
         #region Constructor
@@ -52,6 +56,8 @@ namespace nIS
                 this.unityContainer = unityContainer;
                 this.multiTenantUserRoleAccessRepository = this.unityContainer.Resolve<IMultiTenantUserRoleAccessRepository>();
                 this.validationEngine = new ValidationEngine();
+                this.TenantConfigurationManager = new TenantConfigurationManager(this.unityContainer);
+
             }
             catch (Exception ex)
             {
@@ -78,7 +84,7 @@ namespace nIS
                 this.IsValidMultiTenantUserRoleAccessList(lstMultiTenantUserRoleAccess, tenantCode);
                 return this.multiTenantUserRoleAccessRepository.AddMultiTenantUserRoleAccess(lstMultiTenantUserRoleAccess, tenantCode);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -261,7 +267,16 @@ namespace nIS
         {
             try
             {
-                return this.multiTenantUserRoleAccessRepository.GetUserTenants(userId, tenantCode);
+                IList<UserTenant> userTenants = new List<UserTenant>();
+                userTenants = this.multiTenantUserRoleAccessRepository.GetUserTenants(userId, tenantCode);
+                userTenants.ToList().ForEach(item =>
+                {
+                    if (item.TenantType == "Tenant")
+                    {
+                        item.LastDateOfSubscription = this.TenantConfigurationManager.GetTenantSubscription(tenantCode).SubscriptionEndDate;
+                    }
+                });
+                return userTenants;
             }
             catch (Exception ex)
             {

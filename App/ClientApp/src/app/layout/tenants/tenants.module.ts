@@ -10,11 +10,12 @@ import { AddComponent } from './add/add.component';
 import { SharedModule } from '../../shared/modules/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 @NgModule({
   declarations: [ListComponent, ViewComponent, AddComponent],
   imports: [
     CommonModule,
-    TenantsRoutingModule, FormsModule, ReactiveFormsModule,MatSortModule, MatTableModule, MatPaginatorModule, SharedModule, NgbModule
+    TenantsRoutingModule, OwlDateTimeModule, OwlNativeDateTimeModule, FormsModule, ReactiveFormsModule, MatSortModule, MatTableModule, MatPaginatorModule, SharedModule, NgbModule
   ]
 })
 export class TenantsModule { }

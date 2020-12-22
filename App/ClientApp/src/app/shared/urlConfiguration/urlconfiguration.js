@@ -176,6 +176,24 @@ var URLConfiguration = /** @class */ (function () {
         configurable: true
     });
     ;
+    Object.defineProperty(URLConfiguration, "tenantSubscriptionGetUrl", {
+        get: function () { return "TenantConfiguration/GetTenantSubscription"; },
+        enumerable: false,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(URLConfiguration, "tenantSubscriptionsGetUrl", {
+        get: function () { return "TenantConfiguration/GetTenantSubscriptions"; },
+        enumerable: false,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(URLConfiguration, "tenantSubscriptionAddUrl", {
+        get: function () { return "TenantConfiguration/AddTenantSubscriptions"; },
+        enumerable: false,
+        configurable: true
+    });
+    ;
     Object.defineProperty(URLConfiguration, "userGetUrl", {
         //User Url Method
         get: function () { return "User/List"; },

@@ -15,6 +15,7 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 export class TenantService {
   //public variables
   public tenantsList;
+  public tenantSubscriptionList;
   public profileList;
   public designationList;
   public languageList;
@@ -69,6 +70,46 @@ export class TenantService {
     return response;
   }
 
+  public async getTenantSubscriptions(searchParameter): Promise<any> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.tenantSubscriptionsGetUrl;
+    this.uiLoader.start();
+    var response: any = {};
+    await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          if (httpEvent["status"] === 200) {
+            this.tenantSubscriptionList = [];
+            this.uiLoader.stop();
+            if (httpEvent['body'] != null) {
+              httpEvent['body'].forEach(tenantObject => {
+                this.tenantSubscriptionList = [...this.tenantSubscriptionList, tenantObject];
+              });
+              response.List = this.tenantSubscriptionList;
+              response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
+            } else {
+              response.List = this.tenantSubscriptionList;
+              response.RecordCount = 0;
+            }
+          }
+          else {
+            this.tenantSubscriptionList = [];
+            response.List = this.tenantSubscriptionList;
+            response.RecordCount = 0;
+            this.isRecordFound = false;
+            this.uiLoader.stop();
+          }
+        }
+      }, (error: HttpResponse<any>) => {
+        this.tenantSubscriptionList = [];
+        response.List = this.tenantSubscriptionList;
+        response.RecordCount = 0;
+        this.isRecordFound = false;
+        this.uiLoader.stop();
+      });
+    return response;
+  }
+
   public async getTenantContact(searchParameter): Promise<any> {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.tenantContactGetUrl;
@@ -108,6 +149,7 @@ export class TenantService {
       });
     return response;
   }
+
   //method to call api of delete Tenant.
   public async deleteTenant(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
@@ -131,6 +173,7 @@ export class TenantService {
       });
     return <boolean>this.isRecordDeleted;
   }
+
   //method to call api of delete Tenant.
   public async deleteTenantContact(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
@@ -162,6 +205,30 @@ export class TenantService {
     if (tenantEditModeOn) {
       requestUrl = URLConfiguration.tenantUpdateUrl;
     }
+    this.uiLoader.start();
+    await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+        if (httpEvent.type == HttpEventType.Response) {
+          this.uiLoader.stop();
+          if (httpEvent["status"] === 200) {
+            this.isRecordSaved = true;
+          }
+          else {
+            this.isRecordSaved = false;
+          }
+        }
+      }, (error) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this.isRecordSaved = false;
+        this.uiLoader.stop();
+      });
+    return <boolean>this.isRecordSaved;
+  }
+
+  public async saveTenantSubscription(postData): Promise<boolean> {
+    let httpClientService = this.injector.get(HttpClientService);
+    let requestUrl = URLConfiguration.tenantSubscriptionAddUrl;
+
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {

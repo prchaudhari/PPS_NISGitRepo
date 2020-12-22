@@ -102,6 +102,11 @@ namespace nIS
         /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
 
+        /// <summary>
+        /// The crypto manager
+        /// </summary>
+        private readonly ICryptoManager cryptoManager;
+
         #endregion
 
         #region Constructor
@@ -125,6 +130,8 @@ namespace nIS
             this.tenantContactManager = new TenantContactManager(this.unityContainer);
             this.ContactTypeManager = new ContactTypeManager(this.unityContainer);
             this.TenantConfigurationManager = new TenantConfigurationManager(this.unityContainer);
+            this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
+
         }
 
         #endregion
@@ -197,7 +204,7 @@ namespace nIS
                         PrimaryTenantContact = tenantcontact.ContactNumber;
                         PrimaryTenantCountryCode = tenantcontact.CountryCode;
                     }
-                    else 
+                    else
                     {
                         PrimaryTenantContact = client.TenantContacts.FirstOrDefault().ContactNumber;
                         PrimaryTenantCountryCode = client.TenantContacts.FirstOrDefault().CountryCode;
@@ -296,7 +303,7 @@ namespace nIS
                                 throw new InvalidUserException(tenantCode);
                             }
 
-                            client.TenantContacts.ToList().ForEach(item => 
+                            client.TenantContacts.ToList().ForEach(item =>
                             {
                                 item.ContactNumber = item.ContactNumber != string.Empty ? item.ContactNumber : "0";
                             });
@@ -326,7 +333,16 @@ namespace nIS
                             #endregion
 
                             #region Add Tenant subscription details
-                            
+                            TenantSubscription subscription = new TenantSubscription()
+                            {
+                                TenantCode = new Guid(client.TenantCode),
+                                SubscriptionEndDate = client.TenantSubscriptions.ToList().FirstOrDefault().SubscriptionEndDate,
+                                SubscriptionStartDate = DateTime.UtcNow,
+                            };
+                            IList<TenantSubscription> tenantSubscriptions = new List<TenantSubscription>();
+                            tenantSubscriptions.Add(subscription);
+                            this.TenantConfigurationManager.AddTenantSubscriptions(tenantSubscriptions, client.TenantCode);
+
                             #endregion
                         }
                         if (client.TenantType == "Group")
@@ -718,6 +734,34 @@ namespace nIS
                         client.PrimaryContactNumber = tenant.PrimaryContactNumber;
                         client.ParentTenantCode = tenant.ParentTenantCode;
                         client.IsTenantConfigured = tenant.IsTenantConfigured;
+                        if (clientSearchParameter.IsSubscriptionRequired)
+                        {
+                            if (client.TenantType == "Tenant")
+                            {
+                                TenantSubscription tenantSubscription = new TenantSubscription();
+                                tenantSubscription = this.TenantConfigurationManager.GetTenantSubscription(client.TenantCode);
+                                if (tenantSubscription != null)
+                                {
+                                    client.IsSubscriptionPresent = true;
+                                    client.SubscriptionKey = tenantSubscription.SubscriptionKey;
+                                    if (clientSearchParameter.IsSubscriptionRequired)
+                                    {
+                                        //Guid key = new Guid(client.SubscriptionKey);
+                                        //var dateBytes = key.ToByteArray();
+                                        //Array.Resize(ref dateBytes, 8);
+                                        //var date = new DateTime((long)BitConverter.ToUInt64(dateBytes, 0));
+                                        string decryptedText = this.cryptoManager.Decrypt(client.SubscriptionKey);
+                                        DateTime subscriptionDate = Convert.ToDateTime(decryptedText);
+                                        if (subscriptionDate <= DateTime.UtcNow)
+                                        {
+                                            client.IsSubscriptionExpire = true;
+                                        }
+                                    }
+                                }
+
+                            }
+
+                        }
                         clients.Add(client);
                     });
                 }

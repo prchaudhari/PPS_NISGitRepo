@@ -24,6 +24,7 @@ export class Tenant {
   "TenantLogo": string;
   "TenantContacts": TenantContact[];
   "User": any;
+  "TenantSubscriptions": any[];
 }
 export class Country {
   "Identifier": number;

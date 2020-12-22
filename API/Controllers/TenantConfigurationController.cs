@@ -98,6 +98,53 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method is used to get tenant configuration
+        /// </summary>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public TenantSubscription GetTenantSubscription()
+        {
+            try
+            {
+                TenantSubscription tenantSubscriptions = new TenantSubscription();
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                tenantSubscriptions = this.tenantConfigurationManager.GetTenantSubscription(tenantCode);
+
+                return tenantSubscriptions;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+
+        /// <summary>
+        /// This method is used to get tenant configuration
+        /// </summary>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IList<TenantSubscription> GetTenantSubscriptions(ClientSearchParameter clientSearchParameter)
+        {
+            try
+            {
+                IList<TenantSubscription> tenantSubscriptions = new List<TenantSubscription>();
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+
+                tenantSubscriptions = this.tenantConfigurationManager.GetTenantSubscriptions(clientSearchParameter,tenantCode);
+
+                return tenantSubscriptions;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+
+        /// <summary>
         /// This method helps to get asset libraries list based on the search parameters.
         /// </summary>
         /// <param name="tenantConfigurationSearchParameter"></param>
@@ -105,12 +152,12 @@ namespace nIS
         [HttpPost]
         public bool Save(IList<TenantConfiguration> setting)
         {
-            bool result;  
+            bool result;
             try
             {
 
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                result = this.tenantConfigurationManager.Save(setting[0],tenantCode);
+                result = this.tenantConfigurationManager.Save(setting[0], tenantCode);
             }
             catch (Exception exception)
             {

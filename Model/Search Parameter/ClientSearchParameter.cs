@@ -89,6 +89,11 @@ namespace nIS
         private bool isSubscriptionRequired = false;
 
         /// <summary>
+        /// The  isValidateSubscription
+        /// </summary>
+        private bool isValidateSubscription = false;
+
+        /// <summary>
         /// The  isCountryRequired
         /// </summary>
         private bool isCountryRequired = false;
@@ -197,7 +202,7 @@ namespace nIS
         /// gets or sets the manage type.
         /// </summary>
         [Description("Tenant Type")]
-        public string  TenantType
+        public string TenantType
         {
             get
             {
@@ -325,6 +330,24 @@ namespace nIS
             set
             {
                 this.isSubscriptionRequired = value;
+            }
+        }
+
+
+        /// <summary>
+        /// gets or sets IsSubscriptionRequired mode
+        /// </summary>
+        [Description("IsValidateSubscription")]
+        public bool IsValidateSubscription
+        {
+            get
+            {
+                return this.isValidateSubscription;
+            }
+
+            set
+            {
+                this.isValidateSubscription = value;
             }
         }
 

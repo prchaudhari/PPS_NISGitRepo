@@ -35,7 +35,9 @@ export class URLConfiguration {
   public static get tenantContactUpdate(): string { return "TenantContact/Update" };
   public static get tenantContactDeleteUrl(): string { return "TenantContact/Delete" };
   public static get tenantContactSendActivationUrl(): string { return "TenantContact/SendActivationLink" };
-  
+  public static get tenantSubscriptionGetUrl(): string { return "TenantConfiguration/GetTenantSubscription" };
+  public static get tenantSubscriptionsGetUrl(): string { return "TenantConfiguration/GetTenantSubscriptions" };
+  public static get tenantSubscriptionAddUrl(): string { return "TenantConfiguration/AddTenantSubscriptions" };
   //User Url Method
   public static get userGetUrl(): string { return "User/List" };
   public static get userAddUrl(): string { return "User/Add" };
@@ -155,14 +157,14 @@ export class URLConfiguration {
   //Dashboard Data
   public static get DashboardGetUrl(): string { return "ScheduleLog/Dashboard/Get" };
 
-    //Multi-tenant user role access mapping Url Method
-    public static get multiTenantUserRoleAccessGetUrl(): string { return "MultiTenantUserRoleAccess/List" };
-    public static get multiTenantUserRoleAccessAddUrl(): string { return "MultiTenantUserRoleAccess/Add" };
-    public static get multiTenantUserRoleAccessUpdateUrl(): string { return "MultiTenantUserRoleAccess/Update" };
-    public static get multiTenantUserRoleAccessDeleteUrl(): string { return "MultiTenantUserRoleAccess/Delete" };
-    public static get multiTenantUserRoleAccessActivate(): string { return "MultiTenantUserRoleAccess/Activate" };
-    public static get multiTenantUserRoleAccessDeactivate(): string { return "MultiTenantUserRoleAccess/Deactivate" };
-    public static get getUserTenantRoleMap(): string { return "MultiTenantUserRoleAccess/GetUserTenants" };
-    public static get getParentAndChildTenants(): string { return "MultiTenantUserRoleAccess/GetParentAndChildTenants" };
- 
+  //Multi-tenant user role access mapping Url Method
+  public static get multiTenantUserRoleAccessGetUrl(): string { return "MultiTenantUserRoleAccess/List" };
+  public static get multiTenantUserRoleAccessAddUrl(): string { return "MultiTenantUserRoleAccess/Add" };
+  public static get multiTenantUserRoleAccessUpdateUrl(): string { return "MultiTenantUserRoleAccess/Update" };
+  public static get multiTenantUserRoleAccessDeleteUrl(): string { return "MultiTenantUserRoleAccess/Delete" };
+  public static get multiTenantUserRoleAccessActivate(): string { return "MultiTenantUserRoleAccess/Activate" };
+  public static get multiTenantUserRoleAccessDeactivate(): string { return "MultiTenantUserRoleAccess/Deactivate" };
+  public static get getUserTenantRoleMap(): string { return "MultiTenantUserRoleAccess/GetUserTenants" };
+  public static get getParentAndChildTenants(): string { return "MultiTenantUserRoleAccess/GetParentAndChildTenants" };
+
 }

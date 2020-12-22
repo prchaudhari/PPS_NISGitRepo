@@ -184,6 +184,16 @@ namespace nIS
         private bool isPrimaryTenant = false;
 
         /// <summary>
+        /// The is primary tenant.
+        /// </summary>
+        private bool isSubscriptionExpire = false;
+
+        /// <summary>
+        /// The is primary tenant.
+        /// </summary>
+        private bool isSubscriptionPresent = false;
+
+        /// <summary>
         /// The is manage type
         /// </summary>
         private string manageType = string.Empty;
@@ -232,6 +242,10 @@ namespace nIS
         /// The tenant subscription
         /// </summary>
         private IList<TenantSubscription> tenantSubscriptions = new List<TenantSubscription>();
+
+        private DateTime lastDateOfSubscription = new DateTime();
+
+        private string subscriptionKey = string.Empty;
 
         #endregion
 
@@ -832,6 +846,40 @@ namespace nIS
         }
 
         /// <summary>
+        /// Gets or sets IsSubscriptionExpire
+        /// </summary>
+        [Description("IsSubscriptionExpire")]
+        public bool IsSubscriptionExpire
+        {
+            get
+            {
+                return this.isSubscriptionExpire;
+            }
+
+            set
+            {
+                this.isSubscriptionExpire = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets isSubscriptionPresent
+        /// </summary>
+        [Description("IsSubscriptionPresent")]
+        public bool IsSubscriptionPresent
+        {
+            get
+            {
+                return this.isSubscriptionPresent;
+            }
+
+            set
+            {
+                this.isSubscriptionPresent = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets manage type
         /// </summary>
         [Description("Manage Type")]
@@ -952,6 +1000,40 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// gets or sets the tenant start date.
+        /// </summary>
+        [Description("LastDateOfSubscription")]
+        public DateTime LastDateOfSubscription
+        {
+            get
+            {
+                return this.lastDateOfSubscription;
+            }
+
+            set
+            {
+                this.lastDateOfSubscription = value;
+            }
+        }
+
+        /// <summary>
+        /// gets or sets the tenant start date.
+        /// </summary>
+        [Description("SubscriptionKey")]
+        public string SubscriptionKey
+        {
+            get
+            {
+                return this.subscriptionKey;
+            }
+
+            set
+            {
+                this.subscriptionKey = value;
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -984,8 +1066,8 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("PrimaryPinCode", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDPRIMARYPINCODE);
                 }
-                if (this.tenantSubscriptions.Count > 0)
-                { 
+                if (this.tenantSubscriptions.Count == 0)
+                {
                     exception.Data.Add(this.utility.GetDescription("TenantSubscriptions", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDTENANTSUBSCRIPTION);
 
                 }

@@ -26,6 +26,20 @@ namespace nIS
         IList<TenantConfiguration> GetTenantConfigurations(string tenantCode);
 
         /// <summary>
+        /// This method is used to get tenant configuaration
+        /// </summary>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        IList<TenantSubscription> GetTenantSubscriptions(string tenantCode);
+
+        /// <summary>
+        /// This method is used to get tenant configuaration
+        /// </summary>
+        /// <param name="tenantCode"></param>
+        /// <returns></returns>
+        TenantSubscription GetTenantSubscription(string tenantCode);
+
+        /// <summary>
         /// This method is used to save tenant configuaration
         /// </summary>
         /// <param name="setting"></param>

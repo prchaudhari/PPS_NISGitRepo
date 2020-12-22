@@ -73,7 +73,7 @@ namespace nIS
                     throw new Exception(tenantCode);
                 }
 
-                user = new AuthenticationManager(Container.GetUnityContainer()).UserAuthenticate(context.UserName, context.Password, tenantCode);               
+                user = new AuthenticationManager(Container.GetUnityContainer()).UserAuthenticate(context.UserName, context.Password, tenantCode);
             }
             catch (Exception catchException)
             {
@@ -106,7 +106,8 @@ namespace nIS
                     SortOrder = SortOrder.Ascending,
                     SortColumn = "Id",
                 },
-                SearchMode = SearchMode.Equals
+                SearchMode = SearchMode.Equals,
+                IsSubscriptionRequired = true,
             };
             var lstTenants = new ClientManager(Container.GetUnityContainer()).GetClients(clientSearchParameter, tenantCode);
             var ParentTenentCode = string.Empty;
@@ -118,7 +119,26 @@ namespace nIS
                     context.SetError("invalid_grant", "Tenant on boarding is in process, till then please wait or contact Admin.");
                     return;
                 }
+                if (tenant.TenantType == "Tenant")
+                {
 
+                    //Guid key = new Guid(tenant.SubscriptionKey);
+                    //var dateBytes = key.ToByteArray();
+
+                    //Array.Resize(ref dateBytes, 8);
+
+                    //var date = new DateTime((long)BitConverter.ToUInt64(dateBytes, 0));
+                    if (!tenant.IsSubscriptionPresent)
+                    {
+                        context.SetError("invalid_grant", "Tenant subscription is not available, please contact Admin.");
+                        return;
+                    }
+                    if (tenant.IsSubscriptionExpire)
+                    {
+                        context.SetError("invalid_grant", "Tenant subscription is expired, please contact Admin.");
+                        return;
+                    }
+                }
                 ParentTenentCode = (tenant.ParentTenantCode == null || tenant.ParentTenantCode == string.Empty) ? tenantCode : tenant.ParentTenantCode;
                 if (tenant.TenantType == "Instance" && user.IsInstanceManager)
                 {
@@ -130,7 +150,7 @@ namespace nIS
                     isTenantGroupManager = true;
                     ParentTenentCode = tenant.TenantCode; //Group manager, itself is the parent tenant
                 }
-                
+
             }
 
             if (!isInstanceTenantManager)
@@ -156,7 +176,7 @@ namespace nIS
                 if (lstTenantUserRoleAccess.Count > 0)
                 {
                     isUserHaveMultiTenantAccess = true;
-                }             
+                }
             }
 
             var UserTheme = "Theme0";

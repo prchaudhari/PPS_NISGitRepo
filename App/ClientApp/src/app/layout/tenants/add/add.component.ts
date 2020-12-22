@@ -81,7 +81,9 @@ export class AddComponent implements OnInit {
   get tenantName() {
     return this.tenantFormGroup.get('tenantName');
   }
-
+  get tenantSubscriptionDate() {
+    return this.tenantFormGroup.get('tenantSubscriptionDate');
+  }
   get tenantCountry() {
     return this.tenantFormGroup.get('tenantCountry');
   }
@@ -213,7 +215,7 @@ export class AddComponent implements OnInit {
     this.tenantFormGroup = this.formbuilder.group({
       tenantName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(100)])],
       tenantDescription: ['', Validators.compose([Validators.maxLength(500)])],
-      //tenantDomainName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(100)])],
+      tenantSubscriptionDate: ['', Validators.compose([Validators.required])],
       tenantAddress: ['', Validators.compose([Validators.maxLength(500)])],
       tenantCountry: [0, Validators.compose([Validators.required])],
       tenantState: ['', Validators.compose([Validators.required])],
@@ -367,6 +369,27 @@ export class AddComponent implements OnInit {
 
   navigateToListPage() {
     this._router.navigate(['/tenants']);
+  }
+  public filterSubscriptionDateError: boolean = false;
+  public filterSubscriptionDateErrorMessage: string = "";
+  public filterSubscriptionDateRequiredError: boolean = false;
+
+  onSubscriptionDateSelect(event) {
+    this.filterSubscriptionDateError = false;
+    this.filterSubscriptionDateErrorMessage = "";
+    this.filterSubscriptionDateRequiredError = false;
+
+    if (this.tenantFormGroup.value.tenantSubscriptionDate != null && this.tenantFormGroup.value.tenantSubscriptionDate != '') {
+      var currentDate = new Date();
+      let subscriptionDate = this.tenantFormGroup.value.tenantSubscriptionDate;
+      if (subscriptionDate.getTime() < currentDate.getTime()) {
+        this.filterSubscriptionDateError = true;
+        this.filterSubscriptionDateErrorMessage = "Subscription end date should be greater than current date";
+      }
+    }
+    else {
+      this.filterSubscriptionDateRequiredError = true;
+    }
   }
 
   async BindContacts() {
@@ -676,7 +699,7 @@ export class AddComponent implements OnInit {
     if (this.tenantFormGroup.controls['tenantAddress'].value == '') {
       return true;
     }
-    if(this.tenantCountryCode == 0) {
+    if (this.tenantCountryCode == 0) {
       return true;
     }
     if (this.imageSize > 200000) {
@@ -708,6 +731,10 @@ export class AddComponent implements OnInit {
         this.tenant.TenantContacts = this.contactlist;
         this.tenant.TenantType = "Tenant";
         var userid = localStorage.getItem('UserId');
+        this.tenant.TenantSubscriptions = [];
+        var subscription: any = {};
+        subscription.SubscriptionEndDate = new Date(this.tenantFormGroup.value.tenantSubscriptionDate.setHours(23, 59, 59));
+        this.tenant.TenantSubscriptions.push(subscription);
         this.tenant.User = {};
         this.tenant.User.Identifier = userid;
         var currentUser = this.localstorageservice.GetCurrentUser();

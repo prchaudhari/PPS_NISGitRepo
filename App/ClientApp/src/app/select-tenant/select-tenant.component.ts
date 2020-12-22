@@ -38,7 +38,7 @@ export class SelectTenantComponent implements OnInit {
     this.userData = JSON.parse(localStorage.getItem('userClaims'));
     this.statePrivilegeMap = JSON.parse(localStorage.getItem("StatePrivilegeMap"));
     if (this.userData) {
-      if(this.userData.IsUserHaveMultiTenantAccess == null || this.userData.IsUserHaveMultiTenantAccess.toLocaleLowerCase() != 'true') {
+      if (this.userData.IsUserHaveMultiTenantAccess == null || this.userData.IsUserHaveMultiTenantAccess.toLocaleLowerCase() != 'true') {
         this.onCancelTenantSelection();
       }
       this.getTenants();
@@ -57,8 +57,19 @@ export class SelectTenantComponent implements OnInit {
   async onTenantSelect(tenant: any) {
     this.uiLoader.start();
     let tenantcode = tenant.TenantCode;
-    if(tenant.TenantType == 'Group') {
+    if (tenant.TenantType == 'Group') {
       tenantcode = this.DefaultTenantCode == undefined ? '00000000-0000-0000-0000-000000000000' : this.DefaultTenantCode;
+    }
+    if (tenant.TenantType == "Tenant") {
+      if (!tenant.IsSubscriptionPresent) {
+       
+        this._messageDialogService.openDialogBox('Error', "Tenant subscription is not available, please contact Admin.", Constants.msgBoxError);
+        this.onCancelTenantSelection();
+      }
+      if (tenant.IsSubscriptionExpire) {
+        this._messageDialogService.openDialogBox('Error', "Tenant subscription is expired, please contact Admin.", Constants.msgBoxError);
+        this.onCancelTenantSelection();
+      }
     }
     this.userData.Privileges = await this.getUserRoles(tenant.RoleId, tenantcode);
     if (this.roleDetail.IsActive == false) {
@@ -79,7 +90,7 @@ export class SelectTenantComponent implements OnInit {
         searchParameter.TenantCode = tenantcode;
         let service = this.injector.get(TenantConfigurationService);
         var response: any = await service.getTenantThemeConfigurations(searchParameter);
-        if(response != null && response.length > 0 && response[0].ApplicationTheme != null) {
+        if (response != null && response.length > 0 && response[0].ApplicationTheme != null) {
           UserTheme = response[0].ApplicationTheme;
         }
         var loggedInUser = this.localstorageservice.GetCurrentUser();
@@ -94,9 +105,9 @@ export class SelectTenantComponent implements OnInit {
         this.userData.UserTheme = UserTheme;
         localStorage.setItem('userClaims', JSON.stringify(this.userData));
 
-        if(tenant.TenantType == 'Group') {
+        if (tenant.TenantType == 'Group') {
           this.route.navigate(['tenants']);
-        }else {
+        } else {
           var userClaimsRolePrivilegeOperations = this.userData.Privileges;
           this.handleTheme(this.userData.UserTheme);
           var isFound = false;
@@ -116,7 +127,7 @@ export class SelectTenantComponent implements OnInit {
           }
         }
       }
-    }       
+    }
   }
 
   async getUserRoles(roleIdentifier, TenantCode) {
@@ -161,6 +172,10 @@ export class SelectTenantComponent implements OnInit {
     searchParameter.TenantCode = tenantcode;
     searchParameter.IsCountryRequired = false;
     searchParameter.IsContactRequired = false;
+    searchParameter.IsValidateSubscription = true;
+
+    searchParameter.IsSubscriptionRequired = true;
+
     var response = await tenantService.getTenant(searchParameter);
     let tenant = response.List[0];
     localStorage.setItem('tenantDetails', JSON.stringify(tenant));

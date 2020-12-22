@@ -25,6 +25,11 @@ namespace nIS
         private Guid tenantCode = new Guid();
 
         /// <summary>
+        /// The tenantCode
+        /// </summary>
+        private string tenantName = string.Empty;
+
+        /// <summary>
         /// The subscriptionStartDate
         /// </summary>
         private DateTime subscriptionStartDate = new DateTime();
@@ -33,6 +38,11 @@ namespace nIS
         /// The subscriptionEndtDate
         /// </summary>
         private DateTime subscriptionEndDate = new DateTime();
+
+        /// <summary>
+        /// The subscriptionEndtDate
+        /// </summary>
+        private string subscriptionKey = string.Empty;
 
         /// <summary>
         /// The lastModifiedBy
@@ -81,7 +91,18 @@ namespace nIS
                 this.tenantCode = value;
             }
         }
-
+        [Description("TenantName")]
+        public string TenantName
+        {
+            get
+            {
+                return this.tenantName;
+            }
+            set
+            {
+                this.tenantName = value;
+            }
+        }
         [Description("SubscriptionStartDate")]
         public DateTime SubscriptionStartDate
         {
@@ -121,6 +142,19 @@ namespace nIS
             }
         }
 
+        [Description("SubscriptionKey")]
+        public string SubscriptionKey
+        {
+            get
+            {
+                return this.subscriptionKey;
+            }
+            set
+            {
+                this.subscriptionKey = value;
+            }
+        }
+
         [Description("LastModifiedOn")]
         public DateTime LastModifiedOn
         {
@@ -141,7 +175,7 @@ namespace nIS
 
             if (!this.validationEngine.IsValidDate(this.subscriptionEndDate))
             {
-                exception.Data.Add(this.utility.GetDescription("SubscriptionEndDate", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDDOMAINNAME);
+                exception.Data.Add(this.utility.GetDescription("SubscriptionEndDate", typeof(TenantSubscription)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDDOMAINNAME);
             }
         }
     }
