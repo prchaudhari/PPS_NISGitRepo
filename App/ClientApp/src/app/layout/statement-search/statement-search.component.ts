@@ -11,20 +11,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { StatementSearchService } from './statementsearch.service';
 import { StatementSearch } from './statementsearch';
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpRequest } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { WindowRef } from '../../core/services/window-ref.service';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
-import { ConfigConstants } from '../../shared/constants/configConstants';
 
-export interface ListElement {
-  id: string;
-  date: string;
-  period: string;
-  customer: string;
-  accountId: string;
-  city: string;
-}
 
 @Component({
   selector: 'app-statement-search',
@@ -61,13 +52,15 @@ export class StatementSearchComponent implements OnInit {
   public filterStatementPeriodValue = '';
   public filterStatementDte = null;
   public disablePagination = true;
-  public sortColumn = 'Name';
+  public sortColumn = 'Id';
   public sortOrder = Constants.Ascending;
+  public DataFormat;
+
   closeFilter() {
     this.isFilter = !this.isFilter;
   }
 
-  displayedColumns: string[] = ['customer', 'accountId', 'accounttype', 'date', 'period', 'actions'];
+  displayedColumns: string[] = ['customer', 'batchName', 'accountId', 'accounttype', 'date', 'period', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -91,15 +84,6 @@ export class StatementSearchComponent implements OnInit {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.getStatementSearchs(null);
-    //this.iterator();
-  }
-
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const part = this.array.slice(start, end);
-    this.dataSource = part;
-    this.dataSource.sort = this.sort;
   }
 
   //Getters for Page Forms
@@ -119,28 +103,31 @@ export class StatementSearchComponent implements OnInit {
     return this.StatementSearchFilterForm.get('filterStatementPeriod');
   }
 
-  public DataFormat;
   ngOnInit() {
-    this.DataFormat = localStorage.getItem('DateFormat');
-    //this.getStatementSearchs(null);
-    this.StatementSearchFilterForm = this.fb.group({
-      filterStatementCustomer: [null],
-      filterStatementAccountId: [null],
-      filterStatementDate: [null],
-      filterStatementPeriod: [null],
-    });
-    this.StatementSearchFilterForm.controls['filterStatementCustomer'].setValue(null);
-    this.StatementSearchFilterForm.controls['filterStatementAccountId'].setValue(null);
-    this.StatementSearchFilterForm.controls['filterStatementDate'].setValue(null);
-    this.StatementSearchFilterForm.controls['filterStatementPeriod'].setValue(null);
 
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;
     }
     else {
-      this.userClaimsRolePrivilegeOperations = [];
+      this.localstorageservice.removeLocalStorageData();
+      this.route.navigate(['login']);
     }
+
+    this.DataFormat = localStorage.getItem('DateFormat');
+
+    this.StatementSearchFilterForm = this.fb.group({
+      filterStatementCustomer: [null],
+      filterStatementAccountId: [null],
+      filterStatementDate: [null],
+      filterStatementPeriod: [null],
+    });
+
+    this.StatementSearchFilterForm.controls['filterStatementCustomer'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementAccountId'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementDate'].setValue(null);
+    this.StatementSearchFilterForm.controls['filterStatementPeriod'].setValue(null);
+
   }
 
   sortData(sort: MatSort) {
@@ -155,22 +142,17 @@ export class StatementSearchComponent implements OnInit {
     else {
       this.sortOrder = Constants.Descending;
     }
-    ['customer', 'accountId', 'accounttype', 'date', 'period', 'actions'];
-    if (sort.active == 'customer') {
-      this.sortColumn = 'CustomerName';
+
+    switch (sort.active) {
+      case 'customer': this.sortColumn = "CustomerName"; break;
+      case 'accountId': this.sortColumn = "AccountNumber"; break;
+      case 'date': this.sortColumn = "StatementDate"; break;
+      case 'accounttype': this.sortColumn = "AccountType"; break;
+      case 'period': this.sortColumn = "StatementPeriod"; break;
+      case 'batchName': this.sortColumn = "BatchName"; break;
+      default: this.sortColumn = "Id"; break;
     }
-    else if (sort.active == 'accountId') {
-      this.sortColumn = 'AccountNumber';
-    }
-    else if (sort.active == 'date') {
-      this.sortColumn = 'StatementDate';
-    }
-    else if (sort.active == 'accounttype') {
-      this.sortColumn = 'AccountType';
-    }
-    else if (sort.active == 'period') {
-      this.sortColumn = 'StatementPeriod';
-    }
+
     let searchParameter: any = {};
     searchParameter.PagingParameter = {};
     searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
@@ -207,7 +189,7 @@ export class StatementSearchComponent implements OnInit {
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
       searchParameter.SortParameter = {};
-      searchParameter.SortParameter.SortColumn = 'Id';
+      searchParameter.SortParameter.SortColumn = this.sortColumn;
       searchParameter.SortParameter.SortOrder = Constants.Descending;
       searchParameter.SearchMode = Constants.Contains;
 
@@ -234,7 +216,6 @@ export class StatementSearchComponent implements OnInit {
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
         if (data == true) {
           this.resetSchdeuleLogFilterForm();
-          //this.getStatementSearchs(null);
         }
       });
     }else {
@@ -244,7 +225,6 @@ export class StatementSearchComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.array = this.scheduleLogList;
     this.totalSize = this.totalRecordCount;
-    //this.iterator();
   }
 
   validateFilterDate(): boolean {
@@ -280,7 +260,6 @@ export class StatementSearchComponent implements OnInit {
     this.isFilterDone = true;
     if (searchType == 'reset') {
       this.resetSchdeuleLogFilterForm();
-      //this.getStatementSearchs(null);
       this.scheduleLogList = [];
       this.dataSource = new MatTableDataSource<StatementSearch>(this.scheduleLogList);
       this.dataSource.sort = this.sort;
@@ -408,16 +387,4 @@ export class StatementSearchComponent implements OnInit {
            this.uiLoader.stop();
          });
    }
-}
-
-function compare(a: number, b: number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareStr(a: string, b: string, isAsc: boolean) {
-  return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
-}
-
-function compareDate(a: Date, b: Date, isAsc: boolean) {
-  return (Date.parse("" + a) < Date.parse("" + b) ? -1 : 1) * (isAsc ? 1 : -1);
 }

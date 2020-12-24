@@ -371,6 +371,9 @@
     <Compile Include="View_StatementDefinitionRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="View_StatementMetadataRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="View_UserRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

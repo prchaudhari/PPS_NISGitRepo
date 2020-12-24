@@ -2,6 +2,8 @@
 
 export class StatementSearch {
   "Identifier": number;
+  "BatchId": number;
+  "BatchName": string;
   "ScheduleId": number;
   "ScheduleLogId": number;
   "StatementId": number;

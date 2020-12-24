@@ -1279,6 +1279,36 @@ warning 6002: The table/view 'NIS.NIS.View_StatementDefinition' does not have a 
           <Property Name="OwnerName" Type="nvarchar" MaxLength="201" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_StatementMetadata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_StatementMetadata">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ScheduleId" />
+            <PropertyRef Name="ScheduleLogId" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="AccountNumber" />
+            <PropertyRef Name="AccountType" />
+            <PropertyRef Name="StatementURL" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="BatchId" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="ScheduleLogId" Type="bigint" Nullable="false" />
+          <Property Name="StatementId" Type="bigint" Nullable="false" />
+          <Property Name="StatementDate" Type="datetime" />
+          <Property Name="StatementPeriod" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="500" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StatementURL" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="BatchName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_User">
           <Key>
@@ -1630,6 +1660,24 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_StatementDefinition].[OwnerName] AS [OwnerName]
     FROM [NIS].[View_StatementDefinition] AS [View_StatementDefinition]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="View_StatementMetadata" EntityType="Self.View_StatementMetadata" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_StatementMetadata].[Id] AS [Id], 
+    [View_StatementMetadata].[ScheduleId] AS [ScheduleId], 
+    [View_StatementMetadata].[ScheduleLogId] AS [ScheduleLogId], 
+    [View_StatementMetadata].[StatementId] AS [StatementId], 
+    [View_StatementMetadata].[StatementDate] AS [StatementDate], 
+    [View_StatementMetadata].[StatementPeriod] AS [StatementPeriod], 
+    [View_StatementMetadata].[CustomerId] AS [CustomerId], 
+    [View_StatementMetadata].[CustomerName] AS [CustomerName], 
+    [View_StatementMetadata].[AccountNumber] AS [AccountNumber], 
+    [View_StatementMetadata].[AccountType] AS [AccountType], 
+    [View_StatementMetadata].[StatementURL] AS [StatementURL], 
+    [View_StatementMetadata].[TenantCode] AS [TenantCode], 
+    [View_StatementMetadata].[BatchId] AS [BatchId], 
+    [View_StatementMetadata].[BatchName] AS [BatchName]
+    FROM [NIS].[View_StatementMetadata] AS [View_StatementMetadata]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="View_User" EntityType="Self.View_User" store:Type="Views" store:Schema="NIS">
             <DefiningQuery>SELECT 
     [View_User].[Id] AS [Id], 
@@ -1738,6 +1786,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="ScheduleLogRecords" EntityType="NISModel.ScheduleLogRecord" />
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
           <EntitySet Name="ScheduleLogArchiveRecords" EntityType="NISModel.ScheduleLogArchiveRecord" />
+          <EntitySet Name="View_StatementMetadataRecord" EntityType="NISModel.View_StatementMetadataRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -3082,6 +3131,34 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ArchivalDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="View_StatementMetadataRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ScheduleId" />
+            <PropertyRef Name="ScheduleLogId" />
+            <PropertyRef Name="StatementId" />
+            <PropertyRef Name="CustomerId" />
+            <PropertyRef Name="AccountNumber" />
+            <PropertyRef Name="AccountType" />
+            <PropertyRef Name="StatementURL" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="BatchId" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="ScheduleLogId" Type="Int64" Nullable="false" />
+          <Property Name="StatementId" Type="Int64" Nullable="false" />
+          <Property Name="StatementDate" Type="DateTime" Precision="3" />
+          <Property Name="StatementPeriod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AccountNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatementURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="BatchName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4425,6 +4502,26 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="BatchName" ColumnName="BatchName" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_StatementMetadataRecord">
+            <EntityTypeMapping TypeName="NISModel.View_StatementMetadataRecord">
+              <MappingFragment StoreEntitySet="View_StatementMetadata">
+                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="StatementURL" ColumnName="StatementURL" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="StatementPeriod" ColumnName="StatementPeriod" />
+                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="ScheduleLogId" ColumnName="ScheduleLogId" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

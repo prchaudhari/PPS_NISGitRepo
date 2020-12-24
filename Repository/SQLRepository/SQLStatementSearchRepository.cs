@@ -203,7 +203,7 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(statementSearchParameter, tenantCode);
 
-                IList<StatementMetadataRecord> statementRecords = new List<StatementMetadataRecord>();
+                IList<View_StatementMetadataRecord> statementRecords = new List<View_StatementMetadataRecord>();
                 IList<UserRecord> statementOwnerUserRecords = new List<UserRecord>();
                 IList<UserRecord> statementPublishedUserRecords = new List<UserRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -212,7 +212,7 @@ namespace nIS
                     {
                         if (statementSearchParameter.PagingParameter.PageIndex > 0 && statementSearchParameter.PagingParameter.PageSize > 0)
                         {
-                            statementRecords = nISEntitiesDataContext.StatementMetadataRecords
+                            statementRecords = nISEntitiesDataContext.View_StatementMetadataRecord
                             .OrderBy(statementSearchParameter.SortParameter.SortColumn + " " + statementSearchParameter.SortParameter.SortOrder.ToString())
                             .Skip((statementSearchParameter.PagingParameter.PageIndex - 1) * statementSearchParameter.PagingParameter.PageSize)
                             .Take(statementSearchParameter.PagingParameter.PageSize)
@@ -220,7 +220,7 @@ namespace nIS
                         }
                         else
                         {
-                            statementRecords = nISEntitiesDataContext.StatementMetadataRecords
+                            statementRecords = nISEntitiesDataContext.View_StatementMetadataRecord
                             .OrderBy(statementSearchParameter.SortParameter.SortColumn + " " + statementSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                             .ToList();
                         }
@@ -229,7 +229,7 @@ namespace nIS
                     {
                         if (statementSearchParameter.PagingParameter.PageIndex > 0 && statementSearchParameter.PagingParameter.PageSize > 0)
                         {
-                            statementRecords = nISEntitiesDataContext.StatementMetadataRecords
+                            statementRecords = nISEntitiesDataContext.View_StatementMetadataRecord
                             .OrderBy(statementSearchParameter.SortParameter.SortColumn + " " + statementSearchParameter.SortParameter.SortOrder.ToString())
                             .Where(whereClause)
                             .Skip((statementSearchParameter.PagingParameter.PageIndex - 1) * statementSearchParameter.PagingParameter.PageSize)
@@ -238,13 +238,12 @@ namespace nIS
                         }
                         else
                         {
-                            statementRecords = nISEntitiesDataContext.StatementMetadataRecords
+                            statementRecords = nISEntitiesDataContext.View_StatementMetadataRecord
                             .Where(whereClause)
                             .OrderBy(statementSearchParameter.SortParameter.SortColumn + " " + statementSearchParameter.SortParameter.SortOrder.ToString().ToLower())
                             .ToList();
                         }
                     }
-                
                 }
 
                 if (statementRecords != null && statementRecords.ToList().Count > 0)
@@ -254,6 +253,8 @@ namespace nIS
                         statements.Add(new StatementSearch
                         {
                             Identifier = statementRecord.Id,
+                            BatchId = statementRecord.BatchId,
+                            BatchName = statementRecord.BatchName,
                             ScheduleId = statementRecord.ScheduleId,
                             ScheduleLogId = statementRecord.ScheduleLogId,
                             StatementId = statementRecord.StatementId,
@@ -268,7 +269,6 @@ namespace nIS
                         });
                     });
                 }
-
             }
             catch (Exception ex)
             {
@@ -1443,10 +1443,6 @@ namespace nIS
                 {
                     queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
                 }
-                if (validationEngine.IsValidText(searchParameter.Name))
-                {
-                    queryString.Append(string.Format("Name.Equals(\"{0}\") and ", searchParameter.Name));
-                }
                 if (validationEngine.IsValidText(searchParameter.StatementCustomer))
                 {
                     queryString.Append(string.Format("CustomerName.Equals(\"{0}\") and ", searchParameter.StatementCustomer));
@@ -1462,10 +1458,6 @@ namespace nIS
             }
             if (searchParameter.SearchMode == SearchMode.Contains)
             {
-                if (validationEngine.IsValidText(searchParameter.Name))
-                {
-                    queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));
-                }
                 if (validationEngine.IsValidText(searchParameter.StatementCustomer))
                 {
                     queryString.Append(string.Format("CustomerName.Contains(\"{0}\") and ", searchParameter.StatementCustomer));
@@ -1483,18 +1475,17 @@ namespace nIS
             {
                 DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementStartDate), DateTimeKind.Utc);
                 DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementEndDate), DateTimeKind.Utc);
-                //DateTime fromDateTime = searchParameter.StatementStartDate;
-                //DateTime toDateTime = searchParameter.StatementEndDate;
-
-                queryString.Append("StatementDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
-                               "and StatementDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+                queryString.Append("StatementDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and StatementDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
+
+            var finalQuery = string.Empty;
             if (queryString.ToString() != string.Empty)
             {
-                queryString.Remove(queryString.Length - 4, 4);
+                int last = queryString.ToString().LastIndexOf("and");
+                finalQuery = queryString.ToString().Substring(0, last);
             }
-            //queryString.Append(string.Format("TenantCode.Equals(\"{0}\") and IsDeleted.Equals(false)", tenantCode));
-            return queryString.ToString();
+
+            return finalQuery;
         }
 
         /// <summary>

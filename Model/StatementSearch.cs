@@ -16,6 +16,8 @@ namespace nIS
     public class StatementSearch
     {
         public long Identifier { get; set; }
+        public long BatchId { get; set; }
+        public string BatchName { get; set; }
         public long ScheduleId { get; set; }
         public long ScheduleLogId { get; set; }
         public long StatementId { get; set; }
