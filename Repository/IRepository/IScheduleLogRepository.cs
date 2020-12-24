@@ -73,5 +73,44 @@ namespace nIS
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>dashboard data object</returns>
         DashboardData GetDashboardData(string tenantCode);
+
+        /// <summary>
+        /// This method adds the specified list of schedule log in the repository.
+        /// </summary>
+        /// <param name="scheduleLogs"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log values are added successfully, false otherwise
+        /// </returns>
+        bool SaveScheduleLog(IList<ScheduleLog> scheduleLogs, string tenantCode);
+
+        /// <summary>
+        /// This method adds the specified list of schedule log detail in the repository.
+        /// </summary>
+        /// <param name="scheduleLogDetails"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log details values are added successfully, false otherwise
+        /// </returns>
+        bool SaveScheduleLogDetails(IList<ScheduleLogDetail> scheduleLogDetails, string tenantCode);
+
+        /// <summary>
+        /// This method adds the specified list of statement metadata in the repository.
+        /// </summary>
+        /// <param name="statementMetadata"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the statement metadata values are added successfully, false otherwise
+        /// </returns>
+        bool SaveStatementMetadata(IList<StatementMetadata> statementMetadata, string tenantCode);
+
+        /// <summary>
+        /// This method helps to update schedule log status.
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        bool UpdateScheduleLogStatus(long ScheduleLogIdentifier, string Status, string tenantCode);
     }
 }

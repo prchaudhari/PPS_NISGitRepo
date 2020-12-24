@@ -19,6 +19,8 @@ import { TenantService } from '../layout/tenants/tenant.service';
 export class SelectTenantComponent implements OnInit {
 
   public tenants: any[] = [];
+  public childTenants: any[] = [];
+  public tenantGroups: any[] = [];
   public roleList: any = [];
   public commonRolePrivileges = [];
   public roleDetail;
@@ -52,6 +54,10 @@ export class SelectTenantComponent implements OnInit {
     let service = this.injector.get(MultiTenantUserAccessMapService);
     var response = await service.GetUserTenantRoleMap(this.userData.UserIdentifier);
     this.tenants = response.List;
+    if (this.tenants.length > 0) {
+      this.childTenants = this.tenants.filter(x => x.TenantType == "Tenant");
+      this.tenantGroups = this.tenants.filter(x => x.TenantType == "Group");
+    }
   }
 
   async onTenantSelect(tenant: any) {

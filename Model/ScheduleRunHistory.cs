@@ -103,6 +103,13 @@ namespace nIS
                 this.filePath = value;
             }
         }
+
+        public long ScheduleLogId { get; set; }
+
+        public long ScheduleId { get; set; }
+
+        public long StatementId { get; set; }
+
         #endregion
 
     }

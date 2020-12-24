@@ -342,6 +342,91 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the batch details.
+        /// </summary>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="StatementIdentifier">The statement id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of batch details
+        /// </returns>
+        public IList<BatchDetail> GetBatchDetails(long BatchIdentifier, long StatementIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GetBatchDetails(BatchIdentifier, StatementIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the customer media details.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="StatementIdentifier">The statement id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer media details
+        /// </returns>
+        public IList<CustomerMedia> GetCustomerMediaList(long CustomerIdentifier, long BatchIdentifier, long StatementIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GetCustomerMediaList(CustomerIdentifier, BatchIdentifier, StatementIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the customer income sources.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer income sources
+        /// </returns>
+        public IList<IncomeSources> GetCustomerIncomeSources(long CustomerIdentifier, long BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GetCustomerIncomeSources(CustomerIdentifier, BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the reminder and recommentations.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of reminder and recommentations
+        /// </returns>
+        public IList<ReminderAndRecommendation> GetReminderAndRecommendation(long CustomerIdentifier, long BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GetReminderAndRecommendation(CustomerIdentifier, BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }

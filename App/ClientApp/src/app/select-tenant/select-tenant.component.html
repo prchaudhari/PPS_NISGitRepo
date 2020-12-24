@@ -1,32 +1,32 @@
 <div class="account-maincontainer">
   <div class="container text-center">
 
-    <div class="row form-group">
+    <div class="row form-group" *ngIf="tenantGroups!=null && tenantGroups.length!=0">
       <div class="col-sm-12">
-        <div class="account-container">
-          <div class="account-innercontainer">
+        <div class="account-container" *ngFor='let group of tenantGroups'>
+          <div class="account-innercontainer" (click)='onTenantSelect(group)'>
             <div class="account-logo">
               <div class="account-img">
-                <span>TG</span>
-                <!--<img [src]="tenant.TenantImage" *ngIf="tenant.TenantImage!=null && tenant.TenantImage!=''" />-->
+                <span *ngIf="group.TenantImage==null || group.TenantImage==''">{{group.TenantName.charAt(0) | titlecase}}</span>
+                <img [src]="group.TenantImage" *ngIf="group.TenantImage!=null && group.TenantImage!=''" />
               </div>
             </div>
             <div class="account-title-box">
-              <div class="account-title text-wrap"> Parent</div>
+              <div class="account-title text-wrap"> {{group.TenantName}} </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row form-group">
+    <div class="row form-group" *ngIf="childTenants!=null && childTenants.length!=0">
       <div class="col-sm-12 account-heading">
         <h5 class="mb-0">Select Tenant </h5>
         <p> Please choose from the below options </p>
       </div>
     </div>
-    <div class="row form-group">
+    <div class="row form-group" *ngIf="childTenants!=null && childTenants.length!=0">
       <div class="col-sm-12">
-        <div class="account-container" *ngFor='let tenant of tenants'>
+        <div class="account-container" *ngFor='let tenant of childTenants'>
           <div class="account-innercontainer" (click)='onTenantSelect(tenant)'>
             <div class="account-logo">
               <div class="account-img">

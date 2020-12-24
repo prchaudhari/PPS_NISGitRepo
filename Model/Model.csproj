@@ -117,6 +117,7 @@
     <Compile Include="ScheduleLogDetailSearchParameter.cs" />
     <Compile Include="ScheduleLogErrorDetail.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
+    <Compile Include="Search Parameter\BatchSearchParameter.cs" />
     <Compile Include="Search Parameter\DashboardReportSearchParameter.cs" />
     <Compile Include="Search Parameter\AssetLibrarySearchParameter.cs" />
     <Compile Include="Search Parameter\AnalyticsSearchParameter.cs" />
@@ -152,10 +153,13 @@
     <Compile Include="TenantContact.cs" />
     <Compile Include="TenantSubscription.cs" />
     <Compile Include="TenantUser.cs" />
+    <Compile Include="TransactionData\BatchDetail.cs" />
     <Compile Include="TransactionData\CustomerMaster.cs" />
+    <Compile Include="TransactionData\CustomerMedia.cs" />
     <Compile Include="TransactionData\DataUsage.cs" />
     <Compile Include="TransactionData\EmailsBySubscription.cs" />
     <Compile Include="TransactionData\MeetingUsage.cs" />
+    <Compile Include="TransactionData\StatementMetadata.cs" />
     <Compile Include="TransactionData\SubscriptionMaster.cs" />
     <Compile Include="TransactionData\SubscriptionSpend.cs" />
     <Compile Include="TransactionData\SubscriptionSummary.cs" />

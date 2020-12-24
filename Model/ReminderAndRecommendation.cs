@@ -13,7 +13,12 @@ namespace nIS
 
     public class ReminderAndRecommendation
     {
+        public long Identifier { get; set; }
+        public long CustomerId { get; set; }
+        public long BatchId { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
         public string Action { get; set; }
+        public string TenantCode { get; set; }
     }
 }

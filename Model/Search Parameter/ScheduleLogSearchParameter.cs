@@ -52,6 +52,8 @@ namespace nIS
         /// </summary>
         public DateTime EndDate { get; set; }
 
+        public string BatchId { get; set; }
+
         /// <summary>
         /// Determines whether this instance of schedule log search parameter is valid.
         /// </summary>

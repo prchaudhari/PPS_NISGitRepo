@@ -151,5 +151,50 @@ namespace nIS
         /// Returns the list of customer account saving and spending trend
         /// </returns>
         IList<SavingTrend> Get_SavingTrend(CustomerAccountSearchParameter accountSearchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the batch details.
+        /// </summary>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="StatementIdentifier">The statement id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of batch details
+        /// </returns>
+        IList<BatchDetail> GetBatchDetails(long BatchIdentifier, long StatementIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method gets the customer media details.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="StatementIdentifier">The statement id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer media details
+        /// </returns>
+        IList<CustomerMedia> GetCustomerMediaList(long CustomerIdentifier, long BatchIdentifier, long StatementIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method gets the customer income sources.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer income sources
+        /// </returns>
+        IList<IncomeSources> GetCustomerIncomeSources(long CustomerIdentifier, long BatchIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method gets the reminder and recommentations.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of reminder and recommentations
+        /// </returns>
+        IList<ReminderAndRecommendation> GetReminderAndRecommendation(long CustomerIdentifier, long BatchIdentifier, string tenantCode);
     }
 }

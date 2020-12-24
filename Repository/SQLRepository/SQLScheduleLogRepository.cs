@@ -506,6 +506,173 @@ namespace nIS
             return dashboardData;
         }
 
+        /// <summary>
+        /// This method adds the specified list of schedule log in the repository.
+        /// </summary>
+        /// <param name="scheduleLogs"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log values are added successfully, false otherwise
+        /// </returns>
+        public bool SaveScheduleLog(IList<ScheduleLog> scheduleLogs, string tenantCode)
+        {
+            bool result = false;
+            var scheduleLogRecords = new List<ScheduleLogRecord>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                scheduleLogs.ToList().ForEach(log =>
+                {
+                    scheduleLogRecords.Add(new ScheduleLogRecord()
+                    {
+                        BatchId = log.BatchId,
+                        BatchName = log.BatchName,
+                        CreationDate = DateTime.Now,
+                        LogFilePath = log.LogFilePath,
+                        NumberOfRetry = log.NumberOfRetry,
+                        ScheduleId = log.ScheduleId,
+                        ScheduleName = log.ScheduleName,
+                        Status = log.ScheduleStatus,
+                        TenantCode = tenantCode
+                    });
+                });
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleLogRecords.AddRange(scheduleLogRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// This method adds the specified list of schedule log detail in the repository.
+        /// </summary>
+        /// <param name="scheduleLogDetails"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log details values are added successfully, false otherwise
+        /// </returns>
+        public bool SaveScheduleLogDetails(IList<ScheduleLogDetail> scheduleLogDetails, string tenantCode)
+        {
+            bool result = false;
+            var scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                scheduleLogDetails.ToList().ForEach(log =>
+                {
+                    scheduleLogDetailRecords.Add(new ScheduleLogDetailRecord()
+                    {
+                        CustomerId = log.CustomerId,
+                        CustomerName = log.CustomerName,
+                        CreationDate = DateTime.Now,
+                        LogMessage = log.LogMessage,
+                        NumberOfRetry = log.NumberOfRetry,
+                        RenderEngineId = log.RenderEngineId,
+                        RenderEngineName = log.RenderEngineName,
+                        RenderEngineURL = log.RenderEngineURL,
+                        ScheduleId = log.ScheduleId,
+                        ScheduleLogId = log.ScheduleLogId,
+                        StatementFilePath = log.StatementFilePath,
+                        Status = log.Status,
+                        TenantCode = tenantCode
+                    });
+                });
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleLogDetailRecords.AddRange(scheduleLogDetailRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// This method adds the specified list of statement metadata in the repository.
+        /// </summary>
+        /// <param name="statementMetadata"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the statement metadata values are added successfully, false otherwise
+        /// </returns>
+        public bool SaveStatementMetadata(IList<StatementMetadata> statementMetadata, string tenantCode)
+        {
+            bool result = false;
+            var StatementMetadataRecords = new List<StatementMetadataRecord>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                statementMetadata.ToList().ForEach(data =>
+                {
+                    StatementMetadataRecords.Add(new StatementMetadataRecord()
+                    {
+                        AccountNumber = data.AccountNumber,
+                        AccountType = data.AccountType,
+                        CustomerId = data.CustomerId,
+                        CustomerName = data.CustomerName,
+                        ScheduleId = data.ScheduleId,
+                        ScheduleLogId = data.ScheduleLogId,
+                        StatementDate = data.StatementDate,
+                        StatementId = data.StatementId,
+                        StatementPeriod = data.StatementPeriod,
+                        StatementURL = data.StatementURL,
+                        TenantCode = tenantCode
+                    });
+                });
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.StatementMetadataRecords.AddRange(StatementMetadataRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// This method helps to update schedule log status.
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool UpdateScheduleLogStatus(long ScheduleLogIdentifier, string Status, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == ScheduleLogIdentifier && item.TenantCode == tenantCode).ToList().ForEach(schedule =>
+                    {
+                        schedule.Status = Status;
+                    });
+                    nISEntitiesDataContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
         #endregion
 
         #region Private Methods
@@ -531,9 +698,9 @@ namespace nIS
                 {
                     queryString.Append("(" + string.Join("or ", logSearchParameter.RenderEngineId.ToString().Split(',').Select(item => string.Format("RenderEngineId.Equals({0}) ", item))) + ") and");
                 }
-                if (validationEngine.IsValidText(logSearchParameter.ScheduleId))
+                if (validationEngine.IsValidText(logSearchParameter.BatchId))
                 {
-                    queryString.Append("(" + string.Join("or ", logSearchParameter.ScheduleId.ToString().Split(',').Select(item => string.Format("ScheduleId.Equals({0}) ", item))) + ") and");
+                    queryString.Append("(" + string.Join("or ", logSearchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and");
                 }
                 if (validationEngine.IsValidText(logSearchParameter.ScheduleStatus))
                 {

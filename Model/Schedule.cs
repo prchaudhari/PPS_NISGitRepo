@@ -64,7 +64,6 @@ namespace nIS
         /// </summary>
         private bool isActive;
 
-
         /// <summary>
         /// the is active flag
         /// </summary>
@@ -317,6 +316,8 @@ namespace nIS
         public Nullable<long> NoOfOccurrences { get; set; }
         public bool IsRecurrancePatternChange { get; set; }
         public int ExecutedBatchCount { get; set; }
+
+        public string TenantCode { get; set; }
         #endregion
 
         #region Public Methods

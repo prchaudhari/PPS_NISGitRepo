@@ -14,6 +14,7 @@ namespace nIS
         New,
         InProgress,
         Completed,
-        BatchDataNotAvailable
+        BatchDataNotAvailable,
+        Failed
     }
 }

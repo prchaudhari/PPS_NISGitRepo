@@ -732,6 +732,170 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the batch details.
+        /// </summary>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="StatementIdentifier">The statement id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of batch details
+        /// </returns>
+        public IList<BatchDetail> GetBatchDetails(long BatchIdentifier, long StatementIdentifier, string tenantCode)
+        {
+            var BatchDetails = new List<BatchDetail>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var batchDetailRecords = nISEntitiesDataContext.BatchDetailRecords.Where(item => item.BatchId == BatchIdentifier && item.StatementId == StatementIdentifier && item.TenantCode == tenantCode).ToList();
+                    batchDetailRecords.ForEach(record =>
+                    {
+                        BatchDetails.Add(new BatchDetail()
+                        {
+                            Identifier = record.Id,
+                            BatchId = record.BatchId,
+                            ImageURL = record.ImageURL,
+                            PageId = record.PageId,
+                            StatementId = record.StatementId,
+                            TenantCode = record.TenantCode,
+                            VideoURL = record.VideoURL,
+                            WidgetId = record.WidgetId
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return BatchDetails;
+        }
+
+        /// <summary>
+        /// This method gets the customer media details.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="StatementIdentifier">The statement id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer media details
+        /// </returns>
+        public IList<CustomerMedia> GetCustomerMediaList(long CustomerIdentifier, long BatchIdentifier, long StatementIdentifier, string tenantCode)
+        {
+            var _lstCustomerMedia = new List<CustomerMedia>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var CustomerMediaRecords = nISEntitiesDataContext.CustomerMediaRecords.Where(item => item.CustomerId == CustomerIdentifier && item.StatementId == StatementIdentifier && item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
+                    CustomerMediaRecords.ForEach(record =>
+                    {
+                        _lstCustomerMedia.Add(new CustomerMedia()
+                        {
+                            Identifier = record.Id,
+                            BatchId = record.BatchId,
+                            ImageURL = record.ImageURL,
+                            PageId = record.PageId,
+                            StatementId = record.StatementId,
+                            TenantCode = record.TenantCode,
+                            VideoURL = record.VideoURL,
+                            WidgetId = record.WidgetId,
+                            CustomerId = record.CustomerId
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return _lstCustomerMedia;
+        }
+
+        /// <summary>
+        /// This method gets the customer income sources.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer income sources
+        /// </returns>
+        public IList<IncomeSources> GetCustomerIncomeSources(long CustomerIdentifier, long BatchIdentifier, string tenantCode)
+        {
+            var incomeSources = new List<IncomeSources>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var IncomeSourceRecords = nISEntitiesDataContext.Top4IncomeSourcesRecord.Where(item => item.CustomerId == CustomerIdentifier && item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
+                    IncomeSourceRecords.ForEach(record =>
+                    {
+                        incomeSources.Add(new IncomeSources()
+                        {
+                            Identifier = record.Id,
+                            BatchId = record.BatchId,
+                            CustomerId = record.CustomerId,
+                            AverageSpend = record.AverageSpend != null ? record.AverageSpend.ToString() : "0",
+                            CurrentSpend = record.CurrentSpend != null ? record.CurrentSpend.ToString() : "0",
+                            Source = record.Source,
+                            TenantCode = record.TenantCode
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return incomeSources;
+        }
+
+        /// <summary>
+        /// This method gets the reminder and recommentations.
+        /// </summary>
+        /// <param name="CustomerIdentifier">The customer id</param>
+        /// <param name="BatchIdentifier">The batch id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of reminder and recommentations
+        /// </returns>
+        public IList<ReminderAndRecommendation> GetReminderAndRecommendation(long CustomerIdentifier, long BatchIdentifier, string tenantCode)
+        {
+            var reminders = new List<ReminderAndRecommendation>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var ReminderREcords = nISEntitiesDataContext.ReminderAndRecommendationRecords.Where(item => item.CustomerId == CustomerIdentifier && item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
+                    ReminderREcords.ForEach(record =>
+                    {
+                        reminders.Add(new ReminderAndRecommendation()
+                        {
+                            Identifier = record.Id,
+                            BatchId = record.BatchId,
+                            CustomerId = record.CustomerId,
+                            Action = record.TargetURL,
+                            Description = record.Description,
+                            TenantCode = record.TenantCode,
+                            Title = record.LabelText
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return reminders;
+        }
+
         #endregion
 
         #region Private Methods

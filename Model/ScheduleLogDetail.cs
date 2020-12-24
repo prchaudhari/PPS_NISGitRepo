@@ -74,5 +74,9 @@ namespace nIS
         /// The Log message
         /// </summary>
         public string LogMessage { get; set; }
+
+        public string StatementFilePath { get; set; }
+
+        public IList<StatementMetadata> statementMetadata { get; set; }
     }
 }

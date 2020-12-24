@@ -436,7 +436,8 @@ namespace nIS
                             MonthOfYear = scheduleRecord.MonthOfYear,
                             IsEndsAfterNoOfOccurrences = scheduleRecord.IsEndsAfterNoOfOccurrences,
                             NoOfOccurrences = scheduleRecord.NoOfOccurrences,
-                            ExecutedBatchCount = scheduleRecord.ExecutedBatchCount ?? 0
+                            ExecutedBatchCount = scheduleRecord.ExecutedBatchCount ?? 0,
+                            TenantCode = scheduleRecord.TenantCode
                         }).ToList();
                     }
                 }
@@ -925,7 +926,10 @@ namespace nIS
                                             }
                                         }
                                     }
-
+                                    else
+                                    {
+                                        throw new StatementNotFoundException(tenantCode);
+                                    }
                                 }
                                 else
                                 {
@@ -1119,6 +1123,35 @@ namespace nIS
             return isScheduleSuccess;
         }
 
+        /// <summary>
+        /// This method helps to update schedule status.
+        /// </summary>
+        /// <param name="SchedulIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool UpdateScheduleStatus(long ScheduleIdentifier, string Status, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleRecords.Where(item => item.Id == ScheduleIdentifier && item.TenantCode == tenantCode).ToList().ForEach(schedule =>
+                    {
+                        schedule.Status = Status;
+                    });
+                    nISEntitiesDataContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
         #endregion
 
         #endregion
@@ -1147,7 +1180,10 @@ namespace nIS
                         StartDate = schedule.StartDate,
                         EndDate = schedule.EndDate,
                         TenantCode = tenantCode,
-                        ScheduleId = schedule.Schedule.Identifier
+                        ScheduleId = schedule.ScheduleId,
+                        FilePath = schedule.StatementFilePath,
+                        ScheduleLogId = schedule.ScheduleLogId,
+                        StatementId = schedule.StatementId,
                     });
                 });
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -1307,6 +1343,34 @@ namespace nIS
             return scheduleCount;
         }
 
+        /// <summary>
+        /// This method helps to update schedule run history end date.
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool UpdateScheduleRunHistoryEndDate(long ScheduleLogIdentifier, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleLogId == ScheduleLogIdentifier && item.TenantCode == tenantCode).ToList().ForEach(schedule =>
+                    {
+                        schedule.EndDate = DateTime.UtcNow;
+                    });
+                    nISEntitiesDataContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
         #endregion
 
         #region Batch master
@@ -1412,6 +1476,50 @@ namespace nIS
                 throw ex;
             }
             return batchMasters;
+        }
+
+        /// <summary>
+        /// This method helps to get batch list in between from date and to date.
+        /// </summary>
+        /// <param name="fromdate"></param>
+        /// <param name="todate"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>return list of batches</returns>
+        public IList<BatchMaster> GetBatches(BatchSearchParameter batchSearchParameter, string tenantCode)
+        {
+            IList<BatchMaster> batches = new List<BatchMaster>();
+            try
+            {
+                var query = new StringBuilder();
+                this.SetAndValidateConnectionString(tenantCode);
+                var whereClause = this.WhereClauseGeneratorBatchMaster(batchSearchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(whereClause).ToList();
+                    batchMasterRecords.ForEach(batch =>
+                    {
+                        batches.Add(new BatchMaster()
+                        {
+                            Identifier = batch.Id,
+                            BatchName = batch.BatchName,
+                            BatchExecutionDate = batch.BatchExecutionDate,
+                            CreatedBy = batch.CreatedBy,
+                            CreatedDate = batch.CreatedDate,
+                            DataExtractionDate = batch.DataExtractionDate,
+                            IsDataReady = batch.IsDataReady,
+                            IsExecuted = batch.IsExecuted,
+                            ScheduleId = batch.ScheduleId,
+                            Status = batch.Status,
+                            TenantCode = batch.TenantCode
+                        });
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return batches;
         }
 
         /// <summary>
@@ -1526,6 +1634,36 @@ namespace nIS
             return result;
         }
 
+        /// <summary>
+        /// This method helps to update batch status.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool UpdateBatchStatus(long BatchIdentifier, string Status, bool IsExecuted, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList().ForEach(batch =>
+                    {
+                        batch.Status = Status;
+                        batch.IsExecuted = IsExecuted;
+                    });
+                    nISEntitiesDataContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
         #endregion
 
         #endregion
@@ -1592,8 +1730,82 @@ namespace nIS
                 queryString.Append("StartDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
                                "and EndDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
-            queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
+
+            var finalQuery = string.Empty;
+            if (tenantCode != ModelConstant.DEFAULT_TENANT_CODE)
+            {
+                queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+                finalQuery = queryString.ToString();
+            }
+            else
+            {
+                int last = queryString.ToString().LastIndexOf("and");
+                finalQuery = queryString.ToString().Substring(0, last);
+            }
+
+            return finalQuery;
+        }
+
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="searchParameter">batch search Parameters</param>
+        /// <returns>
+        /// Returns a string.
+        /// </returns>
+        private string WhereClauseGeneratorBatchMaster(BatchSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+            if (validationEngine.IsValidText(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidText(searchParameter.ScheduleId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.ScheduleId.ToString().Split(',').Select(item => string.Format("ScheduleId.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidText(searchParameter.Status))
+            {
+                queryString.Append(string.Format("Status.Equals(\"{0}\") and ", searchParameter.Status));
+            }
+            if (searchParameter.IsExecuted != null)
+            {
+                queryString.Append(string.Format("IsExecuted.Equals({0}) and ", searchParameter.IsExecuted));
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.FromDate) && !this.validationEngine.IsValidDate(searchParameter.ToDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.FromDate), DateTimeKind.Utc);
+                queryString.Append("BatchExecutionDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.ToDate) && !this.validationEngine.IsValidDate(searchParameter.FromDate))
+            {
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.ToDate), DateTimeKind.Utc);
+                queryString.Append("BatchExecutionDate <= DateTime(" + toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.FromDate) && this.validationEngine.IsValidDate(searchParameter.ToDate))
+            {
+                DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.FromDate), DateTimeKind.Utc);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.ToDate), DateTimeKind.Utc);
+
+                queryString.Append("BatchExecutionDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and BatchExecutionDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
+            }
+
+            var finalQuery = string.Empty;
+            if (tenantCode != ModelConstant.DEFAULT_TENANT_CODE)
+            {
+                queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+                finalQuery = queryString.ToString();
+            }
+            else
+            {
+                int last = queryString.ToString().LastIndexOf("and");
+                finalQuery = queryString.ToString().Substring(0, last);
+            }
+            
+            return finalQuery;
         }
 
         /// <summary>

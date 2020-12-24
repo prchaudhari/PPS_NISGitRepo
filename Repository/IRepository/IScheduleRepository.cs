@@ -3,6 +3,7 @@
 // </copyright>
 // -----------------------------------------------------------------------  
 
+using System;
 using System.Collections.Generic;
 
 namespace nIS
@@ -120,6 +121,15 @@ namespace nIS
         IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
 
         /// <summary>
+        /// This method helps to get batch list in between from date and to date.
+        /// </summary>
+        /// <param name="fromdate"></param>
+        /// <param name="todate"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>return list of batches</returns>
+        IList<BatchMaster> GetBatches(BatchSearchParameter batchSearchParameter, string tenantCode);
+
+        /// <summary>
         /// This method helps to run the schedule now
         /// </summary>
         /// <param name="batchMaster">The batch object</param>
@@ -143,6 +153,32 @@ namespace nIS
         /// <param name="tenantCode"></param>
         /// <returns>True if success, otherwise false</returns>
         bool CleanScheduleBatch(long BatchIdentifier, string tenantCode);
+
+        /// <summary>
+        /// This method helps to update schedule status.
+        /// </summary>
+        /// <param name="SchedulIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        bool UpdateScheduleStatus(long ScheduleIdentifier, string Status, string tenantCode);
+
+        /// <summary>
+        /// This method helps to update batch status.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        bool UpdateBatchStatus(long BatchIdentifier, string Status, bool IsExecuted, string tenantCode);
+
+        /// <summary>
+        /// This method helps to update schedule run history end date.
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        bool UpdateScheduleRunHistoryEndDate(long ScheduleLogIdentifier, string tenantCode);
 
     }
 }
