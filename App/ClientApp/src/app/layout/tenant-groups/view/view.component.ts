@@ -15,7 +15,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, SelectControlValueAcce
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-
+  
 export class ViewComponent implements OnInit {
 
   public isCollapsedDetails: boolean = false;
@@ -47,7 +47,7 @@ export class ViewComponent implements OnInit {
   public isTenantSubscriptionContainer: boolean = false;
 
   displayedColumns: string[] = ['firstName', 'lastName', 'email', 'no', 'actions'];
-  displayedTenantColumns: string[] = ['TenantName', 'SubscriptionEndDate', 'actions'];
+  displayedTenantColumns: string[] = ['TenantName','LastModifiedName','LastModifiedOn', 'SubscriptionEndDate', 'actions'];
   dataSource = new MatTableDataSource<any>();
   dataTenantSource = new MatTableDataSource<any>();
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -234,11 +234,12 @@ export class ViewComponent implements OnInit {
       this.sortedList = data;
       return;
     }
+    // ['TenantName','LastModifiedName','LastModifiedOn', 'SubscriptionEndDate', 
     this.sortedList = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'firstName': return compareStr(a.FirstName, b.FirstName, isAsc);
-        case 'lastName': return compareStr(a.LastName, b.LastName, isAsc);
+        case 'TenantName': return compareStr(a.TenantName, b.TenantName, isAsc);
+        case 'SubscriptionEndDate': return compareStr(a.SubscriptionEndDate, b.SubscriptionEndDate, isAsc);
         case 'email': return compareStr(a.EmailAddress, b.EmailAddress, isAsc);
         case 'no': return compareStr(a.ContactNumber, b.ContactNumber, isAsc);
         default: return 0;
@@ -259,11 +260,12 @@ export class ViewComponent implements OnInit {
     }
     this.sortedTenantList = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
+    
       switch (sort.active) {
         case 'TenantName': return compareStr(a.TenantName, b.TenantName, isAsc);
+        case 'LastModifiedName': return compareStr(a.LastModifiedName, b.LastModifiedName, isAsc);
+        case 'LastModifiedOn': return compareStr(a.LastModifiedOn, b.LastModifiedOn, isAsc);
         case 'SubscriptionEndDate': return compareStr(a.SubscriptionEndDate, b.SubscriptionEndDate, isAsc);
-        case 'email': return compareStr(a.EmailAddress, b.EmailAddress, isAsc);
-        case 'no': return compareStr(a.ContactNumber, b.ContactNumber, isAsc);
         default: return 0;
       };
     });

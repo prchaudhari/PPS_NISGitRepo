@@ -297,6 +297,9 @@ export class AddComponent implements OnInit {
     searchParameter.SearchMode = Constants.Exact;
     searchParameter.TenantCode = this.tenant.TenantCode;
     searchParameter.IsCountryRequired = true;
+    
+    searchParameter.IsSubscriptionRequired = true;
+
     var response = await tenantService.getTenant(searchParameter);
     var tenantList = response.List;
     this.isTenantDetailsLoaded = true;
@@ -314,6 +317,12 @@ export class AddComponent implements OnInit {
     this.tenantFormGroup.controls['tenantState'].setValue(this.tenant.TenantState);
     this.tenantFormGroup.controls['tenantCity'].setValue(this.tenant.TenantState);
     this.tenantFormGroup.controls['tenantPostalCode'].setValue(this.tenant.PrimaryPinCode);
+    if (this.tenant.TenantSubscriptions != null && this.tenant.TenantSubscriptions.length > 0) {
+      this.tenantFormGroup.controls['tenantSubscriptionDate'].setValue(this.tenant.TenantSubscriptions[0].SubscriptionEndDate);
+
+    }
+
+    this.
     this.FirstChar = this.tenant.TenantName.charAt(0);
     this.image = this.tenant.TenantLogo;
   }

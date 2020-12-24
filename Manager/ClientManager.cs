@@ -742,6 +742,8 @@ namespace nIS
                                 tenantSubscription = this.TenantConfigurationManager.GetTenantSubscription(client.TenantCode);
                                 if (tenantSubscription != null)
                                 {
+                                    client.TenantSubscriptions = new List<TenantSubscription>();
+                                    client.TenantSubscriptions.Add(tenantSubscription);
                                     client.IsSubscriptionPresent = true;
                                     client.SubscriptionKey = tenantSubscription.SubscriptionKey;
                                     if (clientSearchParameter.IsSubscriptionRequired)

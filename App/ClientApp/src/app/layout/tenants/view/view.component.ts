@@ -104,6 +104,7 @@ export class ViewComponent implements OnInit {
     searchParameter.TenantCode = this.tenant.TenantCode;
     searchParameter.IsCountryRequired = true;
     searchParameter.IsContactRequired = true;
+    searchParameter.IsSubscriptionRequired = true;
     var response = await tenantService.getTenant(searchParameter);
     this.tenant = response.List[0];
     this.dataSource = new MatTableDataSource<TenantContact>(this.tenant.TenantContacts);
@@ -112,7 +113,9 @@ export class ViewComponent implements OnInit {
     this.totalSize = this.tenant.TenantContacts.length;
   }
 
+  public DataFormat;
   ngOnInit() {
+    this.DataFormat = localStorage.getItem('DateFormat');
     var userClaimsDetail = JSON.parse(localStorage.getItem('userClaims'));
     if (userClaimsDetail) {
       this.userClaimsRolePrivilegeOperations = userClaimsDetail.Privileges;

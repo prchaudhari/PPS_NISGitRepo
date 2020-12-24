@@ -15,6 +15,8 @@ namespace nIS
     using System.Linq.Dynamic;
     using System.Text;
     using Unity;
+    using System.Security.Claims;
+
 
     #endregion
 
@@ -204,6 +206,10 @@ namespace nIS
             bool result = false;
             try
             {
+                int userId;
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+
                 this.SetAndValidateConnectionString(tenantcode);
                 IList<TenantSubscriptionRecord> tenantSubscriptionRecords = new List<TenantSubscriptionRecord>();
                 tenantSubscriptions.ToList().ForEach(item =>
@@ -213,7 +219,7 @@ namespace nIS
                         TenantCode = item.TenantCode,
                         SubscriptionEndDate = item.SubscriptionEndDate,
                         SubscriptionStartDate = DateTime.UtcNow,
-                        LastModifiedBy = item.LastModifiedBy,
+                        LastModifiedBy = userId,
                         LastModifiedOn = DateTime.UtcNow,
                         SubscriptionKey = item.SubscriptionKey
                     });
@@ -246,8 +252,8 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    IList<TenantSubscriptionRecord> tenantConfigurationRecord = new List<TenantSubscriptionRecord>();
-                    var data = nISEntitiesDataContext.TenantSubscriptionRecords.GroupBy(item => item.TenantCode);
+                    IList<View_TenantSubscriptionRecord> tenantConfigurationRecord = new List<View_TenantSubscriptionRecord>();
+                    var data = nISEntitiesDataContext.View_TenantSubscriptionRecord.GroupBy(item => item.TenantCode);
                     var tenantData = data.Select(item => new
                     {
                         TenantCode = item.Key,
@@ -256,6 +262,8 @@ namespace nIS
                         LastModifiedOn = item.OrderByDescending(i => i.LastModifiedOn).ToList().FirstOrDefault().LastModifiedOn,
                         SubscriptionStartDate = item.OrderByDescending(i => i.LastModifiedOn).ToList().FirstOrDefault().SubscriptionStartDate,
                         SubscriptionKey = item.OrderByDescending(i => i.LastModifiedOn).ToList().FirstOrDefault().SubscriptionKey,
+                        LastModifiedName = item.OrderByDescending(i => i.LastModifiedOn).ToList().FirstOrDefault().LastModifiedName,
+
                         list = item.ToList()
                     });
                     foreach (var item in tenantData)
@@ -267,6 +275,7 @@ namespace nIS
                         subscription.SubscriptionKey = item.SubscriptionKey;
                         subscription.LastModifiedBy = item.LastModifiedBy;
                         subscription.LastModifiedOn = item.LastModifiedOn;
+                        subscription.LastModifiedName = item.LastModifiedName;
                         subscription.TenantCode = item.TenantCode;
                         tenantConfigurations.Add(subscription);
                     }
@@ -303,11 +312,11 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    IList<TenantSubscriptionRecord> tenantConfigurationRecord = new List<TenantSubscriptionRecord>();
-                    tenantConfigurationRecord = nISEntitiesDataContext.TenantSubscriptionRecords.Where(item => item.TenantCode.ToString() == tenantCode).OrderByDescending(item => item.LastModifiedOn).ToList();
+                    IList<View_TenantSubscriptionRecord> tenantConfigurationRecord = new List<View_TenantSubscriptionRecord>();
+                    tenantConfigurationRecord = nISEntitiesDataContext.View_TenantSubscriptionRecord.Where(item => item.TenantCode.ToString() == tenantCode).OrderByDescending(item => item.LastModifiedOn).ToList();
                     tenantConfigurations = tenantConfigurationRecord.Select(item => new TenantSubscription
                     {
-                        Identifier = item.Id,
+                        //Identifier = item.Id,
                         SubscriptionEndDate = item.SubscriptionEndDate,
                         SubscriptionStartDate = item.SubscriptionStartDate,
                         LastModifiedBy = item.LastModifiedBy,

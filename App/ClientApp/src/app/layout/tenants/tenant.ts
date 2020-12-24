@@ -25,6 +25,7 @@ export class Tenant {
   "TenantContacts": TenantContact[];
   "User": any;
   "TenantSubscriptions": any[];
+  "SubscriptionEndDate": any;
 }
 export class Country {
   "Identifier": number;

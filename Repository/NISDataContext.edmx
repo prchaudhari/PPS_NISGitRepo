@@ -1309,6 +1309,26 @@ warning 6002: The table/view 'NIS.NIS.View_StatementMetadata' does not have a pr
           <Property Name="BatchName" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.View_TenantSubscription' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_TenantSubscription">
+          <Key>
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="SubscriptionStartDate" />
+            <PropertyRef Name="SubscriptionEndDate" />
+            <PropertyRef Name="SubscriptionKey" />
+            <PropertyRef Name="LastModifiedBy" />
+            <PropertyRef Name="LastModifiedOn" />
+            <PropertyRef Name="LastModifiedName" />
+          </Key>
+          <Property Name="TenantCode" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SubscriptionStartDate" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionEndDate" Type="datetime" Nullable="false" />
+          <Property Name="SubscriptionKey" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="bigint" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastModifiedName" Type="nvarchar" MaxLength="201" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_User">
           <Key>
@@ -1678,6 +1698,17 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_StatementMetadata].[BatchName] AS [BatchName]
     FROM [NIS].[View_StatementMetadata] AS [View_StatementMetadata]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="View_TenantSubscription" EntityType="Self.View_TenantSubscription" store:Type="Views" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [View_TenantSubscription].[TenantCode] AS [TenantCode], 
+    [View_TenantSubscription].[SubscriptionStartDate] AS [SubscriptionStartDate], 
+    [View_TenantSubscription].[SubscriptionEndDate] AS [SubscriptionEndDate], 
+    [View_TenantSubscription].[SubscriptionKey] AS [SubscriptionKey], 
+    [View_TenantSubscription].[LastModifiedBy] AS [LastModifiedBy], 
+    [View_TenantSubscription].[LastModifiedOn] AS [LastModifiedOn], 
+    [View_TenantSubscription].[LastModifiedName] AS [LastModifiedName]
+    FROM [NIS].[View_TenantSubscription] AS [View_TenantSubscription]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="View_User" EntityType="Self.View_User" store:Type="Views" store:Schema="NIS">
             <DefiningQuery>SELECT 
     [View_User].[Id] AS [Id], 
@@ -1787,6 +1818,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
           <EntitySet Name="ScheduleLogArchiveRecords" EntityType="NISModel.ScheduleLogArchiveRecord" />
           <EntitySet Name="View_StatementMetadataRecord" EntityType="NISModel.View_StatementMetadataRecord" />
+          <EntitySet Name="View_TenantSubscriptionRecord" EntityType="NISModel.View_TenantSubscriptionRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -3159,6 +3191,24 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="BatchId" Type="Int64" Nullable="false" />
           <Property Name="BatchName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="View_TenantSubscriptionRecord">
+          <Key>
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="SubscriptionStartDate" />
+            <PropertyRef Name="SubscriptionEndDate" />
+            <PropertyRef Name="SubscriptionKey" />
+            <PropertyRef Name="LastModifiedBy" />
+            <PropertyRef Name="LastModifiedOn" />
+            <PropertyRef Name="LastModifiedName" />
+          </Key>
+          <Property Name="TenantCode" Type="Guid" Nullable="false" />
+          <Property Name="SubscriptionStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscriptionKey" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifiedBy" Type="Int64" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModifiedName" Type="String" Nullable="false" MaxLength="201" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4524,6 +4574,19 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="ScheduleLogId" ColumnName="ScheduleLogId" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_TenantSubscriptionRecord">
+            <EntityTypeMapping TypeName="NISModel.View_TenantSubscriptionRecord">
+              <MappingFragment StoreEntitySet="View_TenantSubscription">
+                <ScalarProperty Name="LastModifiedName" ColumnName="LastModifiedName" />
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="SubscriptionKey" ColumnName="SubscriptionKey" />
+                <ScalarProperty Name="SubscriptionEndDate" ColumnName="SubscriptionEndDate" />
+                <ScalarProperty Name="SubscriptionStartDate" ColumnName="SubscriptionStartDate" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
