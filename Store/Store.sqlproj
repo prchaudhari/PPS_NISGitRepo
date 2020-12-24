@@ -167,6 +167,7 @@
     <Build Include="Configuration Manager\ConfigurationManagerSchema.sql" />
     <None Include="Seed Data Scripts\UserAndRole.sql" />
     <None Include="Seed Data Scripts\TruncateTable.sql" />
+    <None Include="Seed Data Scripts\Views\View_TenantSubscription.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Store.refactorlog" />

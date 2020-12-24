@@ -66,6 +66,7 @@
     <Compile Include="ArchivalProcessManager.cs" />
     <Compile Include="CityManager.cs" />
     <Compile Include="ClientManager.cs" />
+    <Compile Include="PageTypeManager.cs" />
     <Compile Include="ContactTypeManager.cs" />
     <Compile Include="DynamicWidgetManager.cs" />
     <Compile Include="CountryManager.cs" />

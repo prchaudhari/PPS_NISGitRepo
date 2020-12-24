@@ -148,6 +148,7 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="IRepository\IArchivalProcessRepository.cs" />
+    <Compile Include="IRepository\IPageTypeRepository.cs" />
     <Compile Include="IRepository\IContactTypeRepository.cs" />
     <Compile Include="IRepository\IDynamicWidgetRepository.cs" />
     <Compile Include="IRepository\IMultiTenantUserRoleAccessRepository.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="SQLRepository\SQLAzureCityRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureStateRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureTenantUserRepository.cs" />
+    <Compile Include="SQLRepository\SQLPageTypeRepository.cs" />
     <Compile Include="SQLRepository\SQLContactTypeRepository.cs" />
     <Compile Include="SQLRepository\SQLDynamicWidgetRepository.cs" />
     <Compile Include="SQLRepository\SQLCountryRepository.cs" />

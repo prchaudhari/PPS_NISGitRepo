@@ -752,7 +752,7 @@ namespace nIS
                                         //var date = new DateTime((long)BitConverter.ToUInt64(dateBytes, 0));
                                         string decryptedText = this.cryptoManager.Decrypt(client.SubscriptionKey);
                                         DateTime subscriptionDate = Convert.ToDateTime(decryptedText);
-                                        if (subscriptionDate <= DateTime.UtcNow)
+                                        if (subscriptionDate < DateTime.UtcNow)
                                         {
                                             client.IsSubscriptionExpire = true;
                                         }

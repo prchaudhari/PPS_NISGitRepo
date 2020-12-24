@@ -73,5 +73,30 @@ namespace nIS
         /// The country not found exception key
         /// </summary>
         public const string CONTACTTYPE_REFERENCEIN_CONTACT_EXCEPTION = "Contact type is used in tenant contact";
+
+        /// <summary>
+        /// The country exception section key
+        /// </summary>
+        public const string PAGETYPE_EXCEPTION_SECTION = "PageType";
+
+        /// <summary>
+        /// The duplicate country found exception key
+        /// </summary>
+        public const string DUPLICATE_PAGETYPE_FOUND_EXCEPTION = "Duplicate Page type found";
+
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        public const string PAGETYPE_NOT_FOUND_EXCEPTION = "Page type not found exception";
+
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        public const string INVALID_PAGETYPE_EXCEPTION = "Invalid page type exception";
+
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        public const string PAGETYPE_REFERENCEIN_PAGE_EXCEPTION = "Page type is used in tenant contact";
     }
 }

@@ -50,6 +50,11 @@ namespace nIS
         private long lastModifiedBy;
 
         /// <summary>
+        /// The lastModifiedBy
+        /// </summary>
+        private string lastModifiedByName;
+
+        /// <summary>
         /// The lastModifiedOn
         /// </summary>
         private DateTime lastModifiedOn = new DateTime();
@@ -139,6 +144,19 @@ namespace nIS
             set
             {
                 this.lastModifiedBy = value;
+            }
+        }
+
+        [Description("LastModifiedName")]
+        public string LastModifiedName
+        {
+            get
+            {
+                return this.lastModifiedByName;
+            }
+            set
+            {
+                this.lastModifiedByName = value;
             }
         }
 

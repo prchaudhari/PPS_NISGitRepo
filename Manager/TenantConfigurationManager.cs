@@ -120,6 +120,10 @@ namespace nIS
                         tenantSubscription.SubscriptionEndDate = data[0].SubscriptionEndDate;
                         tenantSubscription.SubscriptionStartDate = data[0].SubscriptionStartDate;
                         tenantSubscription.SubscriptionKey = data[0].SubscriptionKey;
+                        tenantSubscription.LastModifiedOn = data[0].LastModifiedOn;
+                        tenantSubscription.LastModifiedBy = data[0].LastModifiedBy;
+                        tenantSubscription.LastModifiedName = data[0].LastModifiedName;
+
                     }
                     newTenantSubscriptions.Add(tenantSubscription);
                 });
@@ -180,7 +184,7 @@ namespace nIS
             try
             {
                 this.IsValidTenantSubscription(tenantSubscriptions, tenantCode);
-                Guid guid = new Guid();
+             
                 tenantSubscriptions.ToList().ForEach(item =>
                 {
                     //var bytes = BitConverter.GetBytes(item.SubscriptionEndDate.Ticks);
@@ -188,7 +192,7 @@ namespace nIS
                     //guid = new Guid(bytes);
                     //item.SubscriptionKey = guid.ToString();
 
-                    string encryptedText = this.cryptoManager.Encrypt(item.SubscriptionEndDate.ToString());
+                    string encryptedText = this.cryptoManager.Encrypt(item.SubscriptionEndDate.ToUniversalTime().ToString());
                     item.SubscriptionKey = encryptedText;
                     //string decryptedText= this.cryptoManager.Decrypt(encryptedText);
 
