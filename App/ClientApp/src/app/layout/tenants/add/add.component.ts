@@ -322,7 +322,6 @@ export class AddComponent implements OnInit {
 
     }
 
-    this.
     this.FirstChar = this.tenant.TenantName.charAt(0);
     this.image = this.tenant.TenantLogo;
   }
