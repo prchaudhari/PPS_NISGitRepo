@@ -121,10 +121,9 @@ namespace nIS
         IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
 
         /// <summary>
-        /// This method helps to get batch list in between from date and to date.
+        /// This method helps to get batch list by search parameter.
         /// </summary>
-        /// <param name="fromdate"></param>
-        /// <param name="todate"></param>
+        /// <param name="batchSearchParameter">The batch search parameter</param>
         /// <param name="tenantCode"></param>
         /// <returns>return list of batches</returns>
         IList<BatchMaster> GetBatches(BatchSearchParameter batchSearchParameter, string tenantCode);

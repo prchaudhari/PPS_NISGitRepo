@@ -376,6 +376,8 @@ namespace nIS
         /// This method helps to run the schedule
         /// </summary>
         /// <param name="baseURL">The base URL</param>
+        /// <param name="outputLocation">The output location for HTML statements</param>
+        /// <param name="tenantConfiguration">The tenant configuration object</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
         public bool RunSchedule(string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
@@ -413,6 +415,7 @@ namespace nIS
         /// This method helps to run the schedule
         /// </summary>
         /// <param name="baseURL">The base URL</param>
+        /// <param name="outputLocation">The output location for HTML statements</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
         public bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode)
@@ -639,6 +642,8 @@ namespace nIS
         /// </summary>
         /// <param name="batchMaster">The batch object</param>
         /// <param name="baseURL">The base URL</param>
+        /// <param name="outputLocation">The output location for HTML statements</param>
+        /// <param name="tenantConfiguration">The tenant configuration object</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>True if schedules runs successfully, false otherwise</returns>
         public bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
@@ -672,6 +677,15 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method helps to run the schedule now
+        /// </summary>
+        /// <param name="batchMaster">The batch object</param>
+        /// <param name="baseURL">The base URL</param>
+        /// <param name="outputLocation">The output location for HTML statements</param>
+        /// <param name="tenantConfiguration">The tenant configuration object</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>True if schedules runs successfully, false otherwise</returns>
         public bool RunScheduleNowNew(BatchMaster batchMaster, string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             bool scheduleRunStatus = false;
@@ -847,16 +861,16 @@ namespace nIS
                         {
                             var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
 
-                            ParallelOptions parallelOptions = new ParallelOptions();
-                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                            Parallel.ForEach(customers, parallelOptions, customer =>
-                            {
-                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
-                            });
-                            //customers.ToList().ForEach(customer =>
+                            //ParallelOptions parallelOptions = new ParallelOptions();
+                            //parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                            //Parallel.ForEach(customers, parallelOptions, customer =>
                             //{
                             //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
                             //});
+                            customers.ToList().ForEach(customer =>
+                            {
+                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
+                            });
                         }
                         else
                         {
@@ -902,6 +916,24 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method helps to get batch list by search parameter.
+        /// </summary>
+        /// <param name="batchSearchParameter">The batch search parameter</param>
+        /// <param name="tenantCode"></param>
+        /// <returns>return list of batches</returns>
+        public IList<BatchMaster> GetBatches(BatchSearchParameter batchSearchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.GetBatches(batchSearchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
         /// <param name="BatchIdentifier"></param>
@@ -930,6 +962,25 @@ namespace nIS
             try
             {
                 return this.scheduleRepository.CleanScheduleBatch(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to update batch status.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool UpdateBatchStatus(long BatchIdentifier, string Status, bool IsExecuted, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.UpdateBatchStatus(BatchIdentifier, Status, IsExecuted, tenantCode);
             }
             catch (Exception ex)
             {
@@ -1007,10 +1058,12 @@ namespace nIS
             IList<StatementMetadata> statementMetadataRecords = new List<StatementMetadata>();
             try
             {
+                //call to generate actual HTML statement file for current customer record
                 var logDetailRecord = this.statementManager.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client, tenantEntities);
 
                 if (logDetailRecord != null)
                 {
+                    //save schedule log details for current customer
                     logDetailRecord.ScheduleLogId = scheduleLog.Identifier;
                     logDetailRecord.CustomerId = customer.Identifier;
                     logDetailRecord.CustomerName = customer.FirstName.Trim() + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim();
@@ -1043,7 +1096,7 @@ namespace nIS
                         }
                     }
 
-                    //If any error occurs during statement generation then delete all files from output directory of current customer
+                    //If any error occurs during statement generation then delete all files from output directory of current customer html statement
                     if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                     {
                         this.utility.DeleteUnwantedDirectory(batchMaster.Identifier, customer.Identifier, outputLocation);
@@ -1085,7 +1138,6 @@ namespace nIS
                     this.scheduleRepository.UpdateBatchStatus(batchMaster.Identifier, batchStatus, true, tenantCode);
                     this.scheduleRepository.UpdateScheduleStatus(scheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
                 }
-            
             }
             catch (Exception ex)
             {

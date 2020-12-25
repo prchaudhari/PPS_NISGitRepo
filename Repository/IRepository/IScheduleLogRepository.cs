@@ -95,6 +95,16 @@ namespace nIS
         bool SaveScheduleLogDetails(IList<ScheduleLogDetail> scheduleLogDetails, string tenantCode);
 
         /// <summary>
+        /// This method update the specified list of schedule log detail in the repository.
+        /// </summary>
+        /// <param name="scheduleLogDetails"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log details values are updated successfully, false otherwise
+        /// </returns>
+        bool UpdateScheduleLogDetails(IList<ScheduleLogDetail> scheduleLogDetails, string tenantCode);
+
+        /// <summary>
         /// This method adds the specified list of statement metadata in the repository.
         /// </summary>
         /// <param name="statementMetadata"></param>

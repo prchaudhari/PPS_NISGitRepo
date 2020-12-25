@@ -30,6 +30,7 @@ namespace nIS
         private IValidationEngine validationEngine = new ValidationEngine();
 
         public long Identifier { get; set; }
+        public long CustomerId { get; set; }
         public long BatchId { get; set; }
         public string WidgetFilterSetting { get; set; }
 

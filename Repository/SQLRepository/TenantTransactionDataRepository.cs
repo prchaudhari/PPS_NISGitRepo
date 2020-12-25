@@ -939,6 +939,10 @@ namespace nIS
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
             }
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
             if (validationEngine.IsValidLong(searchParameter.BatchId))
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");

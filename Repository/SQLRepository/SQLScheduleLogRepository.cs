@@ -599,6 +599,59 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method update the specified list of schedule log detail in the repository.
+        /// </summary>
+        /// <param name="scheduleLogDetails"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log details values are updated successfully, false otherwise
+        /// </returns>
+        public bool UpdateScheduleLogDetails(IList<ScheduleLogDetail> scheduleLogDetails, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    StringBuilder query = new StringBuilder();
+                    query.Append("(" + string.Join("or ", string.Join(",", scheduleLogDetails.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+                    IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    if (scheduleLogDetailRecords == null || scheduleLogDetailRecords.Count <= 0 || scheduleLogDetailRecords.Count() != string.Join(",", scheduleLogDetailRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
+                    {
+                        throw new ScheduleLogDetailNotFoundException(tenantCode);
+                    }
+
+                    scheduleLogDetails.ToList().ForEach(item =>
+                    {
+                        ScheduleLogDetailRecord scheduleLogDetailRecord = scheduleLogDetailRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode);
+                        scheduleLogDetailRecord.ScheduleLogId = item.ScheduleLogId;
+                        scheduleLogDetailRecord.ScheduleId = item.ScheduleId;
+                        scheduleLogDetailRecord.CustomerId = item.CustomerId;
+                        scheduleLogDetailRecord.CustomerName = item.CustomerName;
+                        scheduleLogDetailRecord.RenderEngineId = item.RenderEngineId;
+                        scheduleLogDetailRecord.RenderEngineName = item.RenderEngineName;
+                        scheduleLogDetailRecord.RenderEngineURL = item.RenderEngineURL;
+                        scheduleLogDetailRecord.NumberOfRetry = item.NumberOfRetry;
+                        scheduleLogDetailRecord.Status = item.Status;
+                        scheduleLogDetailRecord.LogMessage = item.LogMessage;
+                        scheduleLogDetailRecord.CreationDate = DateTime.UtcNow;
+                        scheduleLogDetailRecord.TenantCode = tenantCode;
+                        scheduleLogDetailRecord.StatementFilePath = item.StatementFilePath;
+                        nISEntitiesDataContext.SaveChanges();
+                    });
+
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        /// <summary>
         /// This method adds the specified list of statement metadata in the repository.
         /// </summary>
         /// <param name="statementMetadata"></param>
@@ -696,11 +749,11 @@ namespace nIS
                 }
                 if (validationEngine.IsValidText(logSearchParameter.RenderEngineId))
                 {
-                    queryString.Append("(" + string.Join("or ", logSearchParameter.RenderEngineId.ToString().Split(',').Select(item => string.Format("RenderEngineId.Equals({0}) ", item))) + ") and");
+                    queryString.Append("(" + string.Join("or ", logSearchParameter.RenderEngineId.ToString().Split(',').Select(item => string.Format("RenderEngineId.Equals({0}) ", item))) + ") and ");
                 }
                 if (validationEngine.IsValidText(logSearchParameter.BatchId))
                 {
-                    queryString.Append("(" + string.Join("or ", logSearchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and");
+                    queryString.Append("(" + string.Join("or ", logSearchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
                 }
                 if (validationEngine.IsValidText(logSearchParameter.ScheduleStatus))
                 {
@@ -735,16 +788,13 @@ namespace nIS
                     DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(logSearchParameter.StartDate), DateTimeKind.Utc);
                     queryString.Append("ExecutionDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and ");
                 }
-                //if (queryString.ToString() != string.Empty)
-                //{
-                //    queryString.Remove(queryString.Length - 4, 4);
-                //}
-                queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+                
+                queryString.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
                 return queryString.ToString();
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                throw exception;
+                throw ex;
             }
         }
 
@@ -814,7 +864,7 @@ namespace nIS
                     queryString.Append("CreationDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") " +
                                    "and CreationDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
                 }
-                queryString.Append(string.Format("TenantCode.Equals(\"{0}\") ", tenantCode));
+                queryString.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
                 return queryString.ToString();
             }
             catch (Exception exception)

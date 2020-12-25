@@ -107,14 +107,13 @@ namespace nIS
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
                 var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
-                TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                 if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
                 {
                     baseURL = tenantConfiguration.OutputHTMLPath;
                     outputLocation = tenantConfiguration.OutputHTMLPath;
                 }
-                return this.scheduleLogManager.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, outputLocation, tenantCode);
+                return this.scheduleLogManager.ReRunScheduleForFailedCases(scheduleLogIdentifier, baseURL, outputLocation, tenantConfiguration, tenantCode);
             }
             catch (Exception ex)
             {
@@ -159,14 +158,13 @@ namespace nIS
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var baseURL = Url.Content("~/");
                 var outputLocation = AppDomain.CurrentDomain.BaseDirectory;
-                TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                 if (!string.IsNullOrEmpty(tenantConfiguration.OutputHTMLPath))
                 {
                     baseURL = tenantConfiguration.OutputHTMLPath;
                     outputLocation = tenantConfiguration.OutputHTMLPath;
                 }
-                return this.scheduleLogManager.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, outputLocation, tenantCode);
+                return this.scheduleLogManager.RetryStatementForFailedCustomerReocrds(scheduleLogDetails, baseURL, outputLocation, tenantConfiguration, tenantCode);
             }
             catch (Exception ex)
             {
