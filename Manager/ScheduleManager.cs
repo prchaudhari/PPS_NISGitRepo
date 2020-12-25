@@ -861,16 +861,16 @@ namespace nIS
                         {
                             var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
 
-                            //ParallelOptions parallelOptions = new ParallelOptions();
-                            //parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                            //Parallel.ForEach(customers, parallelOptions, customer =>
-                            //{
-                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
-                            //});
-                            customers.ToList().ForEach(customer =>
+                            ParallelOptions parallelOptions = new ParallelOptions();
+                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                            Parallel.ForEach(customers, parallelOptions, customer =>
                             {
                                 this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
                             });
+                            //customers.ToList().ForEach(customer =>
+                            //{
+                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
+                            //});
                         }
                         else
                         {
