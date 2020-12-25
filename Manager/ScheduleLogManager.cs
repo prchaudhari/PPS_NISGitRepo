@@ -494,7 +494,7 @@ namespace nIS
                                 logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
                                 {
                                     metarec.ScheduleLogId = scheduleLogDetail.ScheduleLogId;
-                                    metarec.ScheduleId = scheduleLogDetail.ScheduleLogId;
+                                    metarec.ScheduleId = scheduleLogDetail.ScheduleId;
                                     metarec.StatementDate = DateTime.UtcNow;
                                     metarec.StatementURL = scheduleLogDetail.StatementFilePath;
                                     metarec.TenantCode = tenantCode;
