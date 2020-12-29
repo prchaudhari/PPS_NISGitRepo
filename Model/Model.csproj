@@ -96,6 +96,7 @@
     <Compile Include="Enum\SearchMode.cs" />
     <Compile Include="Enum\SortOrder.cs" />
     <Compile Include="Common\SortParameter.cs" />
+    <Compile Include="GenerateStatementRawData.cs" />
     <Compile Include="GroupManagerReport.cs" />
     <Compile Include="IncomeSources.cs" />
     <Compile Include="InstanceManagerReport.cs" />

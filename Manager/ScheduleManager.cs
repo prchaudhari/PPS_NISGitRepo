@@ -5,12 +5,18 @@
 
 namespace nIS
 {
+    using Newtonsoft.Json;
     #region References
 
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.IO;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
     using System.Threading.Tasks;
     using Unity;
 
@@ -586,22 +592,70 @@ namespace nIS
                                                 BatchId = batch.Identifier,
                                             };
                                             var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(customerSearchParameter, tenantCode);
-                                            var renderEngine = this.renderEngineRepository.GetRenderEngine(tenantCode).FirstOrDefault();
 
                                             if (customers.Count > 0)
                                             {
                                                 var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-
-                                                ParallelOptions parallelOptions = new ParallelOptions();
-                                                parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                                                Parallel.ForEach(customers, parallelOptions, customer =>
+                                                GenerateStatementRawData statementRawData = new GenerateStatementRawData()
                                                 {
-                                                    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
-                                                });
-                                                //customerMasters.ToList().ForEach(customer =>
-                                                //{
-                                                //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, batchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
-                                                //});
+                                                    Statement = statement,
+                                                    ScheduleLog = scheduleLog,
+                                                    StatementPageContents = statementPageContents,
+                                                    Batch = batch,
+                                                    BatchDetails = BatchDetails,
+                                                    BaseURL = baseURL,
+                                                    CustomerCount = customers.Count,
+                                                    OutputLocation = outputLocation,
+                                                    TenantConfiguration = tenantConfiguration,
+                                                    Client = client,
+                                                    TenantEntities = tenantEntities,
+                                                };
+
+                                                //Render engine implementation logic
+                                                for (int i = 0; customers.Count > 0; i++)
+                                                {
+                                                    var availableRenderEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                                    ParallelOptions parallelOptions = new ParallelOptions();
+
+                                                    if (customers.Count > availableRenderEngines.Count * parallelThreadCount)
+                                                    {
+                                                        parallelOptions.MaxDegreeOfParallelism = availableRenderEngines.Count;
+                                                        var parallelRequest = new List<CustomerParallelRequest>();
+                                                        int count = 0;
+                                                        for (int j = 1; availableRenderEngines.Count > 0; j++)
+                                                        {
+                                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines.FirstOrDefault() });
+                                                            customers = customers.Skip(parallelThreadCount).ToList();
+                                                            count += 1;
+                                                            availableRenderEngines = availableRenderEngines.Skip(count).ToList();
+                                                        }
+                                                        
+                                                        ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                                    }
+                                                    else
+                                                    {
+                                                        parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
+                                                        var parallelRequest = new List<CustomerParallelRequest>();
+                                                        int count = 0;
+
+                                                        for (int k = 0; customers.Count > 0; k++)
+                                                        {
+                                                            if (customers.Count > parallelThreadCount)
+                                                            {
+                                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines[count] });
+                                                                customers = customers.Skip(parallelThreadCount).ToList();
+                                                                count += 1;
+                                                            }
+                                                            else
+                                                            {
+                                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableRenderEngines[count] });
+                                                                customers = new List<CustomerMaster>();
+                                                            }
+                                                        }
+
+                                                        ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                                    }
+                                                }
                                             }
                                             else
                                             {
@@ -631,6 +685,7 @@ namespace nIS
             }
             catch (Exception ex)
             {
+                WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
 
@@ -855,22 +910,71 @@ namespace nIS
                             BatchId = batch.Identifier,
                         };
                         var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(customerSearchParameter, tenantCode);
-                        var renderEngine = this.renderEngineRepository.GetRenderEngine(tenantCode).FirstOrDefault();
 
                         if (customers.Count > 0)
                         {
                             var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
 
-                            ParallelOptions parallelOptions = new ParallelOptions();
-                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                            Parallel.ForEach(customers, parallelOptions, customer =>
+                            GenerateStatementRawData statementRawData = new GenerateStatementRawData()
                             {
-                                this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
-                            });
-                            //customers.ToList().ForEach(customer =>
-                            //{
-                            //    this.CreateCustomerStatement(customer, statement, scheduleLog, statementPageContents, batch, BatchDetails, baseURL, tenantCode, customers.Count, outputLocation, tenantConfiguration, client, tenantEntities, renderEngine);
-                            //});
+                                Statement = statement,
+                                ScheduleLog = scheduleLog,
+                                StatementPageContents = statementPageContents,
+                                Batch = batch,
+                                BatchDetails = BatchDetails,
+                                BaseURL = baseURL,
+                                CustomerCount = customers.Count,
+                                OutputLocation = outputLocation,
+                                TenantConfiguration = tenantConfiguration,
+                                Client = client,
+                                TenantEntities = tenantEntities,
+                            };
+
+                            //Render engine implementation logic
+                            for (int i = 0; customers.Count > 0; i++)
+                            {
+                                var availableRenderEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                ParallelOptions parallelOptions = new ParallelOptions();
+
+                                if (customers.Count > availableRenderEngines.Count * parallelThreadCount)
+                                {
+                                    parallelOptions.MaxDegreeOfParallelism = availableRenderEngines.Count;
+                                    var parallelRequest = new List<CustomerParallelRequest>();
+                                    int count = 0;
+                                    for (int j = 1; availableRenderEngines.Count > 0; j++)
+                                    {
+                                        parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines.FirstOrDefault() });
+                                        customers = customers.Skip(parallelThreadCount).ToList();
+                                        count += 1;
+                                        availableRenderEngines = availableRenderEngines.Skip(count).ToList();
+                                    }
+
+                                    ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                }
+                                else
+                                {
+                                    parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
+                                    var parallelRequest = new List<CustomerParallelRequest>();
+                                    int count = 0;
+
+                                    for (int k = 0; customers.Count > 0; k++)
+                                    {
+                                        if (customers.Count > parallelThreadCount)
+                                        {
+                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines[count] });
+                                            customers = customers.Skip(parallelThreadCount).ToList();
+                                            count += 1;
+                                        }
+                                        else
+                                        {
+                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableRenderEngines[count] });
+                                            customers = new List<CustomerMaster>();
+                                        }
+                                    }
+
+                                    ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                }
+                            }
                         }
                         else
                         {
@@ -883,10 +987,48 @@ namespace nIS
             }
             catch (Exception ex)
             {
+                WriteToFile(ex.StackTrace.ToString());
                 throw ex;
             }
 
             return scheduleRunStatus;
+        }
+
+        /// <summary>
+        /// This method helps to update schedule status.
+        /// </summary>
+        /// <param name="SchedulIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool UpdateScheduleStatus(long ScheduleIdentifier, string Status, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.UpdateScheduleStatus(ScheduleIdentifier, Status, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to update schedule run history end date.
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool UpdateScheduleRunHistoryEndDate(long ScheduleLogIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.UpdateScheduleRunHistoryEndDate(ScheduleLogIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion
@@ -1053,99 +1195,109 @@ namespace nIS
             }
         }
 
-        private void CreateCustomerStatement(CustomerMaster customer, Statement statement, ScheduleLog scheduleLog, IList<StatementPageContent> statementPageContents, BatchMaster batchMaster, IList<BatchDetail> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client, IList<TenantEntity> tenantEntities, RenderEngine renderEngine)
+        /// <summary>
+        /// This method helps to write content into the file
+        /// </summary>
+        /// <param name="Message">content to write into the file</param>
+        private void WriteToFile(string Message)
         {
-            IList<StatementMetadata> statementMetadataRecords = new List<StatementMetadata>();
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\StatementGenerationLogs";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\StatementGenerationLogs\\Log_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
+            if (!File.Exists(filepath))
+            {
+                // Create a file to write to.   
+                using (StreamWriter sw = File.CreateText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This method helps to process request in parallel
+        /// </summary>
+        /// <param name="statementRawData">raw data object requires in statement generate process</param>
+        /// <param name="parallelOptions">parallel option object of threading</param>
+        /// <param name="parallelRequests">the list of customer parallel request object</param>
+        public void ParallleProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<CustomerParallelRequest> parallelRequests, int parallelThreadCount)
+        {
+            Parallel.ForEach(parallelRequests, parallelOptions, item =>
+            {
+                CallGenearateStatementWebAPI(statementRawData, tenantCode, item, parallelThreadCount);
+            });
+        }
+
+        /// <summary>
+        /// This method helps to call web api of create customer statement file
+        /// </summary>
+        /// <param name="statementRawData">raw data object requires in statement generate process</param>
+        /// <param name="TenantCode">The tenant code</param>
+        /// <param name="parallelRequest">the customer parallel request object</param>
+        /// <param name="parallelThreadCount">the thread count to run request in parallel</param>
+        public void CallGenearateStatementWebAPI(GenerateStatementRawData statementRawData, string TenantCode, CustomerParallelRequest parallelRequest, int parallelThreadCount)
+        {
             try
             {
-                //call to generate actual HTML statement file for current customer record
-                var logDetailRecord = this.statementManager.GenerateStatements(customer, statement, statementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client, tenantEntities);
+                var renderEngine = parallelRequest.RenderEngine;
+                string RenderEngineBaseUrl = string.IsNullOrEmpty(renderEngine?.URL) ? ConfigurationManager.AppSettings["DefaultGenerateStatementApiUrl"].ToString() : renderEngine?.URL;
 
-                if (logDetailRecord != null)
+                ParallelOptions parallelOptions = new ParallelOptions();
+                parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+
+                Parallel.ForEach(parallelRequest.Customers, parallelOptions, customer =>
                 {
-                    //save schedule log details for current customer
-                    logDetailRecord.ScheduleLogId = scheduleLog.Identifier;
-                    logDetailRecord.CustomerId = customer.Identifier;
-                    logDetailRecord.CustomerName = customer.FirstName.Trim() + (customer.MiddleName == string.Empty ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim();
-                    logDetailRecord.ScheduleId = scheduleLog.ScheduleId;
-                    logDetailRecord.RenderEngineId = renderEngine != null ? renderEngine.Identifier : 0; //To be change once render engine implmentation start
-                    logDetailRecord.RenderEngineName = renderEngine != null ? renderEngine.RenderEngineName : "";
-                    logDetailRecord.RenderEngineURL = renderEngine != null ? renderEngine.URL : "";
-                    logDetailRecord.NumberOfRetry = 1;
-                    logDetailRecord.CreateDate = DateTime.UtcNow;
-
-                    IList<ScheduleLogDetail> logDetails = new List<ScheduleLogDetail>();
-                    logDetails.Add(logDetailRecord);
-                    this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
-
-                    //if statement generated successfully, then save statement metadata with actual html statement file path
-                    if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))
+                    var newStatementRawData = new GenerateStatementRawData()
                     {
-                        if (logDetailRecord.statementMetadata.Count > 0)
-                        {
-                            logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
-                            {
-                                metarec.ScheduleLogId = scheduleLog.Identifier;
-                                metarec.ScheduleId = scheduleLog.ScheduleId;
-                                metarec.StatementDate = DateTime.UtcNow;
-                                metarec.StatementURL = logDetailRecord.StatementFilePath;
-                                metarec.TenantCode = tenantCode;
-                                statementMetadataRecords.Add(metarec);
-                            });
-                            this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
-                        }
+                        Statement = statementRawData.Statement,
+                        ScheduleLog = statementRawData.ScheduleLog,
+                        StatementPageContents = statementRawData.StatementPageContents,
+                        Batch = statementRawData.Batch,
+                        BatchDetails = statementRawData.BatchDetails,
+                        BaseURL = statementRawData.BaseURL,
+                        CustomerCount = statementRawData.CustomerCount,
+                        OutputLocation = statementRawData.OutputLocation,
+                        TenantConfiguration = statementRawData.TenantConfiguration,
+                        Client = statementRawData.Client,
+                        TenantEntities = statementRawData.TenantEntities,
+                        Customer = customer,
+                        RenderEngine = parallelRequest.RenderEngine
+                    };
+
+                    HttpClient client = new HttpClient();
+                    client.BaseAddress = new Uri(RenderEngineBaseUrl);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
+                    var response = client.PostAsync("GenerateStatement/CreateCustomerStatement", new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, "application/json")).Result;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var result = response.Content.ReadAsStringAsync().Result;
+                        Console.WriteLine(result);
                     }
-
-                    //If any error occurs during statement generation then delete all files from output directory of current customer html statement
-                    if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
-                    {
-                        this.utility.DeleteUnwantedDirectory(batchMaster.Identifier, customer.Identifier, outputLocation);
-                    }
-                }
-
-                //update status for respective schedule log, schedule log details entities
-                //as well as update batch status if statement generation done for all customers of current batch
-                ScheduleLogDetailSearchParameter scheduleLogDetailSearchParameter = new ScheduleLogDetailSearchParameter()
-                {
-                    ScheduleLogId = scheduleLog.Identifier.ToString(),
-                    PagingParameter = new PagingParameter
-                    {
-                        PageIndex = 0,
-                        PageSize = 0,
-                    },
-                    SortParameter = new SortParameter()
-                    {
-                        SortOrder = SortOrder.Ascending,
-                        SortColumn = "Id",
-                    },
-                    SearchMode = SearchMode.Equals
-                };
-                var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(scheduleLogDetailSearchParameter, tenantCode);
-                if (customerCount == logDetailsRecords.Count)
-                {
-                    var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
-                    var batchStatus = BatchStatus.Completed.ToString();
-
-                    var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
-                    if (failedRecords != null && failedRecords.Count > 0)
-                    {
-                        scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-                        batchStatus = BatchStatus.Failed.ToString();
-                    }
-
-                    this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                    this.scheduleRepository.UpdateScheduleRunHistoryEndDate(scheduleLog.Identifier, tenantCode);
-                    this.scheduleRepository.UpdateBatchStatus(batchMaster.Identifier, batchStatus, true, tenantCode);
-                    this.scheduleRepository.UpdateScheduleStatus(scheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
-                }
+                });
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
         }
 
         #endregion
+
+        public class CustomerParallelRequest
+        {
+            public List<CustomerMaster> Customers { get; set; }
+            public RenderEngine RenderEngine { get; set; }
+        }
     }
 }

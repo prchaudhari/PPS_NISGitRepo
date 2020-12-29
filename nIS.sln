@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialTenantService", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionTenantService", "SubscriptionTenantService\SubscriptionTenantService.csproj", "{5A8894C8-056F-4FA1-AC28-39D314C3CD04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateStatementRenderEngine", "GenerateStatementRenderEngine\GenerateStatementRenderEngine.csproj", "{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -228,6 +230,14 @@ Global
 		{5A8894C8-056F-4FA1-AC28-39D314C3CD04}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A8894C8-056F-4FA1-AC28-39D314C3CD04}.Release|x86.ActiveCfg = Release|Any CPU
 		{5A8894C8-056F-4FA1-AC28-39D314C3CD04}.Release|x86.Build.0 = Release|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Debug|x86.Build.0 = Debug|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E0CD6FE-E144-4DFC-A33B-524B6D7BA700}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

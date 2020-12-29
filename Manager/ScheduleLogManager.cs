@@ -5,12 +5,16 @@
 
 namespace nIS
 {
-
+    using Newtonsoft.Json;
     #region References
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
     using System.Threading.Tasks;
     using Unity;
     #endregion
@@ -337,15 +341,67 @@ namespace nIS
                             
                             var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                             
-                            var renderEngine = this.renderEngineManager.GetRenderEngine(tenantCode).FirstOrDefault();
                             var tenantEntities = this.dynamicWidgetManager.GetTenantEntities(tenantCode);
 
-                            ParallelOptions parallelOptions = new ParallelOptions();
-                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                            Parallel.ForEach(scheduleLogDetailRecords, parallelOptions, scheduleLogDetail =>
+                            GenerateStatementRawData statementRawData = new GenerateStatementRawData()
                             {
-                                this.ReGenerateFailedCustomerStatements(scheduleLogDetail, statement, statementPageContents, batch, BatchDetails, baseURL, tenantCode, outputLocation, renderEngine, tenantEntities, tenantConfiguration, client);
-                            });
+                                Statement = statement,
+                                ScheduleLog = scheduleLog,
+                                StatementPageContents = statementPageContents,
+                                Batch = batch,
+                                BatchDetails = BatchDetails,
+                                BaseURL = baseURL,
+                                OutputLocation = outputLocation,
+                                TenantConfiguration = tenantConfiguration,
+                                Client = client,
+                                TenantEntities = tenantEntities,
+                            };
+
+                            //Render engine implementation logic
+                            for (int i = 0; scheduleLogDetailRecords.Count > 0; i++)
+                            {
+                                var availableRenderEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                ParallelOptions parallelOptions = new ParallelOptions();
+
+                                if (scheduleLogDetailRecords.Count > availableRenderEngines.Count * parallelThreadCount)
+                                {
+                                    parallelOptions.MaxDegreeOfParallelism = availableRenderEngines.Count;
+                                    var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
+                                    int count = 0;
+                                    for (int j = 1; availableRenderEngines.Count > 0; j++)
+                                    {
+                                        parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines.FirstOrDefault() });
+                                        scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
+                                        count += 1;
+                                        availableRenderEngines = availableRenderEngines.Skip(count).ToList();
+                                    }
+
+                                    ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                }
+                                else
+                                {
+                                    parallelOptions.MaxDegreeOfParallelism = scheduleLogDetailRecords.ToList().Count % parallelThreadCount == 0 ? scheduleLogDetailRecords.ToList().Count / parallelThreadCount : scheduleLogDetailRecords.ToList().Count / parallelThreadCount + 1;
+                                    var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
+                                    int count = 0;
+
+                                    for (int k = 0; scheduleLogDetailRecords.Count > 0; k++)
+                                    {
+                                        if (scheduleLogDetailRecords.Count > parallelThreadCount)
+                                        {
+                                            parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines[count] });
+                                            scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
+                                            count += 1;
+                                        }
+                                        else
+                                        {
+                                            parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.ToList(), RenderEngine = availableRenderEngines[count] });
+                                            scheduleLogDetailRecords = new List<ScheduleLogDetail>();
+                                        }
+                                    }
+
+                                    ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                }
+                            }
                         }
 
                         retryStatementStatus = true;
@@ -436,134 +492,79 @@ namespace nIS
             }
         }
 
-        private void ReGenerateFailedCustomerStatements(ScheduleLogDetail scheduleLogDetail, Statement statement, IList<StatementPageContent> statementPageContents, BatchMaster batchMaster, IList<BatchDetail> batchDetails, string baseURL, string tenantCode, string outputLocation, RenderEngine renderEngine, IList<TenantEntity> tenantEntities, TenantConfiguration tenantConfiguration, Client client)
+        /// <summary>
+        /// This method adds the specified list of schedule log detail in the repository.
+        /// </summary>
+        /// <param name="scheduleLogDetails"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log details values are added successfully, false otherwise
+        /// </returns>
+        public bool SaveScheduleLogDetails(IList<ScheduleLogDetail> scheduleLogDetails, string tenantCode)
         {
             try
             {
-                CustomerSearchParameter customerSearchParameter = new CustomerSearchParameter()
-                {
-                    Identifier = scheduleLogDetail.CustomerId,
-                    BatchId = batchMaster.Identifier,
-                };
-                var customerMaster = this.tenantTransactionDataManager.Get_CustomerMasters(customerSearchParameter, tenantCode)?.FirstOrDefault();
-                if (customerMaster != null)
-                {
-                    var newStatementPageContents = new List<StatementPageContent>();
-                    statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
-                    {
-                        Id = it.Id,
-                        PageId = it.PageId,
-                        PageTypeId = it.PageTypeId,
-                        HtmlContent = it.HtmlContent,
-                        PageHeaderContent = it.PageHeaderContent,
-                        PageFooterContent = it.PageFooterContent,
-                        DisplayName = it.DisplayName,
-                        TabClassName = it.TabClassName,
-                        DynamicWidgets = it.DynamicWidgets
-                    }));
+                return this.scheduleLogRepository.SaveScheduleLogDetails(scheduleLogDetails, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-                    var logDetailRecord = this.statementManager.GenerateStatements(customerMaster, statement, newStatementPageContents, batchMaster, batchDetails, baseURL, tenantCode, outputLocation, tenantConfiguration, client, tenantEntities);
-                    if (logDetailRecord != null)
-                    {
-                        //delete un-neccessory files which are created during html statement generation in fail cases
-                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
-                        {
-                            this.utility.DeleteUnwantedDirectory(batchMaster.Identifier, customerMaster.Identifier, outputLocation);
-                        }
+        /// <summary>
+        /// This method adds the specified list of statement metadata in the repository.
+        /// </summary>
+        /// <param name="statementMetadata"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the statement metadata values are added successfully, false otherwise
+        /// </returns>
+        public bool SaveStatementMetadata(IList<StatementMetadata> statementMetadata, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.SaveStatementMetadata(statementMetadata, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-                        if (logDetailRecord != null)
-                        {
-                            //update schedule log detail
-                            scheduleLogDetail.CustomerId = customerMaster.Identifier;
-                            scheduleLogDetail.CustomerName = customerMaster.FirstName.Trim() + (customerMaster.MiddleName == string.Empty ? string.Empty : " " + customerMaster.MiddleName.Trim()) + " " + customerMaster.LastName.Trim();
-                            scheduleLogDetail.RenderEngineId = renderEngine != null ? renderEngine.Identifier : 0; //To be change once render engine implmentation start
-                            scheduleLogDetail.RenderEngineName = renderEngine != null ? renderEngine.RenderEngineName : string.Empty;
-                            scheduleLogDetail.RenderEngineURL = renderEngine != null ? renderEngine.URL : string.Empty;
-                            scheduleLogDetail.LogMessage = logDetailRecord.LogMessage;
-                            scheduleLogDetail.Status = logDetailRecord.Status;
-                            scheduleLogDetail.NumberOfRetry++;
-                            scheduleLogDetail.StatementFilePath = logDetailRecord.StatementFilePath;
-                            IList<ScheduleLogDetail> scheduleLogDetails = new List<ScheduleLogDetail>();
-                            scheduleLogDetails.Add(scheduleLogDetail); 
-                            this.scheduleLogRepository.UpdateScheduleLogDetails(scheduleLogDetails, tenantCode);
+        /// <summary>
+        /// This method helps to update schedule log status.
+        /// </summary>
+        /// <param name="ScheduleLogIdentifier"></param>
+        /// <param name="Status"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
 
-                            //save statement metadata if html statement generated successfully
-                            if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.statementMetadata.Count > 0)
-                            {
-                                IList<StatementMetadata> statementMetadataRecords = new List<StatementMetadata>();
-                                logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
-                                {
-                                    metarec.ScheduleLogId = scheduleLogDetail.ScheduleLogId;
-                                    metarec.ScheduleId = scheduleLogDetail.ScheduleId;
-                                    metarec.StatementDate = DateTime.UtcNow;
-                                    metarec.StatementURL = scheduleLogDetail.StatementFilePath;
-                                    metarec.TenantCode = tenantCode;
-                                    statementMetadataRecords.Add(metarec);
-                                });
-                                this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
-                            }
+        public bool UpdateScheduleLogStatus(long ScheduleLogIdentifier, string Status, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.UpdateScheduleLogStatus(ScheduleLogIdentifier, Status, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-                            ScheduleLogSearchParameter logSearchParameter = new ScheduleLogSearchParameter()
-                            {
-                                ScheduleLogId = scheduleLogDetail.ScheduleLogId.ToString(),
-                                BatchId = batchMaster.Identifier.ToString(),
-                                PagingParameter = new PagingParameter
-                                {
-                                    PageIndex = 0,
-                                    PageSize = 0,
-                                },
-                                SortParameter = new SortParameter()
-                                {
-                                    SortOrder = SortOrder.Ascending,
-                                    SortColumn = "Id",
-                                },
-                                SearchMode = SearchMode.Equals
-                            };
-                            var scheduleLogs = this.scheduleLogRepository.GetScheduleLogs(logSearchParameter, tenantCode).ToList();
-                            scheduleLogs.ForEach(scheduleLog =>
-                            {
-                                //get total no. of schedule log details for current schedule log
-                                ScheduleLogDetailSearchParameter scheduleLogDetailSearchParameter = new ScheduleLogDetailSearchParameter()
-                                {
-                                    ScheduleLogId = scheduleLog.Identifier.ToString(),
-                                    PagingParameter = new PagingParameter
-                                    {
-                                        PageIndex = 0,
-                                        PageSize = 0,
-                                    },
-                                    SortParameter = new SortParameter()
-                                    {
-                                        SortOrder = SortOrder.Ascending,
-                                        SortColumn = "Id",
-                                    },
-                                    SearchMode = SearchMode.Equals
-                                };
-                                var _lstScheduleLogDetail = this.scheduleLogRepository.GetScheduleLogDetails(scheduleLogDetailSearchParameter, tenantCode);
-
-                                //get no of success schedule log details of current schedule log
-                                var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
-
-                                var batchStatus = BatchStatus.Completed.ToString();
-                                var isBatchCompleteExecuted = true;
-                                var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
-                                
-                                //check success schedule log details count is equal to total no. of schedule log details for current schedule log
-                                //if equals then update schedule log and batch status as completed otherwise failed
-                                if (successRecords != null && successRecords.Count != _lstScheduleLogDetail.Count)
-                                {
-                                    scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-                                    batchStatus = BatchStatus.Failed.ToString();
-                                    isBatchCompleteExecuted = false;
-                                }
-
-                                //update schedule log and batch status
-                                this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                                this.scheduleManager.UpdateBatchStatus(batchMaster.Identifier, batchStatus, isBatchCompleteExecuted, tenantCode);
-                            });
-
-                        }
-                    }
-                }
+        /// <summary>
+        /// This method update the specified list of schedule log detail in the repository.
+        /// </summary>
+        /// <param name="scheduleLogDetails"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log details values are updated successfully, false otherwise
+        /// </returns>
+        public bool UpdateScheduleLogDetails(IList<ScheduleLogDetail> scheduleLogDetails, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.UpdateScheduleLogDetails(scheduleLogDetails, tenantCode);
             }
             catch (Exception ex)
             {
@@ -572,5 +573,83 @@ namespace nIS
         }
 
         #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// This method helps to process request in parallel
+        /// </summary>
+        /// <param name="statementRawData">raw data object requires in statement generate process</param>
+        /// <param name="parallelOptions">parallel option object of threading</param>
+        /// <param name="parallelRequests">the list of schedule log detail parallel request object</param>
+        private void ParallleProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<ScheduleLogDetailParallelRequest> parallelRequests, int parallelThreadCount)
+        {
+            Parallel.ForEach(parallelRequests, parallelOptions, item =>
+            {
+                CallRetryToCreateFailedCustomerStatementsWebAPI(statementRawData, tenantCode, item, parallelThreadCount);
+            });
+        }
+
+        /// <summary>
+        /// This method helps to call web api of retry create statement for failed customer records
+        /// </summary>
+        /// <param name="statementRawData">raw data object requires in statement generate process</param>
+        /// <param name="TenantCode">The tenant code</param>
+        /// <param name="parallelRequest">the schedule log detail parallel request object</param>
+        /// <param name="parallelThreadCount">the thread count to run request in parallel</param>
+        private void CallRetryToCreateFailedCustomerStatementsWebAPI(GenerateStatementRawData statementRawData, string TenantCode, ScheduleLogDetailParallelRequest parallelRequest, int parallelThreadCount)
+        {
+
+            try
+            {
+                var renderEngine = parallelRequest.RenderEngine;
+                string RenderEngineBaseUrl = string.IsNullOrEmpty(renderEngine?.URL) ? ConfigurationManager.AppSettings["DefaultGenerateStatementApiUrl"].ToString() : renderEngine?.URL;
+
+                ParallelOptions parallelOptions = new ParallelOptions();
+                parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+
+                Parallel.ForEach(parallelRequest.ScheduleLogDetails, parallelOptions, logDetail =>
+                {
+                    var newStatementRawData = new GenerateStatementRawData()
+                    {
+                        Statement = statementRawData.Statement,
+                        ScheduleLogDetail = logDetail,
+                        StatementPageContents = statementRawData.StatementPageContents,
+                        Batch = statementRawData.Batch,
+                        BatchDetails = statementRawData.BatchDetails,
+                        BaseURL = statementRawData.BaseURL,
+                        CustomerCount = statementRawData.CustomerCount,
+                        OutputLocation = statementRawData.OutputLocation,
+                        TenantConfiguration = statementRawData.TenantConfiguration,
+                        Client = statementRawData.Client,
+                        TenantEntities = statementRawData.TenantEntities,
+                        RenderEngine = parallelRequest.RenderEngine
+                    };
+
+                    HttpClient client = new HttpClient();
+                    client.BaseAddress = new Uri(RenderEngineBaseUrl);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
+                    var response = client.PostAsync("GenerateStatement/RetryToCreateFailedCustomerStatements", new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, "application/json")).Result;
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var result = response.Content.ReadAsStringAsync().Result;
+                        Console.WriteLine(result);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        public class ScheduleLogDetailParallelRequest
+        {
+            public List<ScheduleLogDetail> ScheduleLogDetails { get; set; }
+            public RenderEngine RenderEngine { get; set; }
+        }
     }
 }

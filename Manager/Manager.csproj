@@ -41,6 +41,7 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,6 +67,7 @@
     <Compile Include="ArchivalProcessManager.cs" />
     <Compile Include="CityManager.cs" />
     <Compile Include="ClientManager.cs" />
+    <Compile Include="GenerateStatementManager.cs" />
     <Compile Include="PageTypeManager.cs" />
     <Compile Include="ContactTypeManager.cs" />
     <Compile Include="DynamicWidgetManager.cs" />
