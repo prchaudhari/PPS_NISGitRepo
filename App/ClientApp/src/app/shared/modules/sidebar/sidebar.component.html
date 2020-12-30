@@ -144,9 +144,9 @@
         <a> <span class='nav-icon icon-operations2' title="Configure Assets"> </span> <span class='nav-title'>Configure Assets</span> </a>
       </li>
 
-      <!--<li [ngClass]="(URL=='/renderengines')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isTenantAdminUser" (click)="navigateToRenderEngine()">
-    <a> <span class='nav-icon icon-reportGenerations2' title="Render Engines"> </span> <span class='nav-title'>Render Engines</span> </a>
-  </li>-->
+      <li [ngClass]="(URL=='/renderengines')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isTenantAdminUser" (click)="navigateToRenderEngine()">
+        <a> <span class='nav-icon icon-reportGenerations2' title="Render Engines"> </span> <span class='nav-title'>Render Engines</span> </a>
+      </li>
       <li [ngClass]="(URL=='/country')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && (isTenantGroupManager || isTenantAdminUser)" (click)="navigateToCountry()">
         <a> <span class='nav-icon fa fa-flag' title="Country"> </span> <span class='nav-title'>Country</span> </a>
       </li>

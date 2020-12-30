@@ -21,7 +21,7 @@ import { ConfigConstants } from 'src/app/shared/constants/configConstants';
 export class AddeditComponent implements OnInit {
 
   renderEngineForm: FormGroup;
-  public validUrlRegexPattern = '^(http(s?):\/\/)?([0-9]{2,3}).([0-9]{2,3}).([0-9]{2,3}).([0-9]{1,3})([:0-9]{3,6})?$';
+  public validUrlRegexPattern = '^(http(s?):\/\/)?([0-9]{2,3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})([:0-9]{3,6})?$';
   public onlyAlphabetswithInbetweenSpaceUpto50Characters = Constants.onlyAlphabetswithInbetweenSpaceUpto50Characters;
   public renderEngineEditModeOn: boolean = false;
   public PriorityLevel: number = 0;
@@ -94,7 +94,8 @@ export class AddeditComponent implements OnInit {
     this.renderEngineForm = this.formBuilder.group({
       RenderEngineName: [null, Validators.compose([Validators.required, Validators.minLength(2),
         Validators.maxLength(50), Validators.pattern(this.onlyAlphabetswithInbetweenSpaceUpto50Characters)])],
-      RenderEngineURL: ['', Validators.compose([Validators.required, Validators.pattern(this.validUrlRegexPattern)])],
+      //RenderEngineURL: ['', Validators.compose([Validators.required, Validators.pattern(this.validUrlRegexPattern)])],
+      RenderEngineURL: ['', Validators.compose([Validators.required])],
       RenderEnginePriorityLevel: [0, Validators.compose([Validators.required])],
       RenderEngineConcurrencyCount: [0, Validators.compose([Validators.required])]
     });

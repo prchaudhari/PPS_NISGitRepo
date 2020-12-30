@@ -294,9 +294,8 @@ export class SidebarComponent implements OnInit {
  
       this.URL = this.route.url;
       if(this.isInstanceTenantManager == true || this.isTenantGroupManager == true || this.isTenantAdminUser) {
-        if (this.URL.includes('/tenants') || this.URL.includes('/tenantConfiguration') ||this.URL.includes('/settings') || this.URL.includes('/country') || 
-          this.URL.includes('/tenantgroups') || this.URL.includes('/instanceManagerDashboard') || this.URL.includes('/groupManagerDashboard')|| this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype') || this.URL.includes('/multiTenantUserAccess')
-        || this.URL.includes('/tenantusers') || this.URL.includes('/tenantgroupusers')) {
+        if (this.URL.includes('/tenants') || this.URL.includes('/tenantConfiguration') || this.URL.includes('/settings') || this.URL.includes('/country') || this.URL.includes('/renderengines') || 
+          this.URL.includes('/tenantgroups') || this.URL.includes('/instanceManagerDashboard') || this.URL.includes('/groupManagerDashboard')|| this.URL.includes('/themeConfiguration') || this.URL.includes('/contacttype') || this.URL.includes('/multiTenantUserAccess') || this.URL.includes('/tenantusers') || this.URL.includes('/tenantgroupusers')) {
           this.IsMainMenu = false;
         }
         else {
