@@ -220,27 +220,31 @@ namespace nIS
             string zipFile = string.Empty;
             string outputpath = string.Empty;
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                outputpath = this.StatementSearchManager.GenerateStatement(identifier, tenantCode);
+                outputpath = this.StatementSearchManager.GenerateStatementNew(identifier, tenantCode);
                 zipFile = AppDomain.CurrentDomain.BaseDirectory + "\\Resources" + "\\" + "tempStatementZip" + identifier + ".zip";
                 ZipFile.CreateFromDirectory(outputpath, zipFile);
-                var pdfName = "Statement" + DateTime.Now.ToShortDateString().Replace(" - ", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
-                this.utility.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName);
-                using (MemoryStream ms = new MemoryStream())
+                var pdfName = "Statement_" + DateTime.Now.ToShortDateString().Replace(" - ", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
+                var isPdfSuccess = this.utility.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName);
+                if (isPdfSuccess)
                 {
-                    using (FileStream file = new FileStream((outputpath + "\\" + pdfName), FileMode.Open, FileAccess.Read))
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        byte[] bytes = new byte[file.Length];
-                        file.Read(bytes, 0, (int)file.Length);
-                        ms.Write(bytes, 0, (int)file.Length);
-                        httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
-                        httpResponseMessage.Content.Headers.Add("x-filename", pdfName);
-                        httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
-                        httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                        httpResponseMessage.Content.Headers.ContentDisposition.FileName = pdfName;
-                        httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                        using (FileStream file = new FileStream((outputpath + "\\" + pdfName), FileMode.Open, FileAccess.Read))
+                        {
+                            byte[] bytes = new byte[file.Length];
+                            file.Read(bytes, 0, (int)file.Length);
+                            ms.Write(bytes, 0, (int)file.Length);
+                            httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
+                            httpResponseMessage.Content.Headers.Add("x-filename", pdfName);
+                            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+                            httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                            httpResponseMessage.Content.Headers.ContentDisposition.FileName = pdfName;
+                            httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                        }
                     }
                 }
                 return httpResponseMessage;
@@ -249,9 +253,9 @@ namespace nIS
             {
                 throw new HttpResponseException(HttpStatusCode.InternalServerError);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw new HttpResponseException(HttpStatusCode.InternalServerError);
             }
             finally
             {

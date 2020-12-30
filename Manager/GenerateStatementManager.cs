@@ -157,9 +157,8 @@ namespace nIS
                     }
                 }
 
-                //update status for respective schedule log, schedule log details entities
-                //as well as update batch status if statement generation done for all customers of current batch
-                var scheduleLogDetailSearchParameter = new ScheduleLogDetailSearchParameter()
+                //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
+                var logDetailsRecords = this.scheduleLogManager.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
                 {
                     ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
                     PagingParameter = new PagingParameter
@@ -173,8 +172,7 @@ namespace nIS
                         SortColumn = "Id",
                     },
                     SearchMode = SearchMode.Equals
-                };
-                var logDetailsRecords = this.scheduleLogManager.GetScheduleLogDetails(scheduleLogDetailSearchParameter, tenantCode);
+                }, tenantCode);
                 if (statementRawData.CustomerCount == logDetailsRecords.Count)
                 {
                     var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
@@ -210,12 +208,11 @@ namespace nIS
             try
             {
                 var scheduleLogDetail = statementRawData.ScheduleLogDetail;
-                var customerSearchParameter = new CustomerSearchParameter()
+                var customer = this.tenantTransactionDataManager.Get_CustomerMasters(new CustomerSearchParameter()
                 {
                     Identifier = scheduleLogDetail.CustomerId,
                     BatchId = statementRawData.Batch.Identifier,
-                };
-                var customer = this.tenantTransactionDataManager.Get_CustomerMasters(customerSearchParameter, tenantCode)?.FirstOrDefault();
+                }, tenantCode)?.FirstOrDefault();
                 statementRawData.Customer = customer;
 
                 if (customer != null)
@@ -247,7 +244,7 @@ namespace nIS
                         //save statement metadata if html statement generated successfully
                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.statementMetadata.Count > 0)
                         {
-                            IList<StatementMetadata> statementMetadataRecords = new List<StatementMetadata>();
+                            var statementMetadataRecords = new List<StatementMetadata>();
                             logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
                             {
                                 metarec.ScheduleLogId = scheduleLogDetail.ScheduleLogId;
@@ -260,7 +257,7 @@ namespace nIS
                             this.scheduleLogManager.SaveStatementMetadata(statementMetadataRecords, tenantCode);
                         }
 
-                        var logSearchParameter = new ScheduleLogSearchParameter()
+                        var scheduleLogs = this.scheduleLogManager.GetScheduleLogs(new ScheduleLogSearchParameter()
                         {
                             ScheduleLogId = scheduleLogDetail.ScheduleLogId.ToString(),
                             BatchId = statementRawData.Batch.Identifier.ToString(),
@@ -275,12 +272,11 @@ namespace nIS
                                 SortColumn = "Id",
                             },
                             SearchMode = SearchMode.Equals
-                        };
-                        var scheduleLogs = this.scheduleLogManager.GetScheduleLogs(logSearchParameter, tenantCode).ToList();
+                        }, tenantCode).ToList();
                         scheduleLogs.ForEach(scheduleLog =>
                         {
                             //get total no. of schedule log details for current schedule log
-                            var scheduleLogDetailSearchParameter = new ScheduleLogDetailSearchParameter()
+                            var _lstScheduleLogDetail = this.scheduleLogManager.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
                             {
                                 ScheduleLogId = scheduleLog.Identifier.ToString(),
                                 PagingParameter = new PagingParameter
@@ -294,8 +290,7 @@ namespace nIS
                                     SortColumn = "Id",
                                 },
                                 SearchMode = SearchMode.Equals
-                            };
-                            var _lstScheduleLogDetail = this.scheduleLogManager.GetScheduleLogDetails(scheduleLogDetailSearchParameter, tenantCode);
+                            }, tenantCode);
 
                             //get no of success schedule log details of current schedule log
                             var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
@@ -510,12 +505,9 @@ namespace nIS
                                         SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
                                     }
 
-                                    SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " +
-                                        " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
+                                    SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " +" role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
 
-                                    newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") +
-                                        "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "")
-                                        + "'>");
+                                    newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "")+ "'>");
 
                                     if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                                     {
@@ -656,12 +648,11 @@ namespace nIS
                             else
                             {
                                 //To add statement metadata records for subscription master tenant
-                                var transactionDataSearchParameter = new TransactionDataSearchParameter()
+                                var subscriptionMasters = this.tenantTransactionDataManager.Get_TTD_SubscriptionMasters(new TransactionDataSearchParameter()
                                 {
                                     BatchId = batchMaster.Identifier,
                                     CustomerId = customer.Identifier
-                                };
-                                var subscriptionMasters = this.tenantTransactionDataManager.Get_TTD_SubscriptionMasters(transactionDataSearchParameter, tenantCode);
+                                }, tenantCode);
                                 subscriptionMasters.ToList().ForEach(sub =>
                                 {
                                     var records = statementMetadataRecords.Where(item => item.CustomerId == customer.Identifier && item.StatementId == statement.Identifier && item.AccountNumber == sub.Subscription && item.AccountType == sub.VendorName).ToList();
@@ -1327,22 +1318,18 @@ namespace nIS
                         var tdstring = string.Empty;
                         if (Convert.ToDecimal(src.CurrentSpend) > Convert.ToDecimal(src.AverageSpend))
                         {
-                            tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" +
-                            src.AverageSpend + "</span>";
+                            tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + src.AverageSpend + "</span>";
                         }
                         else
                         {
-                            tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " +
-                            "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + src.AverageSpend + "</span>";
+                            tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + src.AverageSpend + "</span>";
                         }
-                        incomeSources.Append("<tr><td class='float-left'>" + src.Source + "</td>" + "<td> " + src.CurrentSpend + "</td><td>" +
-                            tdstring + "</td></tr>");
+                        incomeSources.Append("<tr><td class='float-left'>" + src.Source + "</td>" + "<td> " + src.CurrentSpend + "</td><td>" + tdstring + "</td></tr>");
                     });
                 }
                 else
                 {
-                    incomeSources.Append("<tr><td colspan='3' class='text-danger text-center'><div style='margin-top: 20px;'>No data available</div>" +
-                        "</td></tr>");
+                    incomeSources.Append("<tr><td colspan='3' class='text-danger text-center'><div style='margin-top: 20px;'>No data available</div></td></tr>");
                 }
                 pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomeSources.ToString());
             }

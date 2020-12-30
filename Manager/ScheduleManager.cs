@@ -390,7 +390,7 @@ namespace nIS
         {
             try
             {
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter
+                var client = this.clientManager.GetClients(new ClientSearchParameter
                 {
                     TenantCode = tenantCode,
                     IsCountryRequired = false,
@@ -406,8 +406,7 @@ namespace nIS
                         SortColumn = "Id",
                     },
                     SearchMode = SearchMode.Equals
-                };
-                var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
+                }, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
                 return this.scheduleRepository.RunScheduleNew(baseURL, outputLocation, tenantCode, parallelThreadCount,tenantConfiguration, client);
             }
@@ -430,7 +429,7 @@ namespace nIS
 
             try
             {
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter
+                var client = this.clientManager.GetClients(new ClientSearchParameter
                 {
                     TenantCode = tenantCode,
                     IsCountryRequired = false,
@@ -446,25 +445,23 @@ namespace nIS
                         SortColumn = "Id",
                     },
                     SearchMode = SearchMode.Equals
-                };
-                var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
+                }, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
 
                 var fromdate = DateTime.Now;
                 var todate = fromdate.AddMinutes(60);
 
-                BatchSearchParameter batchSearchParameter = new BatchSearchParameter()
+                var batches = this.scheduleRepository.GetBatches(new BatchSearchParameter()
                 {
                     FromDate = fromdate,
                     ToDate = todate,
                     Status = BatchStatus.New.ToString(),
                     IsExecuted = false
-                };
-                var batches = this.scheduleRepository.GetBatches(batchSearchParameter, tenantCode);
+                }, tenantCode);
 
                 if (batches.Count > 0)
                 {
-                    var scheduleSearchParameter = new ScheduleSearchParameter()
+                    var schedules = this.scheduleRepository.GetSchedules(new ScheduleSearchParameter()
                     {
                         Identifier = string.Join(",", batches.Select(item => item.ScheduleId).Distinct()).ToString(),
                         PagingParameter = new PagingParameter
@@ -478,8 +475,7 @@ namespace nIS
                             SortColumn = "Name",
                         },
                         SearchMode = SearchMode.Equals
-                    };
-                    var schedules = this.scheduleRepository.GetSchedules(scheduleSearchParameter, tenantCode);
+                    }, tenantCode);
                     if (schedules != null && schedules.Count > 0)
                     {
                         schedules.ToList().ForEach(schedule =>
@@ -499,7 +495,7 @@ namespace nIS
                             {
                                 if (batch.IsDataReady)
                                 {
-                                    StatementSearchParameter statementSearchParameter = new StatementSearchParameter
+                                    var statements = this.statementManager.GetStatements(new StatementSearchParameter
                                     {
                                         Identifier = schedule.Statement.Identifier,
                                         IsActive = true,
@@ -515,8 +511,7 @@ namespace nIS
                                             SortColumn = "Name",
                                         },
                                         SearchMode = SearchMode.Equals
-                                    };
-                                    var statements = this.statementManager.GetStatements(statementSearchParameter, tenantCode);
+                                    }, tenantCode);
                                     if (statements.Count > 0)
                                     {
                                         scheduleLog.ScheduleStatus = ScheduleLogStatus.InProgress.ToString();
@@ -555,7 +550,7 @@ namespace nIS
 
                                             string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batch.Identifier, baseURL, outputLocation, filesDict);
 
-                                            ScheduleLogSearchParameter logSearchParameter = new ScheduleLogSearchParameter()
+                                            scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
                                             {
                                                 ScheduleName = schedule.Name,
                                                 BatchId = batch.Identifier.ToString(),
@@ -570,33 +565,31 @@ namespace nIS
                                                     SortColumn = "Id",
                                                 },
                                                 SearchMode = SearchMode.Equals
-                                            };
-                                            scheduleLog = this.scheduleLogRepository.GetScheduleLogs(logSearchParameter, tenantCode).ToList().FirstOrDefault();
+                                            }, tenantCode).ToList().FirstOrDefault();
                                             scheduleLog.ScheduleId = schedule.Identifier;
 
-                                            ScheduleRunHistory runHistory = new ScheduleRunHistory();
+                                            var runHistory = new ScheduleRunHistory();
                                             runHistory.StartDate = DateTime.UtcNow;
                                             runHistory.ScheduleId = schedule.Identifier;
                                             runHistory.StatementId = statement.Identifier;
                                             runHistory.ScheduleLogId = scheduleLog.Identifier;
                                             runHistory.EndDate = DateTime.UtcNow;
                                             runHistory.StatementFilePath = CommonStatementZipFilePath;
-                                            IList<ScheduleRunHistory> scheduleRunHistory = new List<ScheduleRunHistory>();
+                                            var scheduleRunHistory = new List<ScheduleRunHistory>();
                                             scheduleRunHistory.Add(runHistory);
                                             this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
 
                                             var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
 
-                                            CustomerSearchParameter customerSearchParameter = new CustomerSearchParameter()
+                                            var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
                                             {
                                                 BatchId = batch.Identifier,
-                                            };
-                                            var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(customerSearchParameter, tenantCode);
+                                            }, tenantCode);
 
                                             if (customers.Count > 0)
                                             {
                                                 var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-                                                GenerateStatementRawData statementRawData = new GenerateStatementRawData()
+                                                var statementRawData = new GenerateStatementRawData()
                                                 {
                                                     Statement = statement,
                                                     ScheduleLog = scheduleLog,
@@ -705,7 +698,7 @@ namespace nIS
         {
             try
             {
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter
+                var client = this.clientManager.GetClients(new ClientSearchParameter
                 {
                     TenantCode = tenantCode,
                     IsCountryRequired = false,
@@ -721,8 +714,7 @@ namespace nIS
                         SortColumn = "Id",
                     },
                     SearchMode = SearchMode.Equals
-                };
-                var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
+                }, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
                 return this.scheduleRepository.RunScheduleNow(batchMaster, baseURL, outputLocation, tenantCode, parallelThreadCount, tenantConfiguration, client);
             }
@@ -746,7 +738,7 @@ namespace nIS
             bool scheduleRunStatus = false;
             try
             {
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter
+                var client = this.clientManager.GetClients(new ClientSearchParameter
                 {
                     TenantCode = tenantCode,
                     IsCountryRequired = false,
@@ -762,11 +754,10 @@ namespace nIS
                         SortColumn = "Id",
                     },
                     SearchMode = SearchMode.Equals
-                };
-                var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
+                }, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
 
-                var scheduleSearchParameter = new ScheduleSearchParameter()
+                var scheduleRecord = this.scheduleRepository.GetSchedules(new ScheduleSearchParameter()
                 {
                     Identifier = batchMaster.ScheduleId.ToString(),
                     PagingParameter = new PagingParameter
@@ -780,24 +771,22 @@ namespace nIS
                         SortColumn = "Name",
                     },
                     SearchMode = SearchMode.Equals
-                };
-                var scheduleRecord = this.scheduleRepository.GetSchedules(scheduleSearchParameter, tenantCode)?.FirstOrDefault();
+                }, tenantCode)?.FirstOrDefault();
                 if (scheduleRecord == null)
                 {
                     throw new ScheduleNotFoundException(tenantCode);
                 }
 
-                BatchSearchParameter batchSearchParameter = new BatchSearchParameter()
+                var batch = this.scheduleRepository.GetBatches(new BatchSearchParameter()
                 {
                     Identifier = batchMaster.Identifier.ToString(),
                     ScheduleId = batchMaster.ScheduleId.ToString(),
                     Status = BatchStatus.New.ToString(),
                     IsExecuted = false
-                };
-                var batch = this.scheduleRepository.GetBatches(batchSearchParameter, tenantCode)?.FirstOrDefault();
+                }, tenantCode)?.FirstOrDefault();
                 if (batch != null)
                 {
-                    ScheduleLog scheduleLog = new ScheduleLog();
+                    var scheduleLog = new ScheduleLog();
                     scheduleLog.ScheduleId = scheduleRecord.Identifier;
                     scheduleLog.ScheduleName = scheduleRecord.Name;
                     scheduleLog.BatchId = batch.Identifier;
@@ -826,7 +815,7 @@ namespace nIS
                     this.scheduleRepository.UpdateBatchStatus(batch.Identifier, batchStatus, false, tenantCode);
                     this.scheduleRepository.UpdateScheduleStatus(scheduleRecord.Identifier, scheduleStatus, tenantCode);
 
-                    IList<ScheduleLog> scheduleLogs = new List<ScheduleLog>();
+                    var scheduleLogs = new List<ScheduleLog>();
                     scheduleLogs.Add(scheduleLog);
                     this.scheduleLogRepository.SaveScheduleLog(scheduleLogs, tenantCode);
 
@@ -835,7 +824,7 @@ namespace nIS
                         return scheduleRunStatus;
                     }
 
-                    StatementSearchParameter statementSearchParameter = new StatementSearchParameter
+                    var statements = this.statementManager.GetStatements(new StatementSearchParameter
                     {
                         Identifier = scheduleRecord.Statement.Identifier,
                         IsActive = true,
@@ -851,8 +840,7 @@ namespace nIS
                             SortColumn = "Name",
                         },
                         SearchMode = SearchMode.Equals
-                    };
-                    var statements = this.statementManager.GetStatements(statementSearchParameter, tenantCode);
+                    }, tenantCode);
                     if (statements.Count == 0)
                     {
                         throw new StatementNotFoundException(tenantCode);
@@ -873,7 +861,7 @@ namespace nIS
                         }
                         string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Identifier, baseURL, outputLocation, filesDict);
 
-                        ScheduleLogSearchParameter logSearchParameter = new ScheduleLogSearchParameter()
+                        scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
                         {
                             ScheduleName = scheduleRecord.Name,
                             BatchId = batch.Identifier.ToString(),
@@ -888,34 +876,33 @@ namespace nIS
                                 SortColumn = "Id",
                             },
                             SearchMode = SearchMode.Equals
-                        };
-                        scheduleLog = this.scheduleLogRepository.GetScheduleLogs(logSearchParameter, tenantCode).ToList().FirstOrDefault();
+                        }, tenantCode).ToList().FirstOrDefault();
                         scheduleLog.ScheduleId = scheduleRecord.Identifier;
 
-                        ScheduleRunHistory runHistory = new ScheduleRunHistory();
+                        var runHistory = new ScheduleRunHistory();
                         runHistory.StartDate = DateTime.UtcNow;
                         runHistory.ScheduleId = scheduleRecord.Identifier;
                         runHistory.StatementId = statement.Identifier;
                         runHistory.ScheduleLogId = scheduleLog.Identifier;
                         runHistory.EndDate = DateTime.UtcNow;
                         runHistory.StatementFilePath = CommonStatementZipFilePath;
-                        IList<ScheduleRunHistory> scheduleRunHistory = new List<ScheduleRunHistory>();
+                        var scheduleRunHistory = new List<ScheduleRunHistory>();
                         scheduleRunHistory.Add(runHistory);
                         this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
 
                         var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
 
-                        CustomerSearchParameter customerSearchParameter = new CustomerSearchParameter()
+                        var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
                         {
                             BatchId = batch.Identifier,
-                        };
-                        var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(customerSearchParameter, tenantCode);
+                        }, tenantCode);
 
                         if (customers.Count > 0)
                         {
                             var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+                            long CustomerCount = customers.Count;
 
-                            GenerateStatementRawData statementRawData = new GenerateStatementRawData()
+                            var statementRawData = new GenerateStatementRawData()
                             {
                                 Statement = statement,
                                 ScheduleLog = scheduleLog,
@@ -923,7 +910,7 @@ namespace nIS
                                 Batch = batch,
                                 BatchDetails = BatchDetails,
                                 BaseURL = baseURL,
-                                CustomerCount = customers.Count,
+                                CustomerCount = CustomerCount,
                                 OutputLocation = outputLocation,
                                 TenantConfiguration = tenantConfiguration,
                                 Client = client,
