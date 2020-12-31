@@ -133,10 +133,10 @@ namespace nIS
             IUtility utility = new Utility();
             ValidationEngine validationEngine = new ValidationEngine();
 
-            if (!validationEngine.IsValidLong(this.Identifier, false))
-            {
-                exception.Data.Add(utility.GetDescription("Identifier", typeof(PageType)), ModelConstant.PRODUCTTYPE_SECTION + "~" + ModelConstant.INVALID_PRODUCTTYPE_ID);
-            }
+            //if (!validationEngine.IsValidLong(this.Identifier, false))
+            //{
+            //    exception.Data.Add(utility.GetDescription("Identifier", typeof(PageType)), ModelConstant.PRODUCTTYPE_SECTION + "~" + ModelConstant.INVALID_PRODUCTTYPE_ID);
+            //}
             if (!validationEngine.IsValidText(this.PageTypeName, false))
             {
                 exception.Data.Add(utility.GetDescription("PageTypeName", typeof(PageType)), ModelConstant.PRODUCTTYPE_SECTION + "~" + ModelConstant.INVALID_PRODUCTTYPE_NAME);

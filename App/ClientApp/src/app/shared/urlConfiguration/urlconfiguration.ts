@@ -23,6 +23,13 @@ export class URLConfiguration {
   public static get contacttypeUpdateUrl(): string { return "ContactType/Update" };
   public static get contacttypeDeleteUrl(): string { return "ContactType/Delete" };
 
+  //Page type method
+  public static get pagetypeGetUrl(): string { return "PageType/GetPageTypeList" };
+  public static get pagetypeAddUrl(): string { return "PageType/Add" };
+  public static get pagetypeUpdateUrl(): string { return "PageType/Update" };
+  public static get pagetypeDeleteUrl(): string { return "PageType/Delete" };
+
+
   //tenant method
   public static get tenantGetUrl(): string { return "Client/Get" };
   public static get tenantAddUrl(): string { return "Client/Add" };

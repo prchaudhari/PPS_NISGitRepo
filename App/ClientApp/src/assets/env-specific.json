@@ -1,5 +1,4 @@
 {
-  "baseURL": "http://localhost/API/",
-
+  "baseURL": "http://nisqa-api.azurewebsites.net/",
   "appVersion": "2.1.5"
 }

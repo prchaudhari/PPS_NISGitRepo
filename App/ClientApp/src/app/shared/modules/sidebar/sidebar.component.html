@@ -131,6 +131,7 @@
       <li [ngClass]="(URL=='/contacttype')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isTenantGroupManager" (click)="navigateToContactType()">
         <a> <span class='nav-icon fa fa-address-card' title="Contact Type"> </span> <span class='nav-title'>Contact Type</span> </a>
       </li>
+
       <li [ngClass]="(URL=='/analytics')?'side-bar-li active-li':'side-bar-li'" (click)="navigateToAnalytics()"
           *ngIf="IsMainMenu && ((userClaimsRolePrivilegeOperations | filterAuthorisedRole:{EntityName:'Analytics','Operation' : 'View'}))">
         <a> <span class='nav-icon icon-rp-yield1' title="Analytics"> </span> <span class='nav-title'>Analytics</span> </a>
@@ -149,6 +150,9 @@
       </li>
       <li [ngClass]="(URL=='/country')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && (isTenantGroupManager || isTenantAdminUser)" (click)="navigateToCountry()">
         <a> <span class='nav-icon fa fa-flag' title="Country"> </span> <span class='nav-title'>Country</span> </a>
+      </li>
+      <li [ngClass]="(URL=='/pagetype')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isTenantAdminUser" (click)="navigateToPageType()">
+        <a> <span class='nav-icon icon-templates2' title="Page Type"> </span> <span class='nav-title'>Page Type</span> </a>
       </li>
       <li [ngClass]="(URL=='/themeConfiguration')?'side-bar-li active-li':'side-bar-li'" *ngIf="!IsMainMenu && isTenantAdminUser" (click)="navigateTothemeConfiguration()">
         <a> <span class='nav-icon fa fa-gear' title="Theme ConfigurationComponent"> </span> <span class='nav-title'>Theme Configuration</span> </a>

@@ -18,6 +18,7 @@ import { MultiTenantUserAccessMapComponent } from './multi-tenant-user-access-ma
 import { InstancemanagerdashboardComponent } from './instancemanagerdashboard/instancemanagerdashboard.component';
 import { GroupmanagerdashboardComponent } from './groupmanagerdashboard/groupmanagerdashboard.component';
 import { EnvironmentSpecificResolver } from '../core/services/env-specific/environment-specific-resolver.service';
+import { PagetypeComponent } from './pagetype/pagetype.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,7 @@ const routes: Routes = [
       { path: 'multiTenantUserAccess', component: MultiTenantUserAccessMapComponent, resolve: { envSpecific: EnvironmentSpecificResolver } },
       { path: 'groupManagerDashboard', component: GroupmanagerdashboardComponent, resolve: { envSpecific: EnvironmentSpecificResolver } },
       { path: 'instanceManagerDashboard', component: InstancemanagerdashboardComponent, resolve: { envSpecific: EnvironmentSpecificResolver } },
+      { path: 'pagetype', component: PagetypeComponent, resolve: { envSpecific: EnvironmentSpecificResolver }},
 
     ]
   }

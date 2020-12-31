@@ -523,14 +523,8 @@ INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], 
 INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (14, 10, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
 INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (15, 11, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
 INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (16, 12, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (17, 13, 3, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
+INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (17, 13, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
 INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (18, 14, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (19, 1, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (20, 2, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (21, 2, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (22, 3, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (23, 3, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (24, 3, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
 SET IDENTITY_INSERT [NIS].[WidgetPageTypeMap] OFF
 
 
