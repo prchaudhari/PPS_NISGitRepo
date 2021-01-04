@@ -15,10 +15,12 @@ namespace nIS
     public partial class View_ScheduleLog
     {
         public long Id { get; set; }
+        public long ScheduleId { get; set; }
         public string ScheduleName { get; set; }
         public long BatchId { get; set; }
         public string BatchName { get; set; }
         public string BatchStatus { get; set; }
+        public int NumberOfRetry { get; set; }
         public string ProcessingTime { get; set; }
         public string RecordProccessed { get; set; }
         public string Status { get; set; }
