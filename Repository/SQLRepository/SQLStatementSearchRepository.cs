@@ -202,10 +202,7 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGenerator(statementSearchParameter, tenantCode);
-
-                IList<View_StatementMetadataRecord> statementRecords = new List<View_StatementMetadataRecord>();
-                IList<UserRecord> statementOwnerUserRecords = new List<UserRecord>();
-                IList<UserRecord> statementPublishedUserRecords = new List<UserRecord>();
+                var statementRecords = new List<View_StatementMetadataRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     if(string.IsNullOrEmpty(whereClause))
@@ -265,6 +262,8 @@ namespace nIS
                             AccountNumber = statementRecord.AccountNumber,
                             AccountType = statementRecord.AccountType,
                             StatementURL = statementRecord.StatementURL,
+                            IsPasswordGenerated = statementRecord.IsPasswordGenerated,
+                            Password = statementRecord.Password,
                             TenantCode = statementRecord.TenantCode
                         });
                     });

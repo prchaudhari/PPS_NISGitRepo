@@ -28,7 +28,10 @@ namespace nIS
         public string AccountNumber { get; set; }
         public string AccountType { get; set; }
         public string StatementURL { get; set; }
+        public bool IsPasswordGenerated { get; set; }
+        public string Password { get; set; }
         public string TenantCode { get; set; }
+        
 
         #region
 

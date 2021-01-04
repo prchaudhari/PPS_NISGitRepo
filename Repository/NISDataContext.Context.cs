@@ -22,7 +22,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                                 : base(connectionString)
+                                               : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -105,10 +105,10 @@ namespace nIS
         public virtual DbSet<TenantSubscriptionRecord> TenantSubscriptionRecords { get; set; }
         public virtual DbSet<ScheduleLogRecord> ScheduleLogRecords { get; set; }
         public virtual DbSet<ScheduleLogArchiveRecord> ScheduleLogArchiveRecords { get; set; }
-        public virtual DbSet<View_StatementMetadataRecord> View_StatementMetadataRecord { get; set; }
         public virtual DbSet<View_TenantSubscriptionRecord> View_TenantSubscriptionRecord { get; set; }
         public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
         public virtual DbSet<TenantSecurityCodeFormatRecord> TenantSecurityCodeFormatRecords { get; set; }
+        public virtual DbSet<View_StatementMetadataRecord> View_StatementMetadataRecord { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)
