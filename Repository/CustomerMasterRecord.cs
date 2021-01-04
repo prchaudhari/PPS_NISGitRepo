@@ -31,5 +31,9 @@ namespace nIS
         public string RmName { get; set; }
         public string RmContactNumber { get; set; }
         public string TenantCode { get; set; }
+        public string Field1 { get; set; }
+        public string Field2 { get; set; }
+        public string Field3 { get; set; }
+        public string Field4 { get; set; }
     }
 }

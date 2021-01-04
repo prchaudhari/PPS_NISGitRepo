@@ -289,6 +289,9 @@
     <Compile Include="TenantRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="TenantSecurityCodeFormatRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="TenantSubscriptionRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -390,6 +393,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CryptoManager\CryptoManager.csproj">
+      <Project>{a8e2f6e4-374c-49f5-9be3-a25f855876f0}</Project>
+      <Name>CryptoManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Exception\Exception.csproj">
       <Project>{21ae8607-0557-4d67-96d1-7830e57eab4f}</Project>
       <Name>Exception</Name>

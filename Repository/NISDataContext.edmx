@@ -201,6 +201,10 @@
           <Property Name="RmName" Type="nvarchar" MaxLength="50" />
           <Property Name="RmContactNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Field1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Field2" Type="nvarchar" MaxLength="100" />
+          <Property Name="Field3" Type="nvarchar" MaxLength="100" />
+          <Property Name="Field4" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="CustomerMedia">
           <Key>
@@ -583,6 +587,8 @@
           <Property Name="AccountType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="StatementURL" Type="nvarchar(max)" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsPasswordGenerated" Type="bit" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="StatementMetadataArchive">
           <Key>
@@ -601,6 +607,8 @@
           <Property Name="StatementURL" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ArchivalDate" Type="datetime" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsPasswordGenerated" Type="bit" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="StatementPageMap">
           <Key>
@@ -665,6 +673,22 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="APIPath" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RequestType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS.NIS.TenantSecurityCodeFormat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TenantSecurityCodeFormat">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="Format" />
+            <PropertyRef Name="LastModifiedBy" />
+            <PropertyRef Name="LastModifiedOn" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Format" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastModifiedBy" Type="bigint" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="TenantSubscription">
           <Key>
@@ -1510,6 +1534,15 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="WidgetPageTypeMap" EntityType="Self.WidgetPageTypeMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
+          <EntitySet Name="TenantSecurityCodeFormat" EntityType="Self.TenantSecurityCodeFormat" store:Type="Tables" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [TenantSecurityCodeFormat].[Id] AS [Id], 
+    [TenantSecurityCodeFormat].[TenantCode] AS [TenantCode], 
+    [TenantSecurityCodeFormat].[Format] AS [Format], 
+    [TenantSecurityCodeFormat].[LastModifiedBy] AS [LastModifiedBy], 
+    [TenantSecurityCodeFormat].[LastModifiedOn] AS [LastModifiedOn]
+    FROM [NIS].[TenantSecurityCodeFormat] AS [TenantSecurityCodeFormat]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="View_DynamicWidget" EntityType="Self.View_DynamicWidget" store:Type="Views" store:Schema="NIS">
             <DefiningQuery>SELECT 
     [View_DynamicWidget].[Id] AS [Id], 
@@ -1825,6 +1858,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="View_StatementMetadataRecord" EntityType="NISModel.View_StatementMetadataRecord" />
           <EntitySet Name="View_TenantSubscriptionRecord" EntityType="NISModel.View_TenantSubscriptionRecord" />
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
+          <EntitySet Name="TenantSecurityCodeFormatRecords" EntityType="NISModel.TenantSecurityCodeFormatRecord" />
         </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2237,6 +2271,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="RmName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RmContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Field1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Field2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Field3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Field4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ImageRecord">
           <Key>
@@ -3043,6 +3081,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="AccountType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StatementURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsPasswordGenerated" Type="Boolean" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="StatementMetadataArchiveRecord">
           <Key>
@@ -3061,6 +3101,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="StatementURL" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ArchivalDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsPasswordGenerated" Type="Boolean" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="View_DynamicWidgetRecord">
           <Key>
@@ -3218,6 +3260,20 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TenantSecurityCodeFormatRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="Format" />
+            <PropertyRef Name="LastModifiedBy" />
+            <PropertyRef Name="LastModifiedOn" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Format" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifiedBy" Type="Int64" Nullable="false" />
+          <Property Name="LastModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3645,6 +3701,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="CustomerMasterRecords">
             <EntityTypeMapping TypeName="NISModel.CustomerMasterRecord">
               <MappingFragment StoreEntitySet="CustomerMaster">
+                <ScalarProperty Name="Field4" ColumnName="Field4" />
+                <ScalarProperty Name="Field3" ColumnName="Field3" />
+                <ScalarProperty Name="Field2" ColumnName="Field2" />
+                <ScalarProperty Name="Field1" ColumnName="Field1" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="RmContactNumber" ColumnName="RmContactNumber" />
                 <ScalarProperty Name="RmName" ColumnName="RmName" />
@@ -4437,6 +4497,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="StatementMetadataRecords">
             <EntityTypeMapping TypeName="NISModel.StatementMetadataRecord">
               <MappingFragment StoreEntitySet="StatementMetadata">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsPasswordGenerated" ColumnName="IsPasswordGenerated" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="StatementURL" ColumnName="StatementURL" />
                 <ScalarProperty Name="AccountType" ColumnName="AccountType" />
@@ -4455,6 +4517,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="StatementMetadataArchiveRecords">
             <EntityTypeMapping TypeName="NISModel.StatementMetadataArchiveRecord">
               <MappingFragment StoreEntitySet="StatementMetadataArchive">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsPasswordGenerated" ColumnName="IsPasswordGenerated" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="ArchivalDate" ColumnName="ArchivalDate" />
                 <ScalarProperty Name="StatementURL" ColumnName="StatementURL" />
@@ -4598,6 +4662,17 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TenantSecurityCodeFormatRecords">
+            <EntityTypeMapping TypeName="NISModel.TenantSecurityCodeFormatRecord">
+              <MappingFragment StoreEntitySet="TenantSecurityCodeFormat">
+                <ScalarProperty Name="LastModifiedOn" ColumnName="LastModifiedOn" />
+                <ScalarProperty Name="LastModifiedBy" ColumnName="LastModifiedBy" />
+                <ScalarProperty Name="Format" ColumnName="Format" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
