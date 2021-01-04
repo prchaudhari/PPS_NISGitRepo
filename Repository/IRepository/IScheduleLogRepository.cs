@@ -85,6 +85,16 @@ namespace nIS
         bool SaveScheduleLog(IList<ScheduleLog> scheduleLogs, string tenantCode);
 
         /// <summary>
+        /// This method helps to remove schedule log records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        bool DeleteScheduleLog(long ScheduleLogId, string tenantCode);
+
+        /// <summary>
         /// This method adds the specified list of schedule log detail in the repository.
         /// </summary>
         /// <param name="scheduleLogDetails"></param>
@@ -105,6 +115,17 @@ namespace nIS
         bool UpdateScheduleLogDetails(IList<ScheduleLogDetail> scheduleLogDetails, string tenantCode);
 
         /// <summary>
+        /// This method helps to remove schedule log details records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="CustomerId">The customer identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        bool DeleteScheduleLogDetails(long ScheduleLogId, long? CustomerId, string tenantCode);
+
+        /// <summary>
         /// This method adds the specified list of statement metadata in the repository.
         /// </summary>
         /// <param name="statementMetadata"></param>
@@ -113,6 +134,17 @@ namespace nIS
         /// True, if the statement metadata values are added successfully, false otherwise
         /// </returns>
         bool SaveStatementMetadata(IList<StatementMetadata> statementMetadata, string tenantCode);
+
+        /// <summary>
+        /// This method helps to remove statement metadata records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="CustomerId">The customer identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        bool DeleteStatementMetadata(long ScheduleLogId, long? CustomerId, string tenantCode);
 
         /// <summary>
         /// This method helps to update schedule log status.

@@ -1,35 +1,35 @@
 <div class="main-container">
     <div class="page-title">
-      <span class="xs-title" *ngIf="renderEngineEditModeOn == false"> Add Render Engine </span>
-      <span class="xs-title" *ngIf="renderEngineEditModeOn == true"> Update Render Engine </span>
+      <span class="xs-title" *ngIf="renderEngineEditModeOn == false"> Add NIS Engine </span>
+      <span class="xs-title" *ngIf="renderEngineEditModeOn == true"> Update NIS Engine </span>
     </div>
     <form [formGroup]="renderEngineForm" name="renderEngineForm" autocomplete="on" novalidate>
       <div class="card border-0 mb-2 card-shadow">
         <div class="card-body" id="collapseDetails">
             <div class="row form-group">
                 <div class="col-md-6 col-sm-6 col-lg-4">
-                    <label id="lblRenderEngineName" for="inputRenderEngineName">Render Engine Name<span class="text-danger ml-2">*</span></label>
+                    <label id="lblRenderEngineName" for="inputRenderEngineName">NIS Engine Name<span class="text-danger ml-2">*</span></label>
                     <input type="text" class="form-control" id="inputRenderEngineName" name="RenderEngineName"
                                     formControlName="RenderEngineName" />
                     <!-- Error Masseges  -->
                     <div class="validation-msg" style="color:red" *ngIf="RenderEngineName.touched && RenderEngineName.errors">
                         <ul style="list-style-type:none">
-                            <li class="text-danger" *ngIf="RenderEngineName.errors?.pattern">Invalid Render Engine Name</li>
-                            <li class="text-danger" *ngIf="RenderEngineName.errors?.required">Render Engine name required</li>
-                            <li class="text-danger" *ngIf="RenderEngineName.errors?.minlength">Render Engine name length should not be less than 2</li>
-                            <li class="text-danger" *ngIf="RenderEngineName.errors?.maxlength">Render Engine name length should not be greater than 50</li>
+                            <li class="text-danger" *ngIf="RenderEngineName.errors?.pattern">Invalid NIS Engine Name</li>
+                            <li class="text-danger" *ngIf="RenderEngineName.errors?.required">NIS Engine name required</li>
+                            <li class="text-danger" *ngIf="RenderEngineName.errors?.minlength">NIS Engine name length should not be less than 2</li>
+                            <li class="text-danger" *ngIf="RenderEngineName.errors?.maxlength">NIS Engine name length should not be greater than 50</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-4">
-                    <label id="lblRenderEngineURL" for="inputRenderEngineURL">Render Engine URL<span class="text-danger ml-2">*</span></label>
+                    <label id="lblRenderEngineURL" for="inputRenderEngineURL">NIS Engine URL<span class="text-danger ml-2">*</span></label>
                     <input type="text" class="form-control" id="inputRenderEngineURL" name="RenderEngineURL"
                                     formControlName="RenderEngineURL" />
                     <!-- Error Masseges  -->
                     <div class="validation-msg" style="color:red" *ngIf="RenderEngineURL.touched && RenderEngineURL.errors">
                         <ul style="list-style-type:none">
-                            <li class="text-danger" *ngIf="RenderEngineURL.errors?.pattern">Invalid Render Engine URL</li>
-                            <li class="text-danger" *ngIf="RenderEngineURL.errors?.required">Render Engine URL required</li>
+                            <li class="text-danger" *ngIf="RenderEngineURL.errors?.pattern">Invalid NIS Engine URL</li>
+                            <li class="text-danger" *ngIf="RenderEngineURL.errors?.required">NIS Engine URL required</li>
                         </ul>
                     </div>
                 </div>
@@ -88,4 +88,3 @@
       </div>
     </form>
   </div>
-  

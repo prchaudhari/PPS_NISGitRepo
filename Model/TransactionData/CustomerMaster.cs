@@ -1,4 +1,4 @@
-﻿// <copyright file="SubscriptionMaster.cs" company="Websym Solutions Pvt. Ltd.">
+﻿// <copyright file="CustomerMaster.cs" company="Websym Solutions Pvt. Ltd.">
 // Copyright (c) 2020 Websym Solutions Pvt. Ltd..
 // </copyright>
 //-----------------------------------------------------------------------

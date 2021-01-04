@@ -1,6 +1,6 @@
 ﻿CREATE VIEW [NIS].[View_ScheduleLog]
 AS
-SELECT sl.Id, sl.ScheduleName, sl.BatchId, sl.BatchName, bm.Status AS BatchStatus,
+SELECT sl.Id, sl.ScheduleId, sl.ScheduleName, sl.BatchId, sl.BatchName, bm.Status AS BatchStatus, sl.NumberOfRetry,
 CONVERT(VARCHAR(5),DATEDIFF(s, srh.StartDate, srh.EndDate)/3600)+' Hr '+
 CONVERT(VARCHAR(5),DATEDIFF(s, srh.StartDate, srh.EndDate)%3600/60)+' Min '+
 CONVERT(VARCHAR(5),(DATEDIFF(s, srh.StartDate, srh.EndDate)%60)) + ' Sec' AS ProcessingTime,
@@ -10,4 +10,4 @@ FROM NIS.ScheduleLog sl
 INNER JOIN NIS.BatchMaster bm ON sl.BatchId = bm.Id
 LEFT JOIN NIS.ScheduleLogDetail sld ON sl.Id = sld.ScheduleLogId
 LEFT JOIN NIS.ScheduleRunHistory srh ON sl.Id = srh.ScheduleLogId
-GROUP BY sl.ScheduleName, sl.BatchId, sl.BatchName, bm.Status, sl.CreationDate, sl.Status, srh.StartDate, srh.EndDate, sl.Id, sl.TenantCode
+GROUP BY sl.ScheduleId, sl.ScheduleName, sl.BatchId, sl.BatchName, bm.Status, sl.NumberOfRetry, sl.CreationDate, sl.Status, srh.StartDate, srh.EndDate, sl.Id, sl.TenantCode

@@ -70,12 +70,6 @@ namespace nIS
         /// </summary>
         private DynamicWidgetManager dynamicWidgetManager = null;
 
-        /// <summary>
-        /// The utility object
-        /// </summary>
-        private IUtility utility = null;
-
-
         #endregion
 
         #region Constructor
@@ -98,7 +92,6 @@ namespace nIS
                 this.statementManager = this.unityContainer.Resolve<StatementManager>();
                 this.renderEngineManager = this.unityContainer.Resolve<RenderEngineManager>();
                 this.dynamicWidgetManager = this.unityContainer.Resolve<DynamicWidgetManager>();
-                this.utility = new Utility();
             }
             catch (Exception ex)
             {
@@ -229,27 +222,9 @@ namespace nIS
 
             try
             {
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter
-                {
-                    TenantCode = tenantCode,
-                    IsCountryRequired = false,
-                    IsContactRequired = false,
-                    PagingParameter = new PagingParameter
-                    {
-                        PageIndex = 0,
-                        PageSize = 0,
-                    },
-                    SortParameter = new SortParameter()
-                    {
-                        SortOrder = SortOrder.Ascending,
-                        SortColumn = "Id",
-                    },
-                    SearchMode = SearchMode.Equals
-                };
-                var client = this.clientManager.GetClients(clientSearchParameter, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
 
-                ScheduleLogDetailSearchParameter scheduleLogDetailSearchParameter = new ScheduleLogDetailSearchParameter()
+                var scheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
                 {
                     ScheduleLogDetailId = string.Join(",", scheduleLogDetails.Select(item => item.Identifier).Distinct()).ToString(),
                     PagingParameter = new PagingParameter
@@ -263,8 +238,7 @@ namespace nIS
                         SortColumn = "Id",
                     },
                     SearchMode = SearchMode.Equals
-                };
-                var scheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(scheduleLogDetailSearchParameter, tenantCode);
+                }, tenantCode);
                 if (scheduleLogDetailRecords == null || scheduleLogDetailRecords.Count <= 0 || scheduleLogDetailRecords.Count() != string.Join(",", scheduleLogDetailRecords.Select(item => item.Identifier).Distinct()).ToString().Split(',').Length)
                 {
                     throw new ScheduleLogDetailNotFoundException(tenantCode);
@@ -273,25 +247,7 @@ namespace nIS
                 if (scheduleLogDetailRecords.Count > 0)
                 {
                     var firstScheduleLogDetailRecord = scheduleLogDetailRecords.ToList().FirstOrDefault();
-
-                    var scheduleSearchParameter = new ScheduleSearchParameter()
-                    {
-                        Identifier = firstScheduleLogDetailRecord.ScheduleId.ToString(),
-                        PagingParameter = new PagingParameter
-                        {
-                            PageIndex = 0,
-                            PageSize = 0,
-                        },
-                        SortParameter = new SortParameter()
-                        {
-                            SortOrder = SortOrder.Ascending,
-                            SortColumn = "Name",
-                        },
-                        SearchMode = SearchMode.Equals
-                    };
-                    var scheduleRecord = this.scheduleManager.GetSchedules(scheduleSearchParameter, tenantCode)?.FirstOrDefault();
-
-                    ScheduleLogSearchParameter logSearchParameter = new ScheduleLogSearchParameter()
+                    var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
                     {
                         ScheduleLogId = firstScheduleLogDetailRecord.ScheduleLogId.ToString(),
                         PagingParameter = new PagingParameter
@@ -305,18 +261,47 @@ namespace nIS
                             SortColumn = "Id",
                         },
                         SearchMode = SearchMode.Equals
-                    };
-                    var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(logSearchParameter, tenantCode).ToList().FirstOrDefault();
-
-                    BatchSearchParameter batchSearchParameter = new BatchSearchParameter()
+                    }, tenantCode).ToList().FirstOrDefault();
+                    var batch = this.scheduleManager.GetBatches(new BatchSearchParameter()
                     {
                         Identifier = scheduleLog.BatchId.ToString()
-                    };
-                    var batch = this.scheduleManager.GetBatches(batchSearchParameter, tenantCode)?.FirstOrDefault();
+                    }, tenantCode)?.FirstOrDefault();
 
                     if (batch != null)
                     {
-                        StatementSearchParameter statementSearchParameter = new StatementSearchParameter
+                        var client = this.clientManager.GetClients(new ClientSearchParameter
+                        {
+                            TenantCode = tenantCode,
+                            IsCountryRequired = false,
+                            IsContactRequired = false,
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Id",
+                            },
+                            SearchMode = SearchMode.Equals
+                        }, tenantCode).FirstOrDefault();
+                        var scheduleRecord = this.scheduleManager.GetSchedules(new ScheduleSearchParameter()
+                        {
+                            Identifier = firstScheduleLogDetailRecord.ScheduleId.ToString(),
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Name",
+                            },
+                            SearchMode = SearchMode.Equals
+                        }, tenantCode)?.FirstOrDefault();
+                        var statements = this.statementManager.GetStatements(new StatementSearchParameter
                         {
                             Identifier = scheduleRecord.Statement.Identifier,
                             IsActive = true,
@@ -332,8 +317,7 @@ namespace nIS
                                 SortColumn = "Name",
                             },
                             SearchMode = SearchMode.Equals
-                        };
-                        var statements = this.statementManager.GetStatements(statementSearchParameter, tenantCode);
+                        }, tenantCode);
                         if (statements.Count > 0)
                         {
                             var statement = statements.ToList().FirstOrDefault();
@@ -343,7 +327,7 @@ namespace nIS
                             
                             var tenantEntities = this.dynamicWidgetManager.GetTenantEntities(tenantCode);
 
-                            GenerateStatementRawData statementRawData = new GenerateStatementRawData()
+                            var statementRawData = new GenerateStatementRawData()
                             {
                                 Statement = statement,
                                 ScheduleLog = scheduleLog,
@@ -360,23 +344,23 @@ namespace nIS
                             //Render engine implementation logic
                             for (int i = 0; scheduleLogDetailRecords.Count > 0; i++)
                             {
-                                var availableRenderEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                var availableNisEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
                                 ParallelOptions parallelOptions = new ParallelOptions();
 
-                                if (scheduleLogDetailRecords.Count > availableRenderEngines.Count * parallelThreadCount)
+                                if (scheduleLogDetailRecords.Count > availableNisEngines.Count * parallelThreadCount)
                                 {
-                                    parallelOptions.MaxDegreeOfParallelism = availableRenderEngines.Count;
+                                    parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
                                     var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
                                     int count = 0;
-                                    for (int j = 1; availableRenderEngines.Count > 0; j++)
+                                    for (int j = 1; availableNisEngines.Count > 0; j++)
                                     {
-                                        parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines.FirstOrDefault() });
+                                        parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
                                         scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
                                         count += 1;
-                                        availableRenderEngines = availableRenderEngines.Skip(count).ToList();
+                                        availableNisEngines = availableNisEngines.Skip(count).ToList();
                                     }
 
-                                    ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                 }
                                 else
                                 {
@@ -388,18 +372,18 @@ namespace nIS
                                     {
                                         if (scheduleLogDetailRecords.Count > parallelThreadCount)
                                         {
-                                            parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines[count] });
+                                            parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
                                             scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
                                             count += 1;
                                         }
                                         else
                                         {
-                                            parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.ToList(), RenderEngine = availableRenderEngines[count] });
+                                            parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.ToList(), RenderEngine = availableNisEngines[count] });
                                             scheduleLogDetailRecords = new List<ScheduleLogDetail>();
                                         }
                                     }
 
-                                    ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                 }
                             }
                         }
@@ -539,7 +523,6 @@ namespace nIS
         /// <param name="Status"></param>
         /// <param name="tenantCode"></param>
         /// <returns>True if success, otherwise false</returns>
-
         public bool UpdateScheduleLogStatus(long ScheduleLogIdentifier, string Status, string tenantCode)
         {
             try
@@ -572,6 +555,68 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method helps to remove schedule log records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        public bool DeleteScheduleLog(long ScheduleLogId, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.DeleteScheduleLog(ScheduleLogId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to remove schedule log details records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="CustomerId">The customer identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        public bool DeleteScheduleLogDetails(long ScheduleLogId, long? CustomerId, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.DeleteScheduleLogDetails(ScheduleLogId, CustomerId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to remove statement metadata records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="CustomerId">The customer identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        public bool DeleteStatementMetadata(long ScheduleLogId, long? CustomerId, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleLogRepository.DeleteStatementMetadata(ScheduleLogId, CustomerId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -582,7 +627,7 @@ namespace nIS
         /// <param name="statementRawData">raw data object requires in statement generate process</param>
         /// <param name="parallelOptions">parallel option object of threading</param>
         /// <param name="parallelRequests">the list of schedule log detail parallel request object</param>
-        private void ParallleProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<ScheduleLogDetailParallelRequest> parallelRequests, int parallelThreadCount)
+        private void ParalllelProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<ScheduleLogDetailParallelRequest> parallelRequests, int parallelThreadCount)
         {
             Parallel.ForEach(parallelRequests, parallelOptions, item =>
             {

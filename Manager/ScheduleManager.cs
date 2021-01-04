@@ -429,28 +429,11 @@ namespace nIS
 
             try
             {
-                var client = this.clientManager.GetClients(new ClientSearchParameter
-                {
-                    TenantCode = tenantCode,
-                    IsCountryRequired = false,
-                    IsContactRequired = false,
-                    PagingParameter = new PagingParameter
-                    {
-                        PageIndex = 0,
-                        PageSize = 0,
-                    },
-                    SortParameter = new SortParameter()
-                    {
-                        SortOrder = SortOrder.Ascending,
-                        SortColumn = "Id",
-                    },
-                    SearchMode = SearchMode.Equals
-                }, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
-
+                
+                //get batches which has execution time in between given time interval
                 var fromdate = DateTime.Now;
                 var todate = fromdate.AddMinutes(60);
-
                 var batches = this.scheduleRepository.GetBatches(new BatchSearchParameter()
                 {
                     FromDate = fromdate,
@@ -533,6 +516,23 @@ namespace nIS
                                         var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                                         if (statementPageContents.Count > 0)
                                         {
+                                            var client = this.clientManager.GetClients(new ClientSearchParameter
+                                            {
+                                                TenantCode = tenantCode,
+                                                IsCountryRequired = false,
+                                                IsContactRequired = false,
+                                                PagingParameter = new PagingParameter
+                                                {
+                                                    PageIndex = 0,
+                                                    PageSize = 0,
+                                                },
+                                                SortParameter = new SortParameter()
+                                                {
+                                                    SortOrder = SortOrder.Ascending,
+                                                    SortColumn = "Id",
+                                                },
+                                                SearchMode = SearchMode.Equals
+                                            }, tenantCode).FirstOrDefault();
                                             var statementPreviewData = this.statementManager.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
                                             string fileName = "Statement_" + statement.Identifier + "_" + batch.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
@@ -607,23 +607,23 @@ namespace nIS
                                                 //Render engine implementation logic
                                                 for (int i = 0; customers.Count > 0; i++)
                                                 {
-                                                    var availableRenderEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                                    var availableNisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
                                                     ParallelOptions parallelOptions = new ParallelOptions();
 
-                                                    if (customers.Count > availableRenderEngines.Count * parallelThreadCount)
+                                                    if (customers.Count > availableNisEngines.Count * parallelThreadCount)
                                                     {
-                                                        parallelOptions.MaxDegreeOfParallelism = availableRenderEngines.Count;
+                                                        parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
                                                         var parallelRequest = new List<CustomerParallelRequest>();
                                                         int count = 0;
-                                                        for (int j = 1; availableRenderEngines.Count > 0; j++)
+                                                        for (int j = 1; availableNisEngines.Count > 0; j++)
                                                         {
-                                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines.FirstOrDefault() });
+                                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
                                                             customers = customers.Skip(parallelThreadCount).ToList();
                                                             count += 1;
-                                                            availableRenderEngines = availableRenderEngines.Skip(count).ToList();
+                                                            availableNisEngines = availableNisEngines.Skip(count).ToList();
                                                         }
                                                         
-                                                        ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                                     }
                                                     else
                                                     {
@@ -635,18 +635,18 @@ namespace nIS
                                                         {
                                                             if (customers.Count > parallelThreadCount)
                                                             {
-                                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines[count] });
+                                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
                                                                 customers = customers.Skip(parallelThreadCount).ToList();
                                                                 count += 1;
                                                             }
                                                             else
                                                             {
-                                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableRenderEngines[count] });
+                                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
                                                                 customers = new List<CustomerMaster>();
                                                             }
                                                         }
 
-                                                        ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                                     }
                                                 }
                                             }
@@ -738,25 +738,7 @@ namespace nIS
             bool scheduleRunStatus = false;
             try
             {
-                var client = this.clientManager.GetClients(new ClientSearchParameter
-                {
-                    TenantCode = tenantCode,
-                    IsCountryRequired = false,
-                    IsContactRequired = false,
-                    PagingParameter = new PagingParameter
-                    {
-                        PageIndex = 0,
-                        PageSize = 0,
-                    },
-                    SortParameter = new SortParameter()
-                    {
-                        SortOrder = SortOrder.Ascending,
-                        SortColumn = "Id",
-                    },
-                    SearchMode = SearchMode.Equals
-                }, tenantCode).FirstOrDefault();
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
-
                 var scheduleRecord = this.scheduleRepository.GetSchedules(new ScheduleSearchParameter()
                 {
                     Identifier = batchMaster.ScheduleId.ToString(),
@@ -851,6 +833,23 @@ namespace nIS
                     var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                     if (statementPageContents.Count > 0)
                     {
+                        var client = this.clientManager.GetClients(new ClientSearchParameter
+                        {
+                            TenantCode = tenantCode,
+                            IsCountryRequired = false,
+                            IsContactRequired = false,
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Id",
+                            },
+                            SearchMode = SearchMode.Equals
+                        }, tenantCode).FirstOrDefault();
                         var statementPreviewData = this.statementManager.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
                         string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
@@ -890,16 +889,15 @@ namespace nIS
                         scheduleRunHistory.Add(runHistory);
                         this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
 
-                        var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
-
                         var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
                         {
                             BatchId = batch.Identifier,
                         }, tenantCode);
-
                         if (customers.Count > 0)
                         {
                             var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+                            var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
+
                             long CustomerCount = customers.Count;
 
                             var statementRawData = new GenerateStatementRawData()
@@ -936,7 +934,7 @@ namespace nIS
                                         availableRenderEngines = availableRenderEngines.Skip(count).ToList();
                                     }
 
-                                    ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                 }
                                 else
                                 {
@@ -959,7 +957,7 @@ namespace nIS
                                         }
                                     }
 
-                                    ParallleProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                 }
                             }
                         }
@@ -1217,7 +1215,7 @@ namespace nIS
         /// <param name="statementRawData">raw data object requires in statement generate process</param>
         /// <param name="parallelOptions">parallel option object of threading</param>
         /// <param name="parallelRequests">the list of customer parallel request object</param>
-        public void ParallleProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<CustomerParallelRequest> parallelRequests, int parallelThreadCount)
+        public void ParalllelProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<CustomerParallelRequest> parallelRequests, int parallelThreadCount)
         {
             Parallel.ForEach(parallelRequests, parallelOptions, item =>
             {

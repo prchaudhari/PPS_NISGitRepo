@@ -1,0 +1,22 @@
+analyticsdata = [
+  {
+    "AccountType": "Saving Account",
+    "Percentage": 11.84
+  },
+  {
+    "AccountType": "Current Account",
+    "Percentage": 10.85
+  },
+  {
+    "AccountType": "Recurring Account",
+    "Percentage": 4.67
+  },
+  {
+    "AccountType": "Wealth",
+    "Percentage": 4.18
+  },
+  {
+    "AccountType": "Home Loan",
+    "Percentage": 7.05
+  }
+]

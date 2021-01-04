@@ -1,12 +1,12 @@
 <div class="main-container position-relative">
     <div class="page-title d-flex justify-content-md-between justify-content-end">
       <div class="xs-title">
-        <span class="mr-2">Render Engines</span>
+        <span class="mr-2">NIS Engines</span>
         <span class="icon-filter filter-btn" id="spnFilter" (click)="isFilter=!isFilter"></span>
       </div>
       <div>
         <button class="btn-add btn-cust" id="btnAddRenderEngine" (click)="navigateToAddRenderEngine()">
-          <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> Render Engine
+          <span class="fa fa-plus btn-icon-cust btn-icon-fill"></span> NIS Engine
         </button>
       </div>
     </div>
@@ -56,19 +56,19 @@
             <th class="width15 ip-w-20" mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let re">
               <div class="action-btns btn-tbl-action">
-                <button type="button" id="btnViewRenderEngine" title="View Render Rengine" (click)="navigateToViewRenderEngine(re)">
+                <button type="button" id="btnViewRenderEngine" title="View NIS Rengine" (click)="navigateToViewRenderEngine(re)">
                     <span class="fa fa-file-text-o"></span>
                 </button>
-                <button type="button" id="btnUpdateRenderEngine" *ngIf="re.IsActive" title="Update Render Engine" (click)="navigateToEditRederEngine(re)">
+                <button type="button" id="btnUpdateRenderEngine" *ngIf="re.IsActive" title="Update NIS Engine" (click)="navigateToEditRederEngine(re)">
                     <span class="fa fa-pencil-square-o"></span>
                 </button>
-                <button type="button" id="btnDeleteRenderEngine" title="Delete Render Engine" (click)="deleteRenderEngine(re)">
+                <button type="button" id="btnDeleteRenderEngine" title="Delete NIS Engine" (click)="deleteRenderEngine(re)">
                     <span class="fa fa-trash-o"></span>
                 </button>
-                <button type="button" id="btnDeactivateRenderEngine" title="Deactivate Render Engine" (click)="DeactivateRenderEngine(re)" *ngIf="re.IsActive">
+                <button type="button" id="btnDeactivateRenderEngine" title="Deactivate NIS Engine" (click)="DeactivateRenderEngine(re)" *ngIf="re.IsActive">
                   <span class="fa fa-toggle-on text-success"></span>
                 </button>
-                <button type="button" id="btnActivateRenderEngine" title="Activate Render Engine" (click)="ActivateRenderEngine(re)" *ngIf="!re.IsActive">
+                <button type="button" id="btnActivateRenderEngine" title="Activate NIS Engine" (click)="ActivateRenderEngine(re)" *ngIf="!re.IsActive">
                   <span class="fa fa-toggle-off text-success"></span>
                 </button>
             </div>

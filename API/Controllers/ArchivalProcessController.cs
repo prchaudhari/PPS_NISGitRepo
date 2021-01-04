@@ -43,7 +43,6 @@ namespace nIS
         /// </summary>
         private TenantConfigurationManager tenantConfigurationManager = null;
 
-
         #endregion
 
         #region Constructor
@@ -71,13 +70,7 @@ namespace nIS
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var htmlStatementFilepath = Url.Content("~/");
                 var pdfStatementFilepath = AppDomain.CurrentDomain.BaseDirectory;
-                var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.ArchivalPath))
-                {
-                    htmlStatementFilepath = tenantConfiguration.OutputHTMLPath;
-                    pdfStatementFilepath = tenantConfiguration.ArchivalPath;
-                }
-                return this.archivalProcessManager.RunArchivalProcess(pdfStatementFilepath, htmlStatementFilepath, tenantConfiguration, tenantCode);
+                return this.archivalProcessManager.RunArchivalProcessNew(pdfStatementFilepath, htmlStatementFilepath, tenantCode);
             }
             catch (Exception ex)
             {

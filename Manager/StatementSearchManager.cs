@@ -167,7 +167,6 @@ namespace nIS
                 {
                     throw invalidSearchParameterException;
                 }
-
                
                 return this.StatementSearchRepository.GetStatementSearchs(StatementSearchSearchParameter, tenantCode);
             }

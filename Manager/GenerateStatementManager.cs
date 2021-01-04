@@ -12,6 +12,7 @@ namespace nIS
     using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -43,7 +44,7 @@ namespace nIS
         /// <summary>
         /// The validation engine object
         /// </summary>
-        IValidationEngine validationEngine = null;
+        private IValidationEngine validationEngine = null;
 
         /// <summary>
         /// The dynamic widget manager object.
@@ -53,22 +54,32 @@ namespace nIS
         /// <summary>
         /// The tenant transaction data manager.
         /// </summary>
-        TenantTransactionDataManager tenantTransactionDataManager = null;
+        private TenantTransactionDataManager tenantTransactionDataManager = null;
 
         /// <summary>
         /// The schedule log manager.
         /// </summary>
-        ScheduleLogManager scheduleLogManager = null;
+        private ScheduleLogManager scheduleLogManager = null;
 
         /// <summary>
         /// The schedule manager.
         /// </summary>
-        ScheduleManager scheduleManager = null;
+        private ScheduleManager scheduleManager = null;
 
         /// <summary>
         /// The asset library manager.
         /// </summary>
-        AssetLibraryManager assetLibraryManager = null;
+        private AssetLibraryManager assetLibraryManager = null;
+
+        /// <summary>
+        /// The statement search manager.
+        /// </summary>
+        private StatementSearchManager statementSearchManager = null;
+
+        /// <summary>
+        /// The archival process manager.
+        /// </summary>
+        private ArchivalProcessManager archivalProcessManager = null;
 
         #endregion
 
@@ -91,6 +102,8 @@ namespace nIS
                 this.scheduleManager = new ScheduleManager(unityContainer);
                 this.scheduleLogManager = new ScheduleLogManager(unityContainer);
                 this.dynamicWidgetManager = new DynamicWidgetManager(unityContainer);
+                this.statementSearchManager = new StatementSearchManager(unityContainer);
+                this.archivalProcessManager = new ArchivalProcessManager(unityContainer);
             }
             catch (Exception ex)
             {
@@ -738,6 +751,196 @@ namespace nIS
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// This method helps to convert HTML statement to PDF statement and archive related data for the customer.
+        /// </summary>
+        /// <param name="archivalProcessRawData">The raw data object required for archival process</param>
+        /// <param name="tenantCode">The tenant code</param>
+        public bool RunArchivalForCustomerRecord(ArchivalProcessRawData archivalProcessRawData, string tenantCode)
+        {
+            var tempDir = string.Empty;
+            var runStatus = false;
+
+            try
+            {
+                var pdfStatementFilepath = archivalProcessRawData.PdfStatementFilepath;
+                var batch = archivalProcessRawData.BatchMaster;
+
+                var customer = this.tenantTransactionDataManager.Get_CustomerMasters(new CustomerSearchParameter()
+                {
+                    BatchId = batch.Identifier,
+                    CustomerId = archivalProcessRawData.CustomerId
+                }, tenantCode).FirstOrDefault();
+                var metadataRecords = this.statementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
+                {
+                    CustomerId = archivalProcessRawData.CustomerId.ToString(),
+                    StatementId = archivalProcessRawData.Statement.Identifier.ToString(),
+                    PagingParameter = new PagingParameter
+                    {
+                        PageIndex = 0,
+                        PageSize = 0,
+                    },
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = "Id",
+                    },
+                    SearchMode = SearchMode.Equals
+                }, tenantCode);
+                
+                if (customer != null && metadataRecords != null && metadataRecords.Count > 0)
+                {
+                    var statementSearchRecord = metadataRecords.FirstOrDefault();
+
+                    //Create final output directory to save PDF statement of current customer
+                    var outputlocation = pdfStatementFilepath + "\\PDF_Statements" + "\\" + "ScheduleId_" + statementSearchRecord.ScheduleId + "\\" + "BatchId_" + batch.Identifier + "\\ArchiveData";
+                    if (!Directory.Exists(outputlocation))
+                    {
+                        Directory.CreateDirectory(outputlocation);
+                    }
+
+                    tempDir = outputlocation + "\\temp_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                    if (!Directory.Exists(tempDir))
+                    {
+                        Directory.CreateDirectory(tempDir);
+                    }
+
+                    //Create temp output directory to save all neccessories files which requires to genearate PDF statement of current customer
+                    var samplefilespath = tempDir + "\\" + statementSearchRecord.Identifier + "_" + customer.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                    if (!Directory.Exists(samplefilespath))
+                    {
+                        Directory.CreateDirectory(samplefilespath);
+                    }
+
+                    //get actual HTML statement file path directory for current customer
+                    var htmlStatementDirPath = statementSearchRecord.StatementURL.Substring(0, statementSearchRecord.StatementURL.LastIndexOf("\\"));
+
+                    //get resource file path directory
+                    var resourceFilePath = htmlStatementDirPath.Substring(0, htmlStatementDirPath.LastIndexOf("\\")) + "\\common";
+                    if (!Directory.Exists(resourceFilePath))
+                    {
+                        resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+                    }
+
+                    //Copying all neccessories files which requires to genearate PDF statement of current customer
+                    this.utility.DirectoryCopy(resourceFilePath + "\\css", samplefilespath, false);
+                    this.utility.DirectoryCopy(resourceFilePath + "\\js", samplefilespath, false);
+                    this.utility.DirectoryCopy(resourceFilePath + "\\images", samplefilespath, false);
+                    this.utility.DirectoryCopy(resourceFilePath + "\\fonts", samplefilespath, false);
+
+                    //Gernerate HTML statement of current customer
+                    this.statementSearchManager.GenerateHtmlStatementForPdfGeneration(customer, archivalProcessRawData.Statement, archivalProcessRawData.StatementPageContents, batch, archivalProcessRawData.BatchDetails, tenantCode, samplefilespath, archivalProcessRawData.Client, archivalProcessRawData.TenantConfiguration);
+
+                    //To insert html statement file of current customer and all required files into the zip file
+                    var zipfilepath = tempDir + "\\tempzip";
+                    if (!Directory.Exists(zipfilepath))
+                    {
+                        Directory.CreateDirectory(zipfilepath);
+                    }
+                    var zipFile = zipfilepath + "\\" + "StatementZip" + "_" + statementSearchRecord.Identifier + "_" + statementSearchRecord.ScheduleId + "_" + statementSearchRecord.StatementId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
+                    ZipFile.CreateFromDirectory(samplefilespath, zipFile);
+
+                    //Convert HTML statement to PDF statement for current customer
+                    var pdfName = "Statement" + "_" + statementSearchRecord.ScheduleLogId + "_" + statementSearchRecord.ScheduleId + statementSearchRecord.StatementId + "_" + statementSearchRecord.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
+                    var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName);
+                    if (result)
+                    {
+                        //To insert archive schedule log detail records
+                        var scheduleLogDetailRecords = this.scheduleLogManager.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                        {
+                            ScheduleLogId = archivalProcessRawData.ScheduleLog.Identifier.ToString(),
+                            CustomerId = archivalProcessRawData.CustomerId.ToString(),
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Id",
+                            },
+                            SearchMode = SearchMode.Equals
+                        }, tenantCode);
+                        var scheduleDetailArchiveRecords = new List<ScheduleLogDetailArchieve>();
+                        scheduleLogDetailRecords.ToList().ForEach(logDetail =>
+                        {
+                            scheduleDetailArchiveRecords.Add(new ScheduleLogDetailArchieve()
+                            {
+                                CustomerId = logDetail.CustomerId,
+                                CustomerName = logDetail.CustomerName,
+                                LogDetailCreationDate = logDetail.CreateDate,
+                                LogMessage = logDetail.LogMessage,
+                                NumberOfRetry = logDetail.NumberOfRetry,
+                                RenderEngineId = archivalProcessRawData.RenderEngine.Identifier,
+                                RenderEngineName = archivalProcessRawData.RenderEngine.RenderEngineName,
+                                RenderEngineURL = archivalProcessRawData.RenderEngine.URL,
+                                ScheduleId = archivalProcessRawData.Schedule.Identifier,
+                                ScheduleLogArchiveId = archivalProcessRawData.ScheduleLogArchive.Identifier,
+                                Status = logDetail.Status,
+                                TenantCode = tenantCode,
+                                ArchivalDate = DateTime.UtcNow,
+                                PdfStatementPath = outputlocation + "\\" + pdfName
+                            });
+                        });
+                        this.archivalProcessManager.SaveScheduleLogDetailsArchieve(scheduleDetailArchiveRecords, tenantCode);
+
+                        //TO insert archive statement metadata records
+                        var metadataArchiveRecords = new List<StatementMetadataArchive>();
+                        metadataRecords.ToList().ForEach(record =>
+                        {
+                            metadataArchiveRecords.Add(new StatementMetadataArchive()
+                            {
+                                AccountNumber = record.AccountNumber,
+                                AccountType = record.AccountType,
+                                CustomerId = record.CustomerId,
+                                CustomerName = record.CustomerName,
+                                ScheduleId = record.ScheduleId,
+                                ScheduleLogArchiveId = archivalProcessRawData.ScheduleLogArchive.Identifier,
+                                StatementDate = record.StatementDate,
+                                StatementId = record.StatementId,
+                                StatementPeriod = record.StatementPeriod,
+                                StatementURL = outputlocation + "\\" + pdfName,
+                                TenantCode = tenantCode,
+                                ArchivalDate = DateTime.UtcNow
+                            });
+                        });
+                        this.archivalProcessManager.SaveStatementMetadataArchieve(metadataArchiveRecords, tenantCode);
+
+                        //TO delete actual schedule log details, and statement metadata records
+                        this.scheduleLogManager.DeleteScheduleLogDetails(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
+                        this.scheduleLogManager.DeleteStatementMetadata(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
+
+                        //To delete actual HTML statement of currrent customer, once the PDF statement genearated
+                        DirectoryInfo directoryInfo = new DirectoryInfo(htmlStatementDirPath);
+                        if (directoryInfo.Exists)
+                        {
+                            directoryInfo.Delete(true);
+                        }
+
+                        runStatus = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteToFile(ex.Message);
+                WriteToFile(ex.StackTrace);
+                throw ex;
+            }
+            finally
+            {
+                //To delete temp files, once the PDF statement genearated
+                DirectoryInfo directoryInfo = new DirectoryInfo(tempDir);
+                if (directoryInfo.Exists)
+                {
+                    directoryInfo.Delete(true);
+                }
+            }
+
+            return runStatus;
         }
 
         #endregion
@@ -1845,7 +2048,9 @@ namespace nIS
                 throw ex;
             }
         }
+
         #endregion
+
 
         #endregion
     }

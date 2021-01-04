@@ -59,12 +59,10 @@ namespace nIS
         /// </summary>
         public DateTime StatementEndDate { get; set; }
 
-
         /// <summary>
         /// The page page owner
         /// </summary>
         public string StatementCustomer { get; set; }
-
 
         /// <summary>
         /// The page page owner
@@ -76,6 +74,20 @@ namespace nIS
         /// </summary>
         public string StatementAccount { get; set; }
 
+        /// <summary>
+        /// The statement archieve date
+        /// </summary>
+        public DateTime StatementArchieveDate { get; set; }
+
+        /// <summary>
+        /// The customer identifier
+        /// </summary>
+        public string CustomerId { get; set; }
+
+        /// <summary>
+        /// The statement identifier
+        /// </summary>
+        public string StatementId { get; set; }
 
         #endregion
 

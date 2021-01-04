@@ -71,6 +71,24 @@ namespace GenerateStatementRenderEngine
             }
         }
 
+        /// <summary>
+        /// This method helps to convert HTML statement to PDF statement and archive related data for the customer.
+        /// </summary>
+        /// <param name="archivalProcessRawData">The raw data object required for archival process</param>
+        [HttpPost]
+        public void RunArchivalForCustomerRecord(ArchivalProcessRawData archivalProcessRawData)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                this.generateStatementManager.RunArchivalForCustomerRecord(archivalProcessRawData, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
     }
 }

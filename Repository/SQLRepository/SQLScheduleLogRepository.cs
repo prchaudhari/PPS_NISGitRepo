@@ -154,9 +154,11 @@ namespace nIS
                         log.RecordProcessed = scheduleLogRecords[i].RecordProccessed;
                         log.ScheduleStatus = scheduleLogRecords[i].Status;
                         log.BatchStatus = scheduleLogRecords[i].BatchStatus;
+                        log.ScheduleId = scheduleLogRecords[i].ScheduleId;
                         log.ScheduleName = scheduleLogRecords[i].ScheduleName;
                         log.BatchId = scheduleLogRecords[i].BatchId;
                         log.BatchName = scheduleLogRecords[i].BatchName;
+                        log.NumberOfRetry = scheduleLogRecords[i].NumberOfRetry;
                         log.CreateDate = DateTime.SpecifyKind((DateTime)scheduleLogRecords[i].ExecutionDate, DateTimeKind.Utc);
                         scheduleLogs.Add(log);
                     }
@@ -551,6 +553,33 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method helps to remove schedule log records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        public bool DeleteScheduleLog(long ScheduleLogId, string tenantCode)
+        {
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var scheduleLogs = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.Id == ScheduleLogId && item.TenantCode == tenantCode).ToList();
+                    nISEntitiesDataContext.ScheduleLogRecords.RemoveRange(scheduleLogs);
+                    nISEntitiesDataContext.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method adds the specified list of schedule log detail in the repository.
         /// </summary>
         /// <param name="scheduleLogDetails"></param>
@@ -652,6 +681,42 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method helps to remove schedule log details records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="CustomerId">The customer identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        public bool DeleteScheduleLogDetails(long ScheduleLogId, long? CustomerId, string tenantCode)
+        {
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    if (CustomerId == null)
+                    {
+                        var scheduleLogDetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == ScheduleLogId && item.TenantCode == tenantCode).ToList();
+                        nISEntitiesDataContext.ScheduleLogDetailRecords.RemoveRange(scheduleLogDetails);
+                    }
+                    else
+                    {
+                        var scheduleLogDetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleLogId == ScheduleLogId && item.CustomerId == CustomerId && item.TenantCode == tenantCode).ToList();
+                        nISEntitiesDataContext.ScheduleLogDetailRecords.RemoveRange(scheduleLogDetails);
+                    }
+                    nISEntitiesDataContext.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method adds the specified list of statement metadata in the repository.
         /// </summary>
         /// <param name="statementMetadata"></param>
@@ -724,6 +789,42 @@ namespace nIS
                 throw ex;
             }
             return result;
+        }
+
+        /// <summary>
+        /// This method helps to remove statement metadata records from repository.
+        /// </summary>
+        /// <param name="ScheduleLogId">The schedule log identifier</param>
+        /// <param name="CustomerId">The customer identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns true if records removed successfully..
+        /// </returns>
+        public bool DeleteStatementMetadata(long ScheduleLogId, long? CustomerId, string tenantCode)
+        {
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    if (CustomerId == null)
+                    {
+                        var metadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.ScheduleLogId == ScheduleLogId && item.TenantCode == tenantCode).ToList();
+                        nISEntitiesDataContext.StatementMetadataRecords.RemoveRange(metadataRecords);
+                    }
+                    else
+                    {
+                        var metadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.ScheduleLogId == ScheduleLogId && item.CustomerId == CustomerId && item.TenantCode == tenantCode).ToList();
+                        nISEntitiesDataContext.StatementMetadataRecords.RemoveRange(metadataRecords);
+                    }
+                    nISEntitiesDataContext.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion

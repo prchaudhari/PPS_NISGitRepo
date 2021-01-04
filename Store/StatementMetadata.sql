@@ -10,6 +10,9 @@
     [AccountNumber]   NVARCHAR (50)  NOT NULL,
     [AccountType]     NVARCHAR (50)  NOT NULL,
     [StatementURL]    NVARCHAR (MAX) NOT NULL,
+    [TenantCode] NVARCHAR(50) NOT NULL, 
+    [IsPasswordGenerated] BIT NOT NULL, 
+    [Password] NVARCHAR(500) NOT NULL, 
     CONSTRAINT [PK_StatementMetadata] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

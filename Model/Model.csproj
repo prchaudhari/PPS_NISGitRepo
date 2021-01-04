@@ -51,6 +51,7 @@
     <Compile Include="AccountInformation.cs" />
     <Compile Include="AccountMaster.cs" />
     <Compile Include="AnalyticsData.cs" />
+    <Compile Include="ArchivalProcessRawData.cs" />
     <Compile Include="BatchMaster.cs" />
     <Compile Include="AccountSummary.cs" />
     <Compile Include="AccountTransaction.cs" />
@@ -114,7 +115,9 @@
     <Compile Include="SavingTrend.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="ScheduleLog.cs" />
+    <Compile Include="ScheduleLogArchive.cs" />
     <Compile Include="ScheduleLogDetail.cs" />
+    <Compile Include="ScheduleLogDetailArchieve.cs" />
     <Compile Include="ScheduleLogDetailSearchParameter.cs" />
     <Compile Include="ScheduleLogErrorDetail.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
@@ -146,6 +149,7 @@
     <Compile Include="Search Parameter\RoleSearchParameter.cs" />
     <Compile Include="Search Parameter\UserSearchParameter.cs" />
     <Compile Include="State.cs" />
+    <Compile Include="StatementMetadataArchive.cs" />
     <Compile Include="StatementPreviewData.cs" />
     <Compile Include="StatementSearch.cs" />
     <Compile Include="Statement.cs" />

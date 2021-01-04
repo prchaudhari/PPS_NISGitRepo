@@ -182,6 +182,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Resources\css\bootstrap.min.css" />
+    <Content Include="Resources\css\font-awesome.min.css" />
+    <Content Include="Resources\css\ltr.css" />
+    <Content Include="Resources\css\site.css" />
+    <Content Include="Resources\fonts\fontawesome-webfont.svg" />
+    <Content Include="Resources\images\absa-logo.png" />
+    <Content Include="Resources\images\logo.png" />
+    <Content Include="Resources\images\nisLogo.png" />
+    <Content Include="Resources\js\accessibility.js" />
+    <Content Include="Resources\js\bootstrap.min.js" />
+    <Content Include="Resources\js\export-data.js" />
+    <Content Include="Resources\js\exporting.js" />
+    <Content Include="Resources\js\highcharts.js" />
+    <Content Include="Resources\js\jquery.min.js" />
+    <Content Include="Resources\js\popper.min.js" />
+    <Content Include="Resources\js\script.js" />
+    <Content Include="Resources\js\series-label.js" />
+    <Content Include="Resources\sampledata\icon-image.png" />
+    <Content Include="Resources\sampledata\SampleVideo.mp4" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -196,6 +215,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="Resources\fonts\fontawesome-webfont.eot" />
+    <Content Include="Resources\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Resources\fonts\fontawesome-webfont.woff" />
+    <Content Include="Resources\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Resources\fonts\FontAwesome.otf" />
+    <Content Include="Resources\sampledata\analyticschartdata.json" />
+    <Content Include="Resources\sampledata\currenttransactiondetail.json" />
+    <Content Include="Resources\sampledata\savingtransactiondetail.json" />
+    <Content Include="Resources\sampledata\savingtrenddata.json" />
+    <Content Include="Resources\sampledata\spendingtrenddata.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CryptoManager\CryptoManager.csproj">

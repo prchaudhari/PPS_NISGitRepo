@@ -1455,6 +1455,7 @@ namespace nIS
                     queryString.Append(string.Format("StatementPeriod.Contains(\"{0}\") and ", searchParameter.StatementPeriod));
                 }
             }
+
             if (searchParameter.SearchMode == SearchMode.Contains)
             {
                 if (validationEngine.IsValidText(searchParameter.StatementCustomer))
@@ -1470,21 +1471,32 @@ namespace nIS
                     queryString.Append(string.Format("StatementPeriod.Contains(\"{0}\") and ", searchParameter.StatementPeriod));
                 }
             }
-            if (this.validationEngine.IsValidDate(searchParameter.StatementStartDate))
+
+            if (validationEngine.IsValidText(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidText(searchParameter.StatementId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.StatementId.ToString().Split(',').Select(item => string.Format("StatementId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (this.validationEngine.IsValidDate(searchParameter.StatementStartDate) || this.validationEngine.IsValidDate(searchParameter.StatementEndDate))
             {
                 DateTime fromDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementStartDate), DateTimeKind.Utc);
                 DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementEndDate), DateTimeKind.Utc);
                 queryString.Append("StatementDate >= DateTime(" + fromDateTime.Year + "," + fromDateTime.Month + "," + fromDateTime.Day + "," + fromDateTime.Hour + "," + fromDateTime.Minute + "," + fromDateTime.Second + ") and StatementDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
 
-            var finalQuery = string.Empty;
-            if (queryString.ToString() != string.Empty)
+            if (this.validationEngine.IsValidDate(searchParameter.StatementArchieveDate))
             {
-                int last = queryString.ToString().LastIndexOf("and");
-                finalQuery = queryString.ToString().Substring(0, last);
+                DateTime toDateTime = DateTime.SpecifyKind(Convert.ToDateTime(searchParameter.StatementArchieveDate), DateTimeKind.Utc);
+                queryString.Append(" StatementDate <= DateTime(" + +toDateTime.Year + "," + toDateTime.Month + "," + toDateTime.Day + "," + toDateTime.Hour + "," + toDateTime.Minute + "," + toDateTime.Second + ") and ");
             }
 
-            return finalQuery;
+            queryString.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
         }
 
         /// <summary>

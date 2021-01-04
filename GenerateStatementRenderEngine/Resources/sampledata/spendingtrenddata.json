@@ -1,0 +1,44 @@
+spendingdata = [
+  {
+    'Month': 'Jan',
+    'Income': 234.5,
+    'SpendAmount': 208,
+    "SpendPercentage": 31.6
+  },
+  {
+    "Month": "Feb",
+    "Income": 265.5,
+    "SpendAmount": 167.4,
+    "SpendPercentage": 44.8
+  },
+  {
+    "Month": "Mar",
+    "Income": 300,
+    "SpendAmount": 189.2,
+    "SpendPercentage": 68.9
+  },
+  {
+    "Month": "Apr",
+    "Income": 198.5,
+    "SpendAmount": 200.7,
+    "SpendPercentage": 45.2
+  },
+  {
+    "Month": "May",
+    "Income": 275,
+    "SpendAmount": 167.2,
+    "SpendPercentage": 37.6
+  },
+  {
+    "Month": "Jun",
+    "Income": 225.9,
+    "SpendAmount": 175.7,
+    "SpendPercentage": 23.0
+  },
+  {
+    "Month": "Jul",
+    "Income": 290.3,
+    "SpendAmount": 160.0,
+    "SpendPercentage": 34.2
+  }
+]

@@ -81,6 +81,23 @@ namespace nIS
             this.statementSearchRepository = this.unityContainer.Resolve<IStatementSearchRepository>();
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// This method to convert HTML statements into the PDF statement files and archieve related to log and metadata.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="ParallelThreadCount"></param>
+        /// <param name="MinimumArchivalPeriodDays"></param>
+        /// <param name="pdfStatementFilepath"></param>
+        /// <param name="htmlStatementFilepath"></param>
+        /// <param name="tenantConfiguration"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the archive process runs successfully, false otherwise
+        /// </returns>
         public bool RunArchivalProcess(Client client, int ParallelThreadCount, int MinimumArchivalPeriodDays, string pdfStatementFilepath, string htmlStatementFilepath, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             bool IsArchivalProcessDone = false;
@@ -152,7 +169,7 @@ namespace nIS
 
                                             //To insert archive schedule log record
                                             var scheduleLogArchiveRecord = new ScheduleLogArchiveRecord();
-                                            var tempmetadata = res.GroupedStatementMetadataRecords.FirstOrDefault();
+                                            //var tempmetadata = res.GroupedStatementMetadataRecords.FirstOrDefault();
                                             using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                                             {
                                                 scheduleLogArchiveRecord.ScheduleId = schedulelog.ScheduleId;
@@ -222,9 +239,193 @@ namespace nIS
             }
         }
 
-        #endregion
+        /// <summary>
+        /// This method adds the specified list of schedule log archive in the repository.
+        /// </summary>
+        /// <param name="scheduleLogArchives"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log archive values are added successfully, false otherwise
+        /// </returns>
+        public bool SaveScheduleLogArchieve(IList<ScheduleLogArchive> scheduleLogArchives, string tenantCode)
+        {
+            bool result = false;
+            var scheduleLogArchiveRecords = new List<ScheduleLogArchiveRecord>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                scheduleLogArchives.ToList().ForEach(log =>
+                {
+                    scheduleLogArchiveRecords.Add(new ScheduleLogArchiveRecord()
+                    {
+                        BatchId = log.BatchId,
+                        BatchName = log.BatchName,
+                        ArchivalDate = DateTime.Now,
+                        LogFilePath = log.LogFilePath,
+                        NumberOfRetry = log.NumberOfRetry,
+                        ScheduleId = log.ScheduleId,
+                        ScheduleName = log.ScheduleName,
+                        Status = log.Status,
+                        TenantCode = tenantCode,
+                        LogCreationDate = DateTime.UtcNow
+                    });
+                });
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleLogArchiveRecords.AddRange(scheduleLogArchiveRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
 
-        #region Public Methods
+        /// <summary>
+        /// This method gets the specified list of schedule log archive records from repository.
+        /// </summary>
+        /// <param name="ScheduleId">The schedule identifier</param>
+        /// <param name="BatchId">The schedule identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of schedule log archive records
+        /// </returns>
+        public IList<ScheduleLogArchive> GetScheduleLogArchives(long ScheduleId, long BatchId, string tenantCode)
+        {
+            IList<ScheduleLogArchive> scheduleLogs = new List<ScheduleLogArchive>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var scheduleLogRecords = nISEntitiesDataContext.ScheduleLogArchiveRecords.Where(item => item.BatchId == BatchId && item.ScheduleId == ScheduleId && item.TenantCode == tenantCode).ToList();
+                    scheduleLogRecords.ForEach(log =>
+                    {
+                        scheduleLogs.Add(new ScheduleLogArchive()
+                        {
+                            Identifier = log.Id,
+                            BatchId = log.BatchId,
+                            BatchName = log.BatchName,
+                            ArchivalDate = log.ArchivalDate,
+                            LogCreationDate = log.LogCreationDate,
+                            LogFilePath = log.LogFilePath,
+                            NumberOfRetry = log.NumberOfRetry,
+                            ScheduleId = log.ScheduleId,
+                            ScheduleName = log.ScheduleName,
+                            Status = log.Status,
+                            TenantCode = log.TenantCode
+                        });
+                    });
+                }
+
+                return scheduleLogs;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method adds the specified list of schedule log detail archieve in the repository.
+        /// </summary>
+        /// <param name="scheduleLogDetailArchieves"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the schedule log details archieve values are added successfully, false otherwise
+        /// </returns>
+        public bool SaveScheduleLogDetailsArchieve(IList<ScheduleLogDetailArchieve> scheduleLogDetailArchieves, string tenantCode)
+        {
+            bool result = false;
+            var scheduleLogDetailArchieveRecords = new List<ScheduleLogDetailArchiveRecord>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                scheduleLogDetailArchieves.ToList().ForEach(log =>
+                {
+                    scheduleLogDetailArchieveRecords.Add(new ScheduleLogDetailArchiveRecord()
+                    {
+                        CustomerId = log.CustomerId,
+                        CustomerName = log.CustomerName,
+                        ArchivalDate = DateTime.Now,
+                        LogMessage = log.LogMessage,
+                        NumberOfRetry = log.NumberOfRetry,
+                        RenderEngineId = log.RenderEngineId,
+                        RenderEngineName = log.RenderEngineName,
+                        RenderEngineURL = log.RenderEngineURL,
+                        ScheduleId = log.ScheduleId,
+                        ScheduleLogArchiveId = log.ScheduleLogArchiveId,
+                        PdfStatementPath = log.PdfStatementPath,
+                        Status = log.Status,
+                        TenantCode = tenantCode,
+                        LogDetailCreationDate = DateTime.UtcNow
+                    });
+                });
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleLogDetailArchiveRecords.AddRange(scheduleLogDetailArchieveRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// This method adds the specified list of statement metadata archieve in the repository.
+        /// </summary>
+        /// <param name="statementMetadataArchives"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>
+        /// True, if the statement metadata archieve values are added successfully, false otherwise
+        /// </returns>
+        public bool SaveStatementMetadataArchieve(IList<StatementMetadataArchive> statementMetadataArchives, string tenantCode)
+        {
+            bool result = false;
+            var StatementMetadataArchieveRecords = new List<StatementMetadataArchiveRecord>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                statementMetadataArchives.ToList().ForEach(data =>
+                {
+                    StatementMetadataArchieveRecords.Add(new StatementMetadataArchiveRecord()
+                    {
+                        AccountNumber = data.AccountNumber,
+                        AccountType = data.AccountType,
+                        CustomerId = data.CustomerId,
+                        CustomerName = data.CustomerName,
+                        ScheduleId = data.ScheduleId,
+                        ScheduleLogArchiveId = data.ScheduleLogArchiveId,
+                        StatementDate = data.StatementDate,
+                        StatementId = data.StatementId,
+                        StatementPeriod = data.StatementPeriod,
+                        StatementURL = data.StatementURL,
+                        TenantCode = tenantCode,
+                        ArchivalDate = DateTime.UtcNow
+                    });
+                });
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.StatementMetadataArchiveRecords.AddRange(StatementMetadataArchieveRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
 
         #endregion
 
