@@ -20,8 +20,7 @@ namespace nIS
     /// <summary>
     /// This class represent api controller for pageType
     /// </summary>
-    [EnableCors("*", "*", "*", "*")]
-    [RoutePrefix("PageType")]
+    
     public class PageTypeController : ApiController
     {
 
@@ -131,7 +130,7 @@ namespace nIS
         /// <param name="pageTypeSearchParameter"></param>
         /// <returns>List of pageTypes</returns>
         [HttpPost]
-        public IList<PageType> List(PageTypeSearchParameter pageTypeSearchParameter)
+        public IList<PageType> GetPageTypeList(PageTypeSearchParameter pageTypeSearchParameter)
         {
             IList<PageType> pageTypes = new List<PageType>();
             try

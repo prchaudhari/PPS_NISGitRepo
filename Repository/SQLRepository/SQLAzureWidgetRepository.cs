@@ -152,7 +152,11 @@ namespace nIS
                         IList<WidgetPageTypeMap> widgetPageTypeMaps = new List<WidgetPageTypeMap>();
                         widgetPageTypeMaps = nISEntitiesDataContext.WidgetPageTypeMaps.Where(item => item.PageTypeId.ToString() == widgetSearchParameter.PageTypeId
                          && item.IsDynamicWidget == false && item.TenantCode == tenantCode).ToList();
-                        widgetSearchParameter.Identifier = string.Join(",", widgetPageTypeMaps.Select(item => item.WidgetId).ToList());
+                        if (widgetPageTypeMaps.Count > 0)
+                        {
+                            widgetSearchParameter.Identifier = string.Join(",", widgetPageTypeMaps.Select(item => item.WidgetId).ToList());
+                            return widgets;
+                        }
                     }
                     string whereClause = this.WhereClauseGenerator(widgetSearchParameter, tenantCode);
                     IList<WidgetRecord> widgetRecords = new List<WidgetRecord>();
@@ -210,7 +214,7 @@ namespace nIS
                         if (widgetSearchParameter.IsPageTypeDetailsRequired != null && widgetSearchParameter.IsPageTypeDetailsRequired == true)
                         {
                             StringBuilder queryString = new StringBuilder();
-                            queryString.Append("("+string.Join("or ", widgets.Select(item => string.Format("WidgetId.Equals({0}) ", item.Identifier)))+")");
+                            queryString.Append("(" + string.Join("or ", widgets.Select(item => string.Format("WidgetId.Equals({0}) ", item.Identifier))) + ")");
                             queryString.Append(" and IsDynamicWidget.Equals(false)");
                             queryString.Append(string.Format("and TenantCode.Equals(\"{0}\") ", tenantCode));
                             List<WidgetPageTypeMap> pageWidgetMapRecords = new List<WidgetPageTypeMap>();

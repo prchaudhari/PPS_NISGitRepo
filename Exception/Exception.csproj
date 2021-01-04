@@ -84,6 +84,8 @@
     <Compile Include="Constants\RoleConstant.cs" />
     <Compile Include="Constants\UserConstant.cs" />
     <Compile Include="PageType\PageTypeNotFoundException.cs" />
+    <Compile Include="PageType\PageTypeReferenceInDynamicWidget.cs" />
+    <Compile Include="PageType\PageTypeReferenceInWidget.cs" />
     <Compile Include="PageType\PageTypeReferenceInPage.cs" />
     <Compile Include="PageType\DuplicatePageTypeFoundException.cs" />
     <Compile Include="PageType\InvalidPageTypeException.cs" />

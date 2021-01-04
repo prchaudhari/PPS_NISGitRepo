@@ -97,6 +97,15 @@ namespace nIS
         /// <summary>
         /// The country not found exception key
         /// </summary>
-        public const string PAGETYPE_REFERENCEIN_PAGE_EXCEPTION = "Page type is used in tenant contact";
+        public const string PAGETYPE_REFERENCEIN_PAGE_EXCEPTION = "Page type is used in page";
+
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        public const string PAGETYPE_REFERENCEIN_WIDGET_EXCEPTION = "Page type is used in static widget";
+        /// <summary>
+        /// The country not found exception key
+        /// </summary>
+        public const string PAGETYPE_REFERENCEIN_DYNAMICWIDGET_EXCEPTION = "Page type is used in dynamic widget";
     }
 }

@@ -318,10 +318,12 @@
     <None Include="Properties\PublishProfiles\nisqa-api - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - FTP2.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - FTP3.pubxml" />
+    <None Include="Properties\PublishProfiles\nisqa-api - FTP4.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - ReadOnly - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - ReadOnly - FTP1.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - ReadOnly - FTP2.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - ReadOnly - FTP3.pubxml" />
+    <None Include="Properties\PublishProfiles\nisqa-api - ReadOnly - FTP4.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - Web Deploy.pubxml" />
     <Content Include="Properties\webjobs-list.json" />
     <Content Include="Resources\fonts\fontawesome-webfont.eot" />
@@ -337,6 +339,7 @@
     <None Include="Properties\PublishProfiles\nisqa-api - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - Web Deploy2.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api - Web Deploy3.pubxml" />
+    <None Include="Properties\PublishProfiles\nisqa-api - Web Deploy4.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

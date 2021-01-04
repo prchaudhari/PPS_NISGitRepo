@@ -1,4 +1,4 @@
-﻿// <copyright file="PageTypeReferenceInPageException.cs" company="Websym Solutions Pvt. Ltd.">
+﻿// <copyright file="PageTypeReferenceInWidgetException.cs" company="Websym Solutions Pvt. Ltd.">
 //  Copyright (c) 2018 Websym Solutions Pvt. Ltd. 
 // </copyright>
 
@@ -13,7 +13,7 @@ namespace nIS
     /// <summary>
     /// This class represent pageType not found exception Class.
     /// </summary>
-    public class PageTypeReferenceInPageException : Exception
+    public class PageTypeReferenceInWidgetException : Exception
     {
         #region Private Members
 
@@ -30,7 +30,7 @@ namespace nIS
         /// Parameterized constructor for pageType not found exception.
         /// </summary>
         /// <param name="tenantCode">The tenant code.</param>
-        public PageTypeReferenceInPageException(string tenantCode)
+        public PageTypeReferenceInWidgetException(string tenantCode)
         {
             this.tenantCode = tenantCode;
         }
@@ -46,7 +46,7 @@ namespace nIS
         {
             get
             {
-                return ExceptionConstant.PAGETYPE_EXCEPTION_SECTION + "~" + ExceptionConstant.PAGETYPE_REFERENCEIN_PAGE_EXCEPTION;
+                return ExceptionConstant.PAGETYPE_EXCEPTION_SECTION + "~" + ExceptionConstant.PAGETYPE_REFERENCEIN_WIDGET_EXCEPTION;
             }
         }
 

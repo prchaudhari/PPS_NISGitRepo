@@ -91,10 +91,10 @@ namespace nIS
                     pageTypeRecords.Add(new PageTypeRecord()
                     {
                         Name = pageType.PageTypeName,
-                        Description = pageType.Description,
+                        Description = pageType.Description == null ? "" : pageType.Description,
                         IsActive = true,
                         IsDeleted = false,
-                        TenantCode= tenantCode
+                        TenantCode = tenantCode
                     });
                 });
 
@@ -197,10 +197,41 @@ namespace nIS
                         {
                             throw new PageTypeNotFoundException(tenantCode);
                         }
-                        PageRecord user = nISEntitiesDataContext.PageRecords.Where(item => item.PageTypeId == pageType.Identifier && item.IsDeleted == false).FirstOrDefault();
-                        if (user != null)
+                        PageRecord pageRecord = nISEntitiesDataContext.PageRecords.Where(item => item.PageTypeId == pageType.Identifier && item.IsDeleted == false).FirstOrDefault();
+                        if (pageRecord != null)
                         {
-                            throw new PageTypeReferenceInTenantContactException(tenantCode);
+                            throw new PageTypeReferenceInPageException(tenantCode);
+                        }
+                        List<WidgetPageTypeMap> widgetPageTypeMapRecords = nISEntitiesDataContext.WidgetPageTypeMaps.Where(item => item.PageTypeId == pageType.Identifier).ToList();
+
+                        if (widgetPageTypeMapRecords.Count > 0)
+                        {
+                            StringBuilder queryString = new StringBuilder();
+                            if (widgetPageTypeMapRecords.Where(item => item.IsDynamicWidget == true).Count() > 0)
+                            {
+
+                                queryString.Append(string.Join("or ", widgetPageTypeMapRecords.Where(item => item.IsDynamicWidget == true).Select(it => it.WidgetId).Distinct().ToList().Select(item => string.Format("Id.Equals({0}) ", item))));
+                                queryString.Append(" and IsDeleted.Equals(false)");
+
+                                DynamicWidgetRecord dynamicWidgetRecord = nISEntitiesDataContext.DynamicWidgetRecords.Where(queryString.ToString()).FirstOrDefault();
+                                if (dynamicWidgetRecord != null)
+                                {
+                                    throw new PageTypeReferenceInDynamicWidgetException(tenantCode);
+                                }
+                            }
+                            if (widgetPageTypeMapRecords.Where(item => item.IsDynamicWidget == false).Count() > 0)
+                            {
+                                queryString = new StringBuilder();
+                                queryString.Append(string.Join("or ", widgetPageTypeMapRecords.Where(item => item.IsDynamicWidget == false).Select(it => it.WidgetId).Distinct().ToList().Select(item => string.Format("Id.Equals({0}) ", item))));
+                                queryString.Append(" and IsDeleted.Equals(false)");
+
+                                WidgetRecord wdgetRecord = nISEntitiesDataContext.WidgetRecords.Where(queryString.ToString()).FirstOrDefault();
+                                if (wdgetRecord != null)
+                                {
+                                    throw new PageTypeReferenceInWidgetException(tenantCode);
+                                }
+                            }
+
                         }
                         pageTypeRecords.IsDeleted = true;
                         nISEntitiesDataContext.SaveChanges();
@@ -370,7 +401,7 @@ namespace nIS
                 StringBuilder query = new StringBuilder();
                 if (operation.Equals(ModelConstant.ADD_OPERATION))
                 {
-                    query.Append("(" + string.Join(" or ", pageTypes.Select(item => string.Format("Name.Equals(\"{0}\") ", item.PageTypeName)).ToList()) + ") and TenantCode.Equals(\""+tenantCode+"\") and IsDeleted.Equals(false)");
+                    query.Append("(" + string.Join(" or ", pageTypes.Select(item => string.Format("Name.Equals(\"{0}\") ", item.PageTypeName)).ToList()) + ") and TenantCode.Equals(\"" + tenantCode + "\") and IsDeleted.Equals(false)");
                 }
 
                 if (operation.Equals(ModelConstant.UPDATE_OPERATION))

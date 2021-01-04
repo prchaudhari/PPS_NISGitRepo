@@ -21,6 +21,7 @@
     [CloneOfWidgetId]      BIGINT         NULL,
     [Version]              NVARCHAR (100) NULL,
     [PreviewData]          NVARCHAR (MAX) NOT NULL,
+    [FilterCondition] NVARCHAR(MAX) NULL, 
     CONSTRAINT [PK__DynamicW__3214EC071888ACAB] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

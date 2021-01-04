@@ -28,8 +28,9 @@ import { ContacttypeComponent } from './contacttype/contacttype.component';
 import { MultiTenantUserAccessMapComponent } from './multi-tenant-user-access-map/multi-tenant-user-access-map.component';
 import { InstancemanagerdashboardComponent } from './instancemanagerdashboard/instancemanagerdashboard.component';
 import { GroupmanagerdashboardComponent } from './groupmanagerdashboard/groupmanagerdashboard.component';
+import { PagetypeComponent } from './pagetype/pagetype.component';
 @NgModule({
-  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent, ThemeConfigurationComponent, ContacttypeComponent, MultiTenantUserAccessMapComponent, InstancemanagerdashboardComponent, GroupmanagerdashboardComponent],
+  declarations: [DashboardComponent, LayoutComponent, ChangePasswordComponent, ProfileComponent, LogsComponent, AnalyticsComponent, LogsDetailsComponent, SourcedataComponent, AssetSettingsComponent, StatementSearchComponent, TenantConfigurationComponent, CountryComponent, ThemeConfigurationComponent, ContacttypeComponent, MultiTenantUserAccessMapComponent, InstancemanagerdashboardComponent, GroupmanagerdashboardComponent, PagetypeComponent],
   imports: [
     CommonModule,
     FormsModule,

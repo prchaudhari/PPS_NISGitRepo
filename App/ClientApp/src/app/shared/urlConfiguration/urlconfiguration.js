@@ -109,6 +109,31 @@ var URLConfiguration = /** @class */ (function () {
         configurable: true
     });
     ;
+    Object.defineProperty(URLConfiguration, "pagetypeGetUrl", {
+        //Page type method
+        get: function () { return "PageType/List"; },
+        enumerable: false,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(URLConfiguration, "pagetypeAddUrl", {
+        get: function () { return "PageType/Add"; },
+        enumerable: false,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(URLConfiguration, "pagetypeUpdateUrl", {
+        get: function () { return "PageType/Update"; },
+        enumerable: false,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(URLConfiguration, "pagetypeDeleteUrl", {
+        get: function () { return "PageType/Delete"; },
+        enumerable: false,
+        configurable: true
+    });
+    ;
     Object.defineProperty(URLConfiguration, "tenantGetUrl", {
         //tenant method
         get: function () { return "Client/Get"; },

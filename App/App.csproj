@@ -36,6 +36,7 @@
     <None Remove="ClientApp\src\app\layout\country\country.ts" />
     <None Remove="ClientApp\src\app\layout\logs-details\log-details.ts" />
     <None Remove="ClientApp\src\app\layout\logs\scheduleLog.ts" />
+    <None Remove="ClientApp\src\app\layout\pagetype\pagetype.ts" />
     <None Remove="ClientApp\src\app\layout\schedule-management\schedule.ts" />
     <None Remove="ClientApp\src\app\layout\schedule-management\scheduleHitory.ts" />
     <None Remove="ClientApp\src\app\layout\sourcedata\sourcedata.ts" />
@@ -69,6 +70,7 @@
     <TypeScriptCompile Remove="ClientApp\src\app\layout\instancemanagerdashboard\dashboard.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\logs-details\logs-details.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\logs\schedulelog.service.ts" />
+    <TypeScriptCompile Remove="ClientApp\src\app\layout\pagetype\pagetype.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\roles\role.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\schedule-management\schedule.service.ts" />
     <TypeScriptCompile Remove="ClientApp\src\app\layout\sourcedata\sourcedata.service.ts" />
@@ -122,6 +124,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\layout\logs\scheduleLog.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Update="ClientApp\src\app\layout\pagetype\pagetype.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Update="ClientApp\src\app\layout\schedule-management\scheduleHitory.ts">
