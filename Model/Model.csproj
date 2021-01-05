@@ -157,6 +157,7 @@
     <Compile Include="StatementPageContent.cs" />
     <Compile Include="TenantConfiguration.cs" />
     <Compile Include="TenantContact.cs" />
+    <Compile Include="TenantSecurityCodeFormat.cs" />
     <Compile Include="TenantSubscription.cs" />
     <Compile Include="TenantUser.cs" />
     <Compile Include="TransactionData\BatchDetail.cs" />

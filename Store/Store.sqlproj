@@ -150,6 +150,7 @@
     <Build Include="EntityManager\Operations.sql" />
     <PostDeploy Include="Seed Data Scripts\Script.PostDeployment1.sql" />
     <Build Include="TenantSubscription.sql" />
+    <Build Include="TenantSecurityCodeFormat.sql" />
     <Build Include="Seed Data Scripts\Views\View_StatementMetadata.sql" />
   </ItemGroup>
   <ItemGroup>

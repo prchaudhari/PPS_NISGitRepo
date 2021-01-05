@@ -224,9 +224,10 @@ export class ScheduleService {
             result = false;
           }
         }
-      }, (error: HttpResponse<any>) => {
+      }, (error) => {
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this.isRecordSaved = false;
         this.uiLoader.stop();
-          result = false;
       });
     return <boolean>result;
   }
