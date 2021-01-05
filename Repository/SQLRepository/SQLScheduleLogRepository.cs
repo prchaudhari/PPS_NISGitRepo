@@ -745,6 +745,8 @@ namespace nIS
                         StatementId = data.StatementId,
                         StatementPeriod = data.StatementPeriod,
                         StatementURL = data.StatementURL,
+                        IsPasswordGenerated=data.IsPasswordGenerated,
+                        Password=data.Password,
                         TenantCode = tenantCode
                     });
                 });

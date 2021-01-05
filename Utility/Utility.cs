@@ -1057,7 +1057,7 @@
         /// <returns>
         /// Returns the true if pdf generated successfully, otherwise false
         /// </returns>
-        public bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath)
+        public bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath,string password)
         {
             var isPdfSuccess = false;
             try
@@ -1070,6 +1070,11 @@
                 client.setJpegQuality(80);
                 client.setConvertImagesToJpeg("all");
                 client.setImageDpi(340);
+                if (password != string.Empty)
+                {
+                    client.setEncrypt(true);
+                    client.setUserPassword(password);
+                }
                 client.convertFileToFile(htmlStatementPath, outPdfPath);
                 isPdfSuccess = true;
             }

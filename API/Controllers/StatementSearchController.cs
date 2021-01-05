@@ -50,6 +50,11 @@ namespace nIS
         /// </summary>
         private TenantConfigurationManager tenantConfigurationManager = null;
 
+        /// <summary>
+        /// The crypto manager
+        /// </summary>
+        private readonly ICryptoManager cryptoManager;
+
         #endregion
 
         #region Constructor
@@ -60,6 +65,7 @@ namespace nIS
             this.utility = new Utility();
             this.StatementSearchManager = new StatementSearchManager(this.unityContainer);
             this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
+            this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
 
         }
 
@@ -225,10 +231,20 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 outputpath = this.StatementSearchManager.GenerateStatementNew(identifier, tenantCode);
+                StatementSearch statement = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
+                {
+                    Identifier = identifier.ToString(),
+                    SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
+                }, tenantCode).FirstOrDefault();
                 zipFile = AppDomain.CurrentDomain.BaseDirectory + "\\Resources" + "\\" + "tempStatementZip" + identifier + ".zip";
                 ZipFile.CreateFromDirectory(outputpath, zipFile);
                 var pdfName = "Statement_" + DateTime.Now.ToShortDateString().Replace(" - ", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
-                var isPdfSuccess = this.utility.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName);
+                string password = string.Empty;
+                if (statement.IsPasswordGenerated)
+                {
+                    password = this.cryptoManager.Decrypt(statement.Password);
+                }
+                var isPdfSuccess = this.utility.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName,password);
                 if (isPdfSuccess)
                 {
                     using (MemoryStream ms = new MemoryStream())

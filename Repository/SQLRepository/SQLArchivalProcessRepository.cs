@@ -67,6 +67,11 @@ namespace nIS
         /// </summary>
         private IStatementSearchRepository statementSearchRepository = null;
 
+        /// <summary>
+        /// The crypto manager
+        /// </summary>
+        private readonly ICryptoManager cryptoManager;
+
         #endregion
 
         #region Constructor
@@ -79,6 +84,8 @@ namespace nIS
             this.configurationutility = new ConfigurationUtility(this.unityContainer);
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
             this.statementSearchRepository = this.unityContainer.Resolve<IStatementSearchRepository>();
+            this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
+
         }
 
         #endregion
@@ -209,6 +216,7 @@ namespace nIS
                                                     {
                                                         customerRecord = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.Id == customerid && item.TenantCode == tenantCode).ToList().FirstOrDefault();
                                                         statementmetadatarecord = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.CustomerId == customerid && item.TenantCode == tenantCode && item.StatementId == statement.Identifier).ToList().FirstOrDefault();
+
                                                     }
                                                     if (customerRecord != null && statementmetadatarecord != null)
                                                     {
@@ -455,14 +463,14 @@ namespace nIS
                     Directory.CreateDirectory(outputlocation);
                 }
 
-                tempDir = outputlocation + "\\temp_"+ DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                tempDir = outputlocation + "\\temp_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
                 if (!Directory.Exists(tempDir))
                 {
                     Directory.CreateDirectory(tempDir);
                 }
 
                 //Create temp output directory to save all neccessories files which requires to genearate PDF statement of current customer
-                var samplefilespath = tempDir + "\\" + statementmetadatarecord.Id + "_" + customerrecord.Id +"_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                var samplefilespath = tempDir + "\\" + statementmetadatarecord.Id + "_" + customerrecord.Id + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
                 if (!Directory.Exists(samplefilespath))
                 {
                     Directory.CreateDirectory(samplefilespath);
@@ -488,7 +496,13 @@ namespace nIS
 
                 //Convert HTML statement to PDF statement for current customer
                 var pdfName = "Statement" + "_" + statementmetadatarecord.ScheduleLogId + "_" + statementmetadatarecord.ScheduleId + statementmetadatarecord.StatementId + "_" + statementmetadatarecord.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
-                var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName);
+
+                string password = string.Empty;
+                if (statementmetadatarecord.IsPasswordGenerated)
+                {
+                    password = this.cryptoManager.Decrypt(statementmetadatarecord.Password);
+                }
+                var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName, password);
                 if (result)
                 {
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))

@@ -1,0 +1,14 @@
+   at nIS.ScheduleLogManager.SaveStatementMetadata(IList`1 statementMetadata, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\ScheduleLogManager.cs:line 515
+   at nIS.GenerateStatementManager.CreateCustomerStatement(GenerateStatementRawData statementRawData, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\GenerateStatementManager.cs:line 171
+   at nIS.ScheduleLogManager.SaveStatementMetadata(IList`1 statementMetadata, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\ScheduleLogManager.cs:line 515
+   at nIS.GenerateStatementManager.CreateCustomerStatement(GenerateStatementRawData statementRawData, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\GenerateStatementManager.cs:line 171
+   at nIS.ScheduleLogManager.SaveStatementMetadata(IList`1 statementMetadata, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\ScheduleLogManager.cs:line 515
+   at nIS.GenerateStatementManager.CreateCustomerStatement(GenerateStatementRawData statementRawData, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\GenerateStatementManager.cs:line 171
+   at nIS.ScheduleLogManager.SaveStatementMetadata(IList`1 statementMetadata, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\ScheduleLogManager.cs:line 515
+   at nIS.GenerateStatementManager.CreateCustomerStatement(GenerateStatementRawData statementRawData, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\GenerateStatementManager.cs:line 171
+   at nIS.ScheduleLogManager.SaveStatementMetadata(IList`1 statementMetadata, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\ScheduleLogManager.cs:line 515
+   at nIS.GenerateStatementManager.CreateCustomerStatement(GenerateStatementRawData statementRawData, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\GenerateStatementManager.cs:line 171
+   at nIS.ScheduleLogManager.SaveStatementMetadata(IList`1 statementMetadata, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\ScheduleLogManager.cs:line 515
+   at nIS.GenerateStatementManager.CreateCustomerStatement(GenerateStatementRawData statementRawData, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\GenerateStatementManager.cs:line 171
+   at nIS.ScheduleLogManager.SaveStatementMetadata(IList`1 statementMetadata, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\ScheduleLogManager.cs:line 515
+   at nIS.GenerateStatementManager.CreateCustomerStatement(GenerateStatementRawData statementRawData, String tenantCode) in E:\TayyabaShaikh\NISPhase3\Manager\GenerateStatementManager.cs:line 171

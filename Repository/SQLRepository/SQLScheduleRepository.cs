@@ -69,6 +69,11 @@ namespace nIS
         /// </summary>
         private IDynamicWidgetRepository dynamicWidgetRepository = null;
 
+        /// <summary>
+        /// The crypto manager
+        /// </summary>
+        private readonly ICryptoManager cryptoManager;
+
         #endregion
 
         #region Constructor
@@ -82,7 +87,7 @@ namespace nIS
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
             this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
             this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
-            //this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
+            this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
         }
 
         #endregion
@@ -1533,32 +1538,52 @@ namespace nIS
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+
+
+                List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+                List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+                IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
+                IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+                    scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.BatchId == BatchIdentifier).ToList();
+                }
+                StringBuilder query = new StringBuilder();
+                if (scheduleLogRecords?.Count > 0)
+                {
+                    query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
+                    query = query.Append("(" + string.Join("or ", customerMasterRecords.Select(item => string.Format("CustomerId.Equals({0}) ", item.Id))) + ")  ");
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+                    }
+                }
+                if (statementMetadataRecords?.Count > 0)
+                {
+                    TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord;
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                    }
                     if (tenantSecurityCodeFormatRecord == null)
                     {
                         throw new TenantSecurityCodeFormatNotAvailableException(tenantCode);
                     }
                     List<string> fields = tenantSecurityCodeFormatRecord.Format.Split('<').ToList();
                     fields.RemoveAt(0);
-                    //fields.ToList().ForEach(field =>
-                    //{
-                    //    field = field.Remove(field.Length - 1);
-                    //});
                     for (int i = 0; i < fields.Count; i++)
                     {
                         fields[i] = fields[i].Remove(fields[i].Length - 1);
                     }
-                    List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
-                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+                    IList<StatementMetadataRecord> newStatementMetadataRecords = new List<StatementMetadataRecord>();
                     customerMasterRecords.ToList().ForEach(item =>
                     {
                         string password = string.Empty;
                         JObject customerDetails = JObject.FromObject(item);
                         int startIndex = 0;
                         int count = 0;
-                        
+
                         fields.ToList().ForEach(field =>
                         {
                             string fieldValue = string.Empty;
@@ -1584,15 +1609,41 @@ namespace nIS
                                 {
                                     count = Convert.ToInt32(fieldDetail[1]);
                                     int length = customerDetails[fieldDetail[0]].ToString().Length;
-                                    fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length-1-count, count);
+                                    fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length - count, count);
                                 }
-                                password = password + fieldValue;
                             }
-                         
+                            password = password + fieldValue;
+
+                        });
+                        statementMetadataRecords.Where(stmt => stmt.CustomerId == item.Id).ToList().ForEach(st =>
+                        {
+                            StatementMetadataRecord statement = new StatementMetadataRecord();
+                            statement = st;
+                            statement.Password = this.cryptoManager.Encrypt(password);
+                            newStatementMetadataRecords.Add(statement);
                         });
 
-
                     });
+
+                    if (newStatementMetadataRecords?.Count > 0)
+                    {
+                        IList<StatementMetadataRecord> statementToBeUpdate = new List<StatementMetadataRecord>();
+                        query = new StringBuilder();
+                        query = query.Append("(" + string.Join("or ", newStatementMetadataRecords.Select(item => string.Format("Id.Equals({0}) ", item.Id))) + ") ");
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            statementToBeUpdate = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+                            statementToBeUpdate.ToList().ForEach(item =>
+                            {
+                                item.Password = newStatementMetadataRecords.Where(s => s.Id == item.Id).FirstOrDefault().Password;
+                                item.IsPasswordGenerated = true;
+                            });
+                            nISEntitiesDataContext.SaveChanges();
+                        }
+                    }
+                }
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
                     var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
                     batchs.ForEach(batch =>
                     {
@@ -1600,8 +1651,9 @@ namespace nIS
                     });
 
                     nISEntitiesDataContext.SaveChanges();
-                    return true;
                 }
+                return true;
+
             }
             catch (Exception ex)
             {

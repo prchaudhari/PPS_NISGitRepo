@@ -81,6 +81,13 @@ namespace nIS
         /// </summary>
         private ArchivalProcessManager archivalProcessManager = null;
 
+
+        /// <summary>
+        /// The crypto manager
+        /// </summary>
+        private readonly ICryptoManager cryptoManager;
+
+
         #endregion
 
         #region Constructor
@@ -104,6 +111,8 @@ namespace nIS
                 this.dynamicWidgetManager = new DynamicWidgetManager(unityContainer);
                 this.statementSearchManager = new StatementSearchManager(unityContainer);
                 this.archivalProcessManager = new ArchivalProcessManager(unityContainer);
+                this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
+
             }
             catch (Exception ex)
             {
@@ -157,6 +166,8 @@ namespace nIS
                                 metarec.StatementDate = DateTime.UtcNow;
                                 metarec.StatementURL = logDetailRecord.StatementFilePath;
                                 metarec.TenantCode = tenantCode;
+                                metarec.IsPasswordGenerated = false;
+                                metarec.Password = "";
                                 statementMetadataRecords.Add(metarec);
                             });
                             this.scheduleLogManager.SaveStatementMetadata(statementMetadataRecords, tenantCode);
@@ -265,6 +276,8 @@ namespace nIS
                                 metarec.StatementDate = DateTime.UtcNow;
                                 metarec.StatementURL = scheduleLogDetail.StatementFilePath;
                                 metarec.TenantCode = tenantCode;
+                                metarec.IsPasswordGenerated = false;
+                                metarec.Password = "";
                                 statementMetadataRecords.Add(metarec);
                             });
                             this.scheduleLogManager.SaveStatementMetadata(statementMetadataRecords, tenantCode);
@@ -844,7 +857,12 @@ namespace nIS
 
                     //Convert HTML statement to PDF statement for current customer
                     var pdfName = "Statement" + "_" + statementSearchRecord.ScheduleLogId + "_" + statementSearchRecord.ScheduleId + statementSearchRecord.StatementId + "_" + statementSearchRecord.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
-                    var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName);
+                    string password = string.Empty;
+                    if (statementSearchRecord.IsPasswordGenerated)
+                    {
+                        password = this.cryptoManager.Decrypt(statementSearchRecord.Password);
+                    }
+                    var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName,password);
                     if (result)
                     {
                         //To insert archive schedule log detail records

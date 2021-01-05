@@ -247,7 +247,7 @@
         /// </returns>
         string ExecuteWebTenantRequest(string instanceURL, string controller, string action, string objectData, string tenantKey, string tenantCode, bool isThirdPartyEnabled = false, bool toBeSerailzied = false);
 
-        bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath);
+        bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath, string password);
 
     }
 }
