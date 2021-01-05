@@ -223,7 +223,9 @@ namespace nIS
                                     if (statementSearchRecords.Count > 0)
                                     {
                                         var customerIds = new List<long>();
-                                        var results = statementSearchRecords.GroupBy(p => p.StatementId, (key, g) => new { StatementId = key, GroupedStatementMetadataRecords = g.ToList() }).ToList();
+
+                                        //get statement search records by grouping of the schedule log id
+                                        var results = statementSearchRecords.GroupBy(p => p.ScheduleLogId, (key, g) => new { ScheduelogId = key, GroupedStatementMetadataRecords = g.ToList() }).ToList();
                                         if (results.Count > 0)
                                         {
                                             results.ForEach(res =>
@@ -232,6 +234,7 @@ namespace nIS
                                                 {
                                                     //get schedule log record
                                                     var scheduleLogId = res.GroupedStatementMetadataRecords.FirstOrDefault().ScheduleLogId;
+                                                    var statementId = res.GroupedStatementMetadataRecords.FirstOrDefault().StatementId;
                                                     var scheduleLog = this.scheduleLogManager.GetScheduleLogs(new ScheduleLogSearchParameter()
                                                     {
                                                         ScheduleLogId = scheduleLogId.ToString(),
@@ -260,7 +263,7 @@ namespace nIS
                                                         {
                                                             var statements = this.statementManager.GetStatements(new StatementSearchParameter
                                                             {
-                                                                Identifier = res.StatementId,
+                                                                Identifier = statementId,
                                                                 IsActive = true,
                                                                 IsStatementPagesRequired = true,
                                                                 PagingParameter = new PagingParameter
