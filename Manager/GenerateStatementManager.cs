@@ -922,6 +922,8 @@ namespace nIS
                                 StatementPeriod = record.StatementPeriod,
                                 StatementURL = outputlocation + "\\" + pdfName,
                                 TenantCode = tenantCode,
+                                IsPasswordGenerated = record.IsPasswordGenerated,
+                                Password = record.Password,
                                 ArchivalDate = DateTime.UtcNow
                             });
                         });

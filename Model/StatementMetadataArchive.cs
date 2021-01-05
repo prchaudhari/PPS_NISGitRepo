@@ -22,5 +22,7 @@ namespace nIS
         public string StatementURL { get; set; }
         public DateTime ArchivalDate { get; set; }
         public string TenantCode { get; set; }
+        public bool IsPasswordGenerated { get; set; }
+        public string Password { get; set; }
     }
 }

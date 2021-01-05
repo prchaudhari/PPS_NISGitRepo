@@ -417,6 +417,8 @@ namespace nIS
                         StatementPeriod = data.StatementPeriod,
                         StatementURL = data.StatementURL,
                         TenantCode = tenantCode,
+                        IsPasswordGenerated = data.IsPasswordGenerated,
+                        Password = data.Password,
                         ArchivalDate = DateTime.UtcNow
                     });
                 });
@@ -551,6 +553,8 @@ namespace nIS
                                 StatementPeriod = data.StatementPeriod,
                                 TenantCode = data.TenantCode,
                                 ScheduleLogArchiveId = scheduleLogArchiveRecord.Id,
+                                IsPasswordGenerated = data.IsPasswordGenerated,
+                                Password = data.Password,
                                 ArchivalDate = DateTime.UtcNow
                             });
                         });
