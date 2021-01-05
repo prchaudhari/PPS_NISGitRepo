@@ -42,6 +42,18 @@ namespace nIS
         public const string INVALID_SCHEDULE_EXCEPTION = "Invalid schedule";
 
         /// <summary>
+        /// The invalid role exception
+        /// </summary>
+        //public const string TENANT_SECURITYCODE_NOTAVAILABLE = "TENANT_SECURITYCODE_NOTAVAILABLE";
+        public const string TENANT_SECURITYCODEFORMAT_NOTAVAILABLE = "Tenant security code format not available";
+
+        /// <summary>
+        /// The  TENANT_SECURITYCODEFIELDDATA_NOTAVAILABLE exception
+        /// </summary>
+        //public const string TENANT_SECURITYCODEFIELDDATA_NOTAVAILABLE = "TENANT_SECURITYCODEFIELDDATA_NOTAVAILABLE";
+        public const string TENANT_SECURITYCODEFIELDDATA_NOTAVAILABLE = "Tenant security code field data not available";
+
+        /// <summary>
         /// The invalid role paging parameter
         /// </summary>
         //public const string INVALID_SCHEDULE_PAGING_PARAMETER = "InvalidSchedulePagingParameter";

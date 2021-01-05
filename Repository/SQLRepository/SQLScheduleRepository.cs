@@ -82,6 +82,7 @@ namespace nIS
             this.statementRepository = this.unityContainer.Resolve<IStatementRepository>();
             this.tenantConfigurationRepository = this.unityContainer.Resolve<ITenantConfigurationRepository>();
             this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
+            //this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
         }
 
         #endregion
@@ -294,7 +295,7 @@ namespace nIS
                             var lastExecutedBatch = Batches.FirstOrDefault();
                             var newStartDate = lastExecutedBatch.BatchExecutionDate;
                             if (scheduleRecord.RecurrancePattern == ModelConstant.DAILY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
-                                {
+                            {
                                 newStartDate.AddDays(1);
                                 this.AddDailyOccurenceScheduleBatches(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
                             }
@@ -764,7 +765,7 @@ namespace nIS
             bool scheduleRunStatus = false;
             var schedules = new List<ScheduleRecord>();
             var batchMasterRecords = new List<BatchMasterRecord>();
-            
+
             var fromdate = DateTime.Now;
             var todate = fromdate.AddMinutes(60);
 
@@ -786,7 +787,7 @@ namespace nIS
                         query.Append("(" + string.Join("or ", string.Join(",", batchMasterRecords.Select(item => item.ScheduleId).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
                         schedules = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
                     }
-                    
+
                     if (schedules != null && schedules.Count > 0)
                     {
                         var batchMaster = new BatchMasterRecord();
@@ -946,7 +947,7 @@ namespace nIS
                             }
                         });
                     }
-                    
+
                 }
                 scheduleRunStatus = true;
             }
@@ -992,7 +993,7 @@ namespace nIS
                     scheduleLog.NumberOfRetry = 1;
                     scheduleLog.CreationDate = DateTime.UtcNow;
                     scheduleLog.TenantCode = tenantCode;
-                    
+
                     var IsDataAvail = false;
                     if (batchMaster != null)
                     {
@@ -1534,6 +1535,64 @@ namespace nIS
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
+                    TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                    if (tenantSecurityCodeFormatRecord == null)
+                    {
+                        throw new TenantSecurityCodeFormatNotAvailableException(tenantCode);
+                    }
+                    List<string> fields = tenantSecurityCodeFormatRecord.Format.Split('<').ToList();
+                    fields.RemoveAt(0);
+                    //fields.ToList().ForEach(field =>
+                    //{
+                    //    field = field.Remove(field.Length - 1);
+                    //});
+                    for (int i = 0; i < fields.Count; i++)
+                    {
+                        fields[i] = fields[i].Remove(fields[i].Length - 1);
+                    }
+                    List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+                    customerMasterRecords.ToList().ForEach(item =>
+                    {
+                        string password = string.Empty;
+                        JObject customerDetails = JObject.FromObject(item);
+                        int startIndex = 0;
+                        int count = 0;
+                        
+                        fields.ToList().ForEach(field =>
+                        {
+                            string fieldValue = string.Empty;
+                            List<string> fieldDetail = field.Split(':').ToList();
+                            if (customerDetails[fieldDetail[0]].ToString() == "")
+                            {
+                                throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+                            }
+                            if (fieldDetail.Count == 1)
+                            {
+                                fieldValue = customerDetails[fieldDetail[0]].ToString();
+                            }
+                            else if (fieldDetail.Count == 3)
+                            {
+                                fieldValue = fieldDetail[0];
+
+                                if (fieldDetail[2] == "F")
+                                {
+                                    count = Convert.ToInt32(fieldDetail[1]);
+                                    fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(0, count);
+                                }
+                                else if (fieldDetail[2] == "L")
+                                {
+                                    count = Convert.ToInt32(fieldDetail[1]);
+                                    int length = customerDetails[fieldDetail[0]].ToString().Length;
+                                    fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length-1-count, count);
+                                }
+                                password = password + fieldValue;
+                            }
+                         
+                        });
+
+
+                    });
                     var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
                     batchs.ForEach(batch =>
                     {
@@ -1597,7 +1656,7 @@ namespace nIS
 
                         //delete schedule log
                         nISEntitiesDataContext.ScheduleLogRecords.RemoveRange(scheduleLogs);
-                        
+
                         //to save all above delete records in database
                         nISEntitiesDataContext.SaveChanges();
                         result = true;
@@ -1803,7 +1862,7 @@ namespace nIS
                 int last = queryString.ToString().LastIndexOf("and");
                 finalQuery = queryString.ToString().Substring(0, last);
             }
-            
+
             return finalQuery;
         }
 

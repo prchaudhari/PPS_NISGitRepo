@@ -114,6 +114,8 @@
     <Compile Include="Render Engine\InvalidRenderEngineException.cs" />
     <Compile Include="Render Engine\RenderEngineNotFoundException.cs" />
     <Compile Include="ScheduleLog\ScheduleLogDetailNotFoundException.cs" />
+    <Compile Include="Schedule\TenantSecurityCodeFieldDataNotAvailable.cs" />
+    <Compile Include="Schedule\TenantSecurityCodeFormatNotAvailable.cs" />
     <Compile Include="Schedule\RunningScheduleRefrenceException.cs" />
     <Compile Include="Statement\DuplicateStatementPageFoundException.cs" />
     <Compile Include="Statement\DuplicateStatementFoundException.cs" />
