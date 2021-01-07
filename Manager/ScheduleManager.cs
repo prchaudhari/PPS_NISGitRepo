@@ -968,6 +968,7 @@ namespace nIS
                             this.scheduleRepository.UpdateScheduleStatus(scheduleRecord.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
                         }
                     }
+                    scheduleRunStatus = true;
                 }
             }
             catch (Exception ex)

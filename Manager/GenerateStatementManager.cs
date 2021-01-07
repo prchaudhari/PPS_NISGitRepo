@@ -1607,7 +1607,8 @@ namespace nIS
             if (savingtrends != null && savingtrends.Count > 0)
             {
                 var savingTrendRecords = new List<SavingTrend>();
-                int mnth = DateTime.Now.Month - 1;  //To start month validation of consecutive month data from previous month
+                var currentMonth = DateTime.Now.Month;
+                int mnth = currentMonth - 1 == 0 ? 12 : currentMonth - 1;  //To start month validation of consecutive month data from previous month
                 for (int t = savingtrends.Count; t > 0; t--)
                 {
                     string month = this.utility.getMonth(mnth);
@@ -1667,7 +1668,8 @@ namespace nIS
             if (spendingtrends != null && spendingtrends.Count > 0)
             {
                 var trends = new List<SavingTrend>();
-                int mnth = DateTime.Now.Month - 1; //To start month validation of consecutive month data from previous month
+                var currentMonth = DateTime.Now.Month;
+                int mnth = currentMonth - 1 == 0 ? 12 : currentMonth - 1;  //To start month validation of consecutive month data from previous month
                 for (int t = spendingtrends.Count; t > 0; t--)
                 {
                     string month = this.utility.getMonth(mnth);
