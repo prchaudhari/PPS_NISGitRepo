@@ -34,7 +34,7 @@ export class ScheduleService {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.scheduleGetUrl;
     this.uiLoader.start();
-    var response : any = {};
+    var response: any = {};
     await httpClientService.CallHttp("POST", requestUrl, searchParameter).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
         if (httpEvent.type == HttpEventType.Response) {
@@ -47,7 +47,7 @@ export class ScheduleService {
               });
               response.List = this.schedulesList;
               response.RecordCount = parseInt(httpEvent.headers.get('recordCount'));
-            }else {
+            } else {
               response.List = this.schedulesList;
               response.RecordCount = 0;
             }
@@ -103,7 +103,7 @@ export class ScheduleService {
   //method to call api of delete Schedule.
   public async deleteSchedule(postData): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.scheduleDeleteUrl ;
+    let requestUrl = URLConfiguration.scheduleDeleteUrl;
     this.uiLoader.start();
     await httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
       .then((httpEvent: HttpEvent<any>) => {
@@ -117,7 +117,7 @@ export class ScheduleService {
           }
         }
       }, (error) => {
-          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
         this.uiLoader.stop();
         this.isRecordDeleted = false;
       });
@@ -200,17 +200,28 @@ export class ScheduleService {
     let httpClientService = this.injector.get(HttpClientService);
     let requestUrl = URLConfiguration.RunScheduleNow;
     httpClientService.CallHttp("POST", requestUrl, postData).toPromise()
-    .then((httpEvent: HttpEvent<any>) => {
+      .then((httpEvent: HttpEvent<any>) => {
 
-    }, (error: HttpResponse<any>) => {
+      }, (error: HttpResponse<any>) => {
         this.uiLoader.stop();
         this.isRecordDeleted = false;
-      });     
+      });
+  }
+  public ApproveBatch(BatchIdentifier) {
+    let httpClientService = this.injector.get(HttpClientService);
+
+    let requestUrl = URLConfiguration.ApproveScheduleBatch + "?" + "BatchIdentifier=" + BatchIdentifier;
+    httpClientService.CallHttp("POST", requestUrl).toPromise()
+      .then((httpEvent: HttpEvent<any>) => {
+      }, (error: HttpResponse<any>) => {
+        this.uiLoader.stop();
+        this.isRecordDeleted = false;
+      });
   }
 
-  public async ApproveBatch(BatchIdentifier): Promise<boolean> {
+  public async ValidateApproveBatchAsync(BatchIdentifier): Promise<boolean> {
     let httpClientService = this.injector.get(HttpClientService);
-    let requestUrl = URLConfiguration.ApproveScheduleBatch + "?" + "BatchIdentifier=" + BatchIdentifier;
+    let requestUrl = URLConfiguration.ValidateApproveScheduleBatch + "?" + "BatchIdentifier=" + BatchIdentifier;
     this.uiLoader.start();
     var result = false;
     await httpClientService.CallHttp("POST", requestUrl).toPromise()
@@ -219,6 +230,7 @@ export class ScheduleService {
           this.uiLoader.stop();
           if (httpEvent["status"] === 200) {
             result = true;
+            this.ApproveBatch(BatchIdentifier);
           }
           else {
             result = false;

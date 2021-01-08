@@ -1662,6 +1662,89 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method helps to approve batch of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+
+
+                List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+                List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+                IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
+                IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+                    scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.BatchId == BatchIdentifier).ToList();
+                }
+                StringBuilder query = new StringBuilder();
+                if (scheduleLogRecords?.Count > 0)
+                {
+                    query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
+                    query = query.Append("(" + string.Join("or ", customerMasterRecords.Select(item => string.Format("CustomerId.Equals({0}) ", item.Id))) + ")  ");
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+                    }
+                }
+                if (statementMetadataRecords?.Count > 0)
+                {
+                    TenantSecurityCodeFormatRecord tenantSecurityCodeFormatRecord;
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        tenantSecurityCodeFormatRecord = nISEntitiesDataContext.TenantSecurityCodeFormatRecords.Where(item => item.TenantCode == tenantCode).ToList().FirstOrDefault();
+                    }
+                    if (tenantSecurityCodeFormatRecord == null)
+                    {
+                        throw new TenantSecurityCodeFormatNotAvailableException(tenantCode);
+                    }
+                    List<string> fields = tenantSecurityCodeFormatRecord.Format.Split('<').ToList();
+                    fields.RemoveAt(0);
+                    for (int i = 0; i < fields.Count; i++)
+                    {
+                        fields[i] = fields[i].Remove(fields[i].Length - 1);
+                    }
+                    IList<StatementMetadataRecord> newStatementMetadataRecords = new List<StatementMetadataRecord>();
+                    customerMasterRecords.ToList().ForEach(item =>
+                    {
+                        JObject customerDetails = JObject.FromObject(item);
+                        fields.ToList().ForEach(field =>
+                        {
+                            string fieldValue = string.Empty;
+                            List<string> fieldDetail = field.Split(':').ToList();
+                            if (customerDetails[fieldDetail[0]].ToString() == "")
+                            {
+                                throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+                            }
+                        });
+                    });
+                }
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+                    batchs.ForEach(batch =>
+                    {
+                        batch.Status = BatchStatus.ApprovalInProgress.ToString();
+                    });
+
+                    nISEntitiesDataContext.SaveChanges();
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
         /// <param name="BatchIdentifier"></param>

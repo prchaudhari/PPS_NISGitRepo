@@ -17,6 +17,7 @@ namespace nIS
         Failed,
         BatchDataNotAvailable,
         Approved,
-        Archived
+        Archived,
+        ApprovalInProgress
     }
 }

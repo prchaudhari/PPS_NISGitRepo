@@ -146,6 +146,14 @@ namespace nIS
         bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode);
 
         /// <summary>
+        /// This method helps to approve batch of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode);
+
+        /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
         /// <param name="BatchIdentifier"></param>
