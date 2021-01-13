@@ -225,6 +225,12 @@
     <Content Include="Resources\sampledata\savingtransactiondetail.json" />
     <Content Include="Resources\sampledata\savingtrenddata.json" />
     <Content Include="Resources\sampledata\spendingtrenddata.json" />
+    <None Include="Properties\PublishProfiles\nisqa-api1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nisqa-api1 - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nisqa-api1 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\nisqa-api2 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nisqa-api2 - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nisqa-api2 - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CryptoManager\CryptoManager.csproj">

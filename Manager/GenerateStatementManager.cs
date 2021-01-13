@@ -180,40 +180,6 @@ namespace nIS
                         this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.Identifier, statementRawData.OutputLocation);
                     }
                 }
-
-                //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
-                var logDetailsRecords = this.scheduleLogManager.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
-                {
-                    ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
-                    PagingParameter = new PagingParameter
-                    {
-                        PageIndex = 0,
-                        PageSize = 0,
-                    },
-                    SortParameter = new SortParameter()
-                    {
-                        SortOrder = SortOrder.Ascending,
-                        SortColumn = "Id",
-                    },
-                    SearchMode = SearchMode.Equals
-                }, tenantCode);
-                if (statementRawData.CustomerCount == logDetailsRecords.Count)
-                {
-                    var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
-                    var batchStatus = BatchStatus.Completed.ToString();
-
-                    var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
-                    if (failedRecords != null && failedRecords.Count > 0)
-                    {
-                        scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-                        batchStatus = BatchStatus.Failed.ToString();
-                    }
-
-                    this.scheduleLogManager.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                    this.scheduleManager.UpdateScheduleRunHistoryEndDate(statementRawData.ScheduleLog.Identifier, tenantCode);
-                    this.scheduleManager.UpdateBatchStatus(statementRawData.Batch.Identifier, batchStatus, true, tenantCode);
-                    this.scheduleManager.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
-                }
             }
             catch (Exception ex)
             {

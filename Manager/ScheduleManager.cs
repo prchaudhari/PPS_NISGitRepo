@@ -579,16 +579,17 @@ namespace nIS
                                             scheduleRunHistory.Add(runHistory);
                                             this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
 
-                                            var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
 
                                             var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
                                             {
                                                 BatchId = batch.Identifier,
                                             }, tenantCode);
-
                                             if (customers.Count > 0)
                                             {
                                                 var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+                                                var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
+
+                                                long CustomerCount = customers.Count;
                                                 var statementRawData = new GenerateStatementRawData()
                                                 {
                                                     Statement = statement,
@@ -597,7 +598,7 @@ namespace nIS
                                                     Batch = batch,
                                                     BatchDetails = BatchDetails,
                                                     BaseURL = baseURL,
-                                                    CustomerCount = customers.Count,
+                                                    CustomerCount = CustomerCount,
                                                     OutputLocation = outputLocation,
                                                     TenantConfiguration = tenantConfiguration,
                                                     Client = client,
@@ -649,6 +650,37 @@ namespace nIS
                                                         ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                                     }
                                                 }
+
+                                                //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
+                                                var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                                                {
+                                                    ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
+                                                    PagingParameter = new PagingParameter
+                                                    {
+                                                        PageIndex = 0,
+                                                        PageSize = 0,
+                                                    },
+                                                    SortParameter = new SortParameter()
+                                                    {
+                                                        SortOrder = SortOrder.Ascending,
+                                                        SortColumn = "Id",
+                                                    },
+                                                    SearchMode = SearchMode.Equals
+                                                }, tenantCode);
+                                                var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+                                                var _batchStatus = BatchStatus.Completed.ToString();
+
+                                                var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
+                                                if (failedRecords != null && failedRecords.Count > 0)
+                                                {
+                                                    scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+                                                    _batchStatus = BatchStatus.Failed.ToString();
+                                                }
+
+                                                this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
+                                                this.scheduleRepository.UpdateScheduleRunHistoryEndDate(statementRawData.ScheduleLog.Identifier, tenantCode);
+                                                this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
+                                                this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
                                             }
                                             else
                                             {
@@ -960,6 +992,37 @@ namespace nIS
                                     ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                 }
                             }
+
+                            //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
+                            var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                            {
+                                ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
+                                PagingParameter = new PagingParameter
+                                {
+                                    PageIndex = 0,
+                                    PageSize = 0,
+                                },
+                                SortParameter = new SortParameter()
+                                {
+                                    SortOrder = SortOrder.Ascending,
+                                    SortColumn = "Id",
+                                },
+                                SearchMode = SearchMode.Equals
+                            }, tenantCode);
+                            var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+                            var _batchStatus = BatchStatus.Completed.ToString();
+
+                            var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
+                            if (failedRecords != null && failedRecords.Count > 0)
+                            {
+                                scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+                                _batchStatus = BatchStatus.Failed.ToString();
+                            }
+
+                            this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
+                            this.scheduleRepository.UpdateScheduleRunHistoryEndDate(statementRawData.ScheduleLog.Identifier, tenantCode);
+                            this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
+                            this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
                         }
                         else
                         {
