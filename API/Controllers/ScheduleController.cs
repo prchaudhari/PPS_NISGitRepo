@@ -289,6 +289,24 @@ namespace nIS
 
             return batchMasters;
         }
+        /// <summary>
+        /// This method helps to approve batch of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <returns>True if success, otherwise false</returns>
+        [HttpPost]
+        public bool ValidateApproveScheduleBatch(long BatchIdentifier)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.scheduleManager.ValidateApproveScheduleBatch(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// This method helps to approve batch of the respective schedule.

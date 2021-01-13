@@ -111,7 +111,7 @@ var URLConfiguration = /** @class */ (function () {
     ;
     Object.defineProperty(URLConfiguration, "pagetypeGetUrl", {
         //Page type method
-        get: function () { return "PageType/List"; },
+        get: function () { return "PageType/GetPageTypeList"; },
         enumerable: false,
         configurable: true
     });
@@ -549,6 +549,12 @@ var URLConfiguration = /** @class */ (function () {
     ;
     Object.defineProperty(URLConfiguration, "RunScheduleNow", {
         get: function () { return "Schedule/RunScheduleNow"; },
+        enumerable: false,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(URLConfiguration, "ValidateApproveScheduleBatch", {
+        get: function () { return "Schedule/ValidateApproveScheduleBatch"; },
         enumerable: false,
         configurable: true
     });

@@ -1141,6 +1141,23 @@ namespace nIS
                 throw ex;
             }
         }
+        /// <summary>
+        /// This method helps to approve batch of the respective schedule.
+        /// </summary>
+        /// <param name="BatchIdentifier"></param>
+        /// <param name="tenantCode"></param>
+        /// <returns>True if success, otherwise false</returns>
+        public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
+        {
+            try
+            {
+                return this.scheduleRepository.ValidateApproveScheduleBatch(BatchIdentifier, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.

@@ -337,9 +337,9 @@ export class ViewComponent implements OnInit {
     }
     this._messageDialogService.openConfirmationDialogBox('Confirm', message, Constants.msgBoxWarning).subscribe(async (isConfirmed) => {
       if (isConfirmed) {
-        let result = await this.scheduleService.ApproveBatch(batch.Identifier);
+        let result = await this.scheduleService.ValidateApproveBatchAsync(batch.Identifier);
         if (result) {
-          let messageString = "Batch approved successfully";
+          let messageString = "Batch approval in progress successfully";
           this._messageDialogService.openDialogBox('Success', messageString, Constants.msgBoxSuccess);
           this.isCollapsedBatch = !this.isCollapsedBatch;
           this.IsBatchDetailsGet = false;
