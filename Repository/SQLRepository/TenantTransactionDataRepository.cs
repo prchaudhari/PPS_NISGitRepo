@@ -641,7 +641,7 @@ namespace nIS
                 var accountTransactionRecords = new List<AccountTransactionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords.Where(whereClause).OrderByDescending(it => it.TransactionDate).ToList();
+                    accountTransactionRecords = nISEntitiesDataContext.AccountTransactionRecords.Where(whereClause)?.OrderByDescending(it => it.TransactionDate).ToList();
                     if (accountTransactionRecords != null && accountTransactionRecords.Count > 0)
                     {
                         accountTransactionRecords.ForEach(item =>

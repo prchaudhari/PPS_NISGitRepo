@@ -568,27 +568,16 @@ namespace nIS
                                             }, tenantCode).ToList().FirstOrDefault();
                                             scheduleLog.ScheduleId = schedule.Identifier;
 
-                                            var runHistory = new ScheduleRunHistory();
-                                            runHistory.StartDate = DateTime.UtcNow;
-                                            runHistory.ScheduleId = schedule.Identifier;
-                                            runHistory.StatementId = statement.Identifier;
-                                            runHistory.ScheduleLogId = scheduleLog.Identifier;
-                                            runHistory.EndDate = DateTime.UtcNow;
-                                            runHistory.StatementFilePath = CommonStatementZipFilePath;
-                                            var scheduleRunHistory = new List<ScheduleRunHistory>();
-                                            scheduleRunHistory.Add(runHistory);
-                                            this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
-
-
+                                            var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+                                            var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
+                                            
                                             var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
                                             {
                                                 BatchId = batch.Identifier,
                                             }, tenantCode);
+                                            var scheduleRunStartTime = DateTime.UtcNow;
                                             if (customers.Count > 0)
                                             {
-                                                var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-                                                var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
-
                                                 long CustomerCount = customers.Count;
                                                 var statementRawData = new GenerateStatementRawData()
                                                 {
@@ -605,10 +594,11 @@ namespace nIS
                                                     TenantEntities = tenantEntities,
                                                 };
 
+                                                var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
                                                 //Render engine implementation logic
                                                 for (int i = 0; customers.Count > 0; i++)
                                                 {
-                                                    var availableNisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                                    var availableNisEngines = new List<RenderEngine>(NisEngines);
                                                     ParallelOptions parallelOptions = new ParallelOptions();
 
                                                     if (customers.Count > availableNisEngines.Count * parallelThreadCount)
@@ -651,6 +641,19 @@ namespace nIS
                                                     }
                                                 }
 
+                                                var scheduleRunHistory = new List<ScheduleRunHistory>();
+                                                scheduleRunHistory.Add(new ScheduleRunHistory()
+                                                {
+                                                    StartDate = scheduleRunStartTime,
+                                                    ScheduleId = schedule.Identifier,
+                                                    StatementId = statement.Identifier,
+                                                    ScheduleLogId = scheduleLog.Identifier,
+                                                    EndDate = DateTime.UtcNow,
+                                                    StatementFilePath = CommonStatementZipFilePath
+                                                });
+                                                this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
+                                                //this.scheduleRepository.UpdateScheduleRunHistoryEndDate(statementRawData.ScheduleLog.Identifier, tenantCode);
+
                                                 //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
                                                 var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
                                                 {
@@ -678,7 +681,6 @@ namespace nIS
                                                 }
 
                                                 this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                                                this.scheduleRepository.UpdateScheduleRunHistoryEndDate(statementRawData.ScheduleLog.Identifier, tenantCode);
                                                 this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
                                                 this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
                                             }
@@ -910,28 +912,17 @@ namespace nIS
                         }, tenantCode).ToList().FirstOrDefault();
                         scheduleLog.ScheduleId = scheduleRecord.Identifier;
 
-                        var runHistory = new ScheduleRunHistory();
-                        runHistory.StartDate = DateTime.UtcNow;
-                        runHistory.ScheduleId = scheduleRecord.Identifier;
-                        runHistory.StatementId = statement.Identifier;
-                        runHistory.ScheduleLogId = scheduleLog.Identifier;
-                        runHistory.EndDate = DateTime.UtcNow;
-                        runHistory.StatementFilePath = CommonStatementZipFilePath;
-                        var scheduleRunHistory = new List<ScheduleRunHistory>();
-                        scheduleRunHistory.Add(runHistory);
-                        this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
-
+                        var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+                        var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
+                        
                         var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
                         {
                             BatchId = batch.Identifier,
                         }, tenantCode);
+                        var scheduleRunStartTime = DateTime.UtcNow;
                         if (customers.Count > 0)
                         {
-                            var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-                            var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
-
                             long CustomerCount = customers.Count;
-
                             var statementRawData = new GenerateStatementRawData()
                             {
                                 Statement = statement,
@@ -947,23 +938,23 @@ namespace nIS
                                 TenantEntities = tenantEntities,
                             };
 
+                            var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
                             //Render engine implementation logic
                             for (int i = 0; customers.Count > 0; i++)
                             {
-                                var availableRenderEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                var availableNisEngines = new List<RenderEngine>(NisEngines);
                                 ParallelOptions parallelOptions = new ParallelOptions();
-
-                                if (customers.Count > availableRenderEngines.Count * parallelThreadCount)
+                                if (customers.Count > availableNisEngines.Count * parallelThreadCount)
                                 {
-                                    parallelOptions.MaxDegreeOfParallelism = availableRenderEngines.Count;
+                                    parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
                                     var parallelRequest = new List<CustomerParallelRequest>();
                                     int count = 0;
-                                    for (int j = 1; availableRenderEngines.Count > 0; j++)
+                                    for (int j = 1; availableNisEngines.Count > 0; j++)
                                     {
-                                        parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines.FirstOrDefault() });
+                                        parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
                                         customers = customers.Skip(parallelThreadCount).ToList();
                                         count += 1;
-                                        availableRenderEngines = availableRenderEngines.Skip(count).ToList();
+                                        availableNisEngines = availableNisEngines.Skip(count).ToList();
                                     }
 
                                     ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
@@ -978,13 +969,13 @@ namespace nIS
                                     {
                                         if (customers.Count > parallelThreadCount)
                                         {
-                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableRenderEngines[count] });
+                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
                                             customers = customers.Skip(parallelThreadCount).ToList();
                                             count += 1;
                                         }
                                         else
                                         {
-                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableRenderEngines[count] });
+                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
                                             customers = new List<CustomerMaster>();
                                         }
                                     }
@@ -992,6 +983,19 @@ namespace nIS
                                     ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                 }
                             }
+
+                            var scheduleRunHistory = new List<ScheduleRunHistory>();
+                            scheduleRunHistory.Add(new ScheduleRunHistory()
+                            {
+                                StartDate = scheduleRunStartTime,
+                                ScheduleId = scheduleRecord.Identifier,
+                                StatementId = statement.Identifier,
+                                ScheduleLogId = scheduleLog.Identifier,
+                                EndDate = DateTime.UtcNow,
+                                StatementFilePath = CommonStatementZipFilePath
+                            });
+                            this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
+                            //this.scheduleRepository.UpdateScheduleRunHistoryEndDate(statementRawData.ScheduleLog.Identifier, tenantCode);
 
                             //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
                             var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
@@ -1020,7 +1024,6 @@ namespace nIS
                             }
 
                             this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                            this.scheduleRepository.UpdateScheduleRunHistoryEndDate(statementRawData.ScheduleLog.Identifier, tenantCode);
                             this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
                             this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
                         }
@@ -1345,11 +1348,6 @@ namespace nIS
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
                     var response = client.PostAsync("GenerateStatement/CreateCustomerStatement", new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, "application/json")).Result;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var result = response.Content.ReadAsStringAsync().Result;
-                        Console.WriteLine(result);
-                    }
                 });
             }
             catch (Exception ex)

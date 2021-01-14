@@ -405,21 +405,7 @@ namespace nIS
                     string accountType = string.Empty; //also use for vendor name
                     long accountId = 0;
                     HttpClient httpClient = null;
-
-                    var newStatementPageContents = new List<StatementPageContent>();
-                    statementRawData.StatementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
-                    {
-                        Id = it.Id,
-                        PageId = it.PageId,
-                        PageTypeId = it.PageTypeId,
-                        HtmlContent = it.HtmlContent,
-                        PageHeaderContent = it.PageHeaderContent,
-                        PageFooterContent = it.PageFooterContent,
-                        DisplayName = it.DisplayName,
-                        TabClassName = it.TabClassName,
-                        DynamicWidgets = it.DynamicWidgets
-                    }));
-
+                    var newStatementPageContents = new List<StatementPageContent>(statementRawData.StatementPageContents);
                     long FirstPageId = statement.Pages[0].Identifier;
                     for (int i = 0; i < statement.Pages.Count; i++)
                     {
@@ -456,13 +442,12 @@ namespace nIS
 
                         var SubTabs = new StringBuilder();
                         var PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
-                        var dynamicWidgets = statementPageContent.DynamicWidgets;
+                        var dynamicWidgets = new List<DynamicWidget>(statementPageContent.DynamicWidgets);
 
                         string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                         navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
                         string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
-                        PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName);
-                        PageHeaderContent.Replace("{{DivId}}", tabClassName);
+                        PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
 
                         var newPageContent = new StringBuilder();
                         newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
@@ -682,28 +667,17 @@ namespace nIS
 
                     newStatementPageContents.ToList().ForEach(page =>
                     {
-                        htmlbody.Append(page.PageHeaderContent);
-                        htmlbody.Append(page.HtmlContent);
-                        htmlbody.Append(page.PageFooterContent);
+                        htmlbody.Append(page.PageHeaderContent).Append(page.HtmlContent).Append(page.PageFooterContent);
                     });
 
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
-
                     navbarHtml = navbarHtml.Replace("{{NavItemList}}", navbar.ToString());
-
                     var finalHtml = new StringBuilder();
-                    finalHtml.Append(HtmlConstants.HTML_HEADER);
-                    finalHtml.Append(navbarHtml);
-                    finalHtml.Append(htmlbody.ToString());
-                    finalHtml.Append(HtmlConstants.HTML_FOOTER);
+                    finalHtml.Append(HtmlConstants.HTML_HEADER).Append(navbarHtml).Append(htmlbody.ToString()).Append(HtmlConstants.HTML_FOOTER);
                     scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
 
                     //replace below variable with actual data in final html string
-                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
-                    finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
-                    finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
-                    finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
-                    finalHtml.Replace("{{TenantCode}}", tenantCode);
+                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString()).Replace("{{CustomerNumber}}", customer.Identifier.ToString()).Replace("{{StatementNumber}}", statement.Identifier.ToString()).Replace("{{FirstPageId}}", FirstPageId.ToString()).Replace("{{TenantCode}}", tenantCode);
 
                     //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
                     //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
@@ -1296,7 +1270,7 @@ namespace nIS
             var IsFailed = false;
             if (accountrecords != null && accountrecords.Count > 0)
             {
-                var currentAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountType.ToLower().Contains("current") && item.Identifier == accountId)?.ToList();
+                var currentAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Identifier && item.Identifier == accountId)?.ToList();
                 if (currentAccountRecords != null && currentAccountRecords.Count > 0)
                 {
                     var records = currentAccountRecords.GroupBy(item => item.AccountType).ToList();
@@ -1329,7 +1303,7 @@ namespace nIS
             var IsFailed = false;
             if (accountrecords != null && accountrecords.Count > 0)
             {
-                var savingAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountType.ToLower().Contains("saving") && item.Identifier == accountId)?.ToList();
+                var savingAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Identifier && item.Identifier == accountId)?.ToList();
                 if (savingAccountRecords != null && savingAccountRecords.Count > 0)
                 {
                     var records = savingAccountRecords.GroupBy(item => item.AccountType).ToList();
@@ -1359,34 +1333,19 @@ namespace nIS
 
         private void BindSavingTransactionWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, CustomerMaster customer, BatchMaster batchMaster, IList<AccountTransaction> CustomerAcccountTransactions, Page page, PageWidget widget, long accountId, string tenantCode, string currency, string outputLocation)
         {
-            var accountTransactions = CustomerAcccountTransactions.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountType.ToLower().Contains("saving") && item.AccountId == accountId && item.TenantCode == tenantCode)?.ToList();
-
+            var accountTransactions = CustomerAcccountTransactions.Where(item => item.CustomerId == customer.Identifier && item.AccountId == accountId)?.ToList();
             var transaction = new StringBuilder();
             var selectOption = new StringBuilder();
 
             if (accountTransactions != null && accountTransactions.Count > 0)
             {
-                IList<AccountTransaction> transactions = new List<AccountTransaction>();
                 pageContent.Replace("{{Currency}}", currency);
-                //get saving transaction data in the list and then convert it to json format string 
-                //and store it as file at same directory of html statement file
-                accountTransactions.ToList().ForEach(trans =>
-                {
-                    AccountTransaction accountTransaction = new AccountTransaction();
-                    accountTransaction.AccountType = trans.AccountType;
-                    accountTransaction.TransactionDate = trans.TransactionDate;
-                    accountTransaction.TransactionType = trans.TransactionType;
-                    accountTransaction.FCY = trans.FCY;
-                    accountTransaction.Narration = trans.Narration;
-                    accountTransaction.LCY = trans.LCY;
-                    accountTransaction.CurrentRate = trans.CurrentRate;
-                    transactions.Add(accountTransaction);
-                });
-                string savingtransactionjson = JsonConvert.SerializeObject(transactions);
+                // convert it to json format string and store it as file at same directory of html statement file
+                string savingtransactionjson = JsonConvert.SerializeObject(accountTransactions);
                 if (savingtransactionjson != null && savingtransactionjson != string.Empty)
                 {
                     var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
-                    distinctNaration.ToList().ForEach(item =>
+                    distinctNaration.ForEach(item =>
                     {
                         selectOption.Append("<option value='" + item + "'> " + item + "</option>");
                     });
@@ -1429,33 +1388,18 @@ namespace nIS
 
         private void BindCurrentTransactionWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, CustomerMaster customer, BatchMaster batchMaster, IList<AccountTransaction> CustomerAcccountTransactions, Page page, PageWidget widget, long accountId, string tenantCode, string currency, string outputLocation)
         {
-            var accountTransactions = CustomerAcccountTransactions.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountType.ToLower().Contains("current") && item.AccountId == accountId && item.TenantCode == tenantCode)?.ToList();
-
+            var accountTransactions = CustomerAcccountTransactions.Where(item => item.CustomerId == customer.Identifier && item.AccountId == accountId)?.ToList();
             var transaction = new StringBuilder();
             var selectOption = new StringBuilder();
             if (accountTransactions != null && accountTransactions.Count > 0)
             {
-                IList<AccountTransaction> transactions = new List<AccountTransaction>();
                 pageContent.Replace("{{Currency}}", currency);
-                //get saving transaction data in the list and then convert it to json format string
-                //and store it as json file at same directory of html statement file
-                accountTransactions.ToList().ForEach(trans =>
-                {
-                    AccountTransaction accountTransaction = new AccountTransaction();
-                    accountTransaction.AccountType = trans.AccountType;
-                    accountTransaction.TransactionDate = trans.TransactionDate;
-                    accountTransaction.TransactionType = trans.TransactionType;
-                    accountTransaction.FCY = trans.FCY;
-                    accountTransaction.Narration = trans.Narration;
-                    accountTransaction.LCY = trans.LCY;
-                    accountTransaction.CurrentRate = trans.CurrentRate;
-                    transactions.Add(accountTransaction);
-                });
-                string currenttransactionjson = JsonConvert.SerializeObject(transactions);
+                //convert it to json format string and store it as json file at same directory of html statement file
+                string currenttransactionjson = JsonConvert.SerializeObject(accountTransactions);
                 if (currenttransactionjson != null && currenttransactionjson != string.Empty)
                 {
                     var distinctNaration = accountTransactions.Select(item => item.Narration).Distinct().ToList();
-                    distinctNaration.ToList().ForEach(item =>
+                    distinctNaration.ForEach(item =>
                     {
                         selectOption.Append("<option value='" + item + "'> " + item + "</option>");
                     });
@@ -1572,7 +1516,6 @@ namespace nIS
             var savingtrends = CustomerSavingTrends.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountId == accountId).ToList();
             if (savingtrends != null && savingtrends.Count > 0)
             {
-                var savingTrendRecords = new List<SavingTrend>();
                 var currentMonth = DateTime.Now.Month;
                 int mnth = currentMonth - 1 == 0 ? 12 : currentMonth - 1;  //To start month validation of consecutive month data from previous month
                 for (int t = savingtrends.Count; t > 0; t--)
@@ -1581,14 +1524,7 @@ namespace nIS
                     var lst = savingtrends.Where(it => it.Month.ToLower().Contains(month.ToLower()))?.ToList();
                     if (lst != null && lst.Count > 0)
                     {
-                        SavingTrend trend = new SavingTrend();
-                        trend.Month = lst[0].Month;
-                        trend.NumericMonth = mnth;
-                        trend.Income = lst[0].Income;
-                        trend.IncomePercentage = lst[0].IncomePercentage;
-                        trend.SpendAmount = lst[0].SpendAmount;
-                        trend.SpendPercentage = lst[0].SpendPercentage;
-                        savingTrendRecords.Add(trend);
+                        lst[0].NumericMonth = mnth;
                     }
                     else
                     {
@@ -1599,8 +1535,7 @@ namespace nIS
                 }
 
                 //get saving trend chart widget data, convert it into json string format and store it as json file at same directory of html statement file
-                var records = savingTrendRecords.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
-                string savingtrendjson = JsonConvert.SerializeObject(records);
+                string savingtrendjson = JsonConvert.SerializeObject(savingtrends.OrderByDescending(item => item.NumericMonth).Take(6).ToList());
                 if (savingtrendjson != null && savingtrendjson != string.Empty)
                 {
                     SavingTrendChartJson = "savingdata" + accountId + page.Identifier + "=" + savingtrendjson;
@@ -1633,7 +1568,6 @@ namespace nIS
             var spendingtrends = CustomerSavingTrends.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountId == accountId).ToList();
             if (spendingtrends != null && spendingtrends.Count > 0)
             {
-                var trends = new List<SavingTrend>();
                 var currentMonth = DateTime.Now.Month;
                 int mnth = currentMonth - 1 == 0 ? 12 : currentMonth - 1;  //To start month validation of consecutive month data from previous month
                 for (int t = spendingtrends.Count; t > 0; t--)
@@ -1642,14 +1576,7 @@ namespace nIS
                     var lst = spendingtrends.Where(it => it.Month.ToLower().Contains(month.ToLower()))?.ToList();
                     if (lst != null && lst.Count > 0)
                     {
-                        SavingTrend trend = new SavingTrend();
-                        trend.Month = lst[0].Month;
-                        trend.NumericMonth = mnth;
-                        trend.Income = lst[0].Income;
-                        trend.IncomePercentage = lst[0].IncomePercentage;
-                        trend.SpendAmount = lst[0].SpendAmount;
-                        trend.SpendPercentage = lst[0].SpendPercentage;
-                        trends.Add(trend);
+                        lst[0].NumericMonth = mnth;
                     }
                     else
                     {
@@ -1660,8 +1587,7 @@ namespace nIS
                 }
 
                 //get spending trend chart widget data, convert it into json string format and store it as json file at same directory of html statement file
-                var records = trends.OrderByDescending(item => item.NumericMonth).Take(6).ToList();
-                string spendingtrendjson = JsonConvert.SerializeObject(records);
+                string spendingtrendjson = JsonConvert.SerializeObject(spendingtrends.OrderByDescending(item => item.NumericMonth).Take(6).ToList());
                 if (spendingtrendjson != null && spendingtrendjson != string.Empty)
                 {
                     SpendingTrendChartJson = "spendingdata" + accountId + page.Identifier + "=" + spendingtrendjson;
@@ -1724,8 +1650,7 @@ namespace nIS
                 var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    var apiOutputArr = JArray.Parse(result);
+                    var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
                     if (apiOutputArr.Count > 0)
                     {
                         apiOutputArr.ToList().ForEach(op =>
@@ -1766,8 +1691,7 @@ namespace nIS
                 var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    var apiOutputArr = JArray.Parse(result);
+                    var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
                     if (apiOutputArr.Count > 0)
                     {
                         apiOutputArr.ToList().ForEach(op =>
@@ -1806,8 +1730,7 @@ namespace nIS
                 var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    var apiOutputArr = JArray.Parse(result);
+                    var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
                     if (apiOutputArr.Count > 0)
                     {
                         var graphEntity = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynawidget.WidgetSettings);
@@ -1873,8 +1796,7 @@ namespace nIS
                 var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    var apiOutputArr = JArray.Parse(result);
+                    var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
                     if (apiOutputArr.Count > 0)
                     {
                         var graphEntity = JsonConvert.DeserializeObject<DynamicWidgetLineGraph>(dynawidget.WidgetSettings);
@@ -1921,7 +1843,6 @@ namespace nIS
                     }
                 }
 
-
                 pageContent.Replace("hiddenBarGraphValue_" + page.Identifier + "_" + widget.Identifier + "", chartDataVal);
                 scriptHtmlRenderer.Append(HtmlConstants.BAR_GRAPH_WIDGET_SCRIPT.Replace("barchartcontainer", "barGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenBarGraphData", "hiddenBarGraphData_" + page.Identifier + "_" + widget.Identifier));
             }
@@ -1941,8 +1862,7 @@ namespace nIS
                 var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    var apiOutputArr = JArray.Parse(result);
+                    var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
                     if (apiOutputArr.Count > 0)
                     {
                         var pieChartSetting = JsonConvert.DeserializeObject<PieChartSettingDetails>(dynawidget.WidgetSettings);
@@ -2013,8 +1933,7 @@ namespace nIS
                         var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
-                            var result = response.Content.ReadAsStringAsync().Result;
-                            var apiOutputArr = JArray.Parse(result);
+                            var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
                             if (apiOutputArr.Count > 0)
                             {
                                 var apidata = apiOutputArr.FirstOrDefault();
