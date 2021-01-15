@@ -324,6 +324,7 @@ namespace nIS
                                                                         },
                                                                         SearchMode = SearchMode.Equals
                                                                     }, tenantCode)?.FirstOrDefault();
+                                                                    var NisEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
 
                                                                     var archivalProcessRawData = new ArchivalProcessRawData()
                                                                     {
@@ -343,7 +344,7 @@ namespace nIS
                                                                     //nIS engine implementation logic
                                                                     for (int i = 0; customerIds.Count > 0; i++)
                                                                     {
-                                                                        var availableNisEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                                                        var availableNisEngines = new List<RenderEngine>(NisEngines);
                                                                         ParallelOptions parallelOptions = new ParallelOptions();
 
                                                                         if (customerIds.Count > availableNisEngines.Count * ParallelThreadCount)
@@ -544,11 +545,6 @@ namespace nIS
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
                     var response = client.PostAsync("GenerateStatement/RunArchivalForCustomerRecord", new StringContent(JsonConvert.SerializeObject(newArchivalProcessRawData), Encoding.UTF8, "application/json")).Result;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var result = response.Content.ReadAsStringAsync().Result;
-                        Console.WriteLine(result);
-                    }
                 });
             }
             catch (Exception ex)

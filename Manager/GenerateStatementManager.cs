@@ -175,7 +175,7 @@ namespace nIS
                     }
 
                     //If any error occurs during statement generation then delete all files from output directory of current customer html statement
-                    if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+                    else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                     {
                         this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.Identifier, statementRawData.OutputLocation);
                     }
@@ -802,7 +802,7 @@ namespace nIS
                     {
                         password = this.cryptoManager.Decrypt(statementSearchRecord.Password);
                     }
-                    var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName,password);
+                    var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName, password);
                     if (result)
                     {
                         //To insert archive schedule log detail records
@@ -934,107 +934,6 @@ namespace nIS
                     sw.WriteLine(Message);
                 }
             }
-        }
-
-        /// <summary>
-        /// This method help to apply theme for dynamic table, form, and html widgets
-        /// </summary>
-        /// <param name="html"> the widget html string </param>
-        /// <param name="themeDetails"> the theme details for widget </param>
-        /// <returns>return new html after applying theme </returns>
-        private string ApplyStyleCssForDynamicTableAndFormWidget(string html, CustomeTheme themeDetails)
-        {
-            StringBuilder style = new StringBuilder();
-            style.Append(HtmlConstants.STYLE);
-
-            if (themeDetails.TitleColor != null)
-            {
-                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-            }
-            if (themeDetails.TitleSize != null)
-            {
-                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-            }
-            if (themeDetails.TitleWeight != null)
-            {
-                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-            }
-            if (themeDetails.TitleType != null)
-            {
-                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-            }
-            html = html.Replace("{{TitleStyle}}", style.ToString());
-
-            style = new StringBuilder();
-            style.Append(HtmlConstants.STYLE);
-            if (themeDetails.HeaderColor != null)
-            {
-                style = style.Replace("{{COLOR}}", themeDetails.HeaderColor);
-            }
-            if (themeDetails.HeaderSize != null)
-            {
-                style = style.Replace("{{SIZE}}", themeDetails.HeaderSize);
-            }
-            if (themeDetails.HeaderWeight != null)
-            {
-                style = style.Replace("{{WEIGHT}}", themeDetails.HeaderWeight);
-            }
-            if (themeDetails.HeaderType != null)
-            {
-                style = style.Replace("{{TYPE}}", themeDetails.HeaderType);
-            }
-            html = html.Replace("{{HeaderStyle}}", style.ToString());
-
-            style = new StringBuilder();
-            style.Append(HtmlConstants.STYLE);
-            if (themeDetails.DataColor != null)
-            {
-                style = style.Replace("{{COLOR}}", themeDetails.DataColor);
-            }
-            if (themeDetails.DataSize != null)
-            {
-                style = style.Replace("{{SIZE}}", themeDetails.DataSize);
-            }
-            if (themeDetails.DataWeight != null)
-            {
-                style = style.Replace("{{WEIGHT}}", themeDetails.DataWeight);
-            }
-            if (themeDetails.DataType != null)
-            {
-                style = style.Replace("{{TYPE}}", themeDetails.DataType);
-            }
-            html = html.Replace("{{BodyStyle}}", style.ToString());
-            return html;
-        }
-
-        /// <summary>
-        /// This method help to apply theme for dynamic line graph, bar graph, and pie chart widgets
-        /// </summary>
-        /// <param name="html"> the widget html string </param>
-        /// <param name="themeDetails"> the theme details for widget </param>
-        /// <returns>return new html after applying theme </returns>
-        private string ApplyStyleCssForDynamicGraphAndChartWidgets(string html, CustomeTheme themeDetails)
-        {
-            StringBuilder style = new StringBuilder();
-            style.Append(HtmlConstants.STYLE);
-            if (themeDetails.TitleColor != null)
-            {
-                style = style.Replace("{{COLOR}}", themeDetails.TitleColor);
-            }
-            if (themeDetails.TitleSize != null)
-            {
-                style = style.Replace("{{SIZE}}", themeDetails.TitleSize);
-            }
-            if (themeDetails.TitleWeight != null)
-            {
-                style = style.Replace("{{WEIGHT}}", themeDetails.TitleWeight);
-            }
-            if (themeDetails.TitleType != null)
-            {
-                style = style.Replace("{{TYPE}}", themeDetails.TitleType);
-            }
-            html = html.Replace("{{TitleStyle}}", style.ToString());
-            return html;
         }
 
         /// <summary>
@@ -1481,7 +1380,7 @@ namespace nIS
                 var records = accountrecords.GroupBy(item => item.AccountType).ToList();
 
                 //get analytics chart widget data, convert it into json string format and store it as json file at same directory of html statement file
-                records.ToList().ForEach(acc => accounts.Add(new AccountMasterRecord()
+                records.ForEach(acc => accounts.Add(new AccountMasterRecord()
                 {
                     AccountType = acc.FirstOrDefault().AccountType,
                     Percentage = acc.Average(item => item.Percentage == null || item.Percentage == string.Empty ? 0 : Convert.ToDecimal(item.Percentage))
@@ -1564,7 +1463,6 @@ namespace nIS
         {
             var IsFailed = false;
             var SpendingTrendChartJson = string.Empty;
-
             var spendingtrends = CustomerSavingTrends.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountId == accountId).ToList();
             if (spendingtrends != null && spendingtrends.Count > 0)
             {

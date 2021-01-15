@@ -974,7 +974,7 @@ namespace nIS
                             StatementPageContent statementPageContent = new StatementPageContent();
                             StringBuilder pageHtmlContent = new StringBuilder();
                             statementPageContent.Id = i;
-                            PageSearchParameter pageSearchParameter = new PageSearchParameter
+                            var pages = this.pageRepository.GetPages(new PageSearchParameter
                             {
                                 Identifier = statementPages[i].ReferencePageId,
                                 IsPageWidgetsRequired = true,
@@ -990,8 +990,7 @@ namespace nIS
                                     SortColumn = "DisplayName",
                                 },
                                 SearchMode = SearchMode.Equals
-                            };
-                            var pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
+                            }, tenantCode);
                             if (pages.Count != 0)
                             {
                                 for (int j = 0; j < pages.Count; j++)
@@ -1022,7 +1021,7 @@ namespace nIS
                                         IList<DynamicWidget> dynawidgets = new List<DynamicWidget>();
                                         if (dynamicwidgetids != string.Empty)
                                         {
-                                            DynamicWidgetSearchParameter dynamicWidgetSearchParameter = new DynamicWidgetSearchParameter
+                                            dynawidgets = this.dynamicWidgetManager.GetDynamicWidgets(new DynamicWidgetSearchParameter
                                             {
                                                 Identifier = dynamicwidgetids,
                                                 PagingParameter = new PagingParameter
@@ -1036,8 +1035,7 @@ namespace nIS
                                                     SortColumn = "Title",
                                                 },
                                                 SearchMode = SearchMode.Contains
-                                            };
-                                            dynawidgets = this.dynamicWidgetManager.GetDynamicWidgets(dynamicWidgetSearchParameter, tenantCode);
+                                            }, tenantCode);
                                         }
                                         statementPageContent.DynamicWidgets = dynawidgets;
 
@@ -1389,7 +1387,7 @@ namespace nIS
             try
             {
                 var AppBaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                StatementPreviewData statementPreviewData = new StatementPreviewData();
+                var statementPreviewData = new StatementPreviewData();
 
                 //start to render common html content data
                 StringBuilder htmlbody = new StringBuilder();
@@ -1404,20 +1402,9 @@ namespace nIS
                 //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                 StringBuilder scriptHtmlRenderer = new StringBuilder();
                 StringBuilder navbar = new StringBuilder();
-                var newStatementPageContents = new List<StatementPageContent>();
-                IList<FileData> SampleFiles = new List<FileData>();
-                statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
-                {
-                    Id = it.Id,
-                    PageId = it.PageId,
-                    PageTypeId = it.PageTypeId,
-                    HtmlContent = it.HtmlContent,
-                    PageHeaderContent = it.PageHeaderContent,
-                    PageFooterContent = it.PageFooterContent,
-                    DisplayName = it.DisplayName,
-                    TabClassName = it.TabClassName,
-                    DynamicWidgets = it.DynamicWidgets
-                }));
+                var newStatementPageContents = new List<StatementPageContent>(statementPageContents);
+                var SampleFiles = new List<FileData>();
+
                 for (int i = 0; i < statement.Pages.Count; i++)
                 {
                     var page = statement.Pages[i];
@@ -1431,8 +1418,7 @@ namespace nIS
                     string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                     navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
                     string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
-                    PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName);
-                    PageHeaderContent.Replace("{{DivId}}", tabClassName);
+                    PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
 
                     StringBuilder newPageContent = new StringBuilder();
                     newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
@@ -1539,15 +1525,12 @@ namespace nIS
                             }
                             else if (widget.WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
                             {
-                                string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"}" +
-                                    ",{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":" +
-                                    "\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" + ":\"$\",\"Amount\":\"4589\"}]";
+                                string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"},{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" + ":\"$\",\"Amount\":\"4589\"}]";
 
                                 string accountSummary = string.Empty;
                                 if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
                                 {
-                                    IList<AccountSummary> lstAccountSummary = JsonConvert.DeserializeObject<List
-                                        <AccountSummary>>(accountBalanceDataJson);
+                                    var lstAccountSummary = JsonConvert.DeserializeObject<List<AccountSummary>>(accountBalanceDataJson);
                                     if (lstAccountSummary.Count > 0)
                                     {
                                         StringBuilder accSummary = new StringBuilder();
@@ -1601,7 +1584,6 @@ namespace nIS
                                 fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\savingtransactiondetail.json";
                                 SampleFiles.Add(fileData);
                                 scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
-                                //scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\savingtransactiondetail.json'></script>");
                                 StringBuilder scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
                                 scriptval.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
                                 scriptval.Replace("savingShowAll", "savingShowAll" + page.Identifier);
@@ -1632,7 +1614,6 @@ namespace nIS
                                 fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\currenttransactiondetail.json";
                                 SampleFiles.Add(fileData);
                                 scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
-                                //scriptHtmlRenderer.Append("<script type='text/javascript' src='" + AppBaseDirectory + "\\Resources\\sampledata\\currenttransactiondetail.json'></script>");
                                 StringBuilder scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
                                 scriptval.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
                                 scriptval.Replace("currentShowAll", "currentShowAll" + page.Identifier);
@@ -1666,7 +1647,7 @@ namespace nIS
                                         }
                                         else
                                         {
-                                            tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' " + "style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
+                                            tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
                                         }
                                         incomestr.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend + "</td><td>" + tdstring + "</td></tr>");
                                     });
@@ -1713,9 +1694,7 @@ namespace nIS
                                     reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
                                     reminderAndRecommendations.ToList().ForEach(item =>
                                     {
-                                        reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" +
-                                            item.Title + " </p></div><div class='col-lg-3 text-left'> <a><i class='fa fa-caret-left fa-3x float-left " +
-                                            "text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
+                                        reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'> <a><i class='fa fa-caret-left fa-3x float-left text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
                                     });
                                     pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
                                 }
@@ -1787,19 +1766,14 @@ namespace nIS
 
                 newStatementPageContents.ToList().ForEach(page =>
                 {
-                    htmlbody.Append(page.PageHeaderContent);
-                    htmlbody.Append(page.HtmlContent);
-                    htmlbody.Append(page.PageFooterContent);
+                    htmlbody.Append(page.PageHeaderContent).Append(page.HtmlContent).Append(page.PageFooterContent);
                 });
-                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
 
+                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
                 navbarHtml = navbarHtml.Replace("{{NavItemList}}", navbar.ToString());
 
                 StringBuilder finalHtml = new StringBuilder();
-                finalHtml.Append(HtmlConstants.HTML_HEADER);
-                finalHtml.Append(navbarHtml);
-                finalHtml.Append(htmlbody.ToString());
-                finalHtml.Append(HtmlConstants.HTML_FOOTER);
+                finalHtml.Append(HtmlConstants.HTML_HEADER).Append(navbarHtml).Append(htmlbody.ToString()).Append(HtmlConstants.HTML_FOOTER);
                 scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
                 finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
 

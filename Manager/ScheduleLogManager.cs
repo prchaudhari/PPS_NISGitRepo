@@ -320,13 +320,10 @@ namespace nIS
                         }, tenantCode);
                         if (statements.Count > 0)
                         {
-                            var statement = statements.ToList().FirstOrDefault();
+                            var statement = statements.FirstOrDefault();
                             var BatchDetails = this.tenantTransactionDataManager.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
-                            
                             var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
-                            
                             var tenantEntities = this.dynamicWidgetManager.GetTenantEntities(tenantCode);
-
                             var statementRawData = new GenerateStatementRawData()
                             {
                                 Statement = statement,
@@ -341,10 +338,11 @@ namespace nIS
                                 TenantEntities = tenantEntities,
                             };
 
+                            var NisEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
                             //Render engine implementation logic
                             for (int i = 0; scheduleLogDetailRecords.Count > 0; i++)
                             {
-                                var availableNisEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                var availableNisEngines = new List<RenderEngine>(NisEngines);
                                 ParallelOptions parallelOptions = new ParallelOptions();
 
                                 if (scheduleLogDetailRecords.Count > availableNisEngines.Count * parallelThreadCount)
@@ -411,7 +409,7 @@ namespace nIS
         {
             try
             {
-                ScheduleLogDetailSearchParameter scheduleLogDetailSearchParameter = new ScheduleLogDetailSearchParameter()
+                var failedScheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
                 {
                     ScheduleLogId = scheduleLogIdentifier.ToString(),
                     Status = ScheduleLogStatus.Failed.ToString(),
@@ -426,8 +424,7 @@ namespace nIS
                         SortColumn = "Id",
                     },
                     SearchMode = SearchMode.Equals
-                };
-                var failedScheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(scheduleLogDetailSearchParameter, tenantCode);
+                }, tenantCode);
                 if (failedScheduleLogDetailRecords == null || failedScheduleLogDetailRecords.Count == 0)
                 {
                     throw new ScheduleLogDetailNotFoundException(tenantCode);
@@ -644,7 +641,6 @@ namespace nIS
         /// <param name="parallelThreadCount">the thread count to run request in parallel</param>
         private void CallRetryToCreateFailedCustomerStatementsWebAPI(GenerateStatementRawData statementRawData, string TenantCode, ScheduleLogDetailParallelRequest parallelRequest, int parallelThreadCount)
         {
-
             try
             {
                 var renderEngine = parallelRequest.RenderEngine;
@@ -676,11 +672,6 @@ namespace nIS
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
                     var response = client.PostAsync("GenerateStatement/RetryToCreateFailedCustomerStatements", new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, "application/json")).Result;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var result = response.Content.ReadAsStringAsync().Result;
-                        Console.WriteLine(result);
-                    }
                 });
             }
             catch (Exception ex)
