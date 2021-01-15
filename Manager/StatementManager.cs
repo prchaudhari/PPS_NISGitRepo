@@ -1402,7 +1402,19 @@ namespace nIS
                 //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                 StringBuilder scriptHtmlRenderer = new StringBuilder();
                 StringBuilder navbar = new StringBuilder();
-                var newStatementPageContents = new List<StatementPageContent>(statementPageContents);
+                var newStatementPageContents = new List<StatementPageContent>();
+                statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
+                {
+                    Id = it.Id,
+                    PageId = it.PageId,
+                    PageTypeId = it.PageTypeId,
+                    HtmlContent = it.HtmlContent,
+                    PageHeaderContent = it.PageHeaderContent,
+                    PageFooterContent = it.PageFooterContent,
+                    DisplayName = it.DisplayName,
+                    TabClassName = it.TabClassName,
+                    DynamicWidgets = it.DynamicWidgets
+                }));
                 var SampleFiles = new List<FileData>();
 
                 for (int i = 0; i < statement.Pages.Count; i++)

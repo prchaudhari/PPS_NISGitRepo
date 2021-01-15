@@ -47,29 +47,29 @@ namespace nIS
         private IValidationEngine validationEngine = null;
 
         /// <summary>
-        /// The dynamic widget manager object.
+        /// The dynamic widget repository object.
         /// </summary>
-        private DynamicWidgetManager dynamicWidgetManager = null;
+        private IDynamicWidgetRepository dynamicWidgetRepository = null;
 
         /// <summary>
-        /// The tenant transaction data manager.
+        /// The tenant transaction data repository.
         /// </summary>
-        private TenantTransactionDataManager tenantTransactionDataManager = null;
+        private ITenantTransactionDataRepository tenantTransactionDataRepository = null;
 
         /// <summary>
-        /// The schedule log manager.
+        /// The schedule log repository.
         /// </summary>
-        private ScheduleLogManager scheduleLogManager = null;
+        private IScheduleLogRepository scheduleLogRepository = null;
 
         /// <summary>
-        /// The schedule manager.
+        /// The schedule repository.
         /// </summary>
-        private ScheduleManager scheduleManager = null;
+        private IScheduleRepository scheduleRepository = null;
 
         /// <summary>
-        /// The asset library manager.
+        /// The asset library repository.
         /// </summary>
-        private AssetLibraryManager assetLibraryManager = null;
+        private IAssetLibraryRepository assetLibraryRepository = null;
 
         /// <summary>
         /// The statement search manager.
@@ -77,10 +77,14 @@ namespace nIS
         private StatementSearchManager statementSearchManager = null;
 
         /// <summary>
-        /// The archival process manager.
+        /// The statement search repository.
         /// </summary>
-        private ArchivalProcessManager archivalProcessManager = null;
+        private IStatementSearchRepository statementSearchRepository = null;
 
+        /// <summary>
+        /// The archival process repository.
+        /// </summary>
+        private IArchivalProcessRepository archivalProcessRepository = null;
 
         /// <summary>
         /// The crypto manager
@@ -104,13 +108,14 @@ namespace nIS
                 this.unityContainer = unityContainer;
                 this.validationEngine = new ValidationEngine();
                 this.utility = new Utility();
-                this.tenantTransactionDataManager = new TenantTransactionDataManager(unityContainer);
-                this.assetLibraryManager = new AssetLibraryManager(unityContainer);
-                this.scheduleManager = new ScheduleManager(unityContainer);
-                this.scheduleLogManager = new ScheduleLogManager(unityContainer);
-                this.dynamicWidgetManager = new DynamicWidgetManager(unityContainer);
-                this.statementSearchManager = new StatementSearchManager(unityContainer);
-                this.archivalProcessManager = new ArchivalProcessManager(unityContainer);
+                this.statementSearchManager = this.unityContainer.Resolve<StatementSearchManager>();
+                this.tenantTransactionDataRepository = this.unityContainer.Resolve<ITenantTransactionDataRepository>();
+                this.assetLibraryRepository = this.unityContainer.Resolve<IAssetLibraryRepository>();
+                this.archivalProcessRepository = this.unityContainer.Resolve<IArchivalProcessRepository>();
+                this.scheduleRepository = this.unityContainer.Resolve<IScheduleRepository>();
+                this.scheduleLogRepository = this.unityContainer.Resolve<IScheduleLogRepository>();
+                this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
+                this.statementSearchRepository = this.unityContainer.Resolve<IStatementSearchRepository>();
                 this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
 
             }
@@ -152,7 +157,7 @@ namespace nIS
                     logDetailRecord.NumberOfRetry = 1;
                     logDetailRecord.CreateDate = DateTime.UtcNow;
                     logDetails.Add(logDetailRecord);
-                    this.scheduleLogManager.SaveScheduleLogDetails(logDetails, tenantCode);
+                    this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
 
                     //if statement generated successfully, then save statement metadata with actual html statement file path
                     if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()))
@@ -170,7 +175,7 @@ namespace nIS
                                 metarec.Password = "";
                                 statementMetadataRecords.Add(metarec);
                             });
-                            this.scheduleLogManager.SaveStatementMetadata(statementMetadataRecords, tenantCode);
+                            this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
                         }
                     }
 
@@ -198,7 +203,7 @@ namespace nIS
             try
             {
                 var scheduleLogDetail = statementRawData.ScheduleLogDetail;
-                var customer = this.tenantTransactionDataManager.Get_CustomerMasters(new CustomerSearchParameter()
+                var customer = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
                 {
                     Identifier = scheduleLogDetail.CustomerId,
                     BatchId = statementRawData.Batch.Identifier,
@@ -229,7 +234,7 @@ namespace nIS
                         scheduleLogDetail.NumberOfRetry++;
                         scheduleLogDetail.StatementFilePath = logDetailRecord.StatementFilePath;
                         scheduleLogDetails.Add(scheduleLogDetail);
-                        this.scheduleLogManager.UpdateScheduleLogDetails(scheduleLogDetails, tenantCode);
+                        this.scheduleLogRepository.UpdateScheduleLogDetails(scheduleLogDetails, tenantCode);
 
                         //save statement metadata if html statement generated successfully
                         if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.statementMetadata.Count > 0)
@@ -246,10 +251,10 @@ namespace nIS
                                 metarec.Password = "";
                                 statementMetadataRecords.Add(metarec);
                             });
-                            this.scheduleLogManager.SaveStatementMetadata(statementMetadataRecords, tenantCode);
+                            this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
                         }
 
-                        var scheduleLogs = this.scheduleLogManager.GetScheduleLogs(new ScheduleLogSearchParameter()
+                        var scheduleLogs = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
                         {
                             ScheduleLogId = scheduleLogDetail.ScheduleLogId.ToString(),
                             BatchId = statementRawData.Batch.Identifier.ToString(),
@@ -268,7 +273,7 @@ namespace nIS
                         scheduleLogs.ForEach(scheduleLog =>
                         {
                             //get total no. of schedule log details for current schedule log
-                            var _lstScheduleLogDetail = this.scheduleLogManager.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                            var _lstScheduleLogDetail = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
                             {
                                 ScheduleLogId = scheduleLog.Identifier.ToString(),
                                 PagingParameter = new PagingParameter
@@ -301,8 +306,8 @@ namespace nIS
                             }
 
                             //update schedule log and batch status
-                            this.scheduleLogManager.UpdateScheduleLogStatus(scheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                            this.scheduleManager.UpdateBatchStatus(statementRawData.Batch.Identifier, batchStatus, isBatchCompleteExecuted, tenantCode);
+                            this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, scheduleLogStatus, tenantCode);
+                            this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, batchStatus, isBatchCompleteExecuted, tenantCode);
                         });
                     }
                 }
@@ -361,7 +366,7 @@ namespace nIS
                             CustomerId = customer.Identifier,
                             BatchId = batchMaster.Identifier
                         };
-                        accountrecords = this.tenantTransactionDataManager.Get_AccountMaster(customerAccountSearchParameter, tenantCode)?.ToList();
+                        accountrecords = this.tenantTransactionDataRepository.Get_AccountMaster(customerAccountSearchParameter, tenantCode)?.ToList();
                         if ((accountrecords == null || accountrecords.Count == 0))
                         {
                             ErrorMessages.Append("<li>Account master data is not available for this customer..!!</li>");
@@ -378,14 +383,14 @@ namespace nIS
                         }
 
                         //get customer account transaction details
-                        CustomerAcccountTransactions = this.tenantTransactionDataManager.Get_AccountTransaction(customerAccountSearchParameter, tenantCode)?.OrderBy(item => item.TransactionDate)?.ToList();
+                        CustomerAcccountTransactions = this.tenantTransactionDataRepository.Get_AccountTransaction(customerAccountSearchParameter, tenantCode)?.OrderBy(item => item.TransactionDate)?.ToList();
 
                         //get customer saving and spending trend details data
-                        CustomerSavingTrends = this.tenantTransactionDataManager.Get_SavingTrend(customerAccountSearchParameter, tenantCode)?.ToList();
+                        CustomerSavingTrends = this.tenantTransactionDataRepository.Get_SavingTrend(customerAccountSearchParameter, tenantCode)?.ToList();
                     }
 
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
-                    var customerMedias = this.tenantTransactionDataManager.GetCustomerMediaList(customer.Identifier, batchMaster.Identifier, statement.Identifier, tenantCode);
+                    var customerMedias = this.tenantTransactionDataRepository.GetCustomerMediaList(customer.Identifier, batchMaster.Identifier, statement.Identifier, tenantCode);
 
                     var htmlbody = new StringBuilder();
                     currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
@@ -405,7 +410,21 @@ namespace nIS
                     string accountType = string.Empty; //also use for vendor name
                     long accountId = 0;
                     HttpClient httpClient = null;
-                    var newStatementPageContents = new List<StatementPageContent>(statementRawData.StatementPageContents);
+
+                    var newStatementPageContents = new List<StatementPageContent>();
+                    statementRawData.StatementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
+                    {
+                        Id = it.Id,
+                        PageId = it.PageId,
+                        PageTypeId = it.PageTypeId,
+                        HtmlContent = it.HtmlContent,
+                        PageHeaderContent = it.PageHeaderContent,
+                        PageFooterContent = it.PageFooterContent,
+                        DisplayName = it.DisplayName,
+                        TabClassName = it.TabClassName,
+                        DynamicWidgets = it.DynamicWidgets
+                    }));
+
                     long FirstPageId = statement.Pages[0].Identifier;
                     for (int i = 0; i < statement.Pages.Count; i++)
                     {
@@ -420,7 +439,7 @@ namespace nIS
                             //if cusomer have 2 saving or current account, then 2 tabs will be render to current page in html statement
                             if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                             {
-                                savingaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountType.ToLower().Contains("saving"))?.ToList();
+                                savingaccountrecords = accountrecords.Where(item => item.AccountType.ToLower().Contains("saving"))?.ToList();
                                 if (savingaccountrecords == null || savingaccountrecords.Count == 0)
                                 {
                                     ErrorMessages.Append("<li>Saving account master data is not available for this customer..!!</li>");
@@ -430,7 +449,7 @@ namespace nIS
                             }
                             else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                             {
-                                curerntaccountrecords = accountrecords.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountType.ToLower().Contains("current"))?.ToList();
+                                curerntaccountrecords = accountrecords.Where(item => item.AccountType.ToLower().Contains("current"))?.ToList();
                                 if (curerntaccountrecords == null || curerntaccountrecords.Count == 0)
                                 {
                                     ErrorMessages.Append("<li>Current account master data is not available for this customer..!!</li>");
@@ -625,7 +644,7 @@ namespace nIS
                             else
                             {
                                 //To add statement metadata records for subscription master tenant
-                                var subscriptionMasters = this.tenantTransactionDataManager.Get_TTD_SubscriptionMasters(new TransactionDataSearchParameter()
+                                var subscriptionMasters = this.tenantTransactionDataRepository.Get_TTD_SubscriptionMasters(new TransactionDataSearchParameter()
                                 {
                                     BatchId = batchMaster.Identifier,
                                     CustomerId = customer.Identifier
@@ -667,17 +686,28 @@ namespace nIS
 
                     newStatementPageContents.ToList().ForEach(page =>
                     {
-                        htmlbody.Append(page.PageHeaderContent).Append(page.HtmlContent).Append(page.PageFooterContent);
+                        htmlbody.Append(page.PageHeaderContent);
+                        htmlbody.Append(page.HtmlContent);
+                        htmlbody.Append(page.PageFooterContent);
                     });
 
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+
                     navbarHtml = navbarHtml.Replace("{{NavItemList}}", navbar.ToString());
+
                     var finalHtml = new StringBuilder();
-                    finalHtml.Append(HtmlConstants.HTML_HEADER).Append(navbarHtml).Append(htmlbody.ToString()).Append(HtmlConstants.HTML_FOOTER);
+                    finalHtml.Append(HtmlConstants.HTML_HEADER);
+                    finalHtml.Append(navbarHtml);
+                    finalHtml.Append(htmlbody.ToString());
+                    finalHtml.Append(HtmlConstants.HTML_FOOTER);
                     scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
 
                     //replace below variable with actual data in final html string
-                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString()).Replace("{{CustomerNumber}}", customer.Identifier.ToString()).Replace("{{StatementNumber}}", statement.Identifier.ToString()).Replace("{{FirstPageId}}", FirstPageId.ToString()).Replace("{{TenantCode}}", tenantCode);
+                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
+                    finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
+                    finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
+                    finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
+                    finalHtml.Replace("{{TenantCode}}", tenantCode);
 
                     //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
                     //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
@@ -721,12 +751,12 @@ namespace nIS
                 var pdfStatementFilepath = archivalProcessRawData.PdfStatementFilepath;
                 var batch = archivalProcessRawData.BatchMaster;
 
-                var customer = this.tenantTransactionDataManager.Get_CustomerMasters(new CustomerSearchParameter()
+                var customer = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
                 {
                     BatchId = batch.Identifier,
                     CustomerId = archivalProcessRawData.CustomerId
                 }, tenantCode).FirstOrDefault();
-                var metadataRecords = this.statementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
+                var metadataRecords = this.statementSearchRepository.GetStatementSearchs(new StatementSearchSearchParameter()
                 {
                     CustomerId = archivalProcessRawData.CustomerId.ToString(),
                     StatementId = archivalProcessRawData.Statement.Identifier.ToString(),
@@ -806,7 +836,7 @@ namespace nIS
                     if (result)
                     {
                         //To insert archive schedule log detail records
-                        var scheduleLogDetailRecords = this.scheduleLogManager.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                        var scheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
                         {
                             ScheduleLogId = archivalProcessRawData.ScheduleLog.Identifier.ToString(),
                             CustomerId = archivalProcessRawData.CustomerId.ToString(),
@@ -843,7 +873,7 @@ namespace nIS
                                 PdfStatementPath = outputlocation + "\\" + pdfName
                             });
                         });
-                        this.archivalProcessManager.SaveScheduleLogDetailsArchieve(scheduleDetailArchiveRecords, tenantCode);
+                        this.archivalProcessRepository.SaveScheduleLogDetailsArchieve(scheduleDetailArchiveRecords, tenantCode);
 
                         //TO insert archive statement metadata records
                         var metadataArchiveRecords = new List<StatementMetadataArchive>();
@@ -867,11 +897,11 @@ namespace nIS
                                 ArchivalDate = DateTime.UtcNow
                             });
                         });
-                        this.archivalProcessManager.SaveStatementMetadataArchieve(metadataArchiveRecords, tenantCode);
+                        this.archivalProcessRepository.SaveStatementMetadataArchieve(metadataArchiveRecords, tenantCode);
 
                         //TO delete actual schedule log details, and statement metadata records
-                        this.scheduleLogManager.DeleteScheduleLogDetails(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
-                        this.scheduleLogManager.DeleteStatementMetadata(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
+                        this.scheduleLogRepository.DeleteScheduleLogDetails(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
+                        this.scheduleLogRepository.DeleteStatementMetadata(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
 
                         //To delete actual HTML statement of currrent customer, once the PDF statement genearated
                         DirectoryInfo directoryInfo = new DirectoryInfo(htmlStatementDirPath);
@@ -1029,7 +1059,7 @@ namespace nIS
                 dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
                 if (widgetSetting.isPersonalize == false) //Is not dynamic image, then assign selected image from asset library
                 {
-                    var asset = this.assetLibraryManager.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                    var asset = this.assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
                     if (asset != null)
                     {
                         var path = asset.FilePath.ToString();
@@ -1093,7 +1123,7 @@ namespace nIS
                 }
                 else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false) //If not dynamic video, then assign selected video from asset library
                 {
-                    var asset = this.assetLibraryManager.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                    var asset = this.assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
                     if (asset != null)
                     {
                         var path = asset.FilePath.ToString();
@@ -1150,7 +1180,7 @@ namespace nIS
             {
                 var accSummary = new StringBuilder();
                 var accRecords = accountrecords.GroupBy(item => item.AccountType).ToList();
-                accRecords.ToList().ForEach(acc =>
+                accRecords.ForEach(acc =>
                 {
                     accSummary.Append("<tr><td>" + acc.FirstOrDefault().AccountType + "</td><td>" + acc.FirstOrDefault().Currency + "</td><td>" + acc.Sum(it => Convert.ToDecimal(it.Balance)).ToString() + "</td></tr>");
                 });
@@ -1169,11 +1199,11 @@ namespace nIS
             var IsFailed = false;
             if (accountrecords != null && accountrecords.Count > 0)
             {
-                var currentAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Identifier && item.Identifier == accountId)?.ToList();
+                var currentAccountRecords = accountrecords.Where(item => item.Identifier == accountId)?.ToList();
                 if (currentAccountRecords != null && currentAccountRecords.Count > 0)
                 {
                     var records = currentAccountRecords.GroupBy(item => item.AccountType).ToList();
-                    records?.ToList().ForEach(acc =>
+                    records?.ForEach(acc =>
                     {
                         var accountIndicatorClass = acc.FirstOrDefault().Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
                         pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
@@ -1202,11 +1232,11 @@ namespace nIS
             var IsFailed = false;
             if (accountrecords != null && accountrecords.Count > 0)
             {
-                var savingAccountRecords = accountrecords.Where(item => item.CustomerId == customer.Identifier && item.Identifier == accountId)?.ToList();
+                var savingAccountRecords = accountrecords.Where(item => item.Identifier == accountId)?.ToList();
                 if (savingAccountRecords != null && savingAccountRecords.Count > 0)
                 {
                     var records = savingAccountRecords.GroupBy(item => item.AccountType).ToList();
-                    records?.ToList().ForEach(acc =>
+                    records?.ForEach(acc =>
                     {
                         var accountIndicatorClass = acc.FirstOrDefault().Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
                         pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
@@ -1232,7 +1262,7 @@ namespace nIS
 
         private void BindSavingTransactionWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, CustomerMaster customer, BatchMaster batchMaster, IList<AccountTransaction> CustomerAcccountTransactions, Page page, PageWidget widget, long accountId, string tenantCode, string currency, string outputLocation)
         {
-            var accountTransactions = CustomerAcccountTransactions.Where(item => item.CustomerId == customer.Identifier && item.AccountId == accountId)?.ToList();
+            var accountTransactions = CustomerAcccountTransactions.Where(item => item.AccountId == accountId)?.ToList();
             var transaction = new StringBuilder();
             var selectOption = new StringBuilder();
 
@@ -1287,7 +1317,7 @@ namespace nIS
 
         private void BindCurrentTransactionWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, CustomerMaster customer, BatchMaster batchMaster, IList<AccountTransaction> CustomerAcccountTransactions, Page page, PageWidget widget, long accountId, string tenantCode, string currency, string outputLocation)
         {
-            var accountTransactions = CustomerAcccountTransactions.Where(item => item.CustomerId == customer.Identifier && item.AccountId == accountId)?.ToList();
+            var accountTransactions = CustomerAcccountTransactions.Where(item => item.AccountId == accountId)?.ToList();
             var transaction = new StringBuilder();
             var selectOption = new StringBuilder();
             if (accountTransactions != null && accountTransactions.Count > 0)
@@ -1341,11 +1371,11 @@ namespace nIS
         {
             try
             {
-                var top4IncomeSources = this.tenantTransactionDataManager.GetCustomerIncomeSources(customer.Identifier, batchMaster.Identifier, tenantCode)?.OrderByDescending(it => Convert.ToDecimal(it.CurrentSpend))?.Take(4)?.ToList();
+                var top4IncomeSources = this.tenantTransactionDataRepository.GetCustomerIncomeSources(customer.Identifier, batchMaster.Identifier, tenantCode)?.OrderByDescending(it => Convert.ToDecimal(it.CurrentSpend))?.Take(4)?.ToList();
                 var incomeSources = new StringBuilder();
                 if (top4IncomeSources != null && top4IncomeSources.Count > 0)
                 {
-                    top4IncomeSources.ToList().ForEach(src =>
+                    top4IncomeSources.ForEach(src =>
                     {
                         var tdstring = string.Empty;
                         if (Convert.ToDecimal(src.CurrentSpend) > Convert.ToDecimal(src.AverageSpend))
@@ -1380,7 +1410,7 @@ namespace nIS
                 var records = accountrecords.GroupBy(item => item.AccountType).ToList();
 
                 //get analytics chart widget data, convert it into json string format and store it as json file at same directory of html statement file
-                records.ForEach(acc => accounts.Add(new AccountMasterRecord()
+                records?.ForEach(acc => accounts.Add(new AccountMasterRecord()
                 {
                     AccountType = acc.FirstOrDefault().AccountType,
                     Percentage = acc.Average(item => item.Percentage == null || item.Percentage == string.Empty ? 0 : Convert.ToDecimal(item.Percentage))
@@ -1412,7 +1442,7 @@ namespace nIS
             var SavingTrendChartJson = string.Empty;
             var IsFailed = false;
 
-            var savingtrends = CustomerSavingTrends.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountId == accountId).ToList();
+            var savingtrends = CustomerSavingTrends.Where(item => item.AccountId == accountId).ToList();
             if (savingtrends != null && savingtrends.Count > 0)
             {
                 var currentMonth = DateTime.Now.Month;
@@ -1463,7 +1493,7 @@ namespace nIS
         {
             var IsFailed = false;
             var SpendingTrendChartJson = string.Empty;
-            var spendingtrends = CustomerSavingTrends.Where(item => item.CustomerId == customer.Identifier && item.BatchId == batchMaster.Identifier && item.AccountId == accountId).ToList();
+            var spendingtrends = CustomerSavingTrends.Where(item => item.AccountId == accountId).ToList();
             if (spendingtrends != null && spendingtrends.Count > 0)
             {
                 var currentMonth = DateTime.Now.Month;
@@ -1514,7 +1544,7 @@ namespace nIS
         {
             try
             {
-                var reminderAndRecommendations = this.tenantTransactionDataManager.GetReminderAndRecommendation(customer.Identifier, batchMaster.Identifier, tenantCode);
+                var reminderAndRecommendations = this.tenantTransactionDataRepository.GetReminderAndRecommendation(customer.Identifier, batchMaster.Identifier, tenantCode);
                 var reminderstr = new StringBuilder();
                 if (reminderAndRecommendations != null && reminderAndRecommendations.Count > 0)
                 {
@@ -1764,7 +1794,7 @@ namespace nIS
                     if (apiOutputArr.Count > 0)
                     {
                         var pieChartSetting = JsonConvert.DeserializeObject<PieChartSettingDetails>(dynawidget.WidgetSettings);
-                        var entityFields = this.dynamicWidgetManager.GetEntityFields(dynawidget.EntityId, tenantCode);
+                        var entityFields = this.dynamicWidgetRepository.GetEntityFields(dynawidget.EntityId, tenantCode);
                         var seriesfor = entityFields.Where(it => it.Identifier == Convert.ToInt32(pieChartSetting.PieSeries))?.ToList()?.FirstOrDefault().Name;
                         var seriesdatafor = entityFields.Where(it => it.Identifier == Convert.ToInt32(pieChartSetting.PieValue))?.ToList()?.FirstOrDefault().Name;
 
