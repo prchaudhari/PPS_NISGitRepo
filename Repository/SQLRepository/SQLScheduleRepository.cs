@@ -1780,7 +1780,10 @@ namespace nIS
 
                             //get and delete schedule run history
                             var scheduleRunHistories = nISEntitiesDataContext.ScheduleRunHistoryRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
-                            HtmlFilePath = scheduleRunHistories[0].FilePath;
+                            if (scheduleRunHistories.Count > 0)
+                            {
+                                HtmlFilePath = scheduleRunHistories[0].FilePath;
+                            }
 
                             nISEntitiesDataContext.ScheduleRunHistoryRecords.RemoveRange(scheduleRunHistories);
 

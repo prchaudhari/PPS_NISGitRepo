@@ -974,6 +974,10 @@ namespace nIS
                             StatementPageContent statementPageContent = new StatementPageContent();
                             StringBuilder pageHtmlContent = new StringBuilder();
                             statementPageContent.Id = i;
+                            var widgetId = string.Empty;
+                            var widgetHTML = string.Empty;
+                            var htmlWidget = string.Empty;
+
                             var pages = this.pageRepository.GetPages(new PageSearchParameter
                             {
                                 Identifier = statementPages[i].ReferencePageId,
@@ -1018,7 +1022,7 @@ namespace nIS
 
                                         //Get all dynamic widgets of current page and assign it to statement page content object for future use
                                         var dynamicwidgetids = string.Join(", ", completelst.Where(item => item.IsDynamicWidget).ToList().Select(item => item.WidgetId));
-                                        IList<DynamicWidget> dynawidgets = new List<DynamicWidget>();
+                                        var dynawidgets = new List<DynamicWidget>();
                                         if (dynamicwidgetids != string.Empty)
                                         {
                                             dynawidgets = this.dynamicWidgetManager.GetDynamicWidgets(new DynamicWidgetSearchParameter
@@ -1035,7 +1039,7 @@ namespace nIS
                                                     SortColumn = "Title",
                                                 },
                                                 SearchMode = SearchMode.Contains
-                                            }, tenantCode);
+                                            }, tenantCode)?.ToList();
                                         }
                                         statementPageContent.DynamicWidgets = dynawidgets;
 
@@ -1045,8 +1049,7 @@ namespace nIS
 
                                         while (completelst.Count != 0)
                                         {
-                                            //filter 1st row widgets from current page widgets..
-                                            //get widgets by current Y position
+                                            //filter 1st row widgets from current page widgets.. get widgets by current Y position
                                             var lst = completelst.Where(it => it.Yposition == currentYPosition).ToList();
                                             if (lst.Count > 0)
                                             {
@@ -1056,8 +1059,7 @@ namespace nIS
                                                 //filter widgets which are in between current Y Position and above max Y Position
                                                 var _lst = completelst.Where(it => it.Yposition < max && it.Yposition != currentYPosition).ToList();
 
-                                                //merge 2 widgets into single list which are finds by current Y position and 
-                                                //then finds with in between current and max Y position
+                                                //merge 2 widgets into single list which are finds by current Y position and then finds with in between current and max Y position
                                                 var mergedlst = lst.Concat(_lst).OrderBy(it => it.Xposition).ToList();
 
                                                 //assign current Y position to new max Y position
@@ -1066,6 +1068,11 @@ namespace nIS
                                                 //loop over current merge widget list and create empty HTML template
                                                 for (int x = 0; x < mergedlst.Count; x++)
                                                 {
+                                                    var pageWidget = mergedlst[x];
+                                                    widgetId = string.Empty;
+                                                    widgetHTML = string.Empty;
+                                                    htmlWidget = string.Empty;
+
                                                     //if tempRowWidth equals to zero then create new div with bootstrap row class
                                                     if (tempRowWidth == 0)
                                                     {
@@ -1074,15 +1081,14 @@ namespace nIS
                                                     }
 
                                                     //get current widget width
-                                                    var divLength = mergedlst[x].Width;
+                                                    var divLength = pageWidget.Width;
 
                                                     //get current widget height and multiple with 110 as per angular gridster implementation of each column height
                                                     //to find actual height for current widget in pixel
-                                                    var divHeight = mergedlst[x].Height * 110 + "px";
+                                                    var divHeight = pageWidget.Height * 110 + "px";
                                                     tempRowWidth = tempRowWidth + divLength;
 
-                                                    // If current col-lg class length is greater than 12, 
-                                                    //then end parent row class div and then start new row class div
+                                                    // If current col-lg class length is greater than 12, then end parent row class div and then start new row class div
                                                     if (tempRowWidth > 12)
                                                     {
                                                         tempRowWidth = divLength;
@@ -1096,145 +1102,145 @@ namespace nIS
 
                                                     //create new div with col-lg with newly finded div length and above padding zero value
                                                     pageHtmlContent.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
-
+                                                    
                                                     //check current widget is dynamic or static and start generating empty html template for current widget
-                                                    if (!mergedlst[x].IsDynamicWidget)
+                                                    if (!pageWidget.IsDynamicWidget)
                                                     {
-                                                        if (mergedlst[x].WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME)
+                                                        switch (pageWidget.WidgetName)
                                                         {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
+                                                            case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.CUSTOMER_INFORMATION_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
 
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML_FOR_STMT.Replace("{{AccountInfoData}}", "{{AccountInfoData_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.IMAGE_WIDGET_NAME)
-                                                        {
+                                                            case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML_FOR_STMT.Replace("{{AccountInfoData}}", "{{AccountInfoData_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
 
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.IMAGE_WIDGET_HTML_FOR_STMT.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            if (mergedlst[x].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[x].WidgetSetting))
-                                                            {
-                                                                var imageWidgetHtml = string.Empty;
-                                                                dynamic widgetSetting = JObject.Parse(mergedlst[x].WidgetSetting);
-                                                                if (widgetSetting.isPersonalize == false && widgetSetting.SourceUrl != null && widgetSetting.SourceUrl != string.Empty)
+                                                            case HtmlConstants.IMAGE_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.IMAGE_WIDGET_HTML_FOR_STMT.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                if (pageWidget.WidgetSetting != string.Empty && validationEngine.IsValidJson(pageWidget.WidgetSetting))
                                                                 {
-                                                                    widgetHTML = widgetHTML.Replace("{{TargetLink}}", "<a href='" + widgetSetting.SourceUrl + "' target='_blank'>");
-                                                                    widgetHTML = widgetHTML.Replace("{{EndTargetLink}}", "</a>");
+                                                                    var imageWidgetHtml = string.Empty;
+                                                                    dynamic widgetSetting = JObject.Parse(pageWidget.WidgetSetting);
+                                                                    if (widgetSetting.isPersonalize == false && widgetSetting.SourceUrl != null && widgetSetting.SourceUrl != string.Empty)
+                                                                    {
+                                                                        widgetHTML = widgetHTML.Replace("{{TargetLink}}", "<a href='" + widgetSetting.SourceUrl + "' target='_blank'>");
+                                                                        widgetHTML = widgetHTML.Replace("{{EndTargetLink}}", "</a>");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        widgetHTML = widgetHTML.Replace("{{TargetLink}}", "");
+                                                                        widgetHTML = widgetHTML.Replace("{{EndTargetLink}}", "");
+                                                                    }
                                                                 }
-                                                                else
-                                                                {
-                                                                    widgetHTML = widgetHTML.Replace("{{TargetLink}}", "");
-                                                                    widgetHTML = widgetHTML.Replace("{{EndTargetLink}}", "");
-                                                                }
-                                                            }
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.VIDEO_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.VIDEO_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML_FOR_STMT.Replace("{{AccountSummary}}", "{{AccountSummary_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string CurrentAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            CurrentAvailBalanceWidget = CurrentAvailBalanceWidget.Replace("{{WidgetId}}", widgetId);
-                                                            CurrentAvailBalanceWidget = CurrentAvailBalanceWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            pageHtmlContent.Append(CurrentAvailBalanceWidget);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string SavingAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            SavingAvailBalanceWidget = SavingAvailBalanceWidget.Replace("{{WidgetId}}", widgetId);
-                                                            SavingAvailBalanceWidget = SavingAvailBalanceWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            pageHtmlContent.Append(SavingAvailBalanceWidget);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML_FOR_STMT.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML_FOR_STMT.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML_FOR_STMT.Replace("{{IncomeSourceList}}", "{{IncomeSourceList_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.ANALYTIC_WIDGET_HTML_FOR_STMT;
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.SPENDING_TRENDS_WIDGET_HTML_FOR_STMT;
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.SAVING_TRENDS_WIDGET_HTML_FOR_STMT;
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
-                                                        }
-                                                        else if (mergedlst[x].WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
-                                                        {
-                                                            string widgetId = "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString();
-                                                            string widgetHTML = HtmlConstants.REMINDER_WIDGET_HTML_FOR_STMT.Replace("{{ReminderAndRecommdationDataList}}", "{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-                                                            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
-                                                            pageHtmlContent.Append(widgetHTML);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.VIDEO_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.VIDEO_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML_FOR_STMT.Replace("{{AccountSummary}}", "{{AccountSummary_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                var CurrentAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                CurrentAvailBalanceWidget = CurrentAvailBalanceWidget.Replace("{{WidgetId}}", widgetId);
+                                                                CurrentAvailBalanceWidget = CurrentAvailBalanceWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                pageHtmlContent.Append(CurrentAvailBalanceWidget);
+                                                                break;
+
+                                                            case HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                var SavingAvailBalanceWidget = HtmlConstants.SAVING_CURRENT_AVALABLE_BAL_WIDGET_HTML_FOR_STMT.Replace("{{TotalValue}}", "{{TotalValue_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TotalDeposit}}", "{{TotalDeposit_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TotalSpend}}", "{{TotalSpend_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{Savings}}", "{{Savings_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                SavingAvailBalanceWidget = SavingAvailBalanceWidget.Replace("{{WidgetId}}", widgetId);
+                                                                SavingAvailBalanceWidget = SavingAvailBalanceWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                pageHtmlContent.Append(SavingAvailBalanceWidget);
+                                                                break;
+
+                                                            case HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.SAVING_TRANSACTION_WIDGET_HTML_FOR_STMT.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.CURRENT_TRANSACTION_WIDGET_HTML_FOR_STMT.Replace("{{AccountTransactionDetails}}", "{{AccountTransactionDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{SelectOption}}", "{{SelectOption_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_HTML_FOR_STMT.Replace("{{IncomeSourceList}}", "{{IncomeSourceList_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.ANALYTICS_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.ANALYTIC_WIDGET_HTML_FOR_STMT;
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.SPENDING_TREND_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.SPENDING_TRENDS_WIDGET_HTML_FOR_STMT;
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.SAVING_TREND_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.SAVING_TRENDS_WIDGET_HTML_FOR_STMT;
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
+
+                                                            case HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME:
+                                                                widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+                                                                widgetHTML = HtmlConstants.REMINDER_WIDGET_HTML_FOR_STMT.Replace("{{ReminderAndRecommdationDataList}}", "{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+                                                                pageHtmlContent.Append(widgetHTML);
+                                                                break;
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        if (dynawidgets.Count > 0)
+                                                        if (dynawidgets?.Count > 0)
                                                         {
-                                                            var dynawidget = dynawidgets.Where(item => item.Identifier == mergedlst[x].WidgetId).ToList().FirstOrDefault();
+                                                            var dynawidget = dynawidgets.Where(item => item.Identifier == pageWidget.WidgetId).ToList().FirstOrDefault();
 
                                                             //get theme for current dynamic widget, 
                                                             //if it is default take theme setting from tenant configuration, otherwise from current widget theme setting
@@ -1248,73 +1254,75 @@ namespace nIS
                                                                 themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
                                                             }
 
-                                                            if (dynawidget.WidgetType == HtmlConstants.TABLE_DYNAMICWIDGET)
+                                                            switch (dynawidget.WidgetType)
                                                             {
-                                                                var htmlWidget = HtmlConstants.TABLE_WIDEGT_FOR_STMT;
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = htmlWidget.Replace("{{TableMaxHeight}}", (mergedlst[x].Height * 110) - 40 + "px");
-                                                                htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
-                                                                List<DynamicWidgetTableEntity> tableEntities = JsonConvert.DeserializeObject<List<DynamicWidgetTableEntity>>(dynawidget.WidgetSettings);
-                                                                StringBuilder tableHeader = new StringBuilder();
-                                                                tableHeader.Append("<tr>" + string.Join("", tableEntities.Select(field => string.Format("<th>{0}</th> ", field.HeaderName))) + "</tr>");
-                                                                htmlWidget = htmlWidget.Replace("{{tableHeader}}", tableHeader.ToString());
-                                                                htmlWidget = htmlWidget.Replace("{{tableBody}}", "{{tableBody_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                                pageHtmlContent.Append(htmlWidget);
-                                                            }
-                                                            else if (dynawidget.WidgetType == HtmlConstants.FORM_DYNAMICWIDGET)
-                                                            {
-                                                                var htmlWidget = HtmlConstants.FORM_WIDGET_FOR_STMT;
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
-                                                                htmlWidget = htmlWidget.Replace("{{FormData}}", "{{FormData_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                                pageHtmlContent.Append(htmlWidget);
-                                                            }
-                                                            else if (dynawidget.WidgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
-                                                            {
-                                                                var htmlWidget = HtmlConstants.LINE_GRAPH_FOR_STMT;
-                                                                htmlWidget = htmlWidget.Replace("lineGraphcontainer", "lineGraphcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "");
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
-                                                                htmlWidget = htmlWidget + "<input type='hidden' id='hiddenLineGraphData_" + page.Identifier + "_" + mergedlst[x].Identifier + "' value='hiddenLineGraphValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "'>";
-                                                                pageHtmlContent.Append(htmlWidget);
-                                                            }
-                                                            else if (dynawidget.WidgetType == HtmlConstants.BARGRAPH_DYNAMICWIDGET)
-                                                            {
-                                                                var htmlWidget = HtmlConstants.BAR_GRAPH_FOR_STMT;
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = htmlWidget.Replace("barGraphcontainer", "barGraphcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "");
-                                                                htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
-                                                                htmlWidget = htmlWidget + "<input type='hidden' id='hiddenBarGraphData_" + page.Identifier + "_" + mergedlst[x].Identifier + "' value='hiddenBarGraphValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "'>";
-                                                                pageHtmlContent.Append(htmlWidget);
-                                                            }
-                                                            else if (dynawidget.WidgetType == HtmlConstants.PICHART_DYNAMICWIDGET)
-                                                            {
-                                                                var htmlWidget = HtmlConstants.PIE_CHART_FOR_STMT;
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = htmlWidget.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + mergedlst[x].Identifier + "");
-                                                                htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
-                                                                htmlWidget = htmlWidget + "<input type='hidden' id='hiddenPieChartData_" + page.Identifier + "_" + mergedlst[x].Identifier + "' value='hiddenPieChartValue_" + page.Identifier + "_" + mergedlst[x].Identifier + "'>";
-                                                                pageHtmlContent.Append(htmlWidget);
-                                                            }
-                                                            else if (dynawidget.WidgetType == HtmlConstants.HTML_DYNAMICWIDGET)
-                                                            {
-                                                                var htmlWidget = HtmlConstants.HTML_WIDGET_FOR_STMT;
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                                htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
-                                                                htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + mergedlst[x].Identifier + "_Counter" + counter.ToString());
-                                                                htmlWidget = htmlWidget.Replace("{{FormData}}", "{{FormData_" + page.Identifier + "_" + mergedlst[x].Identifier + "}}");
-                                                                pageHtmlContent.Append(htmlWidget);
+                                                                case HtmlConstants.TABLE_DYNAMICWIDGET:
+                                                                    htmlWidget = HtmlConstants.TABLE_WIDEGT_FOR_STMT;
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                    htmlWidget = htmlWidget.Replace("{{TableMaxHeight}}", (pageWidget.Height * 110) - 40 + "px");
+                                                                    htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+                                                                    var tableEntities = JsonConvert.DeserializeObject<List<DynamicWidgetTableEntity>>(dynawidget.WidgetSettings);
+                                                                    var tableHeader = new StringBuilder();
+                                                                    tableHeader.Append("<tr>" + string.Join("", tableEntities.Select(field => string.Format("<th>{0}</th> ", field.HeaderName))) + "</tr>");
+                                                                    htmlWidget = htmlWidget.Replace("{{tableHeader}}", tableHeader.ToString());
+                                                                    htmlWidget = htmlWidget.Replace("{{tableBody}}", "{{tableBody_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                    pageHtmlContent.Append(htmlWidget);
+                                                                    break;
+
+                                                                case HtmlConstants.FORM_DYNAMICWIDGET:
+                                                                    htmlWidget = HtmlConstants.FORM_WIDGET_FOR_STMT;
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                    htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+                                                                    htmlWidget = htmlWidget.Replace("{{FormData}}", "{{FormData_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                    pageHtmlContent.Append(htmlWidget);
+                                                                    break;
+
+                                                                case HtmlConstants.LINEGRAPH_DYNAMICWIDGET:
+                                                                    htmlWidget = HtmlConstants.LINE_GRAPH_FOR_STMT;
+                                                                    htmlWidget = htmlWidget.Replace("lineGraphcontainer", "lineGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                    htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+                                                                    htmlWidget = htmlWidget + "<input type='hidden' id='hiddenLineGraphData_" + page.Identifier + "_" + pageWidget.Identifier + "' value='hiddenLineGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>";
+                                                                    pageHtmlContent.Append(htmlWidget);
+                                                                    break;
+
+                                                                case HtmlConstants.BARGRAPH_DYNAMICWIDGET:
+                                                                    htmlWidget = HtmlConstants.BAR_GRAPH_FOR_STMT;
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                    htmlWidget = htmlWidget.Replace("barGraphcontainer", "barGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+                                                                    htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+                                                                    htmlWidget = htmlWidget + "<input type='hidden' id='hiddenBarGraphData_" + page.Identifier + "_" + pageWidget.Identifier + "' value='hiddenBarGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>";
+                                                                    pageHtmlContent.Append(htmlWidget);
+                                                                    break;
+
+                                                                case HtmlConstants.PICHART_DYNAMICWIDGET:
+                                                                    htmlWidget = HtmlConstants.PIE_CHART_FOR_STMT;
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                    htmlWidget = htmlWidget.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+                                                                    htmlWidget = this.ApplyStyleCssForDynamicGraphAndChartWidgets(htmlWidget, themeDetails);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+                                                                    htmlWidget = htmlWidget + "<input type='hidden' id='hiddenPieChartData_" + page.Identifier + "_" + pageWidget.Identifier + "' value='hiddenPieChartValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>";
+                                                                    pageHtmlContent.Append(htmlWidget);
+                                                                    break;
+
+                                                                case HtmlConstants.HTML_DYNAMICWIDGET:
+                                                                    htmlWidget = HtmlConstants.HTML_WIDGET_FOR_STMT;
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                                    htmlWidget = this.ApplyStyleCssForDynamicTableAndFormWidget(htmlWidget, themeDetails);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetTitle}}", dynawidget.Title);
+                                                                    htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+                                                                    htmlWidget = htmlWidget.Replace("{{FormData}}", "{{FormData_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+                                                                    pageHtmlContent.Append(htmlWidget);
+                                                                    break;
                                                             }
                                                         }
                                                     }
@@ -1390,8 +1398,8 @@ namespace nIS
                 var statementPreviewData = new StatementPreviewData();
 
                 //start to render common html content data
-                StringBuilder htmlbody = new StringBuilder();
-                string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
+                var htmlbody = new StringBuilder();
+                var navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
                 navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy")); //bind current date to html header
 
                 //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
@@ -1400,8 +1408,8 @@ namespace nIS
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
                 //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
-                StringBuilder scriptHtmlRenderer = new StringBuilder();
-                StringBuilder navbar = new StringBuilder();
+                var scriptHtmlRenderer = new StringBuilder();
+                var navbar = new StringBuilder();
                 var newStatementPageContents = new List<StatementPageContent>();
                 statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
                 {
@@ -1415,31 +1423,32 @@ namespace nIS
                     TabClassName = it.TabClassName,
                     DynamicWidgets = it.DynamicWidgets
                 }));
+
                 var SampleFiles = new List<FileData>();
+                var fileData = new FileData();
+                var scriptval = new StringBuilder();
+                var selectOption = new StringBuilder();
 
                 for (int i = 0; i < statement.Pages.Count; i++)
                 {
                     var page = statement.Pages[i];
-                    StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
-                    StringBuilder pageContent = new StringBuilder(statementPageContent.HtmlContent);
+                    var statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
+                    var pageContent = new StringBuilder(statementPageContent.HtmlContent);
                     var dynamicWidgets = statementPageContent.DynamicWidgets;
 
-                    StringBuilder SubTabs = new StringBuilder();
-                    StringBuilder PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
+                    var SubTabs = new StringBuilder();
+                    var PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
 
-                    string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
+                    var tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                     navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
-                    string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
-                    PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
+                    PageHeaderContent.Replace("{{ExtraClass}}", (i > 0 ? "d-none " + tabClassName : tabClassName)).Replace("{{DivId}}", tabClassName);
 
-                    StringBuilder newPageContent = new StringBuilder();
+                    var newPageContent = new StringBuilder();
                     newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
 
                     if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
                     {
-                        SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
-                        SubTabs.Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - 6789</a></li>");
-                        SubTabs.Append("</ul>");
+                        SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>").Append("<li class='nav-item active'><a id='tab1-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-' role='tab' class='nav-link active'> Account - XX89</a></li>").Append("</ul>");
 
                         newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-6789' class='tab-pane fade in active show'>");
                     }
@@ -1450,315 +1459,305 @@ namespace nIS
                         var widget = pagewidgets[j];
                         if (!widget.IsDynamicWidget)
                         {
-                            if (widget.WidgetName == HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME)
+                            switch (widget.WidgetName)
                             {
-                                string customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'4000 Executive Parkway', 'AddressLine2':'Saint Globin Rd','City':'Canary Wharf', 'State':'London', 'Country':'England','Zip':'E14 9RZ'}";
-                                if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
-                                {
-                                    CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
-                                    pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4");
-
-                                    string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
-                                    pageContent.Replace("{{CustomerName}}", customerName);
-
-                                    string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ";
-                                    pageContent.Replace("{{Address1}}", address1);
-
-                                    string address2 = (customerInfo.City != "" ? customerInfo.City + ", " : "") + (customerInfo.State != "" ? customerInfo.State + ", " : "") + (customerInfo.Country != "" ? customerInfo.Country + ", " : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
-                                    pageContent.Replace("{{Address2}}", address2);
-                                }
-                            }
-                            else if (widget.WidgetName == HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME)
-                            {
-                                string accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement', 'CustomerID':'ID2-8989-5656','RmName':'James Wiilims','RmContactNumber':'+4487867833'}";
-
-                                string accountInfoData = string.Empty;
-                                StringBuilder AccDivData = new StringBuilder();
-                                if (accountInfoJson != string.Empty && validationEngine.IsValidJson(accountInfoJson))
-                                {
-                                    AccountInformation accountInfo = JsonConvert.DeserializeObject<AccountInformation>(accountInfoJson);
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Statement Date</div><label class='list-value mb-0'>" + accountInfo.StatementDate + "</label>" + "</div></div>");
-
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Statement Period</div><label class='list-value mb-0'>" + accountInfo.StatementPeriod + "</label></div></div>");
-
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Cusomer ID</div><label class='list-value mb-0'>" + accountInfo.CustomerID + "</label></div></div>");
-
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "RM Name</div><label class='list-value mb-0'>" + accountInfo.RmName + "</label></div></div>");
-
-                                    AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber + "</label></div></div>");
-                                }
-                                pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
-                            }
-                            else if (widget.WidgetName == HtmlConstants.IMAGE_WIDGET_NAME)
-                            {
-                                var imageAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
-                                if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
-                                {
-                                    dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                                    if (widgetSetting.isPersonalize == false)
+                                case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
+                                    var customerInfoJson = "{'FirstName':'Laura','MiddleName':'J','LastName':'Donald','AddressLine1':'4000 Executive Parkway', 'AddressLine2':'Saint Globin Rd','City':'Canary Wharf', 'State':'London', 'Country':'England','Zip':'E14 9RZ'}";
+                                    if (customerInfoJson != string.Empty && validationEngine.IsValidJson(customerInfoJson))
                                     {
-                                        var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
-                                        if (asset != null)
+                                        var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
+                                        pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4");
+                                        pageContent.Replace("{{CustomerName}}", customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName);
+                                        pageContent.Replace("{{Address1}}", customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ");
+                                        pageContent.Replace("{{Address2}}", (customerInfo.City != "" ? customerInfo.City + ", " : "") + (customerInfo.State != "" ? customerInfo.State + ", " : "") + (customerInfo.Country != "" ? customerInfo.Country + ", " : "") + (customerInfo.Zip != "" ? customerInfo.Zip : ""));
+                                    }
+                                    break;
+
+                                case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
+                                    var accountInfoJson = "{'StatementDate':'1-APR-2020','StatementPeriod':'Annual Statement', 'CustomerID':'ID2-8989-5656','RmName':'James Wiilims', 'RmContactNumber':'+4487867833'}";
+
+                                    var accountInfoData = string.Empty;
+                                    var AccDivData = new StringBuilder();
+                                    if (accountInfoJson != string.Empty && validationEngine.IsValidJson(accountInfoJson))
+                                    {
+                                        var accountInfo = JsonConvert.DeserializeObject<AccountInformation>(accountInfoJson);
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Statement Date</div><label class='list-value mb-0'>" + accountInfo.StatementDate + "</label>" + "</div></div>");
+
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Statement Period</div><label class='list-value mb-0'>" + accountInfo.StatementPeriod + "</label></div></div>");
+
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "Cusomer ID</div><label class='list-value mb-0'>" + accountInfo.CustomerID + "</label></div></div>");
+
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "RM Name</div><label class='list-value mb-0'>" + accountInfo.RmName + "</label></div></div>");
+
+                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>" + "RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber + "</label></div></div>");
+                                    }
+                                    pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
+                                    break;
+
+                                case HtmlConstants.IMAGE_WIDGET_NAME:
+                                    var imageAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
+                                    if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
+                                    {
+                                        dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                                        if (widgetSetting.isPersonalize == false)
                                         {
-                                            FileData fileData = new FileData();
-                                            fileData.FileName = "Image" + page.Identifier + widget.Identifier + ".jpg";
-                                            fileData.FileUrl = asset.FilePath; //baseURL + "/assets/" + widgetSetting.AssetLibraryId + "/" + widgetSetting.AssetName;
-                                            SampleFiles.Add(fileData);
-                                            imageAssetPath = "./" + fileData.FileName;
+                                            var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                            if (asset != null)
+                                            {
+                                                fileData = new FileData();
+                                                fileData.FileName = "Image" + page.Identifier + widget.Identifier + ".jpg";
+                                                fileData.FileUrl = asset.FilePath;
+                                                SampleFiles.Add(fileData);
+                                                imageAssetPath = "./" + fileData.FileName;
+                                            }
                                         }
                                     }
-                                }
-                                pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imageAssetPath);
-                            }
-                            else if (widget.WidgetName == HtmlConstants.VIDEO_WIDGET_NAME)
-                            {
-                                var videoAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4";
-                                if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
-                                {
-                                    dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                                    if (widgetSetting.isEmbedded == true)
+                                    pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imageAssetPath);
+                                    break;
+
+                                case HtmlConstants.VIDEO_WIDGET_NAME:
+                                    var videoAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4";
+                                    if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
                                     {
-                                        videoAssetPath = widgetSetting.SourceUrl;
-                                    }
-                                    else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
-                                    {
-                                        var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
-                                        if (asset != null)
+                                        dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                                        if (widgetSetting.isEmbedded == true)
                                         {
-                                            FileData fileData = new FileData();
-                                            fileData.FileName = "Video" + page.Identifier + widget.Identifier + ".jpg";
-                                            fileData.FileUrl = asset.FilePath;
-                                            SampleFiles.Add(fileData);
-                                            videoAssetPath = "./" + fileData.FileName;
+                                            videoAssetPath = widgetSetting.SourceUrl;
+                                        }
+                                        else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false)
+                                        {
+                                            var asset = assetLibraryRepository.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                                            if (asset != null)
+                                            {
+                                                fileData = new FileData();
+                                                fileData.FileName = "Video" + page.Identifier + widget.Identifier + ".jpg";
+                                                fileData.FileUrl = asset.FilePath;
+                                                SampleFiles.Add(fileData);
+                                                videoAssetPath = "./" + fileData.FileName;
+                                            }
                                         }
                                     }
-                                }
-                                pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", videoAssetPath);
-                            }
-                            else if (widget.WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
-                            {
-                                string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"},{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" + ":\"$\",\"Amount\":\"4589\"}]";
+                                    pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", videoAssetPath);
+                                    break;
 
-                                string accountSummary = string.Empty;
-                                if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
-                                {
-                                    var lstAccountSummary = JsonConvert.DeserializeObject<List<AccountSummary>>(accountBalanceDataJson);
-                                    if (lstAccountSummary.Count > 0)
+                                case HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME:
+                                    var accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"87356\"},{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"18654\"},{\"AccountType\":\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"54367\"},{\"AccountType\":\"Wealth\",\"Currency\"" + ":\"$\",\"Amount\":\"4589\"}]";
+
+                                    var accountSummary = string.Empty;
+                                    if (accountBalanceDataJson != string.Empty && validationEngine.IsValidJson(accountBalanceDataJson))
                                     {
-                                        StringBuilder accSummary = new StringBuilder();
-                                        lstAccountSummary.ToList().ForEach(acc =>
+                                        var lstAccountSummary = JsonConvert.DeserializeObject<List<AccountSummary>>(accountBalanceDataJson);
+                                        if (lstAccountSummary.Count > 0)
                                         {
-                                            accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>" + acc.Amount + "</td></tr>");
+                                            var accSummary = new StringBuilder();
+                                            lstAccountSummary.ForEach(acc =>
+                                            {
+                                                accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>" + acc.Amount + "</td></tr>");
+                                            });
+                                            pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
+                                        }
+                                    }
+                                    break;
+
+                                case HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME:
+                                    var currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'$', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
+                                    if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
+                                    {
+                                        var accountMaster = JsonConvert.DeserializeObject<AccountMaster>(currentAvailBalanceJson);
+                                        var accountIndicatorClass = accountMaster.Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
+                                        pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
+                                        pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.GrandTotal));
+                                        pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalDeposit));
+                                        pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalSpend));
+                                        pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                                    }
+                                    break;
+
+                                case HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME:
+                                    var savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'$', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
+                                    if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
+                                    {
+                                        var accountMaster = JsonConvert.DeserializeObject<AccountMaster>(savingAvailBalanceJson);
+                                        var accountIndicatorClass = accountMaster.Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
+                                        pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
+                                        pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.GrandTotal));
+                                        pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalDeposit));
+                                        pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalSpend));
+                                        pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
+                                    }
+                                    break;
+
+                                case HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME:
+                                    selectOption = new StringBuilder();
+                                    scriptval = new StringBuilder();
+                                    var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
+                                    distinctNaration.ToList().ForEach(item =>
+                                    {
+                                        selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                    });
+
+                                    fileData = new FileData();
+                                    fileData.FileName = "savingtransactiondetail.json";
+                                    fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\savingtransactiondetail.json";
+                                    SampleFiles.Add(fileData);
+                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
+                                    scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
+                                    scriptval.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
+                                    scriptval.Replace("savingShowAll", "savingShowAll" + page.Identifier);
+                                    scriptval.Replace("filterStatus", "filterStatus" + page.Identifier);
+                                    scriptval.Replace("ResetGrid", "ResetGrid" + page.Identifier);
+                                    scriptval.Replace("PrintGrid", "PrintGrid" + page.Identifier);
+                                    scriptHtmlRenderer.Append(scriptval);
+
+                                    pageContent.Replace("savingShowAll", "savingShowAll" + page.Identifier);
+                                    pageContent.Replace("filterStatus", "filterStatus" + page.Identifier);
+                                    pageContent.Replace("ResetGrid", "ResetGrid" + page.Identifier);
+                                    pageContent.Replace("PrintGrid", "PrintGrid" + page.Identifier);
+                                    pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+                                    pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
+                                    pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                                    break;
+
+                                case HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME:
+                                    selectOption = new StringBuilder();
+                                    scriptval = new StringBuilder();
+                                    var distintNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
+                                    distintNaration.ToList().ForEach(item =>
+                                    {
+                                        selectOption.Append("<option value='" + item + "'> " + item + "</option>");
+                                    });
+
+                                    fileData = new FileData();
+                                    fileData.FileName = "currenttransactiondetail.json";
+                                    fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\currenttransactiondetail.json";
+                                    SampleFiles.Add(fileData);
+                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
+                                    scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
+                                    scriptval.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
+                                    scriptval.Replace("currentShowAll", "currentShowAll" + page.Identifier);
+                                    scriptval.Replace("filterStatus", "filterStatus" + page.Identifier);
+                                    scriptval.Replace("ResetGrid", "ResetGrid" + page.Identifier);
+                                    scriptval.Replace("PrintGrid", "PrintGrid" + page.Identifier);
+                                    scriptHtmlRenderer.Append(scriptval);
+
+                                    pageContent.Replace("currentShowAll", "currentShowAll" + page.Identifier);
+                                    pageContent.Replace("filterStatus", "filterStatus" + page.Identifier);
+                                    pageContent.Replace("ResetGrid", "ResetGrid" + page.Identifier);
+                                    pageContent.Replace("PrintGrid", "PrintGrid" + page.Identifier);
+                                    pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
+                                    pageContent.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
+                                    pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                                    break;
+
+                                case HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME:
+                                    string incomeSourceListJson = "[{ 'Source': 'Salary Transfer', 'CurrentSpend': 3453, 'AverageSpend': 123},{ 'Source': 'Cash Deposit', 'CurrentSpend': 3453, 'AverageSpend': 6123},{ 'Source': 'Profit Earned', 'CurrentSpend': 3453, 'AverageSpend': 6123}, { 'Source': 'Rebete', 'CurrentSpend': 3453, 'AverageSpend': 123}]";
+                                    if (incomeSourceListJson != string.Empty && validationEngine.IsValidJson(incomeSourceListJson))
+                                    {
+                                        var incomeSources = JsonConvert.DeserializeObject<List<IncomeSources>>(incomeSourceListJson);
+                                        var incomestr = new StringBuilder();
+                                        incomeSources.ForEach(item =>
+                                        {
+                                            var tdstring = string.Empty;
+                                            if (Int32.Parse(item.CurrentSpend) > Int32.Parse(item.AverageSpend))
+                                            {
+                                                tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
+                                            }
+                                            else
+                                            {
+                                                tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
+                                            }
+                                            incomestr.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend + "</td><td>" + tdstring + "</td></tr>");
                                         });
-                                        pageContent.Replace("{{AccountSummary_" + page.Identifier + "_" + widget.Identifier + "}}", accSummary.ToString());
+                                        pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomestr.ToString());
                                     }
-                                }
-                            }
-                            else if (widget.WidgetName == HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME)
-                            {
-                                string currentAvailBalanceJson = "{'GrandTotal':'32,453,23', 'TotalDeposit':'16,250,00', 'TotalSpend':'16,254,00', 'ProfitEarned':'1,430,00 ', 'Currency':'$', 'Balance': '14,768,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Current', 'Indicator': 'Up'}";
-                                if (currentAvailBalanceJson != string.Empty && validationEngine.IsValidJson(currentAvailBalanceJson))
-                                {
-                                    AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(currentAvailBalanceJson);
-                                    var accountIndicatorClass = accountMaster.Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
-                                    pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
-                                    pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.GrandTotal));
-                                    pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalDeposit));
-                                    pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalSpend));
-                                    pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
-                                }
-                            }
-                            else if (widget.WidgetName == HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME)
-                            {
-                                string savingAvailBalanceJson = "{'GrandTotal':'26,453,23', 'TotalDeposit':'13,530,00', 'TotalSpend':'12,124,00', 'ProfitEarned':'2,340,00 ', 'Currency':'$', 'Balance': '19,456,80', 'AccountNumber': 'J566565TR678ER', 'AccountType': 'Saving', 'Indicator': 'Up'}";
-                                if (savingAvailBalanceJson != string.Empty && validationEngine.IsValidJson(savingAvailBalanceJson))
-                                {
-                                    AccountMaster accountMaster = JsonConvert.DeserializeObject<AccountMaster>(savingAvailBalanceJson);
-                                    var accountIndicatorClass = accountMaster.Indicator.ToLower().Equals("up") ? "fa fa-sort-asc text-success" : "fa fa-sort-desc text-danger";
-                                    pageContent.Replace("{{AccountIndicatorClass}}", accountIndicatorClass);
-                                    pageContent.Replace("{{TotalValue_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.GrandTotal));
-                                    pageContent.Replace("{{TotalDeposit_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalDeposit));
-                                    pageContent.Replace("{{TotalSpend_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.TotalSpend));
-                                    pageContent.Replace("{{Savings_" + page.Identifier + "_" + widget.Identifier + "}}", (accountMaster.Currency + accountMaster.ProfitEarned));
-                                }
-                            }
-                            else if (widget.WidgetName == HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME)
-                            {
-                                StringBuilder selectOption = new StringBuilder();
-                                var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
-                                distinctNaration.ToList().ForEach(item =>
-                                {
-                                    selectOption.Append("<option value='" + item + "'> " + item + "</option>");
-                                });
+                                    break;
 
-                                FileData fileData = new FileData();
-                                fileData.FileName = "savingtransactiondetail.json";
-                                fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\savingtransactiondetail.json";
-                                SampleFiles.Add(fileData);
-                                scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
-                                StringBuilder scriptval = new StringBuilder(HtmlConstants.SAVING_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
-                                scriptval.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
-                                scriptval.Replace("savingShowAll", "savingShowAll" + page.Identifier);
-                                scriptval.Replace("filterStatus", "filterStatus" + page.Identifier);
-                                scriptval.Replace("ResetGrid", "ResetGrid" + page.Identifier);
-                                scriptval.Replace("PrintGrid", "PrintGrid" + page.Identifier);
-                                scriptHtmlRenderer.Append(scriptval);
+                                case HtmlConstants.ANALYTICS_WIDGET_NAME:
+                                    fileData = new FileData();
+                                    fileData.FileName = "analyticschartdata.json";
+                                    fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\analyticschartdata.json";
+                                    SampleFiles.Add(fileData);
+                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
+                                    pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
+                                    scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
+                                    break;
 
-                                pageContent.Replace("savingShowAll", "savingShowAll" + page.Identifier);
-                                pageContent.Replace("filterStatus", "filterStatus" + page.Identifier);
-                                pageContent.Replace("ResetGrid", "ResetGrid" + page.Identifier);
-                                pageContent.Replace("PrintGrid", "PrintGrid" + page.Identifier);
-                                pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
-                                pageContent.Replace("SavingTransactionTable", "SavingTransactionTable" + page.Identifier);
-                                pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
-                            }
-                            else if (widget.WidgetName == HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME)
-                            {
-                                StringBuilder selectOption = new StringBuilder();
-                                var distinctNaration = new string[] { "NXT TXN: IIFL IIFL6574562", "NXT TXN: IIFL IIFL6574563", "NXT TXN: IIFL IIFL3557346", "NXT TXN: IIFL RTED87978947 REFUND", "NXT TXN: IIFL IIFL896452896ERE", "NXT TXN: IIFL IIFL8965435", "NXT TXN: IIFL FGTR454565JHGKD", "NXT TXN: OFFICE RENT 798789DFGH", "NXT TXN: IIFL IIFL0034212", "NXT TXN: IIFL IIFL045678DFGH" };
-                                distinctNaration.ToList().ForEach(item =>
-                                {
-                                    selectOption.Append("<option value='" + item + "'> " + item + "</option>");
-                                });
+                                case HtmlConstants.SPENDING_TREND_WIDGET_NAME:
+                                    fileData = new FileData();
+                                    fileData.FileName = "spendingtrenddata.json";
+                                    fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\spendingtrenddata.json";
+                                    SampleFiles.Add(fileData);
+                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='" + fileData.FileName + "'></script>");
+                                    pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier);
+                                    scriptHtmlRenderer.Append(HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier));
+                                    break;
 
-                                FileData fileData = new FileData();
-                                fileData.FileName = "currenttransactiondetail.json";
-                                fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\currenttransactiondetail.json";
-                                SampleFiles.Add(fileData);
-                                scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
-                                StringBuilder scriptval = new StringBuilder(HtmlConstants.CURRENT_TRANSACTION_DETAIL_GRID_WIDGET_SCRIPT);
-                                scriptval.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
-                                scriptval.Replace("currentShowAll", "currentShowAll" + page.Identifier);
-                                scriptval.Replace("filterStatus", "filterStatus" + page.Identifier);
-                                scriptval.Replace("ResetGrid", "ResetGrid" + page.Identifier);
-                                scriptval.Replace("PrintGrid", "PrintGrid" + page.Identifier);
-                                scriptHtmlRenderer.Append(scriptval);
+                                case HtmlConstants.SAVING_TREND_WIDGET_NAME:
+                                    fileData = new FileData();
+                                    fileData.FileName = "savingtrenddata.json";
+                                    fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\savingtrenddata.json";
+                                    SampleFiles.Add(fileData);
+                                    scriptHtmlRenderer.Append("<script type='text/javascript' src='" + fileData.FileName + "'></script>");
+                                    pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier);
+                                    scriptHtmlRenderer.Append(HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier));
+                                    break;
 
-                                pageContent.Replace("currentShowAll", "currentShowAll" + page.Identifier);
-                                pageContent.Replace("filterStatus", "filterStatus" + page.Identifier);
-                                pageContent.Replace("ResetGrid", "ResetGrid" + page.Identifier);
-                                pageContent.Replace("PrintGrid", "PrintGrid" + page.Identifier);
-                                pageContent.Replace("{{SelectOption_" + page.Identifier + "_" + widget.Identifier + "}}", selectOption.ToString());
-                                pageContent.Replace("CurrentTransactionTable", "CurrentTransactionTable" + page.Identifier);
-
-                                pageContent.Replace("{{AccountTransactionDetails_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
-                            }
-                            else if (widget.WidgetName == HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME)
-                            {
-                                string incomeSourceListJson = "[{ 'Source': 'Salary Transfer', 'CurrentSpend': 3453, 'AverageSpend': 123},{ 'Source': 'Cash Deposit', 'CurrentSpend': 3453, 'AverageSpend': 6123},{ 'Source': 'Profit Earned', 'CurrentSpend': 3453, 'AverageSpend': 6123}, { 'Source': 'Rebete', 'CurrentSpend': 3453, 'AverageSpend': 123}]";
-                                if (incomeSourceListJson != string.Empty && validationEngine.IsValidJson(incomeSourceListJson))
-                                {
-                                    IList<IncomeSources> incomeSources = JsonConvert.DeserializeObject<List<IncomeSources>>(incomeSourceListJson);
-                                    StringBuilder incomestr = new StringBuilder();
-                                    incomeSources.ToList().ForEach(item =>
+                                case HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME:
+                                    string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
+                                    if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))
                                     {
-                                        var tdstring = string.Empty;
-                                        if (Int32.Parse(item.CurrentSpend) > Int32.Parse(item.AverageSpend))
+                                        var reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(reminderJson);
+                                        var reminderstr = new StringBuilder();
+                                        reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
+                                        reminderAndRecommendations.ForEach(item =>
                                         {
-                                            tdstring = "<span class='fa fa-sort-desc fa-2x text-danger' aria-hidden='true'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
-                                        }
-                                        else
-                                        {
-                                            tdstring = "<span class='fa fa-sort-asc fa-2x mt-1' aria-hidden='true' style='position:relative;top:6px;color:limegreen'></span><span class='ml-2'>" + item.AverageSpend + "</span>";
-                                        }
-                                        incomestr.Append("<tr><td class='float-left'>" + item.Source + "</td>" + "<td> " + item.CurrentSpend + "</td><td>" + tdstring + "</td></tr>");
-                                    });
-                                    pageContent.Replace("{{IncomeSourceList_" + page.Identifier + "_" + widget.Identifier + "}}", incomestr.ToString());
-                                }
-                            }
-                            else if (widget.WidgetName == HtmlConstants.ANALYTICS_WIDGET_NAME)
-                            {
-                                FileData fileData = new FileData();
-                                fileData.FileName = "analyticschartdata.json";
-                                fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\analyticschartdata.json";
-                                SampleFiles.Add(fileData);
-                                scriptHtmlRenderer.Append("<script type='text/javascript' src='./" + fileData.FileName + "'></script>");
-                                pageContent.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier);
-                                scriptHtmlRenderer.Append(HtmlConstants.ANALYTICS_CHART_WIDGET_SCRIPT.Replace("analyticschartcontainer", "analyticschartcontainer" + page.Identifier));
-                            }
-                            else if (widget.WidgetName == HtmlConstants.SPENDING_TREND_WIDGET_NAME)
-                            {
-                                FileData fileData = new FileData();
-                                fileData.FileName = "spendingtrenddata.json";
-                                fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\spendingtrenddata.json";
-                                SampleFiles.Add(fileData);
-                                scriptHtmlRenderer.Append("<script type='text/javascript' src='" + fileData.FileName + "'></script>");
-                                pageContent.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier);
-                                scriptHtmlRenderer.Append(HtmlConstants.SPENDING_TREND_CHART_WIDGET_SCRIPT.Replace("spendingTrendscontainer", "spendingTrendscontainer" + page.Identifier));
-                            }
-                            else if (widget.WidgetName == HtmlConstants.SAVING_TREND_WIDGET_NAME)
-                            {
-                                FileData fileData = new FileData();
-                                fileData.FileName = "savingtrenddata.json";
-                                fileData.FileUrl = AppBaseDirectory + "\\Resources\\sampledata\\savingtrenddata.json";
-                                SampleFiles.Add(fileData);
-                                scriptHtmlRenderer.Append("<script type='text/javascript' src='" + fileData.FileName + "'></script>");
-                                pageContent.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier);
-                                scriptHtmlRenderer.Append(HtmlConstants.SAVING_TREND_CHART_WIDGET_SCRIPT.Replace("savingTrendscontainer", "savingTrendscontainer" + page.Identifier));
-                            }
-                            else if (widget.WidgetName == HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME)
-                            {
-                                string reminderJson = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
-                                if (reminderJson != string.Empty && validationEngine.IsValidJson(reminderJson))
-                                {
-                                    IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(reminderJson);
-                                    StringBuilder reminderstr = new StringBuilder();
-                                    reminderstr.Append("<div class='row'><div class='col-lg-9'></div><div class='col-lg-3 text-left'><i class='fa fa-caret-left fa-3x float-left text-danger' aria-hidden='true'></i><span class='mt-2 d-inline-block ml-2'>Click</span></div> </div>");
-                                    reminderAndRecommendations.ToList().ForEach(item =>
-                                    {
-                                        reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'> <a><i class='fa fa-caret-left fa-3x float-left text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
-                                    });
-                                    pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
-                                }
+                                            reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'> <a><i class='fa fa-caret-left fa-3x float-left text-danger'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
+                                        });
+                                        pageContent.Replace("{{ReminderAndRecommdationDataList_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
+                                    }
+                                    break;
                             }
                         }
                         else
                         {
-                            var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId).ToList();
-                            if (dynaWidgets.Count > 0)
+                            var dynaWidgets = dynamicWidgets?.Where(item => item.Identifier == widget.WidgetId).ToList();
+                            if (dynaWidgets?.Count > 0)
                             {
                                 var dynawidget = dynaWidgets.FirstOrDefault();
-                                TenantEntity entity = new TenantEntity();
-                                entity.Identifier = dynawidget.EntityId;
-                                entity.Name = dynawidget.EntityName;
-                                CustomeTheme themeDetails = new CustomeTheme();
-                                if (dynawidget.ThemeType == "Default")
+                                switch (dynawidget.WidgetType)
                                 {
-                                    themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(tenantConfiguration.WidgetThemeSetting);
-                                }
-                                else
-                                {
-                                    themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
-                                }
+                                    case HtmlConstants.TABLE_DYNAMICWIDGET:
+                                        pageContent.Replace("{{tableBody_" + page.Identifier + "_" + widget.Identifier + "}}", dynawidget.PreviewData);
+                                        break;
 
-                                if (dynawidget.WidgetType == HtmlConstants.TABLE_DYNAMICWIDGET)
-                                {
-                                    pageContent.Replace("{{tableBody_" + page.Identifier + "_" + widget.Identifier + "}}", dynawidget.PreviewData);
-                                }
-                                else if (dynawidget.WidgetType == HtmlConstants.FORM_DYNAMICWIDGET)
-                                {
-                                    pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", dynawidget.PreviewData);
-                                }
-                                else if (dynawidget.WidgetType == HtmlConstants.LINEGRAPH_DYNAMICWIDGET)
-                                {
-                                    pageContent.Replace("hiddenLineGraphValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
-                                    scriptHtmlRenderer.Append(HtmlConstants.LINE_GRAPH_WIDGET_SCRIPT.Replace("linechartcontainer", "lineGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenLineGraphData", "hiddenLineGraphData_" + page.Identifier + "_" + widget.Identifier));
-                                }
-                                else if (dynawidget.WidgetType == HtmlConstants.BARGRAPH_DYNAMICWIDGET)
-                                {
-                                    pageContent.Replace("hiddenBarGraphValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
-                                    scriptHtmlRenderer.Append(HtmlConstants.BAR_GRAPH_WIDGET_SCRIPT.Replace("barchartcontainer", "barGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenBarGraphData", "hiddenBarGraphData_" + page.Identifier + "_" + widget.Identifier));
-                                }
-                                else if (dynawidget.WidgetType == HtmlConstants.PICHART_DYNAMICWIDGET)
-                                {
-                                    pageContent.Replace("hiddenPieChartValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
-                                    scriptHtmlRenderer.Append(HtmlConstants.PIE_CHART_WIDGET_SCRIPT.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenPieChartData", "hiddenPieChartData_" + page.Identifier + "_" + widget.Identifier));
-                                }
-                                else if (dynawidget.WidgetType == HtmlConstants.HTML_DYNAMICWIDGET)
-                                {
-                                    var entityFieldMaps = this.dynamicWidgetManager.GetEntityFields(dynawidget.EntityId, tenantCode);
-                                    string data = this.GetHTMLPreviewData(entity, entityFieldMaps, dynawidget.PreviewData);
-                                    pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", data);
+                                    case HtmlConstants.FORM_DYNAMICWIDGET:
+                                        pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", dynawidget.PreviewData);
+                                        break;
+
+                                    case HtmlConstants.LINEGRAPH_DYNAMICWIDGET:
+                                        pageContent.Replace("hiddenLineGraphValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
+                                        scriptHtmlRenderer.Append(HtmlConstants.LINE_GRAPH_WIDGET_SCRIPT.Replace("linechartcontainer", "lineGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenLineGraphData", "hiddenLineGraphData_" + page.Identifier + "_" + widget.Identifier));
+                                        break;
+
+                                    case HtmlConstants.BARGRAPH_DYNAMICWIDGET:
+                                        pageContent.Replace("hiddenBarGraphValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
+                                        scriptHtmlRenderer.Append(HtmlConstants.BAR_GRAPH_WIDGET_SCRIPT.Replace("barchartcontainer", "barGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenBarGraphData", "hiddenBarGraphData_" + page.Identifier + "_" + widget.Identifier));
+                                        break;
+
+                                    case HtmlConstants.PICHART_DYNAMICWIDGET:
+                                        pageContent.Replace("hiddenPieChartValue_" + page.Identifier + "_" + widget.Identifier + "", dynawidget.PreviewData);
+                                        scriptHtmlRenderer.Append(HtmlConstants.PIE_CHART_WIDGET_SCRIPT.Replace("pieChartcontainer", "pieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("hiddenPieChartData", "hiddenPieChartData_" + page.Identifier + "_" + widget.Identifier));
+                                        break;
+
+                                    case HtmlConstants.HTML_DYNAMICWIDGET:
+                                        var entityFieldMaps = this.dynamicWidgetManager.GetEntityFields(dynawidget.EntityId, tenantCode);
+                                        var data = this.GetHTMLPreviewData(new TenantEntity()
+                                        {
+                                            Identifier = dynawidget.EntityId,
+                                            Name = dynawidget.EntityName
+                                        }, entityFieldMaps, dynawidget.PreviewData);
+                                        pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", data);
+                                        break;
                                 }
                             }
                         }
