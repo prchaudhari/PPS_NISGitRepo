@@ -222,7 +222,7 @@ namespace nIS
 
             try
             {
-                var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings["ThreadCountToGenerateStatementParallel"]);
+                var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings[ModelConstant.PARALLEL_THREAD_COUNT]);
 
                 var scheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
                 {
@@ -338,49 +338,107 @@ namespace nIS
                                 TenantEntities = tenantEntities,
                             };
 
-                            var NisEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
-                            //Render engine implementation logic
-                            for (int i = 0; scheduleLogDetailRecords.Count > 0; i++)
+                            //NIS engine implementation logic
+                            bool IsWantToUseNisEngines = true;
+                            if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
                             {
-                                var availableNisEngines = new List<RenderEngine>(NisEngines);
-                                ParallelOptions parallelOptions = new ParallelOptions();
+                                bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
+                            }
 
-                                if (scheduleLogDetailRecords.Count > availableNisEngines.Count * parallelThreadCount)
+                            if (IsWantToUseNisEngines)
+                            {
+                                var NisEngines = this.renderEngineManager.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                                if (NisEngines.Count > 0)
                                 {
-                                    parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
-                                    var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
-                                    int count = 0;
-                                    for (int j = 1; availableNisEngines.Count > 0; j++)
+                                    for (int i = 0; scheduleLogDetailRecords.Count > 0; i++)
                                     {
-                                        parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
-                                        scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
-                                        count += 1;
-                                        availableNisEngines = availableNisEngines.Skip(count).ToList();
-                                    }
+                                        var availableNisEngines = new List<RenderEngine>(NisEngines);
+                                        ParallelOptions parallelOptions = new ParallelOptions();
 
-                                    ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                }
-                                else
-                                {
-                                    parallelOptions.MaxDegreeOfParallelism = scheduleLogDetailRecords.ToList().Count % parallelThreadCount == 0 ? scheduleLogDetailRecords.ToList().Count / parallelThreadCount : scheduleLogDetailRecords.ToList().Count / parallelThreadCount + 1;
-                                    var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
-                                    int count = 0;
-
-                                    for (int k = 0; scheduleLogDetailRecords.Count > 0; k++)
-                                    {
-                                        if (scheduleLogDetailRecords.Count > parallelThreadCount)
+                                        if (scheduleLogDetailRecords.Count > availableNisEngines.Count * parallelThreadCount)
                                         {
-                                            parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
-                                            scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
-                                            count += 1;
+                                            parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
+                                            var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
+                                            int count = 0;
+                                            for (int j = 1; availableNisEngines.Count > 0; j++)
+                                            {
+                                                parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
+                                                scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
+                                                count += 1;
+                                                availableNisEngines = availableNisEngines.Skip(count).ToList();
+                                            }
+
+                                            ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                         }
                                         else
                                         {
-                                            parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.ToList(), RenderEngine = availableNisEngines[count] });
-                                            scheduleLogDetailRecords = new List<ScheduleLogDetail>();
+                                            parallelOptions.MaxDegreeOfParallelism = scheduleLogDetailRecords.ToList().Count % parallelThreadCount == 0 ? scheduleLogDetailRecords.ToList().Count / parallelThreadCount : scheduleLogDetailRecords.ToList().Count / parallelThreadCount + 1;
+                                            var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
+                                            int count = 0;
+
+                                            for (int k = 0; scheduleLogDetailRecords.Count > 0; k++)
+                                            {
+                                                if (scheduleLogDetailRecords.Count > parallelThreadCount)
+                                                {
+                                                    parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
+                                                    scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
+                                                    count += 1;
+                                                }
+                                                else
+                                                {
+                                                    parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.ToList(), RenderEngine = availableNisEngines[count] });
+                                                    scheduleLogDetailRecords = new List<ScheduleLogDetail>();
+                                                }
+                                            }
+
+                                            ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                         }
                                     }
-
+                                }
+                                else
+                                {
+                                    RenderEngine renderEngine = new RenderEngine()
+                                    {
+                                        Identifier = 0,
+                                        RenderEngineName = "DeFault NIS Engine",
+                                        URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+                                        IsActive = true,
+                                        IsDeleted = false,
+                                        InUse = false,
+                                        NumberOfThread = 1,
+                                        PriorityLevel = 1
+                                    };
+                                    for (int i = 0; scheduleLogDetailRecords.Count > 0; i++)
+                                    {
+                                        ParallelOptions parallelOptions = new ParallelOptions();
+                                        parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                                        var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
+                                        parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+                                        scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
+                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                RenderEngine renderEngine = new RenderEngine()
+                                {
+                                    Identifier = 0,
+                                    RenderEngineName = "DeFault NIS Engine",
+                                    URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+                                    IsActive = true,
+                                    IsDeleted = false,
+                                    InUse = false,
+                                    NumberOfThread = 1,
+                                    PriorityLevel = 1
+                                };
+                                for (int i = 0; scheduleLogDetailRecords.Count > 0; i++)
+                                {
+                                    ParallelOptions parallelOptions = new ParallelOptions();
+                                    parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                                    var parallelRequest = new List<ScheduleLogDetailParallelRequest>();
+                                    parallelRequest.Add(new ScheduleLogDetailParallelRequest { ScheduleLogDetails = scheduleLogDetailRecords.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+                                    scheduleLogDetailRecords = scheduleLogDetailRecords.Skip(parallelThreadCount).ToList();
                                     ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
                                 }
                             }
@@ -644,7 +702,7 @@ namespace nIS
             try
             {
                 var renderEngine = parallelRequest.RenderEngine;
-                string RenderEngineBaseUrl = string.IsNullOrEmpty(renderEngine?.URL) ? ConfigurationManager.AppSettings["DefaultGenerateStatementApiUrl"].ToString() : renderEngine?.URL;
+                string RenderEngineBaseUrl = string.IsNullOrEmpty(renderEngine?.URL) ? ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString() : renderEngine?.URL;
 
                 ParallelOptions parallelOptions = new ParallelOptions();
                 parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
@@ -669,9 +727,9 @@ namespace nIS
 
                     HttpClient client = new HttpClient();
                     client.BaseAddress = new Uri(RenderEngineBaseUrl);
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    client.DefaultRequestHeaders.Add("TenantCode", TenantCode);
-                    var response = client.PostAsync("GenerateStatement/RetryToCreateFailedCustomerStatements", new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, "application/json")).Result;
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+                    client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, TenantCode);
+                    var response = client.PostAsync(ModelConstant.RETRY_TO_CREATE_FAILED_CUSTOMER_STATEMENTS_API_URL, new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 });
             }
             catch (Exception ex)

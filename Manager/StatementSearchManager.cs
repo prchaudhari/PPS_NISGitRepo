@@ -443,7 +443,20 @@ namespace nIS
                     string CurrentTransactionGridJson = string.Empty;
                     HttpClient httpClient = null;
 
-                    var newStatementPageContents = new List<StatementPageContent>(statementPageContents);
+                    var newStatementPageContents = new List<StatementPageContent>();
+                    statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
+                    {
+                        Id = it.Id,
+                        PageId = it.PageId,
+                        PageTypeId = it.PageTypeId,
+                        HtmlContent = it.HtmlContent,
+                        PageHeaderContent = it.PageHeaderContent,
+                        PageFooterContent = it.PageFooterContent,
+                        DisplayName = it.DisplayName,
+                        TabClassName = it.TabClassName,
+                        DynamicWidgets = it.DynamicWidgets
+                    }));
+
                     long FirstPageId = statement.Pages[0].Identifier;
                     for (int i = 0; i < statement.Pages.Count; i++)
                     {
@@ -596,14 +609,14 @@ namespace nIS
                                         //Get data from database for widget
                                         httpClient = new HttpClient();
                                         httpClient.BaseAddress = new Uri(tenantConfiguration.BaseUrlForTransactionData);
-                                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                                        httpClient.DefaultRequestHeaders.Add("TenantCode", tenantCode);
+                                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+                                        httpClient.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
 
                                         //API search parameter
                                         JObject searchParameter = new JObject();
-                                        searchParameter["BatchId"] = batchMaster.Identifier;
-                                        searchParameter["CustomerId"] = customer.Identifier;
-                                        searchParameter["WidgetFilterSetting"] = dynawidget.WidgetFilterSettings;
+                                        searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
+                                        searchParameter[ModelConstant.CUSTOEMR_ID] = customer.Identifier;
+                                        searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
 
                                         switch (dynawidget.WidgetType)
                                         {
@@ -649,17 +662,28 @@ namespace nIS
 
                     newStatementPageContents.ToList().ForEach(page =>
                     {
-                        htmlbody.Append(page.PageHeaderContent).Append(page.HtmlContent).Append(page.PageFooterContent);
+                        htmlbody.Append(page.PageHeaderContent);
+                        htmlbody.Append(page.HtmlContent);
+                        htmlbody.Append(page.PageFooterContent);
                     });
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
 
                     navbarHtml = navbarHtml.Replace("{{NavItemList}}", navbar.ToString());
 
                     StringBuilder finalHtml = new StringBuilder();
-                    finalHtml.Append(HtmlConstants.HTML_HEADER).Append(navbarHtml).Append(htmlbody.ToString()).Append(HtmlConstants.HTML_FOOTER);
+                    finalHtml.Append(HtmlConstants.HTML_HEADER);
+                    finalHtml.Append(navbarHtml);
+                    finalHtml.Append(htmlbody.ToString());
+                    finalHtml.Append(HtmlConstants.HTML_FOOTER);
                     scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
-                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString()).Replace("{{CustomerNumber}}", customer.Identifier.ToString()).Replace("{{StatementNumber}}", statement.Identifier.ToString()).Replace("{{FirstPageId}}", FirstPageId.ToString());
-                    finalHtml.Replace("<link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'>", "").Replace("../common/css/", "./").Replace("../common/js/", "./").Replace("../common/css/", "./");
+
+                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
+                    finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
+                    finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
+                    finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
+                    finalHtml.Replace("<link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'>", "");
+                    finalHtml.Replace("../common/css/", "./").Replace("../common/js/", "./");
+                    finalHtml.Replace("../common/css/", "./");
 
                     string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                     filePath = this.WriteToFile(finalHtml.ToString(), fileName, outputLocation);
@@ -1151,7 +1175,7 @@ namespace nIS
                 var tr = new StringBuilder();
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1192,7 +1216,7 @@ namespace nIS
                 var formdata = new StringBuilder();
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1231,7 +1255,7 @@ namespace nIS
                 var chartDataVal = string.Empty;
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1297,7 +1321,7 @@ namespace nIS
                 var chartDataVal = string.Empty;
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1363,7 +1387,7 @@ namespace nIS
                 var chartDataVal = string.Empty;
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1434,7 +1458,7 @@ namespace nIS
                     if (_lstHtmlWidgetSettings.Count > 0)
                     {
                         //API call
-                        var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                        var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
                             var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);

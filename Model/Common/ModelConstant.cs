@@ -230,7 +230,6 @@ namespace nIS
 
         #region Role
 
-
         /// <summary>
         /// The role model section
         /// </summary>
@@ -367,6 +366,32 @@ namespace nIS
         /// Indicates the new password is sent to user by mail.
         /// </summary>
         public const string SENDPASSWORDMAILTOUSERMESSAGE = "SendPasswordMailToUserMessage";
+
+        #endregion
+
+        #region nIS engine
+
+        public const string DEFAULT_NIS_ENGINE_BASE_URL = "DefaultNisEngineBaseUrl";
+
+        public const string CREATE_CUSTOMER_STATEMENT_API_URL = "GenerateStatement/CreateCustomerStatement";
+
+        public const string RETRY_TO_CREATE_FAILED_CUSTOMER_STATEMENTS_API_URL = "GenerateStatement/RetryToCreateFailedCustomerStatements";
+
+        public const string RUN_ARCHIVAL_PROCESS_FOR_CUSTOMER_RECORD = "GenerateStatement/RunArchivalForCustomerRecord";
+
+        public const string APPLICATION_JSON_MEDIA_TYPE = "application/json";
+
+        public const string BATCH_ID = "BatchId";
+
+        public const string CUSTOEMR_ID = "CustomerId";
+
+        public const string WIDGET_FILTER_SETTING = "WidgetFilterSetting";
+
+        public const string PARALLEL_THREAD_COUNT = "ParallelThreadCount";
+
+        public const string MINIMUM_ARCHIVAL_PROCESS_PERIOD_IN_DAYS = "MinimumArchivalPeriodDays";
+
+        public const string IS_WANT_TO_USE_NIS_ENGINES = "IsWantToUseNisEngines";
 
         #endregion
     }

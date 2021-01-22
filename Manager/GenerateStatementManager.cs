@@ -593,14 +593,14 @@ namespace nIS
                                         //Get data from database for widget
                                         httpClient = new HttpClient();
                                         httpClient.BaseAddress = new Uri(statementRawData.TenantConfiguration.BaseUrlForTransactionData);
-                                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                                        httpClient.DefaultRequestHeaders.Add("TenantCode", tenantCode);
+                                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+                                        httpClient.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
 
                                         //API search parameter
                                         JObject searchParameter = new JObject();
-                                        searchParameter["BatchId"] = batchMaster.Identifier;
-                                        searchParameter["CustomerId"] = customer.Identifier;
-                                        searchParameter["WidgetFilterSetting"] = dynawidget.WidgetFilterSettings;
+                                        searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
+                                        searchParameter[ModelConstant.CUSTOEMR_ID] = customer.Identifier;
+                                        searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
 
                                         switch (dynawidget.WidgetType)
                                         {
@@ -1575,7 +1575,7 @@ namespace nIS
                 var tr = new StringBuilder();
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1616,7 +1616,7 @@ namespace nIS
                 var formdata = new StringBuilder();
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1655,7 +1655,7 @@ namespace nIS
                 var chartDataVal = string.Empty;
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1721,7 +1721,7 @@ namespace nIS
                 var chartDataVal = string.Empty;
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1787,7 +1787,7 @@ namespace nIS
                 var chartDataVal = string.Empty;
 
                 //API call
-                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);
@@ -1858,7 +1858,7 @@ namespace nIS
                     if (_lstHtmlWidgetSettings.Count > 0)
                     {
                         //API call
-                        var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, "application/json")).Result;
+                        var response = httpClient.PostAsync(dynawidget.APIPath, new StringContent(JsonConvert.SerializeObject(searchParameter), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
                             var apiOutputArr = JArray.Parse(response.Content.ReadAsStringAsync().Result);

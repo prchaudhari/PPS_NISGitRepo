@@ -336,6 +336,7 @@ export class WidgetdesignerComponent implements OnInit {
     this.dynamicWidgetDetails = response.List[0];
     this.setWidgetType(this.dynamicWidgetDetails.WidgetType);
     var themeCSS: any = {};
+
     // this.getEntityField(this.dynamicWidgetDetails.EntityId);
     if (this.dynamicWidgetDetails.ThemeCSS != null && this.dynamicWidgetDetails.ThemeCSS != '') {
       themeCSS = JSON.parse(this.dynamicWidgetDetails.ThemeCSS);
@@ -358,8 +359,8 @@ export class WidgetdesignerComponent implements OnInit {
         DataType: themeCSS.DataType
       });
     }
-    this.isDefault = this.dynamicWidgetDetails.ThemeType == "Default" ? true : false;
 
+    this.isDefault = this.dynamicWidgetDetails.ThemeType == "Default" ? true : false;
     this.isCustome = this.dynamicWidgetDetails.ThemeType == "Default" ? false : true;
 
     if (this.dynamicWidgetDetails.WidgetFilterSettings != null && this.dynamicWidgetDetails.WidgetFilterSettings != '') {
@@ -371,12 +372,9 @@ export class WidgetdesignerComponent implements OnInit {
         this.displayWidgetFilterlist.push(object);
       });
     }
-    if (this.dynamicWidgetDetails.WidgetSettings != null && this.dynamicWidgetDetails.WidgetSettings != '') {
 
-      var settings;
-      if (this.dynamicWidgetDetails.WidgetType != 'Html') {
-        settings = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
-      }
+    if (this.dynamicWidgetDetails.WidgetSettings != null && this.dynamicWidgetDetails.WidgetSettings != '') {
+      var settings = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
 
       if (this.dynamicWidgetDetails.WidgetType == 'Form') {
         this.formList = settings;
@@ -401,19 +399,14 @@ export class WidgetdesignerComponent implements OnInit {
         });
       }
       else if (this.dynamicWidgetDetails.WidgetType == 'Html') {
-        //  this.rteObj.executeCommand('insertHTML', this.dynamicWidgetDetails.WidgetSettings);
-        //var div = document.createElement('div');
-        //div.innerHTML = this.dynamicWidgetDetails.WidgetSettings
-        //this.rteObj.executeCommand('insertHTML', div);
-        this.editorValue = this.dynamicWidgetDetails.PreviewData;
-        this.htmlFieldsMappinng = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
+        this.htmlFieldsMappinng = settings;
       }
     }
+
     if (this.dynamicWidgetDetails.WidgetType == 'Html') {
-      
       this.editorValue = this.dynamicWidgetDetails.PreviewData;
-      this.htmlFieldsMappinng = JSON.parse(this.dynamicWidgetDetails.WidgetSettings);
     }
+
     this.DynamicWidgetForm.patchValue({
       WidgetName: this.dynamicWidgetDetails.WidgetName,
       PageType: this.dynamicWidgetDetails.PageTypeId,
@@ -440,7 +433,6 @@ export class WidgetdesignerComponent implements OnInit {
   }
 
   async getEntities() {
-
     var data = await this.dynamicWidgetService.getEntities();
     data.forEach(item => {
       this.entityList.push(item);
@@ -450,7 +442,6 @@ export class WidgetdesignerComponent implements OnInit {
       this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError).subscribe(data => {
       });
     }
-
   }
 
   async getAssetLibraries() {
@@ -479,7 +470,6 @@ export class WidgetdesignerComponent implements OnInit {
     this.assets = [];
     this.assets.push({ 'Identifier': '0', 'Name': 'Select Asset' });
     let assetLibraryService = this.injector.get(AssetLibraryService);
-
     let assetSearchParameter: any = {};
     assetSearchParameter.AssetLibraryIdentifier = String(value);
     assetSearchParameter.IsDeleted = false;
@@ -487,7 +477,6 @@ export class WidgetdesignerComponent implements OnInit {
     assetSearchParameter.SortParameter.SortColumn = Constants.Name;
     assetSearchParameter.SortParameter.SortOrder = Constants.Ascending;
     assetSearchParameter.SearchMode = Constants.Contains;
-
     var response = await assetLibraryService.getAsset(assetSearchParameter);
     this.assets.push(...response.assestList);
   }
@@ -519,7 +508,6 @@ export class WidgetdesignerComponent implements OnInit {
   }
 
   public onEntityFieldSelected(event, widgetType) {
-
     const value = event.target.value;
     if (value == "0") {
       //this.filterPageTypeId = 0;
@@ -651,15 +639,11 @@ export class WidgetdesignerComponent implements OnInit {
       var url = filePath;
       var video = document.createElement("video");
       video.src = url;
-
       video.controls = true;
-
       InsertHtml.Insert(this.rteObj.contentModule.getDocument(), video);
       this.rteObj.formatter.saveData();
     }
   }
-
-
 
   PreviewAsset(asset: any): void {
     var fileType = asset.Name.split('.').pop();
@@ -671,23 +655,18 @@ export class WidgetdesignerComponent implements OnInit {
       var img = document.createElement('img');
       img.src = url;
       this.rteObj.executeCommand('insertHTML', img);
-
     }
     else {
       isImage = false;
-
       var url = "http://localhost/API/test/assets/31/testvideo.mp4";
-
       var video = document.createElement('video');
       video.src = url;
       video.controls = true;
       this.rteObj.executeCommand('insertHTML', video);
     }
-
   }
 
   public disableAddHTMLField() {
-
     if (this.DynamicWidgetForm.value.HTMLEntityField == null || this.DynamicWidgetForm.value.HTMLEntityField == 0) {
       return true;
     }
@@ -695,7 +674,6 @@ export class WidgetdesignerComponent implements OnInit {
   }
 
   public disableAssetAdd() {
-
     if (this.DynamicWidgetForm.value.HTMLAssetLibrary == null || this.DynamicWidgetForm.value.HTMLAssetLibrary == 0) {
       return true;
     }
@@ -897,7 +875,7 @@ export class WidgetdesignerComponent implements OnInit {
     else if (this.selectedLink == 'Html') {
       var html = this.rteObj.getHtml();
       this.dynamicWidgetDetails.PreviewData = html;
-      if (this.htmlFieldsMappinng.length > 0) {
+      if (this.htmlFieldsMappinng != null && this.htmlFieldsMappinng.length > 0) {
         this.dynamicWidgetDetails.WidgetSettings = JSON.stringify(this.htmlFieldsMappinng);
 
       }
