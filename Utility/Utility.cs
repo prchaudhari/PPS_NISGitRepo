@@ -1054,27 +1054,52 @@
         /// </summary>
         /// <param name="htmlStatementPath">The statement statement path.</param>
         /// <param name="outPdfPath">The output pdf path.</param>
+        /// <param name="password">The password to protect PDF.</param>
         /// <returns>
         /// Returns the true if pdf generated successfully, otherwise false
         /// </returns>
-        public bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath,string password)
+        public bool HtmlStatementToPdf(string htmlStatementPath, string outPdfPath, string password)
         {
             var isPdfSuccess = false;
             try
             {
-                var client = new pdfcrowd.HtmlToPdfClient("demo", "ce544b6ea52a5621fb9d55f8b542d14d"); //replace it once lincese purchase
+                var userName = System.Configuration.ConfigurationManager.AppSettings["PdfCrowdUserName"];
+                var apiKey = System.Configuration.ConfigurationManager.AppSettings["PdfCrowdApiKey"];
+                var client = new pdfcrowd.HtmlToPdfClient(userName, apiKey);
+                
+                //Set the output page width. The safe maximum is 200in otherwise some PDF viewers may be unable to open the PDF.
                 client.setPageWidth("12in");
+
+                //Set the output page height. Use -1 for a single page PDF. The safe maximum is 200in otherwise some PDF viewers may be unable to open the PDF.
                 client.setPageHeight("10in");
+
+                //The viewport width affects the @media min-width and max-width CSS properties. 
+                //This mode can be used to choose a particular version (mobile, desktop, ..) of a responsive page
                 client.setRenderingMode("viewport");
+
+                //The HTML contents width fits the print area width.
                 client.setSmartScalingMode("content-fit");
+
+                //Set the quality of embedded JPEG images. A lower quality results in a smaller PDF file but can lead to compression artifacts.
                 client.setJpegQuality(80);
+
+                //Specify which image types will be converted to JPEG. 
+                //Converting lossless compression image formats (PNG, GIF, ...) to JPEG may result in a smaller PDF file.
                 client.setConvertImagesToJpeg("all");
-                client.setImageDpi(340);
+
+                //Set the DPI of images in PDF. A lower DPI may result in a smaller PDF file.
+                client.setImageDpi(300);
+
                 if (password != string.Empty)
                 {
+                    //Encrypt the PDF. This prevents search engines from indexing the contents.
                     client.setEncrypt(true);
+
+                    //Protect the PDF with a user password. 
+                    //When a PDF has a user password, it must be supplied in order to view the document and to perform operations allowed by the access permissions.
                     client.setUserPassword(password);
                 }
+
                 client.convertFileToFile(htmlStatementPath, outPdfPath);
                 isPdfSuccess = true;
             }
