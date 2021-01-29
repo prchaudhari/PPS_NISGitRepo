@@ -749,10 +749,9 @@ namespace nIS
                     {
                         var path = asset.FilePath.ToString();
                         var fileName = asset.Name;
-                        var imagePath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customer.Identifier;
-                        if (File.Exists(path) && !File.Exists(imagePath + "\\" + fileName))
+                        if (File.Exists(path) && !File.Exists(outputLocation + "\\" + fileName))
                         {
-                            File.Copy(path, Path.Combine(imagePath, fileName));
+                            File.Copy(path, Path.Combine(outputLocation, fileName));
                         }
                         imgAssetFilepath = "./" + fileName;
                     }
@@ -794,10 +793,9 @@ namespace nIS
                     {
                         var path = asset.FilePath.ToString();
                         var fileName = asset.Name;
-                        var videoPath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customer.Identifier;
-                        if (File.Exists(path) && !File.Exists(videoPath + "\\" + fileName))
+                        if (File.Exists(path) && !File.Exists(outputLocation + "\\" + fileName))
                         {
-                            File.Copy(path, Path.Combine(videoPath, fileName));
+                            File.Copy(path, Path.Combine(outputLocation, fileName));
                         }
                         vdoAssetFilepath = "./" + fileName;
                     }
