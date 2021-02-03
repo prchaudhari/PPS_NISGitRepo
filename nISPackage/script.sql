@@ -395,6 +395,10 @@ CREATE TABLE [NIS].[CustomerMaster](
 	[RmName] [nvarchar](50) NULL,
 	[RmContactNumber] [nvarchar](50) NULL,
 	[TenantCode] [nvarchar](50) NOT NULL,
+	[Field1] [nvarchar](100) NOT NULL,
+	[Field2] [nvarchar](100) NOT NULL,
+	[Field3] [nvarchar](100) NOT NULL,
+	[Field4] [nvarchar](100) NOT NULL,
  CONSTRAINT [PK_CustomerMaster] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -452,6 +456,7 @@ CREATE TABLE [NIS].[DynamicWidget](
 	[CloneOfWidgetId] [bigint] NULL,
 	[Version] [nvarchar](100) NULL,
 	[PreviewData] [nvarchar](max) NOT NULL,
+	[FilterCondition] NVARCHAR(MAX) NULL, 
  CONSTRAINT [PK__DynamicW__3214EC071888ACAB] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -776,12 +781,40 @@ CREATE TABLE [NIS].[ScheduleLog](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[ScheduleId] [bigint] NOT NULL,
 	[ScheduleName] [nvarchar](50) NOT NULL,
+	[BatchId] [bigint] NOT NULL,
+	[BatchName] [nvarchar](150) NOT NULL,
 	[NumberOfRetry] [int] NOT NULL,
 	[LogFilePath] [nvarchar](max) NULL,
 	[CreationDate] [datetime] NOT NULL,
 	[Status] [nvarchar](50) NOT NULL,
 	[TenantCode] [nvarchar](50) NOT NULL,
  CONSTRAINT [PK__Schedule__3214EC07B593A0D3] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  Table [NIS].[ScheduleLogArchive]    Script Date: 2021-01-28 10:34:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [NIS].[ScheduleLogArchive](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[ScheduleId] [bigint] NOT NULL,
+	[ScheduleName] [nvarchar](50) NOT NULL,
+	[BatchId] [bigint] NOT NULL,
+	[BatchName] [nvarchar](150) NOT NULL,
+	[NumberOfRetry] [int] NOT NULL,
+	[LogFilePath] [nvarchar](max) NULL,
+	[LogCreationDate] [datetime] NOT NULL,
+	[Status] [nvarchar](50) NOT NULL,
+	[ArchivalDate] [datetime] NOT NULL,
+	[TenantCode] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK__Schedule__3214EC07BFCAE630] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -809,6 +842,36 @@ CREATE TABLE [NIS].[ScheduleLogDetail](
 	[TenantCode] [nvarchar](50) NOT NULL,
 	[StatementFilePath] [nvarchar](max) NULL,
  CONSTRAINT [PK__Schedule__3214EC073B2F0802] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  Table [NIS].[ScheduleLogDetailArchive]    Script Date: 2021-01-28 10:35:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [NIS].[ScheduleLogDetailArchive](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[ScheduleLogArchiveId] [bigint] NOT NULL,
+	[ScheduleId] [bigint] NOT NULL,
+	[CustomerId] [bigint] NOT NULL,
+	[CustomerName] [nvarchar](250) NULL,
+	[RenderEngineId] [bigint] NOT NULL,
+	[RenderEngineName] [nvarchar](100) NULL,
+	[RenderEngineURL] [nvarchar](max) NULL,
+	[NumberOfRetry] [int] NOT NULL,
+	[Status] [nvarchar](20) NULL,
+	[LogMessage] [nvarchar](max) NULL,
+	[LogDetailCreationDate] [datetime] NOT NULL,
+	[PdfStatementPath] [nvarchar](max) NULL,
+	[ArchivalDate] [datetime] NOT NULL,
+	[TenantCode] [nvarchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -921,7 +984,40 @@ CREATE TABLE [NIS].[StatementMetadata](
 	[AccountNumber] [nvarchar](50) NOT NULL,
 	[AccountType] [nvarchar](50) NOT NULL,
 	[StatementURL] [nvarchar](max) NOT NULL,
+	[TenantCode] [nvarchar](50) NOT NULL,
+	[IsPasswordGenerated] [bit] NOT NULL,
+	[Password] [nvarchar](500) NOT NULL,
  CONSTRAINT [PK_StatementMetadata] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  Table [NIS].[StatementMetadataArchive]    Script Date: 2021-01-28 10:37:33 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [NIS].[StatementMetadataArchive](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[ScheduleId] [bigint] NOT NULL,
+	[ScheduleLogArchiveId] [bigint] NOT NULL,
+	[StatementId] [bigint] NOT NULL,
+	[StatementDate] [datetime] NULL,
+	[StatementPeriod] [nvarchar](50) NULL,
+	[CustomerId] [bigint] NOT NULL,
+	[CustomerName] [nvarchar](500) NULL,
+	[AccountNumber] [nvarchar](50) NOT NULL,
+	[AccountType] [nvarchar](50) NOT NULL,
+	[StatementURL] [nvarchar](max) NOT NULL,
+	[ArchivalDate] [datetime] NOT NULL,
+	[TenantCode] [nvarchar](50) NOT NULL,
+	[IsPasswordGenerated] [bit] NULL,
+	[Password] [nvarchar](500) NULL,
+PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -1018,6 +1114,44 @@ CREATE TABLE [NIS].[TenantEntity](
 	[APIPath] [nvarchar](100) NOT NULL,
 	[RequestType] [nvarchar](50) NOT NULL,
  CONSTRAINT [PK__Entity__3214EC0726944DFF] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [NIS].[TenantSecurityCodeFormat]    Script Date: 2021-01-28 10:38:23 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [NIS].[TenantSecurityCodeFormat](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TenantCode] [nvarchar](50) NOT NULL,
+	[Format] [nvarchar](500) NOT NULL,
+	[LastModifiedBy] [bigint] NOT NULL,
+	[LastModifiedOn] [datetime] NOT NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [NIS].[TenantSubscription]    Script Date: 2021-01-28 10:38:42 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [NIS].[TenantSubscription](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TenantCode] [uniqueidentifier] NOT NULL,
+	[SubscriptionStartDate] [datetime] NOT NULL,
+	[SubscriptionEndDate] [datetime] NOT NULL,
+	[LastModifiedBy] [bigint] NOT NULL,
+	[LastModifiedOn] [datetime] NOT NULL,
+	[SubscriptionKey] [nvarchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -1591,31 +1725,7 @@ AS
 
 SELECT DISTINCT(s.Id) AS Id, MAX(s.WidgetName) AS WidgetName, MAX(s.WidgetType) AS WidgetType, s.EntityId,
 MAX(s.Title) AS Title, MAX(s.ThemeType) AS ThemeType, MAX(s.ThemeCSS) AS ThemeCSS, MAX(s.WidgetSettings) AS WidgetSettings,
-MAX(s.WidgetFilterSettings) AS WidgetFilterSettings, MAX(s.Status) AS Status, MAX(s.CreatedBy) AS CreatedBy, MAX(s.CreatedOn) AS CreatedOn,
-s.LastUpdatedBy, s.PublishedBy,MAX(s.PublishedDate) AS PublishedDate, s.IsActive, s.IsDeleted,
-MAX(s.TenantCode) AS TenantCode, s.CloneOfWidgetId, MAX(s.Version) As Version, 
-MAX(s.PreviewData) AS PreviewData,usr1.FirstName+' '+usr1.LastName AS PublishedByName, usr2.FirstName+' '+usr2.LastName AS CreatedByName,
-ent.Name as EntityName, ent.APIPath, ent.RequestType, (SELECT TOP 1 PageTypeId From [NIS].[WidgetPageTypeMap] WHERE WidgetId = s.Id) AS PageTypeId
-FROM NIS.DynamicWidget s 
-LEFT JOIN NIS.[User] usr1 ON s.PublishedBy = usr1.Id
-INNER JOIN NIS.[User] usr2 ON s.CreatedBy = usr2.Id
-INNER JOIN NIS.TenantEntity ent ON s.EntityId = ent.Id
-INNER JOIN [NIS].[WidgetPageTypeMap] wpt ON wpt.WidgetId = s.Id
-WHERE wpt.IsDynamicWidget = 1
-GROUP BY s.Id, s.EntityId, s.PublishedBy, s.CloneOfWidgetId, s.LastUpdatedBy,
-usr1.FirstName, usr1.LastName, usr2.FirstName, usr2.LastName, ent.Name, ent.APIPath, ent.RequestType, s.IsActive, s.IsDeleted
-GO
-/****** Object:  View [NIS].[View_DynamicWidget1]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [NIS].[View_DynamicWidget1]
-AS
-
-SELECT DISTINCT(s.Id) AS Id, MAX(s.WidgetName) AS WidgetName, MAX(s.WidgetType) AS WidgetType, s.EntityId,
-MAX(s.Title) AS Title, MAX(s.ThemeType) AS ThemeType, MAX(s.ThemeCSS) AS ThemeCSS, MAX(s.WidgetSettings) AS WidgetSettings,
-MAX(s.WidgetFilterSettings) AS WidgetFilterSettings, MAX(s.Status) AS Status, MAX(s.CreatedBy) AS CreatedBy, MAX(s.CreatedOn) AS CreatedOn,
+MAX(s.WidgetFilterSettings) AS WidgetFilterSettings,MAX(s.FilterCondition) AS FilterCondition, MAX(s.Status) AS Status, MAX(s.CreatedBy) AS CreatedBy, MAX(s.CreatedOn) AS CreatedOn,
 s.LastUpdatedBy, s.PublishedBy, MAX(s.PublishedDate) AS PublishedDate, s.IsActive, s.IsDeleted,
 MAX(s.TenantCode) AS TenantCode, s.CloneOfWidgetId, MAX(s.Version) As Version, 
 MAX(s.PreviewData) AS PreviewData, usr1.FirstName+' '+usr1.LastName AS PublishedByName, usr2.FirstName+' '+usr2.LastName AS CreatedByName,
@@ -1629,6 +1739,7 @@ LEFT JOIN [NIS].[PageType] pt ON wpt.PageTypeId = pt.id
 GROUP BY s.Id, s.EntityId, s.PublishedBy, s.CloneOfWidgetId, s.LastUpdatedBy, usr1.FirstName, usr1.LastName, 
 usr2.FirstName, usr2.LastName, ent.Name, ent.APIPath, ent.RequestType, s.IsActive, s.IsDeleted, wpt.PageTypeId
 GO
+
 /****** Object:  View [NIS].[View_MultiTenantUserAccessMap]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
 GO
@@ -1694,15 +1805,18 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [NIS].[View_ScheduleLog]
 AS
-SELECT sl.Id,sl.ScheduleName,CONVERT(VARCHAR(5),DATEDIFF(s, srh.StartDate, srh.EndDate)/3600)+' Hr '+
-CONVERT(VARCHAR(5),DATEDIFF(s, srh.StartDate, srh.EndDate)%3600/60)+' Min '+
+SELECT sl.Id, sl.ScheduleId, sl.ScheduleName, sl.BatchId, sl.BatchName, bm.Status AS BatchStatus, sl.NumberOfRetry,
+CONVERT(VARCHAR(5),DATEDIFF(s, srh.StartDate, srh.EndDate)/3600)+' Hr '+ 
+CONVERT(VARCHAR(5),DATEDIFF(s, srh.StartDate, srh.EndDate)%3600/60)+' Min '+ 
 CONVERT(VARCHAR(5),(DATEDIFF(s, srh.StartDate, srh.EndDate)%60)) + ' Sec' AS ProcessingTime,
-CONVERT(VARCHAR,(SELECT COUNT(Id) FROM nis.ScheduleLogDetail WHERE Status = 'Completed' AND ScheduleLogId = sl.Id))+ ' / '+CONVERT(VARCHAR, COUNT(sld.Id)) AS RecordProccessed,
+CONVERT(VARCHAR,(SELECT COUNT(Id) FROM NIS.ScheduleLogDetail WHERE ScheduleLogId = sl.Id)) + ' / '+ 
+CONVERT(VARCHAR, (SELECT COUNT(Id) FROM NIS.CustomerMaster WHERE BatchId = sl.BatchId)) AS RecordProccessed,
 sl.Status, sl.CreationDate AS ExecutionDate, sl.TenantCode
-FROM nis.ScheduleLog sl
-LEFT JOIN nis.ScheduleLogDetail sld ON sl.Id = sld.ScheduleLogId
-LEFT JOIN nis.ScheduleRunHistory srh ON sl.Id = srh.ScheduleLogId
-GROUP BY sl.ScheduleName, sl.CreationDate, sl.Status, srh.StartDate, srh.EndDate, sl.Id, sl.TenantCode
+FROM NIS.ScheduleLog sl
+INNER JOIN NIS.BatchMaster bm ON sl.BatchId = bm.Id
+LEFT JOIN NIS.ScheduleRunHistory srh ON sl.Id = srh.ScheduleLogId
+GROUP BY sl.ScheduleId, sl.ScheduleName, sl.BatchId, sl.BatchName, bm.Status, sl.NumberOfRetry, sl.CreationDate, 
+sl.Status, srh.StartDate, srh.EndDate, sl.Id, sl.TenantCode
 GO
 /****** Object:  View [NIS].[View_SourceData]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
@@ -1711,12 +1825,14 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [NIS].[View_SourceData]
 AS
-SELECT ad.*, p.DisplayName AS PageName, w.DisplayName AS WidgetName, cm.FirstName+' '+cm.MiddleName+' '+cm.LastName AS CustomerName, pt.Name AS PageTypeName 
-FROM NIS.AnalyticsData ad 
+SELECT ad.*, p.DisplayName AS PageName, CASE WHEN w.DisplayName IS NULL THEN dw.WidgetType ELSE w.DisplayName END AS WidgetName,
+cm.FirstName+' '+cm.MiddleName+' '+cm.LastName AS CustomerName, pt.Name AS PageTypeName
+FROM NIS.AnalyticsData ad
 INNER JOIN NIS.CustomerMaster cm ON ad.CustomerId = cm.Id
 LEFT JOIN NIS.Page p ON ad.PageId = p.Id
 LEFT JOIN NIS.PageType pt ON p.PageTypeId = pt.Id
 LEFT JOIN NIS.Widget w ON w.Id = ad.WidgetId
+LEFT JOIN NIS.DynamicWidget dw ON dw.Id = ad.WidgetId
 GO
 /****** Object:  View [NIS].[View_StatementDefinition]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
@@ -1729,6 +1845,31 @@ SELECT s.*, usr1.FirstName+' '+usr1.LastName AS PublishedByName,  usr2.FirstName
 FROM NIS.Statement s 
 LEFT JOIN NIS.[User] usr1 ON s.PublishedBy = usr1.Id
 INNER JOIN NIS.[User] usr2 ON s.Owner = usr2.Id
+GO
+/****** Object:  View [NIS].[View_StatementMetadata]    Script Date: 2021-01-28 10:42:49 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [NIS].[View_StatementMetadata]
+AS
+SELECT st.Id, st.ScheduleId, st.ScheduleLogId, st.StatementId, st.StatementDate, st.StatementPeriod, st.CustomerId, st.CustomerName, 
+st.AccountNumber, st.AccountType, st.StatementURL, st.TenantCode, st.IsPasswordGenerated, st.Password, bm.Id AS BatchId, bm.BatchName
+FROM NIS.StatementMetadata st
+INNER JOIN NIS.ScheduleLog sl ON st.ScheduleLogId = sl.Id
+INNER JOIN NIS.BatchMaster bm ON sl.BatchId = bm.Id
+GO
+/****** Object:  View [NIS].[View_TenantSubscription]    Script Date: 2021-01-28 10:43:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [NIS].[View_TenantSubscription]
+AS
+SELECT s.TenantCode,s.SubscriptionStartDate,s.SubscriptionEndDate,s.SubscriptionKey,
+s.LastModifiedBy,s.LastModifiedOn, usr2.FirstName+' '+usr2.LastName AS LastModifiedName 
+FROM NIS.TenantSubscription s 
+INNER JOIN NIS.[User] usr2 ON s.LastModifiedBy = usr2.Id
 GO
 /****** Object:  View [NIS].[View_User]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
@@ -1817,395 +1958,99 @@ INSERT [EntityManager].[Operations] ([Id], [TenantCode], [EntityName], [Componen
 INSERT [EntityManager].[Operations] ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (40, N'00000000-0000-0000-0000-000000000000', N'Dynamic Widget', N'nIS', N'View')
 INSERT [EntityManager].[Operations] ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (41, N'00000000-0000-0000-0000-000000000000', N'Dynamic Widget', N'nIS', N'Publish')
 SET IDENTITY_INSERT [EntityManager].[Operations] OFF
-SET IDENTITY_INSERT [NIS].[Asset] ON 
 
-INSERT [NIS].[Asset] ([Id], [Name], [FilePath], [AssetLibraryId], [IsDeleted], [LastUpdatedDate], [LastUpdatedBy]) VALUES (1, N'image-link.png', N'\\WSPL_LAP_012\NISAssets/assets/2/image-link.png', 2, 0, CAST(N'2020-11-19 08:15:20.763' AS DateTime), 5)
-INSERT [NIS].[Asset] ([Id], [Name], [FilePath], [AssetLibraryId], [IsDeleted], [LastUpdatedDate], [LastUpdatedBy]) VALUES (2, N'COPY (1).png', N'\\WSPL_LAP_012\NISAssets/assets/2/COPY (1).png', 2, 0, CAST(N'2020-11-19 08:17:13.390' AS DateTime), 5)
-INSERT [NIS].[Asset] ([Id], [Name], [FilePath], [AssetLibraryId], [IsDeleted], [LastUpdatedDate], [LastUpdatedBy]) VALUES (3, N'default-user.png', N'\\WSPL_LAP_012\NISAssets/assets/1/default-user.png', 1, 0, CAST(N'2020-11-19 08:26:16.717' AS DateTime), 3)
-INSERT [NIS].[Asset] ([Id], [Name], [FilePath], [AssetLibraryId], [IsDeleted], [LastUpdatedDate], [LastUpdatedBy]) VALUES (4, N'testvideo.mp4', N'\\WSPL_LAP_012\NISAssets/assets/1/testvideo.mp4', 1, 0, CAST(N'2020-11-19 08:34:47.913' AS DateTime), 3)
-SET IDENTITY_INSERT [NIS].[Asset] OFF
-SET IDENTITY_INSERT [NIS].[AssetLibrary] ON 
-
-INSERT [NIS].[AssetLibrary] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'Test Asse tLibrary', NULL, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[AssetLibrary] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (2, N'Asset Library Test', NULL, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550')
-SET IDENTITY_INSERT [NIS].[AssetLibrary] OFF
 SET IDENTITY_INSERT [NIS].[AssetSetting] ON 
-
 INSERT [NIS].[AssetSetting] ([Id], [ImageHeight], [ImageWidth], [ImageSize], [ImageFileExtension], [VideoSize], [VideoFileExtension], [TenantCode]) VALUES (1, CAST(1800.00 AS Decimal(18, 2)), CAST(1200.00 AS Decimal(18, 2)), CAST(1.00 AS Decimal(18, 2)), N'jpeg,png', CAST(5.00 AS Decimal(18, 2)), N'mp4', N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[AssetSetting] ([Id], [ImageHeight], [ImageWidth], [ImageSize], [ImageFileExtension], [VideoSize], [VideoFileExtension], [TenantCode]) VALUES (2, CAST(1800.00 AS Decimal(18, 2)), CAST(1200.00 AS Decimal(18, 2)), CAST(1.00 AS Decimal(18, 2)), N'png,jpeg', CAST(5.00 AS Decimal(18, 2)), N'mp4', N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[AssetSetting] ([Id], [ImageHeight], [ImageWidth], [ImageSize], [ImageFileExtension], [VideoSize], [VideoFileExtension], [TenantCode]) VALUES (3, CAST(2000.00 AS Decimal(18, 2)), CAST(2000.00 AS Decimal(18, 2)), CAST(10.00 AS Decimal(18, 2)), N'png,jpeg', CAST(15.00 AS Decimal(18, 2)), N'mp4', N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550')
 SET IDENTITY_INSERT [NIS].[AssetSetting] OFF
-SET IDENTITY_INSERT [NIS].[BatchMaster] ON 
 
-INSERT [NIS].[BatchMaster] ([Id], [TenantCode], [BatchName], [CreatedBy], [CreatedDate], [ScheduleId], [IsExecuted], [IsDataReady], [DataExtractionDate], [BatchExecutionDate], [Status]) VALUES (1, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Batch 1 of Tes Schedule', 3, CAST(N'2020-11-19 07:22:24.507' AS DateTime), 1, 0, 0, CAST(N'2020-11-20 14:30:00.000' AS DateTime), CAST(N'2020-11-21 14:30:00.000' AS DateTime), N'New')
-SET IDENTITY_INSERT [NIS].[BatchMaster] OFF
 SET IDENTITY_INSERT [NIS].[ContactType] ON 
-
-INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'Primary', N'Teat', 1, 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (2, N'Secondary', N'Test', 1, 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (3, N'Primary', N'Teat', 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (4, N'Secondary', N'Test', 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (5, N'Primary', N'Teat', 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320')
-INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (6, N'Secondary', N'Test', 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320')
+INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'Primary', N'Primary contact type', 1, 0, N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted], [TenantCode]) VALUES (2, N'Secondary', N'Secondary contact type', 1, 0, N'00000000-0000-0000-0000-000000000000')
 SET IDENTITY_INSERT [NIS].[ContactType] OFF
+
 SET IDENTITY_INSERT [NIS].[Country] ON 
-
 INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'India', N'IN', N'+91', 1, 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (2, N'India', N'IN', N'+91', 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (3, N'India', N'IN', N'+91', 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320')
-INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (4, N'India', N'IN', N'+91', 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (5, N'India', N'IN', N'+91', 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550')
 SET IDENTITY_INSERT [NIS].[Country] OFF
-SET IDENTITY_INSERT [NIS].[DynamicWidget] ON 
 
-INSERT [NIS].[DynamicWidget] ([Id], [WidgetName], [WidgetType], [PageTypeId], [EntityId], [Title], [ThemeType], [ThemeCSS], [WidgetSettings], [WidgetFilterSettings], [Status], [CreatedBy], [CreatedOn], [LastUpdatedBy], [PublishedBy], [PublishedDate], [IsActive], [IsDeleted], [TenantCode], [CloneOfWidgetId], [Version], [PreviewData]) VALUES (1, N'Saving Account Details', N'Form', 0, 2, N'Saving Account Details', N'Default', N'', N'[{"DisplayName":"Account Number","FieldId":"6","FieldName":"AccountNumber"},{"DisplayName":"Balance","FieldId":"8","FieldName":"Balance"},{"DisplayName":"Deposite","FieldId":"9","FieldName":"TotalDeposit"}]', N'', N'Published', 3, CAST(N'2020-11-19 06:59:11.260' AS DateTime), 3, 3, CAST(N'2020-11-19 07:13:06.367' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', NULL, N'1', N'<div class=''row''><div class=''col-sm-6''><label>Account Number</label></div><div class=''col-sm-6''>AccountNumber1</div></div><div class=''row''><div class=''col-sm-6''><label>Balance</label></div><div class=''col-sm-6''>Balance1</div></div><div class=''row''><div class=''col-sm-6''><label>Deposite</label></div><div class=''col-sm-6''>TotalDeposit1</div></div>')
-INSERT [NIS].[DynamicWidget] ([Id], [WidgetName], [WidgetType], [PageTypeId], [EntityId], [Title], [ThemeType], [ThemeCSS], [WidgetSettings], [WidgetFilterSettings], [Status], [CreatedBy], [CreatedOn], [LastUpdatedBy], [PublishedBy], [PublishedDate], [IsActive], [IsDeleted], [TenantCode], [CloneOfWidgetId], [Version], [PreviewData]) VALUES (2, N'Current Acc Transaction Details', N'Table', 0, 3, N'Current Acc Transaction Details', N'Custome', N'{"TitleColor":"#d7adad","TitleSize":22,"TitleWeight":"Normal","TitleType":"Sans-serif","HeaderColor":"#5372d0","HeaderSize":18,"HeaderWeight":"Normal","HeaderType":"Serif","DataColor":"#4fc994","DataSize":20,"DataWeight":"Italic","DataType":"Sans-serif","ChartColorTheme":""}', N'[{"HeaderName":"Date","FieldId":"11","FieldName":"TransactionDate","IsSorting":false},{"HeaderName":"Narration","FieldId":"13","FieldName":"Narration","IsSorting":false},{"HeaderName":"Fcy","FieldId":"15","FieldName":"FCY","IsSorting":false},{"HeaderName":"Lcy","FieldId":"16","FieldName":"LCY","IsSorting":false}]', N'', N'Published', 3, CAST(N'2020-11-19 07:01:37.807' AS DateTime), 3, 3, CAST(N'2020-11-19 07:13:00.557' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', NULL, N'1', N'<tr><td>TransactionDate1</td> <td>Narration1</td> <td>FCY1</td> <td>LCY1</td> </tr><tr><td>TransactionDate2</td> <td>Narration2</td> <td>FCY2</td> <td>LCY2</td> </tr><tr><td>TransactionDate3</td> <td>Narration3</td> <td>FCY3</td> <td>LCY3</td> </tr><tr><td>TransactionDate4</td> <td>Narration4</td> <td>FCY4</td> <td>LCY4</td> </tr>')
-INSERT [NIS].[DynamicWidget] ([Id], [WidgetName], [WidgetType], [PageTypeId], [EntityId], [Title], [ThemeType], [ThemeCSS], [WidgetSettings], [WidgetFilterSettings], [Status], [CreatedBy], [CreatedOn], [LastUpdatedBy], [PublishedBy], [PublishedDate], [IsActive], [IsDeleted], [TenantCode], [CloneOfWidgetId], [Version], [PreviewData]) VALUES (3, N'TestHTMLWidget', N'Html', 0, 1, N'Test', N'Default', N'', NULL, N'', N'New', 3, CAST(N'2020-11-19 08:36:02.983' AS DateTime), 3, NULL, NULL, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', NULL, N'1', N'<p><img src="http://localhost:8082/assets/1/default-user.png" class="e-rte-image e-imginline e-resize" style=""> </p><p><br></p><p><video src="http://localhost:8082/assets/1/testvideo.mp4" controls=""></video></p>')
-SET IDENTITY_INSERT [NIS].[DynamicWidget] OFF
-SET IDENTITY_INSERT [NIS].[EntityFieldMap] ON 
-
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (1, N'CutomerCode', 1, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (2, N'FirstName', 1, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (3, N'LastName', 1, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (4, N'RMName', 1, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (5, N'RMContactNo', 1, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (6, N'AccountNumber', 2, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (7, N'AccountType', 2, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (8, N'Balance', 2, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (9, N'TotalDeposit', 2, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (10, N'TotalSpend', 2, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (11, N'TransactionDate', 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'DateTime')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (12, N'TransactionType', 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (13, N'Narration', 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (14, N'AccountType', 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (15, N'FCY', 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (16, N'LCY', 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (17, N'Month', 4, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (18, N'SpendAmount', 4, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (19, N'SpendPercentage', 4, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (20, N'Income', 4, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (21, N'IncomePercentage', 4, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (22, N'VendorName', 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (23, N'Subscription', 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (24, N'EmployeeID', 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (25, N'EmployeeName', 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (26, N'Email', 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (27, N'StartDate', 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'DateTime')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (28, N'EndDate', 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'DateTime')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (29, N'Vendor', 6, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (30, N'Subscription', 6, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (31, N'Total', 6, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (32, N'AverageSpend', 6, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (33, N'Month', 7, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (34, N'Microsoft', 7, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (35, N'Zoom', 7, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (36, N'UserName', 8, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (37, N'CountOfSubscription', 8, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'BigInt')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (38, N'VenderName', 9, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (39, N'CountOfSubscription', 9, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'BigInt')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (40, N'EmployeeID', 10, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (41, N'Subscription', 10, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (42, N'VendorName', 10, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (43, N'EmployeeName', 10, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (44, N'Email', 10, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (45, N'Usage', 10, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (46, N'Emails', 10, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'BigInt')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (47, N'Meetings', 10, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'BigInt')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (48, N'Month', 11, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (49, N'Microsoft', 11, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (50, N'Zoom', 11, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (51, N'Month', 12, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (52, N'Microsoft', 12, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (53, N'Zoom', 12, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'Decimal')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (54, N'Subscription', 13, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'String')
-INSERT [NIS].[EntityFieldMap] ([Id], [Name], [EntityId], [IsActive], [IsDeleted], [TenantCode], [DataType]) VALUES (55, N'Emails', 13, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'BigInt')
-SET IDENTITY_INSERT [NIS].[EntityFieldMap] OFF
-SET IDENTITY_INSERT [NIS].[Page] ON 
-
-INSERT [NIS].[Page] ([Id], [DisplayName], [PageTypeId], [PublishedBy], [Owner], [Version], [Status], [CreatedDate], [PublishedOn], [IsActive], [IsDeleted], [TenantCode], [LastUpdatedDate], [UpdateBy], [BackgroundImageAssetId], [BackgroundImageURL]) VALUES (1, N'Saving Account', 5, 3, 3, N'1', N'Published', CAST(N'2020-11-19 12:50:25.403' AS DateTime), CAST(N'2020-11-19 07:21:11.593' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', CAST(N'2020-11-19 12:50:25.403' AS DateTime), NULL, 0, NULL)
-SET IDENTITY_INSERT [NIS].[Page] OFF
 SET IDENTITY_INSERT [NIS].[PageType] ON 
-
 INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (1, N'Home', N'Home pages', N'00000000-0000-0000-0000-000000000000', 0, 1)
 INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (2, N'Saving Account', N'Saving Account Page Type', N'00000000-0000-0000-0000-000000000000', 0, 1)
 INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (3, N'Current Account', N'Current Account Page Type', N'00000000-0000-0000-0000-000000000000', 0, 1)
-INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (4, N'Home', N'Home pages', N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1)
-INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (5, N'Saving Account', N'Saving Account Page Type', N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1)
-INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (6, N'Current Account', N'Current Account Page Type', N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1)
-INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (7, N'Usage', N'Home pages', N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', 0, 1)
-INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (8, N'Billing', N'Saving Account Page Type', N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', 0, 1)
 SET IDENTITY_INSERT [NIS].[PageType] OFF
-SET IDENTITY_INSERT [NIS].[PageWidgetMap] ON 
 
-INSERT [NIS].[PageWidgetMap] ([Id], [ReferenceWidgetId], [Height], [Width], [Xposition], [Yposition], [PageId], [WidgetSetting], [TenantCode], [IsDynamicWidget]) VALUES (1, 1, 4, 3, 0, 0, 1, N'', N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[PageWidgetMap] ([Id], [ReferenceWidgetId], [Height], [Width], [Xposition], [Yposition], [PageId], [WidgetSetting], [TenantCode], [IsDynamicWidget]) VALUES (2, 2, 4, 6, 3, 0, 1, N'', N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[PageWidgetMap] ([Id], [ReferenceWidgetId], [Height], [Width], [Xposition], [Yposition], [PageId], [WidgetSetting], [TenantCode], [IsDynamicWidget]) VALUES (3, 4, 4, 3, 9, 0, 1, N'{"AssetLibraryId":0,"AssetLibrayName":"","AssetId":0,"AssetName":"","SourceUrl":"","isPersonalize":true,"WidgetId":4}', N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-SET IDENTITY_INSERT [NIS].[PageWidgetMap] OFF
 SET IDENTITY_INSERT [NIS].[Role] ON 
 
-INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (1, N'Super Admin', N'Super Admin Role', 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (2, N'Tenant Admin', N'Tenant Admin Role', 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (3, N'Group Manager', N'Group Manager Role', 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (4, N'Instance Manager', N'Instance Manager', 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (5, N'Group Manager', N'Group Manager Role', 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (6, N'Tenant Admin', N'Tenant Admin Role', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (7, N'Group Manager', N'Group Manager Role', 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320')
-INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (8, N'Tenant Admin', N'Tenant Admin Role', 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550')
+INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (1, N'Instance Manager', N'Instance Manager', 0, N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (2, N'Group Manager', N'Group Manager Role', 0, N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (3, N'Tenant Admin', N'Tenant Admin Role', 0, N'00000000-0000-0000-0000-000000000000')
+
 SET IDENTITY_INSERT [NIS].[Role] OFF
+
 SET IDENTITY_INSERT [NIS].[RolePrivilege] ON 
 
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (1, 1, N'Dashboard', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (2, 1, N'User', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (3, 1, N'User', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (4, 1, N'User', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (5, 1, N'User', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (6, 1, N'Role', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (7, 1, N'Role', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (8, 1, N'Role', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (9, 1, N'Role', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (10, 1, N'Asset Library', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (11, 1, N'Asset Library', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (12, 1, N'Asset Library', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (13, 1, N'Asset Library', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (14, 1, N'Widget', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (15, 1, N'Page', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (16, 1, N'Page', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (17, 1, N'Page', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (18, 1, N'Page', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (19, 1, N'Page', N'Publish', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (20, 1, N'Statement Definition', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (21, 1, N'Statement Definition', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (22, 1, N'Statement Definition', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (23, 1, N'Statement Definition', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (24, 1, N'Statement Definition', N'Publish', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (25, 1, N'Schedule Management', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (26, 1, N'Schedule Management', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (27, 1, N'Schedule Management', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (28, 1, N'Schedule Management', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (29, 1, N'Log', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (30, 1, N'Analytics', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (31, 1, N'Statement Search', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (32, 1, N'Dynamic Widget', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (33, 1, N'Dynamic Widget', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (34, 1, N'Dynamic Widget', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (35, 1, N'Dynamic Widget', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (36, 1, N'Dynamic Widget', N'Publish', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (37, 6, N'Dashboard', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (38, 6, N'User', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (39, 6, N'User', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (40, 6, N'User', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (41, 6, N'User', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (42, 6, N'Role', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (43, 6, N'Role', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (44, 6, N'Role', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (45, 6, N'Role', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (46, 6, N'Asset Library', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (47, 6, N'Asset Library', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (48, 6, N'Asset Library', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (49, 6, N'Asset Library', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (50, 6, N'Widget', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (51, 6, N'Page', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (52, 6, N'Page', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (53, 6, N'Page', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (54, 6, N'Page', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (55, 6, N'Page', N'Publish', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (56, 6, N'Statement Definition', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (57, 6, N'Statement Definition', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (58, 6, N'Statement Definition', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (59, 6, N'Statement Definition', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (60, 6, N'Statement Definition', N'Publish', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (61, 6, N'Schedule Management', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (62, 6, N'Schedule Management', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (63, 6, N'Schedule Management', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (64, 6, N'Schedule Management', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (65, 6, N'Log', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (66, 6, N'Analytics', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (67, 6, N'Statement Search', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (68, 6, N'Dynamic Widget', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (69, 6, N'Dynamic Widget', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (70, 6, N'Dynamic Widget', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (71, 6, N'Dynamic Widget', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (72, 6, N'Dynamic Widget', N'Publish', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (73, 8, N'Dashboard', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (74, 8, N'User', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (75, 8, N'User', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (76, 8, N'User', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (77, 8, N'User', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (78, 8, N'Role', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (79, 8, N'Role', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (80, 8, N'Role', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (81, 8, N'Role', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (82, 8, N'Asset Library', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (83, 8, N'Asset Library', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (84, 8, N'Asset Library', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (85, 8, N'Asset Library', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (86, 8, N'Widget', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (87, 8, N'Page', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (88, 8, N'Page', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (89, 8, N'Page', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (90, 8, N'Page', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (91, 8, N'Page', N'Publish', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (92, 8, N'Statement Definition', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (93, 8, N'Statement Definition', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (94, 8, N'Statement Definition', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (95, 8, N'Statement Definition', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (96, 8, N'Statement Definition', N'Publish', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (97, 8, N'Schedule Management', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (98, 8, N'Schedule Management', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (99, 8, N'Schedule Management', N'Delete', 1)
-GO
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (100, 8, N'Schedule Management', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (101, 8, N'Log', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (102, 8, N'Analytics', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (103, 8, N'Statement Search', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (104, 8, N'Dynamic Widget', N'Create', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (105, 8, N'Dynamic Widget', N'Edit', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (106, 8, N'Dynamic Widget', N'Delete', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (107, 8, N'Dynamic Widget', N'View', 1)
-INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (108, 8, N'Dynamic Widget', N'Publish', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (1, 3, N'Dashboard', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (2, 3, N'User', N'Create', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (3, 3, N'User', N'Edit', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (4, 3, N'User', N'Delete', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (5, 3, N'User', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (6, 3, N'Role', N'Create', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (7, 3, N'Role', N'Edit', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (8, 3, N'Role', N'Delete', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (9, 3, N'Role', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (10, 3, N'Asset Library', N'Create', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (11, 3, N'Asset Library', N'Edit', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (12, 3, N'Asset Library', N'Delete', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (13, 3, N'Asset Library', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (14, 3, N'Widget', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (15, 3, N'Page', N'Create', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (16, 3, N'Page', N'Edit', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (17, 3, N'Page', N'Delete', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (18, 3, N'Page', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (19, 3, N'Page', N'Publish', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (20, 3, N'Statement Definition', N'Create', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (21, 3, N'Statement Definition', N'Edit', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (22, 3, N'Statement Definition', N'Delete', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (23, 3, N'Statement Definition', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (24, 3, N'Statement Definition', N'Publish', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (25, 3, N'Schedule Management', N'Create', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (26, 3, N'Schedule Management', N'Edit', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (27, 3, N'Schedule Management', N'Delete', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (28, 3, N'Schedule Management', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (29, 3, N'Log', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (30, 3, N'Analytics', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (31, 3, N'Statement Search', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (32, 3, N'Dynamic Widget', N'Create', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (33, 3, N'Dynamic Widget', N'Edit', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (34, 3, N'Dynamic Widget', N'Delete', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (35, 3, N'Dynamic Widget', N'View', 1)
+INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (36, 3, N'Dynamic Widget', N'Publish', 1)
+
 SET IDENTITY_INSERT [NIS].[RolePrivilege] OFF
-SET IDENTITY_INSERT [NIS].[Schedule] ON 
 
-INSERT [NIS].[Schedule] ([Id], [Name], [StatementId], [Description], [DayOfMonth], [HourOfDay], [MinuteOfDay], [StartDate], [EndDate], [Status], [IsActive], [IsDeleted], [TenantCode], [LastUpdatedDate], [UpdateBy], [IsExportToPDF], [RecurrancePattern], [RepeatEveryDayMonWeekYear], [WeekDays], [IsEveryWeekDay], [MonthOfYear], [IsEndsAfterNoOfOccurrences], [NoOfOccurrences]) VALUES (1, N'Tes Schedule', 1, N'', 0, 14, 30, CAST(N'2020-11-20 18:30:00.000' AS DateTime), NULL, N'New', 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', CAST(N'2020-11-19 07:22:23.837' AS DateTime), 3, 0, N'DoesNotRepeat', NULL, NULL, 0, NULL, NULL, NULL)
-SET IDENTITY_INSERT [NIS].[Schedule] OFF
-SET IDENTITY_INSERT [NIS].[Statement] ON 
-
-INSERT [NIS].[Statement] ([Id], [Name], [Description], [PublishedBy], [Owner], [Version], [Status], [CreatedDate], [PublishedOn], [IsActive], [IsDeleted], [TenantCode], [LastUpdatedDate], [UpdateBy]) VALUES (1, N'Test SD', N'', 3, 3, N'1', N'Published', CAST(N'2020-11-19 12:51:35.690' AS DateTime), CAST(N'2020-11-19 07:21:40.427' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', CAST(N'2020-11-19 12:51:35.690' AS DateTime), 0)
-SET IDENTITY_INSERT [NIS].[Statement] OFF
-SET IDENTITY_INSERT [NIS].[StatementPageMap] ON 
-
-INSERT [NIS].[StatementPageMap] ([Id], [ReferencePageId], [StatementId], [SequenceNumber], [TenantCode]) VALUES (1, 1, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-SET IDENTITY_INSERT [NIS].[StatementPageMap] OFF
 SET IDENTITY_INSERT [NIS].[TenantConfiguration] ON 
-
 INSERT [NIS].[TenantConfiguration] ([Id], [Name], [Description], [InputDataSourcePath], [OutputHTMLPath], [OutputPDFPath], [ArchivalPath], [AssetPath], [TenantCode], [ArchivalPeriod], [ArchivalPeriodUnit], [DateFormat], [ApplicationTheme], [WidgetThemeSetting], [BaseUrlForTransactionData]) VALUES (1, N'TEST', N'', N'', N'', N'', N'', N'', N'00000000-0000-0000-0000-000000000000', 0, NULL, N'MM/dd/yyyy', N'Theme1', N'{"ColorTheme":"charttheme3","TitleColor":"#6c90e5","TitleSize":16,"TitleWeight":"Bold","TitleType":"Times Roman","HeaderColor":"#5ccc60","HeaderSize":14,"HeaderWeight":"Bold","HeaderType":"Tahoma","DataColor":"#a04040","DataSize":12,"DataWeight":"Normal","DataType":"Serif"}', N'http://localhost/API/')
-INSERT [NIS].[TenantConfiguration] ([Id], [Name], [Description], [InputDataSourcePath], [OutputHTMLPath], [OutputPDFPath], [ArchivalPath], [AssetPath], [TenantCode], [ArchivalPeriod], [ArchivalPeriodUnit], [DateFormat], [ApplicationTheme], [WidgetThemeSetting], [BaseUrlForTransactionData]) VALUES (2, N'TEST', N'', N'', N'', N'', N'', N'\\WSPL_LAP_012\NISAssets', N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, NULL, N'MM/dd/yyyy', N'Theme0', N'{"ColorTheme":"charttheme3","TitleColor":"#6c90e5","TitleSize":16,"TitleWeight":"Bold","TitleType":"Times Roman","HeaderColor":"#5ccc60","HeaderSize":14,"HeaderWeight":"Bold","HeaderType":"Tahoma","DataColor":"#a04040","DataSize":12,"DataWeight":"Normal","DataType":"Serif"}', N'http://localhost/API/')
-INSERT [NIS].[TenantConfiguration] ([Id], [Name], [Description], [InputDataSourcePath], [OutputHTMLPath], [OutputPDFPath], [ArchivalPath], [AssetPath], [TenantCode], [ArchivalPeriod], [ArchivalPeriodUnit], [DateFormat], [ApplicationTheme], [WidgetThemeSetting], [BaseUrlForTransactionData]) VALUES (3, N'TEST', N'', N'', N'', N'', N'', N'\\WSPL_LAP_012\NISAssets', N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', 0, NULL, N'MM/dd/yyyy', N'Theme0', N'{"ColorTheme":"charttheme3","TitleColor":"#6c90e5","TitleSize":16,"TitleWeight":"Bold","TitleType":"Times Roman","HeaderColor":"#5ccc60","HeaderSize":14,"HeaderWeight":"Bold","HeaderType":"Tahoma","DataColor":"#a04040","DataSize":12,"DataWeight":"Normal","DataType":"Serif"}', N'http://localhost/API/')
 SET IDENTITY_INSERT [NIS].[TenantConfiguration] OFF
-SET IDENTITY_INSERT [NIS].[TenantEntity] ON 
 
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (1, N'Customer Information', N'', CAST(N'2020-10-14 06:37:42.297' AS DateTime), 3, CAST(N'2020-10-14 06:37:42.297' AS DateTime), 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'TenantTransactionData/Get_CustomerMasters', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (2, N'Account Balalnce', N'', CAST(N'2020-10-14 06:37:42.297' AS DateTime), 3, CAST(N'2020-10-14 06:37:42.297' AS DateTime), 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'TenantTransactionData/Get_AccountMaster', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (3, N'Account Transaction', N'', CAST(N'2020-10-14 06:37:42.297' AS DateTime), 3, CAST(N'2020-10-14 06:37:42.297' AS DateTime), 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'TenantTransactionData/Get_AccountTransaction', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (4, N'Saving Trend', N'', CAST(N'2020-11-09 11:30:14.500' AS DateTime), 5, CAST(N'2020-11-09 11:30:14.500' AS DateTime), 3, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', N'TenantTransactionData/Get_SavingTrend', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (5, N'Subscription Master', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_SubscriptionMasters', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (6, N'Subscription Summary', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_SubscriptionSummaries', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (7, N'Subscription Spend', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_SubscriptionSpends', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (8, N'User Subscriptions', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_UserSubscriptions', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (9, N'Vendor Subscription', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_VendorSubscriptions', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (10, N'Subscription Usage', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_SubscriptionUsages', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (11, N'Data Usage', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_DataUsages', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (12, N'Meeting Usage', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_MeetingUsages', N'POST')
-INSERT [NIS].[TenantEntity] ([Id], [Name], [Description], [CreatedOn], [CreatedBy], [LastUpdatedOn], [LastUpdatedBy], [IsActive], [IsDeleted], [TenantCode], [APIPath], [RequestType]) VALUES (13, N'Emails By Subscription', N'', CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, CAST(N'2020-02-11 06:37:00.000' AS DateTime), 5, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', N'TenantTransactionData/Get_TTD_EmailsBySubscription', N'POST')
-SET IDENTITY_INSERT [NIS].[TenantEntity] OFF
 SET IDENTITY_INSERT [NIS].[User] ON 
-
 INSERT [NIS].[User] ([Id], [FirstName], [LastName], [ContactNumber], [EmailAddress], [Image], [IsLocked], [NoofAttempts], [IsActive], [IsDeleted], [TenantCode], [CountryId], [IsInstanceManager], [IsGroupManager], [IsPasswordResetByAdmin]) VALUES (1, N'NIS', N'SuperAdmin', N'7878322333', N'instancemanager@nis.com', N'', 0, 0, 1, 0, N'00000000-0000-0000-0000-000000000000', 1, 1, 0, 0)
-INSERT [NIS].[User] ([Id], [FirstName], [LastName], [ContactNumber], [EmailAddress], [Image], [IsLocked], [NoofAttempts], [IsActive], [IsDeleted], [TenantCode], [CountryId], [IsInstanceManager], [IsGroupManager], [IsPasswordResetByAdmin]) VALUES (2, N'Tenant', N'UK Group', N'7878322334', N'pramod.shinde45123@gmail.com', N'', 0, 0, 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289', 2, 0, 1, 0)
-INSERT [NIS].[User] ([Id], [FirstName], [LastName], [ContactNumber], [EmailAddress], [Image], [IsLocked], [NoofAttempts], [IsActive], [IsDeleted], [TenantCode], [CountryId], [IsInstanceManager], [IsGroupManager], [IsPasswordResetByAdmin]) VALUES (3, N'UK', N'Tenant Admin', N'7878322335', N'tenantuk@demo.com', N'', 0, 0, 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 3, 0, 0, 0)
-INSERT [NIS].[User] ([Id], [FirstName], [LastName], [ContactNumber], [EmailAddress], [Image], [IsLocked], [NoofAttempts], [IsActive], [IsDeleted], [TenantCode], [CountryId], [IsInstanceManager], [IsGroupManager], [IsPasswordResetByAdmin]) VALUES (4, N'SS', N'Tenant Group', N'7878322336', N'ss_group@mailinator.com', N'', 0, 0, 1, 0, N'b22f7d5e-3b49-46fd-9c8c-18e87c901320', 4, 0, 1, 0)
-INSERT [NIS].[User] ([Id], [FirstName], [LastName], [ContactNumber], [EmailAddress], [Image], [IsLocked], [NoofAttempts], [IsActive], [IsDeleted], [TenantCode], [CountryId], [IsInstanceManager], [IsGroupManager], [IsPasswordResetByAdmin]) VALUES (5, N'SS', N'Websym', N'7878322337', N'sswebsym@mailinator.com', N'', 0, 0, 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550', 5, 0, 0, 0)
 SET IDENTITY_INSERT [NIS].[User] OFF
+
 SET IDENTITY_INSERT [NIS].[UserCredentialHistory] ON 
-
 INSERT [NIS].[UserCredentialHistory] ([Id], [UserIdentifier], [Password], [IsSystemGenerated], [CreatedAt], [TenantCode]) VALUES (1, N'instancemanager@nis.com', N'DnUXFB+1PyHuQ5s1W1odCg==', 0, CAST(N'2020-07-26 06:33:32.657' AS DateTime), N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[UserCredentialHistory] ([Id], [UserIdentifier], [Password], [IsSystemGenerated], [CreatedAt], [TenantCode]) VALUES (2, N'pramod.shinde45123@gmail.com', N'DnUXFB+1PyHuQ5s1W1odCg==', 0, CAST(N'2020-11-02 07:45:54.327' AS DateTime), N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[UserCredentialHistory] ([Id], [UserIdentifier], [Password], [IsSystemGenerated], [CreatedAt], [TenantCode]) VALUES (3, N'tenantuk@demo.com', N'DnUXFB+1PyHuQ5s1W1odCg==', 0, CAST(N'2020-11-02 07:51:03.803' AS DateTime), N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserCredentialHistory] ([Id], [UserIdentifier], [Password], [IsSystemGenerated], [CreatedAt], [TenantCode]) VALUES (4, N'ss_group@mailinator.com', N'DnUXFB+1PyHuQ5s1W1odCg==', 0, CAST(N'2020-11-02 07:45:54.327' AS DateTime), N'b22f7d5e-3b49-46fd-9c8c-18e87c901320')
-INSERT [NIS].[UserCredentialHistory] ([Id], [UserIdentifier], [Password], [IsSystemGenerated], [CreatedAt], [TenantCode]) VALUES (5, N'sswebsym@mailinator.com', N'DnUXFB+1PyHuQ5s1W1odCg==', 0, CAST(N'2020-11-02 07:51:03.803' AS DateTime), N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550')
 SET IDENTITY_INSERT [NIS].[UserCredentialHistory] OFF
+
 SET IDENTITY_INSERT [NIS].[UserLogin] ON 
-
 INSERT [NIS].[UserLogin] ([Id], [UserIdentifier], [Password], [LastModifiedOn]) VALUES (1, N'instancemanager@nis.com', N'DnUXFB+1PyHuQ5s1W1odCg==', CAST(N'2020-11-18 23:35:01.420' AS DateTime))
-INSERT [NIS].[UserLogin] ([Id], [UserIdentifier], [Password], [LastModifiedOn]) VALUES (2, N'pramod.shinde45123@gmail.com', N'DnUXFB+1PyHuQ5s1W1odCg==', CAST(N'2020-11-18 23:35:01.423' AS DateTime))
-INSERT [NIS].[UserLogin] ([Id], [UserIdentifier], [Password], [LastModifiedOn]) VALUES (3, N'tenantuk@demo.com', N'DnUXFB+1PyHuQ5s1W1odCg==', CAST(N'2020-11-18 23:35:01.427' AS DateTime))
-INSERT [NIS].[UserLogin] ([Id], [UserIdentifier], [Password], [LastModifiedOn]) VALUES (4, N'ss_group@mailinator.com', N'DnUXFB+1PyHuQ5s1W1odCg==', CAST(N'2020-11-18 23:35:01.427' AS DateTime))
-INSERT [NIS].[UserLogin] ([Id], [UserIdentifier], [Password], [LastModifiedOn]) VALUES (5, N'sswebsym@mailinator.com', N'DnUXFB+1PyHuQ5s1W1odCg==', CAST(N'2020-11-18 23:35:01.427' AS DateTime))
 SET IDENTITY_INSERT [NIS].[UserLogin] OFF
+
 SET IDENTITY_INSERT [NIS].[UserLoginActivityHistory] ON 
-
 INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'1', N'LogIn', CAST(N'2020-11-18 18:05:30.793' AS DateTime), 1, 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (2, N'3', N'LogIn', CAST(N'2020-11-18 18:05:56.023' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (3, N'3', N'LogIn', CAST(N'2020-11-18 18:06:08.997' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (4, N'2', N'LogIn', CAST(N'2020-11-18 18:06:21.860' AS DateTime), 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (5, N'2', N'LogIn', CAST(N'2020-11-19 03:20:34.687' AS DateTime), 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (6, N'1', N'LogIn', CAST(N'2020-11-19 03:21:00.660' AS DateTime), 1, 0, N'00000000-0000-0000-0000-000000000000')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (7, N'3', N'LogIn', CAST(N'2020-11-19 03:21:17.187' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (8, N'3', N'LogIn', CAST(N'2020-11-19 03:29:16.973' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (9, N'3', N'LogIn', CAST(N'2020-11-19 03:29:31.673' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (10, N'3', N'LogIn', CAST(N'2020-11-19 03:38:37.990' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (11, N'3', N'LogIn', CAST(N'2020-11-19 03:38:59.030' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (12, N'3', N'LogIn', CAST(N'2020-11-19 03:43:06.073' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (13, N'3', N'LogIn', CAST(N'2020-11-19 03:51:12.813' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (14, N'3', N'LogIn', CAST(N'2020-11-19 03:53:46.347' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (15, N'3', N'LogIn', CAST(N'2020-11-19 03:54:37.443' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (16, N'2', N'LogIn', CAST(N'2020-11-19 03:57:18.447' AS DateTime), 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (17, N'3', N'LogIn', CAST(N'2020-11-19 03:57:52.113' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (18, N'2', N'LogIn', CAST(N'2020-11-19 04:03:08.810' AS DateTime), 1, 0, N'6553f11e-4dc5-4450-afa7-3c5b1fa2d289')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (19, N'5', N'LogIn', CAST(N'2020-11-19 04:06:21.347' AS DateTime), 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (20, N'3', N'LogIn', CAST(N'2020-11-19 04:13:01.550' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (21, N'3', N'LogIn', CAST(N'2020-11-19 04:56:07.857' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (22, N'3', N'LogIn', CAST(N'2020-11-19 06:43:29.293' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (23, N'3', N'LogIn', CAST(N'2020-11-19 06:44:18.343' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (24, N'3', N'LogIn', CAST(N'2020-11-19 07:13:24.863' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (25, N'3', N'LogIn', CAST(N'2020-11-19 07:13:39.497' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (26, N'5', N'LogIn', CAST(N'2020-11-19 07:28:40.550' AS DateTime), 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (27, N'3', N'LogIn', CAST(N'2020-11-19 08:03:46.217' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (28, N'5', N'LogIn', CAST(N'2020-11-19 08:14:15.343' AS DateTime), 1, 0, N'fc9366f8-cd57-4dbc-886d-94f4e8cb1550')
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (29, N'3', N'LogIn', CAST(N'2020-11-19 08:20:18.667' AS DateTime), 1, 0, N'fd51e101-35e5-49b4-ac29-1224d278e430')
 SET IDENTITY_INSERT [NIS].[UserLoginActivityHistory] OFF
+
 SET IDENTITY_INSERT [NIS].[UserRoleMap] ON 
-
 INSERT [NIS].[UserRoleMap] ([Id], [UserId], [RoleId]) VALUES (1, 1, 1)
-INSERT [NIS].[UserRoleMap] ([Id], [UserId], [RoleId]) VALUES (2, 3, 6)
-INSERT [NIS].[UserRoleMap] ([Id], [UserId], [RoleId]) VALUES (3, 5, 8)
-INSERT [NIS].[UserRoleMap] ([Id], [UserId], [RoleId]) VALUES (4, 2, 3)
-INSERT [NIS].[UserRoleMap] ([Id], [UserId], [RoleId]) VALUES (5, 4, 3)
 SET IDENTITY_INSERT [NIS].[UserRoleMap] OFF
-SET IDENTITY_INSERT [NIS].[Widget] ON 
 
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (1, N'4', N'Customer Information Details', N'CustomerInformation', N'Customer Information', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (2, N'4', N'Account Details', N'AccountInformation', N'Account Information', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (3, N'4', N'Summary at Glance Details', N'Summary', N'Summary at Glance', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (4, N'4,5,6', N'Marketing widget - Configuration for image and click through URL', N'Image', N'Image', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 1)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (5, N'4,4,6', N'Customer Information - Allowing to upload video', N'Video', N'Video', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 1)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (6, N'4', N'Customer Account Analytics Details', N'Analytics', N'Analytics', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (7, N'4', N'Saving Transaction Details', N'SavingTransaction', N'Saving Transaction', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (8, N'6', N'Current Transaction Details', N'CurrentTransaction', N'Current Transaction', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (9, N'4', N'Customer Saving Trend chart', N'SavingTrend', N'Saving Trend', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (10, N'4', N'Customer Top 4 Income Sources details', N'Top4IncomeSources', N'Top 4 Income Sources', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (11, N'6', N'Current : Available Balance Details', N'CurrentAvailableBalance', N'Current : Available Balance', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (12, N'4', N'Saving : Available Balance Details', N'SavingAvailableBalance', N'Saving : Available Balance', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (13, N'4', N'Reminder and Recommendation details', N'ReminderaAndRecommendation', N'Reminder & Recommendation', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-INSERT [NIS].[Widget] ([Id], [PageTypeId], [Description], [WidgetName], [DisplayName], [IsConfigurable], [TenantCode], [IsDeleted], [IsActive], [LastUpdatedDate], [UpdateBy], [Instantiable]) VALUES (14, N'6', N'Customer Sprending trend chart', N'SpendingTrend', N'Spending Trend', 0, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0, 1, CAST(N'2020-10-27 10:42:23.213' AS DateTime), 1, 0)
-SET IDENTITY_INSERT [NIS].[Widget] OFF
-SET IDENTITY_INSERT [NIS].[WidgetPageTypeMap] ON 
-
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (1, 1, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (2, 2, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (3, 3, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (4, 4, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (5, 4, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (6, 4, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (7, 5, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (8, 5, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (9, 5, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (10, 6, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (11, 7, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (12, 8, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (13, 9, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (14, 10, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (15, 11, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (16, 12, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (17, 13, 3, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (18, 14, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 0)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (19, 1, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (20, 2, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (21, 2, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (22, 3, 4, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (23, 3, 5, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-INSERT [NIS].[WidgetPageTypeMap] ([Id], [WidgetId], [PageTypeId], [TenantCode], [IsDynamicWidget]) VALUES (24, 3, 6, N'fd51e101-35e5-49b4-ac29-1224d278e430', 1)
-SET IDENTITY_INSERT [NIS].[WidgetPageTypeMap] OFF
 --SET IDENTITY_INSERT [TenantManager].[Tenant] ON 
 
 --INSERT [TenantManager].[Tenant] VALUES ( N'00000000-0000-0000-0000-000000000000', N'nIS SuperAdmin', N'', N'Instance', N'', N'default.com', N'Super', N'Admin', N'+91-1234567890', N'instancemanager@nis.com', N'', N'', N'', N'Mumbai', N'', N'1', N'1', N'1', N'123456', CAST(N'2015-12-31' AS Date), CAST(N'9999-12-31' AS Date), N'Data Source=[INSTANCENAME];Initial Catalog=[DBNAME];User ID=[USERNAME];Password=[PASSWORD]', N'', N'', N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, N'Self', NULL, NULL, 1, 0, NULL, 1)
