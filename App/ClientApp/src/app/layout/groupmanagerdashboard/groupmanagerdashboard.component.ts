@@ -195,18 +195,18 @@ export class GroupmanagerdashboardComponent implements OnInit {
     data = await service.getDashboardReport(searchParameter);
     this.reportData = data.List;
 
-    this.PieChartOptions.series = this.reportData.PublishedStatementByGroup.series;
-    this.PieChartOptions.title = this.reportData.PublishedStatementByGroup.title;
+    this.PieChartOptions.series = this.reportData.PublishedStatementByGroup != null ? this.reportData.PublishedStatementByGroup.series : [];
+    this.PieChartOptions.title = this.reportData.PublishedStatementByGroup != null ? this.reportData.PublishedStatementByGroup.title : '';
     Highcharts.chart('pieChartcontainer', this.PieChartOptions);
 
-    this.UserChartOptions.xAxis.categories = this.reportData.UsersByGroup.xAxis;
-    this.UserChartOptions.series = this.reportData.UsersByGroup.series;
-    this.UserChartOptions.title = this.reportData.UsersByGroup.title;
+    this.UserChartOptions.xAxis.categories = this.reportData.UsersByGroup != null ? this.reportData.UsersByGroup.xAxis : [];
+    this.UserChartOptions.series = this.reportData.UsersByGroup != null ? this.reportData.UsersByGroup.series : [];
+    this.UserChartOptions.title = this.reportData.UsersByGroup != null ? this.reportData.UsersByGroup.title : '';
     Highcharts.chart('userChartcontainer', this.UserChartOptions);
 
-    this.GeneratedStmtChartOptions.xAxis.categories = this.reportData.StatementByGroup.xAxis;
-    this.GeneratedStmtChartOptions.series = this.reportData.StatementByGroup.series;
-    this.GeneratedStmtChartOptions.title = this.reportData.StatementByGroup.title;
+    this.GeneratedStmtChartOptions.xAxis.categories = this.reportData.StatementByGroup != null ? this.reportData.StatementByGroup.xAxis : [];
+    this.GeneratedStmtChartOptions.series = this.reportData.StatementByGroup != null ? this.reportData.StatementByGroup.series : [];
+    this.GeneratedStmtChartOptions.title = this.reportData.StatementByGroup != null ? this.reportData.StatementByGroup.title : '';
     Highcharts.chart('generatedStmtChartcontainer', this.GeneratedStmtChartOptions);
 
   }

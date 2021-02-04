@@ -32,11 +32,11 @@ namespace nISPackage
                 string tenantCreate = "CREATE TABLE TenantManager.Tenant(Id int IDENTITY(1,1) NOT NULL,TenantCode nvarchar(max) NOT NULL,TenantName nvarchar(max) NOT NULL,TenantDescription nvarchar(max) NULL,TenantType nvarchar(max) NULL,TenantImage nvarchar(max) NULL,TenantDomainName nvarchar(max) NOT NULL,FirstName nvarchar(max) NULL,LastName nvarchar(max) NULL,ContactNumber nvarchar(max) NOT NULL,EmailAddress nvarchar(max) NOT NULL,SecondaryContactName nvarchar(max) NULL,SecondaryContactNumber nvarchar(max) NULL,SecondaryEmailAddress nvarchar(max) NULL,AddressLine1 nvarchar(max) NULL,AddressLine2 nvarchar(max) NULL,TenantCity nvarchar(max) NULL,TenantState nvarchar(max) NULL,TenantCountry nvarchar(max) NULL,PinCode nvarchar(max) NULL,StartDate date NULL,EndDate date NULL,StorageAccount nvarchar(max) NOT NULL,AccessToken nvarchar(max) NOT NULL,ApplicationURL nvarchar(max) NULL,ApplicationModules nvarchar(max) NULL,BillingEmailAddress nvarchar(max) NULL,SecondaryLastName nvarchar(max) NULL,BillingFirstName nvarchar(max) NULL,BillingLastName nvarchar(max) NULL,BillingContactNumber nvarchar(max) NULL,PanNumber nvarchar(max) NULL,ServiceTax nvarchar(max) NULL,IsPrimaryTenant bit NULL,ManageType nvarchar(max) NULL,ExternalCode nvarchar(max) NULL,AutheticationMode nvarchar(max) NULL,IsActive bit NOT NULL CONSTRAINT DF__Tenant__IsActive__6C190EBB  DEFAULT ((1)),IsDeleted bit NOT NULL CONSTRAINT DF__Tenant__IsDelete__6D0D32F4  DEFAULT ((0)),ParentTenantCode nvarchar(max) NULL,IsTenantConfigured bit NOT NULL,CONSTRAINT PK__Tenant__3214EC073F2DE561 PRIMARY KEY CLUSTERED (Id ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF,IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) )";
                 
                 //To add instance manager as an super tenant
-                string tenantInsertQuery = "INSERT TenantManager.Tenant VALUES ( N'00000000-0000-0000-0000-000000000000', N'nIS SuperAdmin', N'', N'Instance', N'', N'default.com', N'Super', N'Admin', N'+91-1234567890', N'instancemanager@nis.com', N'', N'', N'', N'Mumbai', N'', N'1', N'1', N'1', N'123456', CAST(N'2015-12-31' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, N'Self', NULL, NULL, 1, 0, NULL, 1)";
+                string tenantInsertQuery = "INSERT TenantManager.Tenant VALUES ( N'00000000-0000-0000-0000-000000000000', N'nIS SuperAdmin', N'', N'Instance', N'', N'default.com', N'Super', N'Admin', N'+1-9999999999', N'instancemanager@nis.com', N'', N'', N'', N'Mumbai', N'', N'1', N'1', N'1', N'123456', CAST(N'2015-12-31' AS Date), CAST(N'9999-12-31' AS Date), N'', N'', N'', N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, N'Self', NULL, NULL, 1, 0, NULL, 1)";
 
                 var project =
-                new ManagedProject("nISApp1", 
-                new Dir(@"%ProgramFiles%\nISApp1",
+                new ManagedProject("nISApp", 
+                new Dir(@"%ProgramFiles%\nISApp",
                    new Dir("SchedulerWindowService",
                            schedulerService = new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe"),
                            new File(@"..\SchedulerWindowService\bin\Debug\SchedulerWindowService.exe.config"),
@@ -157,7 +157,6 @@ namespace nISPackage
                 project.PreserveTempFiles = true;
 
                 project.BuildMsi();
-
             }
             catch (System.Exception ex)
             {
@@ -168,7 +167,6 @@ namespace nISPackage
         {
             e.Session.Log("Project before install method call");
         }
-
 
         static void Project_AfterInstall(SetupEventArgs e)
         {
@@ -239,10 +237,19 @@ namespace nISPackage
             var config = ConfigurationManager.OpenMappedExeConfiguration(new ExeConfigurationFileMap { ExeConfigFilename = configFile }, ConfigurationUserLevel.None);
             var section = config.ConnectionStrings;
             section.ConnectionStrings["TenantManagerConnectionString"].ConnectionString = connectionString;
+            
             string changePWDLink = config.AppSettings.Settings["ChangePasswordLink"].Value;
             changePWDLink = changePWDLink.Replace("{{APPPORTNO}}", appPort);
             config.AppSettings.Settings["ChangePasswordLink"].Value = changePWDLink;
+
+            string defaultNisEngineBaseUrl = config.AppSettings.Settings["DefaultNisEngineBaseUrl"].Value;
+            defaultNisEngineBaseUrl = defaultNisEngineBaseUrl.Replace("{{APPPORTNO}}", apiport);
+            config.AppSettings.Settings["DefaultNisEngineBaseUrl"].Value = defaultNisEngineBaseUrl;
+
+            config.AppSettings.Settings["TenantSQLStorageAccount"].Value = connectionString;
+
             config.Save();
+
             //Update API base url in Archival process windows service
             string AppConfig = baseURL + @"ArchivalProcessWindowsService\ArchivalProcessWindowsService.exe.config";
             string script = IO.File.ReadAllText(AppConfig);
@@ -274,6 +281,7 @@ namespace nISPackage
             configuration = configuration.Replace("{{APIPORTNO}}", apiPort);
             IO.File.WriteAllText(configFile, configuration);
         }
+
         static public void UpdateDBScript(string configFile, string connectionString)
         {
             // session.Log("In UpdateDBScript ");

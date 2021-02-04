@@ -349,29 +349,6 @@ CREATE TABLE [NIS].[Country](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [NIS].[CustomerInfo]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[CustomerInfo](
-	[Id] [int] NOT NULL,
-	[FirstName] [nvarchar](100) NOT NULL,
-	[MiddleName] [nvarchar](100) NULL,
-	[Lastname] [nvarchar](100) NOT NULL,
-	[AddressLine1] [nvarchar](500) NOT NULL,
-	[AddressLine2] [nvarchar](500) NULL,
-	[City] [bigint] NOT NULL,
-	[State] [bigint] NOT NULL,
-	[Country] [bigint] NOT NULL,
-	[Zip] [nvarchar](500) NULL,
- CONSTRAINT [PK__Customer__3214EC0774BA5E09] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
 /****** Object:  Table [NIS].[CustomerMaster]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
 GO
@@ -504,27 +481,6 @@ CREATE TABLE [NIS].[EntityFieldMap](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [NIS].[Image]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[Image](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[StatementId] [bigint] NOT NULL,
-	[PageId] [bigint] NOT NULL,
-	[WidgetId] [bigint] NOT NULL,
-	[Date] [datetime] NOT NULL,
-	[Title] [nvarchar](100) NOT NULL,
-	[Image] [nvarchar](max) NOT NULL,
- CONSTRAINT [PK__Image__3214EC070AC15F5F] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
-GO
 /****** Object:  Table [NIS].[MultiTenantUserAccessMap]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
 GO
@@ -542,23 +498,6 @@ CREATE TABLE [NIS].[MultiTenantUserAccessMap](
 	[LastUpdatedBy] [bigint] NOT NULL,
 	[LastUpdatedDate] [datetime] NOT NULL,
  CONSTRAINT [PK__MultiTen__3214EC076B0070F9] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[NewsAlert]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[NewsAlert](
-	[Id] [int] NOT NULL,
-	[Date] [datetime] NOT NULL,
-	[Title] [nvarchar](100) NOT NULL,
-	[Details] [nvarchar](500) NULL,
-PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -944,29 +883,6 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [NIS].[StatementAnalytics]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[StatementAnalytics](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[StatementId] [bigint] NOT NULL,
-	[WidgetId] [bigint] NOT NULL,
-	[WidgetName] [nvarchar](200) NOT NULL,
-	[PageId] [bigint] NOT NULL,
-	[PageName] [nvarchar](500) NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[Date] [datetime] NOT NULL,
-	[Hour] [int] NOT NULL,
-	[Minute] [int] NOT NULL,
- CONSTRAINT [PK_StatementAnalytics] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
 /****** Object:  Table [NIS].[StatementMetadata]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
 GO
@@ -1203,242 +1119,6 @@ CREATE TABLE [NIS].[Top4IncomeSources](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [NIS].[TransactionDetail]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TransactionDetail](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[AccountId] [bigint] NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[Date] [datetime] NOT NULL,
-	[TransactionType] [nvarchar](50) NOT NULL,
-	[AccountType] [nvarchar](50) NOT NULL,
-	[Details] [nvarchar](500) NULL,
-	[Amount] [decimal](11, 2) NOT NULL,
- CONSTRAINT [PK__Transact__3214EC074B6784C5] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_CustomerMaster]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_CustomerMaster](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerCode] [nvarchar](50) NOT NULL,
-	[FirstName] [nvarchar](100) NOT NULL,
-	[MiddleName] [nvarchar](100) NULL,
-	[LastName] [nvarchar](500) NOT NULL,
-	[AddressLine1] [nvarchar](500) NOT NULL,
-	[AddressLine2] [nvarchar](500) NULL,
-	[City] [nvarchar](50) NULL,
-	[State] [nvarchar](50) NULL,
-	[Country] [nvarchar](50) NULL,
-	[Zip] [nvarchar](10) NULL,
-	[StatementDate] [datetime] NULL,
-	[StatementPeriod] [nvarchar](50) NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_DataUsage]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_DataUsage](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[Month] [nvarchar](100) NOT NULL,
-	[Year] [bigint] NOT NULL,
-	[Microsoft] [bigint] NOT NULL,
-	[Zoom] [bigint] NOT NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_Data__3214EC072CBB9CDD] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_EmailsBySubscription]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_EmailsBySubscription](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[Subscription] [nvarchar](100) NOT NULL,
-	[Emails] [bigint] NOT NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_Emai__3214EC07043E00AC] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_MeetingUsage]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_MeetingUsage](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[Month] [nvarchar](100) NOT NULL,
-	[Year] [bigint] NOT NULL,
-	[Microsoft] [bigint] NOT NULL,
-	[Zoom] [bigint] NOT NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_Meet__3214EC0726A0BBA3] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_SubscriptionMaster]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_SubscriptionMaster](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[CustomerCode] [nvarchar](100) NULL,
-	[VendorName] [nvarchar](100) NOT NULL,
-	[Subscription] [nvarchar](100) NOT NULL,
-	[Email] [nvarchar](100) NOT NULL,
-	[StartDate] [datetime] NULL,
-	[EndDate] [datetime] NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_Subs__3214EC07341A8EE5] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_SubscriptionSpend]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_SubscriptionSpend](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[Month] [nvarchar](100) NOT NULL,
-	[Year] [bigint] NOT NULL,
-	[Microsoft] [decimal](18, 0) NOT NULL,
-	[Zoom] [decimal](18, 0) NOT NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_Subs__3214EC076D64A03C] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_SubscriptionSummary]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_SubscriptionSummary](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[VendorName] [nvarchar](250) NOT NULL,
-	[Subscription] [nvarchar](250) NOT NULL,
-	[Total] [decimal](18, 0) NOT NULL,
-	[AverageSpend] [decimal](18, 0) NOT NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_Subs__3214EC079DE2FFB0] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_SubscriptionUsage]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_SubscriptionUsage](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[Subscription] [nvarchar](100) NOT NULL,
-	[VendorName] [nvarchar](100) NOT NULL,
-	[Email] [nvarchar](100) NOT NULL,
-	[Usage] [decimal](18, 0) NOT NULL,
-	[Emails] [bigint] NOT NULL,
-	[Meetings] [bigint] NOT NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_Subs__3214EC075391A67E] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_UserSubscriptions]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_UserSubscriptions](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[CountOfSubscription] [bigint] NOT NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_User__3214EC07BA09300A] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[TTD_VendorSubscription]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[TTD_VendorSubscription](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[CustomerId] [bigint] NOT NULL,
-	[VenderName] [nvarchar](100) NOT NULL,
-	[CountOfSubscription] [bigint] NOT NULL,
-	[TenantCode] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK__TTD_Vend__3214EC073B18693D] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
 /****** Object:  Table [NIS].[User]    Script Date: 19-11-2020 15:12:19 ******/
 SET ANSI_NULLS ON
 GO
@@ -1537,27 +1217,6 @@ PRIMARY KEY CLUSTERED
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-
-GO
-/****** Object:  Table [NIS].[Video]    Script Date: 19-11-2020 15:12:19 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [NIS].[Video](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[BatchId] [bigint] NOT NULL,
-	[StatementId] [bigint] NOT NULL,
-	[PageId] [bigint] NOT NULL,
-	[WidgetId] [bigint] NOT NULL,
-	[Date] [datetime] NOT NULL,
-	[Title] [nvarchar](100) NOT NULL,
-	[Video] [nvarchar](max) NOT NULL,
- CONSTRAINT [PK__Video__3214EC07B09B4F6B] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
 /****** Object:  Table [NIS].[Widget]    Script Date: 19-11-2020 15:12:19 ******/
@@ -1679,7 +1338,6 @@ RETURNS TABLE
 AS
 RETURN
 (
-
  SELECT dw.ID, dw.WidgetName, wpt.PageTypeId, dw.Title AS DisplayName, 0 AS Instantiable, dw.WidgetType 
  FROM  [NIS].[DynamicWidget] dw 
  INNER JOIN [NIS].[WidgetPageTypeMap] wpt ON wpt.WidgetId = dw.Id AND wpt.IsDynamicWidget = 1
@@ -1898,8 +1556,8 @@ INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKe
 INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (11, N'EmailConfiguration', N'SecondaryFromEmail', N'nis@n4mative.net')
 INSERT [ConfigurationManager].[ConfigurationManager] ([Id], [PartionKey], [RowKey], [Value]) VALUES (12, N'EmailConfiguration', N'SecondaryPassword', N'Gauch022')
 SET IDENTITY_INSERT [ConfigurationManager].[ConfigurationManager] OFF
-SET IDENTITY_INSERT [EntityManager].[Entities] ON 
 
+SET IDENTITY_INSERT [EntityManager].[Entities] ON 
 INSERT [EntityManager].[Entities] ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (1, N'Dashboard', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'Dashboard')
 INSERT [EntityManager].[Entities] ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (2, N'User', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'User')
 INSERT [EntityManager].[Entities] ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (3, N'Role', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'Role')
@@ -1914,8 +1572,8 @@ INSERT [EntityManager].[Entities] ([Id], [EntityName], [Keys], [AssemblyName], [
 INSERT [EntityManager].[Entities] ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (12, N'Tenant', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'Tenant')
 INSERT [EntityManager].[Entities] ([Id], [EntityName], [Keys], [AssemblyName], [NamespaceName], [Operations], [ComponentCode], [IsActive], [IsImportEnabled], [ServiceURL], [TenantCode], [IsDefaultEntity], [DisplayName]) VALUES (13, N'Dynamic Widget', NULL, NULL, NULL, NULL, N'nIS', 1, 0, NULL, N'00000000-0000-0000-0000-000000000000', 1, N'Dynamic Widget')
 SET IDENTITY_INSERT [EntityManager].[Entities] OFF
-SET IDENTITY_INSERT [EntityManager].[Operations] ON 
 
+SET IDENTITY_INSERT [EntityManager].[Operations] ON 
 INSERT [EntityManager].[Operations] ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (1, N'00000000-0000-0000-0000-000000000000', N'Dashboard', N'nIS', N'View')
 INSERT [EntityManager].[Operations] ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (2, N'00000000-0000-0000-0000-000000000000', N'User', N'nIS', N'Create')
 INSERT [EntityManager].[Operations] ([Id], [TenantCode], [EntityName], [ComponentCode], [Operation]) VALUES (3, N'00000000-0000-0000-0000-000000000000', N'User', N'nIS', N'Edit')
@@ -1969,25 +1627,26 @@ INSERT [NIS].[ContactType] ([Id], [Name], [Description], [IsActive], [IsDeleted]
 SET IDENTITY_INSERT [NIS].[ContactType] OFF
 
 SET IDENTITY_INSERT [NIS].[Country] ON 
-INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'India', N'IN', N'+91', 1, 0, N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'USA', N'USA', N'+1', 1, 0, N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (2, N'South Africa', N'South Africa', N'+27', 1, 0, N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (3, N'Germany', N'Germany', N'+49', 1, 0, N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[Country] ([Id], [Name], [Code], [DialingCode], [IsActive], [IsDeleted], [TenantCode]) VALUES (4, N'India', N'IN', N'+91', 1, 0, N'00000000-0000-0000-0000-000000000000')
 SET IDENTITY_INSERT [NIS].[Country] OFF
 
 SET IDENTITY_INSERT [NIS].[PageType] ON 
-INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (1, N'Home', N'Home pages', N'00000000-0000-0000-0000-000000000000', 0, 1)
-INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (2, N'Saving Account', N'Saving Account Page Type', N'00000000-0000-0000-0000-000000000000', 0, 1)
-INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (3, N'Current Account', N'Current Account Page Type', N'00000000-0000-0000-0000-000000000000', 0, 1)
+INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (1, N'Common', N'Common pages', N'00000000-0000-0000-0000-000000000000', 0, 1)
+INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (2, N'Home', N'Home pages', N'00000000-0000-0000-0000-000000000000', 0, 1)
+INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (3, N'Saving Account', N'Saving Account Page Type', N'00000000-0000-0000-0000-000000000000', 0, 1)
+INSERT [NIS].[PageType] ([Id], [Name], [Description], [TenantCode], [IsDeleted], [IsActive]) VALUES (4, N'Current Account', N'Current Account Page Type', N'00000000-0000-0000-0000-000000000000', 0, 1)
 SET IDENTITY_INSERT [NIS].[PageType] OFF
 
 SET IDENTITY_INSERT [NIS].[Role] ON 
-
 INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (1, N'Instance Manager', N'Instance Manager', 0, N'00000000-0000-0000-0000-000000000000')
 INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (2, N'Group Manager', N'Group Manager Role', 0, N'00000000-0000-0000-0000-000000000000')
 INSERT [NIS].[Role] ([Id], [Name], [Description], [IsDeleted], [TenantCode]) VALUES (3, N'Tenant Admin', N'Tenant Admin Role', 0, N'00000000-0000-0000-0000-000000000000')
-
 SET IDENTITY_INSERT [NIS].[Role] OFF
 
 SET IDENTITY_INSERT [NIS].[RolePrivilege] ON 
-
 INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (1, 3, N'Dashboard', N'View', 1)
 INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (2, 3, N'User', N'Create', 1)
 INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (3, 3, N'User', N'Edit', 1)
@@ -2024,27 +1683,26 @@ INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation],
 INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (34, 3, N'Dynamic Widget', N'Delete', 1)
 INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (35, 3, N'Dynamic Widget', N'View', 1)
 INSERT [NIS].[RolePrivilege] ([Id], [RoleIdentifier], [EntityName], [Operation], [IsEnable]) VALUES (36, 3, N'Dynamic Widget', N'Publish', 1)
-
 SET IDENTITY_INSERT [NIS].[RolePrivilege] OFF
 
 SET IDENTITY_INSERT [NIS].[TenantConfiguration] ON 
-INSERT [NIS].[TenantConfiguration] ([Id], [Name], [Description], [InputDataSourcePath], [OutputHTMLPath], [OutputPDFPath], [ArchivalPath], [AssetPath], [TenantCode], [ArchivalPeriod], [ArchivalPeriodUnit], [DateFormat], [ApplicationTheme], [WidgetThemeSetting], [BaseUrlForTransactionData]) VALUES (1, N'TEST', N'', N'', N'', N'', N'', N'', N'00000000-0000-0000-0000-000000000000', 0, NULL, N'MM/dd/yyyy', N'Theme1', N'{"ColorTheme":"charttheme3","TitleColor":"#6c90e5","TitleSize":16,"TitleWeight":"Bold","TitleType":"Times Roman","HeaderColor":"#5ccc60","HeaderSize":14,"HeaderWeight":"Bold","HeaderType":"Tahoma","DataColor":"#a04040","DataSize":12,"DataWeight":"Normal","DataType":"Serif"}', N'http://localhost/API/')
+INSERT [NIS].[TenantConfiguration] ([Id], [Name], [Description], [InputDataSourcePath], [OutputHTMLPath], [OutputPDFPath], [ArchivalPath], [AssetPath], [TenantCode], [ArchivalPeriod], [ArchivalPeriodUnit], [DateFormat], [ApplicationTheme], [WidgetThemeSetting], [BaseUrlForTransactionData]) VALUES (1, N'TEST', N'', N'', N'', N'', N'', N'', N'00000000-0000-0000-0000-000000000000', 0, NULL, N'MM/dd/yyyy', N'Theme1', N'{"ColorTheme":"charttheme3","TitleColor":"#6c90e5","TitleSize":16,"TitleWeight":"Bold","TitleType":"Times Roman", "HeaderColor":"#5ccc60", "HeaderSize":14, "HeaderWeight":"Bold","HeaderType":"Tahoma","DataColor":"#a04040","DataSize":13,"DataWeight":"Normal","DataType":"Serif"}', N'http://localhost/API/')
 SET IDENTITY_INSERT [NIS].[TenantConfiguration] OFF
 
 SET IDENTITY_INSERT [NIS].[User] ON 
-INSERT [NIS].[User] ([Id], [FirstName], [LastName], [ContactNumber], [EmailAddress], [Image], [IsLocked], [NoofAttempts], [IsActive], [IsDeleted], [TenantCode], [CountryId], [IsInstanceManager], [IsGroupManager], [IsPasswordResetByAdmin]) VALUES (1, N'NIS', N'SuperAdmin', N'7878322333', N'instancemanager@nis.com', N'', 0, 0, 1, 0, N'00000000-0000-0000-0000-000000000000', 1, 1, 0, 0)
+INSERT [NIS].[User] ([Id], [FirstName], [LastName], [ContactNumber], [EmailAddress], [Image], [IsLocked], [NoofAttempts], [IsActive], [IsDeleted], [TenantCode], [CountryId], [IsInstanceManager], [IsGroupManager], [IsPasswordResetByAdmin]) VALUES (1, N'NIS', N'SuperAdmin', N'9999999999', N'instancemanager@nis.com', N'', 0, 0, 1, 0, N'00000000-0000-0000-0000-000000000000', 1, 1, 0, 0)
 SET IDENTITY_INSERT [NIS].[User] OFF
 
 SET IDENTITY_INSERT [NIS].[UserCredentialHistory] ON 
-INSERT [NIS].[UserCredentialHistory] ([Id], [UserIdentifier], [Password], [IsSystemGenerated], [CreatedAt], [TenantCode]) VALUES (1, N'instancemanager@nis.com', N'DnUXFB+1PyHuQ5s1W1odCg==', 0, CAST(N'2020-07-26 06:33:32.657' AS DateTime), N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[UserCredentialHistory] ([Id], [UserIdentifier], [Password], [IsSystemGenerated], [CreatedAt], [TenantCode]) VALUES (1, N'instancemanager@nis.com', N'DnUXFB+1PyHuQ5s1W1odCg==', 0, GETDATE(), N'00000000-0000-0000-0000-000000000000')
 SET IDENTITY_INSERT [NIS].[UserCredentialHistory] OFF
 
 SET IDENTITY_INSERT [NIS].[UserLogin] ON 
-INSERT [NIS].[UserLogin] ([Id], [UserIdentifier], [Password], [LastModifiedOn]) VALUES (1, N'instancemanager@nis.com', N'DnUXFB+1PyHuQ5s1W1odCg==', CAST(N'2020-11-18 23:35:01.420' AS DateTime))
+INSERT [NIS].[UserLogin] ([Id], [UserIdentifier], [Password], [LastModifiedOn]) VALUES (1, N'instancemanager@nis.com', N'DnUXFB+1PyHuQ5s1W1odCg==', GETDATE())
 SET IDENTITY_INSERT [NIS].[UserLogin] OFF
 
 SET IDENTITY_INSERT [NIS].[UserLoginActivityHistory] ON 
-INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'1', N'LogIn', CAST(N'2020-11-18 18:05:30.793' AS DateTime), 1, 0, N'00000000-0000-0000-0000-000000000000')
+INSERT [NIS].[UserLoginActivityHistory] ([Id], [UserIdentifier], [Activity], [CreatedAt], [IsActive], [IsDeleted], [TenantCode]) VALUES (1, N'1', N'LogIn', GETDATE(), 1, 0, N'00000000-0000-0000-0000-000000000000')
 SET IDENTITY_INSERT [NIS].[UserLoginActivityHistory] OFF
 
 SET IDENTITY_INSERT [NIS].[UserRoleMap] ON 

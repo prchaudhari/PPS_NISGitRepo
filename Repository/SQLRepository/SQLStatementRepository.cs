@@ -3014,26 +3014,26 @@ namespace nIS
                             else
                             {
                                 //To add statement metadata records for subscription master tenant
-                                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                                {
-                                    var subscriptionmasters = nISEntitiesDataContext.TTD_SubscriptionMasterRecord.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
-                                    subscriptionmasters.ForEach(sub =>
-                                    {
-                                        var records = statementMetadataRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.AccountNumber == sub.Subscription && item.AccountType == sub.VendorName).ToList();
-                                        if (records.Count <= 0)
-                                        {
-                                            statementMetadataRecords.Add(new StatementMetadataRecord
-                                            {
-                                                AccountNumber = sub.Subscription,
-                                                AccountType = sub.VendorName,
-                                                CustomerId = customer.Id,
-                                                CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
-                                                StatementPeriod = customer.StatementPeriod,
-                                                StatementId = statement.Identifier,
-                                            });
-                                        }
-                                    });
-                                }
+                                //using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                                //{
+                                //    var subscriptionmasters = nISEntitiesDataContext.TTD_SubscriptionMasterRecord.Where(item => item.CustomerId == customer.Id && item.BatchId == batchMaster.Id && item.TenantCode == tenantCode).ToList();
+                                //    subscriptionmasters.ForEach(sub =>
+                                //    {
+                                //        var records = statementMetadataRecords.Where(item => item.CustomerId == customer.Id && item.StatementId == statement.Identifier && item.AccountNumber == sub.Subscription && item.AccountType == sub.VendorName).ToList();
+                                //        if (records.Count <= 0)
+                                //        {
+                                //            statementMetadataRecords.Add(new StatementMetadataRecord
+                                //            {
+                                //                AccountNumber = sub.Subscription,
+                                //                AccountType = sub.VendorName,
+                                //                CustomerId = customer.Id,
+                                //                CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
+                                //                StatementPeriod = customer.StatementPeriod,
+                                //                StatementId = statement.Identifier,
+                                //            });
+                                //        }
+                                //    });
+                                //}
                             }
 
                             newPageContent.Append(pageContent);

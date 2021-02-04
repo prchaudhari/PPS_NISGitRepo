@@ -28,13 +28,9 @@
         <EntityTypeShape EntityType="NISModel.AssetSettingRecord" Width="1.75" PointX="2.75" PointY="3.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ScheduleRunHistoryRecord" Width="1.75" PointX="4.875" PointY="3.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.RenderEngineRecord" Width="1.5" PointX="7" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.BatchDetailRecord" Width="1.5" PointX="6.75" PointY="4.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.CustomerInfoRecord" Width="1.5" PointX="9" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.BatchDetailRecord" Width="1.5" PointX="7" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.CustomerMediaRecord" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.NewsAlertRecord" Width="1.5" PointX="6.75" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.CustomerMasterRecord" Width="1.5" PointX="2.75" PointY="4.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ImageRecord" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.VideoRecord" Width="1.5" PointX="4.75" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ReminderAndRecommendationRecord" Width="1.5" PointX="0.875" PointY="5.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ScheduleLogDetailRecord" Width="1.5" PointX="8.625" PointY="8.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AccountTransactionRecord" Width="1.5" PointX="2.75" PointY="6" IsExpanded="false" />
@@ -43,8 +39,7 @@
         <EntityTypeShape EntityType="NISModel.TransactionDetailRecord" Width="1.5" PointX="4.875" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AccountMasterRecord" Width="1.5" PointX="2.75" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantConfigurationRecord" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.StatementAnalyticRecord" Width="1.5" PointX="4.875" PointY="6.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.BatchMasterRecord" Width="1.5" PointX="8.625" PointY="4.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.BatchMasterRecord" Width="1.5" PointX="9" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AnalyticsDataRecord" Width="1.5" PointX="6.75" PointY="6.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_ScheduleRecord" Width="1.5" PointX="2.75" PointY="7.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_UserRecord" Width="1.5" PointX="8.625" PointY="6" IsExpanded="false" />
@@ -61,28 +56,18 @@
         <EntityTypeShape EntityType="NISModel.EntityFieldMapRecord" Width="1.5" PointX="6.75" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantEntityRecord" Width="1.5" PointX="8.625" PointY="6.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.DynamicWidgetFilterDetail" Width="1.5" PointX="8.625" PointY="7.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_CustomerMasterRecord" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_DataUsageRecord" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_EmailsBySubscriptionRecord" Width="1.5" PointX="4.75" PointY="10.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_MeetingUsageRecord" Width="1.5" PointX="4.875" PointY="9.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_SubscriptionMasterRecord" Width="1.5" PointX="2.75" PointY="9.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_SubscriptionSpendRecord" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_SubscriptionSummaryRecord" Width="1.5" PointX="9" PointY="1.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_SubscriptionUsageRecord" Width="1.5" PointX="9" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_UserSubscriptionsRecord" Width="1.5" PointX="8.625" PointY="9.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TTD_VendorSubscriptionRecord" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.WidgetPageTypeMap" Width="1.5" PointX="9" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_PageWidgetMapRecord" Width="1.5" PointX="9" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogDetailArchiveRecord" Width="1.5" PointX="6.75" PointY="10.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ScheduleLogDetailArchiveRecord" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementMetadataRecord" Width="1.5" PointX="2.75" PointY="6.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementMetadataArchiveRecord" Width="1.5" PointX="8.625" PointY="8.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_DynamicWidgetRecord" Width="1.5" PointX="9" PointY="2.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantSubscriptionRecord" Width="1.5" PointX="10.875" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.TenantSubscriptionRecord" Width="1.5" PointX="9.125" PointY="1.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.ScheduleLogRecord" Width="1.5" PointX="6.75" PointY="6" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogArchiveRecord" Width="1.5" PointX="8.625" PointY="10.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_TenantSubscriptionRecord" Width="1.5" PointX="10.875" PointY="2.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantSecurityCodeFormatRecord" Width="1.5" PointX="10.875" PointY="2.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_StatementMetadataRecord" Width="1.5" PointX="10.875" PointY="1.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ScheduleLogArchiveRecord" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_TenantSubscriptionRecord" Width="1.5" PointX="5" PointY="5.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.TenantSecurityCodeFormatRecord" Width="1.5" PointX="6.875" PointY="5.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_StatementMetadataRecord" Width="1.5" PointX="9" PointY="1.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>

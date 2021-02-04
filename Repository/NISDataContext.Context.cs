@@ -22,7 +22,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                                   : base(connectionString)
+                                               : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -54,12 +54,8 @@ namespace nIS
         public virtual DbSet<ScheduleRunHistoryRecord> ScheduleRunHistoryRecords { get; set; }
         public virtual DbSet<RenderEngineRecord> RenderEngineRecords { get; set; }
         public virtual DbSet<BatchDetailRecord> BatchDetailRecords { get; set; }
-        public virtual DbSet<CustomerInfoRecord> CustomerInfoRecords { get; set; }
         public virtual DbSet<CustomerMediaRecord> CustomerMediaRecords { get; set; }
-        public virtual DbSet<NewsAlertRecord> NewsAlertRecords { get; set; }
         public virtual DbSet<CustomerMasterRecord> CustomerMasterRecords { get; set; }
-        public virtual DbSet<ImageRecord> ImageRecords { get; set; }
-        public virtual DbSet<VideoRecord> VideoRecords { get; set; }
         public virtual DbSet<ReminderAndRecommendationRecord> ReminderAndRecommendationRecords { get; set; }
         public virtual DbSet<ScheduleLogDetailRecord> ScheduleLogDetailRecords { get; set; }
         public virtual DbSet<AccountTransactionRecord> AccountTransactionRecords { get; set; }
@@ -68,7 +64,6 @@ namespace nIS
         public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
         public virtual DbSet<AccountMasterRecord> AccountMasterRecords { get; set; }
         public virtual DbSet<TenantConfigurationRecord> TenantConfigurationRecords { get; set; }
-        public virtual DbSet<StatementAnalyticRecord> StatementAnalyticRecords { get; set; }
         public virtual DbSet<BatchMasterRecord> BatchMasterRecords { get; set; }
         public virtual DbSet<AnalyticsDataRecord> AnalyticsDataRecords { get; set; }
         public virtual DbSet<View_ScheduleRecord> View_ScheduleRecord { get; set; }
@@ -86,16 +81,6 @@ namespace nIS
         public virtual DbSet<EntityFieldMapRecord> EntityFieldMapRecords { get; set; }
         public virtual DbSet<TenantEntityRecord> TenantEntityRecords { get; set; }
         public virtual DbSet<DynamicWidgetFilterDetail> DynamicWidgetFilterDetails { get; set; }
-        public virtual DbSet<TTD_CustomerMasterRecord> TTD_CustomerMasterRecord { get; set; }
-        public virtual DbSet<TTD_DataUsageRecord> TTD_DataUsageRecord { get; set; }
-        public virtual DbSet<TTD_EmailsBySubscriptionRecord> TTD_EmailsBySubscriptionRecord { get; set; }
-        public virtual DbSet<TTD_MeetingUsageRecord> TTD_MeetingUsageRecord { get; set; }
-        public virtual DbSet<TTD_SubscriptionMasterRecord> TTD_SubscriptionMasterRecord { get; set; }
-        public virtual DbSet<TTD_SubscriptionSpendRecord> TTD_SubscriptionSpendRecord { get; set; }
-        public virtual DbSet<TTD_SubscriptionSummaryRecord> TTD_SubscriptionSummaryRecord { get; set; }
-        public virtual DbSet<TTD_SubscriptionUsageRecord> TTD_SubscriptionUsageRecord { get; set; }
-        public virtual DbSet<TTD_UserSubscriptionsRecord> TTD_UserSubscriptionsRecord { get; set; }
-        public virtual DbSet<TTD_VendorSubscriptionRecord> TTD_VendorSubscriptionRecord { get; set; }
         public virtual DbSet<WidgetPageTypeMap> WidgetPageTypeMaps { get; set; }
         public virtual DbSet<View_PageWidgetMapRecord> View_PageWidgetMapRecord { get; set; }
         public virtual DbSet<ScheduleLogDetailArchiveRecord> ScheduleLogDetailArchiveRecords { get; set; }

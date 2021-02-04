@@ -165,21 +165,6 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="CustomerInfo">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
-          <Property Name="Lastname" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
-          <Property Name="City" Type="bigint" Nullable="false" />
-          <Property Name="State" Type="bigint" Nullable="false" />
-          <Property Name="Country" Type="bigint" Nullable="false" />
-          <Property Name="Zip" Type="nvarchar" MaxLength="500" />
-        </EntityType>
         <EntityType Name="CustomerMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -272,19 +257,6 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DataType" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="Image">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="StatementId" Type="bigint" Nullable="false" />
-          <Property Name="PageId" Type="bigint" Nullable="false" />
-          <Property Name="WidgetId" Type="bigint" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Image" Type="nvarchar(max)" Nullable="false" />
-        </EntityType>
         <EntityType Name="MultiTenantUserAccessMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -299,15 +271,6 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="LastUpdatedBy" Type="bigint" Nullable="false" />
           <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="NewsAlert">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Details" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Page">
           <Key>
@@ -556,21 +519,6 @@
           <Property Name="LastUpdatedDate" Type="datetime" />
           <Property Name="UpdateBy" Type="bigint" Nullable="false" />
         </EntityType>
-        <EntityType Name="StatementAnalytics">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="StatementId" Type="bigint" Nullable="false" />
-          <Property Name="WidgetId" Type="bigint" Nullable="false" />
-          <Property Name="WidgetName" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="PageId" Type="bigint" Nullable="false" />
-          <Property Name="PageName" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Hour" Type="int" Nullable="false" />
-          <Property Name="Minute" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="StatementMetadata">
           <Key>
             <PropertyRef Name="Id" />
@@ -745,140 +693,6 @@ warning 6002: The table/view 'NIS.NIS.TenantSecurityCodeFormat' does not have a 
           <Property Name="Details" Type="nvarchar" MaxLength="500" />
           <Property Name="Amount" Type="decimal" Precision="11" Scale="2" Nullable="false" />
         </EntityType>
-        <EntityType Name="TTD_CustomerMaster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
-          <Property Name="City" Type="nvarchar" MaxLength="50" />
-          <Property Name="State" Type="nvarchar" MaxLength="50" />
-          <Property Name="Country" Type="nvarchar" MaxLength="50" />
-          <Property Name="Zip" Type="nvarchar" MaxLength="10" />
-          <Property Name="StatementDate" Type="datetime" />
-          <Property Name="StatementPeriod" Type="nvarchar" MaxLength="50" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_DataUsage">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="Month" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Year" Type="bigint" Nullable="false" />
-          <Property Name="Microsoft" Type="bigint" Nullable="false" />
-          <Property Name="Zoom" Type="bigint" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_EmailsBySubscription">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="Subscription" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Emails" Type="bigint" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_MeetingUsage">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="Month" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Year" Type="bigint" Nullable="false" />
-          <Property Name="Microsoft" Type="bigint" Nullable="false" />
-          <Property Name="Zoom" Type="bigint" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionMaster">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerCode" Type="nvarchar" MaxLength="100" />
-          <Property Name="VendorName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Subscription" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="StartDate" Type="datetime" />
-          <Property Name="EndDate" Type="datetime" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionSpend">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="Month" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Year" Type="bigint" Nullable="false" />
-          <Property Name="Microsoft" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="Zoom" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionSummary">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="VendorName" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="Subscription" Type="nvarchar" MaxLength="250" Nullable="false" />
-          <Property Name="Total" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="AverageSpend" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionUsage">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="Subscription" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="VendorName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Usage" Type="decimal" Precision="18" Scale="0" Nullable="false" />
-          <Property Name="Emails" Type="bigint" Nullable="false" />
-          <Property Name="Meetings" Type="bigint" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_UserSubscriptions">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="CountOfSubscription" Type="bigint" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TTD_VendorSubscription">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="VenderName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="CountOfSubscription" Type="bigint" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -938,19 +752,6 @@ warning 6002: The table/view 'NIS.NIS.TenantSecurityCodeFormat' does not have a 
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
           <Property Name="RoleId" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Video">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="StatementId" Type="bigint" Nullable="false" />
-          <Property Name="PageId" Type="bigint" Nullable="false" />
-          <Property Name="WidgetId" Type="bigint" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Video" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Widget">
           <Key>
@@ -1483,15 +1284,12 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="City" EntityType="Self.City" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="ContactType" EntityType="Self.ContactType" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="CustomerInfo" EntityType="Self.CustomerInfo" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DynamicWidget" EntityType="Self.DynamicWidget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DynamicWidgetFilterDetail" EntityType="Self.DynamicWidgetFilterDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="EntityFieldMap" EntityType="Self.EntityFieldMap" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="Image" EntityType="Self.Image" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="MultiTenantUserAccessMap" EntityType="Self.MultiTenantUserAccessMap" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="NewsAlert" EntityType="Self.NewsAlert" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageType" EntityType="Self.PageType" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageWidgetMap" EntityType="Self.PageWidgetMap" Schema="NIS" store:Type="Tables" />
@@ -1508,7 +1306,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="ScheduleRunHistory" EntityType="Self.ScheduleRunHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="State" EntityType="Self.State" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Statement" EntityType="Self.Statement" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="StatementAnalytics" EntityType="Self.StatementAnalytics" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementMetadata" EntityType="Self.StatementMetadata" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementMetadataArchive" EntityType="Self.StatementMetadataArchive" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementPageMap" EntityType="Self.StatementPageMap" Schema="NIS" store:Type="Tables" />
@@ -1519,22 +1316,11 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TenantUser" EntityType="Self.TenantUser" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Top4IncomeSources" EntityType="Self.Top4IncomeSources" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TransactionDetail" EntityType="Self.TransactionDetail" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_CustomerMaster" EntityType="Self.TTD_CustomerMaster" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_DataUsage" EntityType="Self.TTD_DataUsage" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_EmailsBySubscription" EntityType="Self.TTD_EmailsBySubscription" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_MeetingUsage" EntityType="Self.TTD_MeetingUsage" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_SubscriptionMaster" EntityType="Self.TTD_SubscriptionMaster" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_SubscriptionSpend" EntityType="Self.TTD_SubscriptionSpend" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_SubscriptionSummary" EntityType="Self.TTD_SubscriptionSummary" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_SubscriptionUsage" EntityType="Self.TTD_SubscriptionUsage" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_UserSubscriptions" EntityType="Self.TTD_UserSubscriptions" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="TTD_VendorSubscription" EntityType="Self.TTD_VendorSubscription" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserCredentialHistory" EntityType="Self.UserCredentialHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserLoginActivityHistory" EntityType="Self.UserLoginActivityHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="UserRoleMap" EntityType="Self.UserRoleMap" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="Video" EntityType="Self.Video" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="WidgetPageTypeMap" EntityType="Self.WidgetPageTypeMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
@@ -1800,12 +1586,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="ScheduleRunHistoryRecords" EntityType="NISModel.ScheduleRunHistoryRecord" />
           <EntitySet Name="RenderEngineRecords" EntityType="NISModel.RenderEngineRecord" />
           <EntitySet Name="BatchDetailRecords" EntityType="NISModel.BatchDetailRecord" />
-          <EntitySet Name="CustomerInfoRecords" EntityType="NISModel.CustomerInfoRecord" />
           <EntitySet Name="CustomerMediaRecords" EntityType="NISModel.CustomerMediaRecord" />
-          <EntitySet Name="NewsAlertRecords" EntityType="NISModel.NewsAlertRecord" />
           <EntitySet Name="CustomerMasterRecords" EntityType="NISModel.CustomerMasterRecord" />
-          <EntitySet Name="ImageRecords" EntityType="NISModel.ImageRecord" />
-          <EntitySet Name="VideoRecords" EntityType="NISModel.VideoRecord" />
           <EntitySet Name="ReminderAndRecommendationRecords" EntityType="NISModel.ReminderAndRecommendationRecord" />
           <EntitySet Name="ScheduleLogDetailRecords" EntityType="NISModel.ScheduleLogDetailRecord" />
           <EntitySet Name="AccountTransactionRecords" EntityType="NISModel.AccountTransactionRecord" />
@@ -1814,7 +1596,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
           <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
           <EntitySet Name="TenantConfigurationRecords" EntityType="NISModel.TenantConfigurationRecord" />
-          <EntitySet Name="StatementAnalyticRecords" EntityType="NISModel.StatementAnalyticRecord" />
           <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
           <EntitySet Name="AnalyticsDataRecords" EntityType="NISModel.AnalyticsDataRecord" />
           <EntitySet Name="View_ScheduleRecord" EntityType="NISModel.View_ScheduleRecord" />
@@ -1842,16 +1623,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             <Parameter Name="PageTypeId" Mode="In" Type="Int64" />
             <Parameter Name="TenantCode" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="TTD_CustomerMasterRecord" EntityType="NISModel.TTD_CustomerMasterRecord" />
-          <EntitySet Name="TTD_DataUsageRecord" EntityType="NISModel.TTD_DataUsageRecord" />
-          <EntitySet Name="TTD_EmailsBySubscriptionRecord" EntityType="NISModel.TTD_EmailsBySubscriptionRecord" />
-          <EntitySet Name="TTD_MeetingUsageRecord" EntityType="NISModel.TTD_MeetingUsageRecord" />
-          <EntitySet Name="TTD_SubscriptionMasterRecord" EntityType="NISModel.TTD_SubscriptionMasterRecord" />
-          <EntitySet Name="TTD_SubscriptionSpendRecord" EntityType="NISModel.TTD_SubscriptionSpendRecord" />
-          <EntitySet Name="TTD_SubscriptionSummaryRecord" EntityType="NISModel.TTD_SubscriptionSummaryRecord" />
-          <EntitySet Name="TTD_SubscriptionUsageRecord" EntityType="NISModel.TTD_SubscriptionUsageRecord" />
-          <EntitySet Name="TTD_UserSubscriptionsRecord" EntityType="NISModel.TTD_UserSubscriptionsRecord" />
-          <EntitySet Name="TTD_VendorSubscriptionRecord" EntityType="NISModel.TTD_VendorSubscriptionRecord" />
           <EntitySet Name="WidgetPageTypeMaps" EntityType="NISModel.WidgetPageTypeMap" />
           <EntitySet Name="View_PageWidgetMapRecord" EntityType="NISModel.View_PageWidgetMapRecord" />
           <EntitySet Name="ScheduleLogDetailArchiveRecords" EntityType="NISModel.ScheduleLogDetailArchiveRecord" />
@@ -2218,21 +1989,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="VideoURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="CustomerInfoRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Lastname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="Int64" Nullable="false" />
-          <Property Name="State" Type="Int64" Nullable="false" />
-          <Property Name="Country" Type="Int64" Nullable="false" />
-          <Property Name="Zip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="CustomerMediaRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -2246,15 +2002,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="VideoURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="NewsAlertRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CustomerMasterRecord">
           <Key>
@@ -2281,32 +2028,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="Field2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Field3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Field4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="ImageRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="PageId" Type="Int64" Nullable="false" />
-          <Property Name="WidgetId" Type="Int64" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Image1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="VideoRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="PageId" Type="Int64" Nullable="false" />
-          <Property Name="WidgetId" Type="Int64" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Video1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ReminderAndRecommendationRecord">
           <Key>
@@ -2436,21 +2157,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ApplicationTheme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WidgetThemeSetting" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="BaseUrlForTransactionData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="StatementAnalyticRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StatementId" Type="Int64" Nullable="false" />
-          <Property Name="WidgetId" Type="Int64" Nullable="false" />
-          <Property Name="WidgetName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PageId" Type="Int64" Nullable="false" />
-          <Property Name="PageName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Hour" Type="Int32" Nullable="false" />
-          <Property Name="Minute" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="BatchMasterRecord">
           <Key>
@@ -2882,140 +2588,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Type="Int32" Name="Instantiable" Nullable="false" />
           <Property Type="String" Name="WidgetType" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="TTD_CustomerMasterRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Zip" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="StatementDate" Type="DateTime" Precision="3" />
-          <Property Name="StatementPeriod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_DataUsageRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="Month" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="Int64" Nullable="false" />
-          <Property Name="Microsoft" Type="Int64" Nullable="false" />
-          <Property Name="Zoom" Type="Int64" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_EmailsBySubscriptionRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="Subscription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Emails" Type="Int64" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_MeetingUsageRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="Month" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="Int64" Nullable="false" />
-          <Property Name="Microsoft" Type="Int64" Nullable="false" />
-          <Property Name="Zoom" Type="Int64" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionMasterRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="VendorName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Subscription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionSpendRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="Month" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="Int64" Nullable="false" />
-          <Property Name="Microsoft" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="Zoom" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionSummaryRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="VendorName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Subscription" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Total" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="AverageSpend" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_SubscriptionUsageRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="Subscription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="VendorName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Usage" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="Emails" Type="Int64" Nullable="false" />
-          <Property Name="Meetings" Type="Int64" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_UserSubscriptionsRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="CountOfSubscription" Type="Int64" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TTD_VendorSubscriptionRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="VenderName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CountOfSubscription" Type="Int64" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="WidgetPageTypeMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -3667,22 +3239,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CustomerInfoRecords">
-            <EntityTypeMapping TypeName="NISModel.CustomerInfoRecord">
-              <MappingFragment StoreEntitySet="CustomerInfo">
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
-                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CustomerMediaRecords">
             <EntityTypeMapping TypeName="NISModel.CustomerMediaRecord">
               <MappingFragment StoreEntitySet="CustomerMedia">
@@ -3694,16 +3250,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NewsAlertRecords">
-            <EntityTypeMapping TypeName="NISModel.NewsAlertRecord">
-              <MappingFragment StoreEntitySet="NewsAlert">
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3730,34 +3276,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ImageRecords">
-            <EntityTypeMapping TypeName="NISModel.ImageRecord">
-              <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="Image1" ColumnName="Image" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
-                <ScalarProperty Name="PageId" ColumnName="PageId" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VideoRecords">
-            <EntityTypeMapping TypeName="NISModel.VideoRecord">
-              <MappingFragment StoreEntitySet="Video">
-                <ScalarProperty Name="Video1" ColumnName="Video" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
-                <ScalarProperty Name="PageId" ColumnName="PageId" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -3896,22 +3414,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="OutputHTMLPath" ColumnName="OutputHTMLPath" />
                 <ScalarProperty Name="InputDataSourcePath" ColumnName="InputDataSourcePath" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StatementAnalyticRecords">
-            <EntityTypeMapping TypeName="NISModel.StatementAnalyticRecord">
-              <MappingFragment StoreEntitySet="StatementAnalytics">
-                <ScalarProperty Name="Minute" ColumnName="Minute" />
-                <ScalarProperty Name="Hour" ColumnName="Hour" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="PageName" ColumnName="PageName" />
-                <ScalarProperty Name="PageId" ColumnName="PageId" />
-                <ScalarProperty Name="WidgetName" ColumnName="WidgetName" />
-                <ScalarProperty Name="WidgetId" ColumnName="WidgetId" />
-                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4311,150 +3813,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="TTD_CustomerMasterRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_CustomerMasterRecord">
-              <MappingFragment StoreEntitySet="TTD_CustomerMaster">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="StatementPeriod" ColumnName="StatementPeriod" />
-                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
-                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_DataUsageRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_DataUsageRecord">
-              <MappingFragment StoreEntitySet="TTD_DataUsage">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="Zoom" ColumnName="Zoom" />
-                <ScalarProperty Name="Microsoft" ColumnName="Microsoft" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_EmailsBySubscriptionRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_EmailsBySubscriptionRecord">
-              <MappingFragment StoreEntitySet="TTD_EmailsBySubscription">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="Emails" ColumnName="Emails" />
-                <ScalarProperty Name="Subscription" ColumnName="Subscription" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_MeetingUsageRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_MeetingUsageRecord">
-              <MappingFragment StoreEntitySet="TTD_MeetingUsage">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="Zoom" ColumnName="Zoom" />
-                <ScalarProperty Name="Microsoft" ColumnName="Microsoft" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_SubscriptionMasterRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_SubscriptionMasterRecord">
-              <MappingFragment StoreEntitySet="TTD_SubscriptionMaster">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Subscription" ColumnName="Subscription" />
-                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_SubscriptionSpendRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_SubscriptionSpendRecord">
-              <MappingFragment StoreEntitySet="TTD_SubscriptionSpend">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="Zoom" ColumnName="Zoom" />
-                <ScalarProperty Name="Microsoft" ColumnName="Microsoft" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Month" ColumnName="Month" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_SubscriptionSummaryRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_SubscriptionSummaryRecord">
-              <MappingFragment StoreEntitySet="TTD_SubscriptionSummary">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="AverageSpend" ColumnName="AverageSpend" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Subscription" ColumnName="Subscription" />
-                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_SubscriptionUsageRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_SubscriptionUsageRecord">
-              <MappingFragment StoreEntitySet="TTD_SubscriptionUsage">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="Meetings" ColumnName="Meetings" />
-                <ScalarProperty Name="Emails" ColumnName="Emails" />
-                <ScalarProperty Name="Usage" ColumnName="Usage" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
-                <ScalarProperty Name="Subscription" ColumnName="Subscription" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_UserSubscriptionsRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_UserSubscriptionsRecord">
-              <MappingFragment StoreEntitySet="TTD_UserSubscriptions">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="CountOfSubscription" ColumnName="CountOfSubscription" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TTD_VendorSubscriptionRecord">
-            <EntityTypeMapping TypeName="NISModel.TTD_VendorSubscriptionRecord">
-              <MappingFragment StoreEntitySet="TTD_VendorSubscription">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="CountOfSubscription" ColumnName="CountOfSubscription" />
-                <ScalarProperty Name="VenderName" ColumnName="VenderName" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="WidgetPageTypeMaps">
             <EntityTypeMapping TypeName="NISModel.WidgetPageTypeMap">
               <MappingFragment StoreEntitySet="WidgetPageTypeMap">

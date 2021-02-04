@@ -117,9 +117,6 @@
     <Compile Include="CountryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CustomerInfoRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="CustomerMasterRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -142,9 +139,6 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="FnUserTenant_Result.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ImageRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="IRepository\IArchivalProcessRepository.cs" />
@@ -172,9 +166,6 @@
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
     <Compile Include="MultiTenantUserAccessMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NewsAlertRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NISDataContext.Context.cs">
@@ -259,9 +250,6 @@
     <Compile Include="SQLRepository\SQLScheduleRepository.cs" />
     <Compile Include="SQLRepository\SQLRoleRepository.cs" />
     <Compile Include="SQLRepository\TenantTransactionDataRepository.cs" />
-    <Compile Include="StatementAnalyticRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="StatementMetadataArchiveRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -304,36 +292,6 @@
     <Compile Include="TransactionDetailRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TTD_CustomerMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_DataUsageRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_EmailsBySubscriptionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_MeetingUsageRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_SubscriptionMasterRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_SubscriptionSpendRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_SubscriptionSummaryRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_SubscriptionUsageRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_UserSubscriptionsRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TTD_VendorSubscriptionRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="UserCredentialHistoryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -347,9 +305,6 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="UserRoleMapRecord.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VideoRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="View_DynamicWidgetRecord.cs">

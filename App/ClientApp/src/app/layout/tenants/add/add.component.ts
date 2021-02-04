@@ -741,7 +741,7 @@ export class AddComponent implements OnInit {
         var userid = localStorage.getItem('UserId');
         this.tenant.TenantSubscriptions = [];
         var subscription: any = {};
-        subscription.SubscriptionEndDate = new Date(this.tenantFormGroup.value.tenantSubscriptionDate.setHours(23, 59, 59));
+        subscription.SubscriptionEndDate = new Date(this.tenantFormGroup.value.tenantSubscriptionDate).setHours(23, 59, 59);
         this.tenant.TenantSubscriptions.push(subscription);
         this.tenant.User = {};
         this.tenant.User.Identifier = userid;

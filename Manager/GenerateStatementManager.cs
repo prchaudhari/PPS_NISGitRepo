@@ -644,27 +644,27 @@ namespace nIS
                             else
                             {
                                 //To add statement metadata records for subscription master tenant
-                                var subscriptionMasters = this.tenantTransactionDataRepository.Get_TTD_SubscriptionMasters(new TransactionDataSearchParameter()
-                                {
-                                    BatchId = batchMaster.Identifier,
-                                    CustomerId = customer.Identifier
-                                }, tenantCode);
-                                subscriptionMasters.ToList().ForEach(sub =>
-                                {
-                                    var records = statementMetadataRecords.Where(item => item.CustomerId == customer.Identifier && item.StatementId == statement.Identifier && item.AccountNumber == sub.Subscription && item.AccountType == sub.VendorName).ToList();
-                                    if (records.Count <= 0)
-                                    {
-                                        statementMetadataRecords.Add(new StatementMetadata
-                                        {
-                                            AccountNumber = sub.Subscription,
-                                            AccountType = sub.VendorName,
-                                            CustomerId = customer.Identifier,
-                                            CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
-                                            StatementPeriod = customer.StatementPeriod,
-                                            StatementId = statement.Identifier,
-                                        });
-                                    }
-                                });
+                                //var subscriptionMasters = this.tenantTransactionDataRepository.Get_TTD_SubscriptionMasters(new TransactionDataSearchParameter()
+                                //{
+                                //    BatchId = batchMaster.Identifier,
+                                //    CustomerId = customer.Identifier
+                                //}, tenantCode);
+                                //subscriptionMasters.ToList().ForEach(sub =>
+                                //{
+                                //    var records = statementMetadataRecords.Where(item => item.CustomerId == customer.Identifier && item.StatementId == statement.Identifier && item.AccountNumber == sub.Subscription && item.AccountType == sub.VendorName).ToList();
+                                //    if (records.Count <= 0)
+                                //    {
+                                //        statementMetadataRecords.Add(new StatementMetadata
+                                //        {
+                                //            AccountNumber = sub.Subscription,
+                                //            AccountType = sub.VendorName,
+                                //            CustomerId = customer.Identifier,
+                                //            CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
+                                //            StatementPeriod = customer.StatementPeriod,
+                                //            StatementId = statement.Identifier,
+                                //        });
+                                //    }
+                                //});
                             }
 
                             newPageContent.Append(pageContent);

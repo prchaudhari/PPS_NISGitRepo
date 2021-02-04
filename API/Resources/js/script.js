@@ -1,5 +1,5 @@
-//var apiUrl = 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save';
-var apiUrl = 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save';
+var apiUrl = 'http://localhost:{{APIPORTNO}}/AnalyticsData/Save';
+//var apiUrl = 'http://nisqa-api.azurewebsites.net/AnalyticsData/Save';
 
 $(document).ready(function () {
     $(".mainNav").on('click', function (e) {
