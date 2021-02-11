@@ -537,7 +537,7 @@ export class AddComponent implements OnInit {
       "FirstName": this.contactEditFormGroup.value.EditfirstName.trim(),
       "LastName": this.contactEditFormGroup.value.EditlastName.trim(),
       "EmailAddress": this.contactEditFormGroup.value.Editemail,
-      "ContactNumber": this.contactEditFormGroup.value.EditmobileNumber,
+      "ContactNumber": this.contactEditFormGroup.value.EditmobileNumber != '' ? this.contactEditFormGroup.value.EditmobileNumber : '0',
       "CountryId": this.contactEditFormGroup.value.EditCountryCode,
       "CountryCode": country[0].DialingCode,
       "ContactType": contact[0].Name,
@@ -589,7 +589,7 @@ export class AddComponent implements OnInit {
       "FirstName": this.contactFormGroup.value.firstName.trim(),
       "LastName": this.contactFormGroup.value.lastName.trim(),
       "EmailAddress": this.contactFormGroup.value.email,
-      "ContactNumber": this.contactFormGroup.value.mobileNumber,
+      "ContactNumber": this.contactFormGroup.value.mobileNumber != '' ? this.contactFormGroup.value.mobileNumber : '0',
       "CountryId": this.contactFormGroup.value.CountryCode,
       "CountryCode": country[0].DialingCode,
       "ContactType": contact[0].Name,
@@ -740,9 +740,13 @@ export class AddComponent implements OnInit {
         this.tenant.TenantType = "Tenant";
         var userid = localStorage.getItem('UserId');
         this.tenant.TenantSubscriptions = [];
-        var subscription: any = {};
-        subscription.SubscriptionEndDate = new Date(this.tenantFormGroup.value.tenantSubscriptionDate).setHours(23, 59, 59);
-        this.tenant.TenantSubscriptions.push(subscription);
+
+        if (!this.updateOperationMode) {
+          var subscription: any = {};
+          subscription.SubscriptionEndDate = new Date(this.tenantFormGroup.value.tenantSubscriptionDate.setHours(23, 59, 59));
+          this.tenant.TenantSubscriptions.push(subscription);
+        }
+        
         this.tenant.User = {};
         this.tenant.User.Identifier = userid;
         var currentUser = this.localstorageservice.GetCurrentUser();

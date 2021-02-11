@@ -1066,12 +1066,10 @@ namespace nIS
                 {
                     exception.Data.Add(this.utility.GetDescription("PrimaryPinCode", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDPRIMARYPINCODE);
                 }
-                if (this.tenantSubscriptions.Count == 0)
+                if (!isUpdate && this.tenantSubscriptions.Count == 0)
                 {
                     exception.Data.Add(this.utility.GetDescription("TenantSubscriptions", typeof(Client)), ModelConstant.CLIENTMODELSECTION + "~" + ModelConstant.INVALIDTENANTSUBSCRIPTION);
-
                 }
-
             }
 
             if (this.validationEngine.IsValidText(this.TenantDescription))

@@ -199,17 +199,9 @@ export class ViewComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 }
-function compare(a: number, b: number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-}
 
 function compareStr(a: string, b: string, isAsc: boolean) {
   return (a.toLowerCase() < b.toLowerCase() ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
-function compareDate(a: Date, b: Date, isAsc: boolean) {
-  var a1 = new Date(a);
-  var b1 = new Date(b);
-  return (a1.getTime() < b1.getTime() ? -1 : 1) * (isAsc ? 1 : -1);
-}
 

@@ -125,11 +125,13 @@ export class ViewComponent implements OnInit {
     if (this.userViewArray.length > 0) {
       this.userRecord = this.userViewArray[0];
       this.profileImageList = this.userViewArray[0].ProfileImage;
-      if (this.profileImageList.URL == "" || this.profileImageList.URL == undefined) {
-        this.userImage = "assets/images/user.png"
-      }
-      else {
-        this.userImage = this.profileImageList.URL;
+      if (this.profileImageList != null) {
+        if (this.profileImageList.URL == "" || this.profileImageList.URL == undefined) {
+          this.userImage = "assets/images/user.png"
+        }
+        else {
+          this.userImage = this.profileImageList.URL;
+        }
       }
     }
   }

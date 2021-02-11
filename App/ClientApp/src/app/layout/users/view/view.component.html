@@ -5,7 +5,7 @@
 
   <div class="card border-0 mb-2 card-shadow">
     <div class="card-body" id="collapseDetails">
-      <div class="row">
+      <div class="row" *ngIf="userRecord != null">
         <div class="col-md-4 col-sm-5 col-12 form-group">
           <div class="profile-avtar-box">
             <!--letter image-->
@@ -19,8 +19,8 @@
             </div>
             <div *ngIf="userRecord.Image=='' || userRecord.Image==null">
               <div class="ltr-img">
-                <span>{{userRecord.FirstName.charAt(0) | titlecase}}</span>
-                <span>{{userRecord.LastName.charAt(0) | titlecase}}</span>
+                <span *ngIf="userRecord.FirstName!=undefined">{{userRecord.FirstName.charAt(0) | titlecase}}</span>
+                <span *ngIf="userRecord.LastName!=undefined">{{userRecord.LastName.charAt(0) | titlecase}}</span>
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@
           <div class="row">
             <div class="col-xl-5 col-lg-5 col-md-6 col-sm-6 form-group">
               <label>Role</label>
-              <div>{{userRecord.Roles[0].Name}}</div>
+              <div *ngIf="userRecord.Roles!=undefined">{{userRecord.Roles[0].Name}}</div>
             </div>
           </div>
 

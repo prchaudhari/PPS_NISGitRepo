@@ -91,7 +91,6 @@ namespace nIS
         /// </summary>
         public const string TENANT_PRIMARY_CONTACT = "Primary";
 
-
         /// <summary>
         /// The entity sort column
         /// </summary>
@@ -101,6 +100,12 @@ namespace nIS
         /// The component code
         /// </summary>
         public const string COMPONENTCODE = "nIS";
+
+        public const string CHILD_TENANT = "Tenant";
+
+        public const string TENANT_GROUP = "Group";
+
+        public const string TENANT_SELF_MANAGE_TYPE = "Self";
 
         #endregion
 

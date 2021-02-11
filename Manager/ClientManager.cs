@@ -173,7 +173,6 @@ namespace nIS
                     TenantCode = ModelConstant.DEFAULT_TENANT_CODE
                     //IsPrimaryTenant = true
                 }, tenantCode);
-
                 if (retrivedClients == null || retrivedClients.Count == 0)
                 {
                     throw new TenantNotFoundException(String.Empty);
@@ -187,18 +186,16 @@ namespace nIS
                     }
                 }
 
-
                 #endregion
 
+                this.IsValidClients(clients, ModelConstant.ADD_OPERATION, tenantCode, false, addRegisterFlag);
                 IList<Tenant> tenants = new List<Tenant>();
                 //// Assign primary contact
                 clients.ToList().ForEach(client =>
                 {
-                    Tenant tenant = new Tenant();
-
                     var PrimaryTenantContact = string.Empty;
                     var PrimaryTenantCountryCode = string.Empty;
-                    if (client.TenantType == "Tenant")
+                    if (client.TenantType == ModelConstant.CHILD_TENANT)
                     {
                         var tenantcontact = client.TenantContacts.Where(it => it.ContactType == ModelConstant.TENANT_PRIMARY_CONTACT).ToList().FirstOrDefault();
                         PrimaryTenantContact = tenantcontact.ContactNumber;
@@ -215,6 +212,7 @@ namespace nIS
                     client.PrimaryEmailAddress = client.TenantContacts.FirstOrDefault().EmailAddress;
                     client.PrimaryContactNumber = PrimaryTenantContact != string.Empty ? PrimaryTenantCountryCode + "-" + PrimaryTenantContact : "0";
 
+                    Tenant tenant = new Tenant();
                     tenant.PrimaryFirstName = client.TenantContacts.FirstOrDefault().FirstName;
                     tenant.PrimaryLastName = client.TenantContacts.FirstOrDefault().LastName;
                     tenant.PrimaryEmailAddress = client.TenantContacts.FirstOrDefault().EmailAddress;
@@ -233,7 +231,7 @@ namespace nIS
                     tenant.AccessToken = client.AccessToken;
                     tenant.StartDate = client.StartDate;
                     tenant.EndDate = client.EndDate;
-                    tenant.ManageType = "Self";
+                    tenant.ManageType = ModelConstant.TENANT_SELF_MANAGE_TYPE;
                     tenant.PanNumber = client.PanNumber;
                     tenant.ServiceTax = client.ServiceTax;
                     tenant.TenantCity = client.TenantCity;
@@ -245,25 +243,16 @@ namespace nIS
                     tenant.StartDate = DateTime.UtcNow;
                     tenant.EndDate = DateTime.MaxValue;
                     tenant.ParentTenantCode = client.ParentTenantCode;
-                    tenant.IsTenantConfigured = client.TenantType == "Tenant" ? false : true;
+                    tenant.IsTenantConfigured = client.TenantType == ModelConstant.CHILD_TENANT ? false : true;
                     tenants.Add(tenant);
                 });
-
-                ClientSearchParameter clientSearchParameter = new ClientSearchParameter()
-                {
-                    SortParameter = new SortParameter()
-                    {
-                        SortColumn = "TenantCode"
-                    },
-                };
-                this.IsValidClients(clients, ModelConstant.ADD_OPERATION, tenantCode, false, addRegisterFlag);
                 result = this.configurationUtility.AddTenant(tenants);
 
                 try
                 {
                     clients.ToList().ForEach(client =>
                     {
-                        if (client.TenantType == "Tenant")
+                        if (client.TenantType == ModelConstant.CHILD_TENANT)
                         {
                             #region Add Tenant Admin Role, User and Assign Role to User
 
@@ -329,7 +318,6 @@ namespace nIS
                             };
                             this.TenantConfigurationManager.Save(tenantConfiguration, client.TenantCode);
 
-
                             #endregion
 
                             #region Add Tenant subscription details
@@ -345,7 +333,7 @@ namespace nIS
 
                             #endregion
                         }
-                        if (client.TenantType == "Group")
+                        if (client.TenantType == ModelConstant.TENANT_GROUP)
                         {
                             #region Get Group Admin Role, User and Assign Role to User
 
@@ -446,7 +434,7 @@ namespace nIS
                     tenant.AccessToken = client.AccessToken;
                     tenant.StartDate = client.StartDate;
                     tenant.EndDate = client.EndDate;
-                    tenant.ManageType = "Self";
+                    tenant.ManageType = ModelConstant.TENANT_SELF_MANAGE_TYPE;
                     tenant.PanNumber = client.PanNumber;
                     tenant.ServiceTax = client.ServiceTax;
                     tenant.TenantCity = client.TenantCity;
