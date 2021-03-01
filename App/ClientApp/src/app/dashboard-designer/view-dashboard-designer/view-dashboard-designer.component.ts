@@ -13,7 +13,9 @@ import {
     CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-    DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
+  InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+  PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -323,6 +325,34 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if (widgetName == 'ReminderaAndRecommendation') {
                 gridObj.component = ReminderAndRecommComponent;
             }
+
+            else if (widgetName == 'CustomerDetails') {
+              gridObj.component = CustomerDetailsComponent;
+            }
+            else if (widgetName == 'BankDetails') {
+              gridObj.component = BankDetailsComponent;
+            }
+            else if (widgetName == 'InvestmentPortfolioStatement') {
+              gridObj.component = InvestmentPortfolioStatementComponent;
+            }
+            else if (widgetName == 'InvestorPerformance') {
+              gridObj.component = InvestorPerformanceComponent;
+            }
+            else if (widgetName == 'BreakdownOfInvestmentAccounts') {
+              gridObj.component = BreakdownOfInvestmentAccountsComponent;
+            }
+            else if (widgetName == 'ExplanatoryNotes') {
+              gridObj.component = ExplanatoryNotesComponent;
+            }
+            else if (widgetName == 'PersonalLoanStatement') {
+              gridObj.component = PersonalLoanStatementComponent;
+            }
+            else if (widgetName == 'HomeLoanNewInstallment') {
+              gridObj.component = HomeLoanNewInstallmentComponent;
+            }
+            else if (widgetName == 'HomeLoanStatementOverview') {
+              gridObj.component = HomeLoanStatementOverviewComponent;
+            }
         }
         else {
             let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');
@@ -345,6 +375,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if(widgetType == 'Html') {
                 gridObj.component = DynamicHhtmlComponent;
             }
+
         }
         gridObj.WidgetType = widgetType;
         gridObj.value = widgetName;

@@ -269,6 +269,214 @@
     width: 340px;
   }
 
+  .CustomerDetails {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .BankDetails {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .ConactCenterDiv {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    padding-right: 1.25rem;
+  }
+
+  .customTable td {
+    padding: 0px 25px;
+  }
+
+  .customTable th {
+    padding: 0px 25px;
+  }
+
+  .InvestorPermanaceTable td {
+    padding: 0px 25px;
+  }
+
+
+  .ServicesDiv {
+    background-color: #e2dfdf;
+    height: 230px;
+  }
+
+  .serviceHeader {
+    font-size: 16px;
+    color: #28a745 !important;
+    font-weight: 700
+  }
+
+  .LoanTransactionTable th {
+    background-color: #2d6444 !important;
+    color: #fff;
+    font-size: 13px;
+    font-family: Arial;
+  }
+
+  .LoanTransactionTable tbody {
+    font-size: 13px;
+    font-weight: Normal;
+    font-family: Arial;
+  }
+
+  .InvestmentBreakdown thead {
+    background-color: #2d6444 !important;
+    color: #fff;
+    font-size: 14px;
+    font-weight: Bold;
+    font-family: Arial;
+  }
+
+  .InvestmentBreakdown tbody {
+    font-size: 12px;
+    font-weight: Normal;
+    font-family: Arial;
+  }
+
+  .InvestmentDetail td span {
+    color: #28a745 !important;
+    padding-right: 30px;
+  }
+
+  .card-body-header {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d6444 !important;
+  }
+
+  .card-body-sub-header {
+    font-size: 18px;
+    color: #2d6444 !important;
+    padding: 0px 25px;
+  }
+
+  .w-12 {
+    width: 12%;
+  }
+
+  .w-15 {
+    width: 15%;
+  }
+
+  .w-40 {
+    width: 40%;
+  }
+
+  .fnt-13 {
+    font-size: 13px;
+  }
+
+  .fnt-16 {
+    font-size: 16px;
+  }
+
+  .fnt-20 {
+    font-size: 20px;
+  }
+
+  .ht-30 {
+    height: 30px;
+  }
+
+  .ht-60 {
+    height: 60px;
+  }
+
+  .ptb-10_plr-25 {
+    padding: 10px 25px;
+  }
+
+  .ptb-5_plr-25 {
+    padding: 5px 25px;
+  }
+
+  .pt-80px {
+    padding-top: 80px;
+  }
+
+  .InvestmentPermanaceDiv {
+    background-color: #e2dfdf;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .InvestorPermanaceTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .customTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .pl-25px {
+    padding-left: 25px;
+  }
+
+  .ftr-lt-span1 {
+    float: left;
+    margin-left: 35px;
+    color: #28a745 !important;
+    font-weight: 600
+  }
+
+  .ftr-rt-span1 {
+    float: right;
+    margin-right: 35px;
+    color: #28a745 !important;
+    font-weight: 800;
+    font-size: 18px;
+  }
+
+  .ftr-rt-span2 {
+    float: right;
+    margin-right: 35px;
+    color: gray;
+    font-size: 12px;
+  }
+
+  .bg-success-new {
+    background-color: #2d6444 !important;
+  }
+
+  .eConfirm-logo-container {
+    position: relative;
+    float: left !important;
+    padding-left: 0.25rem !important;
+  }
+
+  .eConfirm-logo-date {
+    position: absolute;
+    bottom: 6px;
+    font-size: 12px;
+    padding-left: 1.5rem !important;
+    color: #848683;
+  }
+
+  .paymentDueHeaderBlock {
+    background-color: #2d6444 !important;
+    text-align: center;
+    padding-top: .25rem !important;
+    height: 30px;
+    color: white;
+    width: 20%;
+  }
+
+  .paymentDueFooterBlock {
+    background-color: #e2dfdf !important;
+    text-align: center;
+    padding-top: .25rem !important;
+    height: 30px;
+    width: 20%;
+  }
+
   .main-container, .main-container-machine {
     overflow-y: auto;
     overflow-x: hidden;

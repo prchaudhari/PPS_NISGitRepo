@@ -155,7 +155,7 @@ namespace nIS
                         if (widgetPageTypeMaps.Count > 0)
                         {
                             widgetSearchParameter.Identifier = string.Join(",", widgetPageTypeMaps.Select(item => item.WidgetId).ToList());
-                            return widgets;
+                            //return widgets;
                         }
                     }
                     string whereClause = this.WhereClauseGenerator(widgetSearchParameter, tenantCode);
@@ -311,7 +311,6 @@ namespace nIS
             }
             if (searchParameter.SearchMode == SearchMode.Contains)
             {
-
                 if (validationEngine.IsValidText(searchParameter.Name))
                 {
                     queryString.Append(string.Format("Name.Contains(\"{0}\") and ", searchParameter.Name));

@@ -27,17 +27,17 @@
       <li class="side-bar-li" title={{widget.DisplayName}} *ngFor="let widget of widgetsArray">
         <a (click)="selectWidget(widget.Identifier, widget.WidgetName)">
           <span class="nav-icon fa" [ngClass]="{
-                  'fa-address-book-o': widget.WidgetName == 'CustomerInformation',
+                  'fa-address-book-o': widget.WidgetName == 'CustomerInformation' || widget.WidgetName == 'CustomerDetails',
                   'fa-address-card-o' : widget.WidgetName == 'AccountInformation',
                   'fa-image fa-lg' : widget.WidgetName == 'Image',
                   'icon-videoWidget' : widget.WidgetName == 'Video',
-                  'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'Summary',
+                  'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanStatement' || widget.WidgetName == 'HomeLoanNewInstallment',
                   'fa-bell-o' : widget.WidgetName == 'ReminderaAndRecommendation',
-                  'icon-rp-loss1 fa-lg' : widget.WidgetName == 'InvestmentPortfolioRisk',
+                  'icon-rp-loss1 fa-lg' : widget.WidgetName == 'InvestmentPortfolioRisk' || widget.WidgetName == 'HomeLoanStatementOverview',
                   'icon-AnalyticsWidget' : widget.WidgetName == 'Analytics',
                   'icon-AvailableBalanceWidget' : widget.WidgetName == 'SavingAvailableBalance' || widget.WidgetName == 'CurrentAvailableBalance',
-                  'icon-widget-multi-column2' : widget.WidgetName == 'SavingTransaction',
-                  'icon-widget-line-chart2' : widget.WidgetName == 'SavingTrend',
+                  'icon-widget-multi-column2' : widget.WidgetName == 'SavingTransaction' || widget.WidgetName == 'InvestmentPortfolioStatement',
+                  'icon-widget-line-chart2' : widget.WidgetName == 'SavingTrend' || widget.WidgetName == 'InvestorPerformance',
                   'icon-TransactionMixWidget' : widget.WidgetName == 'TransactionMix',
                   'icon-rp-production1' : widget.WidgetName == 'SpendingTrend',
                   'fa-newspaper-o' : widget.WidgetName == 'NewsAlerts',
@@ -48,9 +48,11 @@
                   'fa-code fa-lg': widget.WidgetType == 'Html',
                   'fa-bar-chart fa-lg': widget.WidgetType == 'BarGraph',
                   'fa-line-chart fa-lg': widget.WidgetType == 'LineGraph',
-                  'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart'
+                  'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart',
+                  'fa-university' : widget.WidgetName == 'BankDetails',
+                  'fa-list' : widget.WidgetName == 'ExplanatoryNotes'
               }">
-          </span><span class="nav-title"> {{widget.DisplayName}} </span>
+          </span><span class="nav-title text-truncate"> {{widget.DisplayName}} </span>
         </a>
       </li>
     </ul>

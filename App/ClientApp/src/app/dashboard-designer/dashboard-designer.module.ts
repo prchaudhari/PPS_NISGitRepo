@@ -22,7 +22,10 @@ import {
   ReminderAndRecommComponent, SavingTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, 
   SpendindTrendsPreviewComponent, DynamicLineChartWidgetComponent, 
   DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
-  DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent
+  DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
+  CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
+  InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+  PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent,
 } from './widgetComponent/widgetComponent';
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
 
@@ -38,6 +41,9 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     SpendindTrendsPreviewComponent, DynamicBarChartWidgetComponent, 
     DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
+    CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
+    InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+    PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent, 
     PageDesignPreviewComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
@@ -59,6 +65,9 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     AnalyticsWidgetPreviewComponent, SpendindTrendsPreviewComponent,
     DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
+    CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
+    InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+    PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent,
     PageDesignPreviewComponent],
 })
 export class DashboardDesignerModule { }

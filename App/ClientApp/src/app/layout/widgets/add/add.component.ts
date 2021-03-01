@@ -87,67 +87,97 @@ export class AddComponent implements OnInit {
         else if (this.widgetList[i].WidgetName == "Summary") {
           this.widgetList[i].ImageSource = "assets/images/SummaryWidget.PNG"
           this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
-
         }
         else if (this.widgetList[i].WidgetName == "Image") {
           this.widgetList[i].ImageSource = "assets/images/icon-image.png"
           this.widgetList[i].WidgetIcon = "fa fa-image";
-
         }
         else if (this.widgetList[i].WidgetName == "Video") {
           this.widgetList[i].ImageSource = "assets/images/VideoPlaceholder.jpg"
           this.widgetList[i].WidgetIcon = "icon-videoWidget";
-
         }
         else if (this.widgetList[i].WidgetName == "Analytics") {
           this.widgetList[i].ImageSource = "assets/images/Analytics.png"
           this.widgetList[i].WidgetIcon = "icon-AnalyticsWidget";
-
         }
         else if (this.widgetList[i].WidgetName == "SavingTransaction") {
           this.widgetList[i].ImageSource = "assets/images/TranscationListWidget.PNG"
           this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
-
         }
         else if (this.widgetList[i].WidgetName == "CurrentTransaction") {
           this.widgetList[i].ImageSource = "assets/images/TranscationListWidget.PNG"
           this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
-
         }
         else if (this.widgetList[i].WidgetName == "SavingTrend") {
           this.widgetList[i].ImageSource = "assets/images/SavingTrendWidget.PNG"
           this.widgetList[i].WidgetIcon = "icon-widget-line-chart2";
-
         }
         else if (this.widgetList[i].WidgetName == "Top4IncomeSources") {
           this.widgetList[i].ImageSource = "assets/images/Top4IncomeWidget.PNG"
           this.widgetList[i].WidgetIcon = "icon-rp-quality1";
-
         }
         else if (this.widgetList[i].WidgetName == "CurrentAvailableBalance") {
           this.widgetList[i].ImageSource = "assets/images/AvailableBalanceWidget.PNG"
           this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
-
         }
         else if (this.widgetList[i].WidgetName == "SavingAvailableBalance") {
           this.widgetList[i].ImageSource = "assets/images/AvailableBalanceWidget.PNG"
           this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
-
         }
         else if (this.widgetList[i].WidgetName == "SpendingTrend") {
           this.widgetList[i].ImageSource = "assets/images/SpendingTrendWidget.PNG"
           this.widgetList[i].WidgetIcon = "icon-rp-production1";
-
         }
         else if (this.widgetList[i].WidgetName == "ReminderaAndRecommendation") {
           this.widgetList[i].ImageSource = "assets/images/ReminderWidget.PNG"
           this.widgetList[i].WidgetIcon = "fa fa-bell-o";
-
+        }
+        else if (this.widgetList[i].WidgetName == "CustomerDetails") {
+          this.widgetList[i].ImageSource = "assets/images/CustomerDetails.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+        }
+        else if (this.widgetList[i].WidgetName == "BankDetails") {
+          this.widgetList[i].ImageSource = "assets/images/BankDetails.JPG"
+          this.widgetList[i].WidgetIcon = "fa fa-university";
+        }
+        else if (this.widgetList[i].WidgetName == "BreakdownOfInvestmentAccounts") {
+          this.widgetList[i].ImageSource = "assets/images/BreakdownOfInvestmentAccounts.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "Image") {
+          this.widgetList[i].ImageSource = "assets/images/icon-image.png"
+          this.widgetList[i].WidgetIcon = "fa fa-image";
+        }
+        else if (this.widgetList[i].WidgetName == "Video") {
+          this.widgetList[i].ImageSource = "assets/images/VideoPlaceholder.jpg"
+          this.widgetList[i].WidgetIcon = "icon-videoWidget";
+        }
+        else if (this.widgetList[i].WidgetName == "InvestmentPortfolioStatement") {
+          this.widgetList[i].ImageSource = "assets/images/InvestmentPortfolioStatement.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "InvestorPerformance") {
+          this.widgetList[i].ImageSource = "assets/images/InvestorPerformance.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-line-chart2";
+        }
+        else if (this.widgetList[i].WidgetName == "ExplanatoryNotes") {
+          this.widgetList[i].ImageSource = "assets/images/ExplanatoryNotes.JPG"
+          this.widgetList[i].WidgetIcon = "fa fa-list";
+        }
+        else if (this.widgetList[i].WidgetName == "PersonalLoanStatement") {
+          this.widgetList[i].ImageSource = "assets/images/PersonalLoanStatement.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "HomeLoanNewInstallment") {
+          this.widgetList[i].ImageSource = "assets/images/HL_NewInstallment.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "HomeLoanStatementOverview") {
+          this.widgetList[i].ImageSource = "assets/images/HL_StatementOverview.JPG"
+          this.widgetList[i].WidgetIcon = "fa icon-rp-loss1";
         }
       }
     }
-
-
 
     // this.spinner.stop();
   }
