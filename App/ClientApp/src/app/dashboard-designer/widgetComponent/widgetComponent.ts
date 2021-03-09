@@ -1872,45 +1872,45 @@ export class BankDetailsComponent {
     <div class="widget-area height100">
       <div class="row">
           <div class='col-lg-12'>
-                <div class='card border-0'>
-                    <div class='card-body text-left'>
-                        <div class='card-body-header'>Investment portfolio statement: First Name Surname</div>
-                        <div class='row pb-1'>
-                            <div class='col-lg-4 pr-1'>
-                                <div class='bg-success-new ptb-10_plr-25 ht-60 text-white'>
-                                    Current investor balance&nbsp;<br><span class="fnt-16">Total Closing Balance</span>&nbsp;<br>
-                                </div>
-                            </div>
-                            <div class='col-lg-8 pl-0'>
-                                <div class='bg-success-new ht-60'></div>
-                            </div>
-                        </div>
+              <div class='card border-0'>
+                  <div class='card-body text-left'>
+                      <div class='card-body-header pb-2'>Investment portfolio statement</div>
+                      <div class='row pb-1'>
+                          <div class='col-lg-4 pr-1'>
+                              <div class='TotalAmountDetailsDiv'>
+                                  <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
+                              </div>
+                          </div>
+                          <div class='col-lg-8 pl-0'>
+                              <div class='TotalAmountDetailsDiv'></div>
+                          </div>
+                      </div>
 
-                        <div class="pt-1 pb-2" style="background-color:#e2dfdf">
-                            <table class="customTable mt-2" border="0" id="portfolio">
-                                <tbody class="fnt-13">
-                                    <tr>
-                                        <td class="w-25">Account type:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Investment</td>
-                                        <td class="w-25">Statement Day:</td>
-                                        <td class="w-25 text-right text-success">Day of Statement</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Investor no:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Investor ID</td>
-                                        <td class="w-25">Statement Period:</td>
-                                        <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Statement date:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Statement Date</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                      <div class="pt-1 pb-2" style="background-color:#f3f3f3">
+                          <table class="customTable mt-2" border="0" id="portfolio">
+                              <tbody class="fnt-13">
+                                  <tr>
+                                      <td class="w-25">Account type:</td>
+                                      <td class="w-25 text-right pr-4 text-success">Investment</td>
+                                      <td class="w-25">Statement Day:</td>
+                                      <td class="w-25 text-right text-success">Day of Statement</td>
+                                  </tr>
+                                  <tr>
+                                      <td class="w-25">Investor no:</td>
+                                      <td class="w-25 text-right pr-4 text-success">Investor ID</td>
+                                      <td class="w-25">Statement Period:</td>
+                                      <td class="w-25 text-right text-success">Min to Max Transaction Date</td>
+                                  </tr>
+                                  <tr>
+                                      <td class="w-25">Statement date:</td>
+                                      <td class="w-25 text-right pr-4 text-success">Statement Date</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
     </div>
   </div>`
@@ -1928,19 +1928,19 @@ export class InvestmentPortfolioStatementComponent {
       <div class='card border-0'>
           <div class='card-body text-left'>
               <div class='card-body-header pb-2'>Investor performance</div>
-              <div class="InvestmentPermanaceDiv">
-                  <table class="InvestorPermanaceTable" border="0" id="InvestorPerformance">
+              <div class='InvestmentPermanaceDiv'>
+                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
                       <tbody>
                           <tr>
-                              <td style="width: 50%;" colspan="2"><span class="text-success" style="font-size:16px;">Notice deposits</span></td>
+                              <td class='w-50' colspan='2'><span class='text-success fnt-18'>Notice deposits</span></td>
                           </tr>
                           <tr>
-                              <td style="width: 50%;font-size:12px;">Opening balance</td>
-                              <td style="width: 50%;font-size:12px;">Closing balance</td>
+                              <td class='w-50 fnt-14'>Opening balance</td>
+                              <td class='w-50 fnt-14'>Closing balance</td>
                           </tr>
                           <tr>
-                              <td style="width: 50%;font-size:18px;">xxx.xx</td>
-                              <td style="width: 50%;font-size:18px;">xxx.xx</td>
+                              <td class='w-50 fnt-20'>xxx.xx</td>
+                              <td class='w-50 fnt-20'>xxx.xx</td>
                           </tr>
                       </tbody>
                   </table>
@@ -1963,21 +1963,21 @@ export class InvestorPerformanceComponent {
       <div class='card border-0'>
           <div class='card-body text-left'>
               <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
-              <ul class='nav nav-tabs'>
+              <ul class='nav nav-tabs Investment-nav-tabs'>
                   <li class='nav-item active'><a id='tab0-tab' data-toggle='tab' data-target='#JustInvest-9929' role='tab' class='nav-link active'> JustInvest - xx29</a></li>
                   <li class='nav-item'><a id='tab0-tab' data-toggle='tab' data-target='#JustInvest-6789' role='tab' class='nav-link'> JustInvest - xx89</a></li>
               </ul>
               <div class="tab-content">
                   <div id='JustInvest-9929' class='tab-pane fade in active show'>
-                      <div style="background-color: #e2dfdf;padding:10px 15px 5px 15px">
-                          <h4 class="pl-25px"><span class="text-success">Product Desc</span></h4>
+                      <div style="background-color: #f3f3f3;padding:10px 0px">
+                          <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
                           <table border="0" class="InvestmentDetail customTable">
                               <tbody>
                                   <tr>
                                       <td class="w-25">Investment no:</td>
-                                      <td class="text-right w-25"><span>Investor ID with Investoment ID</span></td>
+                                      <td class="text-right w-25"><span>Investor ID + Investoment ID</span></td>
                                       <td class='w-25'>Opening date:</td>
-                                      <td class="text-right w-25"><span>Acc Open Date</span></td>
+                                      <td class="text-right w-25"><span>Account Open Date</span></td>
                                   </tr>
                                   <tr>
                                       <td class='w-25'>Current interest rate:</td>
@@ -1993,22 +1993,22 @@ export class InvestorPerformanceComponent {
                                   </tr>
                                   <tr>
                                       <td class='w-25'>Interest due:</td>
-                                      <td class="text-right w-25" ><span> Accured Interest</span></td>
+                                      <td class="text-right w-25" ><span>Accured Interest</span></td>
                                       <td class='w-25'>&nbsp;</td>
                                       <td class="text-right w-25" >&nbsp;</td>
                                   </tr>
                               </tbody>
                           </table>
-                          <p class="mt-3 pl-25px">
-                              <span>Balance at</span> <span class="text-success">Max Transaction date</span><br>
+                          <div class="InvestmentClosingBalanceDiv">
+                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
                               <span class="text-success fnt-20">Total Closing Balance</span>
-                          </p>
+                          </div>
                       </div>
 
                       <div class="pt-1">
                           <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
                               <thead>
-                                  <tr>
+                                  <tr class='ht-30'>
                                       <th class="w-15">Date</th>
                                       <th class="w-40">Description</th>
                                       <th class="w-15 text-right">Debit</th>
@@ -2033,7 +2033,7 @@ export class InvestorPerformanceComponent {
                                   </tr>
                                   <tr>
                                       <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Balance carried forward</td>
+                                      <td class="w-40">Transaction Description</td>
                                       <td class="w-15 text-right">-</td>
                                       <td class="w-15 text-right">-</td>
                                       <td class="w-15 text-right">xxx.x</td>
@@ -2061,7 +2061,7 @@ export class InvestorPerformanceComponent {
                                   </tr>
                                   <tr>
                                       <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Balance carried forward</td>
+                                      <td class="w-40">Transaction Description</td>
                                       <td class="w-15 text-right">-</td>
                                       <td class="w-15 text-right">-</td>
                                       <td class="w-15 text-right">xxx.x</td>
@@ -2071,8 +2071,8 @@ export class InvestorPerformanceComponent {
                       </div>
                   </div>
                   <div id='JustInvest-6789' class='tab-pane'>
-                      <div style="background-color: #e2dfdf;padding:10px 15px 5px 15px">
-                          <h4 class="pl-25px"><span class="text-success">Product Desc</span></h4>
+                      <div style="background-color: #f3f3f3;padding:10px 0px">
+                          <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
                           <table border="0" class="InvestmentDetail customTable">
                               <tbody>
                                   <tr>
@@ -2101,16 +2101,16 @@ export class InvestorPerformanceComponent {
                                   </tr>
                               </tbody>
                           </table>
-                          <p class="mt-3 pl-25px">
-                              <span>Balance at</span> <span class="text-success">Max Transaction date</span><br>
+                          <div class="InvestmentClosingBalanceDiv">
+                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
                               <span class="text-success fnt-20">Total Closing Balance</span>
-                          </p>
+                          </div>
                       </div>
 
                       <div class="pt-1">
                           <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
                               <thead>
-                                  <tr>
+                                  <tr class='ht-30'>
                                       <th class="w-15">Date</th>
                                       <th class="w-40">Description</th>
                                       <th class="w-15 text-right">Debit</th>
@@ -2135,7 +2135,7 @@ export class InvestorPerformanceComponent {
                                   </tr>
                                   <tr>
                                       <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Balance carried forward</td>
+                                      <td class="w-40">Transaction Description</td>
                                       <td class="w-15 text-right">-</td>
                                       <td class="w-15 text-right">-</td>
                                       <td class="w-15 text-right">xxx.x</td>
@@ -2163,7 +2163,7 @@ export class InvestorPerformanceComponent {
                                   </tr>
                                   <tr>
                                       <td class="w-15">DD/MM/YYYY</td>
-                                      <td class="w-40">Balance carried forward</td>
+                                      <td class="w-40">Transaction Description</td>
                                       <td class="w-15 text-right">-</td>
                                       <td class="w-15 text-right">-</td>
                                       <td class="w-15 text-right">xxx.x</td>
@@ -2190,9 +2190,9 @@ export class BreakdownOfInvestmentAccountsComponent {
   template: `<div class="widget">
     <div class="widget-area height100">
       <div class='card border-0'>
-          <div class='card-body text-left' style="color:#000000;">
+          <div class='card-body text-left'>
               <div class="card-body-header pb-2">Explanatory notes</div>
-              <div>
+              <div class='ExplanatoryNotes'>
                   <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
                   <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
                   <span>Linked deposits — Total balance of all your linked-type accounts.</span>
@@ -2207,6 +2207,29 @@ export class ExplanatoryNotesComponent {
   widgetsGridsterItemArray: any[] = [];
 }
 
+// Component Created for Nedbank service Widget -- Nedbank
+@Component({
+  selector: 'NedbankService',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class="card border-0">
+          <div class="card-body text-left">
+              <div class="ServicesDiv">
+                  <div class="serviceHeader pb-2">Nedbank service message header</div>
+                  <span>Nedbank service message text</span><br>
+                  <span>Nedbank service message text</span><br>
+                  <span>Nedbank service message text</span>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class NedbankServiceComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
 // Component Created for Personal loan statement Widget -- Nedbank
 @Component({
   selector: 'PersonalLoanStatement',
@@ -2216,30 +2239,30 @@ export class ExplanatoryNotesComponent {
             <div class='col-lg-12'>
                 <div class='card border-0'>
                     <div class='card-body text-left'>
-                        <div class='card-body-header'>Personal loan statement</div>
+                        <div class='card-body-header pb-2'>Personal loan statement</div>
                         <div class='row pb-1'>
                             <div class='col-lg-4 pr-1'>
-                                <div class='bg-success-new ptb-10_plr-25 ht-60 text-white'>
-                                    Loan Amount&nbsp;<br><span class="fnt-16">Loan Amount Value</span>&nbsp;<br>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class='fnt-14'>Loan Amount</span><br><span class="fnt-20">Loan Amount Value</span>&nbsp;<br>
                                 </div>
                             </div>
                             <div class='col-lg-4 pr-1 pl-0'>
-                                <div class='bg-success-new ptb-10_plr-25 ht-60 text-white'>
-                                    Balance outstanding&nbsp;<br><span class="fnt-16">Outstanding balance value</span>&nbsp;<br>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class='fnt-14'>Balance outstanding</span><br><span class="fnt-20">Outstanding balance value</span>&nbsp;<br>
                                 </div>
                             </div>
                             <div class='col-lg-4 pl-0'>
-                                <div class='bg-success-new ptb-10_plr-25 ht-60 text-white'>
-                                    Now due&nbsp;<br><span class="fnt-16">Now Due value</span>&nbsp;<br>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class='fnt-14'>Now due</span><br><span class="fnt-20">Now Due value</span>&nbsp;<br>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="pt-2 pb-2" style="background-color:#e2dfdf">
-                            <table class="customTable mt-2" border="0">
-                                <tbody class="fnt-13">
+                        <div class="pt-2 pb-2" style="background-color:#f3f3f3">
+                            <table class="customTable mt-2" border="0" id='PersonalLoanDetailTable'>
+                                <tbody class="fnt-14">
                                     <tr>
-                                        <td class="text-success fnt-20" colspan="3">Nedbank personal loan</td>
+                                        <td colspan="3">Nedbank personal loan</td>
                                     </tr>
                                     <tr>
                                         <td class="w-25">Account Number:</td>
@@ -2277,7 +2300,7 @@ export class ExplanatoryNotesComponent {
                         <div class="pt-1">
                             <table id="TableWidget" style="width:100%;" class="table-striped LoanTransactionTable customTable">
                                 <thead>
-                                    <tr>
+                                    <tr class='ht-30'>
                                         <th class="w-12">Post date</th>
                                         <th class="w-12">Effective date</th>
                                         <th class="w-40">Transaction</th>
@@ -2368,9 +2391,6 @@ export class ExplanatoryNotesComponent {
                             <div class="paymentDueFooterBlock mr-1">x.xx</div>
                             <div class="paymentDueFooterBlock">x.xx</div>
                         </div>
-                        <div class="p-4">
-                            According to our records your personal-loan account is included in the debt counselling process. Please continue making regular payments as per the agreed payment arrangement. For more information please contact us on 0860 109 279 or email us at DebtCounsellingQueries@nedbank.co.za.
-                        </div>
                     </div>
                 </div>
             </div>
@@ -2392,25 +2412,25 @@ export class PersonalLoanStatementComponent {
             <div class='col-lg-12'>
                 <div class='card border-0'>
                     <div class='card-body text-left'>
-                        <div class='card-body-header'>New installment</div>
+                        <div class='card-body-header pb-2'>New installment</div>
                         <div class='row pb-1'>
                             <div class='col-lg-4 pr-1'>
-                                <div class='bg-success-new ptb-10_plr-25 ht-60 text-white'>
-                                    Total Loan Amount&nbsp;<br><span class="fnt-16">Loan Amount Value</span>&nbsp;<br>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class='fnt-14'>Total Loan Amount</span><br><span class="fnt-20">Loan Amount Value</span>&nbsp;<br>
                                 </div>
                             </div>
                             <div class='col-lg-8 pl-0 text-right'>
-                                <div class='bg-success-new ptb-10_plr-25 ht-60 text-white'>
-                                    Balance outstanding&nbsp;<br><span class="fnt-16">Outstanding balance value</span>&nbsp;<br>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class='fnt-14'>Balance outstanding</span><br><span class="fnt-20">Outstanding balance value</span>&nbsp;<br>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="pt-2 pb-2" style="background-color:#e2dfdf">
-                            <table class="customTable mt-2" border="0">
-                                <tbody class="fnt-13">
+                        <div class="pt-2 pb-2" style="background-color:#f3f3f3">
+                            <table class="customTable mt-2" border="0" id='HomeLoanDetailTable'>
+                                <tbody class="fnt-14">
                                     <tr>
-                                        <td class="text-success fnt-20" colspan="3">Nedbank home loan</td>
+                                        <td colspan="3">Nedbank home loan</td>
                                     </tr>
                                     <tr>
                                         <td class="w-25">Bond no:</td>
@@ -2444,7 +2464,7 @@ export class PersonalLoanStatementComponent {
                         <div class="pt-1">
                             <table id="TableWidget" style="width:100%;" class="table-striped LoanTransactionTable customTable">
                                 <thead>
-                                    <tr>
+                                    <tr class='ht-30'>
                                         <th class="w-12">Post date</th>
                                         <th class="w-12">Effective date</th>
                                         <th class="w-40">Transaction</th>
@@ -2534,16 +2554,16 @@ export class HomeLoanNewInstallmentComponent {
             <div class='col-lg-12'>
                 <div class='card border-0'>
                     <div class='card-body text-left'>
-                        <div class='card-body-header'>Home loan statement overview</div>
+                        <div class='card-body-header pb-2'>Home loan statement overview</div>
                         <div class='row pb-1'>
                             <div class='col-lg-4 pr-0'>
-                                <div class='bg-success-new ptb-10_plr-25 ht-60 text-white'>
-                                    <span class="fnt-16">Balance outstanding</span> <br> <span class="fnt-13">as at yyyy-mm-dd</span>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class="fnt-20">Balance outstanding</span> <br> <span class="fnt-14">as at yyyy-mm-dd</span>
                                 </div>
                             </div>
                             <div class='col-lg-8 pl-0 text-right'>
-                                <div class='bg-success-new ptb-10_plr-25 ht-60 text-white'>
-                                    <span class="fnt-16">Outstanding balance amount</span>&nbsp;<br>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class="fnt-20">Outstanding balance amount</span>&nbsp;<br>
                                 </div>
                             </div>
                         </div>
@@ -2565,11 +2585,11 @@ export class HomeLoanNewInstallmentComponent {
                         </div>
 
                         <div class='card-body-sub-header pt-3'>Installment details</div>
-                        <div class="">Due to insurance changes, your new instalment details are as follows:</div>
+                        <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
                         <div class="pt-1">
                             <table id="TableWidget" style="width:100%;" class="table-striped LoanTransactionTable customTable">
                                 <thead>
-                                    <tr>
+                                    <tr class='ht-30'>
                                         <th class="w-50">Payments</th>
                                         <th class="w-50 text-right">Amount</th>
                                     </tr>

@@ -52,6 +52,7 @@
     <Compile Include="AccountMaster.cs" />
     <Compile Include="AnalyticsData.cs" />
     <Compile Include="ArchivalProcessRawData.cs" />
+    <Compile Include="BankDetails.cs" />
     <Compile Include="BatchMaster.cs" />
     <Compile Include="AccountSummary.cs" />
     <Compile Include="AccountTransaction.cs" />
@@ -101,6 +102,8 @@
     <Compile Include="GroupManagerReport.cs" />
     <Compile Include="IncomeSources.cs" />
     <Compile Include="InstanceManagerReport.cs" />
+    <Compile Include="InvestmentAccount.cs" />
+    <Compile Include="MarketingMessage.cs" />
     <Compile Include="MultiTenantUserRoleAccess.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="PageWidget.cs" />

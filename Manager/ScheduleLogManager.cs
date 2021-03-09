@@ -321,6 +321,8 @@ namespace nIS
                         if (statements.Count > 0)
                         {
                             var statement = statements.FirstOrDefault();
+                            
+                            //TO Do - Nedbank
                             var BatchDetails = this.tenantTransactionDataManager.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
                             var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                             var tenantEntities = this.dynamicWidgetManager.GetTenantEntities(tenantCode);

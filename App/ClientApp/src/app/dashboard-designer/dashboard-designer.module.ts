@@ -24,7 +24,7 @@ import {
   DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
   DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
   CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
-  InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+  InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent,
 } from './widgetComponent/widgetComponent';
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
@@ -42,7 +42,7 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
-    InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+    InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
     PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent, 
     PageDesignPreviewComponent],
   imports: [
@@ -66,7 +66,7 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     DynamicLineChartWidgetComponent, DynamicBarChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent,
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
-    InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+    InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
     PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent,
     PageDesignPreviewComponent],
 })

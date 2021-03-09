@@ -16,7 +16,7 @@ import {
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+  InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent,
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
@@ -120,10 +120,10 @@ export class AddDashboardDesignerComponent implements OnInit {
             this.BackgroundImageAssetId = this.params.Routeparams.passingparams.BackgroundImageAssetId
             this.BackgroundImageURL = this.params.Routeparams.passingparams.BackgroundImageURL
             this.applyBackgroundImage(this.BackgroundImageAssetId, this.BackgroundImageURL);
-            
+
             if (this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString != null && this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString != ""
               && this.testJSON(this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString)) {
-                this.widgetsArray = JSON.parse(this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString);
+              this.widgetsArray = JSON.parse(this.params.Routeparams.passingparams.StaticAndDynamicWidgetArrayString);
             }
 
             if (this.params.Routeparams.passingparams.PageWidgetArrayString != null && this.params.Routeparams.passingparams.PageWidgetArrayString != ""
@@ -190,23 +190,23 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   applyBackgroundImage(AssetId, ImageURL) {
-    if(AssetId != null && AssetId != 0) {
+    if (AssetId != null && AssetId != 0) {
       this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
-          .subscribe(
-            data => {
-              let contentType = data.headers.get('Content-Type');
-              const blob = new Blob([data.body], { type: contentType });
-              let objectURL = URL.createObjectURL(blob);
-              let imgUrl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
-              $('gridster').css('background', 'url('+imgUrl+')');
-            },
-            error => {
-              //$('.overlay').show();
+        .subscribe(
+          data => {
+            let contentType = data.headers.get('Content-Type');
+            const blob = new Blob([data.body], { type: contentType });
+            let objectURL = URL.createObjectURL(blob);
+            let imgUrl = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+            $('gridster').css('background', 'url(' + imgUrl + ')');
+          },
+          error => {
+            //$('.overlay').show();
           });
-    }else if(ImageURL != null && ImageURL != '') {
-      $('gridster').css('background', 'url('+ImageURL+')');
+    } else if (ImageURL != null && ImageURL != '') {
+      $('gridster').css('background', 'url(' + ImageURL + ')');
     }
-    
+
   }
 
   saveImgFormValidation(): boolean {
@@ -280,17 +280,17 @@ export class AddDashboardDesignerComponent implements OnInit {
           this.isPersonalizeImage = widgetConfigObj.isPersonalize;
           if (widgetConfigObj.isPersonalize == false) {
             this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetConfigObj.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
-            .subscribe(
-              data => {
-                let contentType = data.headers.get('Content-Type');
-                let fileName = data.headers.get('x-filename');
-                const blob = new Blob([data.body], { type: contentType });
-                let objectURL = URL.createObjectURL(blob);
-                this.ImagePreviewSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-              },
-              error => {
-                //$('.overlay').show();
-              });
+              .subscribe(
+                data => {
+                  let contentType = data.headers.get('Content-Type');
+                  let fileName = data.headers.get('x-filename');
+                  const blob = new Blob([data.body], { type: contentType });
+                  let objectURL = URL.createObjectURL(blob);
+                  this.ImagePreviewSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+                },
+                error => {
+                  //$('.overlay').show();
+                });
           }
         }
       } else {
@@ -356,38 +356,38 @@ export class AddDashboardDesignerComponent implements OnInit {
         if (widgetConfigObj.AssetLibraryId != 0 && widgetConfigObj.AssetId != 0) {
 
           this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + widgetConfigObj.AssetId, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
-          .subscribe(
-            data => {
-              let contentType = data.headers.get('Content-Type');
-              let fileName = data.headers.get('x-filename');
-              const blob = new Blob([data.body], { type: contentType });
-              let objectURL = URL.createObjectURL(blob);
-              this.videoPreviewSrc = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
-              var videoDiv = document.getElementById('videoPreviewDiv');
-              if (videoDiv != undefined && videoDiv != null) {
-                if (videoDiv.hasChildNodes()) {
-                  videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+            .subscribe(
+              data => {
+                let contentType = data.headers.get('Content-Type');
+                let fileName = data.headers.get('x-filename');
+                const blob = new Blob([data.body], { type: contentType });
+                let objectURL = URL.createObjectURL(blob);
+                this.videoPreviewSrc = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+                var videoDiv = document.getElementById('videoPreviewDiv');
+                if (videoDiv != undefined && videoDiv != null) {
+                  if (videoDiv.hasChildNodes()) {
+                    videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                  }
+                  var video = document.createElement('video');
+                  video.id = 'videoConfigPreviewSrc';
+                  video.style.height = "200px";
+                  video.style.width = "75%";
+                  video.controls = true;
+
+                  var sourceTag = document.createElement('source');
+                  sourceTag.setAttribute('src', this.videoPreviewSrc);
+                  sourceTag.setAttribute('type', 'video/mp4');
+                  video.appendChild(sourceTag);
+                  videoDiv.appendChild(video);
+
+                  video.load();
+                  video.currentTime = 0;
+                  video.play();
                 }
-                var video = document.createElement('video');
-                video.id = 'videoConfigPreviewSrc';
-                video.style.height = "200px";
-                video.style.width = "75%";
-                video.controls = true;
-
-                var sourceTag = document.createElement('source');
-                sourceTag.setAttribute('src', this.videoPreviewSrc);
-                sourceTag.setAttribute('type', 'video/mp4');
-                video.appendChild(sourceTag);
-                videoDiv.appendChild(video);
-
-                video.load();
-                video.currentTime = 0;
-                video.play();
-              }
-            },
-            error => {
-              //$('.overlay').show();
-            });
+              },
+              error => {
+                //$('.overlay').show();
+              });
         }
       } else {
         this.VideoConfigForm.patchValue({
@@ -631,7 +631,7 @@ export class AddDashboardDesignerComponent implements OnInit {
         this._messageDialogService.openDialogBox('Error', message, Constants.msgBoxError);
       } else {
         this.widgetItemCount++;
-        if(widget.WidgetType == 'Static') {
+        if (widget.WidgetType == 'Static') {
 
           if (widget.WidgetName == "CustomerInformation") {
             return this.widgetsGridsterItemArray.push({
@@ -977,9 +977,24 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "NedbankService") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: NedbankServiceComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
         }
         else {
-          if(widget.WidgetType == 'Table') {
+          if (widget.WidgetType == 'Table') {
             return this.widgetsGridsterItemArray.push({
               cols: 6,
               rows: 3,
@@ -994,7 +1009,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: true
             })
           }
-          else if(widget.WidgetType == 'Form') {
+          else if (widget.WidgetType == 'Form') {
             return this.widgetsGridsterItemArray.push({
               cols: 3,
               rows: 4,
@@ -1009,7 +1024,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: true
             })
           }
-          else if(widget.WidgetType == 'BarGraph') {
+          else if (widget.WidgetType == 'BarGraph') {
             return this.widgetsGridsterItemArray.push({
               cols: 4,
               rows: 3,
@@ -1024,7 +1039,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: true
             })
           }
-          else if(widget.WidgetType == 'LineGraph') {
+          else if (widget.WidgetType == 'LineGraph') {
             return this.widgetsGridsterItemArray.push({
               cols: 4,
               rows: 3,
@@ -1039,7 +1054,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: true
             })
           }
-          else if(widget.WidgetType == 'PieChart') {
+          else if (widget.WidgetType == 'PieChart') {
             return this.widgetsGridsterItemArray.push({
               cols: 4,
               rows: 3,
@@ -1054,7 +1069,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: true
             })
           }
-          else if(widget.WidgetType == 'Html') {
+          else if (widget.WidgetType == 'Html') {
             return this.widgetsGridsterItemArray.push({
               cols: 5,
               rows: 3,
@@ -1136,73 +1151,103 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   bindComponent(widget): any {
-    
+
     let widgetName = widget.WidgetName == undefined ? widget.value : widget.WidgetName;
     let widgetType = widget.IsDynamicWidget == false ? 'Static' : 'Dynamic';
     let gridObj: any = {};
-    if(widgetType == 'Static') {
-      if(widgetName == 'CustomerInformation') {
+    if (widgetType == 'Static') {
+      if (widgetName == 'CustomerInformation') {
         gridObj.component = CustomerInformationComponent;
       }
-      else if(widgetName == 'AccountInformation') {
-          gridObj.component = AccountInformationComponent;
+      else if (widgetName == 'AccountInformation') {
+        gridObj.component = AccountInformationComponent;
       }
-      else if(widgetName == 'Image') {
-          gridObj.component = ImageComponent;
+      else if (widgetName == 'Image') {
+        gridObj.component = ImageComponent;
       }
-      else if(widgetName == 'Video') {
-          gridObj.component = VideoComponent;
+      else if (widgetName == 'Video') {
+        gridObj.component = VideoComponent;
       }
-      else if(widgetName == 'Summary') {
-          gridObj.component = SummaryAtGlanceComponent;
+      else if (widgetName == 'Summary') {
+        gridObj.component = SummaryAtGlanceComponent;
       }
       else if (widgetName == 'CurrentAvailableBalance') {
-          gridObj.component = CurrentAvailableBalanceComponent;
+        gridObj.component = CurrentAvailableBalanceComponent;
       }
-        else if (widgetName == 'SavingAvailableBalance') {
-          gridObj.component = SavingAvailableBalanceComponent;
+      else if (widgetName == 'SavingAvailableBalance') {
+        gridObj.component = SavingAvailableBalanceComponent;
       }
-        else if (widgetName == 'CurrentTransaction') {
-          gridObj.component = TransactionDetailsComponent;
+      else if (widgetName == 'CurrentTransaction') {
+        gridObj.component = TransactionDetailsComponent;
       }
-        else if (widgetName == 'SavingTransaction') {
-          gridObj.component = SavingTransactionDetailsComponent;
+      else if (widgetName == 'SavingTransaction') {
+        gridObj.component = SavingTransactionDetailsComponent;
       }
       else if (widgetName == 'SpendingTrend') {
-          gridObj.component = SpendindTrendsComponent;
+        gridObj.component = SpendindTrendsComponent;
       }
       else if (widgetName == 'Top4IncomeSources') {
-          gridObj.component = TopIncomeSourcesComponent;
+        gridObj.component = TopIncomeSourcesComponent;
       }
       else if (widgetName == 'SavingTrend') {
-          gridObj.component = SavingTrendsComponent;
+        gridObj.component = SavingTrendsComponent;
       }
       else if (widgetName == 'Analytics') {
-          gridObj.component = AnalyticsWidgetComponent;
+        gridObj.component = AnalyticsWidgetComponent;
       }
       else if (widgetName == 'ReminderaAndRecommendation') {
-          gridObj.component = ReminderAndRecommComponent;
+        gridObj.component = ReminderAndRecommComponent;
+      }
+      else if (widgetName == 'CustomerDetails') {
+        gridObj.component = CustomerDetailsComponent;
+      }
+      else if (widgetName == 'BankDetails') {
+        gridObj.component = BankDetailsComponent;
+      }
+      else if (widgetName == 'InvestmentPortfolioStatement') {
+        gridObj.component = InvestmentPortfolioStatementComponent;
+      }
+      else if (widgetName == 'InvestorPerformance') {
+        gridObj.component = InvestorPerformanceComponent;
+      }
+      else if (widgetName == 'BreakdownOfInvestmentAccounts') {
+        gridObj.component = BreakdownOfInvestmentAccountsComponent;
+      }
+      else if (widgetName == 'ExplanatoryNotes') {
+        gridObj.component = ExplanatoryNotesComponent;
+      }
+      else if (widgetName == 'PersonalLoanStatement') {
+        gridObj.component = PersonalLoanStatementComponent;
+      }
+      else if (widgetName == 'HomeLoanNewInstallment') {
+        gridObj.component = HomeLoanNewInstallmentComponent;
+      }
+      else if (widgetName == 'HomeLoanStatementOverview') {
+        gridObj.component = HomeLoanStatementOverviewComponent;
+      }
+      else if (widgetName == 'NedbankService') {
+        gridObj.component = NedbankServiceComponent;
       }
     }
     else {
       let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');
       widgetType = dynaWidgets[0].WidgetType;
-      if(widgetType == 'Table') {
+      if (widgetType == 'Table') {
         gridObj.component = SummaryAtGlanceComponent;
       }
-      else if(widgetType == 'Form') {
+      else if (widgetType == 'Form') {
         gridObj.component = AccountInformationComponent;
       }
-      else if(widgetType == 'LineGraph') {
+      else if (widgetType == 'LineGraph') {
         gridObj.component = DynamicLineChartWidgetComponent;
       }
-      else if(widgetType == 'BarGraph') {
+      else if (widgetType == 'BarGraph') {
         gridObj.component = DynamicBarChartWidgetComponent;
       }
-      else if(widgetType == 'PieChart') {
+      else if (widgetType == 'PieChart') {
         gridObj.component = DynamicPieChartWidgetComponent;
       }
-      else if(widgetType == 'Html') {
+      else if (widgetType == 'Html') {
         gridObj.component = DynamicHhtmlComponent;
       }
     }
@@ -1307,56 +1352,56 @@ export class AddDashboardDesignerComponent implements OnInit {
       var asset = this.assets.filter(x => x.Identifier == Number(event.target.value))[0];
       this.uiLoader.start();
       this._http.get(this.baseURL + 'assetlibrary/asset/download?assetIdentifier=' + asset.Identifier, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
-      .subscribe(
-        data => {
-          this.uiLoader.stop();
-          let contentType = data.headers.get('Content-Type');
-          let fileName = data.headers.get('x-filename');
-          const blob = new Blob([data.body], { type: contentType });
-          
-          if (type == 'image') {
-            let objectURL = URL.createObjectURL(blob);
-            this.ImagePreviewSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
-            this.imgAssetId = Number(value);
-            this.imgAssetName = asset.Name;
-            this.imageFormErrorObject.showAssetError = false;
-          }
-          else {
-            let objectURL = URL.createObjectURL(blob);
-            this.videoPreviewSrc = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
-            var videoDiv = document.getElementById('videoPreviewDiv');
-            if (videoDiv != undefined && videoDiv != null) {
-              if (videoDiv.hasChildNodes()) {
-                videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
-              }
-              
-              var video = document.createElement('video');
-              video.id = 'videoConfigPreviewSrc';
-              video.style.height = "200px";
-              video.style.width = "75%";
+        .subscribe(
+          data => {
+            this.uiLoader.stop();
+            let contentType = data.headers.get('Content-Type');
+            let fileName = data.headers.get('x-filename');
+            const blob = new Blob([data.body], { type: contentType });
 
-              var sourceTag = document.createElement('source');
-              sourceTag.setAttribute('src', this.videoPreviewSrc);
-              sourceTag.setAttribute('type', 'video/mp4');
-              video.appendChild(sourceTag);
-              videoDiv.appendChild(video);
-
-              video.load();
-              video.currentTime = 0;
-              video.play();
-              
+            if (type == 'image') {
+              let objectURL = URL.createObjectURL(blob);
+              this.ImagePreviewSrc = this.sanitizer.bypassSecurityTrustResourceUrl(objectURL);
+              this.imgAssetId = Number(value);
+              this.imgAssetName = asset.Name;
+              this.imageFormErrorObject.showAssetError = false;
             }
-            this.vdoAssetId = Number(value);
-            this.vdoAssetName = asset.Name;
-            this.videoPreviewSrc = asset.FilePath;
-            this.videoFormErrorObject.showAssetError = false;
-          }
-        },
-        error => {
-          this.uiLoader.stop();
-          $('.overlay').show();
-          this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
-        });
+            else {
+              let objectURL = URL.createObjectURL(blob);
+              this.videoPreviewSrc = this.sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.sanitizer.bypassSecurityTrustResourceUrl(objectURL));
+              var videoDiv = document.getElementById('videoPreviewDiv');
+              if (videoDiv != undefined && videoDiv != null) {
+                if (videoDiv.hasChildNodes()) {
+                  videoDiv.removeChild(document.getElementById('videoConfigPreviewSrc'));
+                }
+
+                var video = document.createElement('video');
+                video.id = 'videoConfigPreviewSrc';
+                video.style.height = "200px";
+                video.style.width = "75%";
+
+                var sourceTag = document.createElement('source');
+                sourceTag.setAttribute('src', this.videoPreviewSrc);
+                sourceTag.setAttribute('type', 'video/mp4');
+                video.appendChild(sourceTag);
+                videoDiv.appendChild(video);
+
+                video.load();
+                video.currentTime = 0;
+                video.play();
+
+              }
+              this.vdoAssetId = Number(value);
+              this.vdoAssetName = asset.Name;
+              this.videoPreviewSrc = asset.FilePath;
+              this.videoFormErrorObject.showAssetError = false;
+            }
+          },
+          error => {
+            this.uiLoader.stop();
+            $('.overlay').show();
+            this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+          });
     }
   }
 

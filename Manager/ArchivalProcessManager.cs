@@ -281,6 +281,8 @@ namespace nIS
                                                             if (statements.Count > 0)
                                                             {
                                                                 var statement = statements.FirstOrDefault();
+
+                                                                //To Do - Nedbank - get method name from tenant configuration
                                                                 var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
                                                                 customerIds = res.GroupedStatementMetadataRecords.Select(item => item.CustomerId).Distinct().ToList();
 

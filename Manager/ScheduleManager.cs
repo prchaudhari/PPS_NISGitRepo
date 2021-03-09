@@ -497,6 +497,8 @@ namespace nIS
                                     }, tenantCode);
                                     if (statements.Count > 0)
                                     {
+                                        var statement = statements.FirstOrDefault();
+
                                         scheduleLog.ScheduleStatus = ScheduleLogStatus.InProgress.ToString();
                                         IList<ScheduleLog> scheduleLogs = new List<ScheduleLog>();
                                         scheduleLogs.Add(scheduleLog);
@@ -512,242 +514,8 @@ namespace nIS
                                             outputLocation = tenantConfiguration.OutputHTMLPath;
                                         }
 
-                                        var statement = statements.FirstOrDefault();
-                                        var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
-                                        if (statementPageContents.Count > 0)
-                                        {
-                                            var client = this.clientManager.GetClients(new ClientSearchParameter
-                                            {
-                                                TenantCode = tenantCode,
-                                                IsCountryRequired = false,
-                                                IsContactRequired = false,
-                                                PagingParameter = new PagingParameter
-                                                {
-                                                    PageIndex = 0,
-                                                    PageSize = 0,
-                                                },
-                                                SortParameter = new SortParameter()
-                                                {
-                                                    SortOrder = SortOrder.Ascending,
-                                                    SortColumn = "Id",
-                                                },
-                                                SearchMode = SearchMode.Equals
-                                            }, tenantCode).FirstOrDefault();
-                                            var statementPreviewData = this.statementManager.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
-                                            string fileName = "Statement_" + statement.Identifier + "_" + batch.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-
-                                            var filesDict = new Dictionary<string, string>();
-                                            if (statementPreviewData.SampleFiles != null && statementPreviewData.SampleFiles.Count > 0)
-                                            {
-                                                statementPreviewData.SampleFiles.ToList().ForEach(file =>
-                                                {
-                                                    if (!filesDict.ContainsKey(file.FileName))
-                                                    {
-                                                        filesDict.Add(file.FileName, file.FileUrl);
-                                                    }
-                                                });
-                                            }
-
-                                            string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batch.Identifier, baseURL, outputLocation, filesDict);
-
-                                            scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
-                                            {
-                                                ScheduleName = schedule.Name,
-                                                BatchId = batch.Identifier.ToString(),
-                                                PagingParameter = new PagingParameter
-                                                {
-                                                    PageIndex = 0,
-                                                    PageSize = 0,
-                                                },
-                                                SortParameter = new SortParameter()
-                                                {
-                                                    SortOrder = SortOrder.Ascending,
-                                                    SortColumn = "Id",
-                                                },
-                                                SearchMode = SearchMode.Equals
-                                            }, tenantCode).ToList().FirstOrDefault();
-                                            scheduleLog.ScheduleId = schedule.Identifier;
-
-                                            var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-                                            var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
-                                            
-                                            var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
-                                            {
-                                                BatchId = batch.Identifier,
-                                            }, tenantCode);
-                                            var scheduleRunStartTime = DateTime.UtcNow;
-                                            if (customers.Count > 0)
-                                            {
-                                                long CustomerCount = customers.Count;
-                                                var statementRawData = new GenerateStatementRawData()
-                                                {
-                                                    Statement = statement,
-                                                    ScheduleLog = scheduleLog,
-                                                    StatementPageContents = statementPageContents,
-                                                    Batch = batch,
-                                                    BatchDetails = BatchDetails,
-                                                    BaseURL = baseURL,
-                                                    CustomerCount = CustomerCount,
-                                                    OutputLocation = outputLocation,
-                                                    TenantConfiguration = tenantConfiguration,
-                                                    Client = client,
-                                                    TenantEntities = tenantEntities,
-                                                };
-
-                                                //NIS engine implementation logic
-                                                bool IsWantToUseNisEngines = true;
-                                                if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
-                                                {
-                                                    bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
-                                                }
-
-                                                if (IsWantToUseNisEngines)
-                                                {
-                                                    var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
-                                                    if (NisEngines.Count > 0)
-                                                    {
-                                                        for (int i = 0; customers.Count > 0; i++)
-                                                        {
-                                                            var availableNisEngines = new List<RenderEngine>(NisEngines);
-                                                            ParallelOptions parallelOptions = new ParallelOptions();
-
-                                                            if (customers.Count > availableNisEngines.Count * parallelThreadCount)
-                                                            {
-                                                                parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
-                                                                var parallelRequest = new List<CustomerParallelRequest>();
-                                                                int count = 0;
-                                                                for (int j = 1; availableNisEngines.Count > 0; j++)
-                                                                {
-                                                                    parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
-                                                                    customers = customers.Skip(parallelThreadCount).ToList();
-                                                                    count += 1;
-                                                                    availableNisEngines = availableNisEngines.Skip(count).ToList();
-                                                                }
-
-                                                                ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                                            }
-                                                            else
-                                                            {
-                                                                parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
-                                                                var parallelRequest = new List<CustomerParallelRequest>();
-                                                                int count = 0;
-
-                                                                for (int k = 0; customers.Count > 0; k++)
-                                                                {
-                                                                    if (customers.Count > parallelThreadCount)
-                                                                    {
-                                                                        parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
-                                                                        customers = customers.Skip(parallelThreadCount).ToList();
-                                                                        count += 1;
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
-                                                                        customers = new List<CustomerMaster>();
-                                                                    }
-                                                                }
-
-                                                                ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        RenderEngine renderEngine = new RenderEngine()
-                                                        {
-                                                            Identifier = 0,
-                                                            RenderEngineName = "DeFault NIS Engine",
-                                                            URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
-                                                            IsActive = true,
-                                                            IsDeleted = false,
-                                                            InUse = false,
-                                                            NumberOfThread = 1,
-                                                            PriorityLevel = 1
-                                                        };
-                                                        for (int i = 0; customers.Count > 0; i++)
-                                                        {
-                                                            ParallelOptions parallelOptions = new ParallelOptions();
-                                                            parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                                                            var parallelRequest = new List<CustomerParallelRequest>();
-                                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
-                                                            customers = customers.Skip(parallelThreadCount).ToList();
-                                                            ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    RenderEngine renderEngine = new RenderEngine()
-                                                    {
-                                                        Identifier = 0,
-                                                        RenderEngineName = "DeFault NIS Engine",
-                                                        URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
-                                                        IsActive = true,
-                                                        IsDeleted = false,
-                                                        InUse = false,
-                                                        NumberOfThread = 1,
-                                                        PriorityLevel = 1
-                                                    };
-                                                    for (int i = 0; customers.Count > 0; i++)
-                                                    {
-                                                        ParallelOptions parallelOptions = new ParallelOptions();
-                                                        parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                                                        var parallelRequest = new List<CustomerParallelRequest>();
-                                                        parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
-                                                        customers = customers.Skip(parallelThreadCount).ToList();
-                                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                                    }
-                                                }
-
-                                                var scheduleRunHistory = new List<ScheduleRunHistory>();
-                                                scheduleRunHistory.Add(new ScheduleRunHistory()
-                                                {
-                                                    StartDate = scheduleRunStartTime,
-                                                    ScheduleId = schedule.Identifier,
-                                                    StatementId = statement.Identifier,
-                                                    ScheduleLogId = scheduleLog.Identifier,
-                                                    EndDate = DateTime.UtcNow,
-                                                    StatementFilePath = CommonStatementZipFilePath
-                                                });
-                                                this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
-
-                                                //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
-                                                var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
-                                                {
-                                                    ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
-                                                    PagingParameter = new PagingParameter
-                                                    {
-                                                        PageIndex = 0,
-                                                        PageSize = 0,
-                                                    },
-                                                    SortParameter = new SortParameter()
-                                                    {
-                                                        SortOrder = SortOrder.Ascending,
-                                                        SortColumn = "Id",
-                                                    },
-                                                    SearchMode = SearchMode.Equals
-                                                }, tenantCode);
-                                                var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
-                                                var _batchStatus = BatchStatus.Completed.ToString();
-
-                                                var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
-                                                if (failedRecords != null && failedRecords.Count > 0)
-                                                {
-                                                    scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-                                                    _batchStatus = BatchStatus.Failed.ToString();
-                                                }
-
-                                                this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                                                this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
-                                                this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
-                                            }
-                                            else
-                                            {
-                                                this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
-                                                this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
-                                                this.scheduleRepository.UpdateScheduleStatus(schedule.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
-                                            }
-                                        }
+                                        //To Do - Nedbank - get method name from tenant configuration 
+                                        this.GenerateFinancialTenantCustomerStatementsByScheduleRunTime(statement, tenantConfiguration, batch, schedule, tenantCode, baseURL, outputLocation, parallelThreadCount);
                                     }
                                     else 
                                     {
@@ -921,235 +689,9 @@ namespace nIS
 
                     var statement = statements.FirstOrDefault();
                     var pages = statement.Pages;
-                    var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
-                    if (statementPageContents.Count > 0)
-                    {
-                        var client = this.clientManager.GetClients(new ClientSearchParameter
-                        {
-                            TenantCode = tenantCode,
-                            IsCountryRequired = false,
-                            IsContactRequired = false,
-                            PagingParameter = new PagingParameter
-                            {
-                                PageIndex = 0,
-                                PageSize = 0,
-                            },
-                            SortParameter = new SortParameter()
-                            {
-                                SortOrder = SortOrder.Ascending,
-                                SortColumn = "Id",
-                            },
-                            SearchMode = SearchMode.Equals
-                        }, tenantCode).FirstOrDefault();
-                        var statementPreviewData = this.statementManager.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
-                        string fileName = "Statement_" + statement.Identifier + "_" + batchMaster.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
 
-                        var filesDict = new Dictionary<string, string>();
-                        for (int i = 0; i < statementPreviewData.SampleFiles.Count; i++)
-                        {
-                            filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
-                        }
-                        string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batchMaster.Identifier, baseURL, outputLocation, filesDict);
-
-                        scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
-                        {
-                            ScheduleName = scheduleRecord.Name,
-                            BatchId = batch.Identifier.ToString(),
-                            PagingParameter = new PagingParameter
-                            {
-                                PageIndex = 0,
-                                PageSize = 0,
-                            },
-                            SortParameter = new SortParameter()
-                            {
-                                SortOrder = SortOrder.Ascending,
-                                SortColumn = "Id",
-                            },
-                            SearchMode = SearchMode.Equals
-                        }, tenantCode).ToList().FirstOrDefault();
-                        scheduleLog.ScheduleId = scheduleRecord.Identifier;
-
-                        var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-                        var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
-                        
-                        var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
-                        {
-                            BatchId = batch.Identifier,
-                        }, tenantCode);
-                        var scheduleRunStartTime = DateTime.UtcNow;
-                        if (customers.Count > 0)
-                        {
-                            long CustomerCount = customers.Count;
-                            var statementRawData = new GenerateStatementRawData()
-                            {
-                                Statement = statement,
-                                ScheduleLog = scheduleLog,
-                                StatementPageContents = statementPageContents,
-                                Batch = batch,
-                                BatchDetails = BatchDetails,
-                                BaseURL = baseURL,
-                                CustomerCount = CustomerCount,
-                                OutputLocation = outputLocation,
-                                TenantConfiguration = tenantConfiguration,
-                                Client = client,
-                                TenantEntities = tenantEntities,
-                            };
-
-                            //NIS engine implementation logic
-                            bool IsWantToUseNisEngines = true;
-                            if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
-                            {
-                                bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
-                            }
-                            
-                            if (IsWantToUseNisEngines)
-                            {
-                                var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
-                                if (NisEngines.Count > 0)
-                                {
-                                    for (int i = 0; customers.Count > 0; i++)
-                                    {
-                                        var availableNisEngines = new List<RenderEngine>(NisEngines);
-                                        ParallelOptions parallelOptions = new ParallelOptions();
-                                        if (customers.Count > availableNisEngines.Count * parallelThreadCount)
-                                        {
-                                            parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
-                                            var parallelRequest = new List<CustomerParallelRequest>();
-                                            int count = 0;
-                                            for (int j = 1; availableNisEngines.Count > 0; j++)
-                                            {
-                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
-                                                customers = customers.Skip(parallelThreadCount).ToList();
-                                                count += 1;
-                                                availableNisEngines = availableNisEngines.Skip(count).ToList();
-                                            }
-
-                                            ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                        }
-                                        else
-                                        {
-                                            parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
-                                            var parallelRequest = new List<CustomerParallelRequest>();
-                                            int count = 0;
-
-                                            for (int k = 0; customers.Count > 0; k++)
-                                            {
-                                                if (customers.Count > parallelThreadCount)
-                                                {
-                                                    parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
-                                                    customers = customers.Skip(parallelThreadCount).ToList();
-                                                    count += 1;
-                                                }
-                                                else
-                                                {
-                                                    parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
-                                                    customers = new List<CustomerMaster>();
-                                                }
-                                            }
-
-                                            ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    RenderEngine renderEngine = new RenderEngine()
-                                    {
-                                        Identifier = 0,
-                                        RenderEngineName = "DeFault NIS Engine",
-                                        URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
-                                        IsActive = true,
-                                        IsDeleted = false,
-                                        InUse = false,
-                                        NumberOfThread = 1,
-                                        PriorityLevel = 1
-                                    };
-                                    for (int i = 0; customers.Count > 0; i++)
-                                    {
-                                        ParallelOptions parallelOptions = new ParallelOptions();
-                                        parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                                        var parallelRequest = new List<CustomerParallelRequest>();
-                                        parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
-                                        customers = customers.Skip(parallelThreadCount).ToList();
-                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                    }
-                                }
-                            }
-                            else 
-                            {
-                                RenderEngine renderEngine = new RenderEngine()
-                                {
-                                    Identifier = 0,
-                                    RenderEngineName = "DeFault NIS Engine",
-                                    URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
-                                    IsActive = true,
-                                    IsDeleted = false,
-                                    InUse = false,
-                                    NumberOfThread = 1,
-                                    PriorityLevel = 1
-                                };
-                                for (int i = 0; customers.Count > 0; i++)
-                                {
-                                    ParallelOptions parallelOptions = new ParallelOptions();
-                                    parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
-                                    var parallelRequest = new List<CustomerParallelRequest>();
-                                    parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
-                                    customers = customers.Skip(parallelThreadCount).ToList();
-                                    ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
-                                }
-                            }
-                            
-
-                            var scheduleRunHistory = new List<ScheduleRunHistory>();
-                            scheduleRunHistory.Add(new ScheduleRunHistory()
-                            {
-                                StartDate = scheduleRunStartTime,
-                                ScheduleId = scheduleRecord.Identifier,
-                                StatementId = statement.Identifier,
-                                ScheduleLogId = scheduleLog.Identifier,
-                                EndDate = DateTime.UtcNow,
-                                StatementFilePath = CommonStatementZipFilePath
-                            });
-                            this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
-
-                            //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
-                            var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
-                            {
-                                ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
-                                PagingParameter = new PagingParameter
-                                {
-                                    PageIndex = 0,
-                                    PageSize = 0,
-                                },
-                                SortParameter = new SortParameter()
-                                {
-                                    SortOrder = SortOrder.Ascending,
-                                    SortColumn = "Id",
-                                },
-                                SearchMode = SearchMode.Equals
-                            }, tenantCode);
-                            var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
-                            var _batchStatus = BatchStatus.Completed.ToString();
-
-                            var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
-                            if (failedRecords != null && failedRecords.Count > 0)
-                            {
-                                scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
-                                _batchStatus = BatchStatus.Failed.ToString();
-                            }
-
-                            this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
-                            this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
-                            this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
-                        }
-                        else
-                        {
-                            this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
-                            this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
-                            this.scheduleRepository.UpdateScheduleStatus(scheduleRecord.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
-                        }
-                    }
-                    scheduleRunStatus = true;
+                    //To Do - Nedbank - get method name from tenant configuration 
+                    scheduleRunStatus = this.GenerateFinancialTenantCustomerStatementsByScheduleRunNow(statement, tenantConfiguration, batch, scheduleRecord, tenantCode, baseURL, outputLocation, parallelThreadCount);
                 }
             }
             catch (Exception ex)
@@ -1414,7 +956,7 @@ namespace nIS
         /// <param name="statementRawData">raw data object requires in statement generate process</param>
         /// <param name="parallelOptions">parallel option object of threading</param>
         /// <param name="parallelRequests">the list of customer parallel request object</param>
-        public void ParalllelProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<CustomerParallelRequest> parallelRequests, int parallelThreadCount)
+        private void ParalllelProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<CustomerParallelRequest> parallelRequests, int parallelThreadCount)
         {
             Parallel.ForEach(parallelRequests, parallelOptions, item =>
             {
@@ -1429,7 +971,7 @@ namespace nIS
         /// <param name="TenantCode">The tenant code</param>
         /// <param name="parallelRequest">the customer parallel request object</param>
         /// <param name="parallelThreadCount">the thread count to run request in parallel</param>
-        public void CallGenearateStatementWebAPI(GenerateStatementRawData statementRawData, string TenantCode, CustomerParallelRequest parallelRequest, int parallelThreadCount)
+        private void CallGenearateStatementWebAPI(GenerateStatementRawData statementRawData, string TenantCode, CustomerParallelRequest parallelRequest, int parallelThreadCount)
         {
             try
             {
@@ -1464,6 +1006,493 @@ namespace nIS
                     client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, TenantCode);
                     var response = client.PostAsync(ModelConstant.CREATE_CUSTOMER_STATEMENT_API_URL, new StringContent(JsonConvert.SerializeObject(newStatementRawData), Encoding.UTF8, ModelConstant.APPLICATION_JSON_MEDIA_TYPE)).Result;
                 });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private bool GenerateFinancialTenantCustomerStatementsByScheduleRunNow(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule scheduleRecord, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
+        {
+            try
+            {
+                var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                if (statementPageContents.Count > 0)
+                {
+                    var client = this.clientManager.GetClients(new ClientSearchParameter
+                    {
+                        TenantCode = tenantCode,
+                        IsCountryRequired = false,
+                        IsContactRequired = false,
+                        PagingParameter = new PagingParameter
+                        {
+                            PageIndex = 0,
+                            PageSize = 0,
+                        },
+                        SortParameter = new SortParameter()
+                        {
+                            SortOrder = SortOrder.Ascending,
+                            SortColumn = "Id",
+                        },
+                        SearchMode = SearchMode.Equals
+                    }, tenantCode).FirstOrDefault();
+                    var statementPreviewData = this.statementManager.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
+                    string fileName = "Statement_" + statement.Identifier + "_" + batch.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+
+                    var filesDict = new Dictionary<string, string>();
+                    for (int i = 0; i < statementPreviewData.SampleFiles.Count; i++)
+                    {
+                        filesDict.Add(statementPreviewData.SampleFiles[i].FileName, statementPreviewData.SampleFiles[i].FileUrl);
+                    }
+                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batch.Identifier, baseURL, outputLocation, filesDict);
+
+                    var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
+                    {
+                        ScheduleName = scheduleRecord.Name,
+                        BatchId = batch.Identifier.ToString(),
+                        PagingParameter = new PagingParameter
+                        {
+                            PageIndex = 0,
+                            PageSize = 0,
+                        },
+                        SortParameter = new SortParameter()
+                        {
+                            SortOrder = SortOrder.Ascending,
+                            SortColumn = "Id",
+                        },
+                        SearchMode = SearchMode.Equals
+                    }, tenantCode).ToList().FirstOrDefault();
+                    scheduleLog.ScheduleId = scheduleRecord.Identifier;
+
+                    var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+                    var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
+
+                    var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
+                    {
+                        BatchId = batch.Identifier,
+                    }, tenantCode);
+                    var scheduleRunStartTime = DateTime.UtcNow;
+                    if (customers.Count > 0)
+                    {
+                        long CustomerCount = customers.Count;
+                        var statementRawData = new GenerateStatementRawData()
+                        {
+                            Statement = statement,
+                            ScheduleLog = scheduleLog,
+                            StatementPageContents = statementPageContents,
+                            Batch = batch,
+                            BatchDetails = BatchDetails,
+                            BaseURL = baseURL,
+                            CustomerCount = CustomerCount,
+                            OutputLocation = outputLocation,
+                            TenantConfiguration = tenantConfiguration,
+                            Client = client,
+                            TenantEntities = tenantEntities,
+                        };
+
+                        //NIS engine implementation logic
+                        bool IsWantToUseNisEngines = true;
+                        if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
+                        {
+                            bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
+                        }
+
+                        if (IsWantToUseNisEngines)
+                        {
+                            var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                            if (NisEngines.Count > 0)
+                            {
+                                for (int i = 0; customers.Count > 0; i++)
+                                {
+                                    var availableNisEngines = new List<RenderEngine>(NisEngines);
+                                    ParallelOptions parallelOptions = new ParallelOptions();
+                                    if (customers.Count > availableNisEngines.Count * parallelThreadCount)
+                                    {
+                                        parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
+                                        var parallelRequest = new List<CustomerParallelRequest>();
+                                        int count = 0;
+                                        for (int j = 1; availableNisEngines.Count > 0; j++)
+                                        {
+                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
+                                            customers = customers.Skip(parallelThreadCount).ToList();
+                                            count += 1;
+                                            availableNisEngines = availableNisEngines.Skip(count).ToList();
+                                        }
+
+                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    }
+                                    else
+                                    {
+                                        parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
+                                        var parallelRequest = new List<CustomerParallelRequest>();
+                                        int count = 0;
+
+                                        for (int k = 0; customers.Count > 0; k++)
+                                        {
+                                            if (customers.Count > parallelThreadCount)
+                                            {
+                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
+                                                customers = customers.Skip(parallelThreadCount).ToList();
+                                                count += 1;
+                                            }
+                                            else
+                                            {
+                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
+                                                customers = new List<CustomerMaster>();
+                                            }
+                                        }
+
+                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                RenderEngine renderEngine = new RenderEngine()
+                                {
+                                    Identifier = 0,
+                                    RenderEngineName = "DeFault NIS Engine",
+                                    URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+                                    IsActive = true,
+                                    IsDeleted = false,
+                                    InUse = false,
+                                    NumberOfThread = 1,
+                                    PriorityLevel = 1
+                                };
+                                for (int i = 0; customers.Count > 0; i++)
+                                {
+                                    ParallelOptions parallelOptions = new ParallelOptions();
+                                    parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                                    var parallelRequest = new List<CustomerParallelRequest>();
+                                    parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+                                    customers = customers.Skip(parallelThreadCount).ToList();
+                                    ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            RenderEngine renderEngine = new RenderEngine()
+                            {
+                                Identifier = 0,
+                                RenderEngineName = "DeFault NIS Engine",
+                                URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+                                IsActive = true,
+                                IsDeleted = false,
+                                InUse = false,
+                                NumberOfThread = 1,
+                                PriorityLevel = 1
+                            };
+                            for (int i = 0; customers.Count > 0; i++)
+                            {
+                                ParallelOptions parallelOptions = new ParallelOptions();
+                                parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                                var parallelRequest = new List<CustomerParallelRequest>();
+                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+                                customers = customers.Skip(parallelThreadCount).ToList();
+                                ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                            }
+                        }
+
+
+                        var scheduleRunHistory = new List<ScheduleRunHistory>();
+                        scheduleRunHistory.Add(new ScheduleRunHistory()
+                        {
+                            StartDate = scheduleRunStartTime,
+                            ScheduleId = scheduleRecord.Identifier,
+                            StatementId = statement.Identifier,
+                            ScheduleLogId = scheduleLog.Identifier,
+                            EndDate = DateTime.UtcNow,
+                            StatementFilePath = CommonStatementZipFilePath
+                        });
+                        this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
+
+                        //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
+                        var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                        {
+                            ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Id",
+                            },
+                            SearchMode = SearchMode.Equals
+                        }, tenantCode);
+                        var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+                        var _batchStatus = BatchStatus.Completed.ToString();
+
+                        var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
+                        if (failedRecords != null && failedRecords.Count > 0)
+                        {
+                            scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+                            _batchStatus = BatchStatus.Failed.ToString();
+                        }
+
+                        this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
+                        this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
+                        this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
+                    }
+                    else
+                    {
+                        this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
+                        this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
+                        this.scheduleRepository.UpdateScheduleStatus(scheduleRecord.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
+                    }
+                }
+                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void GenerateFinancialTenantCustomerStatementsByScheduleRunTime(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule schedule, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
+        {
+            try
+            {
+                var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                if (statementPageContents.Count > 0)
+                {
+                    var client = this.clientManager.GetClients(new ClientSearchParameter
+                    {
+                        TenantCode = tenantCode,
+                        IsCountryRequired = false,
+                        IsContactRequired = false,
+                        PagingParameter = new PagingParameter
+                        {
+                            PageIndex = 0,
+                            PageSize = 0,
+                        },
+                        SortParameter = new SortParameter()
+                        {
+                            SortOrder = SortOrder.Ascending,
+                            SortColumn = "Id",
+                        },
+                        SearchMode = SearchMode.Equals
+                    }, tenantCode).FirstOrDefault();
+                    var statementPreviewData = this.statementManager.BindDataToCommonStatement(statement, statementPageContents, tenantConfiguration, tenantCode, client);
+                    string fileName = "Statement_" + statement.Identifier + "_" + batch.Identifier + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+
+                    var filesDict = new Dictionary<string, string>();
+                    if (statementPreviewData.SampleFiles != null && statementPreviewData.SampleFiles.Count > 0)
+                    {
+                        statementPreviewData.SampleFiles.ToList().ForEach(file =>
+                        {
+                            if (!filesDict.ContainsKey(file.FileName))
+                            {
+                                filesDict.Add(file.FileName, file.FileUrl);
+                            }
+                        });
+                    }
+
+                    string CommonStatementZipFilePath = this.utility.CreateAndWriteToZipFile(statementPreviewData.FileContent, fileName, batch.Identifier, baseURL, outputLocation, filesDict);
+
+                    var scheduleLog = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
+                    {
+                        ScheduleName = schedule.Name,
+                        BatchId = batch.Identifier.ToString(),
+                        PagingParameter = new PagingParameter
+                        {
+                            PageIndex = 0,
+                            PageSize = 0,
+                        },
+                        SortParameter = new SortParameter()
+                        {
+                            SortOrder = SortOrder.Ascending,
+                            SortColumn = "Id",
+                        },
+                        SearchMode = SearchMode.Equals
+                    }, tenantCode).ToList().FirstOrDefault();
+                    scheduleLog.ScheduleId = schedule.Identifier;
+
+                    var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
+                    var BatchDetails = this.tenantTransactionDataRepository.GetBatchDetails(batch.Identifier, statement.Identifier, tenantCode);
+
+                    var customers = this.tenantTransactionDataRepository.Get_CustomerMasters(new CustomerSearchParameter()
+                    {
+                        BatchId = batch.Identifier,
+                    }, tenantCode);
+                    var scheduleRunStartTime = DateTime.UtcNow;
+                    if (customers.Count > 0)
+                    {
+                        long CustomerCount = customers.Count;
+                        var statementRawData = new GenerateStatementRawData()
+                        {
+                            Statement = statement,
+                            ScheduleLog = scheduleLog,
+                            StatementPageContents = statementPageContents,
+                            Batch = batch,
+                            BatchDetails = BatchDetails,
+                            BaseURL = baseURL,
+                            CustomerCount = CustomerCount,
+                            OutputLocation = outputLocation,
+                            TenantConfiguration = tenantConfiguration,
+                            Client = client,
+                            TenantEntities = tenantEntities,
+                        };
+
+                        //NIS engine implementation logic
+                        bool IsWantToUseNisEngines = true;
+                        if (ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES] != null)
+                        {
+                            bool.TryParse(ConfigurationManager.AppSettings[ModelConstant.IS_WANT_TO_USE_NIS_ENGINES], out IsWantToUseNisEngines);
+                        }
+
+                        if (IsWantToUseNisEngines)
+                        {
+                            var NisEngines = this.renderEngineRepository.GetRenderEngine(tenantCode).Where(item => item.IsActive && !item.IsDeleted).ToList();
+                            if (NisEngines.Count > 0)
+                            {
+                                for (int i = 0; customers.Count > 0; i++)
+                                {
+                                    var availableNisEngines = new List<RenderEngine>(NisEngines);
+                                    ParallelOptions parallelOptions = new ParallelOptions();
+
+                                    if (customers.Count > availableNisEngines.Count * parallelThreadCount)
+                                    {
+                                        parallelOptions.MaxDegreeOfParallelism = availableNisEngines.Count;
+                                        var parallelRequest = new List<CustomerParallelRequest>();
+                                        int count = 0;
+                                        for (int j = 1; availableNisEngines.Count > 0; j++)
+                                        {
+                                            parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines.FirstOrDefault() });
+                                            customers = customers.Skip(parallelThreadCount).ToList();
+                                            count += 1;
+                                            availableNisEngines = availableNisEngines.Skip(count).ToList();
+                                        }
+
+                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    }
+                                    else
+                                    {
+                                        parallelOptions.MaxDegreeOfParallelism = customers.ToList().Count % parallelThreadCount == 0 ? customers.ToList().Count / parallelThreadCount : customers.ToList().Count / parallelThreadCount + 1;
+                                        var parallelRequest = new List<CustomerParallelRequest>();
+                                        int count = 0;
+
+                                        for (int k = 0; customers.Count > 0; k++)
+                                        {
+                                            if (customers.Count > parallelThreadCount)
+                                            {
+                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = availableNisEngines[count] });
+                                                customers = customers.Skip(parallelThreadCount).ToList();
+                                                count += 1;
+                                            }
+                                            else
+                                            {
+                                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.ToList(), RenderEngine = availableNisEngines[count] });
+                                                customers = new List<CustomerMaster>();
+                                            }
+                                        }
+
+                                        ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                RenderEngine renderEngine = new RenderEngine()
+                                {
+                                    Identifier = 0,
+                                    RenderEngineName = "DeFault NIS Engine",
+                                    URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+                                    IsActive = true,
+                                    IsDeleted = false,
+                                    InUse = false,
+                                    NumberOfThread = 1,
+                                    PriorityLevel = 1
+                                };
+                                for (int i = 0; customers.Count > 0; i++)
+                                {
+                                    ParallelOptions parallelOptions = new ParallelOptions();
+                                    parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                                    var parallelRequest = new List<CustomerParallelRequest>();
+                                    parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+                                    customers = customers.Skip(parallelThreadCount).ToList();
+                                    ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            RenderEngine renderEngine = new RenderEngine()
+                            {
+                                Identifier = 0,
+                                RenderEngineName = "DeFault NIS Engine",
+                                URL = ConfigurationManager.AppSettings[ModelConstant.DEFAULT_NIS_ENGINE_BASE_URL].ToString(),
+                                IsActive = true,
+                                IsDeleted = false,
+                                InUse = false,
+                                NumberOfThread = 1,
+                                PriorityLevel = 1
+                            };
+                            for (int i = 0; customers.Count > 0; i++)
+                            {
+                                ParallelOptions parallelOptions = new ParallelOptions();
+                                parallelOptions.MaxDegreeOfParallelism = parallelThreadCount;
+                                var parallelRequest = new List<CustomerParallelRequest>();
+                                parallelRequest.Add(new CustomerParallelRequest { Customers = customers.Take(parallelThreadCount).ToList(), RenderEngine = renderEngine });
+                                customers = customers.Skip(parallelThreadCount).ToList();
+                                ParalllelProcessing(statementRawData, tenantCode, parallelOptions, parallelRequest, parallelThreadCount);
+                            }
+                        }
+
+                        var scheduleRunHistory = new List<ScheduleRunHistory>();
+                        scheduleRunHistory.Add(new ScheduleRunHistory()
+                        {
+                            StartDate = scheduleRunStartTime,
+                            ScheduleId = schedule.Identifier,
+                            StatementId = statement.Identifier,
+                            ScheduleLogId = scheduleLog.Identifier,
+                            EndDate = DateTime.UtcNow,
+                            StatementFilePath = CommonStatementZipFilePath
+                        });
+                        this.scheduleRepository.AddScheduleRunHistorys(scheduleRunHistory, tenantCode);
+
+                        //update status for respective schedule log, schedule log details entities as well as update batch status if statement generation done for all customers of current batch
+                        var logDetailsRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                        {
+                            ScheduleLogId = statementRawData.ScheduleLog.Identifier.ToString(),
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Id",
+                            },
+                            SearchMode = SearchMode.Equals
+                        }, tenantCode);
+                        var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+                        var _batchStatus = BatchStatus.Completed.ToString();
+
+                        var failedRecords = logDetailsRecords.Where(item => item.Status == ScheduleLogStatus.Failed.ToString())?.ToList();
+                        if (failedRecords != null && failedRecords.Count > 0)
+                        {
+                            scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+                            _batchStatus = BatchStatus.Failed.ToString();
+                        }
+
+                        this.scheduleLogRepository.UpdateScheduleLogStatus(statementRawData.ScheduleLog.Identifier, scheduleLogStatus, tenantCode);
+                        this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, _batchStatus, true, tenantCode);
+                        this.scheduleRepository.UpdateScheduleStatus(statementRawData.ScheduleLog.ScheduleId, ScheduleStatus.Completed.ToString(), tenantCode);
+                    }
+                    else
+                    {
+                        this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
+                        this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
+                        this.scheduleRepository.UpdateScheduleStatus(schedule.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
+                    }
+                }
             }
             catch (Exception ex)
             {

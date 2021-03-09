@@ -14,7 +14,7 @@ import {
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent,
+  InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
@@ -352,6 +352,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widgetName == 'HomeLoanStatementOverview') {
               gridObj.component = HomeLoanStatementOverviewComponent;
+            }
+            else if (widgetName == 'NedbankService') {
+              gridObj.component = NedbankServiceComponent;
             }
         }
         else {

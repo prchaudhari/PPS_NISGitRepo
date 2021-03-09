@@ -301,6 +301,7 @@ namespace nIS
                         SearchMode = SearchMode.Equals
                     }, tenantCode)?.FirstOrDefault();
 
+                    //To Do - Nedbank - get method name from tenant configuration 
                     var customer = this.tenantTransactionDataManager.Get_CustomerMasters(new CustomerSearchParameter()
                     {
                         CustomerId = statementSearch.CustomerId,
