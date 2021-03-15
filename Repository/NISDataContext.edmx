@@ -205,6 +205,122 @@
           <Property Name="VideoURL" Type="nvarchar(max)" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="DM_BranchMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddressLine0" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine3" Type="nvarchar" MaxLength="500" />
+          <Property Name="VatRegNo" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ContactNo" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DM_CustomerMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SurName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DS_Investor_Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="AddressLine0" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine3" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine4" Type="nvarchar" MaxLength="500" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="500" />
+          <Property Name="Mask_Cell_No" Type="nvarchar" MaxLength="50" />
+          <Property Name="Barcode" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Field1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Field2" Type="nvarchar" MaxLength="100" />
+          <Property Name="Field3" Type="nvarchar" MaxLength="100" />
+          <Property Name="Field4" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="DM_ExplanatoryNotes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="ParentId" Type="bigint" Nullable="false" />
+          <Property Name="Note1" Type="nvarchar(max)" />
+          <Property Name="Note2" Type="nvarchar(max)" />
+          <Property Name="Note3" Type="nvarchar(max)" />
+          <Property Name="Note4" Type="nvarchar(max)" />
+          <Property Name="Note5" Type="nvarchar(max)" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DM_InvestmentMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="InvestmentId" Type="bigint" Nullable="false" />
+          <Property Name="BranchId" Type="bigint" Nullable="false" />
+          <Property Name="ProductId" Type="bigint" Nullable="false" />
+          <Property Name="ProductType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="10" />
+          <Property Name="ProductDesc" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AccountOpenDate" Type="datetime" />
+          <Property Name="CurrentInterestRate" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArchiveDate" Type="datetime" />
+          <Property Name="ExpiryDate" Type="datetime" />
+          <Property Name="InterestDisposalId" Type="bigint" />
+          <Property Name="InterestDisposalDesc" Type="nvarchar" MaxLength="200" />
+          <Property Name="NoticePeriod" Type="nvarchar" MaxLength="100" />
+          <Property Name="AccuredInterest" Type="nvarchar" MaxLength="50" />
+          <Property Name="StatementDate" Type="datetime" />
+          <Property Name="DayOfStatement" Type="nvarchar" MaxLength="20" />
+          <Property Name="StatementPeriod" Type="nvarchar" MaxLength="500" />
+          <Property Name="ClosingBalance" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DM_InvestmentTransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="InvestmentId" Type="bigint" Nullable="false" />
+          <Property Name="ProductId" Type="bigint" Nullable="false" />
+          <Property Name="TransactionDate" Type="datetime" Nullable="false" />
+          <Property Name="TransactionDesc" Type="nvarchar" MaxLength="500" />
+          <Property Name="WJXBFS1" Type="nvarchar" MaxLength="500" />
+          <Property Name="WJXBFS2_Debit" Type="nvarchar" MaxLength="500" />
+          <Property Name="WJXBFS3_Credit" Type="nvarchar" MaxLength="500" />
+          <Property Name="WJXBFS4_Balance" Type="nvarchar" MaxLength="500" />
+          <Property Name="WJXBFS5_TransId" Type="nvarchar" MaxLength="500" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DM_MarketingMessages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="ParentId" Type="bigint" Nullable="false" />
+          <Property Name="Header" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Message1" Type="nvarchar(max)" />
+          <Property Name="Message2" Type="nvarchar(max)" />
+          <Property Name="Message3" Type="nvarchar(max)" />
+          <Property Name="Message4" Type="nvarchar(max)" />
+          <Property Name="Message5" Type="nvarchar(max)" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="DynamicWidget">
           <Key>
             <PropertyRef Name="Id" />
@@ -587,6 +703,11 @@
           <Property Name="ApplicationTheme" Type="nvarchar" MaxLength="50" />
           <Property Name="WidgetThemeSetting" Type="nvarchar(max)" />
           <Property Name="BaseUrlForTransactionData" Type="nvarchar(max)" />
+          <Property Name="PreviewStatementFunctionName" Type="nvarchar" MaxLength="500" />
+          <Property Name="GenerateStatementRunNowScheduleFunctionName" Type="nvarchar" MaxLength="500" />
+          <Property Name="GenerateStatementScheduleTimeFunctionName" Type="nvarchar" MaxLength="500" />
+          <Property Name="GenerateStatementForFailedCasesFunctionName" Type="nvarchar" MaxLength="500" />
+          <Property Name="ArchivalProcessFunctionName" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="TenantContact">
           <Key>
@@ -1175,6 +1296,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             <PropertyRef Name="IsActive" />
             <PropertyRef Name="IsDeleted" />
             <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="IsInstanceManager" />
+            <PropertyRef Name="IsGroupManager" />
             <PropertyRef Name="Name" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
@@ -1188,6 +1311,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CountryId" Type="bigint" />
+          <Property Name="IsInstanceManager" Type="bit" Nullable="false" />
+          <Property Name="IsGroupManager" Type="bit" Nullable="false" />
+          <Property Name="IsPasswordResetByAdmin" Type="bit" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Function Name="FnGetParentAndChildTenant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="NIS">
@@ -1286,6 +1413,12 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="Country" EntityType="Self.Country" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_BranchMaster" EntityType="Self.DM_BranchMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_CustomerMaster" EntityType="Self.DM_CustomerMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_ExplanatoryNotes" EntityType="Self.DM_ExplanatoryNotes" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_InvestmentMaster" EntityType="Self.DM_InvestmentMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_InvestmentTransaction" EntityType="Self.DM_InvestmentTransaction" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_MarketingMessages" EntityType="Self.DM_MarketingMessages" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DynamicWidget" EntityType="Self.DynamicWidget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DynamicWidgetFilterDetail" EntityType="Self.DynamicWidgetFilterDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="EntityFieldMap" EntityType="Self.EntityFieldMap" Schema="NIS" store:Type="Tables" />
@@ -1553,6 +1686,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_User].[IsActive] AS [IsActive], 
     [View_User].[IsDeleted] AS [IsDeleted], 
     [View_User].[TenantCode] AS [TenantCode], 
+    [View_User].[CountryId] AS [CountryId], 
+    [View_User].[IsInstanceManager] AS [IsInstanceManager], 
+    [View_User].[IsGroupManager] AS [IsGroupManager], 
+    [View_User].[IsPasswordResetByAdmin] AS [IsPasswordResetByAdmin], 
     [View_User].[Name] AS [Name]
     FROM [NIS].[View_User] AS [View_User]</DefiningQuery>
           </EntitySet>
@@ -1595,11 +1732,9 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="Top4IncomeSourcesRecord" EntityType="NISModel.Top4IncomeSourcesRecord" />
           <EntitySet Name="TransactionDetailRecords" EntityType="NISModel.TransactionDetailRecord" />
           <EntitySet Name="AccountMasterRecords" EntityType="NISModel.AccountMasterRecord" />
-          <EntitySet Name="TenantConfigurationRecords" EntityType="NISModel.TenantConfigurationRecord" />
           <EntitySet Name="BatchMasterRecords" EntityType="NISModel.BatchMasterRecord" />
           <EntitySet Name="AnalyticsDataRecords" EntityType="NISModel.AnalyticsDataRecord" />
           <EntitySet Name="View_ScheduleRecord" EntityType="NISModel.View_ScheduleRecord" />
-          <EntitySet Name="View_UserRecord" EntityType="NISModel.View_UserRecord" />
           <EntitySet Name="View_PageRecord" EntityType="NISModel.View_PageRecord" />
           <EntitySet Name="View_StatementDefinitionRecord" EntityType="NISModel.View_StatementDefinitionRecord" />
           <EntitySet Name="View_SourceDataRecord" EntityType="NISModel.View_SourceDataRecord" />
@@ -1636,7 +1771,15 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TenantSecurityCodeFormatRecords" EntityType="NISModel.TenantSecurityCodeFormatRecord" />
           <EntitySet Name="View_StatementMetadataRecord" EntityType="NISModel.View_StatementMetadataRecord" />
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
-        </EntityContainer>
+          <EntitySet Name="TenantConfigurationRecords" EntityType="NISModel.TenantConfigurationRecord" />
+          <EntitySet Name="View_UserRecord" EntityType="NISModel.View_UserRecord" />
+          <EntitySet Name="DM_BranchMasterRecord" EntityType="NISModel.DM_BranchMasterRecord" />
+          <EntitySet Name="DM_ExplanatoryNotesRecord" EntityType="NISModel.DM_ExplanatoryNotesRecord" />
+          <EntitySet Name="DM_MarketingMessagesRecord" EntityType="NISModel.DM_MarketingMessagesRecord" />
+          <EntitySet Name="DM_CustomerMasterRecord" EntityType="NISModel.DM_CustomerMasterRecord" />
+          <EntitySet Name="DM_InvestmentMasterRecord" EntityType="NISModel.DM_InvestmentMasterRecord" />
+          <EntitySet Name="DM_InvestmentTransactionRecord" EntityType="NISModel.DM_InvestmentTransactionRecord" />
+          </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -2138,26 +2281,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="Percentage" Type="Decimal" Precision="4" Scale="2" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="TenantConfigurationRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="InputDataSourcePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OutputHTMLPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OutputPDFPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ArchivalPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AssetPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ArchivalPeriod" Type="Int32" />
-          <Property Name="ArchivalPeriodUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ApplicationTheme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WidgetThemeSetting" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="BaseUrlForTransactionData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="BatchMasterRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -2231,33 +2354,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsEndsAfterNoOfOccurrences" Type="Boolean" />
           <Property Name="NoOfOccurrences" Type="Int64" />
           <Property Name="ExecutedBatchCount" Type="Int32" />
-        </EntityType>
-        <EntityType Name="View_UserRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="FirstName" />
-            <PropertyRef Name="LastName" />
-            <PropertyRef Name="ContactNumber" />
-            <PropertyRef Name="EmailAddress" />
-            <PropertyRef Name="IsLocked" />
-            <PropertyRef Name="NoofAttempts" />
-            <PropertyRef Name="IsActive" />
-            <PropertyRef Name="IsDeleted" />
-            <PropertyRef Name="TenantCode" />
-            <PropertyRef Name="Name" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ContactNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="EmailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
-          <Property Name="NoofAttempts" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="View_PageRecord">
           <Key>
@@ -2857,7 +2953,181 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-      </Schema>
+        <EntityType Name="TenantConfigurationRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InputDataSourcePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OutputHTMLPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OutputPDFPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AssetPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalPeriod" Type="Int32" />
+          <Property Name="ArchivalPeriodUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationTheme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetThemeSetting" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BaseUrlForTransactionData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PreviewStatementFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GenerateStatementRunNowScheduleFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GenerateStatementScheduleTimeFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GenerateStatementForFailedCasesFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalProcessFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_UserRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="ContactNumber" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="IsLocked" />
+            <PropertyRef Name="NoofAttempts" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="TenantCode" />
+            <PropertyRef Name="IsInstanceManager" />
+            <PropertyRef Name="IsGroupManager" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+          <Property Name="NoofAttempts" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CountryId" Type="Int64" />
+          <Property Name="IsInstanceManager" Type="Boolean" Nullable="false" />
+          <Property Name="IsGroupManager" Type="Boolean" Nullable="false" />
+          <Property Name="IsPasswordResetByAdmin" Type="Boolean" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_BranchMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine0" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="VatRegNo" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNo" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_ExplanatoryNotesRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="ParentId" Type="Int64" Nullable="false" />
+          <Property Name="Note1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Note2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Note3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Note4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Note5" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_MarketingMessagesRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="ParentId" Type="Int64" Nullable="false" />
+          <Property Name="Header" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Message1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Message2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Message3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Message4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Message5" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_CustomerMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SurName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DS_Investor_Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine0" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine4" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Mask_Cell_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Field1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Field2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Field3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Field4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_InvestmentMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="InvestmentId" Type="Int64" Nullable="false" />
+          <Property Name="BranchId" Type="Int64" Nullable="false" />
+          <Property Name="ProductId" Type="Int64" Nullable="false" />
+          <Property Name="ProductType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDesc" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AccountOpenDate" Type="DateTime" Precision="3" />
+          <Property Name="CurrentInterestRate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArchiveDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+          <Property Name="InterestDisposalId" Type="Int64" />
+          <Property Name="InterestDisposalDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NoticePeriod" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AccuredInterest" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatementDate" Type="DateTime" Precision="3" />
+          <Property Name="DayOfStatement" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="StatementPeriod" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ClosingBalance" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_InvestmentTransactionRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="InvestmentId" Type="Int64" Nullable="false" />
+          <Property Name="ProductId" Type="Int64" Nullable="false" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS2_Debit" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS3_Credit" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS4_Balance" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS5_TransId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -3397,27 +3667,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TenantConfigurationRecords">
-            <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
-              <MappingFragment StoreEntitySet="TenantConfiguration">
-                <ScalarProperty Name="BaseUrlForTransactionData" ColumnName="BaseUrlForTransactionData" />
-                <ScalarProperty Name="WidgetThemeSetting" ColumnName="WidgetThemeSetting" />
-                <ScalarProperty Name="ApplicationTheme" ColumnName="ApplicationTheme" />
-                <ScalarProperty Name="DateFormat" ColumnName="DateFormat" />
-                <ScalarProperty Name="ArchivalPeriodUnit" ColumnName="ArchivalPeriodUnit" />
-                <ScalarProperty Name="ArchivalPeriod" ColumnName="ArchivalPeriod" />
-                <ScalarProperty Name="AssetPath" ColumnName="AssetPath" />
-                <ScalarProperty Name="ArchivalPath" ColumnName="ArchivalPath" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="OutputPDFPath" ColumnName="OutputPDFPath" />
-                <ScalarProperty Name="OutputHTMLPath" ColumnName="OutputHTMLPath" />
-                <ScalarProperty Name="InputDataSourcePath" ColumnName="InputDataSourcePath" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BatchMasterRecords">
             <EntityTypeMapping TypeName="NISModel.BatchMasterRecord">
               <MappingFragment StoreEntitySet="BatchMaster">
@@ -3478,24 +3727,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="View_UserRecord">
-            <EntityTypeMapping TypeName="NISModel.View_UserRecord">
-              <MappingFragment StoreEntitySet="View_User">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="NoofAttempts" ColumnName="NoofAttempts" />
-                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4047,7 +4278,177 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="TenantConfigurationRecords">
+            <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
+              <MappingFragment StoreEntitySet="TenantConfiguration">
+                <ScalarProperty Name="ArchivalProcessFunctionName" ColumnName="ArchivalProcessFunctionName" />
+                <ScalarProperty Name="GenerateStatementForFailedCasesFunctionName" ColumnName="GenerateStatementForFailedCasesFunctionName" />
+                <ScalarProperty Name="GenerateStatementScheduleTimeFunctionName" ColumnName="GenerateStatementScheduleTimeFunctionName" />
+                <ScalarProperty Name="GenerateStatementRunNowScheduleFunctionName" ColumnName="GenerateStatementRunNowScheduleFunctionName" />
+                <ScalarProperty Name="PreviewStatementFunctionName" ColumnName="PreviewStatementFunctionName" />
+                <ScalarProperty Name="BaseUrlForTransactionData" ColumnName="BaseUrlForTransactionData" />
+                <ScalarProperty Name="WidgetThemeSetting" ColumnName="WidgetThemeSetting" />
+                <ScalarProperty Name="ApplicationTheme" ColumnName="ApplicationTheme" />
+                <ScalarProperty Name="DateFormat" ColumnName="DateFormat" />
+                <ScalarProperty Name="ArchivalPeriodUnit" ColumnName="ArchivalPeriodUnit" />
+                <ScalarProperty Name="ArchivalPeriod" ColumnName="ArchivalPeriod" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="AssetPath" ColumnName="AssetPath" />
+                <ScalarProperty Name="ArchivalPath" ColumnName="ArchivalPath" />
+                <ScalarProperty Name="OutputPDFPath" ColumnName="OutputPDFPath" />
+                <ScalarProperty Name="OutputHTMLPath" ColumnName="OutputHTMLPath" />
+                <ScalarProperty Name="InputDataSourcePath" ColumnName="InputDataSourcePath" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_UserRecord">
+            <EntityTypeMapping TypeName="NISModel.View_UserRecord">
+              <MappingFragment StoreEntitySet="View_User">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsPasswordResetByAdmin" ColumnName="IsPasswordResetByAdmin" />
+                <ScalarProperty Name="IsGroupManager" ColumnName="IsGroupManager" />
+                <ScalarProperty Name="IsInstanceManager" ColumnName="IsInstanceManager" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NoofAttempts" ColumnName="NoofAttempts" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_BranchMasterRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_BranchMasterRecord">
+              <MappingFragment StoreEntitySet="DM_BranchMaster">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="VatRegNo" ColumnName="VatRegNo" />
+                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine0" ColumnName="AddressLine0" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_ExplanatoryNotesRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_ExplanatoryNotesRecord">
+              <MappingFragment StoreEntitySet="DM_ExplanatoryNotes">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Note5" ColumnName="Note5" />
+                <ScalarProperty Name="Note4" ColumnName="Note4" />
+                <ScalarProperty Name="Note3" ColumnName="Note3" />
+                <ScalarProperty Name="Note2" ColumnName="Note2" />
+                <ScalarProperty Name="Note1" ColumnName="Note1" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_MarketingMessagesRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_MarketingMessagesRecord">
+              <MappingFragment StoreEntitySet="DM_MarketingMessages">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Message5" ColumnName="Message5" />
+                <ScalarProperty Name="Message4" ColumnName="Message4" />
+                <ScalarProperty Name="Message3" ColumnName="Message3" />
+                <ScalarProperty Name="Message2" ColumnName="Message2" />
+                <ScalarProperty Name="Message1" ColumnName="Message1" />
+                <ScalarProperty Name="Header" ColumnName="Header" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_CustomerMasterRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_CustomerMasterRecord">
+              <MappingFragment StoreEntitySet="DM_CustomerMaster">
+                <ScalarProperty Name="Field4" ColumnName="Field4" />
+                <ScalarProperty Name="Field3" ColumnName="Field3" />
+                <ScalarProperty Name="Field2" ColumnName="Field2" />
+                <ScalarProperty Name="Field1" ColumnName="Field1" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Mask_Cell_No" ColumnName="Mask_Cell_No" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="AddressLine4" ColumnName="AddressLine4" />
+                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine0" ColumnName="AddressLine0" />
+                <ScalarProperty Name="DS_Investor_Name" ColumnName="DS_Investor_Name" />
+                <ScalarProperty Name="SurName" ColumnName="SurName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_InvestmentMasterRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_InvestmentMasterRecord">
+              <MappingFragment StoreEntitySet="DM_InvestmentMaster">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ClosingBalance" ColumnName="ClosingBalance" />
+                <ScalarProperty Name="StatementPeriod" ColumnName="StatementPeriod" />
+                <ScalarProperty Name="DayOfStatement" ColumnName="DayOfStatement" />
+                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
+                <ScalarProperty Name="AccuredInterest" ColumnName="AccuredInterest" />
+                <ScalarProperty Name="NoticePeriod" ColumnName="NoticePeriod" />
+                <ScalarProperty Name="InterestDisposalDesc" ColumnName="InterestDisposalDesc" />
+                <ScalarProperty Name="InterestDisposalId" ColumnName="InterestDisposalId" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="ArchiveDate" ColumnName="ArchiveDate" />
+                <ScalarProperty Name="CurrentInterestRate" ColumnName="CurrentInterestRate" />
+                <ScalarProperty Name="AccountOpenDate" ColumnName="AccountOpenDate" />
+                <ScalarProperty Name="ProductDesc" ColumnName="ProductDesc" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="InvestmentId" ColumnName="InvestmentId" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_InvestmentTransactionRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_InvestmentTransactionRecord">
+              <MappingFragment StoreEntitySet="DM_InvestmentTransaction">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="WJXBFS5_TransId" ColumnName="WJXBFS5_TransId" />
+                <ScalarProperty Name="WJXBFS4_Balance" ColumnName="WJXBFS4_Balance" />
+                <ScalarProperty Name="WJXBFS3_Credit" ColumnName="WJXBFS3_Credit" />
+                <ScalarProperty Name="WJXBFS2_Debit" ColumnName="WJXBFS2_Debit" />
+                <ScalarProperty Name="WJXBFS1" ColumnName="WJXBFS1" />
+                <ScalarProperty Name="TransactionDesc" ColumnName="TransactionDesc" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="InvestmentId" ColumnName="InvestmentId" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

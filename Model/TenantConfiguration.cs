@@ -67,6 +67,12 @@ namespace nIS
         [Description("TenantCode")]
         public string TenantCode { get; set; }
 
+        public string PreviewStatementFunctionName { get; set; }
+        public string GenerateStatementRunNowScheduleFunctionName { get; set; }
+        public string GenerateStatementScheduleTimeFunctionName { get; set; }
+        public string GenerateStatementForFailedCasesFunctionName { get; set; }
+        public string ArchivalProcessFunctionName { get; set; }
+
         /// <summary>
         /// The utility object
         /// </summary>

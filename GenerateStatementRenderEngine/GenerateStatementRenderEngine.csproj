@@ -187,8 +187,9 @@
     <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\css\site.css" />
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
-    <Content Include="Resources\images\absa-logo.png" />
+    <Content Include="Resources\images\eConfirm.png" />
     <Content Include="Resources\images\logo.png" />
+    <Content Include="Resources\images\NEDBANKLogo.png" />
     <Content Include="Resources\images\nisLogo.png" />
     <Content Include="Resources\js\accessibility.js" />
     <Content Include="Resources\js\bootstrap.min.js" />
@@ -231,6 +232,9 @@
     <None Include="Properties\PublishProfiles\nisqa-api2 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api2 - ReadOnly - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\nisqa-api2 - Web Deploy.pubxml" />
+    <Content Include="Resources\fonts\MARKPRO.woff" />
+    <Content Include="Resources\fonts\MARKPROBOLD.woff" />
+    <Content Include="Resources\fonts\MARKPROMEDIUM.woff" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CryptoManager\CryptoManager.csproj">

@@ -2469,7 +2469,7 @@ namespace nIS
                 }
 
                 var scheduleExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, Convert.ToInt32(schedule.DayOfMonth), 0, 0, 0);
-                if (newendate != null)
+                if (schedule.EndDate != null)
                 {
                     while (DateTime.Compare(scheduleExecutionDate, newendate) <= 0)
                     {

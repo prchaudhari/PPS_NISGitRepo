@@ -105,6 +105,11 @@ namespace nIS
                         ApplicationTheme = item.ApplicationTheme,
                         WidgetThemeSetting = item.WidgetThemeSetting,
                         BaseUrlForTransactionData = item.BaseUrlForTransactionData,
+                        PreviewStatementFunctionName = item.PreviewStatementFunctionName,
+                        GenerateStatementRunNowScheduleFunctionName = item.GenerateStatementRunNowScheduleFunctionName,
+                        GenerateStatementScheduleTimeFunctionName = item.GenerateStatementScheduleTimeFunctionName,
+                        GenerateStatementForFailedCasesFunctionName = item.GenerateStatementForFailedCasesFunctionName,
+                        ArchivalProcessFunctionName = item.ArchivalProcessFunctionName,
                         TenantCode = item.TenantCode
                     }).ToList();
 

@@ -23,5 +23,7 @@ namespace nIS
         public Client Client { get; set; }
         public IList<TenantEntity> TenantEntities { get; set; }
         public RenderEngine RenderEngine { get; set; }
+
+        public DM_CustomerMaster DM_Customer { get; set; }
     }
 }

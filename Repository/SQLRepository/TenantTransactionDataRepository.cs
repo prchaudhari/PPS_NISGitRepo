@@ -63,463 +63,6 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of customer master from tenant transaction data repository.
         /// </summary>
-        /// <param name="customerSearchParameter">The subscription master search parameter</param>
-        /// <param name="tenantCode">The tenant code</param>
-        /// <returns>
-        /// Returns the list of customer master
-        /// </returns>
-        //public IList<CustomerMaster> Get_TTD_CustomerMasters(CustomerSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<CustomerMaster> customerMasters = new List<CustomerMaster>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGeneratorForCustomer(searchParameter, tenantCode);
-        //        var customerMasterRecords = new List<TTD_CustomerMasterRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            customerMasterRecords = nISEntitiesDataContext.TTD_CustomerMasterRecord.Where(whereClause).ToList();
-        //            if (customerMasterRecords != null && customerMasterRecords.Count > 0)
-        //            {
-        //                customerMasterRecords.ForEach(item =>
-        //                {
-        //                    customerMasters.Add(new CustomerMaster()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerCode = item.CustomerCode,
-        //                        FirstName = item.FirstName,
-        //                        MiddleName = item.MiddleName,
-        //                        LastName = item.LastName,
-        //                        AddressLine1 = item.AddressLine1,
-        //                        AddressLine2 = item.AddressLine2,
-        //                        City = item.City,
-        //                        State = item.State,
-        //                        Country = item.Country,
-        //                        Zip = item.Zip,
-        //                        StatementDate = item.StatementDate,
-        //                        StatementPeriod = item.StatementPeriod,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return customerMasters;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of subscription master from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of subscription master
-        ///// </returns>
-        //public IList<SubscriptionMaster> Get_TTD_SubscriptionMasters(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<SubscriptionMaster> subscriptionMasters = new List<SubscriptionMaster>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var subscriptionMasterRecords = new List<TTD_SubscriptionMasterRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            subscriptionMasterRecords = nISEntitiesDataContext.TTD_SubscriptionMasterRecord.Where(whereClause).ToList();
-        //            if (subscriptionMasterRecords != null && subscriptionMasterRecords.Count > 0)
-        //            {
-        //                subscriptionMasterRecords.ForEach(item =>
-        //                {
-        //                    var customermaster = nISEntitiesDataContext.CustomerMasterRecords.Where(it => it.Id == searchParameter.CustomerId && it.BatchId == searchParameter.BatchId).ToList().FirstOrDefault();
-        //                    subscriptionMasters.Add(new SubscriptionMaster()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        CustomerCode = item.CustomerCode,
-        //                        EmployeeID = item.CustomerCode,
-        //                        EmployeeName = customermaster.FirstName + " " + customermaster.LastName,
-        //                        VendorName = item.VendorName,
-        //                        Subscription = item.Subscription,
-        //                        Email = item.Email,
-        //                        StartDate = item.StartDate,
-        //                        EndDate = item.EndDate,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return subscriptionMasters;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of subscription usage from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of subscription usage
-        ///// </returns>
-        //public IList<SubscriptionUsage> Get_TTD_SubscriptionUsages(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<SubscriptionUsage> subscriptionUsages = new List<SubscriptionUsage>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var subscriptionUsageRecords = new List<TTD_SubscriptionUsageRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            subscriptionUsageRecords = nISEntitiesDataContext.TTD_SubscriptionUsageRecord.Where(whereClause).ToList();
-        //            if (subscriptionUsageRecords != null && subscriptionUsageRecords.Count > 0)
-        //            {
-        //                subscriptionUsageRecords.ForEach(item =>
-        //                {
-        //                    subscriptionUsages.Add(new SubscriptionUsage()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        VendorName = item.VendorName,
-        //                        Subscription = item.Subscription,
-        //                        Email = item.Email,
-        //                        Usage = item.Usage,
-        //                        Emails = item.Emails,
-        //                        Meetings = item.Meetings,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return subscriptionUsages;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of subscription summaries from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of subscription summeries
-        ///// </returns>
-        //public IList<SubscriptionSummary> Get_TTD_SubscriptionSummaries(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<SubscriptionSummary> subscriptionSummaries = new List<SubscriptionSummary>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var subscriptionSummaryRecords = new List<TTD_SubscriptionSummaryRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            subscriptionSummaryRecords = nISEntitiesDataContext.TTD_SubscriptionSummaryRecord.Where(whereClause).ToList();
-        //            if (subscriptionSummaryRecords != null && subscriptionSummaryRecords.Count > 0)
-        //            {
-        //                subscriptionSummaryRecords.ForEach(item =>
-        //                {
-        //                    subscriptionSummaries.Add(new SubscriptionSummary()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        Vendor = item.VendorName,
-        //                        Subscription = item.Subscription,
-        //                        Total = item.Total,
-        //                        AverageSpend = item.AverageSpend,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return subscriptionSummaries;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of subscription spends from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of subscription spends
-        ///// </returns>
-        //public IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<SubscriptionSpend> subscriptionSpends = new List<SubscriptionSpend>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var subscriptionSpendRecords = new List<TTD_SubscriptionSpendRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            subscriptionSpendRecords = nISEntitiesDataContext.TTD_SubscriptionSpendRecord.Where(whereClause).ToList();
-        //            if (subscriptionSpendRecords != null && subscriptionSpendRecords.Count > 0)
-        //            {
-        //                subscriptionSpendRecords.ForEach(item =>
-        //                {
-        //                    subscriptionSpends.Add(new SubscriptionSpend()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        Month = item.Month,
-        //                        Year = item.Year,
-        //                        Microsoft = item.Microsoft,
-        //                        Zoom = item.Zoom,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return subscriptionSpends;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of user subscription from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of user subscriptions
-        ///// </returns>
-        //public IList<UserSubscription> Get_TTD_UserSubscriptions(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<UserSubscription> userSubscriptions = new List<UserSubscription>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var userSubscriptionRecords = new List<TTD_UserSubscriptionsRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            userSubscriptionRecords = nISEntitiesDataContext.TTD_UserSubscriptionsRecord.Where(whereClause).ToList();
-        //            if (userSubscriptionRecords != null && userSubscriptionRecords.Count > 0)
-        //            {
-        //                userSubscriptionRecords.ForEach(item =>
-        //                {
-        //                    userSubscriptions.Add(new UserSubscription()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        CountOfSubscription = item.CountOfSubscription,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return userSubscriptions;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of vendor subscription from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of vendor subscriptions
-        ///// </returns>
-        //public IList<VendorSubscription> Get_TTD_VendorSubscriptions(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<VendorSubscription> vendorSubscriptions = new List<VendorSubscription>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var vendorSubscriptionRecords = new List<TTD_VendorSubscriptionRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            vendorSubscriptionRecords = nISEntitiesDataContext.TTD_VendorSubscriptionRecord.Where(whereClause).ToList();
-        //            if (vendorSubscriptionRecords != null && vendorSubscriptionRecords.Count > 0)
-        //            {
-        //                vendorSubscriptionRecords.ForEach(item =>
-        //                {
-        //                    vendorSubscriptions.Add(new VendorSubscription()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        VenderName = item.VenderName,
-        //                        CountOfSubscription = item.CountOfSubscription,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return vendorSubscriptions;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of data usages from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of data usages
-        ///// </returns>
-        //public IList<DataUsage> Get_TTD_DataUsages(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<DataUsage> dataUsages = new List<DataUsage>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var dataUsageRecords = new List<TTD_DataUsageRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            dataUsageRecords = nISEntitiesDataContext.TTD_DataUsageRecord.Where(whereClause).ToList();
-        //            if (dataUsageRecords != null && dataUsageRecords.Count > 0)
-        //            {
-        //                dataUsageRecords.ForEach(item =>
-        //                {
-        //                    dataUsages.Add(new DataUsage()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        Month = item.Month,
-        //                        Year = item.Year,
-        //                        Microsoft = item.Microsoft,
-        //                        Zoom = item.Zoom,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return dataUsages;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of meeting usages from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of meeting usages
-        ///// </returns>
-        //public IList<MeetingUsage> Get_TTD_MeetingUsages(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<MeetingUsage> meetingUsages = new List<MeetingUsage>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var meetingUsageRecords = new List<TTD_MeetingUsageRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            meetingUsageRecords = nISEntitiesDataContext.TTD_MeetingUsageRecord.Where(whereClause).ToList();
-        //            if (meetingUsageRecords != null && meetingUsageRecords.Count > 0)
-        //            {
-        //                meetingUsageRecords.ForEach(item =>
-        //                {
-        //                    meetingUsages.Add(new MeetingUsage()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        Month = item.Month,
-        //                        Year = item.Year,
-        //                        Microsoft = item.Microsoft,
-        //                        Zoom = item.Zoom,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return meetingUsages;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// This method gets the specified list of emails by subscription from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of emails by subscription
-        ///// </returns>
-        //public IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(TransactionDataSearchParameter searchParameter, string tenantCode)
-        //{
-        //    IList<EmailsBySubscription> emailsBySubscriptions = new List<EmailsBySubscription>();
-        //    try
-        //    {
-        //        this.SetAndValidateConnectionString(tenantCode);
-        //        string whereClause = this.WhereClauseGenerator(searchParameter, tenantCode);
-        //        var emailsBySubscriptionRecords = new List<TTD_EmailsBySubscriptionRecord>();
-        //        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-        //        {
-        //            emailsBySubscriptionRecords = nISEntitiesDataContext.TTD_EmailsBySubscriptionRecord.Where(whereClause).ToList();
-        //            if (emailsBySubscriptionRecords != null && emailsBySubscriptionRecords.Count > 0)
-        //            {
-        //                emailsBySubscriptionRecords.ForEach(item =>
-        //                {
-        //                    emailsBySubscriptions.Add(new EmailsBySubscription()
-        //                    {
-        //                        Identifier = item.Id,
-        //                        BatchId = item.BatchId,
-        //                        CustomerId = item.CustomerId,
-        //                        Emails = item.Emails,
-        //                        Subscription = item.Subscription,
-        //                        TenantCode = item.TenantCode
-        //                    });
-        //                });
-        //            }
-        //        }
-        //        return emailsBySubscriptions;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
-        /// <summary>
-        /// This method gets the specified list of customer master from tenant transaction data repository.
-        /// </summary>
         /// <param name="customerSearchParameter">The customer search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
@@ -896,40 +439,313 @@ namespace nIS
             return reminders;
         }
 
+        #region Nedbank Tenant
+
+        /// <summary>
+        /// This method gets the specified list of customer master from Dm customer master repository.
+        /// </summary>
+        /// <param name="customerSearchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer master
+        /// </returns>
+        public IList<DM_CustomerMaster> Get_DM_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode)
+        {
+            IList<DM_CustomerMaster> customerMasters = new List<DM_CustomerMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomer(customerSearchParameter, tenantCode);
+                var customerMasterRecords = new List<DM_CustomerMasterRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(whereClause).ToList();
+                    if (customerMasterRecords != null && customerMasterRecords.Count > 0)
+                    {
+                        customerMasterRecords.ForEach(item =>
+                        {
+                            customerMasters.Add(new DM_CustomerMaster()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                Title = item.Title,
+                                FirstName = item.FirstName,
+                                SurName = item.SurName,
+                                AddressLine0 = item.AddressLine0,
+                                AddressLine1 = item.AddressLine1,
+                                AddressLine2 = item.AddressLine2,
+                                AddressLine3 = item.AddressLine3,
+                                AddressLine4 = item.AddressLine4,
+                                DS_Investor_Name = item.DS_Investor_Name,
+                                EmailAddress = item.EmailAddress,
+                                Mask_Cell_No = item.Mask_Cell_No,
+                                Barcode = item.Barcode,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return customerMasters;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer investment master from investment master repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer investment search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer investment master
+        /// </returns>
+        public IList<DM_InvestmentMaster> Get_DM_InvestmasterMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_InvestmentMaster> InvestmentMasters = new List<DM_InvestmentMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerInvestment(searchParameter, tenantCode);
+                var InvestmentMasterRecords = new List<DM_InvestmentMasterRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    InvestmentMasterRecords = nISEntitiesDataContext.DM_InvestmentMasterRecord.Where(whereClause).ToList();
+                    if (InvestmentMasterRecords != null && InvestmentMasterRecords.Count > 0)
+                    {
+                        InvestmentMasterRecords.ForEach(item =>
+                        {
+                            InvestmentMasters.Add(new DM_InvestmentMaster()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                InvestmentId = item.InvestmentId,
+                                InvestorId = item.InvestorId,
+                                AccountOpenDate = item.AccountOpenDate,
+                                AccuredInterest = item.AccuredInterest,
+                                BranchId = item.BranchId,
+                                ClosingBalance = item.ClosingBalance,
+                                CurrentInterestRate = item.CurrentInterestRate,
+                                DayOfStatement = item.DayOfStatement,
+                                ExpiryDate = item.ExpiryDate,
+                                InterestDisposalDesc = item.InterestDisposalDesc,
+                                NoticePeriod = item.NoticePeriod,
+                                ProductDesc = item.ProductDesc,
+                                ProductId = item.ProductId,
+                                ProductType = item.ProductType,
+                                StatementDate = item.StatementDate,
+                                StatementPeriod = item.StatementPeriod,
+                                Currenacy = item.Currency,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return InvestmentMasters;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer investment transaction from Investment transaction repository.
+        /// </summary>
+        /// <param name="searchParameter">The investment search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer investment transaction
+        /// </returns>
+        public IList<DM_InvestmentTransaction> Get_DM_InvestmentTransaction(CustomerInvestmentSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_InvestmentTransaction> InvestmentTransactions = new List<DM_InvestmentTransaction>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerInvestment(searchParameter, tenantCode);
+                var InvestmentTransactionRecords = new List<DM_InvestmentTransactionRecord>();
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    InvestmentTransactionRecords = nISEntitiesDataContext.DM_InvestmentTransactionRecord.Where(whereClause)?.OrderBy(it => it.TransactionDate).ToList();
+                    if (InvestmentTransactionRecords != null && InvestmentTransactionRecords.Count > 0)
+                    {
+                        InvestmentTransactionRecords.ForEach(item =>
+                        {
+                            InvestmentTransactions.Add(new DM_InvestmentTransaction()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                ProductId = item.ProductId,
+                                InvestmentId = item.InvestmentId,
+                                InvestorId = item.InvestorId,
+                                TransactionDate = item.TransactionDate,
+                                TransactionDesc = item.TransactionDesc,
+                                WJXBFS1 = item.WJXBFS1,
+                                WJXBFS2_Debit = item.WJXBFS2_Debit,
+                                WJXBFS3_Credit = item.WJXBFS3_Credit,
+                                WJXBFS4_Balance = item.WJXBFS4_Balance,
+                                WJXBFS5_TransId = item.WJXBFS5_TransId,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return InvestmentTransactions;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of branch master from branch repository.
+        /// </summary>
+        /// <param name="BranchId">The Branch Identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of branch master
+        /// </returns>
+        public IList<DM_BranchMaster> Get_DM_BranchMaster(long BranchId, string tenantCode)
+        {
+            IList<DM_BranchMaster> _BranchMasters = new List<DM_BranchMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var BranchMasterRecords = nISEntitiesDataContext.DM_BranchMasterRecord.Where(it => it.Id == BranchId && it.TenantCode == tenantCode)?.ToList();
+                    if (BranchMasterRecords != null && BranchMasterRecords.Count > 0)
+                    {
+                        BranchMasterRecords.ForEach(item =>
+                        {
+                            _BranchMasters.Add(new DM_BranchMaster()
+                            {
+                                Identifier = item.Id,
+                                BranchName = item.Name,
+                                AddressLine0 = item.AddressLine0,
+                                AddressLine1 = item.AddressLine1,
+                                AddressLine2 = item.AddressLine2,
+                                AddressLine3 = item.AddressLine3,
+                                ContactNo = item.ContactNo,
+                                VatRegNo = item.VatRegNo,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+
+                }
+                return _BranchMasters;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of notes from explanatory notes repository.
+        /// </summary>
+        /// <param name="searchParameter">The message or note search parameter object</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of explanatory notes
+        /// </returns>
+        public IList<DM_ExplanatoryNote> Get_DM_ExplanatoryNotes(MessageAndNoteSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_ExplanatoryNote> ExplanatoryNotes = new List<DM_ExplanatoryNote>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForMessageOrNoteSearch(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var ExplanatoryNoteRecords = nISEntitiesDataContext.DM_ExplanatoryNotesRecord.Where(whereClause)?.ToList();
+                    if (ExplanatoryNoteRecords != null && ExplanatoryNoteRecords.Count > 0)
+                    {
+                        ExplanatoryNoteRecords.ForEach(item =>
+                        {
+                            ExplanatoryNotes.Add(new DM_ExplanatoryNote()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                ParentId = item.ParentId,
+                                Note1 = item.Note1,
+                                Note2 = item.Note2,
+                                Note3 = item.Note3,
+                                Note4 = item.Note4,
+                                Note5 = item.Note5,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+
+                }
+                return ExplanatoryNotes;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of message from marketing message repository.
+        /// </summary>
+        /// <param name="searchParameter">The message or note search parameter object</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of marketing message
+        /// </returns>
+        public IList<DM_MarketingMessage> Get_DM_MarketingMessages(MessageAndNoteSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_MarketingMessage> MarketingMessages = new List<DM_MarketingMessage>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForMessageOrNoteSearch(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var MarketingMessageRecords = nISEntitiesDataContext.DM_MarketingMessagesRecord.Where(whereClause)?.ToList();
+                    if (MarketingMessageRecords != null && MarketingMessageRecords.Count > 0)
+                    {
+                        MarketingMessageRecords.ForEach(item =>
+                        {
+                            MarketingMessages.Add(new DM_MarketingMessage()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                ParentId = item.ParentId,
+                                Header = item.Header,
+                                Message1 = item.Message1,
+                                Message2 = item.Message2,
+                                Message3 = item.Message3,
+                                Message4 = item.Message4,
+                                Message5 = item.Message5,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+
+                }
+                return MarketingMessages;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Private Methods
-
-        /// <summary>
-        /// Generate string for dynamic linq.
-        /// </summary>
-        /// <param name="searchParameter">Role search Parameters</param>
-        /// <returns>
-        /// Returns a string.
-        /// </returns>
-        private string WhereClauseGenerator(TransactionDataSearchParameter searchParameter, string tenantCode)
-        {
-            StringBuilder queryString = new StringBuilder();
-            if (validationEngine.IsValidLong(searchParameter.BatchId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
-            }
-            if (validationEngine.IsValidLong(searchParameter.CustomerId))
-            {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
-            }
-            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
-            {
-                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
-                filterEntities.ForEach(filterEntity =>
-                {
-                    queryString.Append(this.QueryGenerator(filterEntity));
-                });
-            }
-
-            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
-            return queryString.ToString();
-        }
 
         private string WhereClauseGeneratorForCustomer(CustomerSearchParameter searchParameter, string tenantCode)
         {
@@ -943,10 +759,15 @@ namespace nIS
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
             }
+            if (validationEngine.IsValidText(searchParameter.CustomerCode))
+            {
+                queryString.Append(string.Format("CustomerCode.Equals(\"{0}\") and ", searchParameter.CustomerCode));
+            }
             if (validationEngine.IsValidLong(searchParameter.BatchId))
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
             }
+            
             if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
             {
                 var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
@@ -955,6 +776,7 @@ namespace nIS
                     queryString.Append(this.QueryGenerator(filterEntity));
                 });
             }
+
             queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
@@ -999,6 +821,82 @@ namespace nIS
                     queryString.Append(this.QueryGenerator(filterEntity));
                 });
             }
+            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
+        private string WhereClauseGeneratorForCustomerInvestment(CustomerInvestmentSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            //send account id value to this property when account master data fetching
+            if (validationEngine.IsValidLong(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+
+            //send account id value to this property when account transaction data fetching
+            if (validationEngine.IsValidLong(searchParameter.InvestmentId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.InvestmentId.ToString().Split(',').Select(item => string.Format("InvestmentId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.BatchId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.InvestorId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
+            }
+            
+            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+            {
+                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                filterEntities.ForEach(filterEntity =>
+                {
+                    queryString.Append(this.QueryGenerator(filterEntity));
+                });
+            }
+
+            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
+        private string WhereClauseGeneratorForMessageOrNoteSearch(MessageAndNoteSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            if (validationEngine.IsValidLong(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.ParentId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.ParentId.ToString().Split(',').Select(item => string.Format("ParentId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.BatchId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
+            }
+
+            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+            {
+                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                filterEntities.ForEach(filterEntity =>
+                {
+                    queryString.Append(this.QueryGenerator(filterEntity));
+                });
+            }
+
             queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }

@@ -15,106 +15,6 @@ namespace nIS
         /// <summary>
         /// This method gets the specified list of customer master from tenant transaction data repository.
         /// </summary>
-        /// <param name="customerSearchParameter">The subscription master search parameter</param>
-        /// <param name="tenantCode">The tenant code</param>
-        /// <returns>
-        /// Returns the list of customer master
-        /// </returns>
-        //IList<CustomerMaster> Get_TTD_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of subscription master from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of statements
-        ///// </returns>
-        //IList<SubscriptionMaster> Get_TTD_SubscriptionMasters(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of subscription usage from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of subscription usage
-        ///// </returns>
-        //IList<SubscriptionUsage> Get_TTD_SubscriptionUsages(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of subscription summaries from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of subscription summeries
-        ///// </returns>
-        //IList<SubscriptionSummary> Get_TTD_SubscriptionSummaries(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of subscription spends from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="month">The month value</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of subscription spends
-        ///// </returns>
-        //IList<SubscriptionSpend> Get_TTD_SubscriptionSpends(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of user subscription from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of user subscriptions
-        ///// </returns>
-        //IList<UserSubscription> Get_TTD_UserSubscriptions(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of vendor subscription from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of vendor subscriptions
-        ///// </returns>
-        //IList<VendorSubscription> Get_TTD_VendorSubscriptions(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of data usages from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of data usages
-        ///// </returns>
-        //IList<DataUsage> Get_TTD_DataUsages(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of meeting usages from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of meeting usages
-        ///// </returns>
-        //IList<MeetingUsage> Get_TTD_MeetingUsages(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        ///// <summary>
-        ///// This method gets the specified list of emails by subscription from tenant transaction data repository.
-        ///// </summary>
-        ///// <param name="subscriptionMasterSearchParameter">The subscription master search parameter</param>
-        ///// <param name="tenantCode">The tenant code</param>
-        ///// <returns>
-        ///// Returns the list of emails by subscription
-        ///// </returns>
-        //IList<EmailsBySubscription> Get_TTD_EmailsBySubscription(TransactionDataSearchParameter subscriptionMasterSearchParameter, string tenantCode);
-
-        /// <summary>
-        /// This method gets the specified list of customer master from tenant transaction data repository.
-        /// </summary>
         /// <param name="customerSearchParameter">The customer search parameter</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <returns>
@@ -196,5 +96,69 @@ namespace nIS
         /// Returns the list of reminder and recommentations
         /// </returns>
         IList<ReminderAndRecommendation> GetReminderAndRecommendation(long CustomerIdentifier, long BatchIdentifier, string tenantCode);
+
+        #region Nedbank
+
+        /// <summary>
+        /// This method gets the specified list of customer master from Dm customer master repository.
+        /// </summary>
+        /// <param name="customerSearchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer master
+        /// </returns>
+        IList<DM_CustomerMaster> Get_DM_CustomerMasters(CustomerSearchParameter customerSearchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of customer investment master from investment master repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer investment search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer investment master
+        /// </returns>
+        IList<DM_InvestmentMaster> Get_DM_InvestmasterMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of customer investment transaction from Investment transaction repository.
+        /// </summary>
+        /// <param name="searchParameter">The investment search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer investment transaction
+        /// </returns>
+        IList<DM_InvestmentTransaction> Get_DM_InvestmentTransaction(CustomerInvestmentSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of branch master from branch repository.
+        /// </summary>
+        /// <param name="BranchId">The Branch Identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of branch master
+        /// </returns>
+        IList<DM_BranchMaster> Get_DM_BranchMaster(long BranchId, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of notes from explanatory notes repository.
+        /// </summary>
+        /// <param name="searchParameter">The message or note search parameter object</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of explanatory notes
+        /// </returns>
+        IList<DM_ExplanatoryNote> Get_DM_ExplanatoryNotes(MessageAndNoteSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of message from marketing message repository.
+        /// </summary>
+        /// <param name="searchParameter">The message or note search parameter object</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of marketing message
+        /// </returns>
+        IList<DM_MarketingMessage> Get_DM_MarketingMessages(MessageAndNoteSearchParameter searchParameter, string tenantCode);
+
+        #endregion
     }
 }

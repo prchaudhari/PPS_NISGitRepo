@@ -22,7 +22,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                               : base(connectionString)
+                                                   : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -63,11 +63,9 @@ namespace nIS
         public virtual DbSet<Top4IncomeSourcesRecord> Top4IncomeSourcesRecord { get; set; }
         public virtual DbSet<TransactionDetailRecord> TransactionDetailRecords { get; set; }
         public virtual DbSet<AccountMasterRecord> AccountMasterRecords { get; set; }
-        public virtual DbSet<TenantConfigurationRecord> TenantConfigurationRecords { get; set; }
         public virtual DbSet<BatchMasterRecord> BatchMasterRecords { get; set; }
         public virtual DbSet<AnalyticsDataRecord> AnalyticsDataRecords { get; set; }
         public virtual DbSet<View_ScheduleRecord> View_ScheduleRecord { get; set; }
-        public virtual DbSet<View_UserRecord> View_UserRecord { get; set; }
         public virtual DbSet<View_PageRecord> View_PageRecord { get; set; }
         public virtual DbSet<View_StatementDefinitionRecord> View_StatementDefinitionRecord { get; set; }
         public virtual DbSet<View_SourceDataRecord> View_SourceDataRecord { get; set; }
@@ -94,6 +92,14 @@ namespace nIS
         public virtual DbSet<TenantSecurityCodeFormatRecord> TenantSecurityCodeFormatRecords { get; set; }
         public virtual DbSet<View_StatementMetadataRecord> View_StatementMetadataRecord { get; set; }
         public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
+        public virtual DbSet<TenantConfigurationRecord> TenantConfigurationRecords { get; set; }
+        public virtual DbSet<View_UserRecord> View_UserRecord { get; set; }
+        public virtual DbSet<DM_BranchMasterRecord> DM_BranchMasterRecord { get; set; }
+        public virtual DbSet<DM_ExplanatoryNotesRecord> DM_ExplanatoryNotesRecord { get; set; }
+        public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
+        public virtual DbSet<DM_CustomerMasterRecord> DM_CustomerMasterRecord { get; set; }
+        public virtual DbSet<DM_InvestmentMasterRecord> DM_InvestmentMasterRecord { get; set; }
+        public virtual DbSet<DM_InvestmentTransactionRecord> DM_InvestmentTransactionRecord { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

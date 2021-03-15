@@ -206,13 +206,13 @@ namespace nIS
                 var logDetailRecord = this.GenerateNedbankStatements(statementRawData, tenantCode);
                 if (logDetailRecord != null)
                 {
-                    var customer = statementRawData.Customer;
+                    var customer = statementRawData.DM_Customer;
 
                     //save schedule log details for current customer
                     var logDetails = new List<ScheduleLogDetail>();
                     logDetailRecord.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
-                    logDetailRecord.CustomerId = customer.Identifier;
-                    logDetailRecord.CustomerName = customer.FirstName.Trim() + (customer.MiddleName == "" ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim();
+                    logDetailRecord.CustomerId = customer.CustomerId;
+                    logDetailRecord.CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim();
                     logDetailRecord.ScheduleId = statementRawData.ScheduleLog.ScheduleId;
                     logDetailRecord.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
                     logDetailRecord.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "";
@@ -374,424 +374,6 @@ namespace nIS
                         });
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// This method help to bind data to statement file for respective customer
-        /// </summary>
-        /// <param name="customer"> the customer object </param>
-        /// <param name="statement"> the statement object </param>
-        /// <param name="statementPageContents"> the statement page html content list </param>
-        /// <param name="batchMaster"> the batch master object</param>
-        /// <param name="batchDetails"> the batch detail object list</param>
-        /// <param name="baseURL"> the base URL</param>
-        /// <param name="tenantCode"> the tenant code </param>
-        /// <param name="outputLocation"> the HTML statement file output path</param>
-        /// <param name="tenantConfiguration"> the tenant configuration object</param>
-        /// <param name="client"> the client object</param>
-        /// <param name="tenantEntities"> the tenant entity object list</param>
-        public ScheduleLogDetail GenerateStatements(GenerateStatementRawData statementRawData, string tenantCode)
-        {
-            var logDetailRecord = new ScheduleLogDetail();
-            var ErrorMessages = new StringBuilder();
-            bool IsFailed = false;
-            bool IsSavingOrCurrentAccountPagePresent = false;
-            var statementMetadataRecords = new List<StatementMetadata>();
-
-            try
-            {
-                var customer = statementRawData.Customer;
-                var statement = statementRawData.Statement;
-                var batchMaster = statementRawData.Batch;
-
-                if (statementRawData.StatementPageContents.Count > 0)
-                {
-                    string currency = string.Empty;
-                    var accountrecords = new List<AccountMaster>();
-                    var savingaccountrecords = new List<AccountMaster>();
-                    var curerntaccountrecords = new List<AccountMaster>();
-                    var CustomerAcccountTransactions = new List<AccountTransaction>();
-                    var CustomerSavingTrends = new List<SavingTrend>();
-
-                    var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
-                    IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
-
-                    //collecting all required transaction required for static widgets in financial tenant html statement
-                    if (IsSavingOrCurrentAccountPagePresent)
-                    {
-                        var customerAccountSearchParameter = new CustomerAccountSearchParameter()
-                        {
-                            CustomerId = customer.Identifier,
-                            BatchId = batchMaster.Identifier
-                        };
-                        accountrecords = this.tenantTransactionDataRepository.Get_AccountMaster(customerAccountSearchParameter, tenantCode)?.ToList();
-                        if ((accountrecords == null || accountrecords.Count == 0))
-                        {
-                            ErrorMessages.Append("<li>Account master data is not available for this customer..!!</li>");
-                            IsFailed = true;
-                        }
-                        else
-                        {
-                            var records = accountrecords.Where(item => item.AccountType.Equals(string.Empty)).ToList();
-                            if (records.Count > 0)
-                            {
-                                ErrorMessages.Append("<li>Invalid account master data for this customer..!!</li>");
-                                IsFailed = true;
-                            }
-                        }
-
-                        //get customer account transaction details
-                        CustomerAcccountTransactions = this.tenantTransactionDataRepository.Get_AccountTransaction(customerAccountSearchParameter, tenantCode)?.OrderBy(item => item.TransactionDate)?.ToList();
-
-                        //get customer saving and spending trend details data
-                        CustomerSavingTrends = this.tenantTransactionDataRepository.Get_SavingTrend(customerAccountSearchParameter, tenantCode)?.ToList();
-                    }
-
-                    //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
-                    var customerMedias = this.tenantTransactionDataRepository.GetCustomerMediaList(customer.Identifier, batchMaster.Identifier, statement.Identifier, tenantCode);
-
-                    var htmlbody = new StringBuilder();
-                    currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
-                    string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
-                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy")); //bind current date to html header
-
-                    //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
-                    var clientlogo = statementRawData.Client.TenantLogo != null ? statementRawData.Client.TenantLogo : "";
-                    navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
-                    htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-
-                    //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
-                    var scriptHtmlRenderer = new StringBuilder();
-                    var navbar = new StringBuilder();
-                    int subPageCount = 0;
-                    string accountNumber = string.Empty; //also use for Subscription
-                    string accountType = string.Empty; //also use for vendor name
-                    long accountId = 0;
-                    HttpClient httpClient = null;
-
-                    var newStatementPageContents = new List<StatementPageContent>();
-                    statementRawData.StatementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
-                    {
-                        Id = it.Id,
-                        PageId = it.PageId,
-                        PageTypeId = it.PageTypeId,
-                        HtmlContent = it.HtmlContent,
-                        PageHeaderContent = it.PageHeaderContent,
-                        PageFooterContent = it.PageFooterContent,
-                        DisplayName = it.DisplayName,
-                        TabClassName = it.TabClassName,
-                        DynamicWidgets = it.DynamicWidgets
-                    }));
-
-                    long FirstPageId = statement.Pages[0].Identifier;
-                    for (int i = 0; i < statement.Pages.Count; i++)
-                    {
-                        var page = statement.Pages[i];
-                        StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
-
-                        //sub page count under current page tab
-                        subPageCount = 1;
-                        if (IsSavingOrCurrentAccountPagePresent)
-                        {
-                            //This will be applicable only for financial tenant
-                            //if cusomer have 2 saving or current account, then 2 tabs will be render to current page in html statement
-                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
-                            {
-                                savingaccountrecords = accountrecords.Where(item => item.AccountType.ToLower().Contains("saving"))?.ToList();
-                                if (savingaccountrecords == null || savingaccountrecords.Count == 0)
-                                {
-                                    ErrorMessages.Append("<li>Saving account master data is not available for this customer..!!</li>");
-                                    IsFailed = true;
-                                }
-                                subPageCount = savingaccountrecords.Count;
-                            }
-                            else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
-                            {
-                                curerntaccountrecords = accountrecords.Where(item => item.AccountType.ToLower().Contains("current"))?.ToList();
-                                if (curerntaccountrecords == null || curerntaccountrecords.Count == 0)
-                                {
-                                    ErrorMessages.Append("<li>Current account master data is not available for this customer..!!</li>");
-                                    IsFailed = true;
-                                }
-                                subPageCount = curerntaccountrecords.Count;
-                            }
-                        }
-
-                        var SubTabs = new StringBuilder();
-                        var PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
-                        var dynamicWidgets = new List<DynamicWidget>(statementPageContent.DynamicWidgets);
-
-                        string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
-                        navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
-                        string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
-                        PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
-
-                        var newPageContent = new StringBuilder();
-                        newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
-
-                        for (int x = 0; x < subPageCount; x++)
-                        {
-                            accountNumber = string.Empty;
-                            accountType = string.Empty;
-
-                            //Only for financial tenant
-                            if (IsSavingOrCurrentAccountPagePresent)
-                            {
-                                if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
-                                {
-                                    accountNumber = savingaccountrecords[x].AccountNumber;
-                                    accountId = savingaccountrecords[x].Identifier;
-                                    accountType = savingaccountrecords[x].AccountType;
-                                }
-                                else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
-                                {
-                                    accountNumber = curerntaccountrecords[x].AccountNumber;
-                                    accountId = curerntaccountrecords[x].Identifier;
-                                    accountType = curerntaccountrecords[x].AccountType;
-                                }
-
-                                //start creating sub tabs, append tab name with last 4 digits of account number
-                                if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
-                                {
-                                    string lastFourDigisOfAccountNumber = accountNumber.Length > 4 ? accountNumber.Substring(Math.Max(0, accountNumber.Length - 4)) : accountNumber;
-                                    if (x == 0)
-                                    {
-                                        SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
-                                    }
-
-                                    SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " +" role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
-
-                                    newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "")+ "'>");
-
-                                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
-                                    {
-                                        newPageContent.Append("<input type='hidden' id='SavingAccountId' name='SavingAccountId' value='" + accountId + "'>");
-                                    }
-                                    else
-                                    {
-                                        newPageContent.Append("<input type='hidden' id='CurrentAccountId' name='CurrentAccountId' value='" + accountId + "'>");
-                                    }
-
-                                    if (x == subPageCount - 1)
-                                    {
-                                        SubTabs.Append("</ul>");
-                                    }
-                                }
-                            }
-
-                            var pagewidgets = new List<PageWidget>(page.PageWidgets);
-                            var pageContent = new StringBuilder(statementPageContent.HtmlContent);
-                            for (int j = 0; j < pagewidgets.Count; j++)
-                            {
-                                var widget = pagewidgets[j];
-                                if (!widget.IsDynamicWidget)
-                                {
-                                    switch (widget.WidgetName)
-                                    {
-                                        case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
-                                            this.BindCustomerInformationWidgetData(pageContent, customer, statement, page, widget, customerMedias, statementRawData.BatchDetails);
-                                            break;
-                                        case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
-                                            this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
-                                            break;
-                                        case HtmlConstants.IMAGE_WIDGET_NAME:
-                                            IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
-                                            break;
-                                        case HtmlConstants.VIDEO_WIDGET_NAME:
-                                            IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
-                                            break;
-                                        case HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME:
-                                            IsFailed = this.BindSummaryAtGlanceWidgetData(pageContent, ErrorMessages, accountrecords, page, widget);
-                                            break;
-                                        case HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME:
-                                            IsFailed = this.BindCurrentAvailBalanceWidgetData(pageContent, ErrorMessages, customer, batchMaster, accountId, accountrecords, page, widget, currency);
-                                            break;
-                                        case HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME:
-                                            IsFailed = this.BindSavingAvailBalanceWidgetData(pageContent, ErrorMessages, customer, batchMaster, accountId, accountrecords, page, widget, currency);
-                                            break;
-                                        case HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME:
-                                            this.BindSavingTransactionWidgetData(pageContent, scriptHtmlRenderer, customer, batchMaster, CustomerAcccountTransactions, page, widget, accountId, tenantCode, currency, statementRawData.OutputLocation);
-                                            break;
-                                        case HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME:
-                                            this.BindCurrentTransactionWidgetData(pageContent, scriptHtmlRenderer, customer, batchMaster, CustomerAcccountTransactions, page, widget, accountId, tenantCode, currency, statementRawData.OutputLocation);
-                                            break;
-                                        case HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME:
-                                            this.BindTop4IncomeSourcesWidgetData(pageContent, customer, batchMaster, page, widget, tenantCode);
-                                            break;
-                                        case HtmlConstants.ANALYTICS_WIDGET_NAME:
-                                            this.BindAnalyticsChartWidgetData(pageContent, scriptHtmlRenderer, customer, batchMaster, accountrecords, page, statementRawData.OutputLocation);
-                                            break;
-                                        case HtmlConstants.SAVING_TREND_WIDGET_NAME:
-                                            IsFailed = this.BindSavingTrendChartWidgetData(pageContent, scriptHtmlRenderer, ErrorMessages, customer, batchMaster, CustomerSavingTrends, accountId, page, tenantCode, statementRawData.OutputLocation);
-                                            break;
-                                        case HtmlConstants.SPENDING_TREND_WIDGET_NAME:
-                                            IsFailed = this.BindSpendingTrendChartWidgetData(pageContent, scriptHtmlRenderer, ErrorMessages, customer, batchMaster, CustomerSavingTrends, accountId, page, tenantCode, statementRawData.OutputLocation);
-                                            break;
-                                        case HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME:
-                                            this.BindReminderAndRecommendationWidgetData(pageContent, customer, batchMaster, page, widget, tenantCode);
-                                            break;
-                                    }
-                                }
-                                else
-                                {
-                                    var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId).ToList();
-                                    if (dynaWidgets.Count > 0)
-                                    {
-                                        var dynawidget = dynaWidgets.FirstOrDefault();
-                                        var themeDetails = new CustomeTheme();
-                                        if (dynawidget.ThemeType == "Default")
-                                        {
-                                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(statementRawData.TenantConfiguration.WidgetThemeSetting);
-                                        }
-                                        else
-                                        {
-                                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
-                                        }
-
-                                        //Get data from database for widget
-                                        httpClient = new HttpClient();
-                                        httpClient.BaseAddress = new Uri(statementRawData.TenantConfiguration.BaseUrlForTransactionData);
-                                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
-                                        httpClient.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
-
-                                        //API search parameter
-                                        JObject searchParameter = new JObject();
-                                        searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
-                                        searchParameter[ModelConstant.CUSTOEMR_ID] = customer.Identifier;
-                                        searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
-
-                                        switch (dynawidget.WidgetType)
-                                        {
-                                            case HtmlConstants.TABLE_DYNAMICWIDGET:
-                                                this.BindDynamicTableWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
-                                                break;
-                                            case HtmlConstants.FORM_DYNAMICWIDGET:
-                                                this.BindDynamicFormWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
-                                                break;
-                                            case HtmlConstants.LINEGRAPH_DYNAMICWIDGET:
-                                                this.BindDynamicLineGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
-                                                break;
-                                            case HtmlConstants.BARGRAPH_DYNAMICWIDGET:
-                                                this.BindDynamicBarGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
-                                                break;
-                                            case HtmlConstants.PICHART_DYNAMICWIDGET:
-                                                this.BindDynamicPieChartWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails, tenantCode);
-                                                break;
-                                            case HtmlConstants.HTML_DYNAMICWIDGET:
-                                                this.BindDynamicHtmlWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
-                                                break;
-                                        }
-                                    }
-                                }
-                            }
-
-                            //if account number variable is not empty means, financial tenant
-                            if (accountNumber != string.Empty)
-                            {
-                                //generate statement metadata records in list format
-                                statementMetadataRecords.Add(new StatementMetadata
-                                {
-                                    AccountNumber = accountNumber,
-                                    AccountType = accountType,
-                                    CustomerId = customer.Identifier,
-                                    CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
-                                    StatementPeriod = customer.StatementPeriod,
-                                    StatementId = statement.Identifier,
-                                });
-                            }
-                            else
-                            {
-                                //To add statement metadata records for subscription master tenant
-                                //var subscriptionMasters = this.tenantTransactionDataRepository.Get_TTD_SubscriptionMasters(new TransactionDataSearchParameter()
-                                //{
-                                //    BatchId = batchMaster.Identifier,
-                                //    CustomerId = customer.Identifier
-                                //}, tenantCode);
-                                //subscriptionMasters.ToList().ForEach(sub =>
-                                //{
-                                //    var records = statementMetadataRecords.Where(item => item.CustomerId == customer.Identifier && item.StatementId == statement.Identifier && item.AccountNumber == sub.Subscription && item.AccountType == sub.VendorName).ToList();
-                                //    if (records.Count <= 0)
-                                //    {
-                                //        statementMetadataRecords.Add(new StatementMetadata
-                                //        {
-                                //            AccountNumber = sub.Subscription,
-                                //            AccountType = sub.VendorName,
-                                //            CustomerId = customer.Identifier,
-                                //            CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
-                                //            StatementPeriod = customer.StatementPeriod,
-                                //            StatementId = statement.Identifier,
-                                //        });
-                                //    }
-                                //});
-                            }
-
-                            newPageContent.Append(pageContent);
-                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
-                            {
-                                newPageContent.Append(HtmlConstants.END_DIV_TAG);
-                            }
-
-                            if (x == subPageCount - 1)
-                            {
-                                newPageContent.Append(HtmlConstants.END_DIV_TAG);
-                            }
-                        }
-
-                        PageHeaderContent.Replace("{{SubTabs}}", SubTabs.ToString());
-                        statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
-                        statementPageContent.HtmlContent = newPageContent.ToString();
-                    }
-
-                    newStatementPageContents.ToList().ForEach(page =>
-                    {
-                        htmlbody.Append(page.PageHeaderContent);
-                        htmlbody.Append(page.HtmlContent);
-                        htmlbody.Append(page.PageFooterContent);
-                    });
-
-                    htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
-
-                    navbarHtml = navbarHtml.Replace("{{NavItemList}}", navbar.ToString());
-
-                    var finalHtml = new StringBuilder();
-                    finalHtml.Append(HtmlConstants.HTML_HEADER);
-                    finalHtml.Append(navbarHtml);
-                    finalHtml.Append(htmlbody.ToString());
-                    finalHtml.Append(HtmlConstants.HTML_FOOTER);
-                    scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
-
-                    //replace below variable with actual data in final html string
-                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
-                    finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
-                    finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
-                    finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
-                    finalHtml.Replace("{{TenantCode}}", tenantCode);
-
-                    //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
-                    //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
-                    if (IsFailed)
-                    {
-                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
-                        logDetailRecord.LogMessage = "<ul class='pl-4 text-left'>" + ErrorMessages.ToString() + "</ul>";
-                    }
-                    else
-                    {
-                        string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation);
-
-                        logDetailRecord.StatementFilePath = filePath;
-                        logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
-                        logDetailRecord.LogMessage = "Statement generated successfully..!!";
-                        logDetailRecord.statementMetadata = statementMetadataRecords;
-                    }
-                }
-
-                return logDetailRecord;
             }
             catch (Exception ex)
             {
@@ -996,16 +578,94 @@ namespace nIS
             return runStatus;
         }
 
+        #endregion
+
+        #region Private Methods
+
         /// <summary>
-        /// This method help to bind data to nedbank statement file for respective customer
+        /// This method helps to write content into the file
         /// </summary>
-        /// <param name="statementRawData"> the object of statement raw data</param>
+        /// <param name="Message">content to write into the file</param>
+        private void WriteToFile(string Message)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\Log_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
+            if (!File.Exists(filepath))
+            {
+                // Create a file to write to.   
+                using (StreamWriter sw = File.CreateText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    sw.WriteLine(Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This method help to actaul color theme to show series data for dynamic line graph, bar graph, and pie chart widgets
+        /// </summary>
+        /// <param name="theme"> the widget theme </param>
+        /// <returns>return new color theme for graph and chart widgets </returns>
+        private string GetChartColorTheme(string theme)
+        {
+            string colorTheme = string.Empty;
+            if (theme == "Theme1")
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme == "Theme2")
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme == "Theme3")
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
+            else if (theme == "Theme4")
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            else if (theme.ToLower() == "ChartTheme1".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME1;
+            }
+            else if (theme.ToLower() == "ChartTheme2".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME2;
+            }
+            else if (theme.ToLower() == "ChartTheme3".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME4;
+            }
+            else if (theme.ToLower() == "ChartTheme4".ToLower())
+            {
+                colorTheme = HtmlConstants.THEME3;
+            }
+
+            return colorTheme;
+        }
+
+        /// <summary>
+        /// This method help to bind data to financial tenant statement file for respective customer
+        /// </summary>
+        /// <param name="statementRawData"> the statement raw data object</param>
         /// <param name="tenantCode"> the tenant code </param>
-        public ScheduleLogDetail GenerateNedbankStatements(GenerateStatementRawData statementRawData, string tenantCode)
+        private ScheduleLogDetail GenerateStatements(GenerateStatementRawData statementRawData, string tenantCode)
         {
             var logDetailRecord = new ScheduleLogDetail();
             var ErrorMessages = new StringBuilder();
             bool IsFailed = false;
+            bool IsSavingOrCurrentAccountPagePresent = false;
             var statementMetadataRecords = new List<StatementMetadata>();
 
             try
@@ -1018,19 +678,65 @@ namespace nIS
                 {
                     string currency = string.Empty;
                     var accountrecords = new List<AccountMaster>();
+                    var savingaccountrecords = new List<AccountMaster>();
+                    var curerntaccountrecords = new List<AccountMaster>();
+                    var CustomerAcccountTransactions = new List<AccountTransaction>();
+                    var CustomerSavingTrends = new List<SavingTrend>();
+
+                    var pages = statement.Pages.Where(item => item.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || item.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE).ToList();
+                    IsSavingOrCurrentAccountPagePresent = pages.Count > 0 ? true : false;
+
+                    //collecting all required transaction required for static widgets in financial tenant html statement
+                    if (IsSavingOrCurrentAccountPagePresent)
+                    {
+                        var customerAccountSearchParameter = new CustomerAccountSearchParameter()
+                        {
+                            CustomerId = customer.Identifier,
+                            BatchId = batchMaster.Identifier
+                        };
+                        accountrecords = this.tenantTransactionDataRepository.Get_AccountMaster(customerAccountSearchParameter, tenantCode)?.ToList();
+                        if ((accountrecords == null || accountrecords.Count == 0))
+                        {
+                            ErrorMessages.Append("<li>Account master data is not available for this customer..!!</li>");
+                            IsFailed = true;
+                        }
+                        else
+                        {
+                            var records = accountrecords.Where(item => item.AccountType.Equals(string.Empty)).ToList();
+                            if (records.Count > 0)
+                            {
+                                ErrorMessages.Append("<li>Invalid account master data for this customer..!!</li>");
+                                IsFailed = true;
+                            }
+                        }
+
+                        //get customer account transaction details
+                        CustomerAcccountTransactions = this.tenantTransactionDataRepository.Get_AccountTransaction(customerAccountSearchParameter, tenantCode)?.OrderBy(item => item.TransactionDate)?.ToList();
+
+                        //get customer saving and spending trend details data
+                        CustomerSavingTrends = this.tenantTransactionDataRepository.Get_SavingTrend(customerAccountSearchParameter, tenantCode)?.ToList();
+                    }
 
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
                     var customerMedias = this.tenantTransactionDataRepository.GetCustomerMediaList(customer.Identifier, batchMaster.Identifier, statement.Identifier, tenantCode);
 
                     var htmlbody = new StringBuilder();
                     currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
-                    
+                    string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
+                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy")); //bind current date to html header
+
+                    //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
+                    var clientlogo = statementRawData.Client.TenantLogo != null ? statementRawData.Client.TenantLogo : "";
+                    navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
 
                     //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                     var scriptHtmlRenderer = new StringBuilder();
+                    var navbar = new StringBuilder();
+                    int subPageCount = 0;
                     string accountNumber = string.Empty; //also use for Subscription
                     string accountType = string.Empty; //also use for vendor name
+                    long accountId = 0;
                     HttpClient httpClient = null;
 
                     var newStatementPageContents = new List<StatementPageContent>();
@@ -1051,6 +757,378 @@ namespace nIS
                     for (int i = 0; i < statement.Pages.Count; i++)
                     {
                         var page = statement.Pages[i];
+                        StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
+
+                        //sub page count under current page tab
+                        subPageCount = 1;
+                        if (IsSavingOrCurrentAccountPagePresent)
+                        {
+                            //This will be applicable only for financial tenant
+                            //if cusomer have 2 saving or current account, then 2 tabs will be render to current page in html statement
+                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
+                            {
+                                savingaccountrecords = accountrecords.Where(item => item.AccountType.ToLower().Contains("saving"))?.ToList();
+                                if (savingaccountrecords == null || savingaccountrecords.Count == 0)
+                                {
+                                    ErrorMessages.Append("<li>Saving account master data is not available for this customer..!!</li>");
+                                    IsFailed = true;
+                                }
+                                subPageCount = savingaccountrecords.Count;
+                            }
+                            else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
+                            {
+                                curerntaccountrecords = accountrecords.Where(item => item.AccountType.ToLower().Contains("current"))?.ToList();
+                                if (curerntaccountrecords == null || curerntaccountrecords.Count == 0)
+                                {
+                                    ErrorMessages.Append("<li>Current account master data is not available for this customer..!!</li>");
+                                    IsFailed = true;
+                                }
+                                subPageCount = curerntaccountrecords.Count;
+                            }
+                        }
+
+                        var SubTabs = new StringBuilder();
+                        var PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
+                        var dynamicWidgets = new List<DynamicWidget>(statementPageContent.DynamicWidgets);
+
+                        string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
+                        navbar.Append(" <li class='nav-item'><a class='nav-link pt-1 mainNav " + (i == 0 ? "active" : "") + " " + tabClassName + "' href='javascript:void(0);' >" + statementPageContent.DisplayName + "</a> </li> ");
+                        string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
+                        PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
+
+                        var newPageContent = new StringBuilder();
+                        newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
+
+                        for (int x = 0; x < subPageCount; x++)
+                        {
+                            accountNumber = string.Empty;
+                            accountType = string.Empty;
+
+                            //Only for financial tenant
+                            if (IsSavingOrCurrentAccountPagePresent)
+                            {
+                                if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
+                                {
+                                    accountNumber = savingaccountrecords[x].AccountNumber;
+                                    accountId = savingaccountrecords[x].Identifier;
+                                    accountType = savingaccountrecords[x].AccountType;
+                                }
+                                else if (page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
+                                {
+                                    accountNumber = curerntaccountrecords[x].AccountNumber;
+                                    accountId = curerntaccountrecords[x].Identifier;
+                                    accountType = curerntaccountrecords[x].AccountType;
+                                }
+
+                                //start creating sub tabs, append tab name with last 4 digits of account number
+                                if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
+                                {
+                                    string lastFourDigisOfAccountNumber = accountNumber.Length > 4 ? accountNumber.Substring(Math.Max(0, accountNumber.Length - 4)) : accountNumber;
+                                    if (x == 0)
+                                    {
+                                        SubTabs.Append("<ul class='nav nav-tabs' style='margin-top:-20px;'>");
+                                    }
+
+                                    SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " + " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
+
+                                    newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "") + "'>");
+
+                                    if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
+                                    {
+                                        newPageContent.Append("<input type='hidden' id='SavingAccountId' name='SavingAccountId' value='" + accountId + "'>");
+                                    }
+                                    else
+                                    {
+                                        newPageContent.Append("<input type='hidden' id='CurrentAccountId' name='CurrentAccountId' value='" + accountId + "'>");
+                                    }
+
+                                    if (x == subPageCount - 1)
+                                    {
+                                        SubTabs.Append("</ul>");
+                                    }
+                                }
+                            }
+
+                            var pagewidgets = new List<PageWidget>(page.PageWidgets);
+                            var pageContent = new StringBuilder(statementPageContent.HtmlContent);
+                            for (int j = 0; j < pagewidgets.Count; j++)
+                            {
+                                var widget = pagewidgets[j];
+                                if (!widget.IsDynamicWidget)
+                                {
+                                    switch (widget.WidgetName)
+                                    {
+                                        case HtmlConstants.CUSTOMER_INFORMATION_WIDGET_NAME:
+                                            this.BindCustomerInformationWidgetData(pageContent, customer, statement, page, widget, customerMedias, statementRawData.BatchDetails);
+                                            break;
+                                        case HtmlConstants.ACCOUNT_INFORMATION_WIDGET_NAME:
+                                            this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
+                                            break;
+                                        case HtmlConstants.IMAGE_WIDGET_NAME:
+                                            IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer.Identifier, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
+                                            break;
+                                        case HtmlConstants.VIDEO_WIDGET_NAME:
+                                            IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer.Identifier, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
+                                            break;
+                                        case HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME:
+                                            IsFailed = this.BindSummaryAtGlanceWidgetData(pageContent, ErrorMessages, accountrecords, page, widget);
+                                            break;
+                                        case HtmlConstants.CURRENT_AVAILABLE_BALANCE_WIDGET_NAME:
+                                            IsFailed = this.BindCurrentAvailBalanceWidgetData(pageContent, ErrorMessages, customer, batchMaster, accountId, accountrecords, page, widget, currency);
+                                            break;
+                                        case HtmlConstants.SAVING_AVAILABLE_BALANCE_WIDGET_NAME:
+                                            IsFailed = this.BindSavingAvailBalanceWidgetData(pageContent, ErrorMessages, customer, batchMaster, accountId, accountrecords, page, widget, currency);
+                                            break;
+                                        case HtmlConstants.SAVING_TRANSACTION_WIDGET_NAME:
+                                            this.BindSavingTransactionWidgetData(pageContent, scriptHtmlRenderer, customer, batchMaster, CustomerAcccountTransactions, page, widget, accountId, tenantCode, currency, statementRawData.OutputLocation);
+                                            break;
+                                        case HtmlConstants.CURRENT_TRANSACTION_WIDGET_NAME:
+                                            this.BindCurrentTransactionWidgetData(pageContent, scriptHtmlRenderer, customer, batchMaster, CustomerAcccountTransactions, page, widget, accountId, tenantCode, currency, statementRawData.OutputLocation);
+                                            break;
+                                        case HtmlConstants.TOP_4_INCOME_SOURCE_WIDGET_NAME:
+                                            this.BindTop4IncomeSourcesWidgetData(pageContent, customer, batchMaster, page, widget, tenantCode);
+                                            break;
+                                        case HtmlConstants.ANALYTICS_WIDGET_NAME:
+                                            this.BindAnalyticsChartWidgetData(pageContent, scriptHtmlRenderer, customer, batchMaster, accountrecords, page, statementRawData.OutputLocation);
+                                            break;
+                                        case HtmlConstants.SAVING_TREND_WIDGET_NAME:
+                                            IsFailed = this.BindSavingTrendChartWidgetData(pageContent, scriptHtmlRenderer, ErrorMessages, customer, batchMaster, CustomerSavingTrends, accountId, page, tenantCode, statementRawData.OutputLocation);
+                                            break;
+                                        case HtmlConstants.SPENDING_TREND_WIDGET_NAME:
+                                            IsFailed = this.BindSpendingTrendChartWidgetData(pageContent, scriptHtmlRenderer, ErrorMessages, customer, batchMaster, CustomerSavingTrends, accountId, page, tenantCode, statementRawData.OutputLocation);
+                                            break;
+                                        case HtmlConstants.REMINDER_AND_RECOMMENDATION_WIDGET_NAME:
+                                            this.BindReminderAndRecommendationWidgetData(pageContent, customer, batchMaster, page, widget, tenantCode);
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId).ToList();
+                                    if (dynaWidgets.Count > 0)
+                                    {
+                                        var dynawidget = dynaWidgets.FirstOrDefault();
+                                        var themeDetails = new CustomeTheme();
+                                        if (dynawidget.ThemeType == "Default")
+                                        {
+                                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(statementRawData.TenantConfiguration.WidgetThemeSetting);
+                                        }
+                                        else
+                                        {
+                                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
+                                        }
+
+                                        //Get data from database for widget
+                                        httpClient = new HttpClient();
+                                        httpClient.BaseAddress = new Uri(statementRawData.TenantConfiguration.BaseUrlForTransactionData);
+                                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+                                        httpClient.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
+
+                                        //API search parameter
+                                        JObject searchParameter = new JObject();
+                                        searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
+                                        searchParameter[ModelConstant.CUSTOEMR_ID] = customer.Identifier;
+                                        searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
+
+                                        switch (dynawidget.WidgetType)
+                                        {
+                                            case HtmlConstants.TABLE_DYNAMICWIDGET:
+                                                this.BindDynamicTableWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+                                                break;
+                                            case HtmlConstants.FORM_DYNAMICWIDGET:
+                                                this.BindDynamicFormWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+                                                break;
+                                            case HtmlConstants.LINEGRAPH_DYNAMICWIDGET:
+                                                this.BindDynamicLineGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
+                                                break;
+                                            case HtmlConstants.BARGRAPH_DYNAMICWIDGET:
+                                                this.BindDynamicBarGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
+                                                break;
+                                            case HtmlConstants.PICHART_DYNAMICWIDGET:
+                                                this.BindDynamicPieChartWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails, tenantCode);
+                                                break;
+                                            case HtmlConstants.HTML_DYNAMICWIDGET:
+                                                this.BindDynamicHtmlWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            //if account number variable is not empty means, financial tenant
+                            if (accountNumber != string.Empty)
+                            {
+                                //generate statement metadata records in list format
+                                statementMetadataRecords.Add(new StatementMetadata
+                                {
+                                    AccountNumber = accountNumber,
+                                    AccountType = accountType,
+                                    CustomerId = customer.Identifier,
+                                    CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
+                                    StatementPeriod = customer.StatementPeriod,
+                                    StatementId = statement.Identifier,
+                                });
+                            }
+                            else
+                            {
+                                //To add statement metadata records for subscription master tenant
+                                //var subscriptionMasters = this.tenantTransactionDataRepository.Get_TTD_SubscriptionMasters(new TransactionDataSearchParameter()
+                                //{
+                                //    BatchId = batchMaster.Identifier,
+                                //    CustomerId = customer.Identifier
+                                //}, tenantCode);
+                                //subscriptionMasters.ToList().ForEach(sub =>
+                                //{
+                                //    var records = statementMetadataRecords.Where(item => item.CustomerId == customer.Identifier && item.StatementId == statement.Identifier && item.AccountNumber == sub.Subscription && item.AccountType == sub.VendorName).ToList();
+                                //    if (records.Count <= 0)
+                                //    {
+                                //        statementMetadataRecords.Add(new StatementMetadata
+                                //        {
+                                //            AccountNumber = sub.Subscription,
+                                //            AccountType = sub.VendorName,
+                                //            CustomerId = customer.Identifier,
+                                //            CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
+                                //            StatementPeriod = customer.StatementPeriod,
+                                //            StatementId = statement.Identifier,
+                                //        });
+                                //    }
+                                //});
+                            }
+
+                            newPageContent.Append(pageContent);
+                            if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE || page.PageTypeName == HtmlConstants.CURRENT_ACCOUNT_PAGE)
+                            {
+                                newPageContent.Append(HtmlConstants.END_DIV_TAG);
+                            }
+
+                            if (x == subPageCount - 1)
+                            {
+                                newPageContent.Append(HtmlConstants.END_DIV_TAG);
+                            }
+                        }
+
+                        PageHeaderContent.Replace("{{SubTabs}}", SubTabs.ToString());
+                        statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
+                        statementPageContent.HtmlContent = newPageContent.ToString();
+                    }
+
+                    newStatementPageContents.ToList().ForEach(page =>
+                    {
+                        htmlbody.Append(page.PageHeaderContent);
+                        htmlbody.Append(page.HtmlContent);
+                        htmlbody.Append(page.PageFooterContent);
+                    });
+
+                    htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+
+                    navbarHtml = navbarHtml.Replace("{{NavItemList}}", navbar.ToString());
+
+                    var finalHtml = new StringBuilder();
+                    finalHtml.Append(HtmlConstants.HTML_HEADER);
+                    finalHtml.Append(navbarHtml);
+                    finalHtml.Append(htmlbody.ToString());
+                    finalHtml.Append(HtmlConstants.HTML_FOOTER);
+                    scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
+
+                    //replace below variable with actual data in final html string
+                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
+                    finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
+                    finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
+                    finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
+                    finalHtml.Replace("{{TenantCode}}", tenantCode);
+
+                    //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
+                    //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
+                    if (IsFailed)
+                    {
+                        logDetailRecord.Status = ScheduleLogStatus.Failed.ToString();
+                        logDetailRecord.LogMessage = "<ul class='pl-4 text-left'>" + ErrorMessages.ToString() + "</ul>";
+                    }
+                    else
+                    {
+                        string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation);
+
+                        logDetailRecord.StatementFilePath = filePath;
+                        logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
+                        logDetailRecord.LogMessage = "Statement generated successfully..!!";
+                        logDetailRecord.statementMetadata = statementMetadataRecords;
+                    }
+                }
+
+                return logDetailRecord;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method help to bind data to nedbank statement file for respective customer
+        /// </summary>
+        /// <param name="statementRawData"> the object of statement raw data</param>
+        /// <param name="tenantCode"> the tenant code </param>
+        private ScheduleLogDetail GenerateNedbankStatements(GenerateStatementRawData statementRawData, string tenantCode)
+        {
+            var logDetailRecord = new ScheduleLogDetail();
+            var ErrorMessages = new StringBuilder();
+            bool IsFailed = false;
+            var statementMetadataRecords = new List<StatementMetadata>();
+
+            try
+            {
+                var customer = statementRawData.DM_Customer;
+                var statement = statementRawData.Statement;
+                var batchMaster = statementRawData.Batch;
+
+                if (statementRawData.StatementPageContents.Count > 0)
+                {
+                    //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
+                    var customerMedias = this.tenantTransactionDataRepository.GetCustomerMediaList(customer.Identifier, batchMaster.Identifier, statement.Identifier, tenantCode);
+                    
+                    //get investment master data
+                    var investmentMasters = this.tenantTransactionDataRepository.Get_DM_InvestmasterMaster(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+                    long ParentId = 0;
+                    if (investmentMasters != null && investmentMasters.Count > 0)
+                    {
+                        investmentMasters.ForEach(invest =>
+                        {
+                            invest.investmentTransactions = this.tenantTransactionDataRepository.Get_DM_InvestmentTransaction(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier, InvestmentId = invest.InvestmentId }, tenantCode)?.ToList();
+                        });
+                        ParentId = investmentMasters[0].InvestorId;
+                    }
+
+                    var ExplanatoryNotes = this.tenantTransactionDataRepository.Get_DM_ExplanatoryNotes(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+
+                    var Messages = this.tenantTransactionDataRepository.Get_DM_MarketingMessages(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+
+                    var htmlbody = new StringBuilder();
+                    htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+
+                    //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
+                    var scriptHtmlRenderer = new StringBuilder();
+                    HttpClient httpClient = null;
+
+                    var newStatementPageContents = new List<StatementPageContent>();
+                    statementRawData.StatementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
+                    {
+                        Id = it.Id,
+                        PageId = it.PageId,
+                        PageTypeId = it.PageTypeId,
+                        HtmlContent = it.HtmlContent,
+                        PageHeaderContent = it.PageHeaderContent,
+                        PageFooterContent = it.PageFooterContent,
+                        DisplayName = it.DisplayName,
+                        TabClassName = it.TabClassName,
+                        DynamicWidgets = it.DynamicWidgets
+                    }));
+
+                    long FirstPageId = statement.Pages[0].Identifier;
+                    for (int i = 0; i < statement.Pages.Count; i++)
+                    {
+                        var page = statement.Pages[i];
+                        var MarketingMessageCounter = 0;
                         StatementPageContent statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
 
                         //sub page count under current page tab
@@ -1077,25 +1155,29 @@ namespace nIS
                                         this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget);
                                         break;
                                     case HtmlConstants.BANK_DETAILS_WIDGET_NAME:
-                                        this.BindBranchDetailsWidgetData(pageContent, customer, page, widget);
+                                        this.BindBranchDetailsWidgetData(pageContent, investmentMasters[0].BranchId, page, widget, tenantCode);
                                         break;
                                     case HtmlConstants.IMAGE_WIDGET_NAME:
-                                        IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
+                                        IsFailed = this.BindImageWidgetData(pageContent, ErrorMessages, customer.CustomerId, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
                                         break;
                                     case HtmlConstants.VIDEO_WIDGET_NAME:
-                                        IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
+                                        IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer.CustomerId, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
                                         break;
                                     case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
-                                        this.BindInvestmentPortfolioStatementWidgetData(pageContent, page, widget);
+                                        this.BindInvestmentPortfolioStatementWidgetData(pageContent, customer, investmentMasters, page, widget);
                                         break;
                                     case HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME:
-                                        this.BindInvestorPerformanceWidgetData(pageContent, page, widget);
+                                        this.BindInvestorPerformanceWidgetData(pageContent, investmentMasters, page, widget);
                                         break;
                                     case HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
-                                        this.BindBreakdownOfInvestmentAccountsWidgetData(pageContent, page, widget);
+                                        this.BindBreakdownOfInvestmentAccountsWidgetData(pageContent, investmentMasters, page, widget);
                                         break;
                                     case HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME:
-                                        this.BindExplanatoryNotesWidgetData(pageContent, page, widget);
+                                        this.BindExplanatoryNotesWidgetData(pageContent, ExplanatoryNotes, page, widget);
+                                        break;
+                                    case HtmlConstants.SERVICE_WIDGET_NAME:
+                                        this.BindMarketingServiceWidgetData(pageContent, Messages, page, widget, MarketingMessageCounter);
+                                        MarketingMessageCounter++;
                                         break;
                                 }
                             }
@@ -1152,18 +1234,52 @@ namespace nIS
                             }
                         }
 
-                        //if account number variable is not empty means, financial tenant
-                        if (accountNumber != string.Empty)
+                        if (investmentMasters != null && investmentMasters.Count > 0)
                         {
-                            //generate statement metadata records in list format
-                            statementMetadataRecords.Add(new StatementMetadata
+                            investmentMasters.ForEach(invest =>
                             {
-                                AccountNumber = accountNumber,
-                                AccountType = accountType,
-                                CustomerId = customer.Identifier,
-                                CustomerName = customer.FirstName + (customer.MiddleName == string.Empty ? "" : " " + customer.MiddleName) + " " + customer.LastName,
-                                StatementPeriod = customer.StatementPeriod,
-                                StatementId = statement.Identifier,
+                                var InvestmentNo = Convert.ToString(invest.InvestorId) + Convert.ToString(invest.InvestmentId);
+                                while (InvestmentNo.Length != 12)
+                                {
+                                    InvestmentNo = "0" + InvestmentNo;
+                                }
+
+                                //to separate to string dates values into required date format -- 
+                                //given date format for statement period is //2021-02-10 00:00:00.000 - 2021-03-09 23:00:00.000//
+                                //1st try with string separator, if fails then try with char separator
+                                var statementPeriod = string.Empty;
+                                string[] stringSeparators = new string[] { " - ", "- ", " -" };
+                                string[] dates = invest.StatementPeriod.Split(stringSeparators, StringSplitOptions.None);
+                                if (dates.Length > 0)
+                                {
+                                    if (dates.Length > 1)
+                                    {
+                                        statementPeriod = Convert.ToDateTime(dates[0]).ToString("dd'/'MM'/'yyyy") + " to " + Convert.ToDateTime(dates[1]).ToString("dd'/'MM'/'yyyy");
+                                    }
+                                    else
+                                    {
+                                        dates = investmentMasters[0].StatementPeriod.Split(new Char[] { ' ' });
+                                        if (dates.Length > 2)
+                                        {
+                                            statementPeriod = Convert.ToDateTime(dates[0]).ToString("dd'/'MM'/'yyyy") + " to " + Convert.ToDateTime(dates[2]).ToString("dd'/'MM'/'yyyy");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    statementPeriod = investmentMasters[0].StatementPeriod;
+                                }
+
+                                //generate statement metadata records in list format
+                                statementMetadataRecords.Add(new StatementMetadata
+                                {
+                                    AccountNumber = InvestmentNo,
+                                    AccountType = invest.ProductDesc,
+                                    CustomerId = customer.CustomerId,
+                                    CustomerName = customer.FirstName + " " + customer.SurName,
+                                    StatementPeriod = statementPeriod,
+                                    StatementId = statement.Identifier,
+                                });
                             });
                         }
 
@@ -1205,8 +1321,8 @@ namespace nIS
                     }
                     else
                     {
-                        string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
-                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.Identifier, statementRawData.BaseURL, statementRawData.OutputLocation);
+                        string fileName = "Statement_" + customer.CustomerId + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+                        string filePath = this.utility.WriteToFile(finalHtml.ToString(), fileName, batchMaster.Identifier, customer.CustomerId, statementRawData.BaseURL, statementRawData.OutputLocation);
 
                         logDetailRecord.StatementFilePath = filePath;
                         logDetailRecord.Status = ScheduleLogStatus.Completed.ToString();
@@ -1221,83 +1337,6 @@ namespace nIS
             {
                 throw ex;
             }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// This method helps to write content into the file
-        /// </summary>
-        /// <param name="Message">content to write into the file</param>
-        private void WriteToFile(string Message)
-        {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\Log_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
-            if (!File.Exists(filepath))
-            {
-                // Create a file to write to.   
-                using (StreamWriter sw = File.CreateText(filepath))
-                {
-                    sw.WriteLine(Message);
-                }
-            }
-            else
-            {
-                using (StreamWriter sw = File.AppendText(filepath))
-                {
-                    sw.WriteLine(Message);
-                }
-            }
-        }
-
-        /// <summary>
-        /// This method help to actaul color theme to show series data for dynamic line graph, bar graph, and pie chart widgets
-        /// </summary>
-        /// <param name="theme"> the widget theme </param>
-        /// <returns>return new color theme for graph and chart widgets </returns>
-        public string GetChartColorTheme(string theme)
-        {
-            string colorTheme = string.Empty;
-            if (theme == "Theme1")
-            {
-                colorTheme = HtmlConstants.THEME1;
-            }
-            else if (theme == "Theme2")
-            {
-                colorTheme = HtmlConstants.THEME2;
-            }
-            else if (theme == "Theme3")
-            {
-                colorTheme = HtmlConstants.THEME3;
-            }
-            else if (theme == "Theme4")
-            {
-                colorTheme = HtmlConstants.THEME4;
-            }
-            else if (theme.ToLower() == "ChartTheme1".ToLower())
-            {
-                colorTheme = HtmlConstants.THEME1;
-            }
-            else if (theme.ToLower() == "ChartTheme2".ToLower())
-            {
-                colorTheme = HtmlConstants.THEME2;
-            }
-            else if (theme.ToLower() == "ChartTheme3".ToLower())
-            {
-                colorTheme = HtmlConstants.THEME4;
-            }
-            else if (theme.ToLower() == "ChartTheme4".ToLower())
-            {
-                colorTheme = HtmlConstants.THEME3;
-            }
-
-            return colorTheme;
         }
 
         #region These methods helps to bind Data to static widgets of Financial HTML Statement
@@ -1737,7 +1776,7 @@ namespace nIS
 
         #region These methods helps to bind data to Image and Video widgets
 
-        private bool BindImageWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, CustomerMaster customer, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, Statement statement, Page page, BatchMaster batchMaster, PageWidget widget, string tenantCode, string outputLocation)
+        private bool BindImageWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, long customerId, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, Statement statement, Page page, BatchMaster batchMaster, PageWidget widget, string tenantCode, string outputLocation)
         {
             var imgAssetFilepath = string.Empty;
             var IsFailed = false;
@@ -1752,7 +1791,7 @@ namespace nIS
                     {
                         var path = asset.FilePath.ToString();
                         var fileName = asset.Name;
-                        var imagePath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customer.Identifier;
+                        var imagePath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customerId;
                         if (File.Exists(path) && !File.Exists(imagePath + "\\" + fileName))
                         {
                             File.Copy(path, Path.Combine(imagePath, fileName));
@@ -1797,7 +1836,7 @@ namespace nIS
             return IsFailed;
         }
 
-        private bool BindVideoWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, CustomerMaster customer, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, Statement statement, Page page, BatchMaster batchMaster, PageWidget widget, string tenantCode, string outputLocation)
+        private bool BindVideoWidgetData(StringBuilder pageContent, StringBuilder ErrorMessages, long customerId, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, Statement statement, Page page, BatchMaster batchMaster, PageWidget widget, string tenantCode, string outputLocation)
         {
             var vdoAssetFilepath = string.Empty;
             var IsFailed = false;
@@ -1816,7 +1855,7 @@ namespace nIS
                     {
                         var path = asset.FilePath.ToString();
                         var fileName = asset.Name;
-                        var videoPath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customer.Identifier;
+                        var videoPath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customerId;
                         if (File.Exists(path) && !File.Exists(videoPath + "\\" + fileName))
                         {
                             File.Copy(path, Path.Combine(videoPath, fileName));
@@ -2186,83 +2225,113 @@ namespace nIS
 
         #region These methods helps to bind data to static widgets of Nedbank HTML statment
 
-        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
+        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget)
         {
-            string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN', 'ADDR_LINE_2':'NEDERLAND', 'ADDR_LINE_3':'9999', 'ADDR_LINE_4':''}";
-            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            pageContent.Replace("{{Title_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Title);
+            pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.FirstName);
+            pageContent.Replace("{{Surname_" + page.Identifier + "_" + widget.Identifier + "}}", customer.SurName);
+            pageContent.Replace("{{CustAddressLine0_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine0);
+            pageContent.Replace("{{CustAddressLine1_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine1);
+            pageContent.Replace("{{CustAddressLine2_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine2);
+            pageContent.Replace("{{CustAddressLine3_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine3);
+            pageContent.Replace("{{CustAddressLine4_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine4);
+        }
+
+        private void BindBranchDetailsWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode)
+        {
+            var branchDetails = this.tenantTransactionDataRepository.Get_DM_BranchMaster(BranchId, tenantCode)?.FirstOrDefault();
+            if (branchDetails != null)
             {
-                var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(jsonstr);
-                pageContent.Replace("{{Title_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.TITLE_TEXT);
-                pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.FIRST_NAME_TEXT);
-                pageContent.Replace("{{Surname_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.SURNAME_TEXT);
-                pageContent.Replace("{{CustAddressLine0_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.ADDR_LINE_0);
-                pageContent.Replace("{{CustAddressLine1_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.ADDR_LINE_1);
-                pageContent.Replace("{{CustAddressLine2_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.ADDR_LINE_2);
-                pageContent.Replace("{{CustAddressLine3_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.ADDR_LINE_3);
-                pageContent.Replace("{{CustAddressLine4_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.ADDR_LINE_4);
+                pageContent.Replace("{{BankName_" + page.Identifier + "_" + widget.Identifier + "}}", branchDetails.BranchName);
+                pageContent.Replace("{{AddressLine1_" + page.Identifier + "_" + widget.Identifier + "}}", branchDetails.AddressLine0);
+                pageContent.Replace("{{AddressLine2_" + page.Identifier + "_" + widget.Identifier + "}}", branchDetails.AddressLine1);
+                pageContent.Replace("{{CountryName_" + page.Identifier + "_" + widget.Identifier + "}}", branchDetails.AddressLine2);
+                pageContent.Replace("{{BankVATRegNo_" + page.Identifier + "_" + widget.Identifier + "}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
+                pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Contact centre: " + branchDetails.ContactNo);
+            }
+            
+        }
+
+        private void BindInvestmentPortfolioStatementWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
+        {
+            if (investmentMasters != null && investmentMasters.Count > 0)
+            {
+                var currency = investmentMasters[0].Currenacy;
+                var TotalClosingBalance = 0.0;
+                investmentMasters.ForEach(invest =>
+                {
+                    TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
+                });
+
+                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.DS_Investor_Name);
+                pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", currency + TotalClosingBalance);
+                pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].DayOfStatement);
+                pageContent.Replace("{{InvestorID_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(investmentMasters[0].InvestorId));
+
+                //to separate to string dates values into required date format -- 
+                //given date format for statement period is //2021-02-10 00:00:00.000 - 2021-03-09 23:00:00.000//
+                //1st try with string separator, if fails then try with char separator
+                var statementPeriod = string.Empty;
+                string[] stringSeparators = new string[] { " - ", "- ", " -" };
+                string[] dates = investmentMasters[0].StatementPeriod.Split(stringSeparators, StringSplitOptions.None);
+                if (dates.Length > 0)
+                {
+                    if (dates.Length > 1)
+                    {
+                        statementPeriod = Convert.ToDateTime(dates[0]).ToString("dd'/'MM'/'yyyy") + " to " + Convert.ToDateTime(dates[1]).ToString("dd'/'MM'/'yyyy");
+                    }
+                    else
+                    {
+                        dates = investmentMasters[0].StatementPeriod.Split(new Char[] { ' ' });
+                        if (dates.Length > 2)
+                        {
+                            statementPeriod = Convert.ToDateTime(dates[0]).ToString("dd'/'MM'/'yyyy") + " to " + Convert.ToDateTime(dates[2]).ToString("dd'/'MM'/'yyyy");
+                        }
+                    }
+                }
+                else
+                {
+                    statementPeriod = investmentMasters[0].StatementPeriod;
+                }
+                pageContent.Replace("{{StatementPeriod_" + page.Identifier + "_" + widget.Identifier + "}}", statementPeriod);
+                
+                pageContent.Replace("{{StatementDate_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].StatementDate?.ToString("dd'/'MM'/'yyyy"));
             }
         }
 
-        private void BindBranchDetailsWidgetData(StringBuilder pageContent, CustomerMaster customer, Page page, PageWidget widget)
+        private void BindInvestorPerformanceWidgetData(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
         {
-            string jsonstr = "{'BankName': 'Nedbank', 'AddressLine1':'135 Rivonia Road, Sandton, 2196', 'AddressLine2':'PO Box 1144, Johannesburg, 2000','CountryName':'South Africa', 'BankVATRegNo':'4320116074','ContactCenterNo':'0860 555 111'}";
-            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            if (investmentMasters != null && investmentMasters.Count > 0)
             {
-                var bankDetails = JsonConvert.DeserializeObject<BankDetails>(jsonstr);
-                pageContent.Replace("{{BankName_" + page.Identifier + "_" + widget.Identifier + "}}", bankDetails.BankName);
-                pageContent.Replace("{{AddressLine1_" + page.Identifier + "_" + widget.Identifier + "}}", bankDetails.AddressLine1);
-                pageContent.Replace("{{AddressLine2_" + page.Identifier + "_" + widget.Identifier + "}}", bankDetails.AddressLine2);
-                pageContent.Replace("{{CountryName_" + page.Identifier + "_" + widget.Identifier + "}}", bankDetails.CountryName);
-                pageContent.Replace("{{BankVATRegNo_" + page.Identifier + "_" + widget.Identifier + "}}", "Bank VAT Reg No " + bankDetails.BankVATRegNo);
-                pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Contact centre: " + bankDetails.ContactCenterNo);
+                var currency = investmentMasters[0].Currenacy;
+                var TotalClosingBalance = 0.0;
+                var TotalOpeningBalance = 0.0;
+                investmentMasters.ForEach(invest =>
+                {
+                    TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
+                    TotalOpeningBalance = TotalOpeningBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance brought forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
+                });
+
+                pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].ProductType);
+                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", currency + Convert.ToString(TotalOpeningBalance));
+                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", currency + Convert.ToString(TotalClosingBalance));
             }
         }
 
-        private void BindInvestmentPortfolioStatementWidgetData(StringBuilder pageContent, Page page, PageWidget widget)
+        private void BindBreakdownOfInvestmentAccountsWidgetData(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
         {
-            string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021', 'StatementDate':'21/01/2021', 'DsInvestorName' : '' }";
-            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            if (investmentMasters != null && investmentMasters.Count > 0)
             {
-                dynamic InvestmentPortfolio = JObject.Parse(jsonstr);
-                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.DsInvestorName));
-                pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", (Convert.ToString(InvestmentPortfolio.Currency) + Convert.ToString(InvestmentPortfolio.TotalClosingBalance)));
-                pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.DayOfStatement));
-                pageContent.Replace("{{InvestorID_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.InvestorId));
-                pageContent.Replace("{{StatementPeriod_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.StatementPeriod));
-                pageContent.Replace("{{StatementDate_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.StatementDate));
-            }
-        }
-
-        private void BindInvestorPerformanceWidgetData(StringBuilder pageContent, Page page, PageWidget widget)
-        {
-            string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
-            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-            {
-                dynamic InvestmentPerformance = JObject.Parse(jsonstr);
-                pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPerformance.ProductType));
-                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
-                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
-            }
-        }
-
-        private void BindBreakdownOfInvestmentAccountsWidgetData(StringBuilder pageContent, Page page, PageWidget widget)
-        {
-            string jsonstr = "[{'InvestorId': '204626','InvestmentId': '9974','Currency': 'R','ProductType': 'Notice Deposits','ProductDesc': 'JustInvest','OpenDate': '05/09/1994', 'CurrentInterestRate': '2.95', 'ExpiryDate': '','InterestDisposalDesc': 'Capitalise','NoticePeriod': '1 day','AccuredInterest': '2.94','Transactions': [{'TransactionDate': '26/10/2020', 'TransactionDesc': 'Balance brought forward','Debit': '0','Credit': '0','Balance': '5 297.02'},{'TransactionDate': '16/11/2020','TransactionDesc': 'Interest capitalised', 'Debit': '0','Credit': '10.12','Balance': '0'},{'TransactionDate': '25/11/2020','TransactionDesc': 'Balance carried forward','Debit': '0','Credit': '0','Balance': '5 307.14'}]},{'InvestorId': '204626','InvestmentId': '9978','Currency': 'R','ProductType': 'Notice Deposits','ProductDesc': 'JustInvest','OpenDate': '12/11/1996', 'CurrentInterestRate': '2.25', 'ExpiryDate': '','InterestDisposalDesc': 'Capitalise','NoticePeriod': '1 day','AccuredInterest': '24.10','Transactions': [{'TransactionDate': '26/10/2020','TransactionDesc': 'Balance brought forward','Debit': '0','Credit': '0','Balance': '18 578.34'},{'TransactionDate': '16/11/2020','TransactionDesc': 'Interest capitalised','Debit': '0','Credit': '35.50', 'Balance': '0'},{'TransactionDate': '25/11/2020','TransactionDesc': 'Balance carried forward','Debit': '0','Credit': '0','Balance': '18 613.84'}]}]";
-
-            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
-            {
-                IList<InvestmentAccount> InvestmentAccounts = JsonConvert.DeserializeObject<List<InvestmentAccount>>(jsonstr);
-
                 //Create Nav tab if investment accounts is more than 1
                 var NavTabs = new StringBuilder();
-                var InvestmentAccountsCount = InvestmentAccounts.Count;
+                var InvestmentAccountsCount = investmentMasters.Count;
                 if (InvestmentAccountsCount > 1)
                 {
                     NavTabs.Append("<ul class='nav nav-tabs Investment-nav-tabs'>");
                     var cnt = 0;
-                    InvestmentAccounts.ToList().ForEach(acc =>
+                    investmentMasters.ToList().ForEach(acc =>
                     {
-                        NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : "") + "'><a id='tab0-tab' data-toggle='tab' data-target='#" + acc.ProductDesc + "-" + acc.InvestmentId + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : "") + "'> " + acc.ProductDesc + " - " + acc.InvestmentId + "</a></li>");
+                        NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : string.Empty) + "'><a id='tab0-tab' data-toggle='tab' data-target='#" + acc.ProductDesc + "-" + acc.InvestmentId + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : string.Empty) + "'> " + acc.ProductDesc + " - " + acc.InvestmentId + "</a></li>");
                         cnt++;
                     });
                     NavTabs.Append("</ul>");
@@ -2272,42 +2341,43 @@ namespace nIS
                 //create tab-content div if accounts is greater than 1, otherwise create simple div
                 var TabContentHtml = new StringBuilder();
                 var counter = 0;
-                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : "");
-                InvestmentAccounts.ToList().ForEach(acc =>
+                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
+                investmentMasters.ToList().ForEach(acc =>
                 {
                     var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
                     InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
-                    InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
-                    InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : ""));
+                    InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", Convert.ToString(acc.InvestmentId));
+                    InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : string.Empty));
 
-                    var InvestmentNo = acc.InvestorId + acc.InvestmentId;
-                    while (InvestmentNo.Length != 12)
+                    var InvestmentNo = Convert.ToString(acc.InvestorId) + " " + Convert.ToString(acc.InvestmentId);
+                    //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                    while (InvestmentNo.Length != 13)
                     {
                         InvestmentNo = "0" + InvestmentNo;
                     }
                     InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
-                    InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
+                    InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? acc.AccountOpenDate?.ToString("dd'/'MM'/'yyyy") : string.Empty);
 
-                    InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
                     InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
-                    InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate);
-                    InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
-                    InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
-                    InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
+                    InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate != null ? acc.ExpiryDate?.ToString("dd'/'MM'/'yyyy") : string.Empty);
+                    InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc != null ? acc.InterestDisposalDesc : string.Empty);
+                    InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod != null ? acc.NoticePeriod : string.Empty);
+                    InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.AccuredInterest != null ? (acc.Currenacy + acc.AccuredInterest) : string.Empty);
 
-                    InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
-                    InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
+                    var LastInvestmentTransaction = acc.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).OrderByDescending(it => it.TransactionDate).ToList().FirstOrDefault();
+                    InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", LastInvestmentTransaction.TransactionDate.ToString("dd MMMM yyyy"));
+                    InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currenacy + LastInvestmentTransaction.WJXBFS4_Balance);
 
                     var InvestmentTransactionRows = new StringBuilder();
-                    acc.Transactions.ForEach(trans =>
+                    acc.investmentTransactions.OrderBy(it => it.TransactionDate).ToList().ForEach(trans =>
                     {
                         var tr = new StringBuilder();
-                        tr.Append("<tr>");
-                        tr.Append("<td class='w-15'>" + trans.TransactionDate + "</td>");
-                        tr.Append("<td class='w-40'>" + trans.TransactionDesc + "</td>");
-                        tr.Append("<td class='w-15 text-right'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
-                        tr.Append("<td class='w-15 text-right'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
-                        tr.Append("<td class='w-15 text-right'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
+                        tr.Append("<tr class='ht-20'>");
+                        tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate.ToString("dd'/'MM'/'yyyy") + "</td>");
+                        tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : acc.Currenacy + trans.WJXBFS2_Debit) + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : acc.Currenacy + trans.WJXBFS3_Credit) + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : acc.Currenacy + trans.WJXBFS4_Balance) + "</td>");
                         tr.Append("</tr>");
                         InvestmentTransactionRows.Append(tr.ToString());
                     });
@@ -2315,23 +2385,36 @@ namespace nIS
                     TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
                     counter++;
                 });
-                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : "");
-
+                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : string.Empty);
                 pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", TabContentHtml.ToString());
             }
         }
 
-        private void BindExplanatoryNotesWidgetData(StringBuilder pageContent, Page page, PageWidget widget)
+        private void BindExplanatoryNotesWidgetData(StringBuilder pageContent, List<DM_ExplanatoryNote> ExPlanatoryNotes, Page page, PageWidget widget)
         {
-            string jsonstr = "{'Note1': 'Fixed deposits — Total balance of all your fixed-type accounts.', 'Note2': 'Notice deposits — Total balance of all your notice deposit accounts.', 'Note3':'Linked deposits — Total balance of all your linked-type accounts.'}";
-            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            if (ExPlanatoryNotes != null && ExPlanatoryNotes.Count > 0)
             {
-                dynamic noteObj = JObject.Parse(jsonstr);
                 var notes = new StringBuilder();
-                notes.Append("<span> " + Convert.ToString(noteObj.Note1) + " </span> <br/>");
-                notes.Append("<span> " + Convert.ToString(noteObj.Note2) + " </span> <br/>");
-                notes.Append("<span> " + Convert.ToString(noteObj.Note3) + " </span> ");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note1) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note1) + " </span> <br/>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note2) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note2) + " </span> <br/>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note3) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note3) + " </span> <br>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note4) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note4) + " </span> <br>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note5) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note5) + " </span> <br>");
                 pageContent.Replace("{{Notes_" + page.Identifier + "_" + widget.Identifier + "}}", notes.ToString());
+            }
+        }
+
+        private void BindMarketingServiceWidgetData(StringBuilder pageContent, List<DM_MarketingMessage> Messages, Page page, PageWidget widget, int MarketingMessageCounter)
+        {
+            if (Messages != null && Messages.Count > 0)
+            {
+                var ServiceMessage = Messages[MarketingMessageCounter];
+                if (ServiceMessage != null)
+                {
+                    var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.Message1)) ? "<span>" + ServiceMessage.Message1 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message2)) ? "<span>" + ServiceMessage.Message2 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message3)) ? "<span>" + ServiceMessage.Message3 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message4)) ? "<span>" + ServiceMessage.Message4 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message5)) ? "<span>" + ServiceMessage.Message5 + "</span><br>" : string.Empty);
+
+                    pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", ServiceMessage.Header).Replace("{{ServiceMessageText_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", messageTxt);
+                }
             }
         }
 

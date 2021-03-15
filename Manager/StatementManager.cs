@@ -313,8 +313,26 @@ namespace nIS
                     var statementPages = statements[0].StatementPages.OrderBy(it => it.SequenceNumber).ToList();
                     if (statementPages.Count != 0)
                     {
-                        //To Do - Nedbank - get method name from tenant configuration
-                        StatmentPreviewHtml = this.PreviewNedbankStatement(statementPages, tenantConfiguration, baseURL, tenantCode);
+                        var functionName = string.Empty;
+                        if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.PreviewStatementFunctionName))
+                        {
+                            functionName = tenantConfiguration.PreviewStatementFunctionName;
+                        }
+
+                        switch (functionName)
+                        {
+                            case ModelConstant.PREVIEW_FINANCIAL_STATEMENT_FUNCTION_NAME:
+                                StatmentPreviewHtml = this.PreviewFinancialStatement(statementPages, tenantConfiguration, baseURL, tenantCode);
+                                break;
+
+                            case ModelConstant.PREVIEW_NEDBANK_STATEMENT_FUNCTION_NAME:
+                                StatmentPreviewHtml = this.PreviewNedbankStatement(statementPages, tenantConfiguration, baseURL, tenantCode);
+                                break;
+
+                            default:
+                                StatmentPreviewHtml = this.PreviewFinancialStatement(statementPages, tenantConfiguration, baseURL, tenantCode);
+                                break;
+                        }
                     }
                 }
             }
@@ -690,6 +708,7 @@ namespace nIS
                                 for (int j = 0; j < pages.Count; j++)
                                 {
                                     var page = pages[j];
+                                    var MarketingMessageCounter = 0;
                                     statementPageContent.PageId = page.Identifier;
                                     statementPageContent.PageTypeId = page.PageTypeId;
                                     statementPageContent.DisplayName = page.DisplayName;
@@ -784,10 +803,20 @@ namespace nIS
                                                     }
 
                                                     //if rendering html for 1st page, then add padding zero current widget div, otherwise keep default padding
-                                                    var leftPaddingClass = i != 0 ? " pl-0" : string.Empty;
+                                                    var PaddingClass = i != 0 ? " pl-0" : string.Empty;
+
+                                                    if (mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
+                                                    {
+                                                        //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
+                                                        if (MarketingMessageCounter == 0)
+                                                        {
+                                                            pageHtmlContent.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left pb-0 pt-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                                        }
+                                                        PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
+                                                    }
 
                                                     //create new div with col-lg with newly finded div length and above padding zero value
-                                                    pageHtmlContent.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
+                                                    pageHtmlContent.Append("<div class='col-lg-" + divLength + PaddingClass + "'>");
 
                                                     //check current widget is dynamic or static and start generating empty html template for current widget
                                                     if (!pageWidget.IsDynamicWidget)
@@ -824,6 +853,11 @@ namespace nIS
 
                                                             case HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.ExplanatoryNotesWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.SERVICE_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.MarketingServiceMessageWidgetFormatting(pageWidget, counter, page, MarketingMessageCounter));
+                                                                MarketingMessageCounter++;
                                                                 break;
                                                         }
                                                     }
@@ -1146,6 +1180,8 @@ namespace nIS
                 var statementPreviewData = new StatementPreviewData();
                 var SampleFiles = new List<FileData>();
 
+                var MarketingMessages = "[{'MarketingMessageHeader': 'Notice of interest rate change','MarketingMessageText1': 'The interest rates on our current notice deposit accounts have changed on 03 November 2020.','MarketingMessageText2': 'Please review your investment portfolio and rates regularly to ensure that it is still appropriate and meets your needs.','MarketingMessageText3': 'For more information about the interest rate change call 0860 555 111.','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Annual investment fee review','MarketingMessageText1': 'As part of our annual pricing review, some of our fees have changed. You can view our 2020 pricing guide on the Nedbank website.','MarketingMessageText2': 'Click <a href=\"javascript:void(0);\" style=\"color:black;text-decoration: underline;\">here </a> for more information.','MarketingMessageText3': 'If you do not want to click on a link, please type the following address in your browser (without the asterisks): *https://www.nedbank.co.za/content/nedbank/desktop/gt/en/info/campaigns/annual-fee-update2020.html*.','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Notice of withdrawal fee','MarketingMessageText1': 'From 1 July 2020 <strong>we will charge fees if you give notice of withdrawals at a branch or call centre</strong>.','MarketingMessageText2': 'Bank smart and avoid fees by using your Money app, Online Banking or dialling *120*001# to give notice of withdrawal on your investment.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Automatic reinvestment when your investment matures','MarketingMessageText1': 'Without your instruction to reinvest or pay out your money, we will automatically reinvest it in a notice deposit account at the rate applicable to this account when your investment matures. Any subsequent rate changes will also apply.','MarketingMessageText2': 'Please let us know what should happen to your investment before it matures.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Save time and money with our digital and mobile channels','MarketingMessageText1': 'We are continuously enhancing our digital and mobile banking features and capabilities to give you the best experience. We want you to manage your investment accounts seamlessly so that you can have greater control over your money.','MarketingMessageText2': 'Access and transact on your investment account using the Nedbank Money app, Online Banking, USSD and the Nedbank Money App Lite, which requires less data and storage and no software updates.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Notice of withdrawal limit on digital and mobile banking channels','MarketingMessageText1': 'For your safety we have placed a limit on the withdrawal amount to any party, when you use digital and mobile banking channels. This limit does not apply to withdrawals we pay to your own Nedbank accounts.','MarketingMessageText2': 'Remember to report any suspicious activity on your account by calling 0860 555 111.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''}]";
+
                 //start to render common html content data
                 var htmlbody = new StringBuilder();
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
@@ -1169,6 +1205,7 @@ namespace nIS
                 for (int i = 0; i < statement.Pages.Count; i++)
                 {
                     var page = statement.Pages[i];
+                    var MarketingMessageCounter = 0;
                     var statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
                     var pageContent = new StringBuilder(statementPageContent.HtmlContent);
                     var dynamicWidgets = statementPageContent.DynamicWidgets;
@@ -1218,6 +1255,11 @@ namespace nIS
 
                                 case HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME:
                                     this.BindDummyDataToExplanatoryNotesWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.SERVICE_WIDGET_NAME:
+                                    this.BindDummyDataToMarketingServiceMessageWidget(pageContent, MarketingMessages, page, widget, MarketingMessageCounter);
+                                    MarketingMessageCounter++;
                                     break;
                             }
                         }
@@ -2333,7 +2375,7 @@ namespace nIS
                     };
                     var isBackgroundImage = false;
                     IList<Page> pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
-                    var MarketingMessages = "[{'MarketingMessageHeader': 'Notice of interest rate change','MarketingMessageText1': 'The interest rates on our current notice depositaccounts have changed on 03 November 2020.','MarketingMessageText2': 'Please review your investment portfolio and rates regularly to ensure that it is still appropriate and meets your needs.','MarketingMessageText3': 'For more information about the interest rate change call 0860 555 111.','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Annual investment fee review','MarketingMessageText1': 'Click here for more information.','MarketingMessageText2': 'If you do not want to click on a link, please type the following address in your browser (without the asterisks): *https://www.nedbank.co.za/content/nedbank/desktop/gt/en/info/campaigns/annual-fee-update2020.html*.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Notice of withdrawal fee','MarketingMessageText1': 'From 1 July 2020 we will charge fees if you give notice of withdrawals at a branch or call centre.','MarketingMessageText2': 'Bank smart and avoid fees by using your Money app, Online Banking or dialling *120*001# to give notice of withdrawal on your investment.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Automatic reinvestment when your investment matures','MarketingMessageText1': 'Without your instruction to reinvest or pay out your money, we will automatically reinvest it in a notice deposit account at the rate applicable to this account when your investment matures. Any subsequent rate changes will also apply.','MarketingMessageText2': 'Please let us know what should happen to your investment before it matures.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Save time and money with our digital and mobile channels','MarketingMessageText1': 'We are continuously enhancing our digital and mobile banking features and capabilities to give you the best experience. We want you to manage your investment accounts seamlessly so that you can have greater control over your money.','MarketingMessageText2': 'Access and transact on your investment account using the Nedbank Money app, Online Banking, USSD and the Nedbank Money App Lite, which requires less data and storage and no software updates.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Notice of withdrawal limit on digital and mobile banking channels','MarketingMessageText1': 'For your safety we have placed a limit on the withdrawal amount to any party, when you use digital and mobile banking channels. This limit does not apply to withdrawals we pay to your own Nedbank accounts.','MarketingMessageText2': 'Remember to report any suspicious activity on your account by calling 0860 555 111.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''}]";
+                    var MarketingMessages = "[{'MarketingMessageHeader': 'Notice of interest rate change','MarketingMessageText1': 'The interest rates on our current notice deposit accounts have changed on 03 November 2020.','MarketingMessageText2': 'Please review your investment portfolio and rates regularly to ensure that it is still appropriate and meets your needs.','MarketingMessageText3': 'For more information about the interest rate change call 0860 555 111.','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Annual investment fee review','MarketingMessageText1': 'As part of our annual pricing review, some of our fees have changed. You can view our 2020 pricing guide on the Nedbank website.','MarketingMessageText2': 'Click <a href=\"javascript:void(0);\" style=\"color:black;text-decoration: underline;\">here </a> for more information.','MarketingMessageText3': 'If you do not want to click on a link, please type the following address in your browser (without the asterisks): *https://www.nedbank.co.za/content/nedbank/desktop/gt/en/info/campaigns/annual-fee-update2020.html*.','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Notice of withdrawal fee','MarketingMessageText1': 'From 1 July 2020 <strong>we will charge fees if you give notice of withdrawals at a branch or call centre</strong>.','MarketingMessageText2': 'Bank smart and avoid fees by using your Money app, Online Banking or dialling *120*001# to give notice of withdrawal on your investment.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Automatic reinvestment when your investment matures','MarketingMessageText1': 'Without your instruction to reinvest or pay out your money, we will automatically reinvest it in a notice deposit account at the rate applicable to this account when your investment matures. Any subsequent rate changes will also apply.','MarketingMessageText2': 'Please let us know what should happen to your investment before it matures.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Save time and money with our digital and mobile channels','MarketingMessageText1': 'We are continuously enhancing our digital and mobile banking features and capabilities to give you the best experience. We want you to manage your investment accounts seamlessly so that you can have greater control over your money.','MarketingMessageText2': 'Access and transact on your investment account using the Nedbank Money app, Online Banking, USSD and the Nedbank Money App Lite, which requires less data and storage and no software updates.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''},{'MarketingMessageHeader': 'Notice of withdrawal limit on digital and mobile banking channels','MarketingMessageText1': 'For your safety we have placed a limit on the withdrawal amount to any party, when you use digital and mobile banking channels. This limit does not apply to withdrawals we pay to your own Nedbank accounts.','MarketingMessageText2': 'Remember to report any suspicious activity on your account by calling 0860 555 111.','MarketingMessageText3': '','MarketingMessageText4': '','MarketingMessageText5': ''}]";
 
                     if (pages.Count != 0)
                     {
@@ -2425,8 +2467,17 @@ namespace nIS
                                                 isRowComplete = false;
                                             }
 
-                                            var leftPaddingClass = i != 0 ? " pl-0" : string.Empty;
-                                            htmlString.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
+                                            var PaddingClass = i != 0 ? " pl-0" : string.Empty;
+                                            if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
+                                            {
+                                                //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
+                                                if (MarketingMessageCounter == 0)
+                                                {
+                                                    htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left pb-0 pt-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                                }
+                                                PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
+                                            }
+                                            htmlString.Append("<div class='col-lg-" + divLength + PaddingClass + "'>");
 
                                             if (!mergedlst[i].IsDynamicWidget)
                                             {
@@ -2530,7 +2581,7 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                                 {
-                                                    string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 tot 21/01/2021','StatementDate':'21/01/2021', 'DsInvestorName' : ''}";
+                                                    string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021','StatementDate':'21/01/2021', 'DsInvestorName' : ''}";
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
                                                         dynamic InvestmentPortfolio = JObject.Parse(jsonstr);
@@ -2594,8 +2645,9 @@ namespace nIS
                                                             InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
                                                             InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : ""));
 
-                                                            var InvestmentNo = acc.InvestorId + acc.InvestmentId;
-                                                            while (InvestmentNo.Length != 12)
+                                                            var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
+                                                            //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                                                            while (InvestmentNo.Length != 13)
                                                             {
                                                                 InvestmentNo = "0" + InvestmentNo;
                                                             }
@@ -2616,12 +2668,12 @@ namespace nIS
                                                             acc.Transactions.ForEach(trans =>
                                                             {
                                                                 var tr = new StringBuilder();
-                                                                tr.Append("<tr>");
-                                                                tr.Append("<td class='w-15'>" + trans.TransactionDate + "</td>");
-                                                                tr.Append("<td class='w-40'>" + trans.TransactionDesc + "</td>");
-                                                                tr.Append("<td class='w-15 text-right'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
-                                                                tr.Append("<td class='w-15 text-right'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
-                                                                tr.Append("<td class='w-15 text-right'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
+                                                                tr.Append("<tr class='ht-20'>");
+                                                                tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
+                                                                tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
+                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
+                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
                                                                 tr.Append("</tr>");
                                                                 InvestmentTransactionRows.Append(tr.ToString());
                                                             });
@@ -2658,7 +2710,7 @@ namespace nIS
                                                         var ServiceMessage = _lstMarketingMessage[MarketingMessageCounter];
                                                         if (ServiceMessage != null)
                                                         {
-                                                            var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<span>" + ServiceMessage.MarketingMessageText1 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<span>" + ServiceMessage.MarketingMessageText2 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<span>" + ServiceMessage.MarketingMessageText3 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<span>" + ServiceMessage.MarketingMessageText4 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<span>" + ServiceMessage.MarketingMessageText5 + "</span><br>" : string.Empty);
+                                                            var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
 
                                                             var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML;
                                                             htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
@@ -3019,6 +3071,14 @@ namespace nIS
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             var htmlWidget = HtmlConstants.EXPLANATORY_NOTES_WIDGET_HTML.Replace("{{Notes}}", "{{Notes_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget;
+        }
+
+        private string MarketingServiceMessageWidgetFormatting(PageWidget pageWidget, int counter, Page page, int MarketingMessageCounter)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML.Replace("{{ServiceMessageHeader}}", "{{ServiceMessageHeader_" + page.Identifier + "_" + pageWidget.Identifier + "_" + MarketingMessageCounter + "}}").Replace("{{ServiceMessageText}}", "{{ServiceMessageText_" + page.Identifier + "_" + pageWidget.Identifier + "_" + MarketingMessageCounter + "}}");
             htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
             return htmlWidget;
         }
@@ -3462,8 +3522,9 @@ namespace nIS
                     InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
                     InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : ""));
 
-                    var InvestmentNo = acc.InvestorId + acc.InvestmentId;
-                    while (InvestmentNo.Length != 12)
+                    var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
+                    //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                    while (InvestmentNo.Length != 13)
                     {
                         InvestmentNo = "0" + InvestmentNo;
                     }
@@ -3484,12 +3545,12 @@ namespace nIS
                     acc.Transactions.ForEach(trans =>
                     {
                         var tr = new StringBuilder();
-                        tr.Append("<tr>");
-                        tr.Append("<td class='w-15'>" + trans.TransactionDate + "</td>");
-                        tr.Append("<td class='w-40'>" + trans.TransactionDesc + "</td>");
-                        tr.Append("<td class='w-15 text-right'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
-                        tr.Append("<td class='w-15 text-right'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
-                        tr.Append("<td class='w-15 text-right'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
+                        tr.Append("<tr class='ht-20'>");
+                        tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
+                        tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
                         tr.Append("</tr>");
                         InvestmentTransactionRows.Append(tr.ToString());
                     });
@@ -3514,6 +3575,21 @@ namespace nIS
                 notes.Append("<span> " + Convert.ToString(noteObj.Note2) + " </span> <br/>");
                 notes.Append("<span> " + Convert.ToString(noteObj.Note3) + " </span> ");
                 pageContent.Replace("{{Notes_" + page.Identifier + "_" + widget.Identifier + "}}", notes.ToString());
+            }
+        }
+
+        private void BindDummyDataToMarketingServiceMessageWidget(StringBuilder pageContent, string MarketingMessages, Page page, PageWidget widget, int MarketingMessageCounter)
+        {
+            if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
+            {
+                IList<MarketingMessage> _lstMarketingMessage = JsonConvert.DeserializeObject<List<MarketingMessage>>(MarketingMessages);
+                var ServiceMessage = _lstMarketingMessage[MarketingMessageCounter];
+                if (ServiceMessage != null)
+                {
+                    var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
+
+                    pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", ServiceMessage.MarketingMessageHeader).Replace("{{ServiceMessageText_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", messageTxt);
+                }
             }
         }
 

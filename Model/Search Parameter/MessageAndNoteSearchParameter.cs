@@ -1,5 +1,5 @@
-﻿// <copyright file="CustomerSearchParameter.cs" company="Websym Solutions Pvt Ltd">
-// Copyright (c) 2018 Websym Solutions Pvt Ltd.
+﻿// <copyright file="CustomerInvestmentSearchParameter.cs" company="Websym Solutions Pvt Ltd">
+// Copyright (c) 2020 Websym Solutions Pvt Ltd.
 // </copyright>
 // -----------------------------------------------------------------------  
 
@@ -15,28 +15,21 @@ namespace nIS
     #endregion
 
     /// <summary>
-    /// This class represents customer search parameter
+    /// This class represents messages or explanatory notes search parameter
     /// </summary>
-    public class CustomerSearchParameter
+    /// 
+    public class MessageAndNoteSearchParameter
     {
-        /// <summary>
-        /// The utility object
-        /// </summary>
         private ModelUtility utility = new ModelUtility();
-
-        /// <summary>
-        /// The validation engine objecct
-        /// </summary>
         private IValidationEngine validationEngine = new ValidationEngine();
 
         public long Identifier { get; set; }
-        public long CustomerId { get; set; }
         public long BatchId { get; set; }
-        public string CustomerCode { get; set; }
+        public long ParentId { get; set; } //It must be InvestmentId, HomeLoanId, PersonalLoanId, etc...
         public string WidgetFilterSetting { get; set; }
 
         /// <summary>
-        /// Determines whether this instance of subscription search parameter is valid.
+        /// Determines whether this instance of messages or explanatory notes search parameter is valid.
         /// </summary>
         public void IsValid()
         {
@@ -47,14 +40,6 @@ namespace nIS
                 if (validationEngine.IsValidLong(this.BatchId))
                 {
                     exception.Data.Add(this.utility.GetDescription("Batch Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_BATCH_ID);
-                }
-                if (validationEngine.IsValidLong(this.Identifier))
-                {
-                    exception.Data.Add(this.utility.GetDescription("Customer Id", typeof(State)), ModelConstant.TRANSACTION_DATA_MODEL_SECTION + "~" + ModelConstant.INVALID_CUSTOMER_ID);
-                }
-                if (exception.Data.Count > 0)
-                {
-                    throw exception;
                 }
             }
             catch (Exception ex)

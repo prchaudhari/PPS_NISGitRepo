@@ -301,55 +301,25 @@ namespace nIS
                         SearchMode = SearchMode.Equals
                     }, tenantCode)?.FirstOrDefault();
 
-                    //To Do - Nedbank - get method name from tenant configuration 
-                    var customer = this.tenantTransactionDataManager.Get_CustomerMasters(new CustomerSearchParameter()
+                    var functionName = string.Empty;
+                    if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.GenerateStatementRunNowScheduleFunctionName))
                     {
-                        CustomerId = statementSearch.CustomerId,
-                        BatchId = statementSearch.BatchId
-                    }, tenantCode)?.FirstOrDefault();
+                        functionName = tenantConfiguration.GenerateStatementRunNowScheduleFunctionName;
+                    }
 
-                    var batch = this.scheduleManager.GetBatches(new BatchSearchParameter()
+                    switch (functionName)
                     {
-                        Identifier = statementSearch.BatchId.ToString(),
-                    }, tenantCode)?.FirstOrDefault();
+                        case ModelConstant.GENERATE_FINANCIAL_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW:
+                            outputlocation = this.CreateFinancialStatementHtml(statementSearch, schedule, tenantConfiguration, client, outputlocation, tenantCode);
+                            break;
 
-                    if (schedule != null && customer != null && batch != null)
-                    {
-                        var BatchDetails = this.tenantTransactionDataManager.GetBatchDetails(statementSearch.BatchId, schedule.Statement.Identifier, tenantCode);
-                        var statements = this.statementManager.GetStatements(new StatementSearchParameter
-                        {
-                            Identifier = schedule.Statement.Identifier,
-                            IsActive = true,
-                            IsStatementPagesRequired = true,
-                            PagingParameter = new PagingParameter
-                            {
-                                PageIndex = 0,
-                                PageSize = 0,
-                            },
-                            SortParameter = new SortParameter()
-                            {
-                                SortOrder = SortOrder.Ascending,
-                                SortColumn = "Name",
-                            },
-                            SearchMode = SearchMode.Equals
-                        }, tenantCode);
-                        if (statements == null || statements.Count == 0)
-                        {
-                            throw new StatementNotFoundException(tenantCode);
-                        }
+                        case ModelConstant.GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_RUN_NOW:
+                            outputlocation = this.CreateNedbankStatementHtml(statementSearch, schedule, tenantConfiguration, client, outputlocation, tenantCode);
+                            break;
 
-                        var statement = statements.FirstOrDefault();
-                        var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
-                        outputlocation = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\temp_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
-                        if (!Directory.Exists(outputlocation))
-                        {
-                            Directory.CreateDirectory(outputlocation);
-                        }
-                        this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\css", outputlocation, false);
-                        this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\js", outputlocation, false);
-                        this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\images", outputlocation, false);
-                        this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\fonts", outputlocation, false);
-                        this.GenerateHtmlStatementForPdfGeneration(customer, statement, statementPageContents, batch, BatchDetails, tenantCode, outputlocation, client, tenantConfiguration);
+                        default:
+                            outputlocation = this.CreateFinancialStatementHtml(statementSearch, schedule, tenantConfiguration, client, outputlocation, tenantCode);
+                            break;
                     }
                 }
 
@@ -365,10 +335,6 @@ namespace nIS
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         /// <summary>
         /// This method help to generate statement for customer
         /// </summary>
@@ -376,7 +342,6 @@ namespace nIS
         /// <param name="statement"> the statement object </param>
         /// <param name="statementPageContents"> the statement page html content list</param>
         /// <param name="batchMaster"> the batch master object </param>
-        /// <param name="batchDetails"> the list of batch details records </param>
         /// <param name="outputLocation"> the output file path </param>
         /// <param name="client"> the client object </param>
         /// <param name="tenantConfiguration"> the tenant configuration object </param>
@@ -554,10 +519,10 @@ namespace nIS
                                             this.BindAccountInformationWidgetData(pageContent, customer, page, widget);
                                             break;
                                         case HtmlConstants.IMAGE_WIDGET_NAME:
-                                            this.BindImageWidgetData(pageContent, customer, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, outputLocation);
+                                            this.BindImageWidgetData(pageContent, customer.Identifier, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, outputLocation);
                                             break;
                                         case HtmlConstants.VIDEO_WIDGET_NAME:
-                                            this.BindVideoWidgetData(pageContent, customer, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, outputLocation);
+                                            this.BindVideoWidgetData(pageContent, customer.Identifier, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, outputLocation);
                                             break;
                                         case HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME:
                                             this.BindSummaryAtGlanceWidgetData(pageContent, accountrecords, page, widget);
@@ -698,6 +663,381 @@ namespace nIS
             }
         }
 
+
+        /// <summary>
+        /// This method help to generate statement for customer
+        /// </summary>
+        /// <param name="customer"> the customer object </param>
+        /// <param name="statement"> the statement object </param>
+        /// <param name="statementPageContents"> the statement page html content list</param>
+        /// <param name="batchMaster"> the batch master object </param>
+        /// <param name="outputLocation"> the output file path </param>
+        /// <param name="client"> the client object </param>
+        /// <param name="tenantConfiguration"> the tenant configuration object </param>
+        /// <param name="tenantCode"> the tenant code </param>
+        public string GenerateNedbankHtmlStatementForPdfGeneration(DM_CustomerMaster customer, Statement statement, IList<StatementPageContent> statementPageContents, BatchMaster batchMaster, IList<BatchDetail> BatchDetails, string tenantCode, string OutputLocation, TenantConfiguration tenantConfiguration)
+        {
+            string filePath = string.Empty;
+
+            try
+            {
+                if (statementPageContents.Count > 0)
+                {
+                    var tenantEntities = this.dynamicWidgetManager.GetTenantEntities(tenantCode);
+
+                    //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
+                    var customerMedias = this.tenantTransactionDataManager.GetCustomerMediaList(customer.Identifier, batchMaster.Identifier, statement.Identifier, tenantCode);
+
+                    //get investment master data
+                    var investmentMasters = this.tenantTransactionDataManager.Get_DM_InvestmasterMaster(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+                    long ParentId = 0;
+                    if (investmentMasters != null && investmentMasters.Count > 0)
+                    {
+                        investmentMasters.ForEach(invest =>
+                        {
+                            invest.investmentTransactions = this.tenantTransactionDataManager.Get_DM_InvestmentTransaction(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier, InvestmentId = invest.InvestmentId }, tenantCode)?.ToList();
+                        });
+                        ParentId = investmentMasters[0].InvestorId;
+                    }
+
+                    var ExplanatoryNotes = this.tenantTransactionDataManager.Get_DM_ExplanatoryNotes(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+                    var Messages = this.tenantTransactionDataManager.Get_DM_MarketingMessages(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+
+                    var htmlbody = new StringBuilder();
+                    htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+
+                    //start to render actual html content data
+                    StringBuilder scriptHtmlRenderer = new StringBuilder();
+                    int subPageCount = 0;
+                    string accountNumber = string.Empty;
+                    string accountType = string.Empty;
+                    string SavingTrendChartJson = string.Empty;
+                    string SpendingTrendChartJson = string.Empty;
+                    string AnalyticsChartJson = string.Empty;
+                    string SavingTransactionGridJson = string.Empty;
+                    string CurrentTransactionGridJson = string.Empty;
+                    HttpClient httpClient = null;
+
+                    var newStatementPageContents = new List<StatementPageContent>();
+                    statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
+                    {
+                        Id = it.Id,
+                        PageId = it.PageId,
+                        PageTypeId = it.PageTypeId,
+                        HtmlContent = it.HtmlContent,
+                        PageHeaderContent = it.PageHeaderContent,
+                        PageFooterContent = it.PageFooterContent,
+                        DisplayName = it.DisplayName,
+                        TabClassName = it.TabClassName,
+                        DynamicWidgets = it.DynamicWidgets
+                    }));
+
+                    long FirstPageId = statement.Pages[0].Identifier;
+                    for (int i = 0; i < statement.Pages.Count; i++)
+                    {
+                        var page = statement.Pages[i];
+                        var MarketingMessageCounter = 0;
+                        var statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
+
+                        subPageCount = 1;
+                        StringBuilder SubTabs = new StringBuilder();
+                        StringBuilder PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
+                        var dynamicWidgets = new List<DynamicWidget>(statementPageContent.DynamicWidgets);
+
+                        string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
+                        PageHeaderContent.Replace("{{ExtraClass}}", tabClassName).Replace("{{DivId}}", tabClassName);
+
+                        StringBuilder newPageContent = new StringBuilder();
+                        newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
+
+                        for (int x = 0; x < subPageCount; x++)
+                        {
+                            var pagewidgets = new List<PageWidget>(page.PageWidgets);
+                            StringBuilder pageContent = new StringBuilder(statementPageContent.HtmlContent);
+                            for (int j = 0; j < pagewidgets.Count; j++)
+                            {
+                                var widget = pagewidgets[j];
+                                if (!widget.IsDynamicWidget)
+                                {
+                                    switch (widget.WidgetName)
+                                    {
+                                        case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
+                                            this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget);
+                                            break;
+                                        case HtmlConstants.BANK_DETAILS_WIDGET_NAME:
+                                            this.BindBranchDetailsWidgetData(pageContent, investmentMasters[0].BranchId, page, widget, tenantCode);
+                                            break;
+                                        case HtmlConstants.IMAGE_WIDGET_NAME:
+                                            this.BindImageWidgetData(pageContent, customer.CustomerId, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, OutputLocation);
+                                            break;
+                                        case HtmlConstants.VIDEO_WIDGET_NAME:
+                                            this.BindVideoWidgetData(pageContent, customer.CustomerId, customerMedias, BatchDetails, statement, page, batchMaster, widget, tenantCode, OutputLocation);
+                                            break;
+                                        case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
+                                            this.BindInvestmentPortfolioStatementWidgetData(pageContent, customer, investmentMasters, page, widget);
+                                            break;
+                                        case HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME:
+                                            this.BindInvestorPerformanceWidgetData(pageContent, investmentMasters, page, widget);
+                                            break;
+                                        case HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
+                                            this.BindBreakdownOfInvestmentAccountsWidgetData(pageContent, investmentMasters, page, widget);
+                                            break;
+                                        case HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME:
+                                            this.BindExplanatoryNotesWidgetData(pageContent, ExplanatoryNotes, page, widget);
+                                            break;
+                                        case HtmlConstants.SERVICE_WIDGET_NAME:
+                                            this.BindMarketingServiceWidgetData(pageContent, Messages, page, widget, MarketingMessageCounter);
+                                            MarketingMessageCounter++;
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    var dynaWidgets = dynamicWidgets.Where(item => item.Identifier == widget.WidgetId).ToList();
+                                    if (dynaWidgets.Count > 0)
+                                    {
+                                        var dynawidget = dynaWidgets.FirstOrDefault();
+                                        var themeDetails = new CustomeTheme();
+                                        if (dynawidget.ThemeType == "Default")
+                                        {
+                                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(tenantConfiguration.WidgetThemeSetting);
+                                        }
+                                        else
+                                        {
+                                            themeDetails = JsonConvert.DeserializeObject<CustomeTheme>(dynawidget.ThemeCSS);
+                                        }
+
+                                        //Get data from database for widget
+                                        httpClient = new HttpClient();
+                                        httpClient.BaseAddress = new Uri(tenantConfiguration.BaseUrlForTransactionData);
+                                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+                                        httpClient.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
+
+                                        //API search parameter
+                                        JObject searchParameter = new JObject();
+                                        searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
+                                        searchParameter[ModelConstant.CUSTOEMR_ID] = customer.Identifier;
+                                        searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
+
+                                        switch (dynawidget.WidgetType)
+                                        {
+                                            case HtmlConstants.TABLE_DYNAMICWIDGET:
+                                                this.BindDynamicTableWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+                                                break;
+                                            case HtmlConstants.FORM_DYNAMICWIDGET:
+                                                this.BindDynamicFormWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+                                                break;
+                                            case HtmlConstants.LINEGRAPH_DYNAMICWIDGET:
+                                                this.BindDynamicLineGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
+                                                break;
+                                            case HtmlConstants.BARGRAPH_DYNAMICWIDGET:
+                                                this.BindDynamicBarGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails);
+                                                break;
+                                            case HtmlConstants.PICHART_DYNAMICWIDGET:
+                                                this.BindDynamicPieChartWidgetData(pageContent, scriptHtmlRenderer, page, widget, searchParameter, dynawidget, httpClient, themeDetails, tenantCode);
+                                                break;
+                                            case HtmlConstants.HTML_DYNAMICWIDGET:
+                                                this.BindDynamicHtmlWidgetData(pageContent, page, widget, searchParameter, dynawidget, httpClient);
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            newPageContent.Append(pageContent);
+
+                            if (x == subPageCount - 1)
+                            {
+                                newPageContent.Append(HtmlConstants.END_DIV_TAG);
+                            }
+                        }
+
+                        PageHeaderContent.Replace("{{SubTabs}}", SubTabs.ToString());
+                        statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
+                        statementPageContent.HtmlContent = newPageContent.ToString();
+                    }
+
+                    newStatementPageContents.ToList().ForEach(page =>
+                    {
+                        htmlbody.Append(page.PageHeaderContent);
+                        htmlbody.Append(page.HtmlContent);
+                        htmlbody.Append(page.PageFooterContent);
+                    });
+                    htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+
+                    StringBuilder finalHtml = new StringBuilder();
+                    finalHtml.Append(HtmlConstants.HTML_HEADER);
+                    finalHtml.Append(htmlbody.ToString());
+                    finalHtml.Append(HtmlConstants.HTML_FOOTER);
+                    scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
+
+                    finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
+                    finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
+                    finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
+                    finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
+                    finalHtml.Replace("<link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'>", "");
+                    finalHtml.Replace("../common/css/", "./").Replace("../common/js/", "./");
+                    finalHtml.Replace("../common/css/", "./");
+
+                    string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+                    filePath = this.WriteToFile(finalHtml.ToString(), fileName, OutputLocation);
+                }
+
+                return filePath;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// This method help to create HTML statement for financial tenant customer
+        /// </summary>
+        /// <param name="statementSearch"> the statement search object </param>
+        /// <param name="schedule"> the schedule object</param>
+        /// <param name="client"> the client object </param>
+        /// <param name="tenantConfiguration"> the tenant configuration object </param>
+        /// /// <param name="outputlocation"> the output location for HTML statement file </param>
+        /// <param name="tenantCode"> the tenant code </param>
+        private string CreateFinancialStatementHtml(StatementSearch statementSearch, Schedule schedule, TenantConfiguration tenantConfiguration, Client client, string outputlocation, string tenantCode)
+        {
+            try
+            {
+                var customer = this.tenantTransactionDataManager.Get_CustomerMasters(new CustomerSearchParameter()
+                {
+                    CustomerId = statementSearch.CustomerId,
+                    BatchId = statementSearch.BatchId
+                }, tenantCode)?.FirstOrDefault();
+
+                var batch = this.scheduleManager.GetBatches(new BatchSearchParameter()
+                {
+                    Identifier = statementSearch.BatchId.ToString(),
+                }, tenantCode)?.FirstOrDefault();
+
+                if (schedule != null && customer != null && batch != null)
+                {
+                    var BatchDetails = this.tenantTransactionDataManager.GetBatchDetails(statementSearch.BatchId, schedule.Statement.Identifier, tenantCode);
+                    var statements = this.statementManager.GetStatements(new StatementSearchParameter
+                    {
+                        Identifier = schedule.Statement.Identifier,
+                        IsActive = true,
+                        IsStatementPagesRequired = true,
+                        PagingParameter = new PagingParameter
+                        {
+                            PageIndex = 0,
+                            PageSize = 0,
+                        },
+                        SortParameter = new SortParameter()
+                        {
+                            SortOrder = SortOrder.Ascending,
+                            SortColumn = "Name",
+                        },
+                        SearchMode = SearchMode.Equals
+                    }, tenantCode);
+                    if (statements == null || statements.Count == 0)
+                    {
+                        throw new StatementNotFoundException(tenantCode);
+                    }
+
+                    var statement = statements.FirstOrDefault();
+                    var statementPageContents = this.statementManager.GenerateHtmlFormatOfStatement(statement, tenantCode, tenantConfiguration);
+                    outputlocation = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\temp_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                    if (!Directory.Exists(outputlocation))
+                    {
+                        Directory.CreateDirectory(outputlocation);
+                    }
+                    this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\css", outputlocation, false);
+                    this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\js", outputlocation, false);
+                    this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\images", outputlocation, false);
+                    this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\fonts", outputlocation, false);
+                    this.GenerateHtmlStatementForPdfGeneration(customer, statement, statementPageContents, batch, BatchDetails, tenantCode, outputlocation, client, tenantConfiguration);
+                }
+
+                return outputlocation;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method help to create HTML statement for financial tenant customer
+        /// </summary>
+        /// <param name="statementSearch"> the statement search object </param>
+        /// <param name="schedule"> the schedule object</param>
+        /// <param name="client"> the client object </param>
+        /// <param name="tenantConfiguration"> the tenant configuration object </param>
+        /// /// <param name="outputlocation"> the output location for HTML statement file </param>
+        /// <param name="tenantCode"> the tenant code </param>
+        private string CreateNedbankStatementHtml(StatementSearch statementSearch, Schedule schedule, TenantConfiguration tenantConfiguration, Client client, string outputlocation, string tenantCode)
+        {
+            try
+            {
+                var customer = this.tenantTransactionDataManager.Get_DM_CustomerMasters(new CustomerSearchParameter()
+                {
+                    CustomerId = statementSearch.CustomerId,
+                    BatchId = statementSearch.BatchId
+                }, tenantCode)?.FirstOrDefault();
+
+                var batch = this.scheduleManager.GetBatches(new BatchSearchParameter()
+                {
+                    Identifier = statementSearch.BatchId.ToString(),
+                }, tenantCode)?.FirstOrDefault();
+
+                if (schedule != null && customer != null && batch != null)
+                {
+                    var BatchDetails = this.tenantTransactionDataManager.GetBatchDetails(statementSearch.BatchId, schedule.Statement.Identifier, tenantCode);
+                    var statements = this.statementManager.GetStatements(new StatementSearchParameter
+                    {
+                        Identifier = schedule.Statement.Identifier,
+                        IsActive = true,
+                        IsStatementPagesRequired = true,
+                        PagingParameter = new PagingParameter
+                        {
+                            PageIndex = 0,
+                            PageSize = 0,
+                        },
+                        SortParameter = new SortParameter()
+                        {
+                            SortOrder = SortOrder.Ascending,
+                            SortColumn = "Name",
+                        },
+                        SearchMode = SearchMode.Equals
+                    }, tenantCode);
+                    if (statements == null || statements.Count == 0)
+                    {
+                        throw new StatementNotFoundException(tenantCode);
+                    }
+
+                    var statement = statements.FirstOrDefault();
+                    var statementPageContents = this.statementManager.GenerateHtmlFormatOfNedbankStatement(statement, tenantCode, tenantConfiguration);
+                    outputlocation = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\temp_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                    if (!Directory.Exists(outputlocation))
+                    {
+                        Directory.CreateDirectory(outputlocation);
+                    }
+                    this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\css", outputlocation, false);
+                    this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\js", outputlocation, false);
+                    this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\images", outputlocation, false);
+                    this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\fonts", outputlocation, false);
+                    this.GenerateNedbankHtmlStatementForPdfGeneration(customer, statement, statementPageContents, batch, BatchDetails, tenantCode, outputlocation, tenantConfiguration);
+                }
+
+                return outputlocation;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         #region Bind Data to widgets in HTML Statement methods
 
         private void BindCustomerInformationWidgetData(StringBuilder pageContent, CustomerMaster customer, Statement statement, Page page, PageWidget widget, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails)
@@ -735,90 +1075,6 @@ namespace nIS
 
             AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number" + "</div><label class='list-value mb-0'>" + customer.RmContactNumber + "</label></div></div>");
             pageContent.Replace("{{AccountInfoData_" + page.Identifier + "_" + widget.Identifier + "}}", AccDivData.ToString());
-        }
-
-        private void BindImageWidgetData(StringBuilder pageContent, CustomerMaster customer, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, Statement statement, Page page, BatchMaster batchMaster, PageWidget widget, string tenantCode, string outputLocation)
-        {
-            var imgAssetFilepath = string.Empty;
-            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
-            {
-                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                if (widgetSetting.isPersonalize == false) //Is not dynamic image, then assign selected image from asset library
-                {
-                    var asset = this.assetLibraryManager.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
-                    if (asset != null)
-                    {
-                        var path = asset.FilePath.ToString();
-                        var fileName = asset.Name;
-                        if (File.Exists(path) && !File.Exists(outputLocation + "\\" + fileName))
-                        {
-                            File.Copy(path, Path.Combine(outputLocation, fileName));
-                        }
-                        imgAssetFilepath = "./" + fileName;
-                    }
-                }
-                else //Is dynamic image, then assign it from database 
-                {
-                    var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
-                    if (custMedia != null && custMedia.ImageURL != string.Empty)
-                    {
-                        imgAssetFilepath = custMedia.ImageURL;
-                    }
-                    else
-                    {
-                        var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                        if (batchDetail != null && batchDetail.ImageURL != string.Empty)
-                        {
-                            imgAssetFilepath = batchDetail.ImageURL;
-                        }
-                    }
-                }
-                pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgAssetFilepath);
-            }
-        }
-
-        private void BindVideoWidgetData(StringBuilder pageContent, CustomerMaster customer, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, Statement statement, Page page, BatchMaster batchMaster, PageWidget widget, string tenantCode, string outputLocation)
-        {
-            var vdoAssetFilepath = string.Empty;
-            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
-            {
-                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                if (widgetSetting.isEmbedded == true)//If embedded then assigned it it from widget config json source url
-                {
-                    vdoAssetFilepath = widgetSetting.SourceUrl;
-                }
-                else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false) //If not dynamic video, then assign selected video from asset library
-                {
-                    var asset = this.assetLibraryManager.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
-                    if (asset != null)
-                    {
-                        var path = asset.FilePath.ToString();
-                        var fileName = asset.Name;
-                        if (File.Exists(path) && !File.Exists(outputLocation + "\\" + fileName))
-                        {
-                            File.Copy(path, Path.Combine(outputLocation, fileName));
-                        }
-                        vdoAssetFilepath = "./" + fileName;
-                    }
-                }
-                else //If dynamic video, then assign it from database 
-                {
-                    var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
-                    if (custMedia != null && custMedia.VideoURL != string.Empty)
-                    {
-                        vdoAssetFilepath = custMedia.VideoURL;
-                    }
-                    else
-                    {
-                        var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
-                        if (batchDetail != null && batchDetail.VideoURL != string.Empty)
-                        {
-                            vdoAssetFilepath = batchDetail.VideoURL;
-                        }
-                    }
-                }
-                pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", vdoAssetFilepath);
-            }
         }
 
         private void BindSummaryAtGlanceWidgetData(StringBuilder pageContent, IList<AccountMaster> accountrecords, Page page, PageWidget widget)
@@ -1480,6 +1736,293 @@ namespace nIS
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        #endregion
+
+        #region These methods helps to bind data to Image and Video widgets
+
+        private void BindImageWidgetData(StringBuilder pageContent, long customerId, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, Statement statement, Page page, BatchMaster batchMaster, PageWidget widget, string tenantCode, string outputLocation)
+        {
+            var imgAssetFilepath = string.Empty;
+            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
+            {
+                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                if (widgetSetting.isPersonalize == false) //Is not dynamic image, then assign selected image from asset library
+                {
+                    var asset = this.assetLibraryManager.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                    if (asset != null)
+                    {
+                        var path = asset.FilePath.ToString();
+                        var fileName = asset.Name;
+                        var imagePath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customerId;
+                        if (File.Exists(path) && !File.Exists(imagePath + "\\" + fileName))
+                        {
+                            File.Copy(path, Path.Combine(imagePath, fileName));
+                        }
+                        imgAssetFilepath = "./" + fileName;
+                    }
+                }
+                else //Is dynamic image, then assign it from database 
+                {
+                    var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault(); //error if multiple records
+                    if (custMedia != null && custMedia.ImageURL != string.Empty)
+                    {
+                        imgAssetFilepath = custMedia.ImageURL;
+                    }
+                    else
+                    {
+                        var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
+                        if (batchDetail != null && batchDetail.ImageURL != string.Empty)
+                        {
+                            imgAssetFilepath = batchDetail.ImageURL;
+                        }
+                    }
+                }
+                pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgAssetFilepath);
+            }
+        }
+
+        private void BindVideoWidgetData(StringBuilder pageContent, long customerId, IList<CustomerMedia> customerMedias, IList<BatchDetail> batchDetails, Statement statement, Page page, BatchMaster batchMaster, PageWidget widget, string tenantCode, string outputLocation)
+        {
+            var vdoAssetFilepath = string.Empty;
+            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
+            {
+                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                if (widgetSetting.isEmbedded == true)//If embedded then assigned it it from widget config json source url
+                {
+                    vdoAssetFilepath = widgetSetting.SourceUrl;
+                }
+                else if (widgetSetting.isPersonalize == false && widgetSetting.isEmbedded == false) //If not dynamic video, then assign selected video from asset library
+                {
+                    var asset = this.assetLibraryManager.GetAssets(new AssetSearchParameter { Identifier = widgetSetting.AssetId, SortParameter = new SortParameter { SortColumn = "Id" } }, tenantCode).ToList()?.FirstOrDefault();
+                    if (asset != null)
+                    {
+                        var path = asset.FilePath.ToString();
+                        var fileName = asset.Name;
+                        var videoPath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customerId;
+                        if (File.Exists(path) && !File.Exists(videoPath + "\\" + fileName))
+                        {
+                            File.Copy(path, Path.Combine(videoPath, fileName));
+                        }
+                        vdoAssetFilepath = "./" + fileName;
+                    }
+                }
+                else //If dynamic video, then assign it from database 
+                {
+                    var custMedia = customerMedias.Where(item => item.PageId == page.Identifier && item.WidgetId == widget.Identifier)?.ToList()?.FirstOrDefault();
+                    if (custMedia != null && custMedia.VideoURL != string.Empty)
+                    {
+                        vdoAssetFilepath = custMedia.VideoURL;
+                    }
+                    else
+                    {
+                        var batchDetail = batchDetails.Where(item => item.StatementId == statement.Identifier && item.WidgetId == widget.Identifier && item.PageId == page.Identifier)?.ToList()?.FirstOrDefault();
+                        if (batchDetail != null && batchDetail.VideoURL != string.Empty)
+                        {
+                            vdoAssetFilepath = batchDetail.VideoURL;
+                        }
+                    }
+                }
+                pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", vdoAssetFilepath);
+            }
+        }
+
+        #endregion
+
+        #region These methods helps to bind data to static widgets of Nedbank HTML statment
+
+        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget)
+        {
+            pageContent.Replace("{{Title_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Title);
+            pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.FirstName);
+            pageContent.Replace("{{Surname_" + page.Identifier + "_" + widget.Identifier + "}}", customer.SurName);
+            pageContent.Replace("{{CustAddressLine0_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine0);
+            pageContent.Replace("{{CustAddressLine1_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine1);
+            pageContent.Replace("{{CustAddressLine2_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine2);
+            pageContent.Replace("{{CustAddressLine3_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine3);
+            pageContent.Replace("{{CustAddressLine4_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine4);
+        }
+
+        private void BindBranchDetailsWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode)
+        {
+            var branchDetails = this.tenantTransactionDataManager.Get_DM_BranchMaster(BranchId, tenantCode)?.FirstOrDefault();
+            if (branchDetails != null)
+            {
+                pageContent.Replace("{{BankName_" + page.Identifier + "_" + widget.Identifier + "}}", branchDetails.BranchName);
+                pageContent.Replace("{{AddressLine1_" + page.Identifier + "_" + widget.Identifier + "}}", branchDetails.AddressLine0);
+                pageContent.Replace("{{AddressLine2_" + page.Identifier + "_" + widget.Identifier + "}}", branchDetails.AddressLine1);
+                pageContent.Replace("{{CountryName_" + page.Identifier + "_" + widget.Identifier + "}}", branchDetails.AddressLine2);
+                pageContent.Replace("{{BankVATRegNo_" + page.Identifier + "_" + widget.Identifier + "}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
+                pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Contact centre: " + branchDetails.ContactNo);
+            }
+
+        }
+
+        private void BindInvestmentPortfolioStatementWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
+        {
+            if (investmentMasters != null && investmentMasters.Count > 0)
+            {
+                var currency = investmentMasters[0].Currenacy;
+                var TotalClosingBalance = 0.0;
+                investmentMasters.ForEach(invest =>
+                {
+                    TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
+                });
+
+                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.DS_Investor_Name);
+                pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", currency + TotalClosingBalance);
+                pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].DayOfStatement);
+                pageContent.Replace("{{InvestorID_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(investmentMasters[0].InvestorId));
+
+                //to separate to string dates values into required date format -- 
+                //given date format for statement period is //2021-02-10 00:00:00.000 - 2021-03-09 23:00:00.000//
+                //1st try with string separator, if fails then try with char separator
+                var statementPeriod = string.Empty;
+                string[] stringSeparators = new string[] { " - ", "- ", " -" };
+                string[] dates = investmentMasters[0].StatementPeriod.Split(stringSeparators, StringSplitOptions.None);
+                if (dates.Length > 0)
+                {
+                    if (dates.Length > 1)
+                    {
+                        statementPeriod = Convert.ToDateTime(dates[0]).ToString("dd'/'MM'/'yyyy") + " to " + Convert.ToDateTime(dates[1]).ToString("dd'/'MM'/'yyyy");
+                    }
+                    else
+                    {
+                        dates = investmentMasters[0].StatementPeriod.Split(new Char[] { ' ' });
+                        if (dates.Length > 2)
+                        {
+                            statementPeriod = Convert.ToDateTime(dates[0]).ToString("dd'/'MM'/'yyyy") + " to " + Convert.ToDateTime(dates[2]).ToString("dd'/'MM'/'yyyy");
+                        }
+                    }
+                }
+                else
+                {
+                    statementPeriod = investmentMasters[0].StatementPeriod;
+                }
+                pageContent.Replace("{{StatementPeriod_" + page.Identifier + "_" + widget.Identifier + "}}", statementPeriod);
+
+                pageContent.Replace("{{StatementDate_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].StatementDate?.ToString("dd'/'MM'/'yyyy"));
+            }
+        }
+
+        private void BindInvestorPerformanceWidgetData(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
+        {
+            if (investmentMasters != null && investmentMasters.Count > 0)
+            {
+                var currency = investmentMasters[0].Currenacy;
+                var TotalClosingBalance = 0.0;
+                var TotalOpeningBalance = 0.0;
+                investmentMasters.ForEach(invest =>
+                {
+                    TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
+                    TotalOpeningBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance brought forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
+                });
+
+                pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].ProductType);
+                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", currency + Convert.ToString(TotalOpeningBalance));
+                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", currency + Convert.ToString(TotalClosingBalance));
+            }
+        }
+
+        private void BindBreakdownOfInvestmentAccountsWidgetData(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
+        {
+            if (investmentMasters != null && investmentMasters.Count > 0)
+            {
+                //Create Nav tab if investment accounts is more than 1
+                var NavTabs = new StringBuilder();
+                var InvestmentAccountsCount = investmentMasters.Count;
+                if (InvestmentAccountsCount > 1)
+                {
+                    NavTabs.Append("<ul class='nav nav-tabs Investment-nav-tabs'>");
+                    var cnt = 0;
+                    investmentMasters.ToList().ForEach(acc =>
+                    {
+                        NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : string.Empty) + "'><a id='tab0-tab' data-toggle='tab' data-target='#" + acc.ProductDesc + "-" + acc.InvestmentId + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : string.Empty) + "'> " + acc.ProductDesc + " - " + acc.InvestmentId + "</a></li>");
+                        cnt++;
+                    });
+                    NavTabs.Append("</ul>");
+                }
+                pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", NavTabs.ToString());
+
+                //create tab-content div if accounts is greater than 1, otherwise create simple div
+                var TabContentHtml = new StringBuilder();
+                var counter = 0;
+                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
+                investmentMasters.ToList().ForEach(acc =>
+                {
+                    var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
+                    InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
+                    InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", Convert.ToString(acc.InvestmentId));
+                    InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : string.Empty));
+
+                    var InvestmentNo = Convert.ToString(acc.InvestorId) + " " + Convert.ToString(acc.InvestmentId);
+                    //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                    while (InvestmentNo.Length != 13)
+                    {
+                        InvestmentNo = "0" + InvestmentNo;
+                    }
+                    InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
+                    InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? acc.AccountOpenDate?.ToString("dd'/'MM'/'yyyy") : string.Empty);
+
+                    InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
+                    InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate != null ? acc.ExpiryDate?.ToString("dd'/'MM'/'yyyy") : string.Empty);
+                    InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc != null ? acc.InterestDisposalDesc : string.Empty);
+                    InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod != null ? acc.NoticePeriod : string.Empty);
+                    InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.AccuredInterest != null ? (acc.Currenacy + acc.AccuredInterest) : string.Empty);
+
+                    var LastInvestmentTransaction = acc.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).OrderByDescending(it => it.TransactionDate).ToList().FirstOrDefault();
+                    InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", LastInvestmentTransaction.TransactionDate.ToString("dd MMMM yyyy"));
+                    InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currenacy + LastInvestmentTransaction.WJXBFS4_Balance);
+
+                    var InvestmentTransactionRows = new StringBuilder();
+                    acc.investmentTransactions.OrderBy(it => it.TransactionDate).ToList().ForEach(trans =>
+                    {
+                        var tr = new StringBuilder();
+                        tr.Append("<tr class='ht-20'>");
+                        tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate.ToString("dd'/'MM'/'yyyy") + "</td>");
+                        tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : acc.Currenacy + trans.WJXBFS2_Debit) + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : acc.Currenacy + trans.WJXBFS3_Credit) + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : acc.Currenacy + trans.WJXBFS4_Balance) + "</td>");
+                        tr.Append("</tr>");
+                        InvestmentTransactionRows.Append(tr.ToString());
+                    });
+                    InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
+                    TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
+                    counter++;
+                });
+                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : string.Empty);
+                pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", TabContentHtml.ToString());
+            }
+        }
+
+        private void BindExplanatoryNotesWidgetData(StringBuilder pageContent, List<DM_ExplanatoryNote> ExPlanatoryNotes, Page page, PageWidget widget)
+        {
+            if (ExPlanatoryNotes != null && ExPlanatoryNotes.Count > 0)
+            {
+                var notes = new StringBuilder();
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note1) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note1) + " </span> <br/>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note2) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note2) + " </span> <br/>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note3) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note3) + " </span> <br>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note4) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note4) + " </span> <br>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note5) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note5) + " </span> <br>");
+                pageContent.Replace("{{Notes_" + page.Identifier + "_" + widget.Identifier + "}}", notes.ToString());
+            }
+        }
+
+        private void BindMarketingServiceWidgetData(StringBuilder pageContent, List<DM_MarketingMessage> Messages, Page page, PageWidget widget, int MarketingMessageCounter)
+        {
+            if (Messages != null && Messages.Count > 0)
+            {
+                var ServiceMessage = Messages[MarketingMessageCounter];
+                if (ServiceMessage != null)
+                {
+                    var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.Message1)) ? "<span>" + ServiceMessage.Message1 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message2)) ? "<span>" + ServiceMessage.Message2 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message3)) ? "<span>" + ServiceMessage.Message3 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message4)) ? "<span>" + ServiceMessage.Message4 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message5)) ? "<span>" + ServiceMessage.Message5 + "</span><br>" : string.Empty);
+
+                    pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", ServiceMessage.Header).Replace("{{ServiceMessageText_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", messageTxt);
+                }
             }
         }
 

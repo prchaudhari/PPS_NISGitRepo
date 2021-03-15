@@ -251,7 +251,6 @@
     <Content Include="Resources\css\font-awesome.min.css" />
     <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
-    <Content Include="Resources\images\absa-logo.png" />
     <Content Include="Resources\images\eConfirm.png" />
     <Content Include="Resources\images\logo.png" />
     <Content Include="Resources\images\NEDBANKLogo.png" />

@@ -15,19 +15,24 @@ namespace nIS
     public partial class TenantConfigurationRecord
     {
         public long Id { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public string InputDataSourcePath { get; set; }
         public string OutputHTMLPath { get; set; }
         public string OutputPDFPath { get; set; }
-        public string TenantCode { get; set; }
-        public string Name { get; set; }
         public string ArchivalPath { get; set; }
         public string AssetPath { get; set; }
+        public string TenantCode { get; set; }
         public Nullable<int> ArchivalPeriod { get; set; }
         public string ArchivalPeriodUnit { get; set; }
         public string DateFormat { get; set; }
         public string ApplicationTheme { get; set; }
         public string WidgetThemeSetting { get; set; }
         public string BaseUrlForTransactionData { get; set; }
+        public string PreviewStatementFunctionName { get; set; }
+        public string GenerateStatementRunNowScheduleFunctionName { get; set; }
+        public string GenerateStatementScheduleTimeFunctionName { get; set; }
+        public string GenerateStatementForFailedCasesFunctionName { get; set; }
+        public string ArchivalProcessFunctionName { get; set; }
     }
 }

@@ -1,4 +1,25 @@
-  .show-sidebar .nav-icon,
+@font-face {
+    font-family: 'Mark Pro Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Mark Pro Regular'), url('../fonts/MARKPRO.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Mark Pro Medium';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Mark Pro Medium'), url('../fonts/MARKPROMEDIUM.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Mark Pro Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Mark Pro Bold'), url('../fonts/MARKPROBOLD.woff') format('woff');
+}
+  
+.show-sidebar .nav-icon,
   .side-bar-container:hover .nav-icon,
   .side-bar-logo,
   .side-bar-footer,
@@ -268,6 +289,329 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
+
+.CustomerDetails {
+    font-size: 8pt;
+    text-align: left;
+    font-family: 'Mark Pro Medium';
+}
+
+.BankDetails {
+    font-size: 8pt;
+    text-align: right;
+    font-family: 'Mark Pro Medium';
+}
+
+.ConactCenterDiv {
+    font-size: 8pt;
+    font-family: 'Mark Pro Medium';
+    text-align: right;
+    padding-right: 1.25rem;
+}
+
+.customTable td {
+    padding: 0px 25px;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+.customTable th {
+    padding: 0px 25px;
+    font-size: 8pt;
+}
+
+.InvestorPermanaceTable td {
+    padding: 0px 25px;
+    font-family: 'Mark Pro Regular';
+}
+
+.ServicesDiv {
+    background-color: #f3f3f3;
+    height: 200px;
+    font-family: 'Mark Pro Regular';
+    padding: 1.5rem !important;
+    font-size: 8pt;
+}
+
+    .ServicesDiv p {
+        margin-bottom: 0.5rem !important;
+    }
+
+.serviceHeader {
+    font-size: 10pt;
+    color: #2d6444 !important;
+    font-family: 'Mark Pro Bold';
+}
+
+.LoanTransactionTable th {
+    background-color: #1c6a41 !important;
+    color: #fff;
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
+}
+
+.LoanTransactionTable tbody {
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
+}
+
+.InvestmentBreakdown thead {
+    background-color: #1c6a41 !important;
+    color: #fff;
+    font-family: 'Mark Pro Regular';
+}
+
+.InvestmentBreakdown tbody {
+    font-family: 'Mark Pro Regular';
+}
+
+    .InvestmentBreakdown tbody tr:nth-of-type(odd) {
+        background-color: #f3f3f3 !important;
+    }
+
+.InvestmentDetail td span {
+    color: #005b00 !important;
+    font-family: 'Mark Pro Regular';
+}
+
+.card-body-header {
+    font-size: 14pt;
+    font-family: 'Mark Pro Bold';
+    color: #2d6444 !important;
+}
+
+.card-body-sub-header {
+    font-size: 12pt;
+    color: #005b00 !important;
+    font-family: 'Mark Pro Medium';
+    padding: 0px 25px;
+}
+
+.card-body-sub-header2 {
+    font-size: 10pt;
+    font-family: 'Mark Pro Regular';
+    padding: 0px 25px;
+}
+
+.TotalAmountDetailsDiv {
+    background-color: #2d6444 !important;
+    padding: 10px 25px;
+    height: 60px;
+    color: #fff !important;
+    font-family: 'Mark Pro Regular';
+}
+
+.InvestmentClosingBalanceDiv {
+    margin-top: 0.5rem !important;
+    padding-left: 25px;
+    margin-bottom: .25rem !important;
+    font-family: 'Mark Pro Regular';
+}
+
+.Investment-nav-tabs {
+    font-family: 'Mark Pro Regular';
+}
+
+    .Investment-nav-tabs a {
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+    }
+
+.w-12 {
+    width: 12%;
+}
+
+.w-15 {
+    width: 15%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.fnt-8pt {
+    font-size: 8pt !important;
+}
+
+.fnt-10pt {
+    font-size: 10pt !important;
+}
+
+
+.fnt-12pt {
+    font-size: 12pt !important;
+}
+
+.fnt-14pt {
+    font-size: 14pt !important;
+}
+
+.ht-20 {
+    height: 20px;
+}
+
+.ht-30 {
+    height: 30px;
+}
+
+.ht-35 {
+    height: 35px;
+}
+
+.ht-60 {
+    height: 60px;
+}
+
+.ht-70 {
+    height: 70px;
+}
+
+.ptb-10_plr-25 {
+    padding: 10px 25px;
+}
+
+.ptb-5_plr-25 {
+    padding: 5px 25px;
+}
+
+.ptb-0_plr-25 {
+    padding: 0px 25px;
+}
+
+.pt-80px {
+    padding-top: 80px;
+}
+
+.InvestmentPermanaceDiv {
+    background-color: #f3f3f3;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    font-family: 'Mark Pro Regular';
+}
+
+.InvestorPermanaceTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Mark Pro Regular';
+}
+
+.customTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+.pl-25px {
+    padding-left: 25px !important;
+}
+
+.pl-35px {
+    padding-left: 35px !important;
+}
+
+.pr-35px {
+    padding-right: 35px !important;
+}
+
+.ftr {
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    width: 100%;
+    /*border-top: thin solid #e1e1e1;*/
+    height: 50px;
+    line-height: 25px;
+}
+
+.ftr-lt-span1 {
+    float: left;
+    margin-left: 35px;
+    color: #005b00 !important;
+    margin-top: 5px;
+}
+
+.ftr-rt-span1 {
+    float: right;
+    margin-right: 35px;
+    margin-top: 10px;
+}
+
+.ftr-rt-span2 {
+    float: right;
+    margin-right: 35px;
+    color: #f3f3f3;
+    font-size: 7pt;
+    font-family: 'Mark Pro Regular'
+}
+
+.bg-success-new {
+    background-color: #2d6444 !important;
+}
+
+.eConfirm-logo-container {
+    position: relative;
+    float: left !important;
+    font-family: 'Mark Pro Regular';
+}
+
+.eConfirm-logo-date {
+    position: absolute;
+    bottom: 6px;
+    font-size: 8pt;
+    padding-left: 1.25rem !important;
+    font-family: 'Mark Pro Regular';
+}
+
+.paymentDueHeaderBlock {
+    background-color: #1c6a41 !important;
+    text-align: center;
+    padding-top: .5rem !important;
+    height: 30px;
+    color: white;
+    width: 20%;
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
+}
+
+.paymentDueFooterBlock {
+    background-color: #f3f3f3 !important;
+    text-align: center;
+    padding-top: .5rem !important;
+    height: 30px;
+    width: 20%;
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
+}
+
+.text-success {
+    color: #005b00 !important;
+}
+
+.InvestmentProdDesc {
+    color: #005b00 !important;
+    font-family: 'Mark Pro Bold';
+    font-size: 12pt;
+}
+
+#HomeLoanDetailTable tr:first-child td {
+    font-family: 'Mark Pro Bold';
+    color: #005b00 !important;
+    padding-bottom: .5rem !important;
+    font-size: 12pt;
+}
+
+#PersonalLoanDetailTable tr:first-child td {
+    font-family: 'Mark Pro Bold';
+    color: #005b00 !important;
+    padding-bottom: .5rem !important;
+    font-size: 12pt;
+}
+
+.ExplanatoryNotes {
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
 
   @media only screen and (max-width:1024px) {
     .ip-w-5 {

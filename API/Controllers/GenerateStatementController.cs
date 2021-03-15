@@ -37,7 +37,7 @@ namespace nIS
         /// <summary>
         /// This method generate respective customer's HTML statement file.
         /// </summary>
-        /// <param name="GenerateStatementRawData">The raw data object required for statement generation process</param>
+        /// <param name="statementRawData">The raw data object required for statement generation process</param>
         [HttpPost]
         public void CreateCustomerStatement(GenerateStatementRawData statementRawData)
         {
@@ -45,6 +45,24 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 this.generateStatementManager.CreateCustomerStatement(statementRawData, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method generate respective nedbank customer's HTML statement file.
+        /// </summary>
+        /// <param name="statementRawData">The raw data object required for statement generation process</param>
+        [HttpPost]
+        public void CreateNedbankCustomerStatement(GenerateStatementRawData statementRawData)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                this.generateStatementManager.CreateCustomerNedbankStatement(statementRawData, tenantCode);
             }
             catch (Exception ex)
             {

@@ -124,6 +124,8 @@
     <Compile Include="ScheduleLogDetailSearchParameter.cs" />
     <Compile Include="ScheduleLogErrorDetail.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
+    <Compile Include="Search Parameter\CustomerInvestmentSearchParameter.cs" />
+    <Compile Include="Search Parameter\MessageAndNoteSearchParameter.cs" />
     <Compile Include="Search Parameter\PageTypeSearchParameter.cs" />
     <Compile Include="Search Parameter\BatchSearchParameter.cs" />
     <Compile Include="Search Parameter\DashboardReportSearchParameter.cs" />
@@ -169,6 +171,12 @@
     <Compile Include="TransactionData\DataUsage.cs" />
     <Compile Include="TransactionData\EmailsBySubscription.cs" />
     <Compile Include="TransactionData\MeetingUsage.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_BranchMaster.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_CustomerMaster.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_ExplanatoryNote.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_InvestmentMaster.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_InvestmentTransaction.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_MarketingMessage.cs" />
     <Compile Include="TransactionData\StatementMetadata.cs" />
     <Compile Include="TransactionData\SubscriptionMaster.cs" />
     <Compile Include="TransactionData\SubscriptionSpend.cs" />

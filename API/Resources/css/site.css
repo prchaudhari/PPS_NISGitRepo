@@ -2052,6 +2052,7 @@
         height: 250px;
         font-family: 'Mark Pro Regular';
         padding: 1.5rem !important;
+        font-size: 14px;
     }
 
     .serviceHeader {
