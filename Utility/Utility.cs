@@ -9,6 +9,7 @@
     using System.ComponentModel;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -1114,6 +1115,65 @@
             return isPdfSuccess;
         }
 
+        /// <summary>
+        /// This method helps to format nedbank tenant amount value
+        /// </summary>
+        /// <param name="amount">The value.</param>
+        /// <returns>
+        /// Returns the the formatted amount value string
+        /// </returns>
+        public string NedbankClientAmountFormatter(double amount)
+        {
+            try
+            {
+                var totalAmtStr = Convert.ToString(amount).Split(new Char[] { '.', ',' });
+                var wholeNo = totalAmtStr[0];
+                var franctionNo = totalAmtStr.Length > 1 ? (new string(totalAmtStr[1].Take(2).ToArray())) : "0";
+
+                char[] cArray = wholeNo.ToCharArray();
+                Array.Reverse(cArray);
+
+                var tempAmountVal = ".";
+                int cnt = 0;
+                while (cArray.Length != cnt)
+                {
+                    tempAmountVal = (tempAmountVal.Length > 1 && tempAmountVal.Length % 4 == 0) ? tempAmountVal + " " + cArray[cnt].ToString() : tempAmountVal + cArray[cnt].ToString();
+                    cnt++;
+                }
+
+                cArray = tempAmountVal.ToCharArray();
+                Array.Reverse(cArray);
+                return (new string(cArray) + franctionNo);
+            }
+            catch (Exception)
+            {
+                return "0";
+            }
+        }
+
+        /// <summary>
+        /// This method helps to format currency as per provided country currency details amount value
+        /// </summary>
+        /// <param name="CountryCultureInfoCode">The country currency cultureInfo code value.</param>
+        /// <param name="CurrencyDecimalSeparator">Defines the string that separates integral and decimal digits.</param>
+        /// <param name="currencyFormat">The currency format value.</param>
+        /// <param name="amount">The amount value.</param>
+        /// <returns>
+        /// Returns the the formatted amount value in string
+        /// </returns>
+        public string CurrencyFormatting(string CountryCultureInfoCode, string CurrencyDecimalSeparator, string currencyFormat, decimal amount)
+        {
+            try
+            {
+                NumberFormatInfo myNumberFormatInfo = new CultureInfo(CountryCultureInfoCode, false).NumberFormat;
+                myNumberFormatInfo.CurrencyDecimalSeparator = CurrencyDecimalSeparator;
+                return amount.ToString(currencyFormat, myNumberFormatInfo);
+            }
+            catch (Exception)
+            {
+                return "0";
+            }
+        }
 
         #endregion
 

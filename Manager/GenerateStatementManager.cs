@@ -1036,6 +1036,7 @@ namespace nIS
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
                     finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
                     finalHtml.Replace("{{TenantCode}}", tenantCode);
+                    finalHtml.Replace("{{TenantName}}", statementRawData.Client != null ? statementRawData.Client.TenantName : ModelConstant.CHILD_TENANT);
 
                     //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
                     //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
@@ -1303,11 +1304,10 @@ namespace nIS
                     finalHtml.Append(HtmlConstants.HTML_HEADER);
                     finalHtml.Append(htmlbody.ToString());
                     finalHtml.Append(HtmlConstants.HTML_FOOTER);
-                    scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
 
                     //replace below variable with actual data in final html string
                     finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
-                    finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
+                    finalHtml.Replace("{{CustomerNumber}}", customer.CustomerId.ToString());
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
                     finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
                     finalHtml.Replace("{{TenantCode}}", tenantCode);
@@ -2256,15 +2256,22 @@ namespace nIS
         {
             if (investmentMasters != null && investmentMasters.Count > 0)
             {
-                var currency = investmentMasters[0].Currenacy;
-                var TotalClosingBalance = 0.0;
+                var TotalClosingBalance = 0.0m;
                 investmentMasters.ForEach(invest =>
                 {
-                    TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
+                    var res = 0.0m;
+                    try
+                    {
+                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).Select(it => decimal.TryParse(it.WJXBFS4_Balance, out res) ? it.WJXBFS4_Balance : "0").ToList().Sum(it => Convert.ToDecimal(it));
+                    }
+                    catch (Exception)
+                    {
+                        TotalClosingBalance = 0.0m;
+                    }
                 });
 
                 pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.DS_Investor_Name);
-                pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", currency + TotalClosingBalance);
+                pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting("en-ZA", ".", "C", TotalClosingBalance));
                 pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].DayOfStatement);
                 pageContent.Replace("{{InvestorID_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(investmentMasters[0].InvestorId));
 
@@ -2294,7 +2301,6 @@ namespace nIS
                     statementPeriod = investmentMasters[0].StatementPeriod;
                 }
                 pageContent.Replace("{{StatementPeriod_" + page.Identifier + "_" + widget.Identifier + "}}", statementPeriod);
-                
                 pageContent.Replace("{{StatementDate_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].StatementDate?.ToString("dd'/'MM'/'yyyy"));
             }
         }
@@ -2303,18 +2309,34 @@ namespace nIS
         {
             if (investmentMasters != null && investmentMasters.Count > 0)
             {
-                var currency = investmentMasters[0].Currenacy;
-                var TotalClosingBalance = 0.0;
-                var TotalOpeningBalance = 0.0;
+                var TotalClosingBalance = 0.0m;
+                var TotalOpeningBalance = 0.0m;
                 investmentMasters.ForEach(invest =>
                 {
-                    TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
-                    TotalOpeningBalance = TotalOpeningBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance brought forward")).Select(it => it.WJXBFS4_Balance).ToList().Sum(it => Convert.ToDouble(it));
+                    var res = 0.0m;
+                    try
+                    {
+                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).Select(it => decimal.TryParse(it.WJXBFS4_Balance, out res) ? it.WJXBFS4_Balance : "0").ToList().Sum(it => Convert.ToDecimal(it));
+                    }
+                    catch (Exception)
+                    {
+                        TotalClosingBalance = 0.0m;
+                    }
+
+                    res = 0.0m;
+                    try
+                    {
+                        TotalOpeningBalance = TotalOpeningBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance brought forward")).Select(it => decimal.TryParse(it.WJXBFS4_Balance, out res) ? it.WJXBFS4_Balance : "0").ToList().Sum(it => Convert.ToDecimal(it));
+                    }
+                    catch (Exception)
+                    {
+                        TotalOpeningBalance = 0.0m;
+                    }
                 });
 
                 pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].ProductType);
-                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", currency + Convert.ToString(TotalOpeningBalance));
-                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", currency + Convert.ToString(TotalClosingBalance));
+                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting("en-ZA", ".", "C", TotalOpeningBalance));
+                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting("en-ZA", ".", "C", TotalClosingBalance));
             }
         }
 
@@ -2364,9 +2386,25 @@ namespace nIS
                     InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod != null ? acc.NoticePeriod : string.Empty);
                     InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.AccuredInterest != null ? (acc.Currenacy + acc.AccuredInterest) : string.Empty);
 
-                    var LastInvestmentTransaction = acc.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).OrderByDescending(it => it.TransactionDate).ToList().FirstOrDefault();
-                    InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", LastInvestmentTransaction.TransactionDate.ToString("dd MMMM yyyy"));
-                    InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currenacy + LastInvestmentTransaction.WJXBFS4_Balance);
+                    var res = 0.0m;
+                    var LastInvestmentTransaction = acc.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains("balance carried forward")).OrderByDescending(it => it.TransactionDate)?.ToList()?.FirstOrDefault();
+                    if (LastInvestmentTransaction != null)
+                    {
+                        InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", LastInvestmentTransaction.TransactionDate.ToString("dd MMMM yyyy"));
+                        if (decimal.TryParse(LastInvestmentTransaction.WJXBFS4_Balance, out res))
+                        {
+                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", (LastInvestmentTransaction.WJXBFS4_Balance == "0" ? "-" : (decimal.TryParse(LastInvestmentTransaction.WJXBFS4_Balance, out res) ? utility.CurrencyFormatting("en-ZA", ".", "C", (Convert.ToDecimal(LastInvestmentTransaction.WJXBFS4_Balance))) : "0")));
+                        }
+                        else
+                        {
+                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", "0");
+                        }
+                    }
+                    else
+                    {
+                        InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "");
+                        InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", "");
+                    }
 
                     var InvestmentTransactionRows = new StringBuilder();
                     acc.investmentTransactions.OrderBy(it => it.TransactionDate).ToList().ForEach(trans =>
@@ -2375,9 +2413,37 @@ namespace nIS
                         tr.Append("<tr class='ht-20'>");
                         tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate.ToString("dd'/'MM'/'yyyy") + "</td>");
                         tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
-                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : acc.Currenacy + trans.WJXBFS2_Debit) + "</td>");
-                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : acc.Currenacy + trans.WJXBFS3_Credit) + "</td>");
-                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : acc.Currenacy + trans.WJXBFS4_Balance) + "</td>");
+
+                        res = 0.0m;
+                        if (decimal.TryParse(trans.WJXBFS2_Debit, out res))
+                        {
+                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : utility.CurrencyFormatting("en-ZA", ".", "C", (Convert.ToDecimal(trans.WJXBFS2_Debit)))) + "</td>");
+                        }
+                        else 
+                        {
+                            tr.Append("<td class='w-15 text-right pt-1'> - </td>");
+                        }
+
+                        res = 0.0m;
+                        if (decimal.TryParse(trans.WJXBFS3_Credit, out res))
+                        {
+                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : utility.CurrencyFormatting("en-ZA", ".", "C", (Convert.ToDecimal(trans.WJXBFS3_Credit)))) + "</td>");
+                        }
+                        else
+                        {
+                            tr.Append("<td class='w-15 text-right pt-1'> - </td>");
+                        }
+
+                        res = 0.0m;
+                        if (decimal.TryParse(trans.WJXBFS4_Balance, out res))
+                        {
+                            tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : utility.CurrencyFormatting("en-ZA", ".", "C", (Convert.ToDecimal(trans.WJXBFS4_Balance)))) + "</td>");
+                        }
+                        else
+                        {
+                            tr.Append("<td class='w-15 text-right pt-1'> - </td>");
+                        }
+                        
                         tr.Append("</tr>");
                         InvestmentTransactionRows.Append(tr.ToString());
                     });
@@ -2397,9 +2463,9 @@ namespace nIS
                 var notes = new StringBuilder();
                 notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note1) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note1) + " </span> <br/>");
                 notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note2) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note2) + " </span> <br/>");
-                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note3) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note3) + " </span> <br>");
-                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note4) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note4) + " </span> <br>");
-                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note5) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note5) + " </span> <br>");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note3) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note3) + " </span> <br />");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note4) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note4) + " </span> <br />");
+                notes.Append(string.IsNullOrEmpty(ExPlanatoryNotes[0].Note5) ? string.Empty : "<span> " + Convert.ToString(ExPlanatoryNotes[0].Note5) + " </span> <br />");
                 pageContent.Replace("{{Notes_" + page.Identifier + "_" + widget.Identifier + "}}", notes.ToString());
             }
         }
@@ -2411,7 +2477,7 @@ namespace nIS
                 var ServiceMessage = Messages[MarketingMessageCounter];
                 if (ServiceMessage != null)
                 {
-                    var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.Message1)) ? "<span>" + ServiceMessage.Message1 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message2)) ? "<span>" + ServiceMessage.Message2 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message3)) ? "<span>" + ServiceMessage.Message3 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message4)) ? "<span>" + ServiceMessage.Message4 + "</span><br>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message5)) ? "<span>" + ServiceMessage.Message5 + "</span><br>" : string.Empty);
+                    var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.Message1)) ? "<p>" + ServiceMessage.Message1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message2)) ? "<p>" + ServiceMessage.Message2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message3)) ? "<p>" + ServiceMessage.Message3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message4)) ? "<p>" + ServiceMessage.Message4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.Message5)) ? "<p>" + ServiceMessage.Message5 + "</p>" : string.Empty);
 
                     pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", ServiceMessage.Header).Replace("{{ServiceMessageText_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", messageTxt);
                 }
