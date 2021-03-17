@@ -32,6 +32,7 @@ namespace nIS
         public string ADDR_LINE_2 { get; set; }
         public string ADDR_LINE_3 { get; set; }
         public string ADDR_LINE_4 { get; set; }
+        public string MASK_CELL_NO { get; set; }
         #endregion
     }
 }

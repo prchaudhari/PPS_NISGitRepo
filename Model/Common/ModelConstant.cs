@@ -413,5 +413,22 @@ namespace nIS
         public const string GENERATE_NEDBANK_CUSTOEMR_STATEMENT_BY_SCHEDULE_TIME = "GenerateNedbankCustomerStatementsByScheduleRunTime";
 
         #endregion
+
+        #region Statement constants
+
+        public const string SA_COUNTRY_CULTURE_INFO_CODE = "en-ZA";
+
+        public const string DOT_AS_CURERNCY_DECIMAL_SEPARATOR = ".";
+
+        public const string CURRENCY_FORMAT_VALUE = "C";
+
+        public const string BALANCE_CARRIED_FORWARD_TRANSACTION_DESC = "balance carried forward";
+
+        public const string BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC = "balance brought forward";
+
+        public const string DATE_FORMAT_dd_MM_yyyy = "dd'/'MM'/'yyyy";
+
+        public const string DATE_FORMAT_dd_MMM_yyyy = "dd MMMM yyyy";
+        #endregion
     }
 }

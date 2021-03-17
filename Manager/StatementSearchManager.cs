@@ -1843,6 +1843,7 @@ namespace nIS
             pageContent.Replace("{{CustAddressLine2_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine2);
             pageContent.Replace("{{CustAddressLine3_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine3);
             pageContent.Replace("{{CustAddressLine4_" + page.Identifier + "_" + widget.Identifier + "}}", customer.AddressLine4);
+            pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No != string.Empty ? "Cell: " + customer.Mask_Cell_No : string.Empty);
         }
 
         private void BindBranchDetailsWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode)
@@ -1955,20 +1956,8 @@ namespace nIS
             if (investmentMasters != null && investmentMasters.Count > 0)
             {
                 //Create Nav tab if investment accounts is more than 1
-                var NavTabs = new StringBuilder();
                 var InvestmentAccountsCount = investmentMasters.Count;
-                if (InvestmentAccountsCount > 1)
-                {
-                    NavTabs.Append("<ul class='nav nav-tabs Investment-nav-tabs'>");
-                    var cnt = 0;
-                    investmentMasters.ToList().ForEach(acc =>
-                    {
-                        NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : string.Empty) + "'><a id='tab0-tab' data-toggle='tab' data-target='#" + acc.ProductDesc + "-" + acc.InvestmentId + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : string.Empty) + "'> " + acc.ProductDesc + " - " + acc.InvestmentId + "</a></li>");
-                        cnt++;
-                    });
-                    NavTabs.Append("</ul>");
-                }
-                pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", NavTabs.ToString());
+                pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
 
                 //create tab-content div if accounts is greater than 1, otherwise create simple div
                 var TabContentHtml = new StringBuilder();
@@ -1979,7 +1968,7 @@ namespace nIS
                     var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
                     InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
                     InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", Convert.ToString(acc.InvestmentId));
-                    InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : string.Empty));
+                    InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "" + (counter > 0 ? "pt-4" : string.Empty));
 
                     var InvestmentNo = Convert.ToString(acc.InvestorId) + " " + Convert.ToString(acc.InvestmentId);
                     //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters

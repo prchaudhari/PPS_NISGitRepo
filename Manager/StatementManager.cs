@@ -810,13 +810,13 @@ namespace nIS
                                                         //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
                                                         if (MarketingMessageCounter == 0)
                                                         {
-                                                            pageHtmlContent.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left pb-0 pt-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                                            pageHtmlContent.Append("<div class='col-lg-12 col-sm-12'><div class='card border-0'><div class='card-body text-left pb-0 pt-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
                                                         }
                                                         PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
                                                     }
 
                                                     //create new div with col-lg with newly finded div length and above padding zero value
-                                                    pageHtmlContent.Append("<div class='col-lg-" + divLength + PaddingClass + "'>");
+                                                    pageHtmlContent.Append("<div class='col-lg-" + divLength + " col-sm-" + divLength + PaddingClass + "'>");
 
                                                     //check current widget is dynamic or static and start generating empty html template for current widget
                                                     if (!pageWidget.IsDynamicWidget)
@@ -3016,6 +3016,7 @@ namespace nIS
             customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", "{{CustAddressLine2_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", "{{CustAddressLine3_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", "{{CustAddressLine4_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", "{{MaskCellNo_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             customerHtmlWidget = customerHtmlWidget.Replace("{{WidgetId}}", widgetId);
             return customerHtmlWidget;
         }
@@ -3430,7 +3431,7 @@ namespace nIS
 
         private void BindDummyDataToCustomerDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {
-            string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN', 'ADDR_LINE_2':'NEDERLAND', 'ADDR_LINE_3':'9999', 'ADDR_LINE_4':''}";
+            string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN', 'ADDR_LINE_2':'NEDERLAND', 'ADDR_LINE_3':'9999', 'ADDR_LINE_4':'', 'MASK_CELL_NO':'*** *** 1324'}";
             if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
             {
                 var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(jsonstr);
@@ -3442,6 +3443,7 @@ namespace nIS
                 pageContent.Replace("{{CustAddressLine2_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.ADDR_LINE_2);
                 pageContent.Replace("{{CustAddressLine3_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.ADDR_LINE_3);
                 pageContent.Replace("{{CustAddressLine4_" + page.Identifier + "_" + widget.Identifier + "}}", customerInfo.ADDR_LINE_4);
+                pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", "Cell: "+customerInfo.MASK_CELL_NO);
             }
         }
 
@@ -3559,7 +3561,6 @@ namespace nIS
                     counter++;
                 });
                 TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : "");
-
                 pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", TabContentHtml.ToString());
             }
         }
