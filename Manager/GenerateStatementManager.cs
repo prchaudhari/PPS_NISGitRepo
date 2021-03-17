@@ -245,7 +245,7 @@ namespace nIS
                     //If any error occurs during statement generation then delete all files from output directory of current customer html statement
                     else if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
                     {
-                        this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.Identifier, statementRawData.OutputLocation);
+                        this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.CustomerId, statementRawData.OutputLocation);
                     }
                 }
             }
@@ -290,6 +290,131 @@ namespace nIS
                         scheduleLogDetail.CustomerId = customer.Identifier;
                         scheduleLogDetail.CustomerName = customer.FirstName.Trim() + (customer.MiddleName == "" ? "" : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim();
                         scheduleLogDetail.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0; 
+                        scheduleLogDetail.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : string.Empty;
+                        scheduleLogDetail.RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : string.Empty;
+                        scheduleLogDetail.LogMessage = logDetailRecord.LogMessage;
+                        scheduleLogDetail.Status = logDetailRecord.Status;
+                        scheduleLogDetail.NumberOfRetry++;
+                        scheduleLogDetail.StatementFilePath = logDetailRecord.StatementFilePath;
+                        scheduleLogDetails.Add(scheduleLogDetail);
+                        this.scheduleLogRepository.UpdateScheduleLogDetails(scheduleLogDetails, tenantCode);
+
+                        //save statement metadata if html statement generated successfully
+                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Completed.ToString().ToLower()) && logDetailRecord.statementMetadata.Count > 0)
+                        {
+                            var statementMetadataRecords = new List<StatementMetadata>();
+                            logDetailRecord.statementMetadata.ToList().ForEach(metarec =>
+                            {
+                                metarec.ScheduleLogId = scheduleLogDetail.ScheduleLogId;
+                                metarec.ScheduleId = scheduleLogDetail.ScheduleId;
+                                metarec.StatementDate = DateTime.UtcNow;
+                                metarec.StatementURL = scheduleLogDetail.StatementFilePath;
+                                metarec.TenantCode = tenantCode;
+                                metarec.IsPasswordGenerated = false;
+                                metarec.Password = "";
+                                statementMetadataRecords.Add(metarec);
+                            });
+                            this.scheduleLogRepository.SaveStatementMetadata(statementMetadataRecords, tenantCode);
+                        }
+
+                        var scheduleLogs = this.scheduleLogRepository.GetScheduleLogs(new ScheduleLogSearchParameter()
+                        {
+                            ScheduleLogId = scheduleLogDetail.ScheduleLogId.ToString(),
+                            BatchId = statementRawData.Batch.Identifier.ToString(),
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Id",
+                            },
+                            SearchMode = SearchMode.Equals
+                        }, tenantCode).ToList();
+                        scheduleLogs.ForEach(scheduleLog =>
+                        {
+                            //get total no. of schedule log details for current schedule log
+                            var _lstScheduleLogDetail = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                            {
+                                ScheduleLogId = scheduleLog.Identifier.ToString(),
+                                PagingParameter = new PagingParameter
+                                {
+                                    PageIndex = 0,
+                                    PageSize = 0,
+                                },
+                                SortParameter = new SortParameter()
+                                {
+                                    SortOrder = SortOrder.Ascending,
+                                    SortColumn = "Id",
+                                },
+                                SearchMode = SearchMode.Equals
+                            }, tenantCode);
+
+                            //get no of success schedule log details of current schedule log
+                            var successRecords = _lstScheduleLogDetail.Where(item => item.Status == ScheduleLogStatus.Completed.ToString())?.ToList();
+
+                            var batchStatus = BatchStatus.Completed.ToString();
+                            var isBatchCompleteExecuted = true;
+                            var scheduleLogStatus = ScheduleLogStatus.Completed.ToString();
+
+                            //check success schedule log details count is equal to total no. of schedule log details for current schedule log
+                            //if equals then update schedule log and batch status as completed otherwise failed
+                            if (successRecords != null && successRecords.Count != _lstScheduleLogDetail.Count)
+                            {
+                                scheduleLogStatus = ScheduleLogStatus.Failed.ToString();
+                                batchStatus = BatchStatus.Failed.ToString();
+                                isBatchCompleteExecuted = false;
+                            }
+
+                            //update schedule log and batch status
+                            this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, scheduleLogStatus, tenantCode);
+                            this.scheduleRepository.UpdateBatchStatus(statementRawData.Batch.Identifier, batchStatus, isBatchCompleteExecuted, tenantCode);
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to retry to generate HTML statement for failed nedbank customer list.
+        /// </summary>
+        /// <param name="statementRawData"> the raw data object requires for statement generate process</param>
+        /// <param name="tenantCode"></param>
+        public void RetryToCreateFailedNedbankCustomerStatements(GenerateStatementRawData statementRawData, string tenantCode)
+        {
+            try
+            {
+                var scheduleLogDetail = statementRawData.ScheduleLogDetail;
+                var customer = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
+                {
+                    Identifier = scheduleLogDetail.CustomerId,
+                    BatchId = statementRawData.Batch.Identifier,
+                }, tenantCode)?.FirstOrDefault();
+                statementRawData.DM_Customer = customer;
+
+                if (customer != null)
+                {
+                    //call to generate actual HTML statement file for current customer record
+                    var logDetailRecord = this.GenerateNedbankStatements(statementRawData, tenantCode);
+                    if (logDetailRecord != null)
+                    {
+                        //delete un-neccessory files which are created during html statement generation in fail cases
+                        if (logDetailRecord.Status.ToLower().Equals(ScheduleLogStatus.Failed.ToString().ToLower()))
+                        {
+                            this.utility.DeleteUnwantedDirectory(statementRawData.Batch.Identifier, customer.Identifier, statementRawData.OutputLocation);
+                        }
+
+                        //update schedule log detail
+                        var scheduleLogDetails = new List<ScheduleLogDetail>();
+                        scheduleLogDetail.CustomerId = customer.CustomerId;
+                        scheduleLogDetail.CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim();
+                        scheduleLogDetail.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
                         scheduleLogDetail.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : string.Empty;
                         scheduleLogDetail.RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : string.Empty;
                         scheduleLogDetail.LogMessage = logDetailRecord.LogMessage;
@@ -578,6 +703,203 @@ namespace nIS
             return runStatus;
         }
 
+        /// <summary>
+        /// This method helps to convert HTML statement to PDF statement and archive related data for the nedbank customer.
+        /// </summary>
+        /// <param name="archivalProcessRawData">The raw data object required for archival process</param>
+        /// <param name="tenantCode">The tenant code</param>
+        public bool RunArchivalForNedbankCustomerRecord(ArchivalProcessRawData archivalProcessRawData, string tenantCode)
+        {
+            var tempDir = string.Empty;
+            var runStatus = false;
+
+            try
+            {
+                var pdfStatementFilepath = archivalProcessRawData.PdfStatementFilepath;
+                var batch = archivalProcessRawData.BatchMaster;
+
+                var customer = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
+                {
+                    BatchId = batch.Identifier,
+                    CustomerId = archivalProcessRawData.CustomerId
+                }, tenantCode).FirstOrDefault();
+                var metadataRecords = this.statementSearchRepository.GetStatementSearchs(new StatementSearchSearchParameter()
+                {
+                    CustomerId = archivalProcessRawData.CustomerId.ToString(),
+                    StatementId = archivalProcessRawData.Statement.Identifier.ToString(),
+                    PagingParameter = new PagingParameter
+                    {
+                        PageIndex = 0,
+                        PageSize = 0,
+                    },
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = "Id",
+                    },
+                    SearchMode = SearchMode.Equals
+                }, tenantCode);
+
+                if (customer != null && metadataRecords != null && metadataRecords.Count > 0)
+                {
+                    var statementSearchRecord = metadataRecords.FirstOrDefault();
+
+                    //Create final output directory to save PDF statement of current customer
+                    var outputlocation = pdfStatementFilepath + "\\PDF_Statements" + "\\" + "ScheduleId_" + statementSearchRecord.ScheduleId + "\\" + "BatchId_" + batch.Identifier + "\\ArchiveData";
+                    if (!Directory.Exists(outputlocation))
+                    {
+                        Directory.CreateDirectory(outputlocation);
+                    }
+
+                    tempDir = outputlocation + "\\temp_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                    if (!Directory.Exists(tempDir))
+                    {
+                        Directory.CreateDirectory(tempDir);
+                    }
+
+                    //Create temp output directory to save all neccessories files which requires to genearate PDF statement of current customer
+                    var samplefilespath = tempDir + "\\" + statementSearchRecord.Identifier + "_" + customer.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_');
+                    if (!Directory.Exists(samplefilespath))
+                    {
+                        Directory.CreateDirectory(samplefilespath);
+                    }
+
+                    //get actual HTML statement file path directory for current customer
+                    var htmlStatementDirPath = statementSearchRecord.StatementURL.Substring(0, statementSearchRecord.StatementURL.LastIndexOf("\\"));
+
+                    //get resource file path directory
+                    var resourceFilePath = htmlStatementDirPath.Substring(0, htmlStatementDirPath.LastIndexOf("\\")) + "\\common";
+                    if (!Directory.Exists(resourceFilePath))
+                    {
+                        resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
+                    }
+
+                    //Copying all neccessories files which requires to genearate PDF statement of current customer
+                    this.utility.DirectoryCopy(resourceFilePath + "\\css", samplefilespath, false);
+                    this.utility.DirectoryCopy(resourceFilePath + "\\js", samplefilespath, false);
+                    this.utility.DirectoryCopy(resourceFilePath + "\\images", samplefilespath, false);
+                    this.utility.DirectoryCopy(resourceFilePath + "\\fonts", samplefilespath, false);
+
+                    //Gernerate HTML statement of current customer
+                    this.statementSearchManager.GenerateNedbankHtmlStatementForPdfGeneration(customer, archivalProcessRawData.Statement, archivalProcessRawData.StatementPageContents, batch, archivalProcessRawData.BatchDetails, tenantCode, samplefilespath, archivalProcessRawData.TenantConfiguration);
+
+                    //To insert html statement file of current customer and all required files into the zip file
+                    var zipfilepath = tempDir + "\\tempzip";
+                    if (!Directory.Exists(zipfilepath))
+                    {
+                        Directory.CreateDirectory(zipfilepath);
+                    }
+                    var zipFile = zipfilepath + "\\" + "StatementZip" + "_" + statementSearchRecord.Identifier + "_" + statementSearchRecord.ScheduleId + "_" + statementSearchRecord.StatementId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
+                    ZipFile.CreateFromDirectory(samplefilespath, zipFile);
+
+                    //Convert HTML statement to PDF statement for current customer
+                    var pdfName = "Statement" + "_" + statementSearchRecord.ScheduleLogId + "_" + statementSearchRecord.ScheduleId + statementSearchRecord.StatementId + "_" + statementSearchRecord.CustomerId + "_" + DateTime.UtcNow.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
+                    string password = string.Empty;
+                    if (statementSearchRecord.IsPasswordGenerated)
+                    {
+                        password = this.cryptoManager.Decrypt(statementSearchRecord.Password);
+                    }
+                    var result = this.utility.HtmlStatementToPdf(zipFile, outputlocation + "\\" + pdfName, password);
+                    if (result)
+                    {
+                        //To insert archive schedule log detail records
+                        var scheduleLogDetailRecords = this.scheduleLogRepository.GetScheduleLogDetails(new ScheduleLogDetailSearchParameter()
+                        {
+                            ScheduleLogId = archivalProcessRawData.ScheduleLog.Identifier.ToString(),
+                            CustomerId = archivalProcessRawData.CustomerId.ToString(),
+                            PagingParameter = new PagingParameter
+                            {
+                                PageIndex = 0,
+                                PageSize = 0,
+                            },
+                            SortParameter = new SortParameter()
+                            {
+                                SortOrder = SortOrder.Ascending,
+                                SortColumn = "Id",
+                            },
+                            SearchMode = SearchMode.Equals
+                        }, tenantCode);
+                        var scheduleDetailArchiveRecords = new List<ScheduleLogDetailArchieve>();
+                        scheduleLogDetailRecords.ToList().ForEach(logDetail =>
+                        {
+                            scheduleDetailArchiveRecords.Add(new ScheduleLogDetailArchieve()
+                            {
+                                CustomerId = logDetail.CustomerId,
+                                CustomerName = logDetail.CustomerName,
+                                LogDetailCreationDate = logDetail.CreateDate,
+                                LogMessage = logDetail.LogMessage,
+                                NumberOfRetry = logDetail.NumberOfRetry,
+                                RenderEngineId = archivalProcessRawData.RenderEngine.Identifier,
+                                RenderEngineName = archivalProcessRawData.RenderEngine.RenderEngineName,
+                                RenderEngineURL = archivalProcessRawData.RenderEngine.URL,
+                                ScheduleId = archivalProcessRawData.Schedule.Identifier,
+                                ScheduleLogArchiveId = archivalProcessRawData.ScheduleLogArchive.Identifier,
+                                Status = logDetail.Status,
+                                TenantCode = tenantCode,
+                                ArchivalDate = DateTime.UtcNow,
+                                PdfStatementPath = outputlocation + "\\" + pdfName
+                            });
+                        });
+                        this.archivalProcessRepository.SaveScheduleLogDetailsArchieve(scheduleDetailArchiveRecords, tenantCode);
+
+                        //TO insert archive statement metadata records
+                        var metadataArchiveRecords = new List<StatementMetadataArchive>();
+                        metadataRecords.ToList().ForEach(record =>
+                        {
+                            metadataArchiveRecords.Add(new StatementMetadataArchive()
+                            {
+                                AccountNumber = record.AccountNumber,
+                                AccountType = record.AccountType,
+                                CustomerId = record.CustomerId,
+                                CustomerName = record.CustomerName,
+                                ScheduleId = record.ScheduleId,
+                                ScheduleLogArchiveId = archivalProcessRawData.ScheduleLogArchive.Identifier,
+                                StatementDate = record.StatementDate,
+                                StatementId = record.StatementId,
+                                StatementPeriod = record.StatementPeriod,
+                                StatementURL = outputlocation + "\\" + pdfName,
+                                TenantCode = tenantCode,
+                                IsPasswordGenerated = record.IsPasswordGenerated,
+                                Password = record.Password,
+                                ArchivalDate = DateTime.UtcNow
+                            });
+                        });
+                        this.archivalProcessRepository.SaveStatementMetadataArchieve(metadataArchiveRecords, tenantCode);
+
+                        //TO delete actual schedule log details, and statement metadata records
+                        this.scheduleLogRepository.DeleteScheduleLogDetails(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
+                        this.scheduleLogRepository.DeleteStatementMetadata(archivalProcessRawData.ScheduleLog.Identifier, archivalProcessRawData.CustomerId, tenantCode);
+
+                        //To delete actual HTML statement of currrent customer, once the PDF statement genearated
+                        DirectoryInfo directoryInfo = new DirectoryInfo(htmlStatementDirPath);
+                        if (directoryInfo.Exists)
+                        {
+                            directoryInfo.Delete(true);
+                        }
+
+                        runStatus = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteToFile(ex.Message);
+                WriteToFile(ex.StackTrace);
+                throw ex;
+            }
+            finally
+            {
+                //To delete temp files, once the PDF statement genearated
+                DirectoryInfo directoryInfo = new DirectoryInfo(tempDir);
+                if (directoryInfo.Exists)
+                {
+                    directoryInfo.Delete(true);
+                }
+            }
+
+            return runStatus;
+        }
+
         #endregion
 
         #region Private Methods
@@ -723,7 +1045,7 @@ namespace nIS
                     var htmlbody = new StringBuilder();
                     currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
                     string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "../common/images/nisLogo.png");
-                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy")); //bind current date to html header
+                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString(ModelConstant.DATE_FORMAT_dd_MMM_yyyy)); //bind current date to html header
 
                     //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
                     var clientlogo = statementRawData.Client.TenantLogo != null ? statementRawData.Client.TenantLogo : "";
@@ -1086,7 +1408,7 @@ namespace nIS
                 if (statementRawData.StatementPageContents.Count > 0)
                 {
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
-                    var customerMedias = this.tenantTransactionDataRepository.GetCustomerMediaList(customer.Identifier, batchMaster.Identifier, statement.Identifier, tenantCode);
+                    var customerMedias = this.tenantTransactionDataRepository.GetCustomerMediaList(customer.CustomerId, batchMaster.Identifier, statement.Identifier, tenantCode);
                     
                     //get investment master data
                     var investmentMasters = this.tenantTransactionDataRepository.Get_DM_InvestmasterMaster(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
@@ -1207,7 +1529,7 @@ namespace nIS
                                     //API search parameter
                                     JObject searchParameter = new JObject();
                                     searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
-                                    searchParameter[ModelConstant.CUSTOEMR_ID] = customer.Identifier;
+                                    searchParameter[ModelConstant.CUSTOEMR_ID] = customer.CustomerId;
                                     searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
 
                                     switch (dynawidget.WidgetType)
@@ -1255,14 +1577,14 @@ namespace nIS
                                 {
                                     if (dates.Length > 1)
                                     {
-                                        statementPeriod = Convert.ToDateTime(dates[0]).ToString("dd'/'MM'/'yyyy") + " to " + Convert.ToDateTime(dates[1]).ToString("dd'/'MM'/'yyyy");
+                                        statementPeriod = Convert.ToDateTime(dates[0]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " to " + Convert.ToDateTime(dates[1]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy);
                                     }
                                     else
                                     {
                                         dates = investmentMasters[0].StatementPeriod.Split(new Char[] { ' ' });
                                         if (dates.Length > 2)
                                         {
-                                            statementPeriod = Convert.ToDateTime(dates[0]).ToString("dd'/'MM'/'yyyy") + " to " + Convert.ToDateTime(dates[2]).ToString("dd'/'MM'/'yyyy");
+                                            statementPeriod = Convert.ToDateTime(dates[0]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " to " + Convert.ToDateTime(dates[2]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy);
                                         }
                                     }
                                 }

@@ -70,8 +70,9 @@ namespace nIS
         public string PreviewStatementFunctionName { get; set; }
         public string GenerateStatementRunNowScheduleFunctionName { get; set; }
         public string GenerateStatementScheduleTimeFunctionName { get; set; }
-        public string GenerateStatementForFailedCasesFunctionName { get; set; }
-        public string ArchivalProcessFunctionName { get; set; }
+        public string GenerateHtmlFormatForStatementFunctionName { get; set; }
+        public string RetryFailedCustomerStatementApiName { get; set; }
+        public string ArchivalProcessApiName { get; set; }
 
         /// <summary>
         /// The utility object

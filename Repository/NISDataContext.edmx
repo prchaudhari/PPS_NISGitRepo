@@ -706,8 +706,9 @@
           <Property Name="PreviewStatementFunctionName" Type="nvarchar" MaxLength="500" />
           <Property Name="GenerateStatementRunNowScheduleFunctionName" Type="nvarchar" MaxLength="500" />
           <Property Name="GenerateStatementScheduleTimeFunctionName" Type="nvarchar" MaxLength="500" />
-          <Property Name="GenerateStatementForFailedCasesFunctionName" Type="nvarchar" MaxLength="500" />
-          <Property Name="ArchivalProcessFunctionName" Type="nvarchar" MaxLength="500" />
+          <Property Name="GenerateHtmlFormatForStatementFunctionName" Type="nvarchar" MaxLength="500" />
+          <Property Name="RetryFailedCustomerStatementApiName" Type="nvarchar" MaxLength="500" />
+          <Property Name="ArchivalProcessApiName" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="TenantContact">
           <Key>
@@ -1771,7 +1772,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="TenantSecurityCodeFormatRecords" EntityType="NISModel.TenantSecurityCodeFormatRecord" />
           <EntitySet Name="View_StatementMetadataRecord" EntityType="NISModel.View_StatementMetadataRecord" />
           <EntitySet Name="View_ScheduleLog" EntityType="NISModel.View_ScheduleLog" />
-          <EntitySet Name="TenantConfigurationRecords" EntityType="NISModel.TenantConfigurationRecord" />
           <EntitySet Name="View_UserRecord" EntityType="NISModel.View_UserRecord" />
           <EntitySet Name="DM_BranchMasterRecord" EntityType="NISModel.DM_BranchMasterRecord" />
           <EntitySet Name="DM_ExplanatoryNotesRecord" EntityType="NISModel.DM_ExplanatoryNotesRecord" />
@@ -1779,6 +1779,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="DM_CustomerMasterRecord" EntityType="NISModel.DM_CustomerMasterRecord" />
           <EntitySet Name="DM_InvestmentMasterRecord" EntityType="NISModel.DM_InvestmentMasterRecord" />
           <EntitySet Name="DM_InvestmentTransactionRecord" EntityType="NISModel.DM_InvestmentTransactionRecord" />
+          <EntitySet Name="TenantConfigurationRecords" EntityType="NISModel.TenantConfigurationRecord" />
           </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -2953,31 +2954,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="ExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="TenantConfigurationRecord">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="InputDataSourcePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OutputHTMLPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OutputPDFPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ArchivalPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AssetPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ArchivalPeriod" Type="Int32" />
-          <Property Name="ArchivalPeriodUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ApplicationTheme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WidgetThemeSetting" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="BaseUrlForTransactionData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PreviewStatementFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="GenerateStatementRunNowScheduleFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="GenerateStatementScheduleTimeFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="GenerateStatementForFailedCasesFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ArchivalProcessFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="View_UserRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -3126,6 +3102,32 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="WJXBFS4_Balance" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="WJXBFS5_TransId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TenantConfigurationRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InputDataSourcePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OutputHTMLPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OutputPDFPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AssetPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalPeriod" Type="Int32" />
+          <Property Name="ArchivalPeriodUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationTheme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WidgetThemeSetting" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BaseUrlForTransactionData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PreviewStatementFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GenerateStatementRunNowScheduleFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GenerateStatementScheduleTimeFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GenerateHtmlFormatForStatementFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RetryFailedCustomerStatementApiName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivalProcessApiName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -4278,32 +4280,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TenantConfigurationRecords">
-            <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
-              <MappingFragment StoreEntitySet="TenantConfiguration">
-                <ScalarProperty Name="ArchivalProcessFunctionName" ColumnName="ArchivalProcessFunctionName" />
-                <ScalarProperty Name="GenerateStatementForFailedCasesFunctionName" ColumnName="GenerateStatementForFailedCasesFunctionName" />
-                <ScalarProperty Name="GenerateStatementScheduleTimeFunctionName" ColumnName="GenerateStatementScheduleTimeFunctionName" />
-                <ScalarProperty Name="GenerateStatementRunNowScheduleFunctionName" ColumnName="GenerateStatementRunNowScheduleFunctionName" />
-                <ScalarProperty Name="PreviewStatementFunctionName" ColumnName="PreviewStatementFunctionName" />
-                <ScalarProperty Name="BaseUrlForTransactionData" ColumnName="BaseUrlForTransactionData" />
-                <ScalarProperty Name="WidgetThemeSetting" ColumnName="WidgetThemeSetting" />
-                <ScalarProperty Name="ApplicationTheme" ColumnName="ApplicationTheme" />
-                <ScalarProperty Name="DateFormat" ColumnName="DateFormat" />
-                <ScalarProperty Name="ArchivalPeriodUnit" ColumnName="ArchivalPeriodUnit" />
-                <ScalarProperty Name="ArchivalPeriod" ColumnName="ArchivalPeriod" />
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="AssetPath" ColumnName="AssetPath" />
-                <ScalarProperty Name="ArchivalPath" ColumnName="ArchivalPath" />
-                <ScalarProperty Name="OutputPDFPath" ColumnName="OutputPDFPath" />
-                <ScalarProperty Name="OutputHTMLPath" ColumnName="OutputHTMLPath" />
-                <ScalarProperty Name="InputDataSourcePath" ColumnName="InputDataSourcePath" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="View_UserRecord">
             <EntityTypeMapping TypeName="NISModel.View_UserRecord">
               <MappingFragment StoreEntitySet="View_User">
@@ -4444,6 +4420,33 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TenantConfigurationRecords">
+            <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
+              <MappingFragment StoreEntitySet="TenantConfiguration">
+                <ScalarProperty Name="ArchivalProcessApiName" ColumnName="ArchivalProcessApiName" />
+                <ScalarProperty Name="RetryFailedCustomerStatementApiName" ColumnName="RetryFailedCustomerStatementApiName" />
+                <ScalarProperty Name="GenerateHtmlFormatForStatementFunctionName" ColumnName="GenerateHtmlFormatForStatementFunctionName" />
+                <ScalarProperty Name="GenerateStatementScheduleTimeFunctionName" ColumnName="GenerateStatementScheduleTimeFunctionName" />
+                <ScalarProperty Name="GenerateStatementRunNowScheduleFunctionName" ColumnName="GenerateStatementRunNowScheduleFunctionName" />
+                <ScalarProperty Name="PreviewStatementFunctionName" ColumnName="PreviewStatementFunctionName" />
+                <ScalarProperty Name="BaseUrlForTransactionData" ColumnName="BaseUrlForTransactionData" />
+                <ScalarProperty Name="WidgetThemeSetting" ColumnName="WidgetThemeSetting" />
+                <ScalarProperty Name="ApplicationTheme" ColumnName="ApplicationTheme" />
+                <ScalarProperty Name="DateFormat" ColumnName="DateFormat" />
+                <ScalarProperty Name="ArchivalPeriodUnit" ColumnName="ArchivalPeriodUnit" />
+                <ScalarProperty Name="ArchivalPeriod" ColumnName="ArchivalPeriod" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="AssetPath" ColumnName="AssetPath" />
+                <ScalarProperty Name="ArchivalPath" ColumnName="ArchivalPath" />
+                <ScalarProperty Name="OutputPDFPath" ColumnName="OutputPDFPath" />
+                <ScalarProperty Name="OutputHTMLPath" ColumnName="OutputHTMLPath" />
+                <ScalarProperty Name="InputDataSourcePath" ColumnName="InputDataSourcePath" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

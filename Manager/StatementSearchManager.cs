@@ -390,7 +390,7 @@ namespace nIS
                     var htmlbody = new StringBuilder();
                     currency = accountrecords.Count > 0 ? accountrecords[0].Currency : string.Empty;
                     string navbarHtml = HtmlConstants.NAVBAR_HTML_FOR_PREVIEW.Replace("{{logo}}", "./nisLogo.png");
-                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString("dd MMM yyyy"));
+                    navbarHtml = navbarHtml.Replace("{{Today}}", DateTime.UtcNow.ToString(ModelConstant.DATE_FORMAT_dd_MMM_yyyy));
                     var clientlogo = client.TenantLogo != null ? client.TenantLogo : "";
                     navbarHtml = navbarHtml + "<input type='hidden' id='TenantLogoImageValue' value='" + clientlogo + "'>";
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
@@ -647,6 +647,8 @@ namespace nIS
                     finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
                     finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
+                    finalHtml.Replace("{{TenantCode}}", tenantCode);
+                    finalHtml.Replace("{{TenantName}}", client != null ? client.TenantName : ModelConstant.CHILD_TENANT);
                     finalHtml.Replace("<link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'>", "");
                     finalHtml.Replace("../common/css/", "./").Replace("../common/js/", "./");
                     finalHtml.Replace("../common/css/", "./");
@@ -686,7 +688,7 @@ namespace nIS
                     var tenantEntities = this.dynamicWidgetManager.GetTenantEntities(tenantCode);
 
                     //collecting all media information which is required in html statement for some widgets like image, video and static customer information widgets
-                    var customerMedias = this.tenantTransactionDataManager.GetCustomerMediaList(customer.Identifier, batchMaster.Identifier, statement.Identifier, tenantCode);
+                    var customerMedias = this.tenantTransactionDataManager.GetCustomerMediaList(customer.CustomerId, batchMaster.Identifier, statement.Identifier, tenantCode);
 
                     //get investment master data
                     var investmentMasters = this.tenantTransactionDataManager.Get_DM_InvestmasterMaster(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
@@ -816,7 +818,7 @@ namespace nIS
                                         //API search parameter
                                         JObject searchParameter = new JObject();
                                         searchParameter[ModelConstant.BATCH_ID] = batchMaster.Identifier;
-                                        searchParameter[ModelConstant.CUSTOEMR_ID] = customer.Identifier;
+                                        searchParameter[ModelConstant.CUSTOEMR_ID] = customer.CustomerId;
                                         searchParameter[ModelConstant.WIDGET_FILTER_SETTING] = dynawidget.WidgetFilterSettings;
 
                                         switch (dynawidget.WidgetType)
@@ -872,14 +874,15 @@ namespace nIS
                     scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
 
                     finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
-                    finalHtml.Replace("{{CustomerNumber}}", customer.Identifier.ToString());
+                    finalHtml.Replace("{{CustomerNumber}}", customer.CustomerId.ToString());
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
                     finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
+                    finalHtml.Replace("{{TenantCode}}", tenantCode);
                     finalHtml.Replace("<link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'>", "");
                     finalHtml.Replace("../common/css/", "./").Replace("../common/js/", "./");
                     finalHtml.Replace("../common/css/", "./");
 
-                    string fileName = "Statement_" + customer.Identifier + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
+                    string fileName = "Statement_" + customer.CustomerId + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                     filePath = this.WriteToFile(finalHtml.ToString(), fileName, OutputLocation);
                 }
 

@@ -108,8 +108,9 @@ namespace nIS
                         PreviewStatementFunctionName = item.PreviewStatementFunctionName,
                         GenerateStatementRunNowScheduleFunctionName = item.GenerateStatementRunNowScheduleFunctionName,
                         GenerateStatementScheduleTimeFunctionName = item.GenerateStatementScheduleTimeFunctionName,
-                        GenerateStatementForFailedCasesFunctionName = item.GenerateStatementForFailedCasesFunctionName,
-                        ArchivalProcessFunctionName = item.ArchivalProcessFunctionName,
+                        GenerateHtmlFormatForStatementFunctionName = item.GenerateHtmlFormatForStatementFunctionName,
+                        RetryFailedCustomerStatementApiName = item.RetryFailedCustomerStatementApiName,
+                        ArchivalProcessApiName = item.ArchivalProcessApiName,
                         TenantCode = item.TenantCode
                     }).ToList();
 
@@ -180,7 +181,14 @@ namespace nIS
                     record.DateFormat = setting.DateFormat;
                     record.ApplicationTheme = setting.ApplicationTheme ?? string.Empty;
                     record.WidgetThemeSetting = setting.WidgetThemeSetting ?? string.Empty;
-                    record.BaseUrlForTransactionData = setting.BaseUrlForTransactionData != null && setting.BaseUrlForTransactionData != string.Empty ? setting.BaseUrlForTransactionData : "";
+                    record.BaseUrlForTransactionData = setting.BaseUrlForTransactionData ?? string.Empty;
+                    record.PreviewStatementFunctionName = setting.PreviewStatementFunctionName ?? string.Empty;
+                    record.GenerateHtmlFormatForStatementFunctionName = setting.GenerateHtmlFormatForStatementFunctionName ?? string.Empty;
+                    record.GenerateStatementRunNowScheduleFunctionName = setting.GenerateStatementRunNowScheduleFunctionName ?? string.Empty;
+                    record.GenerateStatementScheduleTimeFunctionName = setting.GenerateStatementScheduleTimeFunctionName ?? string.Empty;
+                    record.RetryFailedCustomerStatementApiName = setting.RetryFailedCustomerStatementApiName ?? string.Empty;
+                    record.ArchivalProcessApiName = setting.ArchivalProcessApiName ?? string.Empty;
+
                     if (record.TenantCode == null || record.TenantCode == string.Empty)
                     {
                         record.TenantCode = tenantCode;
