@@ -455,7 +455,7 @@ namespace nIS
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                string whereClause = this.WhereClauseGeneratorForCustomer(customerSearchParameter, tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(customerSearchParameter, tenantCode);
                 var customerMasterRecords = new List<DM_CustomerMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
@@ -821,6 +821,36 @@ namespace nIS
                     queryString.Append(this.QueryGenerator(filterEntity));
                 });
             }
+            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
+        private string WhereClauseGeneratorForDmCustomer(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            if (validationEngine.IsValidLong(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+            }
+            if (validationEngine.IsValidLong(searchParameter.BatchId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
+            }
+
+            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+            {
+                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                filterEntities.ForEach(filterEntity =>
+                {
+                    queryString.Append(this.QueryGenerator(filterEntity));
+                });
+            }
+
             queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }

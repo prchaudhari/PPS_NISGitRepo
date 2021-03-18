@@ -810,7 +810,7 @@ namespace nIS
                                                         //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
                                                         if (MarketingMessageCounter == 0)
                                                         {
-                                                            pageHtmlContent.Append("<div class='col-lg-12 col-sm-12'><div class='card border-0'><div class='card-body text-left pb-0 pt-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                                            pageHtmlContent.Append("<div class='col-lg-12 col-sm-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
                                                         }
                                                         PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
                                                     }
@@ -944,7 +944,10 @@ namespace nIS
                                     {
                                         pageHtmlContent.Append(HtmlConstants.NO_WIDGET_MESSAGE_HTML);
                                     }
-                                    statementPageContent.PageFooterContent = HtmlConstants.WIDGET_HTML_FOOTER;
+
+                                    var footerContent = HtmlConstants.NEDBANK_STATEMENT_FOOTER.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG").Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png").Replace("{{FooterText}}", "Nedbank Ltd Reg No 1951/000009/06. Authorised financial services and registered credit provider (NCRCP16).");
+
+                                    statementPageContent.PageFooterContent = footerContent + HtmlConstants.WIDGET_HTML_FOOTER;
                                 }
                             }
                             else
@@ -2405,10 +2408,7 @@ namespace nIS
                             }
                             htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
 
-                            var eConfirmLogoPath = "assets/images/eConfirm.png";
-                            var NedBankLogoPath = "assets/images/NEDBANKLogo.png";
-                            var statementDate = DateTime.Now.ToString("yyyy-MM-dd");
-                            htmlString.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", eConfirmLogoPath).Replace("{{NedBankLogo}}", NedBankLogoPath).Replace("{{StatementDate}}", statementDate));
+                            htmlString.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "assets/images/eConfirm.png").Replace("{{NedBankLogo}}", "assets/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString("yyyy-MM-dd")));
 
                             htmlString.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
                             
@@ -2547,7 +2547,7 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME)
                                                 {
-                                                    string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':''}";
+                                                    string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': ''}";
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
                                                         var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(jsonstr);
@@ -2560,6 +2560,7 @@ namespace nIS
                                                         customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", customerInfo.ADDR_LINE_2);
                                                         customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", customerInfo.ADDR_LINE_3);
                                                         customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", customerInfo.ADDR_LINE_4);
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", customerInfo.MASK_CELL_NO != string.Empty ? "Cell: " + customerInfo.MASK_CELL_NO : string.Empty);
                                                         htmlString.Append(customerHtmlWidget);
                                                     }
                                                 }
@@ -2880,6 +2881,9 @@ namespace nIS
                     tempHtml.Append("<input type = 'hidden' id = 'hiddenPieChartIds' value = '" + ids + "'>");
                 }
 
+                var footerContent = HtmlConstants.NEDBANK_STATEMENT_FOOTER.Replace("{{NedbankSloganImage}}", "assets/images/See_money_differently.PNG").Replace("{{NedbankNameImage}}", "assets/images/NEDBANK_Name.png").Replace("{{FooterText}}", "Nedbank Ltd Reg No 1951/000009/06. Authorised financial services and registered credit provider (NCRCP16).");
+
+                tempHtml.Append(footerContent);
                 tempHtml.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
                 finalHtml = tempHtml.ToString();
                 return finalHtml;

@@ -254,7 +254,9 @@
     <Content Include="Resources\images\eConfirm.png" />
     <Content Include="Resources\images\logo.png" />
     <Content Include="Resources\images\NEDBANKLogo.png" />
+    <Content Include="Resources\images\NEDBANK_Name.png" />
     <Content Include="Resources\images\nisLogo.png" />
+    <Content Include="Resources\images\See_money_differently.PNG" />
     <Content Include="Resources\js\accessibility.js" />
     <Content Include="Resources\js\bootstrap.min.js" />
     <Content Include="Resources\js\export-data.js" />

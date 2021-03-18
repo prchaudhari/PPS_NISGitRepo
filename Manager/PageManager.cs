@@ -691,7 +691,7 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME)
                                             {
-                                                string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':''}";
+                                                string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': ''}";
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
                                                     var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(jsonstr);
@@ -704,6 +704,7 @@ namespace nIS
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", customerInfo.ADDR_LINE_2);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", customerInfo.ADDR_LINE_3);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", customerInfo.ADDR_LINE_4);
+                                                    customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", customerInfo.MASK_CELL_NO != string.Empty ? "Cell: " + customerInfo.MASK_CELL_NO : string.Empty);
                                                     htmlString.Append(customerHtmlWidget);
                                                 }
                                             }

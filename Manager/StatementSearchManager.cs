@@ -871,16 +871,13 @@ namespace nIS
                     finalHtml.Append(HtmlConstants.HTML_HEADER);
                     finalHtml.Append(htmlbody.ToString());
                     finalHtml.Append(HtmlConstants.HTML_FOOTER);
-                    scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
 
                     finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
                     finalHtml.Replace("{{CustomerNumber}}", customer.CustomerId.ToString());
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
                     finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
                     finalHtml.Replace("{{TenantCode}}", tenantCode);
-                    finalHtml.Replace("<link rel='stylesheet' href='../common/css/site.css'><link rel='stylesheet' href='../common/css/ltr.css'>", "");
-                    finalHtml.Replace("../common/css/", "./").Replace("../common/js/", "./");
-                    finalHtml.Replace("../common/css/", "./");
+                    finalHtml.Replace("../common/images/", "./").Replace("../common/css/", "./").Replace("../common/js/", "./");
 
                     string fileName = "Statement_" + customer.CustomerId + "_" + statement.Identifier + "_" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".html";
                     filePath = this.WriteToFile(finalHtml.ToString(), fileName, OutputLocation);
@@ -1025,6 +1022,13 @@ namespace nIS
                     {
                         Directory.CreateDirectory(outputlocation);
                     }
+
+                    //Update mark pro fonts url in ltr.css
+                    var cssFIlePath = AppDomain.CurrentDomain.BaseDirectory + @"\Resources\css\ltr.css";
+                    var css = File.ReadAllText(cssFIlePath);
+                    css = css.Replace("../fonts/", "./");
+                    File.WriteAllText(cssFIlePath, css);
+
                     this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\css", outputlocation, false);
                     this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\js", outputlocation, false);
                     this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\images", outputlocation, false);

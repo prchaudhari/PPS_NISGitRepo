@@ -164,18 +164,22 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/ExplanatoryNotes.JPG"
           this.widgetList[i].WidgetIcon = "fa fa-list";
         }
-        else if (this.widgetList[i].WidgetName == "PersonalLoanStatement") {
-          this.widgetList[i].ImageSource = "assets/images/PersonalLoanStatement.JPG"
-          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        else if (this.widgetList[i].WidgetName == "NedbankService") {
+          this.widgetList[i].ImageSource = "assets/images/NedbankService.JPG"
+          this.widgetList[i].WidgetIcon = "fa fa-newspaper-o";
         }
-        else if (this.widgetList[i].WidgetName == "HomeLoanNewInstallment") {
-          this.widgetList[i].ImageSource = "assets/images/HL_NewInstallment.JPG"
-          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
-        }
-        else if (this.widgetList[i].WidgetName == "HomeLoanStatementOverview") {
-          this.widgetList[i].ImageSource = "assets/images/HL_StatementOverview.JPG"
-          this.widgetList[i].WidgetIcon = "fa icon-rp-loss1";
-        }
+        //else if (this.widgetList[i].WidgetName == "PersonalLoanStatement") {
+        //  this.widgetList[i].ImageSource = "assets/images/PersonalLoanStatement.JPG"
+        //  this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        //}
+        //else if (this.widgetList[i].WidgetName == "HomeLoanNewInstallment") {
+        //  this.widgetList[i].ImageSource = "assets/images/HL_NewInstallment.JPG"
+        //  this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        //}
+        //else if (this.widgetList[i].WidgetName == "HomeLoanStatementOverview") {
+        //  this.widgetList[i].ImageSource = "assets/images/HL_StatementOverview.JPG"
+        //  this.widgetList[i].WidgetIcon = "fa icon-rp-loss1";
+        //}
       }
     }
 
