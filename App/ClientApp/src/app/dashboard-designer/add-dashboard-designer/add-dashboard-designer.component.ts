@@ -17,7 +17,7 @@ import {
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
-  PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent,
+  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -932,13 +932,13 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "PersonalLoanStatement") {
+          else if (widget.WidgetName == "PersonalLoanDetail") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 6,
+              rows: 3,
               y: 0,
               x: 0,
-              component: PersonalLoanStatementComponent,
+              component: PersonalLoanDetailComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -947,13 +947,13 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "HomeLoanNewInstallment") {
+          else if (widget.WidgetName == "PersonalLoanTransaction") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 5,
+              rows: 2,
               y: 0,
               x: 0,
-              component: HomeLoanNewInstallmentComponent,
+              component: PersonalLoanTransactionComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -962,13 +962,43 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "HomeLoanStatementOverview") {
+          else if (widget.WidgetName == "PersonalLoanPaymentDue") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 5,
+              rows: 2,
               y: 0,
               x: 0,
-              component: HomeLoanStatementOverviewComponent,
+              component: PersonalLoanPaymentDueComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "SpecialMessage") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 1,
+              y: 0,
+              x: 0,
+              component: SpecialMessageComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PL_InsuranceMessage") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 1,
+              y: 0,
+              x: 0,
+              component: PersonalLoanInsuranceMessageComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -1216,14 +1246,20 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'ExplanatoryNotes') {
         gridObj.component = ExplanatoryNotesComponent;
       }
-      else if (widgetName == 'PersonalLoanStatement') {
-        gridObj.component = PersonalLoanStatementComponent;
+      else if (widgetName == 'PersonalLoanDetail') {
+        gridObj.component = PersonalLoanDetailComponent;
       }
-      else if (widgetName == 'HomeLoanNewInstallment') {
-        gridObj.component = HomeLoanNewInstallmentComponent;
+      else if (widgetName == 'PersonalLoanTransaction') {
+        gridObj.component = PersonalLoanTransactionComponent;
       }
-      else if (widgetName == 'HomeLoanStatementOverview') {
-        gridObj.component = HomeLoanStatementOverviewComponent;
+      else if (widgetName == 'PersonalLoanPaymentDue') {
+        gridObj.component = PersonalLoanPaymentDueComponent;
+      }
+      else if (widgetName == 'SpecialMessage') {
+        gridObj.component = SpecialMessageComponent;
+      }
+      else if (widgetName == 'PL_InsuranceMessage') {
+        gridObj.component = PersonalLoanInsuranceMessageComponent;
       }
       else if (widgetName == 'NedbankService') {
         gridObj.component = NedbankServiceComponent;

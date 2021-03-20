@@ -2230,410 +2230,247 @@ export class NedbankServiceComponent {
   widgetsGridsterItemArray: any[] = [];
 }
 
-// Component Created for Personal loan statement Widget -- Nedbank
+// Component Created for Personal loan detail Widget -- Nedbank
 @Component({
-  selector: 'PersonalLoanStatement',
+  selector: 'PersonalLoanDetail',
   template: `<div class="widget">
     <div class="widget-area height100">
-       <div class='row'>
-            <div class='col-lg-12'>
-                <div class='card border-0'>
-                    <div class='card-body text-left'>
-                        <div class='card-body-header pb-2'>Personal loan statement</div>
-                        <div class='row pb-1'>
-                            <div class='col-lg-4 pr-1'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class='fnt-14'>Loan Amount</span><br><span class="fnt-20">Loan Amount Value</span>&nbsp;<br>
-                                </div>
-                            </div>
-                            <div class='col-lg-4 pr-1 pl-0'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class='fnt-14'>Balance outstanding</span><br><span class="fnt-20">Outstanding balance value</span>&nbsp;<br>
-                                </div>
-                            </div>
-                            <div class='col-lg-4 pl-0'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class='fnt-14'>Now due</span><br><span class="fnt-20">Now Due value</span>&nbsp;<br>
-                                </div>
-                            </div>
-                        </div>
+      <div class='card border-0'>
+          <div class='card-body text-left pb-1 pt-1'>
+              <div class='card-body-header pb-2'>Personal loan statement</div>
+              <div class='row pb-1'>
+                  <div class='col-lg-4 col-sm-4 pr-1'>
+                      <div class='LoanAmountDetailsDiv'>
+                          <span class="fnt-10pt">Loan Amount</span><br><span class="fnt-14pt">Loan Amount</span>&nbsp;<br>
+                      </div>
+                  </div>
+                  <div class='col-lg-4 col-sm-4 pr-1 pl-0'>
+                      <div class='LoanAmountDetailsDiv'>
+                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">Outstanding balance</span>&nbsp;<br>
+                      </div>
+                  </div>
+                  <div class='col-lg-4 col-sm-4 pl-0'>
+                      <div class='LoanAmountDetailsDiv'>
+                          <span class="fnt-10pt">Now due</span><br><span class="fnt-14pt">Now Due value</span>&nbsp;<br>
+                      </div>
+                  </div>
+              </div>
 
-                        <div class="pt-2 pb-2" style="background-color:#f3f3f3">
-                            <table class="customTable mt-2" border="0" id='PersonalLoanDetailTable'>
-                                <tbody class="fnt-14">
-                                    <tr>
-                                        <td colspan="3">Nedbank personal loan</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Account Number:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Account Number</td>
-                                        <td class="w-25"></td>
-                                        <td class="w-25 text-right text-success"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Statement date:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Statement date</td>
-                                        <td class="w-25">Arrears:</td>
-                                        <td class="w-25 text-right text-success">Arrears amount</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Statement period:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Min to Max Transaction Date</td>
-                                        <td class="w-25">Annual rate of interest:</td>
-                                        <td class="w-25 text-right pr-4 text-success">annual rate value</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Monthly instalment:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Monthly instalment amount</td>
-                                        <td class="w-25">Original term (months):</td>
-                                        <td class="w-25 text-right pr-4 text-success">Month value</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Due by date:</td>
-                                        <td class="w-25 text-right pr-4 text-success">DD/MM/YYYY</td>
-                                        <td class="w-25"></td>
-                                        <td class="w-25 text-right pr-4 text-success"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="pt-1">
-                            <table id="TableWidget" style="width:100%;" class="table-striped LoanTransactionTable customTable">
-                                <thead>
-                                    <tr class='ht-30'>
-                                        <th class="w-12">Post date</th>
-                                        <th class="w-12">Effective date</th>
-                                        <th class="w-40">Transaction</th>
-                                        <th class="w-12 text-right">Debit</th>
-                                        <th class="w-12 text-right">Credit</th>
-                                        <th class="w-12 text-right">Balance outstanding</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">xxx.x</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">x.xx</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">x.xx</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xx.xx</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">xx.xx</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class='col-lg-12'>
-                <div class='card border-0'>
-                    <div class='card-body text-left'>
-                        <div class='card-body-sub-header pb-2'>Payment Due</div>
-                        <div class="d-flex flex-row">
-                            <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
-                            <div class="paymentDueHeaderBlock">Current</div>
-                        </div>
-                        <div class="d-flex flex-row mt-1">
-                            <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                            <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                            <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                            <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                            <div class="paymentDueFooterBlock">x.xx</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+              <div class="pt-2 pb-2" style="background-color:#f3f3f3">
+                  <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
+                  <table class="customTable mt-2" border="0">
+                      <tbody>
+                          <tr>
+                              <td class="w-25">Account Number:</td>
+                              <td class="w-25 text-right pr-4 text-success">Account Number</td>
+                              <td class="w-25"></td>
+                              <td class="w-25 text-right text-success"></td>
+                          </tr>
+                          <tr>
+                              <td class="w-25">Statement date:</td>
+                              <td class="w-25 text-right pr-4 text-success">Statement date</td>
+                              <td class="w-25">Arrears:</td>
+                              <td class="w-25 text-right text-success">Arrears amount</td>
+                          </tr>
+                          <tr>
+                              <td class="w-25">Statement period:</td>
+                              <td class="w-25 text-right pr-4 text-success">Min to Max Transaction Date</td>
+                              <td class="w-25">Annual rate of interest:</td>
+                              <td class="w-25 text-right pr-4 text-success">annual rate value</td>
+                          </tr>
+                          <tr>
+                              <td class="w-25">Monthly instalment:</td>
+                              <td class="w-25 text-right pr-4 text-success">Monthly instalment amount</td>
+                              <td class="w-25">Original term (months):</td>
+                              <td class="w-25 text-right pr-4 text-success">Month value</td>
+                          </tr>
+                          <tr>
+                              <td class="w-25">Due by date:</td>
+                              <td class="w-25 text-right pr-4 text-success">DD/MM/YYYY</td>
+                              <td class="w-25"></td>
+                              <td class="w-25 text-right pr-4 text-success"></td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
     </div>
   </div>`
 })
-export class PersonalLoanStatementComponent {
+export class PersonalLoanDetailComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 }
 
-// Component Created for Home Loan - New Installement Widget -- Nedbank
+// Component Created for Personal loan transaction Widget -- Nedbank
 @Component({
-  selector: 'HomeLoanNewInstallment',
+  selector: 'PersonalLoanTransaction',
   template: `<div class="widget">
     <div class="widget-area height100">
-      <div class='row'>
-            <div class='col-lg-12'>
-                <div class='card border-0'>
-                    <div class='card-body text-left'>
-                        <div class='card-body-header pb-2'>New installment</div>
-                        <div class='row pb-1'>
-                            <div class='col-lg-4 pr-1'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class='fnt-14'>Total Loan Amount</span><br><span class="fnt-20">Loan Amount Value</span>&nbsp;<br>
-                                </div>
-                            </div>
-                            <div class='col-lg-8 pl-0 text-right'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class='fnt-14'>Balance outstanding</span><br><span class="fnt-20">Outstanding balance value</span>&nbsp;<br>
-                                </div>
-                            </div>
-                        </div>
+      <div class='card border-0'>
+          <div class='card-body text-left pb-1 pt-1'>
+              <div class="pt-1">
+                  <table id="TableWidget" class="LoanTransactionTable customTable">
+                      <thead>
+                          <tr class="ht-30">
+                              <th class="w-12">Post date</th>
+                              <th class="w-12">Effective date</th>
+                              <th class="w-40">Transaction</th>
+                              <th class="w-12 text-right">Debit</th>
+                              <th class="w-12 text-right">Credit</th>
+                              <th class="w-12 text-right">Balance outstanding</th>
+                          </tr>
+                      </thead>
+                  </table>
 
-                        <div class="pt-2 pb-2" style="background-color:#f3f3f3">
-                            <table class="customTable mt-2" border="0" id='HomeLoanDetailTable'>
-                                <tbody class="fnt-14">
-                                    <tr>
-                                        <td colspan="3">Nedbank home loan</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Bond no:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Bond Number</td>
-                                        <td class="w-25">Address:</td>
-                                        <td class="w-25 text-right text-success">Customer address</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Installment:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Installment amount</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Arrears:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Arrears amount</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Interest rate:</td>
-                                        <td class="w-25 text-right pr-4 text-success">Interest rate value</td>
-                                        <td class="w-25">Registration date:</td>
-                                        <td class="w-25 text-right pr-4 text-success">DD/MM/YYYY</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-25">Loan term:</td>
-                                        <td class="w-25 text-right pr-4 text-success">XX months</td>
-                                        <td class="w-25">Registered amount</td>
-                                        <td class="w-25 text-right pr-4 text-success">Registered amount</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="pt-1">
-                            <table id="TableWidget" style="width:100%;" class="table-striped LoanTransactionTable customTable">
-                                <thead>
-                                    <tr class='ht-30'>
-                                        <th class="w-12">Post date</th>
-                                        <th class="w-12">Effective date</th>
-                                        <th class="w-40">Transaction</th>
-                                        <th class="w-12 text-right">Debit</th>
-                                        <th class="w-12 text-right">Credit</th>
-                                        <th class="w-12 text-right">Balance</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">xxx.x</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">x.xx</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">x.xx</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xx.xx</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-12">DD/MM/YYYY</td>
-                                        <td class="w-40">Transaction Description</td>
-                                        <td class="w-12 text-right">xx.xx</td>
-                                        <td class="w-12 text-right">-</td>
-                                        <td class="w-12 text-right">xxx.xx</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                  <div class="pt-0 overflow-auto" style="max-height:125px;">
+                      <table class="LoanTransactionTable customTable">
+                          <tbody>
+                              <tr>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-40">Transaction Description</td>
+                                  <td class="w-12 text-right">xxx.x</td>
+                                  <td class="w-12 text-right">-</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                              </tr>
+                              <tr>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-40">Transaction Description</td>
+                                  <td class="w-12 text-right">-</td>
+                                  <td class="w-12 text-right">x.xx</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                              </tr>
+                              <tr>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-40">Transaction Description</td>
+                                  <td class="w-12 text-right">-</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                              </tr>
+                              <tr>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-40">Transaction Description</td>
+                                  <td class="w-12 text-right">-</td>
+                                  <td class="w-12 text-right">x.xx</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                              </tr>
+                              <tr>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-40">Transaction Description</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                                  <td class="w-12 text-right">-</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                              </tr>
+                              <tr>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-40">Transaction Description</td>
+                                  <td class="w-12 text-right">-</td>
+                                  <td class="w-12 text-right">xx.xx</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                              </tr>
+                              <tr>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-12">DD/MM/YYYY</td>
+                                  <td class="w-40">Transaction Description</td>
+                                  <td class="w-12 text-right">xx.xx</td>
+                                  <td class="w-12 text-right">-</td>
+                                  <td class="w-12 text-right">xxx.xx</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
   </div>`
 })
-export class HomeLoanNewInstallmentComponent {
+export class PersonalLoanTransactionComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 }
 
-// Component Created for Home Loan Statement Overview Widget -- Nedbank
+// Component Created for Personal loan payment due details Widget -- Nedbank
 @Component({
-  selector: 'HomeLoanStatementOverview',
+  selector: 'PersonalLoanPaymentDue',
   template: `<div class="widget">
     <div class="widget-area height100">
-     <div class='row'>
-            <div class='col-lg-12'>
-                <div class='card border-0'>
-                    <div class='card-body text-left'>
-                        <div class='card-body-header pb-2'>Home loan statement overview</div>
-                        <div class='row pb-1'>
-                            <div class='col-lg-4 pr-0'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class="fnt-20">Balance outstanding</span> <br> <span class="fnt-14">as at yyyy-mm-dd</span>
-                                </div>
-                            </div>
-                            <div class='col-lg-8 pl-0 text-right'>
-                                <div class='TotalAmountDetailsDiv'>
-                                    <span class="fnt-20">Outstanding balance amount</span>&nbsp;<br>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class='card-body-sub-header pb-2'>Payment Due</div>
-                        <div class="d-flex flex-row">
-                            <div class="paymentDueHeaderBlock mr-1">Current</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
-                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
-                            <div class="paymentDueHeaderBlock">After 120 + days</div>
-                        </div>
-                        <div class="d-flex flex-row mt-1">
-                            <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                            <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                            <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                            <div class="paymentDueFooterBlock mr-1">x.xx</div>
-                            <div class="paymentDueFooterBlock">x.xx</div>
-                        </div>
-
-                        <div class='card-body-sub-header pt-3'>Installment details</div>
-                        <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
-                        <div class="pt-1">
-                            <table id="TableWidget" style="width:100%;" class="table-striped LoanTransactionTable customTable">
-                                <thead>
-                                    <tr class='ht-30'>
-                                        <th class="w-50">Payments</th>
-                                        <th class="w-50 text-right">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-left">Basic instalment </td>
-                                        <td class="text-right">xxxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-left">Homeowner's insurance </td>
-                                        <td class="text-right">xxxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-left">Credit life insurance </td>
-                                        <td class="text-right">xxxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-left">Transaction fees </td>
-                                        <td class="text-right">xxxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-left">Subsidised account capital redemption </td>
-                                        <td class="text-right">xxxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-left">Monthly service fee </td>
-                                        <td class="text-right">xxxx.xx</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-left font-weight-bold">Total instalment (effective from DD/MM/YYYY) </td>
-                                        <td class="text-right font-weight-bold">xxxx.xx</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class='card border-0'>
+          <div class='card-body text-left pb-1 pt-1'>
+              <div class='card-body-sub-header pb-2'>Payment Due</div>
+              <div class="d-flex flex-row">
+                  <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
+                  <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+                  <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+                  <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+                  <div class="paymentDueHeaderBlock">Current</div>
+              </div>
+              <div class="d-flex flex-row mt-1">
+                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
+                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
+                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
+                  <div class="paymentDueFooterBlock mr-1">x.xx</div>
+                  <div class="paymentDueFooterBlock">x.xx</div>
+              </div>
+          </div>
+      </div>
     </div>
   </div>`
 })
-export class HomeLoanStatementOverviewComponent {
+export class PersonalLoanPaymentDueComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 }
+
+// Component Created for special message Widget -- Nedbank
+@Component({
+  selector: 'SpecialMessage',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class="card border-0">
+          <div class="card-body text-left pb-1 pt-1">
+              <div class="SpecialMessageDiv">
+                  <div class="SpecialMessageHeader">Special message header Text</div>
+                  <p>Personalize special message text 1</p>
+                  <p>Personalize special message text 2</p>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class SpecialMessageComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Personal loan Insurance message Widget -- Nedbank
+@Component({
+  selector: 'PL_Insurance',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class="card border-0">
+          <div class="card-body text-left py-1">
+            <div class="InsuranceMessageDiv">
+                <div class="card-body-header pb-2">Insurance</div>
+                <p>Insurance related Personalize special message text 1</p>
+                <p>Insurance related Personalize special message text 2</p>
+                <p>Insurance related Personalize special message text 3</p>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class PersonalLoanInsuranceMessageComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+

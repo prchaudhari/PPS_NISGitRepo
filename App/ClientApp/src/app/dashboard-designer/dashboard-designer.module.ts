@@ -25,7 +25,7 @@ import {
   DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
   CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
   InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
-  PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent,
+  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent
 } from './widgetComponent/widgetComponent';
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
 
@@ -43,7 +43,7 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
     InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
-    PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent, 
+    PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
     PageDesignPreviewComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
@@ -67,7 +67,7 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
     CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
     InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
-    PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent,
+    PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
     PageDesignPreviewComponent],
 })
 export class DashboardDesignerModule { }

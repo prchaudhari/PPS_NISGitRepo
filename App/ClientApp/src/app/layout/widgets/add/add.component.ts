@@ -168,18 +168,26 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/NedbankService.JPG"
           this.widgetList[i].WidgetIcon = "fa fa-newspaper-o";
         }
-        //else if (this.widgetList[i].WidgetName == "PersonalLoanStatement") {
-        //  this.widgetList[i].ImageSource = "assets/images/PersonalLoanStatement.JPG"
-        //  this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
-        //}
-        //else if (this.widgetList[i].WidgetName == "HomeLoanNewInstallment") {
-        //  this.widgetList[i].ImageSource = "assets/images/HL_NewInstallment.JPG"
-        //  this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
-        //}
-        //else if (this.widgetList[i].WidgetName == "HomeLoanStatementOverview") {
-        //  this.widgetList[i].ImageSource = "assets/images/HL_StatementOverview.JPG"
-        //  this.widgetList[i].WidgetIcon = "fa icon-rp-loss1";
-        //}
+        else if (this.widgetList[i].WidgetName == "PersonalLoanDetail") {
+          this.widgetList[i].ImageSource = "assets/images/PersonalLoanDetails.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "PersonalLoanTransaction") {
+          this.widgetList[i].ImageSource = "assets/images/PersonalLoanTransactions.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "PersonalLoanPaymentDue") {
+          this.widgetList[i].ImageSource = "assets/images/PaymentDue.JPG"
+          this.widgetList[i].WidgetIcon = "icon-AvailableBalanceWidget";
+        }
+        else if (this.widgetList[i].WidgetName == "SpecialMessage") {
+          this.widgetList[i].ImageSource = "assets/images/SpecialMessage.JPG"
+          this.widgetList[i].WidgetIcon = "fa fa-bell-o";
+        }
+        else if (this.widgetList[i].WidgetName == "PL_InsuranceMessage") {
+          this.widgetList[i].ImageSource = "assets/images/PL_InsuranceMessages.JPG"
+          this.widgetList[i].WidgetIcon = "fa fa-exclamation-circle";
+        }
       }
     }
 

@@ -859,6 +859,26 @@ namespace nIS
                                                                 pageHtmlContent.Append(this.MarketingServiceMessageWidgetFormatting(pageWidget, counter, page, MarketingMessageCounter));
                                                                 MarketingMessageCounter++;
                                                                 break;
+
+                                                            case HtmlConstants.PERSONAL_LOAN_DETAIL_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PersonalLoanDetailWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.PERSONAL_LOAN_TRANASCTION_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PersonalLoanTransactionWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PersonalLoanPaymentDueWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.SPECIAL_MESSAGE_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.SpecialMessageWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.PERSONAL_LOAN_INSURANCE_MESSAGE_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PersonalLoanInsuranceMessageWidgetFormatting(pageWidget, counter, page));
+                                                                break;
                                                         }
                                                     }
                                                     else
@@ -1263,6 +1283,26 @@ namespace nIS
                                 case HtmlConstants.SERVICE_WIDGET_NAME:
                                     this.BindDummyDataToMarketingServiceMessageWidget(pageContent, MarketingMessages, page, widget, MarketingMessageCounter);
                                     MarketingMessageCounter++;
+                                    break;
+
+                                case HtmlConstants.PERSONAL_LOAN_DETAIL_WIDGET_NAME:
+                                    this.BindDummyDataToPersonalLoanDetailWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.PERSONAL_LOAN_TRANASCTION_WIDGET_NAME:
+                                    this.BindDummyDataToPersonalLoanTransactionWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_WIDGET_NAME:
+                                    this.BindDummyDataToPersonalLoanPaymentDueWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.SPECIAL_MESSAGE_WIDGET_NAME:
+                                    this.BindDummyDataToSpecialMessageWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.PERSONAL_LOAN_INSURANCE_MESSAGE_WIDGET_NAME:
+                                    this.BindDummmyDataToPersonalLoanInsuranceMessageWidget(pageContent, page, widget);
                                     break;
                             }
                         }
@@ -2473,7 +2513,7 @@ namespace nIS
                                                 //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
                                                 if (MarketingMessageCounter == 0)
                                                 {
-                                                    htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left pb-0 pt-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                                    htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
                                                 }
                                                 PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
                                             }
@@ -2720,6 +2760,229 @@ namespace nIS
                                                         }
                                                     }
                                                     MarketingMessageCounter++;
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PERSONAL_LOAN_DETAIL_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = "{'Identifier': 1,'CustomerId': 211135146504,'InvestorId': 8004334234001,'Currency': 'R','ProductType': 'PersonalLoan','BranchId': 1,'CreditAdvance': '75372','OutstandingBalance': '68169','AmountDue': '3297','ToDate': '2021-02-28 00:00:00','FromDate': '2020-12-01 00:00:00','MonthlyInstallment': '3297','DueDate': '2021-03-31 00:00:00','Arrears': '0','AnnualRate': '24','Term': '36'}";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var PersonalLoan = JsonConvert.DeserializeObject<DM_PersonalLoanMaster>(jsonstr);
+                                                        var widgetHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_DETAIL_HTML);
+
+                                                        var res = 0.0m;
+                                                        if (decimal.TryParse(PersonalLoan.CreditAdvance, out res))
+                                                        {
+                                                            widgetHtml.Replace("{{TotalLoanAmount}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        }
+                                                        else
+                                                        {
+                                                            widgetHtml.Replace("{{TotalLoanAmount}}", "");
+                                                        }
+
+                                                        res = 0.0m;
+                                                        if (decimal.TryParse(PersonalLoan.OutstandingBalance, out res))
+                                                        {
+                                                            widgetHtml.Replace("{{OutstandingBalance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        }
+                                                        else
+                                                        {
+                                                            widgetHtml.Replace("{{OutstandingBalance}}", "");
+                                                        }
+
+                                                        res = 0.0m;
+                                                        if (decimal.TryParse(PersonalLoan.AmountDue, out res))
+                                                        {
+                                                            widgetHtml.Replace("{{DueAmount}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        }
+                                                        else
+                                                        {
+                                                            widgetHtml.Replace("{{DueAmount}}", "");
+                                                        }
+
+                                                        widgetHtml.Replace("{{AccountNumber}}", PersonalLoan.InvestorId.ToString());
+                                                        widgetHtml.Replace("{{StatementDate}}", PersonalLoan.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                                                        widgetHtml.Replace("{{StatementPeriod}}", PersonalLoan.FromDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " - " + PersonalLoan.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+
+                                                        res = 0.0m;
+                                                        if (decimal.TryParse(PersonalLoan.Arrears, out res))
+                                                        {
+                                                            widgetHtml.Replace("{{ArrearsAmount}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        }
+                                                        else
+                                                        {
+                                                            widgetHtml.Replace("{{ArrearsAmount}}", "");
+                                                        }
+
+                                                        widgetHtml.Replace("{{AnnualRate}}", PersonalLoan.AnnualRate + "% pa");
+
+                                                        res = 0.0m;
+                                                        if (decimal.TryParse(PersonalLoan.MonthlyInstallment, out res))
+                                                        {
+                                                            widgetHtml.Replace("{{MonthlyInstallment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        }
+                                                        else
+                                                        {
+                                                            widgetHtml.Replace("{{MonthlyInstallment}}", "");
+                                                        }
+
+                                                        widgetHtml.Replace("{{Terms}}", PersonalLoan.Term);
+                                                        widgetHtml.Replace("{{DueByDate}}", PersonalLoan.DueDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                                                        htmlString.Append(widgetHtml.ToString());
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PERSONAL_LOAN_TRANASCTION_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = "[{'Identifier': 1,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2020-12-31 00:00:00','EffectiveDate': '2020-12-31 00:00:00','Description': 'Monthly Admin Fee','Debit': '69','Credit': '0','OutstandingCapital': '71258'},{'Identifier': 2,'CustomerId': 211135146504, 'InvestorId': 8004334234001,'PostingDate': '2021-01-01 00:00:00','EffectiveDate': '2021-01-01 00:00:00','Description': 'Interest Debit','Debit': '1512','Credit': '0','OutstandingCapital': '72770'},{'Identifier': 3,'CustomerId': 211135146504,'InvestorId': 8004334234001, 'PostingDate': '2021-01-05 00:00:00','EffectiveDate': '2021-01-05 00:00:00','Description': 'Insurance Premium','Debit': '188','Credit': '0', 'OutstandingCapital': '72958'},{'Identifier': 4,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-01-15 00:00:00', 'EffectiveDate': '2021-01-15 00:00:00','Description': '','Debit': '0','Credit': '3297','OutstandingCapital': '69660'},{'Identifier': 5,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-01-30 00:00:00','EffectiveDate': '2021-01-30 00:00:00','Description': 'Monthly Admin Fee','Debit': '69','Credit': '0','OutstandingCapital': '69729'},{'Identifier': 6,'CustomerId': 211135146504,'InvestorId': 8004334234001, 'PostingDate': '2021-02-01 00:00:00', 'EffectiveDate': '2021-02-01 00:00:00','Description': 'Interest Debit','Debit': '1480','Credit': '0', 'OutstandingCapital': '71210'},{'Identifier': 7,'CustomerId': 211135146504,'InvestorId': 8004334234001, 'PostingDate': '2021-02-03 00:00:00', 'EffectiveDate': '2021-02-03 00:00:00','Description': 'Insurance Premium','Debit': '188','Credit': '0','OutstandingCapital': '71398'}, {'Identifier': 8,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-02-15 00:00:00','EffectiveDate': '2021-02-15 00:00:00', 'Description': '','Debit': '0','Credit': '3297', 'OutstandingCapital': '68100'},{'Identifier': 9,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-02-27 00:00:00', 'EffectiveDate': '2021-02-27 00:00:00','Description': 'Monthly Admin Fee','Debit': '69', 'Credit': '0','OutstandingCapital': '68169'}]";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var transactions = JsonConvert.DeserializeObject<List<DM_PersonalLoanTransaction>>(jsonstr);
+                                                        if (transactions != null && transactions.Count > 0)
+                                                        {
+                                                            var widgetHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TRANSACTION_HTML);
+                                                            var LoanTransactionRows = new StringBuilder();
+                                                            var tr = new StringBuilder();
+                                                            transactions.ForEach(trans =>
+                                                            {
+                                                                tr = new StringBuilder();
+                                                                tr.Append("<tr class='ht-20'>");
+                                                                tr.Append("<td class='w-13'> " + trans.PostingDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " </td>");
+                                                                tr.Append("<td class='w-15'> " + trans.EffectiveDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " </td>");
+                                                                tr.Append("<td class='w-35'> " + (!string.IsNullOrEmpty(trans.Description) ? trans.Description : ModelConstant.PAYMENT_THANK_YOU_TRANSACTION_DESC) + " </td>");
+
+                                                                var res = 0.0m;
+                                                                if (decimal.TryParse(trans.Debit, out res))
+                                                                {
+                                                                    tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                                                }
+                                                                else
+                                                                {
+                                                                    tr.Append("<td class='w-12 text-right'> - </td>");
+                                                                }
+
+                                                                res = 0.0m;
+                                                                if (decimal.TryParse(trans.Credit, out res))
+                                                                {
+                                                                    tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                                                }
+                                                                else
+                                                                {
+                                                                    tr.Append("<td class='w-12 text-right'> - </td>");
+                                                                }
+
+                                                                res = 0.0m;
+                                                                if (decimal.TryParse(trans.OutstandingCapital, out res))
+                                                                {
+                                                                    tr.Append("<td class='w-13 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                                                                }
+                                                                else
+                                                                {
+                                                                    tr.Append("<td class='w-13 text-right'> - </td>");
+                                                                }
+                                                                tr.Append("</tr>");
+                                                                LoanTransactionRows.Append(tr.ToString());
+                                                            });
+                                                            widgetHtml.Replace("{{PersonalLoanTransactionRow}}", LoanTransactionRows.ToString());
+                                                            htmlString.Append(widgetHtml.ToString());
+                                                        }
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = "{'Identifier': '1','CustomerId': '211135146504','InvestorId': '8004334234001','Arrears_120': '0','Arrears_90': '0','Arrears_60': '0','Arrears_30': '0','Arrears_0': '3297'}";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var plArrears = JsonConvert.DeserializeObject<DM_PersonalLoanArrears>(jsonstr);
+                                                        if (plArrears != null)
+                                                        {
+                                                            var widgetHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_HTML);
+                                                            var res = 0.0m;
+                                                            if (decimal.TryParse(plArrears.Arrears_120, out res))
+                                                            {
+                                                                widgetHtml.Replace("{{After120Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                            }
+                                                            else
+                                                            {
+                                                                widgetHtml.Replace("{{After120Days}}", "R0.00");
+                                                            }
+
+                                                            res = 0.0m;
+                                                            if (decimal.TryParse(plArrears.Arrears_90, out res))
+                                                            {
+                                                                widgetHtml.Replace("{{After90Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                            }
+                                                            else
+                                                            {
+                                                                widgetHtml.Replace("{{After90Days}}", "R0.00");
+                                                            }
+
+                                                            res = 0.0m;
+                                                            if (decimal.TryParse(plArrears.Arrears_60, out res))
+                                                            {
+                                                                widgetHtml.Replace("{{After60Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                            }
+                                                            else
+                                                            {
+                                                                widgetHtml.Replace("{{After60Days}}", "R0.00");
+                                                            }
+
+                                                            res = 0.0m;
+                                                            if (decimal.TryParse(plArrears.Arrears_30, out res))
+                                                            {
+                                                                widgetHtml.Replace("{{After30Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                            }
+                                                            else
+                                                            {
+                                                                widgetHtml.Replace("{{After30Days}}", "R0.00");
+                                                            }
+
+                                                            res = 0.0m;
+                                                            if (decimal.TryParse(plArrears.Arrears_0, out res))
+                                                            {
+                                                                widgetHtml.Replace("{{Current}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                            }
+                                                            else
+                                                            {
+                                                                widgetHtml.Replace("{{Current}}", "R0.00");
+                                                            }
+
+                                                            htmlString.Append(widgetHtml.ToString());
+                                                        }
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.SPECIAL_MESSAGE_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = "{'Identifier': '1','ParentId': '8004334234001','Header': '','Message1': 'According to our records your personal-loan account is included in the debt counselling process. Please continue making regular payments as per the agreed payment arrangement. For more information please contact us on 0860 109 279 or email us at DebtCounsellingQueries@nedbank.co.za.','Message2': '','Message3': 'Insurance Personalise text message 1','Message4': 'Insurance Personalise text message 2','Message5': 'Insurance Personalise text message 3'}";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var SpecialMessage = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
+                                                        if (SpecialMessage != null)
+                                                        {
+                                                            var widgetHtml = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
+
+                                                            var specialMsgTxtData = (!string.IsNullOrEmpty(SpecialMessage.Header) ? "<div class='SpecialMessageHeader'> " + SpecialMessage.Header + " </div>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message1) ? "<p> " + SpecialMessage.Message1 + " </p>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message2) ? "<p> " + SpecialMessage.Message2 + " </p>" : string.Empty);
+
+                                                            widgetHtml.Replace("{{SpecialMessageTextData}}", specialMsgTxtData);
+                                                            htmlString.Append(widgetHtml.ToString());
+                                                        }
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.PERSONAL_LOAN_INSURANCE_MESSAGE_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = "{'Identifier': '1','ParentId': '8004334234001','Header': '','Message1': 'According to our records your personal-loan account is included in the debt counselling process. Please continue making regular payments as per the agreed payment arrangement. For more information please contact us on 0860 109 279 or email us at DebtCounsellingQueries@nedbank.co.za.','Message2': '','Message3': 'Insurance Personalise text message 1','Message4': 'Insurance Personalise text message 2','Message5': 'Insurance Personalise text message 3'}";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var InsuranceMsg = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
+                                                        if (InsuranceMsg != null)
+                                                        {
+                                                            var widgetHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_INSURANCE_MESSAGE_HTML);
+                                                            var InsuranceMsgTxtData = (!string.IsNullOrEmpty(InsuranceMsg.Message3) ? "<p> " + InsuranceMsg.Message3 + " </p>" : string.Empty) +
+                                                                (!string.IsNullOrEmpty(InsuranceMsg.Message4) ? "<p> " + InsuranceMsg.Message4 + " </p>" : string.Empty) +
+                                                                (!string.IsNullOrEmpty(InsuranceMsg.Message5) ? "<p> " + InsuranceMsg.Message5 + " </p>" : string.Empty);
+
+                                                            widgetHtml.Replace("{{InsuranceMessages}}", InsuranceMsgTxtData);
+                                                            htmlString.Append(widgetHtml.ToString());
+                                                        }
+                                                    }
                                                 }
                                             }
                                             else
@@ -3086,6 +3349,65 @@ namespace nIS
             var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML.Replace("{{ServiceMessageHeader}}", "{{ServiceMessageHeader_" + page.Identifier + "_" + pageWidget.Identifier + "_" + MarketingMessageCounter + "}}").Replace("{{ServiceMessageText}}", "{{ServiceMessageText_" + page.Identifier + "_" + pageWidget.Identifier + "_" + MarketingMessageCounter + "}}");
             htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
             return htmlWidget;
+        }
+
+        private string PersonalLoanDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_DETAIL_HTML);
+            htmlWidget.Replace("{{TotalLoanAmount}}", "{{TotalLoanAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{OutstandingBalance}}", "{{OutstandingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{DueAmount}}", "{{DueAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{AccountNumber}}", "{{AccountNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{ArrearsAmount}}", "{{ArrearsAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{AnnualRate}}", "{{AnnualRate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{MonthlyInstallment}}", "{{MonthlyInstallment_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Terms}}", "{{Terms_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{DueByDate}}", "{{DueByDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
+        }
+
+        private string PersonalLoanTransactionWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TRANSACTION_HTML);
+            htmlWidget.Replace("{{PersonalLoanTransactionRow}}", "{{PersonalLoanTransactionRow_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
+        }
+
+        private string PersonalLoanPaymentDueWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_PAYMENT_DUE_HTML);
+            htmlWidget.Replace("{{After120Days}}", "{{After120Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{After90Days}}", "{{After90Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{After60Days}}", "{{After60Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{After30Days}}", "{{After30Days_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Current}}", "{{Current_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
+        }
+
+        private string SpecialMessageWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlWidget = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
+            htmlWidget.Replace("{{SpecialMessageTextData}}", "{{SpecialMessageTextData_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
+        }
+
+        private string PersonalLoanInsuranceMessageWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlWidget = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
+            htmlWidget.Replace("{{InsuranceMessages}}", "{{InsuranceMessages_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
         }
 
         #endregion
@@ -3594,6 +3916,221 @@ namespace nIS
                     var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
 
                     pageContent.Replace("{{ServiceMessageHeader_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", ServiceMessage.MarketingMessageHeader).Replace("{{ServiceMessageText_" + page.Identifier + "_" + widget.Identifier + "_" + MarketingMessageCounter + "}}", messageTxt);
+                }
+            }
+        }
+
+        private void BindDummyDataToPersonalLoanDetailWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{'Identifier': 1,'CustomerId': 211135146504,'InvestorId': 8004334234001,'Currency': 'R','ProductType': 'PersonalLoan','BranchId': 1,'CreditAdvance': '75372', 'OutstandingBalance': '68169','AmountDue': '3297','ToDate': '2021-02-28 00:00:00','FromDate': '2020-12-01 00:00:00','MonthlyInstallment': '3297','DueDate': '2021-03-31 00:00:00','Arrears': '0','AnnualRate': '24','Term': '36'}";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var PersonalLoan = JsonConvert.DeserializeObject<DM_PersonalLoanMaster>(jsonstr);
+
+                var res = 0.0m;
+                if (decimal.TryParse(PersonalLoan.CreditAdvance, out res))
+                {
+                    pageContent.Replace("{{TotalLoanAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                }
+                else
+                {
+                    pageContent.Replace("{{TotalLoanAmount_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                }
+
+                res = 0.0m;
+                if (decimal.TryParse(PersonalLoan.OutstandingBalance, out res))
+                {
+                    pageContent.Replace("{{OutstandingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                }
+                else
+                {
+                    pageContent.Replace("{{OutstandingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                }
+
+                res = 0.0m;
+                if (decimal.TryParse(PersonalLoan.AmountDue, out res))
+                {
+                    pageContent.Replace("{{DueAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                }
+                else
+                {
+                    pageContent.Replace("{{DueAmount_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                }
+
+                pageContent.Replace("{{AccountNumber_" + page.Identifier + "_" + widget.Identifier + "}}", PersonalLoan.InvestorId.ToString());
+                pageContent.Replace("{{StatementDate_" + page.Identifier + "_" + widget.Identifier + "}}", PersonalLoan.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                pageContent.Replace("{{StatementPeriod_" + page.Identifier + "_" + widget.Identifier + "}}", PersonalLoan.FromDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " - " + PersonalLoan.ToDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+
+                res = 0.0m;
+                if (decimal.TryParse(PersonalLoan.Arrears, out res))
+                {
+                    pageContent.Replace("{{ArrearsAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                }
+                else
+                {
+                    pageContent.Replace("{{ArrearsAmount_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                }
+
+                pageContent.Replace("{{AnnualRate_" + page.Identifier + "_" + widget.Identifier + "}}", PersonalLoan.AnnualRate + "% pa");
+
+                res = 0.0m;
+                if (decimal.TryParse(PersonalLoan.MonthlyInstallment, out res))
+                {
+                    pageContent.Replace("{{MonthlyInstallment_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                }
+                else
+                {
+                    pageContent.Replace("{{MonthlyInstallment_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                }
+
+                pageContent.Replace("{{Terms_" + page.Identifier + "_" + widget.Identifier + "}}", PersonalLoan.Term);
+                pageContent.Replace("{{DueByDate_" + page.Identifier + "_" + widget.Identifier + "}}", PersonalLoan.DueDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+            }
+        }
+
+        private void BindDummyDataToPersonalLoanTransactionWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "[{'Identifier': 1,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2020-12-31 00:00:00','EffectiveDate': '2020-12-31 00:00:00','Description': 'Monthly Admin Fee','Debit': '69','Credit': '0','OutstandingCapital': '71258'},{'Identifier': 2,'CustomerId': 211135146504, 'InvestorId': 8004334234001,'PostingDate': '2021-01-01 00:00:00','EffectiveDate': '2021-01-01 00:00:00','Description': 'Interest Debit','Debit': '1512','Credit': '0','OutstandingCapital': '72770'},{'Identifier': 3,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-01-05 00:00:00','EffectiveDate': '2021-01-05 00:00:00','Description': 'Insurance Premium','Debit': '188','Credit': '0','OutstandingCapital': '72958'},{'Identifier': 4,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-01-15 00:00:00','EffectiveDate': '2021-01-15 00:00:00','Description': '','Debit': '0','Credit': '3297','OutstandingCapital': '69660'},{'Identifier': 5,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-01-30 00:00:00','EffectiveDate': '2021-01-30 00:00:00','Description': 'Monthly Admin Fee','Debit': '69','Credit': '0','OutstandingCapital': '69729'},{'Identifier': 6,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-02-01 00:00:00', 'EffectiveDate': '2021-02-01 00:00:00','Description': 'Interest Debit','Debit': '1480','Credit': '0','OutstandingCapital': '71210'},{'Identifier': 7,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-02-03 00:00:00','EffectiveDate': '2021-02-03 00:00:00','Description': 'Insurance Premium','Debit': '188','Credit': '0','OutstandingCapital': '71398'},{'Identifier': 8,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-02-15 00:00:00','EffectiveDate': '2021-02-15 00:00:00','Description': '','Debit': '0','Credit': '3297', 'OutstandingCapital': '68100'},{'Identifier': 9,'CustomerId': 211135146504,'InvestorId': 8004334234001,'PostingDate': '2021-02-27 00:00:00', 'EffectiveDate': '2021-02-27 00:00:00','Description': 'Monthly Admin Fee','Debit': '69','Credit': '0','OutstandingCapital': '68169'}]";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var transactions = JsonConvert.DeserializeObject<List<DM_PersonalLoanTransaction>>(jsonstr);
+                if (transactions != null && transactions.Count > 0)
+                {
+                    var LoanTransactionRows = new StringBuilder();
+                    var tr = new StringBuilder();
+                    transactions.ForEach(trans =>
+                    {
+                        tr = new StringBuilder();
+                        tr.Append("<tr class='ht-20'>");
+                        tr.Append("<td class='w-13'> " + trans.PostingDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " </td>");
+                        tr.Append("<td class='w-15'> " + trans.EffectiveDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " </td>");
+                        tr.Append("<td class='w-35'> " + (!string.IsNullOrEmpty(trans.Description) ? trans.Description : ModelConstant.PAYMENT_THANK_YOU_TRANSACTION_DESC) + " </td>");
+
+                        var res = 0.0m;
+                        if (decimal.TryParse(trans.Debit, out res))
+                        {
+                            tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                        }
+                        else
+                        {
+                            tr.Append("<td class='w-12 text-right'> - </td>");
+                        }
+
+                        res = 0.0m;
+                        if (decimal.TryParse(trans.Credit, out res))
+                        {
+                            tr.Append("<td class='w-12 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                        }
+                        else
+                        {
+                            tr.Append("<td class='w-12 text-right'> - </td>");
+                        }
+
+                        res = 0.0m;
+                        if (decimal.TryParse(trans.OutstandingCapital, out res))
+                        {
+                            tr.Append("<td class='w-13 text-right'> " + (res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-") + " </td>");
+                        }
+                        else
+                        {
+                            tr.Append("<td class='w-13 text-right'> - </td>");
+                        }
+                        tr.Append("</tr>");
+                        LoanTransactionRows.Append(tr.ToString());
+                    });
+                    pageContent.Replace("{{PersonalLoanTransactionRow_" + page.Identifier + "_" + widget.Identifier + "}}", LoanTransactionRows.ToString());
+                }
+            }
+        }
+
+        private void BindDummyDataToPersonalLoanPaymentDueWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{'Identifier': '1','CustomerId': '211135146504','InvestorId': '8004334234001','Arrears_120': '0','Arrears_90': '0','Arrears_60': '0','Arrears_30': '0','Arrears_0': '3297'}";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var plArrears = JsonConvert.DeserializeObject<DM_PersonalLoanArrears>(jsonstr);
+                if (plArrears != null)
+                {
+                    var res = 0.0m;
+                    if (decimal.TryParse(plArrears.Arrears_120, out res))
+                    {
+                        pageContent.Replace("{{After120Days_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{After120Days_" + page.Identifier + "_" + widget.Identifier + "}}", "R0.00");
+                    }
+
+                    res = 0.0m;
+                    if (decimal.TryParse(plArrears.Arrears_90, out res))
+                    {
+                        pageContent.Replace("{{After90Days_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{After90Days_" + page.Identifier + "_" + widget.Identifier + "}}", "R0.00");
+                    }
+
+                    res = 0.0m;
+                    if (decimal.TryParse(plArrears.Arrears_60, out res))
+                    {
+                        pageContent.Replace("{{After60Days_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{After60Days_" + page.Identifier + "_" + widget.Identifier + "}}", "R0.00");
+                    }
+
+                    res = 0.0m;
+                    if (decimal.TryParse(plArrears.Arrears_30, out res))
+                    {
+                        pageContent.Replace("{{After30Days_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{After30Days_" + page.Identifier + "_" + widget.Identifier + "}}", "R0.00");
+                    }
+
+                    res = 0.0m;
+                    if (decimal.TryParse(plArrears.Arrears_0, out res))
+                    {
+                        pageContent.Replace("{{Current_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{Current_" + page.Identifier + "_" + widget.Identifier + "}}", "R0.00");
+                    }
+                }
+            }
+        }
+
+        private void BindDummyDataToSpecialMessageWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{'Identifier': '1','ParentId': '8004334234001','Header': '','Message1': 'According to our records your personal-loan account is included in the debt counselling process. Please continue making regular payments as per the agreed payment arrangement. For more information please contact us on 0860 109 279 or email us at DebtCounsellingQueries@nedbank.co.za.','Message2': '','Message3': 'Insurance Personalise text message 1','Message4': 'Insurance Personalise text message 2','Message5': 'Insurance Personalise text message 3'}";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var SpecialMessage = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
+                if (SpecialMessage != null)
+                {
+                    var specialMsgTxtData = (!string.IsNullOrEmpty(SpecialMessage.Header) ? "<div class='SpecialMessageHeader'> " + SpecialMessage.Header + " </div>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message1) ? "<p> " + SpecialMessage.Message1 + " </p>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message2) ? "<p> " + SpecialMessage.Message2 + " </p>" : string.Empty);
+                    pageContent.Replace("{{SpecialMessageTextData_" + page.Identifier + "_" + widget.Identifier + "}}", specialMsgTxtData);
+                }
+            }
+        }
+
+        private void BindDummmyDataToPersonalLoanInsuranceMessageWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{'Identifier': '1','ParentId': '8004334234001','Header': '','Message1': 'According to our records your personal-loan account is included in the debt counselling process. Please continue making regular payments as per the agreed payment arrangement. For more information please contact us on 0860 109 279 or email us at DebtCounsellingQueries@nedbank.co.za.','Message2': '','Message3': 'Insurance Personalise text message 1','Message4': 'Insurance Personalise text message 2','Message5': 'Insurance Personalise text message 3'}";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var InsuranceMsg = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
+                if (InsuranceMsg != null)
+                {
+                    var InsuranceMsgTxtData = (!string.IsNullOrEmpty(InsuranceMsg.Message3) ? "<p> " + InsuranceMsg.Message3 + " </p>" : string.Empty) +
+                        (!string.IsNullOrEmpty(InsuranceMsg.Message4) ? "<p> " + InsuranceMsg.Message4 + " </p>" : string.Empty) +
+                        (!string.IsNullOrEmpty(InsuranceMsg.Message5) ? "<p> " + InsuranceMsg.Message5 + " </p>" : string.Empty);
+
+                    pageContent.Replace("{{InsuranceMessages_" + page.Identifier + "_" + widget.Identifier + "}}", InsuranceMsgTxtData);
                 }
             }
         }

@@ -15,7 +15,7 @@ import {
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
-  PersonalLoanStatementComponent, HomeLoanNewInstallmentComponent, HomeLoanStatementOverviewComponent
+  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -344,14 +344,20 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if (widgetName == 'ExplanatoryNotes') {
               gridObj.component = ExplanatoryNotesComponent;
             }
-            else if (widgetName == 'PersonalLoanStatement') {
-              gridObj.component = PersonalLoanStatementComponent;
+            else if (widgetName == 'PersonalLoanDetail') {
+              gridObj.component = PersonalLoanDetailComponent;
             }
-            else if (widgetName == 'HomeLoanNewInstallment') {
-              gridObj.component = HomeLoanNewInstallmentComponent;
+            else if (widgetName == 'PersonalLoanTransaction') {
+              gridObj.component = PersonalLoanTransactionComponent;
             }
-            else if (widgetName == 'HomeLoanStatementOverview') {
-              gridObj.component = HomeLoanStatementOverviewComponent;
+            else if (widgetName == 'PersonalLoanPaymentDue') {
+              gridObj.component = PersonalLoanPaymentDueComponent;
+            }
+            else if (widgetName == 'SpecialMessage') {
+              gridObj.component = SpecialMessageComponent;
+            }
+            else if (widgetName == 'PL_InsuranceMessage') {
+              gridObj.component = PersonalLoanInsuranceMessageComponent;
             }
             else if (widgetName == 'NedbankService') {
               gridObj.component = NedbankServiceComponent;
