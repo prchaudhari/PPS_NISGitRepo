@@ -134,7 +134,7 @@ namespace nIS
         #region Nedbank
 
         /// <summary>
-        /// This method gets the specified list of customer master from Dm customer master repository.
+        /// This method gets the specified list of customer master.
         /// </summary>
         /// <param name="customerSearchParameter">The customer search parameter</param>
         /// <returns>
@@ -155,7 +155,7 @@ namespace nIS
         }
 
         /// <summary>
-        /// This method gets the specified list of customer investment master from investment master repository.
+        /// This method gets the specified list of customer investment master.
         /// </summary>
         /// <param name="searchParameter">The customer investment search parameter</param>
         /// <returns>
@@ -176,7 +176,7 @@ namespace nIS
         }
 
         /// <summary>
-        /// This method gets the specified list of customer investment transaction from Investment transaction repository.
+        /// This method gets the specified list of customer investment transaction.
         /// </summary>
         /// <param name="searchParameter">The investment search parameter</param>
         /// <returns>
@@ -197,7 +197,7 @@ namespace nIS
         }
 
         /// <summary>
-        /// This method gets the specified list of branch master from branch repository.
+        /// This method gets the specified list of branch master.
         /// </summary>
         /// <param name="BranchId">The Branch Identifier</param>
         /// <returns>
@@ -218,7 +218,7 @@ namespace nIS
         }
 
         /// <summary>
-        /// This method gets the specified list of notes from explanatory notes repository.
+        /// This method gets the specified list of notes.
         /// </summary>
         /// <param name="searchParameter">The message or note search parameter object</param>
         /// <returns>
@@ -239,7 +239,7 @@ namespace nIS
         }
 
         /// <summary>
-        /// This method gets the specified list of message from marketing message repository.
+        /// This method gets the specified list of message.
         /// </summary>
         /// <param name="searchParameter">The message or note search parameter object</param>
         /// <returns>
@@ -252,6 +252,90 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 return this.tenantTransactionDataManager.Get_DM_MarketingMessages(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer personal loan master.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <returns>
+        /// Returns the list of customer personal loan master
+        /// </returns>
+        [HttpPost]
+        public IList<DM_PersonalLoanMaster> Get_DM_PersonalLoanMaster(CustomerPersonalLoanSearchParameter searchParameter)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.tenantTransactionDataManager.Get_DM_PersonalLoanMaster(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer personal loan transaction records.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <returns>
+        /// Returns the list of customer personal loan transaction record
+        /// </returns>
+        [HttpPost]
+        public IList<DM_PersonalLoanTransaction> Get_DM_PersonalLoanTransaction(CustomerPersonalLoanSearchParameter searchParameter)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.tenantTransactionDataManager.Get_DM_PersonalLoanTransaction(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer personal loan arrears.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <returns>
+        /// Returns the list of customer personal loan arrears records
+        /// </returns>
+        [HttpPost]
+        public IList<DM_PersonalLoanArrears> Get_DM_PersonalLoanArrears(CustomerPersonalLoanSearchParameter searchParameter)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.tenantTransactionDataManager.Get_DM_PersonalLoanArrears(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of special message.
+        /// </summary>
+        /// <param name="searchParameter">The message or note search parameter object</param>
+        /// <returns>
+        /// Returns the list of special message
+        /// </returns>
+        [HttpPost]
+        public IList<SpecialMessage> Get_DM_SpecialMessages(MessageAndNoteSearchParameter searchParameter)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                return this.tenantTransactionDataManager.Get_DM_SpecialMessages(searchParameter, tenantCode);
             }
             catch (Exception ex)
             {

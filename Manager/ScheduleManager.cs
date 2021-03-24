@@ -705,7 +705,6 @@ namespace nIS
                     }
 
                     var statement = statements.FirstOrDefault();
-                    var pages = statement.Pages;
                     var functionName = string.Empty;
                     if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.GenerateStatementRunNowScheduleFunctionName))
                     {

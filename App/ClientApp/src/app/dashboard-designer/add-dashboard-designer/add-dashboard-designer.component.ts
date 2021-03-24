@@ -17,7 +17,8 @@ import {
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
-  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent
+  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
+  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -857,7 +858,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
-          else if (widget.WidgetName == "BankDetails") {
+          else if (widget.WidgetName == "BranchDetails") {
             return this.widgetsGridsterItemArray.push({
               cols: 6,
               rows: 2,
@@ -995,7 +996,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "PL_InsuranceMessage") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 1,
+              rows: 2,
               y: 0,
               x: 0,
               component: PersonalLoanInsuranceMessageComponent,
@@ -1014,6 +1015,36 @@ export class AddDashboardDesignerComponent implements OnInit {
               y: 0,
               x: 0,
               component: NedbankServiceComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PersonalLoanTotalAmountDetail") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: PersonalLoanTotalAmountDetailComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PersonalLoanAccountsBreakdown") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: PersonalLoanAccountsBreakdownComponent,
               value: widget.WidgetName,
               WidgetId: widget.Identifier,
               widgetItemCount: this.widgetItemCount,
@@ -1231,7 +1262,7 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widgetName == 'CustomerDetails') {
         gridObj.component = CustomerDetailsComponent;
       }
-      else if (widgetName == 'BankDetails') {
+      else if (widgetName == 'BranchDetails') {
         gridObj.component = BankDetailsComponent;
       }
       else if (widgetName == 'InvestmentPortfolioStatement') {
@@ -1263,6 +1294,12 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'NedbankService') {
         gridObj.component = NedbankServiceComponent;
+      }
+      else if (widgetName == 'PersonalLoanTotalAmountDetail') {
+        gridObj.component = PersonalLoanTotalAmountDetailComponent;
+      }
+      else if (widgetName == 'PersonalLoanAccountsBreakdown') {
+        gridObj.component = PersonalLoanAccountsBreakdownComponent;
       }
     }
     else {

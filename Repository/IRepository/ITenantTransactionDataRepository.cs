@@ -159,6 +159,46 @@ namespace nIS
         /// </returns>
         IList<DM_MarketingMessage> Get_DM_MarketingMessages(MessageAndNoteSearchParameter searchParameter, string tenantCode);
 
+        /// <summary>
+        /// This method gets the specified list of customer personal loan master from personal loan master repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer personal loan master
+        /// </returns>
+        IList<DM_PersonalLoanMaster> Get_DM_PersonalLoanMaster(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of customer personal loan transaction records from personal loan transaction repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer personal loan transaction record
+        /// </returns>
+        IList<DM_PersonalLoanTransaction> Get_DM_PersonalLoanTransaction(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of customer personal loan arrears from personal loan arrear repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer personal loan arrears records
+        /// </returns>
+        IList<DM_PersonalLoanArrears> Get_DM_PersonalLoanArrears(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of special message from special message repository.
+        /// </summary>
+        /// <param name="searchParameter">The message or note search parameter object</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of special message
+        /// </returns>
+        IList<SpecialMessage> Get_DM_SpecialMessages(MessageAndNoteSearchParameter searchParameter, string tenantCode);
+
         #endregion
     }
 }

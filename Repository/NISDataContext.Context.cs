@@ -22,7 +22,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                                       : base(connectionString)
+                                                           : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -93,13 +93,17 @@ namespace nIS
         public virtual DbSet<View_StatementMetadataRecord> View_StatementMetadataRecord { get; set; }
         public virtual DbSet<View_ScheduleLog> View_ScheduleLog { get; set; }
         public virtual DbSet<View_UserRecord> View_UserRecord { get; set; }
+        public virtual DbSet<TenantConfigurationRecord> TenantConfigurationRecords { get; set; }
         public virtual DbSet<DM_BranchMasterRecord> DM_BranchMasterRecord { get; set; }
-        public virtual DbSet<DM_ExplanatoryNotesRecord> DM_ExplanatoryNotesRecord { get; set; }
-        public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
         public virtual DbSet<DM_CustomerMasterRecord> DM_CustomerMasterRecord { get; set; }
+        public virtual DbSet<DM_ExplanatoryNotesRecord> DM_ExplanatoryNotesRecord { get; set; }
         public virtual DbSet<DM_InvestmentMasterRecord> DM_InvestmentMasterRecord { get; set; }
         public virtual DbSet<DM_InvestmentTransactionRecord> DM_InvestmentTransactionRecord { get; set; }
-        public virtual DbSet<TenantConfigurationRecord> TenantConfigurationRecords { get; set; }
+        public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
+        public virtual DbSet<DM_PersonalLoanArrearsRecord> DM_PersonalLoanArrearsRecord { get; set; }
+        public virtual DbSet<DM_PersonalLoanMasterRecord> DM_PersonalLoanMasterRecord { get; set; }
+        public virtual DbSet<DM_PersonalLoanTransactionRecord> DM_PersonalLoanTransactionRecord { get; set; }
+        public virtual DbSet<DM_SpecialMessagesRecord> DM_SpecialMessagesRecord { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

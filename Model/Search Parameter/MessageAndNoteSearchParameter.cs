@@ -25,7 +25,7 @@ namespace nIS
 
         public long Identifier { get; set; }
         public long BatchId { get; set; }
-        public long ParentId { get; set; } //It must be InvestmentId, HomeLoanId, PersonalLoanId, etc...
+        public long CustomerId { get; set; }
         public string WidgetFilterSetting { get; set; }
 
         /// <summary>

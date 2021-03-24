@@ -136,7 +136,7 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/CustomerDetails.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
         }
-        else if (this.widgetList[i].WidgetName == "BankDetails") {
+        else if (this.widgetList[i].WidgetName == "BranchDetails") {
           this.widgetList[i].ImageSource = "assets/images/BankDetails.JPG"
           this.widgetList[i].WidgetIcon = "fa fa-university";
         }
@@ -187,6 +187,14 @@ export class AddComponent implements OnInit {
         else if (this.widgetList[i].WidgetName == "PL_InsuranceMessage") {
           this.widgetList[i].ImageSource = "assets/images/PL_InsuranceMessages.JPG"
           this.widgetList[i].WidgetIcon = "fa fa-exclamation-circle";
+        }
+        else if (this.widgetList[i].WidgetName == "PersonalLoanTotalAmountDetail") {
+          this.widgetList[i].ImageSource = "assets/images/PersonalLoanTotalAmountDetails.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "PersonalLoanAccountsBreakdown") {
+          this.widgetList[i].ImageSource = "assets/images/PersonalLoanAccountsBreakdown.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
         }
       }
     }

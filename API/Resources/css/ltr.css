@@ -294,12 +294,14 @@
     font-size: 8pt;
     text-align: left;
     font-family: 'Mark Pro Medium';
+    height: 110px;
 }
 
-.BankDetails {
+.BranchDetails {
     font-size: 8pt;
     text-align: right;
     font-family: 'Mark Pro Medium';
+    height: 110px;
 }
 
 .ConactCenterDiv {
@@ -581,22 +583,24 @@
 .paymentDueHeaderBlock {
     background-color: #1c6a41 !important;
     text-align: center;
-    padding-top: .5rem !important;
-    height: 30px;
+    /*padding-top: .5rem !important;
+    height: 30px;*/
     color: white;
     width: 20%;
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    line-height: 30px;
 }
 
 .paymentDueFooterBlock {
     background-color: #f3f3f3 !important;
     text-align: center;
-    padding-top: .5rem !important;
-    height: 30px;
+    /*padding-top: .5rem !important;
+    height: 30px;*/
     width: 20%;
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
+    line-height: 30px;
 }
 
 .text-success {
@@ -662,7 +666,7 @@
 
 .InsuranceMessageDiv {
     font-family: 'Mark Pro Regular';
-    font-size: 8pt;
+    font-size: 9pt;
 }
 
     .InsuranceMessageDiv p {
@@ -675,6 +679,21 @@
     text-align: left;
     padding-left: 1.25rem;
 }
+
+.Personalloan-nav-tabs {
+    font-family: 'Mark Pro Regular';
+}
+
+    .Personalloan-nav-tabs a {
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+    }
+
+.PersonalLoanDetailDiv {
+    background-color: #f3f3f3;
+    padding: 10px 0px;
+}
+
 
   @media only screen and (max-width:1024px) {
     .ip-w-5 {

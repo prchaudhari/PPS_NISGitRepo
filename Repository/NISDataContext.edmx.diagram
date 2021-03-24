@@ -68,13 +68,17 @@
         <EntityTypeShape EntityType="NISModel.View_StatementMetadataRecord" Width="1.5" PointX="9" PointY="1.875" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_UserRecord" Width="1.5" PointX="8.75" PointY="5.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_BranchMasterRecord" Width="1.5" PointX="0.75" PointY="9.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_ExplanatoryNotesRecord" Width="1.5" PointX="4.875" PointY="9.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_MarketingMessagesRecord" Width="1.5" PointX="0.75" PointY="10.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_CustomerMasterRecord" Width="1.5" PointX="8.75" PointY="9.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_InvestmentMasterRecord" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_InvestmentTransactionRecord" Width="1.5" PointX="2.75" PointY="9.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantConfigurationRecord" Width="1.5" PointX="0.875" PointY="6.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_BranchMasterRecord" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerMasterRecord" Width="1.5" PointX="2.75" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_ExplanatoryNotesRecord" Width="1.5" PointX="4.75" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_InvestmentMasterRecord" Width="1.5" PointX="6.75" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_InvestmentTransactionRecord" Width="1.5" PointX="8.75" PointY="10.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_MarketingMessagesRecord" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanArrearsRecord" Width="1.5" PointX="2.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanMasterRecord" Width="1.5" PointX="6.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanTransactionRecord" Width="1.5" PointX="8.625" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_SpecialMessagesRecord" Width="1.5" PointX="4.875" PointY="9.625" IsExpanded="false" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

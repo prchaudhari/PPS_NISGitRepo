@@ -1849,7 +1849,7 @@ export class CustomerDetailsComponent {
   template: `<div class="widget">
     <div class="widget-area height100">
       <div class='card border-0'>
-          <div class="card-body BankDetails">
+          <div class="card-body BranchDetails">
               BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
               <br>Bank VAT Reg No XXXXXXXXXX
           </div>
@@ -2457,7 +2457,7 @@ export class SpecialMessageComponent {
   template: `<div class="widget">
     <div class="widget-area height100">
       <div class="card border-0">
-          <div class="card-body text-left py-1">
+          <div class="card-body text-left py-4">
             <div class="InsuranceMessageDiv">
                 <div class="card-body-header pb-2">Insurance</div>
                 <p>Insurance related Personalize special message text 1</p>
@@ -2470,6 +2470,305 @@ export class SpecialMessageComponent {
   </div>`
 })
 export class PersonalLoanInsuranceMessageComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Personal loan total amount detail Widget -- Nedbank
+@Component({
+  selector: 'PersonalLoanTotalAmountDetail',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class='card border-0'>
+          <div class='card-body text-left pb-1 pt-4'>
+              <div class='card-body-header pb-2'>Personal loan statement</div>
+              <div class='row pb-1'>
+                  <div class='col-lg-4 col-sm-4 pr-1'>
+                      <div class='LoanAmountDetailsDiv'>
+                          <span class="fnt-10pt">Loan Amount</span><br><span class="fnt-14pt">R121 765.00</span><br>
+                      </div>
+                  </div>
+                  <div class='col-lg-4 col-sm-4 pr-1 pl-0'>
+                      <div class='LoanAmountDetailsDiv'>
+                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">R114 190.00</span><br>
+                      </div>
+                  </div>
+                  <div class='col-lg-4 col-sm-4 pl-0'>
+                      <div class='LoanAmountDetailsDiv'>
+                          <span class="fnt-10pt">Now due</span><br><span class="fnt-14pt">R4 742.00</span><br>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class PersonalLoanTotalAmountDetailComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Personal loan total amount detail Widget -- Nedbank
+@Component({
+  selector: 'PersonalLoanAccountsBreakdown',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class='card border-0'>
+        <div class='card-body text-left py-0'>
+
+            <ul class="nav nav-tabs Personalloan-nav-tabs">
+                <li class="nav-item active"><a id="tab0-tab" data-toggle="tab" data-target="#PersonalLoan-4001" role="tab" class="nav-link active"> Personal Loan - 4001</a></li>
+                <li class="nav-item "><a id="tab0-tab" data-toggle="tab" data-target="#PersonalLoan-6001" role="tab" class="nav-link "> Personal Loan - 6001</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="PersonalLoan-4001" class="tab-pane fade in active show">
+                    <div class="PersonalLoanDetailDiv">
+                        <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
+                        <table class="customTable mt-2" border="0">
+                            <tbody>
+                                <tr>
+                                    <td class="w-25">Account Number:</td>
+                                    <td class="w-25 text-right pr-4 text-success">8004334234001</td>
+                                    <td class="w-25"></td>
+                                    <td class="w-25 text-right text-success"></td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Statement date:</td>
+                                    <td class="w-25 text-right pr-4 text-success">30/01/2021</td>
+                                    <td class="w-25">Arrears:</td>
+                                    <td class="w-25 text-right text-success">R0.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Statement period:</td>
+                                    <td class="w-25 text-right pr-4 text-success">01/12/2020 - 30/01/2021</td>
+                                    <td class="w-25">Annual rate of interest:</td>
+                                    <td class="w-25 text-right pr-4 text-success">24% pa</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Monthly instalment:</td>
+                                    <td class="w-25 text-right pr-4 text-success">R3 297.00</td>
+                                    <td class="w-25">Original term (months):</td>
+                                    <td class="w-25 text-right pr-4 text-success">36</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Due by date:</td>
+                                    <td class="w-25 text-right pr-4 text-success">28/02/2021</td>
+                                    <td class="w-25"></td>
+                                    <td class="w-25 text-right pr-4 text-success"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pt-1">
+                        <table id="TableWidget" class="LoanTransactionTable customTable">
+                            <thead>
+                                <tr class="ht-30">
+                                    <th class="w-12 text-center">Post date</th>
+                                    <th class="w-12 text-center">Effective date</th>
+                                    <th class="w-40">Transaction</th>
+                                    <th class="w-12 text-right">Debit</th>
+                                    <th class="w-12 text-right">Credit</th>
+                                    <th class="w-12 text-right">Balance outstanding</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+                            <table class="LoanTransactionTable customTable">
+                                <tbody>
+                                    <tr>
+                                        <td class="w-12 text-center">01/12/2020</td>
+                                        <td class="w-12 text-center">01/12/2020</td>
+                                        <td class="w-40">Interest Debit</td>
+                                        <td class="w-12 text-right">R1 490.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R74 298.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">03/12/2020</td>
+                                        <td class="w-12 text-center">03/12/2020</td>
+                                        <td class="w-40">Insurance Premium</td>
+                                        <td class="w-12 text-right">R188.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R74 487.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">15/12/2020</td>
+                                        <td class="w-12 text-center">15/12/2020</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R3 297.00</td>
+                                        <td class="w-12 text-right">R71 189.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">31/12/2020</td>
+                                        <td class="w-12 text-center">31/12/2020</td>
+                                        <td class="w-40">Monthly Admin Fee</td>
+                                        <td class="w-12 text-right">R69.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R71 258.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">01/01/2021</td>
+                                        <td class="w-12 text-center">01/01/2021</td>
+                                        <td class="w-40">Interest Debit</td>
+                                        <td class="w-12 text-right">R1 512.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R72 770.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="py-2">
+                        <div class='payment-due-header'>Payment Due</div>
+                        <div class="d-flex flex-row">
+                            <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+                            <div class="paymentDueHeaderBlock">Current</div>
+                        </div>
+                        <div class="d-flex flex-row mt-1">
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock">R3 297.00</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="PersonalLoan-6001" class="tab-pane fade">
+                    <div class="PersonalLoanDetailDiv">
+                        <h4 class="pl-25px"><span class="NedbankPersonalLoanTxt">Nedbank personal loan</span></h4>
+                        <table class="customTable mt-2" border="0">
+                            <tbody>
+                                <tr>
+                                    <td class="w-25">Account Number:</td>
+                                    <td class="w-25 text-right pr-4 text-success">8003922986001</td>
+                                    <td class="w-25"></td>
+                                    <td class="w-25 text-right text-success"></td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Statement date:</td>
+                                    <td class="w-25 text-right pr-4 text-success">30/01/2021</td>
+                                    <td class="w-25">Arrears:</td>
+                                    <td class="w-25 text-right text-success">R774.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Statement period:</td>
+                                    <td class="w-25 text-right pr-4 text-success">01/12/2020 - 30/01/2021</td>
+                                    <td class="w-25">Annual rate of interest:</td>
+                                    <td class="w-25 text-right pr-4 text-success">0% pa</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Monthly instalment:</td>
+                                    <td class="w-25 text-right pr-4 text-success">R671.00</td>
+                                    <td class="w-25">Original term (months):</td>
+                                    <td class="w-25 text-right pr-4 text-success">60</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Due by date:</td>
+                                    <td class="w-25 text-right pr-4 text-success">28/02/2021</td>
+                                    <td class="w-25"></td>
+                                    <td class="w-25 text-right pr-4 text-success"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pt-1">
+                        <table id="TableWidget" class="LoanTransactionTable customTable">
+                            <thead>
+                                <tr class="ht-30">
+                                    <th class="w-12 text-center">Post date</th>
+                                    <th class="w-12 text-center">Effective date</th>
+                                    <th class="w-40">Transaction</th>
+                                    <th class="w-12 text-right">Debit</th>
+                                    <th class="w-12 text-right">Credit</th>
+                                    <th class="w-12 text-right">Balance outstanding</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+                            <table class="LoanTransactionTable customTable">
+                                <tbody>
+                                    <tr>
+                                        <td class="w-12 text-center">01/12/2020</td>
+                                        <td class="w-12 text-center">01/12/2020</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R671.00</td>
+                                        <td class="w-12 text-right">R47 363.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">24/12/2020</td>
+                                        <td class="w-12 text-center">24/12/2020</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R1 789.00</td>
+                                        <td class="w-12 text-right">R45 574.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">24/12/2020</td>
+                                        <td class="w-12 text-center">24/12/2020</td>
+                                        <td class="w-40">Payment Reversal</td>
+                                        <td class="w-12 text-right">R1 789.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R47 363.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">31/12/2020</td>
+                                        <td class="w-12 text-center">31/12/2020</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R671.00</td>
+                                        <td class="w-12 text-right">R46 692.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">29/01/2020</td>
+                                        <td class="w-12 text-center">29/01/2020</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R671.00</td>
+                                        <td class="w-12 text-right">R46 021.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="py-2">
+                        <div class='payment-due-header'>Payment Due</div>
+                        <div class="d-flex flex-row">
+                            <div class="paymentDueHeaderBlock mr-1">After 120 + days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+                            <div class="paymentDueHeaderBlock">Current</div>
+                        </div>
+                        <div class="d-flex flex-row mt-1">
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R103.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R671.00</div>
+                            <div class="paymentDueFooterBlock">R671.00</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>`
+})
+export class PersonalLoanAccountsBreakdownComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 }

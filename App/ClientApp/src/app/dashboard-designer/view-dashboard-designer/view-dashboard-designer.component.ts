@@ -15,7 +15,8 @@ import {
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
-  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent
+  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
+  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -329,7 +330,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if (widgetName == 'CustomerDetails') {
               gridObj.component = CustomerDetailsComponent;
             }
-            else if (widgetName == 'BankDetails') {
+            else if (widgetName == 'BranchDetails') {
               gridObj.component = BankDetailsComponent;
             }
             else if (widgetName == 'InvestmentPortfolioStatement') {
@@ -361,6 +362,12 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widgetName == 'NedbankService') {
               gridObj.component = NedbankServiceComponent;
+            }
+            else if (widgetName == 'PersonalLoanTotalAmountDetail') {
+              gridObj.component = PersonalLoanTotalAmountDetailComponent;
+            }
+            else if (widgetName == 'PersonalLoanAccountsBreakdown') {
+              gridObj.component = PersonalLoanAccountsBreakdownComponent;
             }
         }
         else {

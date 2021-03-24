@@ -125,6 +125,7 @@
     <Compile Include="ScheduleLogErrorDetail.cs" />
     <Compile Include="ScheduleRunHistory.cs" />
     <Compile Include="Search Parameter\CustomerInvestmentSearchParameter.cs" />
+    <Compile Include="Search Parameter\CustomerPersonalLoanSearchParameter.cs" />
     <Compile Include="Search Parameter\MessageAndNoteSearchParameter.cs" />
     <Compile Include="Search Parameter\PageTypeSearchParameter.cs" />
     <Compile Include="Search Parameter\BatchSearchParameter.cs" />

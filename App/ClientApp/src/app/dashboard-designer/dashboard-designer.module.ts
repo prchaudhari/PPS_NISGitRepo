@@ -25,7 +25,8 @@ import {
   DynamicBarChartWidgetPreviewComponent, DynamicLineChartWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent,
   CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
   InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
-  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent
+  PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
+  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent
 } from './widgetComponent/widgetComponent';
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
 
@@ -44,6 +45,7 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
     InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
     PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
+    PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent,
     PageDesignPreviewComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
@@ -68,6 +70,7 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
     InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
     PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
+    PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent,
     PageDesignPreviewComponent],
 })
 export class DashboardDesignerModule { }

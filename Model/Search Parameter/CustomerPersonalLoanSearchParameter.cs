@@ -1,10 +1,11 @@
-﻿// <copyright file="CustomerInvestmentSearchParameter.cs" company="Websym Solutions Pvt Ltd">
+﻿// <copyright file="CustomerPersonalLoanSearchParameter.cs" company="Websym Solutions Pvt Ltd">
 // Copyright (c) 2020 Websym Solutions Pvt Ltd.
 // </copyright>
-// -----------------------------------------------------------------------  
+// -----------------------------------------------------------------------
 
 namespace nIS
 {
+
     #region References
     using System;
     using System.Collections.Generic;
@@ -15,23 +16,22 @@ namespace nIS
     #endregion
 
     /// <summary>
-    /// This class represents customer investment search parameter
+    /// This class represents customer personal loan search parameter
     /// </summary>
-    //
-    public class CustomerInvestmentSearchParameter
+
+    public class CustomerPersonalLoanSearchParameter
     {
         private ModelUtility utility = new ModelUtility();
         private IValidationEngine validationEngine = new ValidationEngine();
-        
-        public long Identifier { get; set; } //send investment id value to this property when investment master data fetching
+
+        public long Identifier { get; set; }
         public long BatchId { get; set; }
         public long CustomerId { get; set; }
-        public long InvestmentId { get; set; } //send investment id value to this property when investment transaction data fetching
         public long InvestorId { get; set; }
         public string WidgetFilterSetting { get; set; }
 
         /// <summary>
-        /// Determines whether this instance of customer investment search parameter is valid.
+        /// Determines whether this instance of customer personal loan search parameter is valid.
         /// </summary>
         public void IsValid()
         {

@@ -18,7 +18,6 @@ namespace nIS
         public long BatchId { get; set; }
         public long CustomerId { get; set; }
         public long InvestorId { get; set; }
-        public long BranchId { get; set; }
         public DateTime PostingDate { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string Description { get; set; }

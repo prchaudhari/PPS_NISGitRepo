@@ -456,10 +456,9 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGeneratorForDmCustomer(customerSearchParameter, tenantCode);
-                var customerMasterRecords = new List<DM_CustomerMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(whereClause).ToList();
+                    var customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(whereClause).ToList();
                     if (customerMasterRecords != null && customerMasterRecords.Count > 0)
                     {
                         customerMasterRecords.ForEach(item =>
@@ -509,10 +508,9 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGeneratorForCustomerInvestment(searchParameter, tenantCode);
-                var InvestmentMasterRecords = new List<DM_InvestmentMasterRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    InvestmentMasterRecords = nISEntitiesDataContext.DM_InvestmentMasterRecord.Where(whereClause).ToList();
+                    var InvestmentMasterRecords = nISEntitiesDataContext.DM_InvestmentMasterRecord.Where(whereClause).ToList();
                     if (InvestmentMasterRecords != null && InvestmentMasterRecords.Count > 0)
                     {
                         InvestmentMasterRecords.ForEach(item =>
@@ -567,10 +565,9 @@ namespace nIS
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 string whereClause = this.WhereClauseGeneratorForCustomerInvestment(searchParameter, tenantCode);
-                var InvestmentTransactionRecords = new List<DM_InvestmentTransactionRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    InvestmentTransactionRecords = nISEntitiesDataContext.DM_InvestmentTransactionRecord.Where(whereClause)?.OrderBy(it => it.TransactionDate).ToList();
+                    var InvestmentTransactionRecords = nISEntitiesDataContext.DM_InvestmentTransactionRecord.Where(whereClause)?.OrderBy(it => it.TransactionDate).ToList();
                     if (InvestmentTransactionRecords != null && InvestmentTransactionRecords.Count > 0)
                     {
                         InvestmentTransactionRecords.ForEach(item =>
@@ -741,6 +738,201 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of customer personal loan master from personal loan master repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer personal loan master
+        /// </returns>
+        public IList<DM_PersonalLoanMaster> Get_DM_PersonalLoanMaster(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_PersonalLoanMaster> Records = new List<DM_PersonalLoanMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerPersonalLoan(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var PersonalLoanMasterRecords = nISEntitiesDataContext.DM_PersonalLoanMasterRecord.Where(whereClause).ToList();
+                    if (PersonalLoanMasterRecords != null && PersonalLoanMasterRecords.Count > 0)
+                    {
+                        PersonalLoanMasterRecords.ForEach(item =>
+                        {
+                            Records.Add(new DM_PersonalLoanMaster()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                InvestorId = item.InvestorId,
+                                Currency = item.Currency,
+                                AmountDue = item.AmountDue,
+                                AnnualRate = item.AnnualRate,
+                                Arrears = item.Arrears,
+                                BranchId = item.BranchId != null ? Convert.ToInt32(item.BranchId) : 1,
+                                CreditAdvance = item.CreditAdvance,
+                                DueDate = item.DueDate ?? DateTime.Now,
+                                FromDate = item.FromDate ?? DateTime.Now,
+                                ToDate = item.ToDate ?? DateTime.Now,
+                                Term = item.Term,
+                                MonthlyInstallment = item.MonthlyInstallment,
+                                OutstandingBalance = item.OutstandingBalance,
+                                ProductType = item.ProductType,
+                                TenantCode = item.TenantCode,
+                                LoanTransactions = this.Get_DM_PersonalLoanTransaction(new CustomerPersonalLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList(),
+                                LoanArrears = this.Get_DM_PersonalLoanArrears(new CustomerPersonalLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList()?.FirstOrDefault()
+                            });
+                        });
+                    }
+                }
+                return Records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer personal loan transaction records from personal loan transaction repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer personal loan transaction record
+        /// </returns>
+        public IList<DM_PersonalLoanTransaction> Get_DM_PersonalLoanTransaction(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_PersonalLoanTransaction> Records = new List<DM_PersonalLoanTransaction>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerPersonalLoan(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var PersonalLoanTransactionRecords = nISEntitiesDataContext.DM_PersonalLoanTransactionRecord.Where(whereClause)?.OrderBy(it => it.PostingDate)?.ToList();
+                    if (PersonalLoanTransactionRecords != null && PersonalLoanTransactionRecords.Count > 0)
+                    {
+                        PersonalLoanTransactionRecords.ForEach(item =>
+                        {
+                            Records.Add(new DM_PersonalLoanTransaction()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                InvestorId = item.InvestorId,
+                                Credit = item.Credit,
+                                Debit = item.Debit,
+                                Description = item.Description,
+                                EffectiveDate = item.EffectiveDate ?? DateTime.Now,
+                                PostingDate = item.PostingDate ?? DateTime.Now,
+                                OutstandingCapital = item.OutstandingCapital,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return Records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer personal loan arrears from personal loan arrear repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer personal loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer personal loan arrears records
+        /// </returns>
+        public IList<DM_PersonalLoanArrears> Get_DM_PersonalLoanArrears(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_PersonalLoanArrears> Records = new List<DM_PersonalLoanArrears>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerPersonalLoan(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var PersonalLoanArrearRecords = nISEntitiesDataContext.DM_PersonalLoanArrearsRecord.Where(whereClause).ToList();
+                    if (PersonalLoanArrearRecords != null && PersonalLoanArrearRecords.Count > 0)
+                    {
+                        PersonalLoanArrearRecords.ForEach(item =>
+                        {
+                            Records.Add(new DM_PersonalLoanArrears()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                InvestorId = item.InvestorId,
+                                Arrears_120 = item.ARREARS_120,
+                                Arrears_90 = item.ARREARS_90,
+                                Arrears_60 = item.ARREARS_60,
+                                Arrears_30 = item.ARREARS_30,
+                                Arrears_0 = item.ARREARS_0,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return Records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of special message from special message repository.
+        /// </summary>
+        /// <param name="searchParameter">The message or note search parameter object</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of special message
+        /// </returns>
+        public IList<SpecialMessage> Get_DM_SpecialMessages(MessageAndNoteSearchParameter searchParameter, string tenantCode)
+        {
+            IList<SpecialMessage> SpecialMessages = new List<SpecialMessage>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForMessageOrNoteSearch(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var SpecialMessageRecords = nISEntitiesDataContext.DM_SpecialMessagesRecord.Where(whereClause)?.ToList();
+                    if (SpecialMessageRecords != null && SpecialMessageRecords.Count > 0)
+                    {
+                        SpecialMessageRecords.ForEach(item =>
+                        {
+                            SpecialMessages.Add(new SpecialMessage()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                ParentId = item.ParentId,
+                                Message1 = item.Message1,
+                                Message2 = item.Message2,
+                                Message3 = item.Message3,
+                                Message4 = item.Message4,
+                                Message5 = item.Message5,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+
+                }
+                return SpecialMessages;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #endregion
@@ -899,6 +1091,44 @@ namespace nIS
             return queryString.ToString();
         }
 
+        private string WhereClauseGeneratorForCustomerPersonalLoan(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            //send account id value to this property when account master data fetching
+            if (validationEngine.IsValidLong(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.InvestorId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.BatchId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
+            }
+
+            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+            {
+                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                filterEntities.ForEach(filterEntity =>
+                {
+                    queryString.Append(this.QueryGenerator(filterEntity));
+                });
+            }
+
+            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
         private string WhereClauseGeneratorForMessageOrNoteSearch(MessageAndNoteSearchParameter searchParameter, string tenantCode)
         {
             StringBuilder queryString = new StringBuilder();
@@ -908,9 +1138,9 @@ namespace nIS
                 queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
             }
 
-            if (validationEngine.IsValidLong(searchParameter.ParentId))
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
             {
-                queryString.Append("(" + string.Join("or ", searchParameter.ParentId.ToString().Split(',').Select(item => string.Format("ParentId.Equals({0}) ", item))) + ") and ");
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("ParentId.Equals({0}) ", item))) + ") and ");
             }
 
             if (validationEngine.IsValidLong(searchParameter.BatchId))

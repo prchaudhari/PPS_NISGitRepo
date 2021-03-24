@@ -141,6 +141,18 @@
     <Compile Include="DM_MarketingMessagesRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DM_PersonalLoanArrearsRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_PersonalLoanMasterRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_PersonalLoanTransactionRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_SpecialMessagesRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DynamicWidgetFilterDetail.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
