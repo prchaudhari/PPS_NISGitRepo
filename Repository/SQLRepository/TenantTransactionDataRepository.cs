@@ -458,7 +458,7 @@ namespace nIS
                 string whereClause = this.WhereClauseGeneratorForDmCustomer(customerSearchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(whereClause).ToList();
+                    var customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(whereClause).GroupBy(it => it.CustomerId).Select(it => it.FirstOrDefault()).ToList();
                     if (customerMasterRecords != null && customerMasterRecords.Count > 0)
                     {
                         customerMasterRecords.ForEach(item =>
@@ -617,24 +617,26 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     var BranchMasterRecords = nISEntitiesDataContext.DM_BranchMasterRecord.Where(it => it.Id == BranchId && it.TenantCode == tenantCode)?.ToList();
-                    if (BranchMasterRecords != null && BranchMasterRecords.Count > 0)
+                    if (BranchMasterRecords == null || BranchMasterRecords.Count == 0)
                     {
-                        BranchMasterRecords.ForEach(item =>
-                        {
-                            _BranchMasters.Add(new DM_BranchMaster()
-                            {
-                                Identifier = item.Id,
-                                BranchName = item.Name,
-                                AddressLine0 = item.AddressLine0,
-                                AddressLine1 = item.AddressLine1,
-                                AddressLine2 = item.AddressLine2,
-                                AddressLine3 = item.AddressLine3,
-                                ContactNo = item.ContactNo,
-                                VatRegNo = item.VatRegNo,
-                                TenantCode = item.TenantCode
-                            });
-                        });
+                        BranchMasterRecords = nISEntitiesDataContext.DM_BranchMasterRecord.Where(it => it.Name.ToLower() == "UNKNOWN".ToLower() && it.TenantCode == tenantCode)?.ToList();
                     }
+
+                    BranchMasterRecords.ForEach(item =>
+                    {
+                        _BranchMasters.Add(new DM_BranchMaster()
+                        {
+                            Identifier = item.Id,
+                            BranchName = item.Name,
+                            AddressLine0 = item.AddressLine0,
+                            AddressLine1 = item.AddressLine1,
+                            AddressLine2 = item.AddressLine2,
+                            AddressLine3 = item.AddressLine3,
+                            ContactNo = item.ContactNo,
+                            VatRegNo = item.VatRegNo,
+                            TenantCode = item.TenantCode
+                        });
+                    });
 
                 }
                 return _BranchMasters;
