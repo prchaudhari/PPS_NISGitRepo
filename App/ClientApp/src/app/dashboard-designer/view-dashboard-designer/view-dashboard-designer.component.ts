@@ -16,7 +16,8 @@ import {
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
-  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent
+  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
+  HomeLoanInstalmentDetailComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -368,6 +369,18 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widgetName == 'PersonalLoanAccountsBreakdown') {
               gridObj.component = PersonalLoanAccountsBreakdownComponent;
+            }
+            else if (widget.WidgetName == "HomeLoanTotalAmountDetail") {
+              gridObj.component = HomeLoanTotalAmountDetailComponent;
+            }
+            else if (widget.WidgetName == "HomeLoanAccountsBreakdown") {
+              gridObj.component = HomeLoanAccountsBreakdownComponent
+            }
+            else if (widget.WidgetName == "HomeLoanPaymentDueSpecialMsg") {
+              gridObj.component = HomeLoanPaymentDueSpecialMsgComponent
+            }
+            else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
+              gridObj.component = HomeLoanInstalmentDetailComponent
             }
         }
         else {

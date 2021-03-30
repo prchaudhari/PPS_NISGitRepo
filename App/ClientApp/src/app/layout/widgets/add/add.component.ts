@@ -189,12 +189,28 @@ export class AddComponent implements OnInit {
           this.widgetList[i].WidgetIcon = "fa fa-exclamation-circle";
         }
         else if (this.widgetList[i].WidgetName == "PersonalLoanTotalAmountDetail") {
-          this.widgetList[i].ImageSource = "assets/images/PersonalLoanTotalAmountDetails.JPG"
+          this.widgetList[i].ImageSource = "assets/images/PersonalLoanTotalAmountDetails.JPG";
           this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
         }
         else if (this.widgetList[i].WidgetName == "PersonalLoanAccountsBreakdown") {
-          this.widgetList[i].ImageSource = "assets/images/PersonalLoanAccountsBreakdown.JPG"
+          this.widgetList[i].ImageSource = "assets/images/PersonalLoanAccountsBreakdown.JPG";
           this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "HomeLoanTotalAmountDetail") {
+          this.widgetList[i].ImageSource = "assets/images/HomeLoanTotalAmountDetails.JPG";
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "HomeLoanAccountsBreakdown") {
+          this.widgetList[i].ImageSource = "assets/images/HomeLoanAccountsBreakdown.JPG";
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "HomeLoanPaymentDueSpecialMsg") {
+          this.widgetList[i].ImageSource = "assets/images/HLPaymentDueSpecialMsg.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-exclamation-circle";
+        }
+        else if (this.widgetList[i].WidgetName == "HomeLoanInstalmentDetail") {
+          this.widgetList[i].ImageSource = "assets/images/HL_InstalmentDetails.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-table";
         }
       }
     }

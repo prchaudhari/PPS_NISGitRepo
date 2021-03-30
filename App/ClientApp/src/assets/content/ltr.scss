@@ -483,6 +483,15 @@
     height: 70px;
   }
 
+  .ht-130px {
+    height: 130px;
+  }
+
+
+  .ht-150px {
+    height: 150px;
+  }
+
   .ptb-10_plr-25 {
     padding: 10px 25px;
   }
@@ -493,6 +502,10 @@
 
   .ptb-0_plr-25 {
     padding: 0px 25px;
+  }
+
+  .pt-60px {
+    padding-top: 60px;
   }
 
   .pt-80px {
@@ -544,19 +557,22 @@
   .ftr-lt-span1 {
     float: left;
     margin-left: 1.75rem !important;
-    color: #005b00 !important;
-    margin-top: 5px;
   }
 
   .ftr-rt-span1 {
     float: right;
     margin-right: 1.75rem !important;
-    margin-top: 10px;
   }
 
   .ftr-rt-span2 {
     float: right;
     margin-right: 1.75rem !important;
+    color: #666666;
+    font-size: 7pt;
+    font-family: 'Mark Pro Regular'
+  }
+
+  .ftr-div {
     color: #666666;
     font-size: 7pt;
     font-family: 'Mark Pro Regular'
@@ -692,6 +708,34 @@
   .PersonalLoanDetailDiv {
     background-color: #f3f3f3;
     padding: 10px 0px;
+  }
+
+  .HomeLoanDetailDiv {
+    background-color: #f3f3f3;
+    padding: 10px 0px;
+  }
+
+  .NedbankHomeLoanTxt {
+    color: #005b00 !important;
+    font-family: 'Mark Pro Bold' !important;
+    font-size: 12pt !important;
+  }
+
+  .PaymentDueSpecialMessageDiv {
+    font-family: 'Mark Pro Regular';
+    font-size: 9pt;
+    background-color: #2d6444 !important;
+    padding: 5px 25px;
+    color: #fff !important;
+  }
+
+  .Homeloan-nav-tabs {
+    font-family: 'Mark Pro Regular';
+  }
+
+  .Homeloan-nav-tabs a {
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
   }
 
   .main-container, .main-container-machine {

@@ -2773,3 +2773,579 @@ export class PersonalLoanAccountsBreakdownComponent {
   widgetsGridsterItemArray: any[] = [];
 }
 
+// Component Created for Home loan total amount detail Widget -- Nedbank
+@Component({
+  selector: 'HomeLoanTotalAmountDetail',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+     <div class='card border-0 pt-4'>
+          <div class='card-body text-left pb-1'>
+              <div class='card-body-header pb-2'>New instalment</div>
+              <div class='row'>
+                  <div class='col-lg-4 pr-1'>
+                      <div class='TotalAmountDetailsDiv'>
+                          <span class="fnt-10pt">Total Loan Amount</span><br><span class="fnt-14pt">R432 969.00</span><br>
+                      </div>
+                  </div>
+                  <div class='col-lg-8 pl-0 text-right'>
+                      <div class='TotalAmountDetailsDiv'>
+                          <span class="fnt-10pt">Balance outstanding</span><br><span class="fnt-14pt">R136 320.00</span>&nbsp;<br>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class HomeLoanTotalAmountDetailComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Home loan accounts breakdown Widget -- Nedbank
+@Component({
+  selector: 'HomeLoanAccountsBreakdown',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class='card border-0 pt-4'>
+        <div class='card-body text-left py-1'>
+
+            <ul class="nav nav-tabs Homeloan-nav-tabs">
+                <li class="nav-item active"><a id="tab0-tab" data-toggle="tab" data-target="#HomeLoan-4001" role="tab" class="nav-link active"> Home Loan - 4001</a></li>
+                <li class="nav-item "><a id="tab0-tab" data-toggle="tab" data-target="#HomeLoan-6001" role="tab" class="nav-link "> Home Loan - 6001</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id='HomeLoan-4001' class='tab-pane fade in active show'>
+                    <div class="HomeLoanDetailDiv">
+                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt">Nedbank home loan</span></h4>
+                        <table class="customTable mt-2" border="0">
+                            <tbody>
+                                <tr>
+                                    <td class="w-25">Bond no:</td>
+                                    <td class="w-25 text-right pr-4 text-success">8003876814001</td>
+                                    <td class="w-25">Address:</td>
+                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Instalment:</td>
+                                    <td class="w-25 text-right pr-4 text-success">R4 149.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Arrears:</td>
+                                    <td class="w-25 text-right pr-4 text-success">R0.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Interest rate:</td>
+                                    <td class="w-25 text-right pr-4 text-success">5.75% pa</td>
+                                    <td class="w-25">Registration date:</td>
+                                    <td class="w-25 text-right pr-4 text-success">12/12/2016</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Loan term:</td>
+                                    <td class="w-25 text-right pr-4 text-success">300 months</td>
+                                    <td class="w-25">Registered amount</td>
+                                    <td class="w-25 text-right pr-4 text-success">R516 037.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pt-1">
+                        <table id="TableWidget" class="LoanTransactionTable customTable">
+                            <thead>
+                                <tr class="ht-30">
+                                    <th class="w-12 text-center">Post date</th>
+                                    <th class="w-12 text-center">Effective date</th>
+                                    <th class="w-40">Transaction</th>
+                                    <th class="w-12 text-right">Debit (R)</th>
+                                    <th class="w-12 text-right">Credit (R)</th>
+                                    <th class="w-12 text-right">Balance (R)</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+                            <table class="LoanTransactionTable customTable">
+                                <tbody>
+                                    <tr>
+                                        <td class="w-12 text-center">01/12/2020</td>
+                                        <td class="w-12 text-center">01/12/2020</td>
+                                        <td class="w-40">Interest Debit</td>
+                                        <td class="w-12 text-right">R1 490.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R74 298.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">03/12/2020</td>
+                                        <td class="w-12 text-center">03/12/2020</td>
+                                        <td class="w-40">Insurance Premium</td>
+                                        <td class="w-12 text-right">R188.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R74 487.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">15/12/2020</td>
+                                        <td class="w-12 text-center">15/12/2020</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R3 297.00</td>
+                                        <td class="w-12 text-right">R71 189.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">31/12/2020</td>
+                                        <td class="w-12 text-center">31/12/2020</td>
+                                        <td class="w-40">Monthly Admin Fee</td>
+                                        <td class="w-12 text-right">R69.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R71 258.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">01/01/2021</td>
+                                        <td class="w-12 text-center">01/01/2021</td>
+                                        <td class="w-40">Interest Debit</td>
+                                        <td class="w-12 text-right">R1 512.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R72 770.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">05/01/2021</td>
+                                        <td class="w-12 text-center">05/01/2021</td>
+                                        <td class="w-40">Insurance Premium</td>
+                                        <td class="w-12 text-right">R188.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R72 958.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">15/01/2021</td>
+                                        <td class="w-12 text-center">15/01/2021</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R3 297.00</td>
+                                        <td class="w-12 text-right">R69 660.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="py-2">
+                        <div class='card-body-header pb-2'>Home loan statement overview</div>
+                        <div class='row pb-1'>
+                            <div class='col-lg-4 pr-0'>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 2021-01-30</span>
+                                </div>
+                            </div>
+                            <div class='col-lg-8 pl-0 text-right'>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class="fnt-14pt">R69 660.00</span>&nbsp;<br>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class='card-body-sub-header pb-2 pt-1'>Payment Due</div>
+                        <div class="d-flex flex-row">
+                            <div class="paymentDueHeaderBlock mr-1">Current</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+                            <div class="paymentDueHeaderBlock">After 120 + days</div>
+                        </div>
+                        <div class="d-flex flex-row mt-1">
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock">R0.00</div>
+                        </div>
+                    </div>
+
+                    <div class='PaymentDueSpecialMessageDiv'>
+                        If you received payment relief because of Covid-19 lockdown, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
+                    </div>
+
+                    <div class='card-body-sub-header pt-2'>Summary for Tax Purposes</div>
+                      <div class="pt-1">
+                          <table class="LoanTransactionTable customTable">
+                              <tbody>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Interest </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Insurance/Assurnace </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Service fee </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Legal costs </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Total amount received </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+
+                      <div class='card-body-sub-header pt-2'>Instalment details</div>
+                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
+                      <div class="pt-1">
+                          <table class="LoanTransactionTable customTable">
+                              <thead>
+                                  <tr class="ht-30">
+                                      <th class="w-50">Payments</th>
+                                      <th class="w-50 text-right">Amount</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Basic instalment </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Homeowner's insurance </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Credit life insurance </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Transaction fees </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Subsidised account capital redemption </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Monthly service fee </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
+                                      <td class="text-right font-weight-bold">R0.00</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+
+                </div>
+
+                <div id='HomeLoan-6001' class='tab-pane fade'>
+                    <div class="HomeLoanDetailDiv">
+                        <h4 class="pl-25px"><span class="NedbankHomeLoanTxt">Nedbank home loan</span></h4>
+                        <table class="customTable mt-2" border="0">
+                            <tbody>
+                                <tr>
+                                    <td class="w-25">Bond no:</td>
+                                    <td class="w-25 text-right pr-4 text-success">8003876816001</td>
+                                    <td class="w-25">Address:</td>
+                                    <td class="w-25 text-right text-success" rowspan="3">ERF 44 THE COVES H <br />ARTBEESPOORT <br /></td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Instalment:</td>
+                                    <td class="w-25 text-right pr-4 text-success">R11 090.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Arrears:</td>
+                                    <td class="w-25 text-right pr-4 text-success">R0.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Interest rate:</td>
+                                    <td class="w-25 text-right pr-4 text-success">7.25% pa</td>
+                                    <td class="w-25">Registration date:</td>
+                                    <td class="w-25 text-right pr-4 text-success">21/01/2018</td>
+                                </tr>
+                                <tr>
+                                    <td class="w-25">Loan term:</td>
+                                    <td class="w-25 text-right pr-4 text-success">273 months</td>
+                                    <td class="w-25">Registered amount</td>
+                                    <td class="w-25 text-right pr-4 text-success">R416 879.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pt-1">
+                        <table id="TableWidget" class="LoanTransactionTable customTable">
+                            <thead>
+                                <tr class="ht-30">
+                                    <th class="w-12 text-center">Post date</th>
+                                    <th class="w-12 text-center">Effective date</th>
+                                    <th class="w-40">Transaction</th>
+                                    <th class="w-12 text-right">Debit (R)</th>
+                                    <th class="w-12 text-right">Credit (R)</th>
+                                    <th class="w-12 text-right">Balance (R)</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="pt-0 overflow-auto" style="max-height:200px;">
+                            <table class="LoanTransactionTable customTable">
+                                <tbody>
+                                    <tr>
+                                        <td class="w-12 text-center">01/12/2020</td>
+                                        <td class="w-12 text-center">01/12/2020</td>
+                                        <td class="w-40">Interest Debit</td>
+                                        <td class="w-12 text-right">R1 490.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R71 298.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">03/12/2020</td>
+                                        <td class="w-12 text-center">03/12/2020</td>
+                                        <td class="w-40">Insurance Premium</td>
+                                        <td class="w-12 text-right">R188.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R71 487.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">15/12/2020</td>
+                                        <td class="w-12 text-center">15/12/2020</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R3 297.00</td>
+                                        <td class="w-12 text-right">R68 189.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">31/12/2020</td>
+                                        <td class="w-12 text-center">31/12/2020</td>
+                                        <td class="w-40">Monthly Admin Fee</td>
+                                        <td class="w-12 text-right">R69.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R68 258.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">01/01/2021</td>
+                                        <td class="w-12 text-center">01/01/2021</td>
+                                        <td class="w-40">Interest Debit</td>
+                                        <td class="w-12 text-right">R1 512.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R69 770.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">05/01/2021</td>
+                                        <td class="w-12 text-center">05/01/2021</td>
+                                        <td class="w-40">Insurance Premium</td>
+                                        <td class="w-12 text-right">R188.00</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R69 958.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-12 text-center">15/01/2021</td>
+                                        <td class="w-12 text-center">15/01/2021</td>
+                                        <td class="w-40">Payment - Thank you</td>
+                                        <td class="w-12 text-right">-</td>
+                                        <td class="w-12 text-right">R3 297.00</td>
+                                        <td class="w-12 text-right">R66 660.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="py-2">
+                        <div class='card-body-header pb-2'>Home loan statement overview</div>
+                        <div class='row pb-1'>
+                            <div class='col-lg-4 pr-0'>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class="fnt-14pt">Balance outstanding</span> <br> <span class="fnt-10pt">as at 2021-01-30</span>
+                                </div>
+                            </div>
+                            <div class='col-lg-8 pl-0 text-right'>
+                                <div class='TotalAmountDetailsDiv'>
+                                    <span class="fnt-14pt">R69 660.00</span><br>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class='card-body-sub-header pb-2 pt-1'>Payment Due</div>
+                        <div class="d-flex flex-row">
+                            <div class="paymentDueHeaderBlock mr-1">Current</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 30 days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 60 days</div>
+                            <div class="paymentDueHeaderBlock mr-1">After 90 days</div>
+                            <div class="paymentDueHeaderBlock">After 120 + days</div>
+                        </div>
+                        <div class="d-flex flex-row mt-1">
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock mr-1">R0.00</div>
+                            <div class="paymentDueFooterBlock">R0.00</div>
+                        </div>
+                    </div>
+
+                    <div class='PaymentDueSpecialMessageDiv'>
+                        If you received payment relief because of Covid-19 lockdown, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
+                    </div>
+
+                    <div class='card-body-sub-header pt-2'>Summary for Tax Purposes</div>
+                      <div class="pt-1">
+                          <table class="LoanTransactionTable customTable">
+                              <tbody>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Interest </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Insurance/Assurnace </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Service fee </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Legal costs </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Total amount received </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+
+                      <div class='card-body-sub-header pt-2'>Instalment details</div>
+                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
+                      <div class="pt-1">
+                          <table class="LoanTransactionTable customTable">
+                              <thead>
+                                  <tr class="ht-30">
+                                      <th class="w-50">Payments</th>
+                                      <th class="w-50 text-right">Amount</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Basic instalment </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Homeowner's insurance </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Credit life insurance </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Transaction fees </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Subsidised account capital redemption </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Monthly service fee </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
+                                      <td class="text-right font-weight-bold">R0.00</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>`
+})
+export class HomeLoanAccountsBreakdownComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Home loan payment due special msg Widget -- Nedbank
+@Component({
+  selector: 'HomeLoanPaymentDueSpecialMsg',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+     <div class="card border-0 pt-2">
+          <div class="card-body text-left py-1">
+              <div class="PaymentDueSpecialMessageDiv pt-2">
+                  If you received payment relief because of Covid-19, any arrear status that we show above will be resolved when we restructure your account after your three-month arrangement has ended. If you have not applied for relief and would like to, phone us on 0860 555 222 or speak to your relationship banker.
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class HomeLoanPaymentDueSpecialMsgComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Home loan instalment details Widget -- Nedbank
+@Component({
+  selector: 'HomeLoanInstalmentDetail',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class='card border-0 pt-4'>
+          <div class='card-body text-left py-1'>
+              <div class='card-body-sub-header pt-1'>Instalment details</div>
+              <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
+              <div class="pt-1">
+                  <table class="LoanTransactionTable customTable">
+                      <thead>
+                          <tr class="ht-30">
+                              <th class="w-50">Payments</th>
+                              <th class="w-50 text-right">Amount</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr class="ht-20">
+                              <td class="text-left">Basic instalment </td>
+                              <td class="text-right">R0.00</td>
+                          </tr>
+                          <tr class="ht-20">
+                              <td class="text-left">Homeowner's insurance </td>
+                              <td class="text-right">R0.00</td>
+                          </tr>
+                          <tr class="ht-20">
+                              <td class="text-left">Credit life insurance </td>
+                              <td class="text-right">R0.00</td>
+                          </tr>
+                          <tr class="ht-20">
+                              <td class="text-left">Transaction fees </td>
+                              <td class="text-right">R0.00</td>
+                          </tr>
+                          <tr class="ht-20">
+                              <td class="text-left">Subsidised account capital redemption </td>
+                              <td class="text-right">R0.00</td>
+                          </tr>
+                          <tr class="ht-20">
+                              <td class="text-left">Monthly service fee </td>
+                              <td class="text-right">R0.00</td>
+                          </tr>
+                          <tr class="ht-20">
+                              <td class="text-left font-weight-bold">Total instalment (effective from 01/02/2021) </td>
+                              <td class="text-right font-weight-bold">R0.00</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class HomeLoanInstalmentDetailComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+
+

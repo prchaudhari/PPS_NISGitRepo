@@ -175,6 +175,7 @@
     <Compile Include="TransactionData\Nedbank\DM_BranchMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_CustomerMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_ExplanatoryNote.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_HomeLoanMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_InvestmentMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_InvestmentTransaction.cs" />
     <Compile Include="TransactionData\Nedbank\DM_MarketingMessage.cs" />

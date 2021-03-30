@@ -26,7 +26,8 @@ import {
   CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
   InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
-  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent
+  PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
+  HomeLoanInstalmentDetailComponent
 } from './widgetComponent/widgetComponent';
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
 
@@ -45,7 +46,8 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
     InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
     PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
-    PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent,
+    PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent,
+    HomeLoanPaymentDueSpecialMsgComponent, HomeLoanInstalmentDetailComponent,
     PageDesignPreviewComponent],
   imports: [
     CommonModule, DashboardDesignerRoutingModule, RouterModule, SharedModule, FormsModule, ReactiveFormsModule,
@@ -70,7 +72,8 @@ import { PageDesignPreviewComponent } from './page-design-preview/page-design-pr
     CustomerDetailsComponent, BankDetailsComponent, InvestmentPortfolioStatementComponent,
     InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
     PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
-    PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent,
+    PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent,
+    HomeLoanPaymentDueSpecialMsgComponent, HomeLoanInstalmentDetailComponent,
     PageDesignPreviewComponent],
 })
 export class DashboardDesignerModule { }
