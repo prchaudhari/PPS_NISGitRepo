@@ -199,6 +199,46 @@ namespace nIS
         /// </returns>
         IList<SpecialMessage> Get_DM_SpecialMessages(MessageAndNoteSearchParameter searchParameter, string tenantCode);
 
+        /// <summary>
+        /// This method gets the specified list of customer home loan master from personal loan master repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer home loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer home loan master
+        /// </returns>
+        IList<DM_HomeLoanMaster> Get_DM_HomeLoanMaster(CustomerHomeLoanSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of customer home loan transaction records from personal loan transaction repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer home loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer home loan transaction record
+        /// </returns>
+        IList<DM_HomeLoanTransaction> Get_DM_HomeLoanTransaction(CustomerHomeLoanSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of customer home loan arrears from personal loan arrear repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer home loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer home loan arrears records
+        /// </returns>
+        IList<DM_HomeLoanArrear> Get_DM_HomeLoanArrears(CustomerHomeLoanSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
+        /// This method gets the specified list of customer home loan summary from personal loan arrear repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer home loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer home loan summary records
+        /// </returns>
+        IList<DM_HomeLoanSummary> Get_DM_HomeLoanSummary(CustomerHomeLoanSearchParameter searchParameter, string tenantCode);
+
         #endregion
     }
 }

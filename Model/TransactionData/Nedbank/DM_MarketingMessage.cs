@@ -20,6 +20,7 @@ namespace nIS
         public string Message3 { get; set; }
         public string Message4 { get; set; }
         public string Message5 { get; set; }
+        public string Type { get; set; }
         public string TenantCode { get; set; }
     }
 }

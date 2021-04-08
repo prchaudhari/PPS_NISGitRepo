@@ -4742,29 +4742,35 @@ namespace nIS
 
         private void BindDummyDataToSpecialMessageWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {
-            string jsonstr = HtmlConstants.SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
+            string jsonstr = string.Empty;
+            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+            {
+                jsonstr = HtmlConstants.HOME_LOAN_SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
+            }
+            else
+            {
+                jsonstr = HtmlConstants.SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
+            }
+
             if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
             {
                 var SpecialMessage = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
                 if (SpecialMessage != null)
                 {
-                    if (!string.IsNullOrEmpty(SpecialMessage.Header) || !string.IsNullOrEmpty(SpecialMessage.Message1) || !string.IsNullOrEmpty(SpecialMessage.Message2))
-                    {
-                        var htmlWidget = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
-                        var specialMsgTxtData = (!string.IsNullOrEmpty(SpecialMessage.Header) ? "<div class='SpecialMessageHeader'> " + SpecialMessage.Header + " </div>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message1) ? "<p> " + SpecialMessage.Message1 + " </p>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message2) ? "<p> " + SpecialMessage.Message2 + " </p>" : string.Empty);
-                        htmlWidget.Replace("{{SpecialMessageTextData}}", specialMsgTxtData);
-                        htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + widget.Identifier + "_Counter" + (new Random().Next(100)).ToString());
-                        pageContent.Replace("{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + widget.Identifier + "}}", htmlWidget.ToString());
-                    }
-                    else
-                    {
-                        pageContent.Replace("{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
-                    }
+                    var htmlWidget = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
+                    var specialMsgTxtData = (!string.IsNullOrEmpty(SpecialMessage.Header) ? "<div class='SpecialMessageHeader'> " + SpecialMessage.Header + " </div>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message1) ? "<p> " + SpecialMessage.Message1 + " </p>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message2) ? "<p> " + SpecialMessage.Message2 + " </p>" : string.Empty);
+                    htmlWidget.Replace("{{SpecialMessageTextData}}", specialMsgTxtData);
+                    htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + widget.Identifier + "_Counter" + (new Random().Next(100)).ToString());
+                    pageContent.Replace("{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + widget.Identifier + "}}", htmlWidget.ToString());
                 }
                 else
                 {
                     pageContent.Replace("{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
                 }
+            }
+            else
+            {
+                pageContent.Replace("{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
             }
         }
 

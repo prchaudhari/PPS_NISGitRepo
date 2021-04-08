@@ -22,7 +22,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                                           : base(connectionString)
+                                                               : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -99,11 +99,15 @@ namespace nIS
         public virtual DbSet<DM_ExplanatoryNotesRecord> DM_ExplanatoryNotesRecord { get; set; }
         public virtual DbSet<DM_InvestmentMasterRecord> DM_InvestmentMasterRecord { get; set; }
         public virtual DbSet<DM_InvestmentTransactionRecord> DM_InvestmentTransactionRecord { get; set; }
-        public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
         public virtual DbSet<DM_PersonalLoanArrearsRecord> DM_PersonalLoanArrearsRecord { get; set; }
         public virtual DbSet<DM_PersonalLoanMasterRecord> DM_PersonalLoanMasterRecord { get; set; }
         public virtual DbSet<DM_PersonalLoanTransactionRecord> DM_PersonalLoanTransactionRecord { get; set; }
         public virtual DbSet<DM_SpecialMessagesRecord> DM_SpecialMessagesRecord { get; set; }
+        public virtual DbSet<DM_HomeLoanArrearsRecord> DM_HomeLoanArrearsRecord { get; set; }
+        public virtual DbSet<DM_HomeLoanMasterRecord> DM_HomeLoanMasterRecord { get; set; }
+        public virtual DbSet<DM_HomeLoanSummaryRecord> DM_HomeLoanSummaryRecord { get; set; }
+        public virtual DbSet<DM_HomeLoanTransactionRecord> DM_HomeLoanTransactionRecord { get; set; }
+        public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

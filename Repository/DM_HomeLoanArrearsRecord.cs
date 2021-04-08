@@ -12,18 +12,17 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class DM_MarketingMessagesRecord
+    public partial class DM_HomeLoanArrearsRecord
     {
         public long Id { get; set; }
         public long BatchId { get; set; }
-        public long ParentId { get; set; }
-        public string Header { get; set; }
-        public string Message1 { get; set; }
-        public string Message2 { get; set; }
-        public string Message3 { get; set; }
-        public string Message4 { get; set; }
-        public string Message5 { get; set; }
+        public long CustomerId { get; set; }
+        public long InvestorId { get; set; }
+        public string CurrentDue { get; set; }
+        public string ARREARS_30 { get; set; }
+        public string ARREARS_60 { get; set; }
+        public string ARREARS_90 { get; set; }
+        public string ARREARS_120 { get; set; }
         public string TenantCode { get; set; }
-        public string Type { get; set; }
     }
 }

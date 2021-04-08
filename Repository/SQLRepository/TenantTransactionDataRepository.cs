@@ -726,6 +726,7 @@ namespace nIS
                                 Message3 = item.Message3,
                                 Message4 = item.Message4,
                                 Message5 = item.Message5,
+                                Type = item.Type,
                                 TenantCode = item.TenantCode
                             });
                         });
@@ -935,6 +936,210 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of customer home loan master from personal loan master repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer home loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer home loan master
+        /// </returns>
+        public IList<DM_HomeLoanMaster> Get_DM_HomeLoanMaster(CustomerHomeLoanSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_HomeLoanMaster> Records = new List<DM_HomeLoanMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerHomeLoan(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var HomeLoanMasterRecords = nISEntitiesDataContext.DM_HomeLoanMasterRecord.Where(whereClause).ToList();
+                    if (HomeLoanMasterRecords != null && HomeLoanMasterRecords.Count > 0)
+                    {
+                        HomeLoanMasterRecords.ForEach(item =>
+                        {
+                            Records.Add(new DM_HomeLoanMaster()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                InvestorId = item.InvestorId,
+                                Currency = item.Currency,
+                                ArrearStatus = item.ArrearStatus,
+                                Balance = item.Balance,
+                                ChargeRate = item.ChargeRate,
+                                IntialDue = item.IntialDue,
+                                LoanAmount = item.LoanAmount,
+                                LoanTerm = item.LoanTerm,
+                                RegisteredAmount = item.RegisteredAmount,
+                                RegisteredDate = item.RegisteredDate ?? DateTime.Now,
+                                SecDescription1 = item.SecDescription1,
+                                SecDescription2 = item.SecDescription2,
+                                SecDescription3 = item.SecDescription3,
+                                TenantCode = item.TenantCode,
+                                LoanTransactions = this.Get_DM_HomeLoanTransaction(new CustomerHomeLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList(),
+                                LoanArrear = this.Get_DM_HomeLoanArrears(new CustomerHomeLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList()?.FirstOrDefault(),
+                                LoanSummary = this.Get_DM_HomeLoanSummary(new CustomerHomeLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList()?.FirstOrDefault()
+                            });
+                        });
+                    }
+                }
+                return Records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer home loan transaction records from personal loan transaction repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer home loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer home loan transaction record
+        /// </returns>
+        public IList<DM_HomeLoanTransaction> Get_DM_HomeLoanTransaction(CustomerHomeLoanSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_HomeLoanTransaction> Records = new List<DM_HomeLoanTransaction>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerHomeLoan(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var HomeLoanTransactionRecords = nISEntitiesDataContext.DM_HomeLoanTransactionRecord.Where(whereClause)?.OrderBy(it => it.Posting_Date)?.ToList();
+                    if (HomeLoanTransactionRecords != null && HomeLoanTransactionRecords.Count > 0)
+                    {
+                        HomeLoanTransactionRecords.ForEach(item =>
+                        {
+                            Records.Add(new DM_HomeLoanTransaction()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                InvestorId = item.InvestorId,
+                                Credit = item.Credit,
+                                Debit = item.Debit,
+                                Description = item.Description,
+                                Effective_date = item.Effective_Date ?? DateTime.Now,
+                                Posting_date = item.Posting_Date ?? DateTime.Now,
+                                RunningBalance = item.RunningBalance,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return Records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer home loan arrears from personal loan arrear repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer home loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer home loan arrears records
+        /// </returns>
+        public IList<DM_HomeLoanArrear> Get_DM_HomeLoanArrears(CustomerHomeLoanSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_HomeLoanArrear> Records = new List<DM_HomeLoanArrear>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerHomeLoan(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var HomeLoanArrearRecords = nISEntitiesDataContext.DM_HomeLoanArrearsRecord.Where(whereClause).ToList();
+                    if (HomeLoanArrearRecords != null && HomeLoanArrearRecords.Count > 0)
+                    {
+                        HomeLoanArrearRecords.ForEach(item =>
+                        {
+                            Records.Add(new DM_HomeLoanArrear()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                InvestorId = item.InvestorId,
+                                ARREARS_120 = item.ARREARS_120,
+                                ARREARS_90 = item.ARREARS_90,
+                                ARREARS_60 = item.ARREARS_60,
+                                ARREARS_30 = item.ARREARS_30,
+                                CurrentDue = item.CurrentDue,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return Records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer home loan summary from personal loan arrear repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer home loan search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer home loan summary records
+        /// </returns>
+        public IList<DM_HomeLoanSummary> Get_DM_HomeLoanSummary(CustomerHomeLoanSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_HomeLoanSummary> Records = new List<DM_HomeLoanSummary>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerHomeLoan(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var HomeLoanSummaryRecords = nISEntitiesDataContext.DM_HomeLoanSummaryRecord.Where(whereClause).ToList();
+                    if (HomeLoanSummaryRecords != null && HomeLoanSummaryRecords.Count > 0)
+                    {
+                        HomeLoanSummaryRecords.ForEach(item =>
+                        {
+                            Records.Add(new DM_HomeLoanSummary()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId,
+                                CustomerId = item.CustomerId,
+                                InvestorId = item.InvestorId,
+                                Annual_Insurance = item.Annual_Insurance,
+                                Annual_Interest = item.Annual_Interest,
+                                Annual_Legal_Costs = item.Annual_Legal_Costs,
+                                Annual_Service_Fee = item.Annual_Service_Fee,
+                                Annual_Total_Recvd = item.Annual_Total_Recvd,
+                                Basic_Instalment = item.Basic_Instalment,
+                                Capital_Redemption = item.Capital_Redemption,
+                                Houseowner_Ins = item.Houseowner_Ins,
+                                Loan_Protection = item.Loan_Protection,
+                                Recovery_Fee_Debit = item.Recovery_Fee_Debit,
+                                Service_Fee = item.Service_Fee,
+                                Total_Instalment = item.Total_Instalment,
+                                Message1 = item.Message1,
+                                Message2 = item.Message2,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return Records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #endregion
@@ -1094,6 +1299,44 @@ namespace nIS
         }
 
         private string WhereClauseGeneratorForCustomerPersonalLoan(CustomerPersonalLoanSearchParameter searchParameter, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+
+            //send account id value to this property when account master data fetching
+            if (validationEngine.IsValidLong(searchParameter.Identifier))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.CustomerId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.InvestorId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.InvestorId.ToString().Split(',').Select(item => string.Format("InvestorId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidLong(searchParameter.BatchId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
+            }
+
+            if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
+            {
+                var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
+                filterEntities.ForEach(filterEntity =>
+                {
+                    queryString.Append(this.QueryGenerator(filterEntity));
+                });
+            }
+
+            queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
+            return queryString.ToString();
+        }
+
+        private string WhereClauseGeneratorForCustomerHomeLoan(CustomerHomeLoanSearchParameter searchParameter, string tenantCode)
         {
             StringBuilder queryString = new StringBuilder();
 

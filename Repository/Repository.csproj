@@ -132,6 +132,18 @@
     <Compile Include="DM_ExplanatoryNotesRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DM_HomeLoanArrearsRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_HomeLoanMasterRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_HomeLoanSummaryRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_HomeLoanTransactionRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DM_InvestmentMasterRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
