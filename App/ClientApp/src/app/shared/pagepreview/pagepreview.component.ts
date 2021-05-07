@@ -566,6 +566,282 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
       this.savingchart = Highcharts.chart('savingTrendscontainer', this.SavingTrendChartOptions);
     }
 
+    if (document.getElementById('AccountAnalysisBarGraphcontainer') != null) {
+      if (null != $('#HiddenAccountAnalysisBarGraphData').val() && '' != $('#HiddenAccountAnalysisBarGraphData').val()) {
+        let data = JSON.parse($('#HiddenAccountAnalysisBarGraphData').val());
+        if (data.length != 0) {
+          var e = [], _lstseries = [];
+          data[0].MonthwiseAmount.forEach(item => { e.push(item.Month); });
+          for (let i = 0; i < data.length; i++) {
+            var a = [];
+            data[i].MonthwiseAmount.forEach(item => { a.push(item.Amount); });
+            _lstseries.push({ 'name': data[i].AccountType, 'data': a });
+          }
+
+          Highcharts.chart('AccountAnalysisBarGraphcontainer', {
+            chart: {
+              type: 'column',
+              style: {
+                fontFamily: 'Mark Pro Regular',
+                fontSize: '8pt'
+              }
+            },
+            title: {
+              text: ''
+            },
+            xAxis: {
+              categories: e,
+              crosshair: true
+            },
+            yAxis: {
+              title: {
+                text: 'Amount (R)'
+              }
+            },
+            credits: {
+              enabled: false
+            },
+            tooltip: {
+              headerFormat: '<span>{point.key}</span><table>',
+              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+              footerFormat: '</table>',
+              shared: true,
+              useHTML: true
+            },
+            plotOptions: {
+              column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+              },
+            },
+            series: _lstseries,
+            //colors: ['#005b00', '#434348', '#7cb5ec']
+          });
+        }
+        else {
+          $('#AccountAnalysisBarGraphcontainer').html('<div class=\"text-danger text-center\">No data available.</div>')
+        }
+      }
+    }
+
+    if (document.getElementById('YTDRewardPointsBarGraphcontainer') != null) {
+      if (null != $('#HiddenYTDRewardPointsBarGraphData').val() && '' != $('#HiddenYTDRewardPointsBarGraphData').val()) {
+        let data = JSON.parse($('#HiddenYTDRewardPointsBarGraphData').val());
+        if (data.length != 0) {
+          var e = [], a = [], _lstseries = [];
+          data.forEach(item => { e.push(item.Month); a.push(item.RewardPoint); });
+          _lstseries.push({ 'name': 'Rewards points', 'data': a });
+
+          Highcharts.chart('YTDRewardPointsBarGraphcontainer', {
+            chart: {
+              type: 'column',
+              style: {
+                fontFamily: 'Mark Pro Regular',
+                fontSize: '8pt'
+              }
+            },
+            title: {
+              text: ''
+            },
+            xAxis: {
+              categories: e,
+              crosshair: true
+            },
+            yAxis: {
+              title: {
+                text: 'Amount (R)'
+              }
+            },
+            credits: {
+              enabled: false
+            },
+            tooltip: {
+              headerFormat: '<span>{point.key}</span><table>',
+              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+              footerFormat: '</table>',
+              shared: true,
+              useHTML: true
+            },
+            plotOptions: {
+              column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+              },
+              series: {
+                color: '#005b00'
+              }
+            },
+            series: _lstseries
+          });
+        }
+        else {
+          $('#YTDRewardPointsBarGraphcontainer').html('<div class=\"text-danger text-center\">No data available.</div>')
+        }
+      }
+    }
+
+    if (document.getElementById('PointsRedeemedYTDBarGraphcontainer') != null) {
+      if (null != $('#HiddenPointsRedeemedBarGraphData').val() && '' != $('#HiddenPointsRedeemedBarGraphData').val()) {
+        let data = JSON.parse($('#HiddenPointsRedeemedBarGraphData').val());
+        if (data.length != 0) {
+          var e = [], a = [], _lstseries = [];
+          data.forEach(item => { e.push(item.Month); a.push(item.RedeemedPoints); });
+          _lstseries.push({ 'name': 'Rewards points', 'data': a });
+
+          Highcharts.chart('PointsRedeemedYTDBarGraphcontainer', {
+            chart: {
+              type: 'column',
+              style: {
+                fontFamily: 'Mark Pro Regular',
+                fontSize: '8pt'
+              }
+            },
+            title: {
+              text: ''
+            },
+            xAxis: {
+              categories: e,
+              crosshair: true
+            },
+            yAxis: {
+              title: {
+                text: 'Amount (R)'
+              }
+            },
+            credits: {
+              enabled: false
+            },
+            tooltip: {
+              headerFormat: '<span>{point.key}</span><table>',
+              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+              footerFormat: '</table>',
+              shared: true,
+              useHTML: true
+            },
+            plotOptions: {
+              column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+              },
+              series: {
+                color: '#005b00'
+              }
+            },
+            series: _lstseries
+          });
+        }
+        else {
+          $('#PointsRedeemedYTDBarGraphcontainer').html('<div class=\"text-danger text-center\">No data available.</div>')
+        }
+      }
+    }
+
+    if (document.getElementById('ProductRelatedPointsEarnedBarGraphcontainer') != null) {
+      if (null != $('#HiddenProductRelatedPointsEarnedBarGraphData').val() && '' != $('#HiddenProductRelatedPointsEarnedBarGraphData').val()) {
+        let data = JSON.parse($('#HiddenProductRelatedPointsEarnedBarGraphData').val());
+        if (data.length != 0) {
+          var e = [], _lstseries = [];
+          data[0].MonthwiseAmount.forEach(item => { e.push(item.Month); });
+          for (let i = 0; i < data.length; i++) {
+            var a = [];
+            data[i].MonthwiseAmount.forEach(item => { a.push(item.RewardPoint); });
+            _lstseries.push({ 'name': data[i].AccountType, 'data': a });
+          }
+
+          Highcharts.chart('ProductRelatedPointsEarnedBarGraphcontainer', {
+            chart: {
+              type: 'column',
+              style: {
+                fontFamily: 'Mark Pro Regular',
+                fontSize: '8pt'
+              }
+            },
+            title: {
+              text: ''
+            },
+            xAxis: {
+              categories: e,
+              crosshair: true
+            },
+            yAxis: {
+              title: {
+                text: 'Amount (R)'
+              }
+            },
+            credits: {
+              enabled: false
+            },
+            tooltip: {
+              headerFormat: '<span>{point.key}</span><table>',
+              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+              footerFormat: '</table>',
+              shared: true,
+              useHTML: true
+            },
+            plotOptions: {
+              column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+              },
+            },
+            series: _lstseries
+          });
+        }
+        else {
+          $('#ProductRelatedPointsEarnedBarGraphcontainer').html('<div class=\"text-danger text-center\">No data available.</div>')
+        }
+      }
+    }
+
+    if (document.getElementById('CategorySpendRewardsPieChartcontainer') != null) {
+      if (null != $('#HiddenCategorySpendRewardsPieChartData').val() && '' != $('#HiddenCategorySpendRewardsPieChartData').val()) {
+        let data = JSON.parse($('#HiddenCategorySpendRewardsPieChartData').val());
+        if (data.length != 0) {
+          var e = [], _lstseries = [];
+          data.forEach(item => {
+            _lstseries.push({ 'name': item.Category, 'y': item.SpendReward });
+          });
+
+          let chartPropertyOptions: any = {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: !1,
+                type: 'pie',
+                style: {
+                    fontFamily: 'Mark Pro Regular',
+                    fontSize: '8pt'
+                }
+            },
+            title: { text: '' },
+            credits: { enabled: false },
+            tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
+            accessibility: { point: { valueSuffix: '%' } },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: !0,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: !0,
+                        format: '{point.percentage:.1f} %'
+                    },
+                    showInLegend: !0
+                }
+            },
+            series: [{
+                name: 'Percentage',
+                colorByPoint: !0,
+                data: _lstseries
+            }]
+          }
+          Highcharts.chart('CategorySpendRewardsPieChartcontainer', chartPropertyOptions );
+        }
+        else {
+          $('#CategorySpendRewardsPieChartcontainer').html('<div class=\"text-danger text-center\">No data available.</div>')
+        }
+      }
+    }
+
     if($('#hiddenLineChartIds').val() != undefined && $('#hiddenLineChartIds').val() != '') {
       let lineChartIds = $('#hiddenLineChartIds').val().split(",");
       for(let i=0; i< lineChartIds.length; i++) {
@@ -640,14 +916,18 @@ export class PagePreviewComponent extends DialogComponent<PagePreviewModel, bool
     { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL8965435', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' },
     { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034212', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' },
     { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': 'NXT TXN: IIFL IIFL0034213', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '1771.42' }
-  ]
+  ];
+
+
   public SavingTransactionAggregateData = [
     { 'TransactionDate': '15/07/2020', 'TransactionType': 'CR', 'Narration': '-', 'FCY': '3101.67', 'CurrentRate': '1.754', 'LCY': '3425.98' },
     { 'TransactionDate': '19/07/2020', 'TransactionType': 'CR', 'Narration': '-', 'FCY': '1254.71', 'CurrentRate': '1.123', 'LCY': '1976.00' },
     { 'TransactionDate': '25/07/2020', 'TransactionType': 'CR', 'Narration': '-', 'FCY': '2345.12', 'CurrentRate': '1.461', 'LCY': '1453.21' },
     { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': '-', 'FCY': '1435.89', 'CurrentRate': '0.962', 'LCY': '1654.56' },
     { 'TransactionDate': '28/07/2020', 'TransactionType': 'CR', 'Narration': '-', 'FCY': '1666.67', 'CurrentRate': '1.062', 'LCY': '3425.98' }
-  ]
+  ];
+
+
   public OnSavingTranGroupByDateClicked() {
     var aggregateDate = this.SavingTransactionAllData.reduce(function (groups, item) {
       const val = item["TransactionDate"]

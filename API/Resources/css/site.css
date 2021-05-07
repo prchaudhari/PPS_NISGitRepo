@@ -2017,6 +2017,20 @@
         font-family: 'Mark Pro Medium';
     }
 
+        .CustomerDetails p {
+            margin-bottom: 0.25rem !important;
+        }
+
+    .ClientDetails {
+        font-size: 8pt;
+        text-align: left;
+        font-family: 'Mark Pro Medium';
+    }
+
+        .ClientDetails p {
+            margin-bottom: 0.25rem !important;
+        }
+
     .BankDetails {
         font-size: 14px;
         text-align: right;
@@ -2295,6 +2309,105 @@
         color: #005b00 !important;
         padding-bottom: .5rem !important;
         font-size: 20px;
+    }
+
+    .height110px {
+        height: 110px;
+    }
+
+    .height130px {
+        height: 130px;
+    }
+
+    .ReminderDiv {
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+    }
+
+        .ReminderDiv p {
+            margin-bottom: 0.25rem !important;
+        }
+
+        .ReminderDiv a {
+            color: black;
+        }
+
+    .NewAlertDiv {
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+    }
+
+        .NewAlertDiv p {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .NewAlertDiv a {
+            color: black;
+        }
+
+    hr {
+        margin-bottom: 0.25rem !important;
+        margin-top: 0.25rem !important;
+        margin-left: 1rem !important;
+        margin-right: 1rem !important;
+    }
+
+    .nav-rt-border {
+        border-right: 2px solid #dee2e6 !important;
+    }
+
+    .JoinGreenbacks-li-bg {
+        background-color: #153527;
+        color: white;
+    }
+
+        .JoinGreenbacks-li-bg a {
+            width: 100%;
+            text-decoration: none;
+        }
+
+    .UseGreenbacks-li-bg {
+        background-color: #679e36;
+        color: white;
+    }
+
+        .UseGreenbacks-li-bg a {
+            width: 100%;
+            text-decoration: none;
+        }
+
+    .ContactUs-li-bg {
+        background-color: #bfbfbf;
+        color: #737373;
+    }
+
+    .OnlyBorderRight {
+        border-right: 1px solid #dee2e6 !important;
+        border-top: 0 !important;
+        border-bottom: 0 !important;
+        border-left: 0 !important;
+    }
+
+    .GraphContent {
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+    }
+
+    .TotalRewardPointsSpan {
+        border-radius: 50% !important;
+        background-color: #2d6444 !important;
+        display: inline-block;
+        width: 5rem;
+        height: 5rem;
+        margin: .25rem;
+        line-height: 80px;
+        color: white;
+        font-family: 'Mark Pro Medium';
+    }
+
+    .GreenbacksContactUsDiv {
+        font-family: 'Mark Pro Regular';
+        font-size: 9pt;
     }
 
     .btn-cust {

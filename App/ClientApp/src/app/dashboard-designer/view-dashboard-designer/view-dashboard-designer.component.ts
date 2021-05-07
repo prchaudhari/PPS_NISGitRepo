@@ -17,7 +17,8 @@ import {
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
-  HomeLoanInstalmentDetailComponent
+  HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
+  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -98,7 +99,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
           });
       }
 
-      isImageConfigForm(widgetId, widgetItemCount) {
+    isImageConfigForm(widgetId, widgetItemCount) {
         this.isImageConfig = true;
         this.imageWidgetId = widgetId;
         this.selectedWidgetItemCount = widgetItemCount;
@@ -274,13 +275,14 @@ export class ViewDashboardDesignerComponent implements OnInit {
                     gridsterItem.component = obj.component;
                     gridsterItem.value = obj.value;
                     gridsterItem.WidgetType = obj.WidgetType;
+                    gridsterItem.TempImageIdentifier = obj.TempImageIdentifier;
                     this.widgetsGridsterItemArray.push(gridsterItem);
                 }
             }
         }
     }
 
-    bindComponent(widget): any {   
+  bindComponent(widget): any {
         let widgetName = widget.WidgetName == undefined ? widget.value : widget.WidgetName;
         let widgetType = widget.IsDynamicWidget == false ? 'Static' : 'Dynamic';
         let gridObj: any = {};
@@ -327,7 +329,6 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if (widgetName == 'ReminderaAndRecommendation') {
                 gridObj.component = ReminderAndRecommComponent;
             }
-
             else if (widgetName == 'CustomerDetails') {
               gridObj.component = CustomerDetailsComponent;
             }
@@ -382,6 +383,45 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
               gridObj.component = HomeLoanInstalmentDetailComponent
             }
+            else if (widget.WidgetName == "PortfolioCustomerDetails") {
+              gridObj.component = PortfolioCustomerDetailsComponent
+            }
+            else if (widget.WidgetName == "CustomerAddressDetails") {
+              gridObj.component = PortfolioCustomerAddressDetailsComponent
+            }
+            else if (widget.WidgetName == "ClientContactDetails") {
+              gridObj.component = PortfolioClientContactDetailsComponent
+            }
+            else if (widget.WidgetName == "AccountSummary") {
+              gridObj.component = PortfolioAccountSummaryDetailsComponent
+            }
+            else if (widget.WidgetName == "AccountAnalysis") {
+              gridObj.component = PortfolioAccountAnalysisComponent
+            }
+            else if (widget.WidgetName == "PortfolioReminders") {
+              gridObj.component = PortfolioRemindersComponent
+            }
+            else if (widget.WidgetName == "PortfolioNewsAlerts") {
+              gridObj.component = PortfolioNewsAlertsComponent
+            }
+            else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
+              gridObj.component = GreenbacksTotalRewardPointsComponent
+            }
+            else if (widget.WidgetName == "GreenbacksContactUs") {
+              gridObj.component = GreenbacksContactUsComponent
+            }
+            else if (widget.WidgetName == "YTDRewardsPoints") {
+              gridObj.component = YTDRewardPointsComponent
+            }
+            else if (widget.WidgetName == "PointsRedeemedYTD") {
+              gridObj.component = PointsRedeemedYTDComponent
+            }
+            else if (widget.WidgetName == "ProductRelatedPointsEarned") {
+              gridObj.component = ProductRelatedPointsEarnedComponent
+            }
+            else if (widget.WidgetName == "CategorySpendRewards") {
+              gridObj.component = CategorySpendRewardsComponent
+            }
         }
         else {
             let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');
@@ -408,9 +448,16 @@ export class ViewDashboardDesignerComponent implements OnInit {
         }
         gridObj.WidgetType = widgetType;
         gridObj.value = widgetName;
+
+        if (widgetName == 'Image' && widget != null && widget != null && widget.WidgetSetting != '' && this.testJSON(widget.WidgetSetting)) {
+          let widgetSetting = JSON.parse(widget.WidgetSetting);
+          if (widgetSetting.TempImageIdentifier != null) {
+            gridObj.TempImageIdentifier = widgetSetting.TempImageIdentifier;
+          }
+        }
+    
         return gridObj;
     }
-    
 
     applyBackgroundImage(AssetId, ImageURL) {
         if(AssetId != null && AssetId != 0) {

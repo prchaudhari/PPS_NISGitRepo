@@ -8,9 +8,10 @@ import * as $ from 'jquery';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SummaryAtGlanceComponent, AccountInformationComponent,
   SavingTrendsPreviewComponent, SpendindTrendsPreviewComponent, AnalyticsWidgetPreviewComponent, DynamicPieChartWidgetPreviewComponent, 
-  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent } from '../widgetComponent/widgetComponent';
+  DynamicBarChartWidgetPreviewComponent, DynamicHhtmlComponent, PortfolioAccountAnalysisPreviewComponent, YTDRewardPointsPreviewComponent, PointsRedeemedYTDPreviewComponent, ProductRelatedPointsEarnedPreviewComponent, CategorySpendRewardsPreviewComponent } from '../widgetComponent/widgetComponent';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 import { AppSettings } from '../../appsettings';
+
 //If you change dashboard-container class in below HTML template, 
 //then you can also need to change in applyBackgroundImage to replace new class name over there.
 @Component({
@@ -134,7 +135,8 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
     this.ItemArray = [];
     for(let i=0; i< this.widgetItemArray.length; i++) {
       let widget = Object.assign({}, this.widgetItemArray[i]);
-      if(widget.value == 'SavingTrend' || widget.value == 'Analytics' || widget.value == 'SpendingTrend' || widget.IsDynamicWidget == true) {
+      if (widget.value == 'SavingTrend' || widget.value == 'Analytics' || widget.value == 'SpendingTrend' || widget.value == 'AccountAnalysis' || widget.value == 'YTDRewardsPoints'
+        || widget.value == 'PointsRedeemedYTD' || widget.value == 'ProductRelatedPointsEarned' || widget.value == 'CategorySpendRewards' || widget.IsDynamicWidget == true) {
         widget.component = this.bindComponent(widget)
       }
       this.ItemArray.push(widget);
@@ -157,6 +159,20 @@ export class PageDesignPreviewComponent extends DialogComponent<PageDesignPrevie
         return AnalyticsWidgetPreviewComponent;
       }else if(widgetName == 'SpendingTrend') {
         return SpendindTrendsPreviewComponent;
+      }else if (widgetName == 'AccountAnalysis') {
+        return PortfolioAccountAnalysisPreviewComponent;
+      }
+      else if (widgetName == 'YTDRewardsPoints') {
+        return YTDRewardPointsPreviewComponent;
+      }
+      else if (widgetName == 'PointsRedeemedYTD') {
+        return PointsRedeemedYTDPreviewComponent;
+      }
+      else if (widgetName == 'ProductRelatedPointsEarned') {
+        return ProductRelatedPointsEarnedPreviewComponent;
+      }
+      else if (widgetName == 'CategorySpendRewards') {
+        return CategorySpendRewardsPreviewComponent;
       }
     }
     else{

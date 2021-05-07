@@ -19,7 +19,8 @@ import {
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
-  HomeLoanInstalmentDetailComponent
+  HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
+  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -63,6 +64,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   public pageEditModeOn: boolean = false;
   public baseURL: string = AppSettings.baseURL;
   public validUrlRegexPattern = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+  public OnlyNumbersAllowed = '[0-9]*';
 
   public templateList: Template[] = [];
   public assetLibraryList: any[] = [{ 'Identifier': '0', 'Name': 'Select Asset Library' }];
@@ -137,6 +139,7 @@ export class AddDashboardDesignerComponent implements OnInit {
                 if (obj != null) {
                   this.widgetsGridsterItemArray[x].component = obj.component;
                   this.widgetsGridsterItemArray[x].value = obj.value;
+                  this.widgetsGridsterItemArray[x].TempImageIdentifier = obj.TempImageIdentifier;
                 }
               }
             }
@@ -171,6 +174,10 @@ export class AddDashboardDesignerComponent implements OnInit {
   get imageUrl() {
     return this.ImageConfigForm.get('imageUrl');
   }
+  get imageHeight() {
+    return this.ImageConfigForm.get('imageHeight');
+  }
+
 
   //Getters for Image config Forms
   get vdoAssetLibrary() {
@@ -214,6 +221,9 @@ export class AddDashboardDesignerComponent implements OnInit {
   saveImgFormValidation(): boolean {
 
     if (this.ImageConfigForm.controls.imageUrl.invalid && !this.isPersonalizeImage) {
+      return true;
+    }
+    if (this.ImageConfigForm.controls.imageHeight.invalid && !this.isPersonalizeImage) {
       return true;
     }
     if (this.imgAssetLibraryId == 0 && !this.isPersonalizeImage) {
@@ -270,6 +280,8 @@ export class AddDashboardDesignerComponent implements OnInit {
           imgAssetLibrary: widgetConfigObj.AssetLibraryId,
           imgAsset: widgetConfigObj.AssetId,
           imageUrl: widgetConfigObj.SourceUrl,
+          imageHeight: widgetConfigObj.Height,
+          imgAlign: widgetConfigObj.Align != undefined ? widgetConfigObj.Align : 0,
         });
         this.imgAssetId = widgetConfigObj.AssetId;
         this.imgAssetName = widgetConfigObj.AssetName;
@@ -299,7 +311,9 @@ export class AddDashboardDesignerComponent implements OnInit {
         this.ImageConfigForm.patchValue({
           imgAssetLibrary: 0,
           imgAsset: 0,
-          imageUrl: null
+          imageUrl: null,
+          imageHeight: null,
+          imgAlign:0
         });
         this.markFormGroupUnTouched(this.ImageConfigForm);
         this.ImagePreviewSrc = '';
@@ -419,7 +433,9 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.ImageConfigForm = this.fb.group({
       imgAssetLibrary: [null, [Validators.required]],
       imgAsset: [null, [Validators.required]],
-      imageUrl: [null, [Validators.pattern(this.validUrlRegexPattern)]]
+      imageUrl: [null, [Validators.pattern(this.validUrlRegexPattern)]],
+      imageHeight: [null, [Validators.pattern(this.OnlyNumbersAllowed)]],
+      imgAlign: [0]
     });
 
     this.VideoConfigForm = this.fb.group({
@@ -677,6 +693,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               widgetItemCount: this.widgetItemCount,
               WidgetSetting: '',
               WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
               IsDynamicWidget: false
             })
           }
@@ -1114,6 +1131,201 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "PortfolioCustomerDetails") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: PortfolioCustomerDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CustomerAddressDetails") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: PortfolioCustomerAddressDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "ClientContactDetails") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: PortfolioClientContactDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "AccountSummary") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 5,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: PortfolioAccountSummaryDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "AccountAnalysis") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 7,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: PortfolioAccountAnalysisComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PortfolioReminders") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: PortfolioRemindersComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PortfolioNewsAlerts") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: PortfolioNewsAlertsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: GreenbacksTotalRewardPointsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "GreenbacksContactUs") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: GreenbacksContactUsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "YTDRewardsPoints") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: YTDRewardPointsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "PointsRedeemedYTD") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: PointsRedeemedYTDComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "ProductRelatedPointsEarned") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: ProductRelatedPointsEarnedComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "CategorySpendRewards") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: CategorySpendRewardsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
         }
         else {
           if (widget.WidgetType == 'Table') {
@@ -1265,9 +1477,9 @@ export class AddDashboardDesignerComponent implements OnInit {
           gridsterItem.component = obj.component;
           gridsterItem.value = obj.value;
           gridsterItem.WidgetType = obj.WidgetType;
+          gridsterItem.TempImageIdentifier = obj.TempImageIdentifier;
           this.widgetsGridsterItemArray.push(gridsterItem);
         }
-        //console.log(this.widgetsGridsterItemArray);
       }
     }
   }
@@ -1374,6 +1586,45 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
         gridObj.component = HomeLoanInstalmentDetailComponent
       }
+      else if (widget.WidgetName == "PortfolioCustomerDetails") {
+        gridObj.component = PortfolioCustomerDetailsComponent
+      }
+      else if (widget.WidgetName == "CustomerAddressDetails") {
+        gridObj.component = PortfolioCustomerAddressDetailsComponent
+      }
+      else if (widget.WidgetName == "ClientContactDetails") {
+        gridObj.component = PortfolioClientContactDetailsComponent
+      }
+      else if (widget.WidgetName == "AccountSummary") {
+        gridObj.component = PortfolioAccountSummaryDetailsComponent
+      }
+      else if (widget.WidgetName == "AccountAnalysis") {
+        gridObj.component = PortfolioAccountAnalysisComponent
+      }
+      else if (widget.WidgetName == "PortfolioReminders") {
+        gridObj.component = PortfolioRemindersComponent
+      }
+      else if (widget.WidgetName == "PortfolioNewsAlerts") {
+        gridObj.component = PortfolioNewsAlertsComponent
+      }
+      else if (widget.WidgetName == "GreenbacksTotalRewardPoints") {
+        gridObj.component = GreenbacksTotalRewardPointsComponent
+      }
+      else if (widget.WidgetName == "GreenbacksContactUs") {
+        gridObj.component = GreenbacksContactUsComponent
+      }
+      else if (widget.WidgetName == "YTDRewardsPoints") {
+        gridObj.component = YTDRewardPointsComponent
+      }
+      else if (widget.WidgetName == "PointsRedeemedYTD") {
+        gridObj.component = PointsRedeemedYTDComponent
+      }
+      else if (widget.WidgetName == "ProductRelatedPointsEarned") {
+        gridObj.component = ProductRelatedPointsEarnedComponent
+      }
+      else if (widget.WidgetName == "CategorySpendRewards") {
+        gridObj.component = CategorySpendRewardsComponent
+      }
     }
     else {
       let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');
@@ -1400,6 +1651,14 @@ export class AddDashboardDesignerComponent implements OnInit {
 
     gridObj.WidgetType = widgetType;
     gridObj.value = widgetName;
+
+    if (widgetName == 'Image' && widget != null && widget != null && widget.WidgetSetting != '' && this.testJSON(widget.WidgetSetting)) {
+      let widgetSetting = JSON.parse(widget.WidgetSetting);
+      if (widgetSetting.TempImageIdentifier != null) {
+        gridObj.TempImageIdentifier = widgetSetting.TempImageIdentifier;
+      }
+    }
+
     return gridObj;
   }
 
@@ -1601,8 +1860,11 @@ export class AddDashboardDesignerComponent implements OnInit {
       imageConfig.AssetId = this.isPersonalizeImage == true ? 0 : this.imgAssetId;
       imageConfig.AssetName = this.isPersonalizeImage == true ? "" : this.imgAssetName;
       imageConfig.SourceUrl = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imageUrl;
+      imageConfig.Height = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imageHeight;
+      imageConfig.Align = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imgAlign;
       imageConfig.isPersonalize = this.isPersonalizeImage;
       imageConfig.WidgetId = this.imageWidgetId;
+      imageConfig.TempImageIdentifier = ''+this.imageWidgetId + this.selectedWidgetItemCount;
       //imageConfig.BlobObjectUrl = this.isPersonalizeImage == true ? "" : this.imageBlobObjectUrl;
 
       let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
@@ -1656,6 +1918,8 @@ export class AddDashboardDesignerComponent implements OnInit {
       imgAssetLibrary: null,
       imgAsset: null,
       imageUrl: null,
+      imageHeight: null,
+      imgAlign: 0
     });
   }
 

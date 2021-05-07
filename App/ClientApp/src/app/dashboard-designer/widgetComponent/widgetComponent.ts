@@ -91,8 +91,8 @@ export class AccountInformationComponent {
       <span class="widget-header-title">Image </span>
     </div>
     <div class="widget-area position-relative width100">
-      <div class="widget-indicator-inner text-center">
-        <img [src]="ImageSrc" class="img-fluid" />
+      <div class="widget-indicator-inner">
+        <img [src]="ImageSrc" [id]="ImageId"/>
       </div>
     </div>
   </div>`
@@ -102,6 +102,7 @@ export class ImageComponent {
   @Input() imgItem: any;
 
   public ImageSrc: any;
+  public ImageId: any;
   public baseURL = AppSettings.baseURL;
 
   constructor(private _http: HttpClient,
@@ -126,9 +127,13 @@ export class ImageComponent {
       } else {
         this.ImageSrc = 'assets/images/icon-image.png';
       }
-    } else {
-      this.ImageSrc = 'assets/images/icon-image.png';
+      this.ImageId = 'Image' + this.imgItem.TempImageIdentifier;
     }
+    else {
+      this.ImageSrc = 'assets/images/icon-image.png';
+      this.ImageId = 'Image1';
+    }
+
   }
 
   testJSON(text) {
@@ -142,6 +147,28 @@ export class ImageComponent {
     catch (error) {
       return false;
     }
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.imgItem != null && this.imgItem.WidgetSetting != null && this.imgItem.WidgetSetting != '' && this.testJSON(this.imgItem.WidgetSetting)) {
+        let widgetSetting = JSON.parse(this.imgItem.WidgetSetting);
+        if (widgetSetting.TempImageIdentifier != null) {
+          if (widgetSetting.Height != null && widgetSetting.Height != 0) {
+            $('#Image' + widgetSetting.TempImageIdentifier).css('height', widgetSetting.Height + 'px');
+          } else {
+            $('#Image' + widgetSetting.TempImageIdentifier).css('height', 'auto');
+          }
+
+          if (widgetSetting.Align != null) {
+            var className = widgetSetting.Align == 1 ? 'text-left' : widgetSetting.Align == 2 ? 'text-right' : 'text-center';
+            $('#Image' + widgetSetting.TempImageIdentifier).parent().addClass(className);
+          }
+        } else {
+          $('#Image1').css('height', 'auto');
+        }
+      } 
+    }, 100);
   }
 }
 
@@ -3347,5 +3374,1026 @@ export class HomeLoanInstalmentDetailComponent {
   widgetsGridsterItemArray: any[] = [];
 }
 
+// Component Created for Portfolio product level Customer Details Widget -- Nedbank
+@Component({
+  selector: 'PortfolioCustomerDetails',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class='card border-0'>
+          <div class="card-body CustomerDetails">
+              <span class="fnt-14pt pt-1">MR. Firstname Lastname</span> <br />
+              <p class="fnt-8pt pt-1">Customer Id: 171001255307</p>
+              <p class="fnt-8pt">Mobile No: +2367 345 786</p>
+              <p>Email: custemail@demo.com</p>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class PortfolioCustomerDetailsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
 
+// Component Created for Portfolio product level Customer address details Widget -- Nedbank
+@Component({
+  selector: 'PortfolioCustomerAddressDetails',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class='card border-0'>
+          <div class="card-body CustomerDetails">
+              <span class="fnt-14pt">Address</span> <br />
+              VERDEAU LIFESTYLE ESTATE <br />
+              6 HERCULE CRESCENT DRIVE <br />
+              WELLINGTON, 7655
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class PortfolioCustomerAddressDetailsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
 
+// Component Created for Portfolio product level client contact details Widget -- Nedbank
+@Component({
+  selector: 'PortfolioClientContactDetails',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class='card border-0'>
+          <div class="card-body ClientDetails">
+              <span class="fnt-14pt">Client contact details</span><br />
+              <p>Mobile No: 0860 555 111</p>
+              <p>Email: supportdesk@nedbank.com</p>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class PortfolioClientContactDetailsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Portfolio product level account summary details Widget -- Nedbank
+@Component({
+  selector: 'PortfolioAccountSummaryDetails',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class='card border-0'>
+          <div class="card-body">
+              <div class="card-body-header pb-2">Account Summary</div>
+              <div class="pt-1">
+                  <table class="LoanTransactionTable customTable">
+                      <thead>
+                          <tr class="ht-30">
+                              <th class="w-50">Account</th>
+                              <th class="w-50 text-right">Total Amount</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr class="ht-30">
+                              <td class="text-left">Investment </td>
+                              <td class="text-right">R9 620.98</td>
+                          </tr>
+                          <tr class="ht-30">
+                              <td class="text-left">Personal Loan </td>
+                              <td class="text-right">R4 165.00</td>
+                          </tr>
+                          <tr class="ht-30">
+                              <td class="text-left">Home Loan </td>
+                              <td class="text-right">R7 969.00</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="pt-2">
+                  <table class="LoanTransactionTable customTable">
+                      <thead>
+                          <tr class="ht-30">
+                              <th class="text-left">Greenbacks rewards points </th>
+                              <th class="text-right">234</th>
+                          </tr>
+                      </thead>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class PortfolioAccountSummaryDetailsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Portfolio product level account analysis Widget -- Nedbank
+@Component({
+  selector: 'PortfolioAccountAnalysis',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">Account analytics</div>
+              <div id="AccountAnalysisBarGraphcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class PortfolioAccountAnalysisComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      type: 'column',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb'],
+      crosshair: true
+    },
+    yAxis: {
+      title: {
+        text: 'Amount (R)'
+      }
+    },
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: '<span>{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Investment',
+      data: [9456.12, 9620.98]
+    }, {
+      name: 'Personal loan',
+      data: [-4465.00, -4165.00]
+    }, {
+      name: 'Home loan',
+      data: [-8969.00, -7969.00]
+    }],
+    //colors: ['#005b00', '#434348', '#7cb5ec']
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('AccountAnalysisBarGraphcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Portfolio product level reminders and recommendation Widget -- Nedbank
+@Component({
+  selector: 'PortfolioReminders',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class='card border-0'>
+          <div class='card-body ReminderDiv'>
+              <div class="card-body-header pb-2 fnt-14pt">Reminder and Recommendation</div>
+              <div class='row'>
+                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Your Credit Card payment is due </p></div>
+                  <div class='col-lg-3 text-left'>
+                      <a href='javascript:void(0)' target='_blank'>
+                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Pay Now</span>
+                      </a>
+                  </div>
+              </div>
+              <div class='row'>
+                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Update missing information in your profile </p></div>
+                  <div class='col-lg-3 text-left'>
+                      <a href='javascript:void(0)' target='_blank'>
+                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Update</span>
+                      </a>
+                  </div>
+              </div>
+              <div class='row'>
+                  <div class='col-lg-9 text-left'>
+                      <p class='p-1' style='background-color: #dce3dc;'>Based on your transaction trend add on BA Airmile card is offered free to you. </p>
+                  </div>
+                  <div class='col-lg-3 text-left'>
+                      <a href='javascript:void(0)' target='_blank'>
+                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Order</span>
+                      </a>
+                  </div>
+              </div>
+              <div class='row'>
+                  <div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>Need saving deposit Boxes </p></div>
+                  <div class='col-lg-3 text-left'>
+                      <a href='javascript:void(0)' target='_blank'>
+                          <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>Apply</span>
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class PortfolioRemindersComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Portfolio product level news alerts Widget -- Nedbank
+@Component({
+  selector: 'PortfolioNewsAlerts',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class='card border-0'>
+          <div class='card-body text-left py-1'>
+            <div class='NewAlertDiv'>
+                <div class='card-body-header pb-2'>News Alerts</div>
+                <p>Covid 19 and the subsequent lockdown has affected all areas of our daily lives. The way we work, the way we bank and how we interact with each other.</p>
+                <p>We want you to know we are in this together. That's why we are sharing advice, tips and news updates with you on ways to bank as well as ways to keep yorself and your loved ones safe.</p>
+                <p>We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.</p>
+                <div class='float-right'>
+                    <a href='javascript:void(0)' target='_blank'>
+                        <i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>More Info</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>`
+})
+export class PortfolioNewsAlertsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Greenbacks product level total reward points Widget -- Nedbank
+@Component({
+  selector: 'GreenbacksTotalRewardPoints',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class='card border-0'>
+          <div class="card-body text-center">
+              <span class="TotalRewardPointsSpan" title='Total Rewards Points'>482</span>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class GreenbacksTotalRewardPointsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Rewards product level greenbacks contact us Widget -- Nedbank
+@Component({
+  selector: 'GreenbacksContactUs',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+       <div class="card border-0">
+          <div class="card-body GreenbacksContactUsDiv">
+              <ul class="list-group float-right" style="width:250px;">
+                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 JoinGreenbacks-li-bg border-white">
+                      <a class="text-white" href="javascript:void(0)">
+                          Join Greenbacks
+                          <i class='fa fa-caret-right float-right text-white mt-1'></i>
+                      </a>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 UseGreenbacks-li-bg border-white">
+                      <a class="text-white" href="javascript:void(0)">
+                          Use Greenbacks
+                          <i class='fa fa-caret-right float-right text-white mt-1'></i>
+                      </a>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center ht-30 ContactUs-li-bg border-white">
+                      Contact Us 0860 553 111
+                  </li>
+              </ul>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class GreenbacksContactUsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Rewards product level YTD rewards points Widget -- Nedbank
+@Component({
+  selector: 'YTDRewardPoints',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">YTD Rewards Points</div>
+              <div id="YTDRewardPointsBarGraphcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class YTDRewardPointsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      type: 'column',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+      crosshair: true
+    },
+    yAxis: {
+      title: {
+        text: 'Points'
+      }
+    },
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: '<span>{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      },
+      series: {
+        color: '#005b00'
+      }
+    },
+    series: [{
+      name: 'Rewards Points',
+      data: [98, 112, 128, 144]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('YTDRewardPointsBarGraphcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Rewards product level Points redeemed YTD Widget -- Nedbank
+@Component({
+  selector: 'PointsRedeemedYTD',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">Points Redeemed YTD</div>
+              <div id="PointsRedeemedYTDBarGraphcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class PointsRedeemedYTDComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      type: 'column',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+      crosshair: true
+    },
+    yAxis: {
+      title: {
+        text: 'Points'
+      }
+    },
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: '<span>{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      },
+      series: {
+        color: '#005b00'
+      }
+    },
+    series: [{
+      name: 'Redeemed Points',
+      data: [96, 71, 87, 54]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('PointsRedeemedYTDBarGraphcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Rewards product level Product Related Points Earned Widget -- Nedbank
+@Component({
+  selector: 'ProductRelatedPointsEarned',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">Product Related Points Earned</div>
+              <div id="ProductRelatedPointsEarnedBarGraphcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class ProductRelatedPointsEarnedComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      type: 'column',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+      crosshair: true
+    },
+    yAxis: {
+      title: {
+        text: 'Points'
+      }
+    },
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: '<span>{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Investment',
+      data: [121, 145, 98, 134]
+    }, {
+      name: 'Personal loan',
+      data: [232, 167, 125, 245]
+    }, {
+      name: 'Home loan',
+      data: [104, 110, 211, 167]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('ProductRelatedPointsEarnedBarGraphcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Rewards product level Category Spend Rewards Widget -- Nedbank
+@Component({
+  selector: 'CategorySpendRewards',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">Category Spend Rewards</div>
+              <div id="CategorySpendRewardsPieChartcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class CategorySpendRewardsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: !1,
+      type: 'pie',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: { text: '' },
+    credits: { enabled: false },
+    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
+    accessibility: { point: { valueSuffix: '%' } },
+    plotOptions: {
+      pie: {
+        allowPointSelect: !0,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: !0,
+          format: '{point.percentage:.1f} %'
+        },
+        showInLegend: !0
+      }
+    },
+    series: [{
+      name: 'Percentage',
+      colorByPoint: !0,
+      data: [{ name: 'Fuel', y: 34 }, { name: 'Groceries', y: 15 }, { name: 'Travel', y: 21 }, { name: 'Movies', y: 19 }, { name: 'Shopping', y: 11 }]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('CategorySpendRewardsPieChartcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+/* ---  below highcharts components are created for page preview while designing..
+    which are same as above highcharts widgets, but created due to facing issue in page preview in popup --- */
+
+// Component Created for Portfolio product level account analysis Widget for page preview while designing -- Nedbank
+@Component({
+  selector: 'PortfolioAccountAnalysisPreview',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">Account analytics</div>
+              <div id="AccountAnalysisPreviewBarGraphcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class PortfolioAccountAnalysisPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+  public options4: any = {
+    chart: {
+      height: (9 / 16 * 100) + '%',
+      backgroundColor: 'rgba(0,0,0,0)',
+      type: 'column',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb'],
+      crosshair: true
+    },
+    yAxis: {
+      title: {
+        text: 'Amount (R)'
+      }
+    },
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: '<span>{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Investment',
+      data: [9456.12, 9620.98]
+    }, {
+      name: 'Personal loan',
+      data: [-4465.00, -4165.00]
+    }, {
+      name: 'Home loan',
+      data: [-8969.00, -7969.00]
+    }],
+    //colors: ['#005b00', '#434348', '#7cb5ec']
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('AccountAnalysisPreviewBarGraphcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Rewards product level YTD rewards points Widget for page preview while designing -- Nedbank
+@Component({
+  selector: 'YTDRewardPointsPreview',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">YTD Rewards points</div>
+              <div id="YTDRewardPointsBarGraphPreviewcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class YTDRewardPointsPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      type: 'column',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+      crosshair: true
+    },
+    yAxis: {
+      title: {
+        text: 'Points'
+      }
+    },
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: '<span>{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      },
+      series: {
+        color: '#005b00'
+      }
+    },
+    series: [{
+      name: 'Rewards Points',
+      data: [98, 112, 128, 144]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('YTDRewardPointsBarGraphPreviewcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Rewards product level Points redeemed YTD Widget for page preview while designing -- Nedbank
+@Component({
+  selector: 'PointsRedeemedYTDPreview',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">Points Redeemed YTD</div>
+              <div id="PointsRedeemedYTDBarGraphPreviewcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class PointsRedeemedYTDPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      type: 'column',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+      crosshair: true
+    },
+    yAxis: {
+      title: {
+        text: 'Points'
+      }
+    },
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: '<span>{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      },
+      series: {
+        color: '#005b00'
+      }
+    },
+    series: [{
+      name: 'Redeemed Points',
+      data: [96, 71, 87, 54]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('PointsRedeemedYTDBarGraphPreviewcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Rewards product level Product Related Points Earned Widget for page preview while designing -- Nedbank
+@Component({
+  selector: 'ProductRelatedPointsEarnedPreview',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">Product Related Points Earned</div>
+              <div id="ProductRelatedPointsEarnedBarGraphPreviewcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class ProductRelatedPointsEarnedPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      backgroundColor: 'rgba(0,0,0,0)',
+      type: 'column',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: {
+      text: ''
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr'],
+      crosshair: true
+    },
+    yAxis: {
+      title: {
+        text: 'Points'
+      }
+    },
+    credits: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: '<span>{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td> <td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: 'Investment',
+      data: [121, 145, 98, 134]
+    }, {
+      name: 'Personal loan',
+      data: [232, 167, 125, 245]
+    }, {
+      name: 'Home loan',
+      data: [104, 110, 211, 167]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('ProductRelatedPointsEarnedBarGraphPreviewcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}
+
+// Component Created for Rewards product level Category Spend Rewards Widget for page preview while designing -- Nedbank
+@Component({
+  selector: 'CategorySpendRewardsPreview',
+  template: `<div class="widget">
+    <div class="widget-area width100">
+      <div class="card border-0">
+          <div class="card-body">
+              <div class="card-body-header pb-2 text-center pb-1">Category Spend Rewards</div>
+              <div id="CategorySpendRewardsPieChartPreviewcontainer" style="height:200px;"></div>
+          </div>
+      </div>      
+    </div>
+</div>`
+})
+export class CategorySpendRewardsPreviewComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+
+  public options4: any = {
+    chart: {
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: !1,
+      type: 'pie',
+      style: {
+        fontFamily: 'Mark Pro Regular',
+        fontSize: '8pt'
+      }
+    },
+    title: { text: '' },
+    credits: { enabled: false },
+    tooltip: { pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' },
+    accessibility: { point: { valueSuffix: '%' } },
+    plotOptions: {
+      pie: {
+        allowPointSelect: !0,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: !0,
+          format: '{point.percentage:.1f} %'
+        },
+        showInLegend: !0
+      }
+    },
+    series: [{
+      name: 'Percentage',
+      colorByPoint: !0,
+      data: [{ name: 'Fuel', y: 34 }, { name: 'Groceries', y: 15 }, { name: 'Travel', y: 21 }, { name: 'Movies', y: 19 }, { name: 'Shopping', y: 11 }]
+    }]
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      Highcharts.chart('CategorySpendRewardsPieChartPreviewcontainer', this.options4);
+    }, 100);
+  }
+
+  ngOnInit() {
+    $(document).ready(function () {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 10);
+    });
+  }
+}

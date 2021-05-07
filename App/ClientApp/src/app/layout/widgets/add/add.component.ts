@@ -212,6 +212,58 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/HL_InstalmentDetails.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-table";
         }
+        else if (this.widgetList[i].WidgetName == "PortfolioCustomerDetails") {
+          this.widgetList[i].ImageSource = "assets/images/PortfolioCustomerDetails.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-address-book-o";
+        }
+        else if (this.widgetList[i].WidgetName == "CustomerAddressDetails") {
+          this.widgetList[i].ImageSource = "assets/images/PortfolioCustomerAddress.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-address-card-o";
+        }
+        else if (this.widgetList[i].WidgetName == "ClientContactDetails") {
+          this.widgetList[i].ImageSource = "assets/images/PortfolioClientContactDetails.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-cc";
+        }
+        else if (this.widgetList[i].WidgetName == "AccountSummary") {
+          this.widgetList[i].ImageSource = "assets/images/PortfolioAccountSummary.JPG";
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "AccountAnalysis") {
+          this.widgetList[i].ImageSource = "assets/images/PortfolioAccountAnalysis.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-bar-chart";
+        }
+        else if (this.widgetList[i].WidgetName == "PortfolioReminders") {
+          this.widgetList[i].ImageSource = "assets/images/PortfolioReminders.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-bell-o";
+        }
+        else if (this.widgetList[i].WidgetName == "PortfolioNewsAlerts") {
+          this.widgetList[i].ImageSource = "assets/images/PortfolioNewsAlerts.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-newspaper-o";
+        }
+        else if (this.widgetList[i].WidgetName == "GreenbacksContactUs") {
+          this.widgetList[i].ImageSource = "assets/images/GreenbacksContactUs.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-list-alt";
+        }
+        else if (this.widgetList[i].WidgetName == "YTDRewardsPoints") {
+          this.widgetList[i].ImageSource = "assets/images/GreenbacksYTDRewardsPointsGraph.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-bar-chart";
+        }
+        else if (this.widgetList[i].WidgetName == "PointsRedeemedYTD") {
+          this.widgetList[i].ImageSource = "assets/images/GreenbacksPointsRedeemedYTDGraph.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-bar-chart";
+        }
+        else if (this.widgetList[i].WidgetName == "ProductRelatedPointsEarned") {
+          this.widgetList[i].ImageSource = "assets/images/GreenbacksProductRelatedPointsEarnedGraph.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-bar-chart";
+        }
+        else if (this.widgetList[i].WidgetName == "CategorySpendRewards") {
+          this.widgetList[i].ImageSource = "assets/images/GreenbacksCategorySpendPointsGraph.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-bar-chart";
+        }
+        else if (this.widgetList[i].WidgetName == "GreenbacksTotalRewardPoints") {
+          this.widgetList[i].ImageSource = "assets/images/TotalRewardsPoints.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-trophy";
+        }
       }
     }
 

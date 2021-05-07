@@ -1449,10 +1449,12 @@ namespace nIS
 
                     var htmlbody = new StringBuilder();
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+                    htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
 
                     //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                     var scriptHtmlRenderer = new StringBuilder();
                     HttpClient httpClient = null;
+                    var NavItemList = new StringBuilder();
 
                     var newStatementPageContents = new List<StatementPageContent>();
                     statementRawData.StatementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
@@ -1480,12 +1482,13 @@ namespace nIS
                         var dynamicWidgets = new List<DynamicWidget>(statementPageContent.DynamicWidgets);
 
                         string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
-                        string ExtraClassName = i > 0 ? "d-none " + tabClassName : tabClassName;
+
+                        NavItemList.Append("<li class='nav-item " + (i != statement.Pages.Count - 1 ? "nav-rt-border" : string.Empty) + " '><a id='tab" + i + "-tab' data-toggle='tab' data-target='#" + tabClassName + "' role='tab' class='nav-link " + (i == 0 ? "active" : string.Empty) + " '> " + statementPageContent.DisplayName + " </a></li>");
+
+                        string ExtraClassName = statement.Pages.Count > 1 ? (i == 0 ? " tab-pane fade in active show " : " tab-pane fade ") : string.Empty;
                         PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
 
                         var newPageContent = new StringBuilder();
-                        newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
-
                         var pagewidgets = new List<PageWidget>(page.PageWidgets);
                         var pageContent = new StringBuilder(statementPageContent.HtmlContent);
                         for (int j = 0; j < pagewidgets.Count; j++)
@@ -1709,11 +1712,17 @@ namespace nIS
                         }
 
                         newPageContent.Append(pageContent);
-                        newPageContent.Append(HtmlConstants.END_DIV_TAG);
-
                         statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
                         statementPageContent.HtmlContent = newPageContent.ToString();
                     }
+
+                    //NAV bar will append to html statement, only if statement definition have more than 1 pages 
+                    if (statement.Pages.Count > 1)
+                    {
+                        htmlbody.Append(HtmlConstants.NEDBANK_NAV_BAR_HTML.Replace("{{NavItemList}}", NavItemList.ToString()));
+                    }
+
+                    htmlbody.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
 
                     newStatementPageContents.ToList().ForEach(page =>
                     {
@@ -1722,7 +1731,13 @@ namespace nIS
                         htmlbody.Append(page.PageFooterContent);
                     });
 
-                    htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                    htmlbody.Append(HtmlConstants.END_DIV_TAG); // end tab-content div
+
+                    var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG").Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png").Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING));
+                    footerContent.Replace("{{LastFooterText}}", string.Empty);
+                    htmlbody.Append(footerContent.ToString());
+
+                    htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER); // end of container-fluid div
 
                     var finalHtml = new StringBuilder();
                     finalHtml.Append(HtmlConstants.HTML_HEADER);

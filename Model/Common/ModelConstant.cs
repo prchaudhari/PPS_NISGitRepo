@@ -442,7 +442,7 @@ namespace nIS
 
         public const string DATE_FORMAT_dd_MM_yyyy = "dd'/'MM'/'yyyy";
 
-        public const string DATE_FORMAT_dd_MMM_yyyy = "dd MMMM yyyy";
+        public const string DATE_FORMAT_dd_MMM_yyyy = "dd MMM yyyy";
 
         public const string DATE_FORMAT_yyyy_MM_dd = "yyyy-MM-dd";
         #endregion

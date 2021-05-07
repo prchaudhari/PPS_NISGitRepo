@@ -507,6 +507,8 @@ namespace nIS
                                                 var isImageFromAsset = false;
                                                 var assetId = 0;
                                                 var imgAssetFilepath = "assets/images/icon-image.png";
+                                                var imgHeight = "auto";
+                                                var imgAlignment = "text-center";
                                                 if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                                 {
                                                     dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
@@ -526,11 +528,22 @@ namespace nIS
                                                             assetId = Convert.ToInt32(asset.Identifier);
                                                         }
                                                     }
+                                                    if (!string.IsNullOrEmpty(Convert.ToString(widgetSetting.Height)) && Convert.ToString(widgetSetting.Height) != "0")
+                                                    {
+                                                        imgHeight = widgetSetting.Height + "px";
+                                                    }
+
+                                                    if (widgetSetting.Align != null)
+                                                    {
+                                                        imgAlignment = widgetSetting.Align == 1 ? "text-left" : widgetSetting.Align == 2 ? "text-right" : "text-center";
+                                                    }
                                                 }
-                                                var imgHtmlWidget = HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath);
-                                                imgHtmlWidget = imgHtmlWidget.Replace("{{NewImageClass}}", isImageFromAsset ? " ImageAsset " + assetId : "");
-                                                imgHtmlWidget = imgHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                htmlString.Append(imgHtmlWidget);
+                                                var imgHtmlWidget = new StringBuilder(HtmlConstants.IMAGE_WIDGET_HTML.Replace("{{ImageSource}}", imgAssetFilepath));
+                                                imgHtmlWidget.Replace("{{NewImageClass}}", isImageFromAsset ? " ImageAsset " + assetId : "");
+                                                imgHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                imgHtmlWidget.Replace("{{ImgHeight}}", imgHeight);
+                                                imgHtmlWidget.Replace("{{ImgAlignmentClass}}", imgAlignment);
+                                                htmlString.Append(imgHtmlWidget.ToString());
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.VIDEO_WIDGET_NAME)
                                             {
@@ -770,7 +783,7 @@ namespace nIS
                                                         htmlString.Append(htmlWidget.ToString());
                                                     }
                                                 }
-                                                
+
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                             {
@@ -1400,7 +1413,7 @@ namespace nIS
                                                         var res = 0.0m;
                                                         try
                                                         {
-                                                            TotalLoanAmt = HomeLoans.Select(it => decimal.TryParse(it.LoanAmount, out res) ? res :0).ToList().Sum(it => it);
+                                                            TotalLoanAmt = HomeLoans.Select(it => decimal.TryParse(it.LoanAmount, out res) ? res : 0).ToList().Sum(it => it);
                                                         }
                                                         catch
                                                         {
@@ -1828,6 +1841,160 @@ namespace nIS
                                                         htmlString.Append(widgetHtml.ToString());
                                                     }
                                                 }
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME)
+                                            {
+                                                string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com'}";
+                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                {
+                                                    var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
+                                                    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_HTML);
+                                                    widgetHtml.Replace("{{CustomerName}}", (customer.Title + " " + customer.FirstName + " " + customer.SurName));
+                                                    widgetHtml.Replace("{{CustomerId}}", customer.CustomerId.ToString());
+                                                    widgetHtml.Replace("{{MobileNumber}}", customer.Mask_Cell_No);
+                                                    widgetHtml.Replace("{{EmailAddress}}", customer.EmailAddress);
+                                                    htmlString.Append(widgetHtml.ToString());
+                                                }
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME)
+                                            {
+                                                string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com'}";
+                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                {
+                                                    var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
+                                                    var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_HTML);
+                                                    var custAddress = (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
+                                                    (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1 + "<br>") : string.Empty) +
+                                                    (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) +
+                                                    (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3 + "<br>") : string.Empty) +
+                                                    (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
+                                                    widgetHtml.Replace("{{CustomerAddress}}", custAddress);
+                                                    htmlString.Append(widgetHtml.ToString());
+                                                }
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_HTML);
+                                                widgetHtml.Replace("{{MobileNumber}}", "0860 555 111");
+                                                widgetHtml.Replace("{{EmailAddress}}", "supportdesk@nedbank.com");
+                                                htmlString.Append(widgetHtml.ToString());
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_HTML);
+                                                string jsonstr = "[{'AccountType': 'Investment', 'TotalCurrentAmount': 'R9 620.98'},{'AccountType': 'Personal Loan', 'TotalCurrentAmount': 'R4 165.00'},{'AccountType': 'Home Loan', 'TotalCurrentAmount': 'R7 969.00'}]";
+                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                {
+                                                    var _lstAccounts = JsonConvert.DeserializeObject<List<DM_CustomerAccountSummary>>(jsonstr);
+                                                    if (_lstAccounts.Count > 0)
+                                                    {
+
+                                                        var accountSummaryRows = new StringBuilder();
+                                                        _lstAccounts.ForEach(acc =>
+                                                        {
+                                                            var tr = new StringBuilder();
+                                                            tr.Append("<tr class='ht-30'>");
+                                                            tr.Append("<td class='text-left'>" + acc.AccountType + " </td>");
+                                                            tr.Append("<td class='text-right'>" + acc.TotalCurrentAmount + " </td>");
+                                                            tr.Append("</tr>");
+                                                            accountSummaryRows.Append(tr.ToString());
+                                                        });
+                                                        widgetHtml.Replace("{{AccountSummaryRows}}", accountSummaryRows.ToString());
+                                                    }
+                                                    else
+                                                    {
+                                                        widgetHtml.Replace("{{AccountSummaryRows}}", "<tr class='ht-30'><td class='text-center' colspan='2'>No records found</td></tr>");
+                                                    }
+                                                }
+
+                                                var rewardPointsDiv = new StringBuilder("<div class='pt-2'><table class='LoanTransactionTable customTable'><thead><tr class='ht-30'><th class='text-left'>{{RewardType}} </th><th class='text-right'>{{RewardPoints}}</th></tr></thead></table></div>");
+                                                rewardPointsDiv.Replace("{{RewardType}}", "Greenbacks rewards points");
+                                                rewardPointsDiv.Replace("{{RewardPoints}}", "234");
+                                                widgetHtml.Replace("{{RewardPointsDiv}}", rewardPointsDiv.ToString());
+
+                                                htmlString.Append(widgetHtml.ToString());
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_HTML);
+                                                var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": 9456.12}, {\"Month\": \"Feb\", \"Amount\": 9620.98}]},{\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -4465.00}, {\"Month\": \"Feb\", \"Amount\": -4165.00}]},{\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -8969.00}, {\"Month\": \"Feb\", \"Amount\": -7969.00}]}]";
+                                                widgetHtml.Append("<input type='hidden' id='HiddenAccountAnalysisBarGraphData' value='" + data + "'/>");
+                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                                htmlString.Append(widgetHtml.ToString());
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_REMINDERS_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML);
+                                                string jsonstr = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
+                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                {
+                                                    IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(jsonstr);
+                                                    StringBuilder reminderstr = new StringBuilder();
+                                                    reminderAndRecommendations.ToList().ForEach(item =>
+                                                    {
+                                                        reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'><a href='javascript:void(0)' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
+                                                    });
+                                                    widgetHtml.Replace("{{ReminderAndRecommendation}}", reminderstr.ToString());
+                                                    htmlString.Append(widgetHtml.ToString());
+                                                }
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML);
+                                                string jsonstr = "{ \"Message1\": \"Covid 19 and the subsequent lockdown has affected all areas of our daily lives. The way we work, the way we bank and how we interact with each other.\", \"Message2\": \"We want you to know we are in this together. That's why we are sharing advice, tips and news updates with you on ways to bank as well as ways to keep yorself and your loved ones safe.\", \"Message3\": \"We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.\", \"Message4\": \"\", \"Message5\": \"\" }";
+                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                {
+                                                    var newsAlert = JsonConvert.DeserializeObject<NewsAlert>(jsonstr);
+                                                    var newsAlertStr = (!string.IsNullOrEmpty(newsAlert.Message1) ? ("<p>" + newsAlert.Message1 + "</p>") : string.Empty) +
+                                                        (!string.IsNullOrEmpty(newsAlert.Message2) ? ("<p>" + newsAlert.Message2 + "</p>") : string.Empty) +
+                                                        (!string.IsNullOrEmpty(newsAlert.Message3) ? ("<p>" + newsAlert.Message3 + "</p>") : string.Empty) +
+                                                        (!string.IsNullOrEmpty(newsAlert.Message4) ? ("<p>" + newsAlert.Message4 + "</p>") : string.Empty) +
+                                                        (!string.IsNullOrEmpty(newsAlert.Message5) ? ("<p>" + newsAlert.Message5 + "</p>") : string.Empty);
+                                                    widgetHtml.Replace("{{NewsAlert}}", newsAlertStr);
+                                                    htmlString.Append(widgetHtml.ToString());
+                                                }
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_HTML);
+                                                widgetHtml.Replace("{{TotalRewardsPoints}}", "482");
+                                                htmlString.Append(widgetHtml.ToString());
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_NAME)
+                                            {
+                                                htmlString.Append(HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_HTML);
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_HTML);
+                                                var data = "[{\"Month\": \"Jan\",\"RewardPoint\" : 98}, {\"Month\": \"Feb\",\"RewardPoint\" : 112}, {\"Month\": \"Mar\",\"RewardPoint\" : 128}, {\"Month\": \"Apr\",\"RewardPoint\" : 144}]";
+                                                widgetHtml.Append("<input type='hidden' id='HiddenYTDRewardPointsBarGraphData' value='" + data + "'/>");
+                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                                htmlString.Append(widgetHtml.ToString());
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_HTML);
+                                                var data = "[{\"Month\": \"Jan\",\"RedeemedPoints\" : 58}, {\"Month\": \"Feb\",\"RedeemedPoints\" : 71}, {\"Month\": \"Mar\",\"RedeemedPoints\" : 63}, {\"Month\": \"Apr\",\"RedeemedPoints\" : 84}]";
+                                                widgetHtml.Append("<input type='hidden' id='HiddenPointsRedeemedBarGraphData' value='" + data + "'/>");
+                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                                htmlString.Append(widgetHtml.ToString());
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_HTML);
+                                                var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 34}, {\"Month\": \"Feb\", \"RewardPoint\": 29},{\"Month\": \"Mar\", \"RewardPoint\": 41}, {\"Month\": \"Apr\", \"RewardPoint\": 48}]}, {\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 27}, {\"Month\": \"Feb\", \"RewardPoint\": 45},{\"Month\": \"Mar\", \"RewardPoint\": 36}, {\"Month\": \"Apr\", \"RewardPoint\": 51}]}, {\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 37}, {\"Month\": \"Feb\", \"RewardPoint\": 38},{\"Month\": \"Mar\", \"RewardPoint\": 51}, {\"Month\": \"Apr\", \"RewardPoint\": 45}]}]"; ;
+                                                widgetHtml.Append("<input type='hidden' id='HiddenProductRelatedPointsEarnedBarGraphData' value='" + data + "'/>");
+                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                                htmlString.Append(widgetHtml.ToString());
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME)
+                                            {
+                                                var widgetHtml = new StringBuilder(HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_HTML);
+                                                var data = "[{\"Category\": \"Fuel\",\"SpendReward\" : 34}, {\"Category\": \"Groceries\",\"SpendReward\" : 15}, {\"Category\": \"Travel\",\"SpendReward\" : 21}, {\"Category\": \"Movies\",\"SpendReward\" : 19}, {\"Category\": \"Shopping\",\"SpendReward\" : 11}]"; ;
+                                                widgetHtml.Append("<input type='hidden' id='HiddenCategorySpendRewardsPieChartData' value='" + data + "'/>");
+                                                //widgetHtml.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT);
+                                                htmlString.Append(widgetHtml.ToString());
                                             }
                                         }
                                         else

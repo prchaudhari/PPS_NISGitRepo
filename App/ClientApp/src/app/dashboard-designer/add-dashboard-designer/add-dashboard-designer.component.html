@@ -27,12 +27,14 @@
       <li class="side-bar-li" title={{widget.DisplayName}} *ngFor="let widget of widgetsArray">
         <a (click)="selectWidget(widget.Identifier, widget.WidgetName)">
           <span class="nav-icon fa" [ngClass]="{
-                  'fa-address-book-o': widget.WidgetName == 'CustomerInformation' || widget.WidgetName == 'CustomerDetails',
-                  'fa-address-card-o' : widget.WidgetName == 'AccountInformation',
+                  'fa-address-book-o': widget.WidgetName == 'CustomerInformation' || widget.WidgetName == 'CustomerDetails' || widget.WidgetName == 'PortfolioCustomerDetails',
+                  'fa-address-card-o' : widget.WidgetName == 'AccountInformation' || widget.WidgetName == 'CustomerAddressDetails',
+                  'fa-cc fa-lg': widget.WidgetName == 'ClientContactDetails',
+                  'fa-trophy fa-lg': widget.WidgetName == 'GreenbacksTotalRewardPoints',
                   'fa-image fa-lg' : widget.WidgetName == 'Image',
                   'icon-videoWidget' : widget.WidgetName == 'Video',
-                  'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail',
-                  'fa-bell-o' : widget.WidgetName == 'ReminderaAndRecommendation' || widget.WidgetName == 'SpecialMessage',
+                  'icon-widget-single-column2 fa-lg' : widget.WidgetName == 'Summary' || widget.WidgetName == 'BreakdownOfInvestmentAccounts' || widget.WidgetName == 'PersonalLoanDetail' || widget.WidgetName == 'PersonalLoanTotalAmountDetail' || widget.WidgetName == 'HomeLoanTotalAmountDetail' || widget.WidgetName == 'AccountSummary',
+                  'fa-bell-o' : widget.WidgetName == 'ReminderaAndRecommendation' || widget.WidgetName == 'SpecialMessage' || widget.WidgetName == 'PortfolioReminders',
                   'icon-rp-loss1 fa-lg' : widget.WidgetName == 'InvestmentPortfolioRisk',
                   'icon-AnalyticsWidget' : widget.WidgetName == 'Analytics',
                   'icon-AvailableBalanceWidget' : widget.WidgetName == 'SavingAvailableBalance' || widget.WidgetName == 'CurrentAvailableBalance' || widget.WidgetName == 'PersonalLoanPaymentDue',
@@ -40,18 +42,18 @@
                   'icon-widget-line-chart2' : widget.WidgetName == 'SavingTrend' || widget.WidgetName == 'InvestorPerformance',
                   'icon-TransactionMixWidget' : widget.WidgetName == 'TransactionMix',
                   'icon-rp-production1' : widget.WidgetName == 'SpendingTrend',
-                  'fa-newspaper-o' : widget.WidgetName == 'NewsAlerts' || widget.WidgetName == 'NedbankService',
+                  'fa-newspaper-o' : widget.WidgetName == 'NewsAlerts' || widget.WidgetName == 'NedbankService' || widget.WidgetName == 'PortfolioNewsAlerts',
                   'fa-credit-card' : widget.WidgetName == 'CurrentTransaction',
                   'icon-rp-quality1' : widget.WidgetName == 'Top4IncomeSources',
                   'fa-university' : widget.WidgetName == 'BranchDetails',
                   'fa-list' : widget.WidgetName == 'ExplanatoryNotes',
                   'fa-exclamation-circle' : widget.WidgetName == 'PL_InsuranceMessage'  || widget.WidgetName == 'HomeLoanPaymentDueSpecialMsg',
                   'fa-table fa-lg': widget.WidgetType == 'Table' || widget.WidgetName == 'HomeLoanInstalmentDetail',
-                  'fa-list-alt fa-lg': widget.WidgetType == 'Form',
+                  'fa-list-alt fa-lg': widget.WidgetType == 'Form' || widget.WidgetName == 'GreenbacksContactUs',
                   'fa-code fa-lg': widget.WidgetType == 'Html',
-                  'fa-bar-chart fa-lg': widget.WidgetType == 'BarGraph',
+                  'fa-bar-chart fa-lg': widget.WidgetType == 'BarGraph' || widget.WidgetName == 'AccountAnalysis' || widget.WidgetName == 'YTDRewardsPoints' || widget.WidgetName == 'PointsRedeemedYTD' || widget.WidgetName == 'ProductRelatedPointsEarned',
                   'fa-line-chart fa-lg': widget.WidgetType == 'LineGraph',
-                  'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart'
+                  'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart' || widget.WidgetName == 'CategorySpendRewards'
               }">
           </span><span class="nav-title text-truncate"> {{widget.DisplayName}} </span>
         </a>
@@ -125,7 +127,7 @@
           </div>
         </div>
         <div class="row" *ngIf="!isPersonalizeImage">
-          <div class="col-sm-12">
+          <div class="col-sm-12 form-group">
             <label> Target Link </label>
             <!-- <span class="text-danger"> *</span> -->
             <input type="text" class="form-control" formControlName="imageUrl" />
@@ -139,6 +141,28 @@
                 </li>
               </ul>
             </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!isPersonalizeImage">
+          <div class="col-sm-6">
+            <label> Image Height (in px) </label>
+            <input type="text" class="form-control" formControlName="imageHeight" placeholder="Please enter height in px" />
+            <div class="validation-msg" style="color:red" *ngIf="imgForm.imageHeight.touched && imgForm.imageHeight.errors">
+              <ul style="list-style-type:none">
+                <li class="text-danger" *ngIf="imgForm.imageHeight.errors?.pattern">
+                  Invalid height value
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <label> Image Align </label>
+            <select formControlName="imgAlign" class="form-control">
+              <option value="0" selected>Center</option>
+              <option value="1">Left</option>
+              <option value="2">Right</option>
+            </select>
           </div>
         </div>
         <div class="row" *ngIf="!isPersonalizeImage" style="margin-top: 40px;">

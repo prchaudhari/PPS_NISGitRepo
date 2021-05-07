@@ -28,4 +28,10 @@ namespace nIS
         public string Barcode { get; set; }
         public string TenantCode { get; set; }
     }
+
+    public class DM_CustomerAccountSummary
+    {
+        public string AccountType { get; set; }
+        public string TotalCurrentAmount { get; set; }
+    }
 }
