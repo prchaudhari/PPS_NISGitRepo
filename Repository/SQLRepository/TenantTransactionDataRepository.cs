@@ -1388,6 +1388,11 @@ namespace nIS
                 queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("ParentId.Equals({0}) ", item))) + ") and ");
             }
 
+            if (validationEngine.IsValidText(searchParameter.Type))
+            {
+                queryString.Append(string.Format("Type.Equals(\"{0}\") and ", searchParameter.Type));
+            }
+
             if (validationEngine.IsValidLong(searchParameter.BatchId))
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");

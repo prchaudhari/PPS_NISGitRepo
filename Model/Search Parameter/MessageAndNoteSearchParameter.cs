@@ -26,6 +26,7 @@ namespace nIS
         public long Identifier { get; set; }
         public long BatchId { get; set; }
         public long CustomerId { get; set; }
+        public string Type { get; set; }
         public string WidgetFilterSetting { get; set; }
 
         /// <summary>

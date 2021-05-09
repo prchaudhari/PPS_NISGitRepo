@@ -719,7 +719,7 @@ namespace nIS
 
                                     //pageHeaderContent.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
 
-                                    //statementPageContent.PageHeaderContent = pageHeaderContent.ToString();
+                                    statementPageContent.PageHeaderContent = pageHeaderContent.ToString();
 
                                     int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
                                     int max = 0;
@@ -802,10 +802,8 @@ namespace nIS
                                                         isRowComplete = false;
                                                     }
 
-                                                    //if rendering html for 1st page, then add padding zero current widget div, otherwise keep default padding
-                                                    var PaddingClass = i != 0 ? " pl-0" : string.Empty;
-
-                                                    if (mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
+                                                    var PaddingClass = string.Empty;
+                                                    if (pageWidget.WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
                                                     {
                                                         //to add Nedbank services as a header for nedbank services div blocks...
                                                         if (MarketingMessageCounter == 0)
@@ -824,11 +822,24 @@ namespace nIS
                                                         switch (pageWidget.WidgetName)
                                                         {
                                                             case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
-                                                                pageHtmlContent.Append(this.CustomerDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                if (statementPages.Count == 1)
+                                                                {
+                                                                    pageHtmlContent.Append(this.CustomerDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                }
                                                                 break;
 
                                                             case HtmlConstants.BRANCH_DETAILS_WIDGET_NAME:
-                                                                pageHtmlContent.Append(this.BranchDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                                {
+                                                                    if (statementPages.Count == 1)
+                                                                    {
+                                                                        pageHtmlContent.Append(this.BranchDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    pageHtmlContent.Append(this.BranchDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                }
                                                                 break;
 
                                                             case HtmlConstants.IMAGE_WIDGET_NAME:
@@ -894,6 +905,58 @@ namespace nIS
 
                                                             case HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.HomeLoanAccountsBreakdownsWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PortfolioCustomerDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PortfolioCustomerAddressDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PortfolioClientContactDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PortfolioAccountSummaryWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PortfolioAccountAnalysisWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_PORTFOLIO_REMINDERS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PortfolioRemindersWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.PortfolioNewsAlertWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.GreenbacksTotalRewardPointsWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.GreenbacksContactUsWidgetFormatting(pageWidget, counter));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.GreenbacksYTDRewardPointsGraphWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.GreenbacksPointsRedeemedYTDGraphWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.GreenbacksProductRelatedPointsEarnedGraphWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.GreenbacksCategorySpendPointsGraphWidgetFormatting(pageWidget, counter, page));
                                                                 break;
                                                         }
                                                     }
@@ -1224,33 +1287,15 @@ namespace nIS
                 var statementPreviewData = new StatementPreviewData();
                 var SampleFiles = new List<FileData>();
 
-                var IsInvestmentStatement = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE).ToList().Count > 0;
-                var IsPersonalLoanStatement = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
-                var IsHomeLoanStatement = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList().Count > 0;
-                var MarketingMessages = string.Empty;
-                if (IsInvestmentStatement)
-                {
-                    MarketingMessages = HtmlConstants.INVESTMENT_MARKETING_MESSAGE_JSON_STR;
-                }
-                else if (IsPersonalLoanStatement)
-                {
-                    MarketingMessages = HtmlConstants.PERSONAL_LOAN_MARKETING_MESSAGE_JSON_STR;
-                }
-                else if (IsHomeLoanStatement)
-                {
-                    MarketingMessages = HtmlConstants.HOME_LOAN_MARKETING_MESSAGE_JSON_STR;
-                }
-                else
-                {
-                    MarketingMessages = HtmlConstants.PERSONAL_LOAN_MARKETING_MESSAGE_JSON_STR;
-                }
-
                 //start to render common html content data
                 var htmlbody = new StringBuilder();
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
+                htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
 
                 //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                 var scriptHtmlRenderer = new StringBuilder();
+                
+                var NavItemList = new StringBuilder();
                 var newStatementPageContents = new List<StatementPageContent>();
                 statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
                 {
@@ -1270,16 +1315,33 @@ namespace nIS
                     var page = statement.Pages[i];
                     var MarketingMessageCounter = 0;
                     var statementPageContent = newStatementPageContents.Where(item => item.PageTypeId == page.PageTypeId && item.Id == i).FirstOrDefault();
+
+                    var MarketingMessages = string.Empty;
+                    if (page.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE)
+                    {
+                        MarketingMessages = HtmlConstants.INVESTMENT_MARKETING_MESSAGE_JSON_STR;
+                    }
+                    else if (page.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE)
+                    {
+                        MarketingMessages = HtmlConstants.PERSONAL_LOAN_MARKETING_MESSAGE_JSON_STR;
+                    }
+                    else if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                    {
+                        MarketingMessages = HtmlConstants.HOME_LOAN_MARKETING_MESSAGE_JSON_STR;
+                    }
+
                     var pageContent = new StringBuilder(statementPageContent.HtmlContent);
                     var dynamicWidgets = statementPageContent.DynamicWidgets;
 
                     var PageHeaderContent = new StringBuilder(statementPageContent.PageHeaderContent);
+
                     var tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
-                    PageHeaderContent.Replace("{{ExtraClass}}", (i > 0 ? "d-none " + tabClassName : tabClassName)).Replace("{{DivId}}", tabClassName);
+                    NavItemList.Append("<li class='nav-item" + (i != statement.Pages.Count - 1 ? " nav-rt-border" : string.Empty) + "'><a id='tab" + i + "-tab' data-toggle='tab' data-target='#" + tabClassName + "' role='tab' class='nav-link" + (i == 0 ? " active" : string.Empty) + "'> " + statementPageContent.DisplayName + " </a></li>");
+
+                    string ExtraClassName = statement.Pages.Count > 1 ? (i == 0 ? " tab-pane fade in active show " : " tab-pane fade ") : string.Empty;
+                    PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
 
                     var newPageContent = new StringBuilder();
-                    newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
-
                     var pagewidgets = new List<PageWidget>(page.PageWidgets);
                     for (int j = 0; j < pagewidgets.Count; j++)
                     {
@@ -1289,11 +1351,14 @@ namespace nIS
                             switch (widget.WidgetName)
                             {
                                 case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
-                                    this.BindDummyDataToCustomerDetailsWidget(pageContent, page, widget);
+                                    if (statement.Pages.Count == 1)
+                                    {
+                                        this.BindDummyDataToCustomerDetailsWidget(pageContent, page, widget);
+                                    }
                                     break;
 
                                 case HtmlConstants.BRANCH_DETAILS_WIDGET_NAME:
-                                    this.BindDummyDataToBranchDetailsWidget(pageContent, page, widget);
+                                    this.BindDummyDataToBranchDetailsWidget(pageContent, page, widget, statement.Pages.Count);
                                     break;
 
                                 case HtmlConstants.IMAGE_WIDGET_NAME:
@@ -1360,6 +1425,54 @@ namespace nIS
                                 case HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
                                     this.BindDummyDataToHomeLoanAccountsBreakdownWidget(pageContent, page, widget);
                                     break;
+
+                                case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME:
+                                    this.BindDummyDataToPortfolioCustomerDetailsWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME:
+                                    this.BindDummyDataToPortfolioCustomerAddressDetailsWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_NAME:
+                                    this.BindDummyDataToPortfolioClientContactDetailsWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_NAME:
+                                    this.BindDummyDataToPortfolioAccountSummaryDetailsWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_NAME:
+                                    this.BindDummyDataToPortfolioAccountAnalysisGraphWidget(pageContent, scriptHtmlRenderer, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_PORTFOLIO_REMINDERS_WIDGET_NAME:
+                                    this.BindDummyDataToPortfolioReimndersWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_NAME:
+                                    this.BindDummyDataToPortfolioNewsAlertsWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME:
+                                    this.BindDummyDataToGreenbacksTotalRewardPointsWidget(pageContent, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME:
+                                    this.BindDummyDataToGreenbacksYtdRewardsPointsGraphWidget(pageContent, scriptHtmlRenderer, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_NAME:
+                                    this.BindDummyDataToGreenbacksPointsRedeemedYtdGraphWidget(pageContent, scriptHtmlRenderer, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_NAME:
+                                    this.BindDummyDataToGreenbacksProductRelatedPonitsEarnedGraphWidget(pageContent, scriptHtmlRenderer, page, widget);
+                                    break;
+
+                                case HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME:
+                                    this.BindDummyDataToGreenbacksCategorySpendRewardPointsGraphWidget(pageContent, scriptHtmlRenderer, page, widget);
+                                    break;
                             }
                         }
                         else
@@ -1399,21 +1512,41 @@ namespace nIS
                     }
 
                     newPageContent.Append(pageContent);
-                    newPageContent.Append(HtmlConstants.PAGE_TAB_CONTENT_FOOTER); //to end tab-content div
                     statementPageContent.PageHeaderContent = PageHeaderContent.ToString();
                     statementPageContent.HtmlContent = newPageContent.ToString();
                 }
 
+                //NAV bar will append to html statement, only if statement definition have more than 1 pages 
+                if (statement.Pages.Count > 1)
+                {
+                    htmlbody.Append(HtmlConstants.NEDBANK_NAV_BAR_HTML.Replace("{{Today}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MMM_yyyy)).Replace("{{NavItemList}}", NavItemList.ToString()));
+                }
+
+                htmlbody.Append(HtmlConstants.PAGE_TAB_CONTENT_HEADER);
                 newStatementPageContents.ToList().ForEach(page =>
                 {
-                    htmlbody.Append(page.PageHeaderContent).Append(page.HtmlContent).Append(page.PageFooterContent);
+                    htmlbody.Append(page.PageHeaderContent);
+                    htmlbody.Append(page.HtmlContent);
+                    htmlbody.Append(page.PageFooterContent);
+                    htmlbody.Append(HtmlConstants.PAGE_FOOTER_HTML);
                 });
+                htmlbody.Append(HtmlConstants.END_DIV_TAG); // end tab-content div
 
-                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
+                var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER);
+                footerContent.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG");
+                footerContent.Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png");
+                footerContent.Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING);
+                footerContent.Replace("{{LastFooterText}}", string.Empty);
+                htmlbody.Append(footerContent.ToString());
+
+                htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER); // end of container-fluid div
 
                 StringBuilder finalHtml = new StringBuilder();
-                finalHtml.Append(HtmlConstants.HTML_HEADER).Append(htmlbody.ToString()).Append(HtmlConstants.HTML_FOOTER);
-                scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
+                finalHtml.Append(HtmlConstants.HTML_HEADER);
+                finalHtml.Append(htmlbody.ToString());
+                finalHtml.Append(HtmlConstants.HTML_FOOTER);
+
+                //scriptHtmlRenderer.Append(HtmlConstants.TENANT_LOGO_SCRIPT);
                 finalHtml.Replace("{{ChartScripts}}", scriptHtmlRenderer.ToString());
 
                 statementPreviewData.SampleFiles = SampleFiles;
@@ -2276,7 +2409,6 @@ namespace nIS
 
                 var htmlString = new StringBuilder();
                 var NavItemList = new StringBuilder();
-
 
                 for (int x = 0; x < statementPages.Count; x++)
                 {
@@ -4077,15 +4209,16 @@ namespace nIS
         private string CustomerDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var customerHtmlWidget = HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT;
-            customerHtmlWidget = customerHtmlWidget.Replace("{{CustomerDetails}}", "{{CustomerDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", "{{MaskCellNo_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            customerHtmlWidget = customerHtmlWidget.Replace("{{WidgetId}}", widgetId);
-            return customerHtmlWidget;
+            var HtmlWidget = new StringBuilder(HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML_SMT);
+            HtmlWidget.Replace("{{CustomerDetails}}", "{{CustomerDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            HtmlWidget.Replace("{{MaskCellNo}}", "{{MaskCellNo_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            HtmlWidget.Replace("{{WidgetId}}", widgetId);
+            return HtmlWidget.ToString();
         }
 
         private string BranchDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
+            //if(page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML_SMT);
             htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
@@ -4097,15 +4230,15 @@ namespace nIS
         private string InvestmentPortfolioStatementWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var InvestmentPortfolioHtmlWidget = HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_HTML;
-            InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "{{DSName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", "{{TotalClosingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", "{{DayOfStatement_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{InvestorID}}", "{{InvestorID_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{WidgetId}}", widgetId);
-            return InvestmentPortfolioHtmlWidget;
+            var InvestmentPortfolioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_HTML);
+            InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "{{DSName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", "{{TotalClosingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", "{{DayOfStatement_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{InvestorID}}", "{{InvestorID_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{WidgetId}}", widgetId);
+            return InvestmentPortfolioHtmlWidget.ToString();
         }
 
         private string InvestorPerformanceWidgetFormatting(PageWidget pageWidget, int counter, Page page)
@@ -4208,9 +4341,9 @@ namespace nIS
         private string PersonalLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = HtmlConstants.PERSONAL_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_HTML.Replace("{{NavTab}}", "{{NavTab_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget;
+            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_HTML).Replace("{{NavTab}}", "{{NavTab_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
         }
 
         private string HomeLoanTotalAmountDetailWidgetFormatting(PageWidget pageWidget, int counter, Page page)
@@ -4226,9 +4359,130 @@ namespace nIS
         private string HomeLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_HTML.Replace("{{NavTab}}", "{{NavTab_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
-            return htmlWidget;
+            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_HTML).Replace("{{NavTab}}", "{{NavTab_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
+        }
+
+        private string PortfolioCustomerDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_HTML);
+            htmlwidget.Replace("{{CustomerName}}", "{{CustomerName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{CustomerId}}", "{{CustomerId_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{MobileNumber}}", "{{MobileNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{WidgetId}}", widgetId);
+            return htmlwidget.ToString();
+        }
+
+        private string PortfolioCustomerAddressDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_HTML);
+            htmlwidget.Replace("{{CustomerAddress}}", "{{CustomerAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{WidgetId}}", widgetId);
+            return htmlwidget.ToString();
+        }
+
+        private string PortfolioClientContactDetailsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_HTML);
+            htmlwidget.Replace("{{MobileNumber}}", "{{MobileNumber_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{EmailAddress}}", "{{EmailAddress_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{WidgetId}}", widgetId);
+            return htmlwidget.ToString();
+        }
+
+        private string PortfolioAccountSummaryWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_HTML);
+            htmlwidget.Replace("{{AccountSummaryRows}}", "{{AccountSummaryRows_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{RewardPointsDiv}}", "{{RewardPointsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{WidgetId}}", widgetId);
+            return htmlwidget.ToString();
+        }
+
+        private string PortfolioAccountAnalysisWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_HTML);
+            htmlWidget.Replace("AccountAnalysisBarGraphcontainer", "AccountAnalysisBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+            htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            htmlWidget.Append("<input type='hidden' id='HiddenAccountAnalysisGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenAccountAnalysisGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+            return htmlWidget.ToString();
+        }
+
+        private string PortfolioRemindersWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML);
+            htmlwidget.Replace("{{ReminderAndRecommendation}}", "{{ReminderAndRecommendation_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{WidgetId}}", widgetId);
+            return htmlwidget.ToString();
+        }
+
+        private string PortfolioNewsAlertWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML);
+            htmlwidget.Replace("{{NewsAlert}}", "{{NewsAlert_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{WidgetId}}", widgetId);
+            return htmlwidget.ToString();
+        }
+
+        private string GreenbacksTotalRewardPointsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_HTML);
+            htmlwidget.Replace("{{TotalRewardsPoints}}", "{{TotalRewardsPoints_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlwidget.Replace("{{WidgetId}}", widgetId);
+            return htmlwidget.ToString();
+        }
+
+        private string GreenbacksContactUsWidgetFormatting(PageWidget pageWidget, int counter)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_HTML);
+            htmlwidget.Replace("{{WidgetId}}", widgetId);
+            return htmlwidget.ToString();
+        }
+
+        private string GreenbacksYTDRewardPointsGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_HTML);
+            htmlWidget.Replace("YTDRewardPointsBarGraphcontainer", "YTDRewardPointsBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+            htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            htmlWidget.Append("<input type='hidden' id='HiddenYTDRewardPointsGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenYTDRewardPointsGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+            return htmlWidget.ToString();
+        }
+
+        private string GreenbacksPointsRedeemedYTDGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_HTML);
+            htmlWidget.Replace("PointsRedeemedYTDBarGraphcontainer", "PointsRedeemedYTDBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+            htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            htmlWidget.Append("<input type='hidden' id='HiddenPointsRedeemedGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenPointsRedeemedGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+            return htmlWidget.ToString();
+        }
+
+        private string GreenbacksProductRelatedPointsEarnedGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_HTML);
+            htmlWidget.Replace("ProductRelatedPointsEarnedBarGraphcontainer", "ProductRelatedPointsEarnedBarGraphcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+            htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            htmlWidget.Append("<input type='hidden' id='HiddenProductRelatedPointsEarnedGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenProductRelatedPointsEarnedGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+            return htmlWidget.ToString();
+        }
+
+        private string GreenbacksCategorySpendPointsGraphWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_HTML);
+            htmlWidget.Replace("CategorySpendRewardsPieChartcontainer", "CategorySpendRewardsPieChartcontainer_" + page.Identifier + "_" + pageWidget.Identifier + "");
+            htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            htmlWidget.Append("<input type='hidden' id='HiddenCategorySpendRewardsGraph_" + page.Identifier + "_" + pageWidget.Identifier + "' value='HiddenCategorySpendRewardsGraphValue_" + page.Identifier + "_" + pageWidget.Identifier + "'>");
+            return htmlWidget.ToString();
         }
 
         #endregion
@@ -4238,32 +4492,33 @@ namespace nIS
         private string ImageWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var widgetHTML = HtmlConstants.IMAGE_WIDGET_HTML_FOR_STMT.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
-            widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
+            var widgetHTML = new StringBuilder(HtmlConstants.IMAGE_WIDGET_HTML_FOR_STMT.Replace("{{ImageSource}}", "{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}"));
+            widgetHTML.Replace("{{ImgAlignmentClass}}", "{{ImgAlignmentClass_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            widgetHTML.Replace("{{ImgHeight}}", "{{ImgHeight_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            widgetHTML.Replace("{{WidgetDivHeight}}", "auto");
+            widgetHTML.Replace("{{WidgetId}}", widgetId);
             if (pageWidget.WidgetSetting != string.Empty && validationEngine.IsValidJson(pageWidget.WidgetSetting))
             {
-                var imageWidgetHtml = string.Empty;
                 dynamic widgetSetting = JObject.Parse(pageWidget.WidgetSetting);
                 if (widgetSetting.isPersonalize == false && widgetSetting.SourceUrl != null && widgetSetting.SourceUrl != string.Empty)
                 {
-                    widgetHTML = widgetHTML.Replace("{{TargetLink}}", "<a href='" + widgetSetting.SourceUrl + "' target='_blank'>");
-                    widgetHTML = widgetHTML.Replace("{{EndTargetLink}}", "</a>");
+                    widgetHTML.Replace("{{TargetLink}}", "<a href='" + widgetSetting.SourceUrl + "' target='_blank'>");
+                    widgetHTML.Replace("{{EndTargetLink}}", "</a>");
                 }
                 else
                 {
-                    widgetHTML = widgetHTML.Replace("{{TargetLink}}", "");
-                    widgetHTML = widgetHTML.Replace("{{EndTargetLink}}", "");
+                    widgetHTML.Replace("{{TargetLink}}", string.Empty);
+                    widgetHTML.Replace("{{EndTargetLink}}", string.Empty);
                 }
             }
-            return widgetHTML;
+            return widgetHTML.ToString();
         }
 
         private string VideoWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             var widgetHTML = HtmlConstants.VIDEO_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", divHeight);
+           widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", "auto");
             widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
             return widgetHTML;
         }
@@ -4593,13 +4848,16 @@ namespace nIS
             }
         }
 
-        private void BindDummyDataToBranchDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        private void BindDummyDataToBranchDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget, int pagesCount)
         {
             var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML);
             if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
             {
-                pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
-                htmlWidget.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Professional Banking 24/7 Contact centre " + "0860 555 111");
+                if (pagesCount == 1)
+                {
+                    pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                    htmlWidget.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Professional Banking 24/7 Contact centre " + "0860 555 111");
+                }
             }
             else
             {
@@ -5677,12 +5935,151 @@ namespace nIS
             }
         }
 
+        private void BindDummyDataToPortfolioCustomerDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com'}";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
+                pageContent.Replace("{{CustomerName_" + page.Identifier + "_" + widget.Identifier + "}}", (customer.Title + " " + customer.FirstName + " " + customer.SurName));
+                pageContent.Replace("{{CustomerId_" + page.Identifier + "_" + widget.Identifier + "}}", customer.CustomerId.ToString());
+                pageContent.Replace("{{MobileNumber_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No);
+                pageContent.Replace("{{EmailAddress_" + page.Identifier + "_" + widget.Identifier + "}}", customer.EmailAddress);
+            }
+        }
+
+        private void BindDummyDataToPortfolioCustomerAddressDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com'}";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
+                var custAddress = (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3 + "<br>") : string.Empty) +
+                                (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
+                pageContent.Replace("{{CustomerAddress_" + page.Identifier + "_" + widget.Identifier + "}}", custAddress);
+            }
+        }
+
+        private void BindDummyDataToPortfolioClientContactDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            pageContent.Replace("{{MobileNumber_" + page.Identifier + "_" + widget.Identifier + "}}", "0860 555 111");
+            pageContent.Replace("{{EmailAddress_" + page.Identifier + "_" + widget.Identifier + "}}", "supportdesk@nedbank.com");
+        }
+
+        private void BindDummyDataToPortfolioAccountSummaryDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "[{'AccountType': 'Investment', 'TotalCurrentAmount': 'R9 620.98'}, {'AccountType': 'Personal Loan', 'TotalCurrentAmount': 'R4 165.00'}, {'AccountType': 'Home Loan', 'TotalCurrentAmount': 'R7 969.00'}]";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var _lstAccounts = JsonConvert.DeserializeObject<List<DM_CustomerAccountSummary>>(jsonstr);
+                if (_lstAccounts.Count > 0)
+                {
+                    var accountSummaryRows = new StringBuilder();
+                    _lstAccounts.ForEach(acc =>
+                    {
+                        var tr = new StringBuilder();
+                        tr.Append("<tr class='ht-30'>");
+                        tr.Append("<td class='text-left'>" + acc.AccountType + " </td>");
+                        tr.Append("<td class='text-right'>" + acc.TotalCurrentAmount + " </td>");
+                        tr.Append("</tr>");
+                        accountSummaryRows.Append(tr.ToString());
+                    });
+                    pageContent.Replace("{{AccountSummaryRows_" + page.Identifier + "_" + widget.Identifier + "}}", accountSummaryRows.ToString());
+                }
+                else
+                {
+                    pageContent.Replace("{{AccountSummaryRows_" + page.Identifier + "_" + widget.Identifier + "}}", "<tr class='ht-30'><td class='text-center' colspan='2'> No records found </td></tr>");
+                }
+            }
+
+            var rewardPointsDiv = new StringBuilder("<div class='pt-2'><table class='LoanTransactionTable customTable'><thead><tr class='ht-30'><th class='text-left'>{{RewardType}} </th><th class='text-right'>{{RewardPoints}}</th></tr></thead></table></div>");
+            rewardPointsDiv.Replace("{{RewardType}}", "Greenbacks rewards points");
+            rewardPointsDiv.Replace("{{RewardPoints}}", "234");
+            pageContent.Replace("{{RewardPointsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", rewardPointsDiv.ToString());
+        }
+
+        private void BindDummyDataToPortfolioAccountAnalysisGraphWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        {
+            var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": 9456.12}, {\"Month\": \"Feb\", \"Amount\": 9620.98}]},{\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -4465.00}, {\"Month\": \"Feb\", \"Amount\": -4165.00}]},{\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -8969.00}, {\"Month\": \"Feb\", \"Amount\": -7969.00}]}]";
+            pageContent.Replace("HiddenAccountAnalysisGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
+            scriptHtmlRenderer.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT.Replace("AccountAnalysisBarGraphcontainer", "AccountAnalysisBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenAccountAnalysisGraph", "HiddenAccountAnalysisGraph_" + page.Identifier + "_" + widget.Identifier));
+        }
+
+        private void BindDummyDataToPortfolioReimndersWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(jsonstr);
+                StringBuilder reminderstr = new StringBuilder();
+                reminderAndRecommendations.ToList().ForEach(item =>
+                {
+                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'><a href='javascript:void(0)' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
+                });
+                pageContent.Replace("{{ReminderAndRecommendation_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
+            }
+        }
+
+        private void BindDummyDataToPortfolioNewsAlertsWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{ \"Message1\": \"Covid 19 and the subsequent lockdown has affected all areas of our daily lives. The way we work, the way we bank and how we interact with each other.\", \"Message2\": \"We want you to know we are in this together. That's why we are sharing advice, tips and news updates with you on ways to bank as well as ways to keep yorself and your loved ones safe.\", \"Message3\": \"We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.\", \"Message4\": \"\", \"Message5\": \"\" }";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                var newsAlert = JsonConvert.DeserializeObject<NewsAlert>(jsonstr);
+                var newsAlertStr = (!string.IsNullOrEmpty(newsAlert.Message1) ? ("<p>" + newsAlert.Message1 + "</p>") : string.Empty) +
+                    (!string.IsNullOrEmpty(newsAlert.Message2) ? ("<p>" + newsAlert.Message2 + "</p>") : string.Empty) +
+                    (!string.IsNullOrEmpty(newsAlert.Message3) ? ("<p>" + newsAlert.Message3 + "</p>") : string.Empty) +
+                    (!string.IsNullOrEmpty(newsAlert.Message4) ? ("<p>" + newsAlert.Message4 + "</p>") : string.Empty) +
+                    (!string.IsNullOrEmpty(newsAlert.Message5) ? ("<p>" + newsAlert.Message5 + "</p>") : string.Empty);
+                pageContent.Replace("{{NewsAlert_" + page.Identifier + "_" + widget.Identifier + "}}", newsAlertStr);
+            }
+        }
+
+        private void BindDummyDataToGreenbacksTotalRewardPointsWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            pageContent.Replace("{{TotalRewardsPoints_" + page.Identifier + "_" + widget.Identifier + "}}", "482");
+        }
+
+        private void BindDummyDataToGreenbacksYtdRewardsPointsGraphWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        {
+            var data = "[{\"Month\": \"Jan\",\"RewardPoint\" : 98}, {\"Month\": \"Feb\",\"RewardPoint\" : 112}, {\"Month\": \"Mar\",\"RewardPoint\" : 128}, {\"Month\": \"Apr\",\"RewardPoint\" : 144}]";
+            pageContent.Replace("HiddenYTDRewardPointsGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
+            scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_YTD_REWARDS_POINTS_BAR_GRAPH_SCRIPT.Replace("YTDRewardPointsBarGraphcontainer", "YTDRewardPointsBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenYTDRewardPointsGraph", "HiddenYTDRewardPointsGraph_" + page.Identifier + "_" + widget.Identifier));
+        }
+
+        private void BindDummyDataToGreenbacksPointsRedeemedYtdGraphWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        {
+            var data = "[{\"Month\": \"Jan\",\"RedeemedPoints\" : 58}, {\"Month\": \"Feb\",\"RedeemedPoints\" : 71}, {\"Month\": \"Mar\",\"RedeemedPoints\" : 63}, {\"Month\": \"Apr\",\"RedeemedPoints\" : 84}]";
+            pageContent.Replace("HiddenPointsRedeemedGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
+            scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_POINTS_REDEEMED_YTD_BAR_GRAPH_SCRIPT.Replace("PointsRedeemedYTDBarGraphcontainer", "PointsRedeemedYTDBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenPointsRedeemedGraph", "HiddenPointsRedeemedGraph_" + page.Identifier + "_" + widget.Identifier));
+        }
+
+        private void BindDummyDataToGreenbacksProductRelatedPonitsEarnedGraphWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        {
+            var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 34}, {\"Month\": \"Feb\", \"RewardPoint\": 29},{\"Month\": \"Mar\", \"RewardPoint\": 41}, {\"Month\": \"Apr\", \"RewardPoint\": 48}]}, {\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 27}, {\"Month\": \"Feb\", \"RewardPoint\": 45},{\"Month\": \"Mar\", \"RewardPoint\": 36}, {\"Month\": \"Apr\", \"RewardPoint\": 51}]}, {\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 37}, {\"Month\": \"Feb\", \"RewardPoint\": 38},{\"Month\": \"Mar\", \"RewardPoint\": 51}, {\"Month\": \"Apr\", \"RewardPoint\": 45}]}]";
+            pageContent.Replace("HiddenProductRelatedPointsEarnedGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
+            scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_SCRIPT.Replace("ProductRelatedPointsEarnedBarGraphcontainer", "ProductRelatedPointsEarnedBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenProductRelatedPointsEarnedGraph", "HiddenProductRelatedPointsEarnedGraph_" + page.Identifier + "_" + widget.Identifier));
+        }
+
+        private void BindDummyDataToGreenbacksCategorySpendRewardPointsGraphWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        {
+            var data = "[{\"Category\": \"Fuel\",\"SpendReward\" : 34}, {\"Category\": \"Groceries\",\"SpendReward\" : 15}, {\"Category\": \"Travel\",\"SpendReward\" : 21}, {\"Category\": \"Movies\",\"SpendReward\" : 19}, {\"Category\": \"Shopping\",\"SpendReward\" : 11}]";
+            pageContent.Replace("HiddenCategorySpendRewardsGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
+            scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_CATEGORY_SPEND_REWARD_POINTS_BAR_GRAPH_SCRIPT.Replace("CategorySpendRewardsPieChartcontainer", "CategorySpendRewardsPieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenCategorySpendRewardsGraph", "HiddenCategorySpendRewardsGraph_" + page.Identifier + "_" + widget.Identifier));
+        }
+
         #endregion
 
         #region Bind dummy data for Image and Video widget
 
         private void BindDummyDataToImageWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget, List<FileData> SampleFiles, string AppBaseDirectory, string tenantCode)
         {
+            var imgHeight = "auto";
+            var imgAlignment = "text-center";
+
             var imageAssetPath = AppBaseDirectory + "\\Resources\\sampledata\\icon-image.png";
             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
             {
@@ -5699,7 +6096,20 @@ namespace nIS
                         imageAssetPath = "./" + fileData.FileName;
                     }
                 }
+
+                if (!string.IsNullOrEmpty(Convert.ToString(widgetSetting.Height)) && Convert.ToString(widgetSetting.Height) != "0")
+                {
+                    imgHeight = widgetSetting.Height + "px";
+                }
+
+                if (widgetSetting.Align != null)
+                {
+                    imgAlignment = widgetSetting.Align == 1 ? "text-left" : widgetSetting.Align == 2 ? "text-right" : "text-center";
+                }
             }
+
+            pageContent.Replace("{{ImgHeight_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgHeight);
+            pageContent.Replace("{{ImgAlignmentClass_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imgAlignment);
             pageContent.Replace("{{ImageSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", imageAssetPath);
         }
 
@@ -5719,7 +6129,7 @@ namespace nIS
                     if (asset != null)
                     {
                         var fileData = new FileData();
-                        fileData.FileName = "Video" + page.Identifier + widget.Identifier + ".jpg";
+                        fileData.FileName = "Video" + page.Identifier + widget.Identifier + ".mp4";
                         fileData.FileUrl = asset.FilePath;
                         SampleFiles.Add(fileData);
                         videoAssetPath = "./" + fileData.FileName;

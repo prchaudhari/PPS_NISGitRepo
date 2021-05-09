@@ -1888,7 +1888,6 @@ namespace nIS
                                                     var _lstAccounts = JsonConvert.DeserializeObject<List<DM_CustomerAccountSummary>>(jsonstr);
                                                     if (_lstAccounts.Count > 0)
                                                     {
-
                                                         var accountSummaryRows = new StringBuilder();
                                                         _lstAccounts.ForEach(acc =>
                                                         {

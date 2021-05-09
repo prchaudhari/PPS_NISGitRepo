@@ -173,6 +173,7 @@
     <Compile Include="TransactionData\DataUsage.cs" />
     <Compile Include="TransactionData\EmailsBySubscription.cs" />
     <Compile Include="TransactionData\MeetingUsage.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_AccountsSummary.cs" />
     <Compile Include="TransactionData\Nedbank\DM_BranchMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_CustomerMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_ExplanatoryNote.cs" />
