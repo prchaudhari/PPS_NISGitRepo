@@ -4102,7 +4102,7 @@ namespace nIS
                 var accountSummaryRows = new StringBuilder();
                 _AccountsSummaries.ForEach(acc =>
                 {
-                    if (acc.AccountType != "Greenback reward points")
+                    if (!acc.AccountType.ToLower().Contains("reward") || !acc.AccountType.ToLower().Contains("point"))
                     {
                         var tr = new StringBuilder();
                         tr.Append("<tr class='ht-30'>");

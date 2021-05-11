@@ -239,15 +239,15 @@ namespace nIS
 
         public const string NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card OnlyBorderRight ht-130px'><div class='card-body CustomerDetails'><span class='fnt-14pt pt-1'>{{CustomerName}}</span> <br/><p class='fnt-8pt pt-1'>Customer Id: {{CustomerId}}</p><p class='fnt-8pt'>Mobile No: {{MobileNumber}}</p><p class='fnt-8pt'>Email: {{EmailAddress}}</p> </div></div>";
 
-        public const string NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_HTML = "<div id={{WidgetId}} class='card OnlyBorderRight ht-130px'><div class='card-body CustomerDetails'><span class='fnt-14pt'> Address</span> <br />{{CustomerAddress}}</div></div>";
+        public const string NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_HTML = "<div id={{WidgetId}} class='card OnlyBorderRight ht-130px'><div class='card-body CustomerDetails'><span class='fnt-14pt'>Customer Address</span> <br />{{CustomerAddress}}</div></div>";
 
-        public const string NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-130px'><div class='card-body ClientDetails'><span class='fnt-14pt'>Client contact details</span><br /><p>Mobile No: {{MobileNumber}}</p><p>Email: {{EmailAddress}}</p></div></div>";
+        public const string NEDBANK_PORTFOLIO_CLIENT_CONTACT_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-130px'><div class='card-body ClientDetails'><span class='fnt-14pt'>Client Contact Details</span><br /><p>Mobile No: {{MobileNumber}}</p><p>Email: {{EmailAddress}}</p></div></div>";
 
         public const string NEDBANK_PORTFOLIO_ACCOUNT_SUMMARY_WIDGET_HTML = "<div id={{WidgetId}} class='card OnlyBorderRight'><div class='card-body'><div class='card-body-header pb-2'>Account Summary</div> <div class='pt-1'><table class='LoanTransactionTable customTable'> <thead> <tr class='ht-30'> <th class='w-50'>Account</th><th class='w-50 text-right'>Total Amount</th></tr> </thead><tbody>{{AccountSummaryRows}}</tbody></table></div>{{RewardPointsDiv}}</div></div>";
 
-        public const string NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body'><div class='card-body-header pb-2 text-center pb-1'>Account analytics</div><div id='AccountAnalysisBarGraphcontainer' style='height:200px;'></div></div></div>";
+        public const string NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body'><div class='card-body-header pb-2 text-center pb-1'>Account Analytics</div><div id='AccountAnalysisBarGraphcontainer' style='height:200px;'></div></div></div>";
 
-        public const string NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML = "<div id={{WidgetId}} class='card OnlyBorderRight'><div class='card-body ReminderDiv'><div class='card-body-header pb-2 fnt-14pt'>Reminder and Recommendation</div>{{ReminderAndRecommendation}}</div></div>";
+        public const string NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML = "<div id={{WidgetId}} class='card OnlyBorderRight'><div class='card-body ReminderDiv py-1'><div class='card-body-header pb-2 fnt-14pt'>Reminder and Recommendation</div>{{ReminderAndRecommendation}}</div></div>";
 
         public const string NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-1'><div class='NewAlertDiv'><div class='card-body-header pb-2'>News Alerts</div>{{NewsAlert}}<div class='float-right'><a href='javascript:void(0)' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>More Info</span></a></div></div></div></div>";
 
