@@ -1414,38 +1414,57 @@ namespace nIS
                     var investmentMasters = new List<DM_InvestmentMaster>();
                     var PersonalLoanAccounts = new List<DM_PersonalLoanMaster>();
                     var HomeLoanAccounts = new List<DM_HomeLoanMaster>();
-                    var AccountsSummaries = new List<DM_AccountsSummary>();
 
+                    var AccountsSummaries = new List<DM_AccountsSummary>();
+                    var _lstAccountAnalysis = new List<DM_AccountAnanlysis>();
+                    var Reminders = new List<DM_CustomerReminderAndRecommendation>();
+                    var NewsAndAlerts = new List<DM_CustomerNewsAndAlert>();
+                    var GreenbackMaster = new DM_GreenbacksMaster();
+                    var GreenbacksRewardPoints = new List<DM_GreenbacksRewardPoints>();
+                    var GreenbacksRedeemedPoints = new List<DM_GreenbacksRewardPointsRedeemed>();
+                    var CustProductMonthwiseRewardPoints = new List<DM_CustomerProductWiseRewardPoints>();
+                    var CustRewardSpendByCategory = new List<DM_CustomerRewardSpendByCategory>();
+
+                    var customerSearchParameter = new CustomerSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier };
+
+                    var IsPortFolioPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.AT_A_GLANCE_PAGE_TYPE).ToList().Count > 0;
                     var IsInvestmentPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE).ToList().Count > 0;
                     var IsPersonalLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
                     var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList().Count > 0;
                     var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
 
+                    if (IsPortFolioPageTypePresent)
+                    {
+                        AccountsSummaries = this.tenantTransactionDataRepository.GET_DM_AccountSummaries(customerSearchParameter, tenantCode)?.ToList();
+                        _lstAccountAnalysis = this.tenantTransactionDataRepository.GET_DM_AccountAnalysisDetails(customerSearchParameter, tenantCode)?.ToList();
+                        Reminders = this.tenantTransactionDataRepository.GET_DM_CustomerReminderAndRecommendations(customerSearchParameter, tenantCode)?.ToList();
+                        NewsAndAlerts = this.tenantTransactionDataRepository.GET_DM_CustomerNewsAndAlert(customerSearchParameter, tenantCode)?.ToList();
+                    }
                     if (IsInvestmentPageTypePresent)
                     {
                         investmentMasters = this.tenantTransactionDataRepository.Get_DM_InvestmasterMaster(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
                         if (investmentMasters != null && investmentMasters.Count > 0)
                         {
-                            var totalAmount = 0.0m; var res = 0.0m;
+                            //var totalAmount = 0.0m; var res = 0.0m;
                             investmentMasters.ForEach(invest =>
                             {
                                 invest.investmentTransactions = this.tenantTransactionDataRepository.Get_DM_InvestmentTransaction(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier, InvestmentId = invest.InvestmentId }, tenantCode)?.ToList();
 
-                                totalAmount = totalAmount + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+                                //totalAmount = totalAmount + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
                             });
                             
                             BranchId = (investmentMasters != null && investmentMasters.Count > 0) ? investmentMasters[0].BranchId : 0;
                             
-                            AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Investment", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
+                            //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Investment", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
                         }
                     }
                     if (IsPersonalLoanPageTypePresent)
                     {
                         PersonalLoanAccounts = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
                         
-                        var totalAmount = 0.0m; var res = 0.0m;
-                        totalAmount = PersonalLoanAccounts.Select(it => decimal.TryParse(it.CreditAdvance, out res) ? res : 0).ToList().Sum(it => it);
-                        AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Personal Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
+                        //var totalAmount = 0.0m; var res = 0.0m;
+                        //totalAmount = PersonalLoanAccounts.Select(it => decimal.TryParse(it.CreditAdvance, out res) ? res : 0).ToList().Sum(it => it);
+                        //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Personal Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
 
                         BranchId = (PersonalLoanAccounts != null && PersonalLoanAccounts.Count > 0) ? PersonalLoanAccounts[0].BranchId : 0;
                     }
@@ -1453,13 +1472,18 @@ namespace nIS
                     {
                         HomeLoanAccounts = this.tenantTransactionDataRepository.Get_DM_HomeLoanMaster(new CustomerHomeLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
                         
-                        var totalAmount = 0.0m; var res = 0.0m;
-                        totalAmount = HomeLoanAccounts.Select(it => decimal.TryParse(it.LoanAmount, out res) ? res : 0).ToList().Sum(it => it);
-                        AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Home Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
+                        //var totalAmount = 0.0m; var res = 0.0m;
+                        //totalAmount = HomeLoanAccounts.Select(it => decimal.TryParse(it.LoanAmount, out res) ? res : 0).ToList().Sum(it => it);
+                        //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Home Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
                     }
                     if (IsRewardPageTypePresent)
                     {
-                        AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Greenback reward points", TotalAmount = "432" });
+                        //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Greenback reward points", TotalAmount = "432" });
+                        GreenbackMaster = this.tenantTransactionDataRepository.GET_DM_GreenbacksMasterDetails(tenantCode)?.ToList()?.FirstOrDefault();
+                        GreenbacksRewardPoints = this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPoints(customerSearchParameter, tenantCode)?.ToList();
+                        GreenbacksRedeemedPoints = this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPointsRedeemed(customerSearchParameter, tenantCode)?.ToList();
+                        CustProductMonthwiseRewardPoints = this.tenantTransactionDataRepository.GET_DM_CustomerProductWiseRewardPoints(customerSearchParameter, tenantCode)?.ToList();
+                        CustRewardSpendByCategory = this.tenantTransactionDataRepository.GET_DM_CustomerRewardSpendByCategory(customerSearchParameter, tenantCode)?.ToList();
                     }
 
                     var SpecialMessage = this.tenantTransactionDataRepository.Get_DM_SpecialMessages(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList()?.FirstOrDefault();
@@ -1621,15 +1645,15 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.NEDBANK_PORTFOLIO_ACCOUNT_ANALYSIS_WIDGET_NAME:
-                                        this.BindPortfolioAccountAnalysisWidgetData(pageContent, scriptHtmlRenderer, page, widget);
+                                        this.BindPortfolioAccountAnalysisWidgetData(pageContent, scriptHtmlRenderer, _lstAccountAnalysis, page, widget);
                                         break;
 
                                     case HtmlConstants.NEDBANK_PORTFOLIO_REMINDERS_WIDGET_NAME:
-                                        this.BindPortfolioRemindersWidgetData(pageContent, page, widget);
+                                        this.BindPortfolioRemindersWidgetData(pageContent, Reminders, page, widget);
                                         break;
 
                                     case HtmlConstants.NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_NAME:
-                                        this.BindPortfolioNewsAlertsWidgetData(pageContent, page, widget);
+                                        this.BindPortfolioNewsAlertsWidgetData(pageContent, NewsAndAlerts, page, widget);
                                         break;
 
                                     case HtmlConstants.NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_NAME:
@@ -1637,19 +1661,19 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME:
-                                        this.BindGreenbacksYtdRewardsPointsGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget);
+                                        this.BindGreenbacksYtdRewardsPointsGraphWidgetData(pageContent, scriptHtmlRenderer, GreenbacksRewardPoints, page, widget);
                                         break;
 
                                     case HtmlConstants.NEDBANK_POINTS_REDEEMED_YTD_BAR_GRAPH_WIDGET_NAME:
-                                        this.BindGreenbacksPointsRedeemedYtdGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget);
+                                        this.BindGreenbacksPointsRedeemedYtdGraphWidgetData(pageContent, scriptHtmlRenderer, GreenbacksRedeemedPoints, page, widget);
                                         break;
 
                                     case HtmlConstants.NEDBANK_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_WIDGET_NAME:
-                                        this.BindGreenbacksProductRelatedPonitsEarnedGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget);
+                                        this.BindGreenbacksProductRelatedPonitsEarnedGraphWidgetData(pageContent, scriptHtmlRenderer, CustProductMonthwiseRewardPoints, page, widget);
                                         break;
 
                                     case HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME:
-                                        this.BindGreenbacksCategorySpendRewardPointsGraphWidgetData(pageContent, scriptHtmlRenderer, page, widget);
+                                        this.BindGreenbacksCategorySpendRewardPointsGraphWidgetData(pageContent, scriptHtmlRenderer, CustRewardSpendByCategory, page, widget);
                                         break;
                                 }
                             }
@@ -4099,6 +4123,7 @@ namespace nIS
         {
             if (_AccountsSummaries.Count > 0)
             {
+                var res = 0.0m;
                 var accountSummaryRows = new StringBuilder();
                 _AccountsSummaries.ForEach(acc =>
                 {
@@ -4107,7 +4132,7 @@ namespace nIS
                         var tr = new StringBuilder();
                         tr.Append("<tr class='ht-30'>");
                         tr.Append("<td class='text-left'>" + acc.AccountType + " </td>");
-                        tr.Append("<td class='text-right'>" + acc.TotalAmount + " </td>");
+                        tr.Append("<td class='text-right'>" + utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, (decimal.TryParse(acc.TotalAmount, out res) ? res : 0)) + " </td>");
                         tr.Append("</tr>");
                         accountSummaryRows.Append(tr.ToString());
                     }
@@ -4129,41 +4154,47 @@ namespace nIS
             pageContent.Replace("{{RewardPointsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", rewardPointsDiv.ToString());
         }
 
-        private void BindPortfolioAccountAnalysisWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        private void BindPortfolioAccountAnalysisWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_AccountAnanlysis> _lstAccountAnalysis, Page page, PageWidget widget)
         {
-            var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": 9456.12}, {\"Month\": \"Feb\", \"Amount\": 9620.98}]},{\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -4465.00}, {\"Month\": \"Feb\", \"Amount\": -4165.00}]},{\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"Amount\": -8969.00}, {\"Month\": \"Feb\", \"Amount\": -7969.00}]}]";
+            var data = "[]";
+            if(_lstAccountAnalysis != null && _lstAccountAnalysis.Count > 0)
+            {
+                data = JsonConvert.SerializeObject(_lstAccountAnalysis);
+            }
             pageContent.Replace("HiddenAccountAnalysisGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
             scriptHtmlRenderer.Append(HtmlConstants.PORTFOLIO_ACCOUNT_ANALYSIS_BAR_GRAPH_SCRIPT.Replace("AccountAnalysisBarGraphcontainer", "AccountAnalysisBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenAccountAnalysisGraph", "HiddenAccountAnalysisGraph_" + page.Identifier + "_" + widget.Identifier));
         }
 
-        private void BindPortfolioRemindersWidgetData(StringBuilder pageContent, Page page, PageWidget widget)
+        private void BindPortfolioRemindersWidgetData(StringBuilder pageContent, List<DM_CustomerReminderAndRecommendation> Reminders, Page page, PageWidget widget)
         {
-            string jsonstr = "[{ 'Title': 'Update Missing Inofrmation', 'Action': 'Update' },{ 'Title': 'Your Rewards Video is available', 'Action': 'View' },{ 'Title': 'Payment Due for Home Loan', 'Action': 'Pay' }, { title: 'Need financial planning for savings.', action: 'Call Me' },{ title: 'Subscribe/Unsubscribe Alerts.', action: 'Apply' },{ title: 'Your credit card payment is due now.', action: 'Pay' }]";
-            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            if (Reminders != null && Reminders.Count > 0)
             {
-                IList<ReminderAndRecommendation> reminderAndRecommendations = JsonConvert.DeserializeObject<List<ReminderAndRecommendation>>(jsonstr);
                 StringBuilder reminderstr = new StringBuilder();
-                reminderAndRecommendations.ToList().ForEach(item =>
+                Reminders.ToList().ForEach(item =>
                 {
-                    reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.Title + " </p></div><div class='col-lg-3 text-left'><a href='javascript:void(0)' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>" + item.Action + "</span></a></div></div>");
+                    if (!string.IsNullOrEmpty(item.reminderAndRecommendation.Description))
+                    {
+                        reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.reminderAndRecommendation.Description + " </p></div><div class='col-lg-3 text-left'><a href='" + item.reminderAndRecommendation.ActionUrl + "' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>" + item.reminderAndRecommendation.ActionTitle + "</span></a></div></div>");
+                    }
                 });
                 pageContent.Replace("{{ReminderAndRecommendation_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
             }
         }
 
-        private void BindPortfolioNewsAlertsWidgetData(StringBuilder pageContent, Page page, PageWidget widget)
+        private void BindPortfolioNewsAlertsWidgetData(StringBuilder pageContent, List<DM_CustomerNewsAndAlert> NewsAndAlerts, Page page, PageWidget widget)
         {
-            string jsonstr = "{ \"Message1\": \"Covid 19 and the subsequent lockdown has affected all areas of our daily lives. The way we work, the way we bank and how we interact with each other.\", \"Message2\": \"We want you to know we are in this together. That's why we are sharing advice, tips and news updates with you on ways to bank as well as ways to keep yorself and your loved ones safe.\", \"Message3\": \"We would like to remind you of the credit life insurance benefits available to you through your Nedbank Insurance policy. When you pass away, Nedbank Insurance will cover your outstanding loan amount. If you are permanently employed, you will also enjoy cover for comprehensive disability and loss of income. The disability benefit will cover your monthly instalments if you cannot earn your usual income due to illness or bodily injury.\", \"Message4\": \"\", \"Message5\": \"\" }";
-            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            var newsAlertStr = new StringBuilder();
+            if (NewsAndAlerts != null && NewsAndAlerts.Count > 0)
             {
-                var newsAlert = JsonConvert.DeserializeObject<NewsAlert>(jsonstr);
-                var newsAlertStr = (!string.IsNullOrEmpty(newsAlert.Message1) ? ("<p>" + newsAlert.Message1 + "</p>") : string.Empty) +
-                    (!string.IsNullOrEmpty(newsAlert.Message2) ? ("<p>" + newsAlert.Message2 + "</p>") : string.Empty) +
-                    (!string.IsNullOrEmpty(newsAlert.Message3) ? ("<p>" + newsAlert.Message3 + "</p>") : string.Empty) +
-                    (!string.IsNullOrEmpty(newsAlert.Message4) ? ("<p>" + newsAlert.Message4 + "</p>") : string.Empty) +
-                    (!string.IsNullOrEmpty(newsAlert.Message5) ? ("<p>" + newsAlert.Message5 + "</p>") : string.Empty);
-                pageContent.Replace("{{NewsAlert_" + page.Identifier + "_" + widget.Identifier + "}}", newsAlertStr);
+                NewsAndAlerts.ForEach(item =>
+                {
+                    if (!string.IsNullOrEmpty(item.NewsAndAlert.Description))
+                    {
+                        newsAlertStr.Append("<p>" + item.NewsAndAlert.Description + "</p>");
+                    }
+                });
             }
+            pageContent.Replace("{{NewsAlert_" + page.Identifier + "_" + widget.Identifier + "}}", newsAlertStr.ToString());
         }
 
         private void BindGreenbacksTotalRewardPointsWidgetData(StringBuilder pageContent, List<DM_AccountsSummary> _AccountsSummaries, Page page, PageWidget widget)
@@ -4172,30 +4203,46 @@ namespace nIS
             pageContent.Replace("{{TotalRewardsPoints_" + page.Identifier + "_" + widget.Identifier + "}}", (accSummary != null ? accSummary.TotalAmount : "0"));
         }
 
-        private void BindGreenbacksYtdRewardsPointsGraphWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        private void BindGreenbacksYtdRewardsPointsGraphWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_GreenbacksRewardPoints> RewardPoints, Page page, PageWidget widget)
         {
-            var data = "[{\"Month\": \"Jan\",\"RewardPoint\" : 98}, {\"Month\": \"Feb\",\"RewardPoint\" : 112}, {\"Month\": \"Mar\",\"RewardPoint\" : 128}, {\"Month\": \"Apr\",\"RewardPoint\" : 144}]";
+            var data = "[]";
+            if (RewardPoints != null && RewardPoints.Count > 0)
+            {
+                data = JsonConvert.SerializeObject(RewardPoints);
+            }
             pageContent.Replace("HiddenYTDRewardPointsGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
             scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_YTD_REWARDS_POINTS_BAR_GRAPH_SCRIPT.Replace("YTDRewardPointsBarGraphcontainer", "YTDRewardPointsBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenYTDRewardPointsGraph", "HiddenYTDRewardPointsGraph_" + page.Identifier + "_" + widget.Identifier));
         }
 
-        private void BindGreenbacksPointsRedeemedYtdGraphWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        private void BindGreenbacksPointsRedeemedYtdGraphWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_GreenbacksRewardPointsRedeemed> rewardPointsRedeemeds, Page page, PageWidget widget)
         {
-            var data = "[{\"Month\": \"Jan\",\"RedeemedPoints\" : 58}, {\"Month\": \"Feb\",\"RedeemedPoints\" : 71}, {\"Month\": \"Mar\",\"RedeemedPoints\" : 63}, {\"Month\": \"Apr\",\"RedeemedPoints\" : 84}]";
+            var data = "[]";
+            if (rewardPointsRedeemeds != null && rewardPointsRedeemeds.Count > 0)
+            {
+                data = JsonConvert.SerializeObject(rewardPointsRedeemeds);
+            }
             pageContent.Replace("HiddenPointsRedeemedGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
             scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_POINTS_REDEEMED_YTD_BAR_GRAPH_SCRIPT.Replace("PointsRedeemedYTDBarGraphcontainer", "PointsRedeemedYTDBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenPointsRedeemedGraph", "HiddenPointsRedeemedGraph_" + page.Identifier + "_" + widget.Identifier));
         }
 
-        private void BindGreenbacksProductRelatedPonitsEarnedGraphWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        private void BindGreenbacksProductRelatedPonitsEarnedGraphWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_CustomerProductWiseRewardPoints> productWiseRewardPoints, Page page, PageWidget widget)
         {
-            var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 34}, {\"Month\": \"Feb\", \"RewardPoint\": 29},{\"Month\": \"Mar\", \"RewardPoint\": 41}, {\"Month\": \"Apr\", \"RewardPoint\": 48}]}, {\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 27}, {\"Month\": \"Feb\", \"RewardPoint\": 45},{\"Month\": \"Mar\", \"RewardPoint\": 36}, {\"Month\": \"Apr\", \"RewardPoint\": 51}]}, {\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 37}, {\"Month\": \"Feb\", \"RewardPoint\": 38},{\"Month\": \"Mar\", \"RewardPoint\": 51}, {\"Month\": \"Apr\", \"RewardPoint\": 45}]}]";
+            var data = "[]";
+            if (productWiseRewardPoints != null && productWiseRewardPoints.Count > 0)
+            {
+                data = JsonConvert.SerializeObject(productWiseRewardPoints);
+            }
             pageContent.Replace("HiddenProductRelatedPointsEarnedGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
             scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_SCRIPT.Replace("ProductRelatedPointsEarnedBarGraphcontainer", "ProductRelatedPointsEarnedBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenProductRelatedPointsEarnedGraph", "HiddenProductRelatedPointsEarnedGraph_" + page.Identifier + "_" + widget.Identifier));
         }
 
-        private void BindGreenbacksCategorySpendRewardPointsGraphWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
+        private void BindGreenbacksCategorySpendRewardPointsGraphWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_CustomerRewardSpendByCategory> rewardSpendByCategories, Page page, PageWidget widget)
         {
-            var data = "[{\"Category\": \"Fuel\",\"SpendReward\" : 34}, {\"Category\": \"Groceries\",\"SpendReward\" : 15}, {\"Category\": \"Travel\",\"SpendReward\" : 21}, {\"Category\": \"Movies\",\"SpendReward\" : 19}, {\"Category\": \"Shopping\",\"SpendReward\" : 11}]";
+            var data = "[]";
+            if (rewardSpendByCategories != null && rewardSpendByCategories.Count > 0)
+            {
+                data = JsonConvert.SerializeObject(rewardSpendByCategories);
+            }
             pageContent.Replace("HiddenCategorySpendRewardsGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
             scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_CATEGORY_SPEND_REWARD_POINTS_BAR_GRAPH_SCRIPT.Replace("CategorySpendRewardsPieChartcontainer", "CategorySpendRewardsPieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenCategorySpendRewardsGraph", "HiddenCategorySpendRewardsGraph_" + page.Identifier + "_" + widget.Identifier));
         }

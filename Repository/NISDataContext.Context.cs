@@ -22,7 +22,7 @@ namespace nIS
         {
         }
         public NISEntities(string connectionString)
-                                                               : base(connectionString)
+                                                                   : base(connectionString)
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -108,6 +108,18 @@ namespace nIS
         public virtual DbSet<DM_HomeLoanSummaryRecord> DM_HomeLoanSummaryRecord { get; set; }
         public virtual DbSet<DM_HomeLoanTransactionRecord> DM_HomeLoanTransactionRecord { get; set; }
         public virtual DbSet<DM_MarketingMessagesRecord> DM_MarketingMessagesRecord { get; set; }
+        public virtual DbSet<DM_AccountAnalysisRecord> DM_AccountAnalysisRecord { get; set; }
+        public virtual DbSet<DM_AccountSummaryRecord> DM_AccountSummaryRecord { get; set; }
+        public virtual DbSet<DM_CustomerNewsAndAlertsRecord> DM_CustomerNewsAndAlertsRecord { get; set; }
+        public virtual DbSet<DM_CustomerProductWiseRewardPointsRecord> DM_CustomerProductWiseRewardPointsRecord { get; set; }
+        public virtual DbSet<DM_CustomerReminderRecosRecord> DM_CustomerReminderRecosRecord { get; set; }
+        public virtual DbSet<DM_CustomerRewardPointsRecord> DM_CustomerRewardPointsRecord { get; set; }
+        public virtual DbSet<DM_CustomerRewardPointsRedeemedRecord> DM_CustomerRewardPointsRedeemedRecord { get; set; }
+        public virtual DbSet<DM_CustomerRewardSpendByCategoryRecord> DM_CustomerRewardSpendByCategoryRecord { get; set; }
+        public virtual DbSet<DM_GreenbacksMasterRecord> DM_GreenbacksMasterRecord { get; set; }
+        public virtual DbSet<DM_NewsAndAlertsRecord> DM_NewsAndAlertsRecord { get; set; }
+        public virtual DbSet<DM_ReminderRecosRecord> DM_ReminderRecosRecord { get; set; }
+        public virtual DbSet<SystemActivityHistoryRecord> SystemActivityHistoryRecords { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

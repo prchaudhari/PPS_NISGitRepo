@@ -509,6 +509,225 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of customer account summaries from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account summary records
+        /// </returns>
+        public IList<DM_AccountsSummary> GET_DM_AccountSummaries(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_AccountSummaries(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer account analysis records from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account analysis records
+        /// </returns>
+        public IList<DM_AccountAnanlysis> GET_DM_AccountAnalysisDetails(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_AccountAnalysisDetails(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of reminder and recommendation records from repository.
+        /// </summary>
+        /// <param name="ReminderId">The reminder identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of reminder and recommendation records
+        /// </returns>
+        public IList<DM_ReminderAndRecommendation> GET_DM_ReminderAndRecommendations(long ReminderId, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_ReminderAndRecommendations(ReminderId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer reminder and recommendation records from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer reminder and recommendation records
+        /// </returns>
+        public IList<DM_CustomerReminderAndRecommendation> GET_DM_CustomerReminderAndRecommendations(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_CustomerReminderAndRecommendations(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of news and alerts records from repository.
+        /// </summary>
+        /// <param name="NewsAndAlertId">The news/alert identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of news and alerts records
+        /// </returns>
+        public IList<DM_NewsAndAlerts> GET_DM_NewsAndAlerts(long NewsAndAlertId, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_NewsAndAlerts(NewsAndAlertId, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer news and alerts records from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer news and alerts records
+        /// </returns>
+        public IList<DM_CustomerNewsAndAlert> GET_DM_CustomerNewsAndAlert(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_CustomerNewsAndAlert(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the greenbacks master details from repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the greenbacks master details record
+        /// </returns>
+        public IList<DM_GreenbacksMaster> GET_DM_GreenbacksMasterDetails(string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_GreenbacksMasterDetails(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the customer greenbacks reward points from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the customer greenbacks reward points records
+        /// </returns>
+        public IList<DM_GreenbacksRewardPoints> GET_DM_GreenbacksRewardPoints(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPoints(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the customer redeemed greenbacks reward points from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the customer redeemed greenbacks reward points records
+        /// </returns>
+        public IList<DM_GreenbacksRewardPointsRedeemed> GET_DM_GreenbacksRewardPointsRedeemed(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPointsRedeemed(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the customer's product monthwise reward points earned data from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the customer's product monthwise reward points earned records
+        /// </returns>
+        public IList<DM_CustomerProductWiseRewardPoints> GET_DM_CustomerProductWiseRewardPoints(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_CustomerProductWiseRewardPoints(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the category wise customer's spend reward points from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the category wise customer's spend reward points records
+        /// </returns>
+        public IList<DM_CustomerRewardSpendByCategory> GET_DM_CustomerRewardSpendByCategory(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            try
+            {
+                return this.tenantTransactionDataRepository.GET_DM_CustomerRewardSpendByCategory(searchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #endregion

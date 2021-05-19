@@ -123,13 +123,40 @@
     <Compile Include="CustomerMediaRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DM_AccountAnalysisRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_AccountSummaryRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DM_BranchMasterRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DM_CustomerMasterRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DM_CustomerNewsAndAlertsRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_CustomerProductWiseRewardPointsRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_CustomerReminderRecosRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_CustomerRewardPointsRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_CustomerRewardPointsRedeemedRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_CustomerRewardSpendByCategoryRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DM_ExplanatoryNotesRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_GreenbacksMasterRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DM_HomeLoanArrearsRecord.cs">
@@ -153,6 +180,9 @@
     <Compile Include="DM_MarketingMessagesRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DM_NewsAndAlertsRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="DM_PersonalLoanArrearsRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
@@ -160,6 +190,9 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DM_PersonalLoanTransactionRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DM_ReminderRecosRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DM_SpecialMessagesRecord.cs">
@@ -305,6 +338,9 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="StateRecord.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemActivityHistoryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TenantConfigurationRecord.cs">

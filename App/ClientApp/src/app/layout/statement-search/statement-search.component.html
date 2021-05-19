@@ -62,8 +62,11 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
       </div>
-      <div class="widget-area-grid padding-0 text-center" *ngIf='scheduleLogList!=undefined && scheduleLogList.length==0'>
-          <label>Please use the filter to see the statement records.</label>
+      <div class="widget-area-grid padding-0 text-center" *ngIf='noFilterValueError == false && scheduleLogList!=undefined && scheduleLogList.length==0'>
+        <label>No records found.</label>
+      </div>
+      <div class="widget-area-grid padding-0 text-center" *ngIf='noFilterValueError==true'>
+        <label>Please use the filter to see the statement records.</label>
       </div>
     </div>
   </div>

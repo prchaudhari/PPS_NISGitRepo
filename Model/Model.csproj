@@ -177,13 +177,16 @@
     <Compile Include="TransactionData\Nedbank\DM_BranchMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_CustomerMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_ExplanatoryNote.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_GreenbacksMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_HomeLoanMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_InvestmentMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_InvestmentTransaction.cs" />
     <Compile Include="TransactionData\Nedbank\DM_MarketingMessage.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_NewsAndAlerts.cs" />
     <Compile Include="TransactionData\Nedbank\DM_PersonalLoanArrears.cs" />
     <Compile Include="TransactionData\Nedbank\DM_PersonalLoanMaster.cs" />
     <Compile Include="TransactionData\Nedbank\DM_PersonalLoanTransaction.cs" />
+    <Compile Include="TransactionData\Nedbank\DM_ReminderAndRecommendation.cs" />
     <Compile Include="TransactionData\Nedbank\SpecialMessage.cs" />
     <Compile Include="TransactionData\StatementMetadata.cs" />
     <Compile Include="TransactionData\SubscriptionMaster.cs" />

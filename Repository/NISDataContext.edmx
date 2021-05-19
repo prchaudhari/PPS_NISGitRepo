@@ -205,6 +205,76 @@
           <Property Name="VideoURL" Type="nvarchar(max)" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="DM_AccountAnalysis">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="InvestmentAmt1" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt2" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt3" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt4" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt5" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt6" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt7" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt8" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt9" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt10" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt11" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentAmt12" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt1" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt2" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt3" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt4" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt5" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt6" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt7" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt8" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt9" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt10" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt11" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt12" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt1" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt2" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt3" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt4" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt5" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt6" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt7" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt8" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt9" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt10" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt11" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt12" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks1" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks2" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks3" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks4" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks5" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks6" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks7" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks8" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks9" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks10" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks11" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks12" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DM_AccountSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="InvestmentAmt" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanAmt" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanAmt" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="DM_BranchMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -245,6 +315,124 @@
           <Property Name="Field3" Type="nvarchar" MaxLength="100" />
           <Property Name="Field4" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="DM_CustomerNewsAndAlerts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="NewsAndAlertId" Type="bigint" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DM_CustomerProductWiseRewardPoints">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="InvestmentGreenbacks1" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks2" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks3" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks4" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks5" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks6" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks7" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks8" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks9" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks10" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks11" Type="nvarchar" MaxLength="200" />
+          <Property Name="InvestmentGreenbacks12" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks1" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks2" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks3" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks4" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks5" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks6" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks7" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks8" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks9" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks10" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks11" Type="nvarchar" MaxLength="200" />
+          <Property Name="PersonalLoanGreenbacks12" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks1" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks2" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks3" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks4" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks5" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks6" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks7" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks8" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks9" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks10" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks11" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeLoanGreenbacks12" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DM_CustomerReminderRecos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="ReminderId" Type="bigint" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DM_CustomerRewardPoints">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="Greenbacks1" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks2" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks3" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks4" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks5" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks6" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks7" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks8" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks9" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks10" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks11" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks12" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DM_CustomerRewardPointsRedeemed">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="Greenbacks1" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks2" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks3" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks4" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks5" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks6" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks7" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks8" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks9" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks10" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks11" Type="nvarchar" MaxLength="200" />
+          <Property Name="Greenbacks12" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DM_CustomerRewardSpendByCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="200" />
+          <Property Name="Points" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="DM_ExplanatoryNotes">
           <Key>
             <PropertyRef Name="Id" />
@@ -258,6 +446,15 @@
           <Property Name="Note4" Type="nvarchar(max)" />
           <Property Name="Note5" Type="nvarchar(max)" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DM_GreenbacksMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JoinUsUrl" Type="nvarchar(max)" />
+          <Property Name="UseUsUrl" Type="nvarchar(max)" />
+          <Property Name="ContactNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="DM_HomeLoanArrears">
           <Key>
@@ -399,6 +596,15 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="DM_NewsAndAlerts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsGeneric" Type="bit" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="DM_PersonalLoanArrears">
           <Key>
             <PropertyRef Name="Id" />
@@ -452,6 +658,18 @@
           <Property Name="Credit" Type="varchar" MaxLength="50" />
           <Property Name="OutstandingCapital" Type="varchar" MaxLength="50" />
           <Property Name="TenantCode" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DM_ReminderRecos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsGeneric" Type="bit" Nullable="false" />
+          <Property Name="IsActionable" Type="bit" Nullable="false" />
+          <Property Name="LabelText" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TargetURL" Type="nvarchar" MaxLength="500" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="DM_SpecialMessages">
           <Key>
@@ -828,6 +1046,22 @@
           <Property Name="ReferencePageId" Type="bigint" Nullable="false" />
           <Property Name="StatementId" Type="bigint" Nullable="false" />
           <Property Name="SequenceNumber" Type="bigint" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SystemActivityHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Module" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EntityId" Type="bigint" Nullable="false" />
+          <Property Name="EntityName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SubEntityId" Type="bigint" />
+          <Property Name="SubEntityName" Type="nvarchar(max)" />
+          <Property Name="ActionTaken" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ActionTakenBy" Type="bigint" Nullable="false" />
+          <Property Name="ActionTakenByUserName" Type="nvarchar" MaxLength="500" />
+          <Property Name="ActionTakenDate" Type="datetime" Nullable="false" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TenantConfiguration">
@@ -1560,9 +1794,18 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="Country" EntityType="Self.Country" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="CustomerMedia" EntityType="Self.CustomerMedia" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_AccountAnalysis" EntityType="Self.DM_AccountAnalysis" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_AccountSummary" EntityType="Self.DM_AccountSummary" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_BranchMaster" EntityType="Self.DM_BranchMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_CustomerMaster" EntityType="Self.DM_CustomerMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_CustomerNewsAndAlerts" EntityType="Self.DM_CustomerNewsAndAlerts" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_CustomerProductWiseRewardPoints" EntityType="Self.DM_CustomerProductWiseRewardPoints" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_CustomerReminderRecos" EntityType="Self.DM_CustomerReminderRecos" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_CustomerRewardPoints" EntityType="Self.DM_CustomerRewardPoints" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_CustomerRewardPointsRedeemed" EntityType="Self.DM_CustomerRewardPointsRedeemed" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_CustomerRewardSpendByCategory" EntityType="Self.DM_CustomerRewardSpendByCategory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_ExplanatoryNotes" EntityType="Self.DM_ExplanatoryNotes" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_GreenbacksMaster" EntityType="Self.DM_GreenbacksMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_HomeLoanArrears" EntityType="Self.DM_HomeLoanArrears" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_HomeLoanMaster" EntityType="Self.DM_HomeLoanMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_HomeLoanSummary" EntityType="Self.DM_HomeLoanSummary" Schema="NIS" store:Type="Tables" />
@@ -1570,9 +1813,11 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="DM_InvestmentMaster" EntityType="Self.DM_InvestmentMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_InvestmentTransaction" EntityType="Self.DM_InvestmentTransaction" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_MarketingMessages" EntityType="Self.DM_MarketingMessages" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_NewsAndAlerts" EntityType="Self.DM_NewsAndAlerts" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_PersonalLoanArrears" EntityType="Self.DM_PersonalLoanArrears" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_PersonalLoanMaster" EntityType="Self.DM_PersonalLoanMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_PersonalLoanTransaction" EntityType="Self.DM_PersonalLoanTransaction" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="DM_ReminderRecos" EntityType="Self.DM_ReminderRecos" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DM_SpecialMessages" EntityType="Self.DM_SpecialMessages" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DynamicWidget" EntityType="Self.DynamicWidget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DynamicWidgetFilterDetail" EntityType="Self.DynamicWidgetFilterDetail" Schema="NIS" store:Type="Tables" />
@@ -1597,6 +1842,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="StatementMetadata" EntityType="Self.StatementMetadata" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementMetadataArchive" EntityType="Self.StatementMetadataArchive" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="StatementPageMap" EntityType="Self.StatementPageMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="SystemActivityHistory" EntityType="Self.SystemActivityHistory" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantConfiguration" EntityType="Self.TenantConfiguration" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantContact" EntityType="Self.TenantContact" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="TenantEntity" EntityType="Self.TenantEntity" Schema="NIS" store:Type="Tables" />
@@ -1942,6 +2188,18 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="DM_HomeLoanSummaryRecord" EntityType="NISModel.DM_HomeLoanSummaryRecord" />
           <EntitySet Name="DM_HomeLoanTransactionRecord" EntityType="NISModel.DM_HomeLoanTransactionRecord" />
           <EntitySet Name="DM_MarketingMessagesRecord" EntityType="NISModel.DM_MarketingMessagesRecord" />
+          <EntitySet Name="DM_AccountAnalysisRecord" EntityType="NISModel.DM_AccountAnalysisRecord" />
+          <EntitySet Name="DM_AccountSummaryRecord" EntityType="NISModel.DM_AccountSummaryRecord" />
+          <EntitySet Name="DM_CustomerNewsAndAlertsRecord" EntityType="NISModel.DM_CustomerNewsAndAlertsRecord" />
+          <EntitySet Name="DM_CustomerProductWiseRewardPointsRecord" EntityType="NISModel.DM_CustomerProductWiseRewardPointsRecord" />
+          <EntitySet Name="DM_CustomerReminderRecosRecord" EntityType="NISModel.DM_CustomerReminderRecosRecord" />
+          <EntitySet Name="DM_CustomerRewardPointsRecord" EntityType="NISModel.DM_CustomerRewardPointsRecord" />
+          <EntitySet Name="DM_CustomerRewardPointsRedeemedRecord" EntityType="NISModel.DM_CustomerRewardPointsRedeemedRecord" />
+          <EntitySet Name="DM_CustomerRewardSpendByCategoryRecord" EntityType="NISModel.DM_CustomerRewardSpendByCategoryRecord" />
+          <EntitySet Name="DM_GreenbacksMasterRecord" EntityType="NISModel.DM_GreenbacksMasterRecord" />
+          <EntitySet Name="DM_NewsAndAlertsRecord" EntityType="NISModel.DM_NewsAndAlertsRecord" />
+          <EntitySet Name="DM_ReminderRecosRecord" EntityType="NISModel.DM_ReminderRecosRecord" />
+          <EntitySet Name="SystemActivityHistoryRecords" EntityType="NISModel.SystemActivityHistoryRecord" />
           </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -3437,6 +3695,240 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="DM_AccountAnalysisRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="InvestmentAmt1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentAmt12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_AccountSummaryRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="InvestmentAmt" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanAmt" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanAmt" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_CustomerNewsAndAlertsRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="NewsAndAlertId" Type="Int64" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_CustomerProductWiseRewardPointsRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="InvestmentGreenbacks1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InvestmentGreenbacks12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalLoanGreenbacks12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomeLoanGreenbacks12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_CustomerReminderRecosRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="ReminderId" Type="Int64" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_CustomerRewardPointsRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Greenbacks1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_CustomerRewardPointsRedeemedRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Greenbacks1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks5" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks6" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks7" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks8" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks9" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks11" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Greenbacks12" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_CustomerRewardSpendByCategoryRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Points" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_GreenbacksMasterRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JoinUsUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UseUsUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_NewsAndAlertsRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsGeneric" Type="Boolean" Nullable="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DM_ReminderRecosRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsGeneric" Type="Boolean" Nullable="false" />
+          <Property Name="IsActionable" Type="Boolean" Nullable="false" />
+          <Property Name="LabelText" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TargetURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SystemActivityHistoryRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Module" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EntityId" Type="Int64" Nullable="false" />
+          <Property Name="EntityName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubEntityId" Type="Int64" />
+          <Property Name="SubEntityName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActionTaken" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ActionTakenBy" Type="Int64" Nullable="false" />
+          <Property Name="ActionTakenByUserName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ActionTakenDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4909,6 +5401,252 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <ScalarProperty Name="Header" ColumnName="Header" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_AccountAnalysisRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_AccountAnalysisRecord">
+              <MappingFragment StoreEntitySet="DM_AccountAnalysis">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Greenbacks12" ColumnName="Greenbacks12" />
+                <ScalarProperty Name="Greenbacks11" ColumnName="Greenbacks11" />
+                <ScalarProperty Name="Greenbacks10" ColumnName="Greenbacks10" />
+                <ScalarProperty Name="Greenbacks9" ColumnName="Greenbacks9" />
+                <ScalarProperty Name="Greenbacks8" ColumnName="Greenbacks8" />
+                <ScalarProperty Name="Greenbacks7" ColumnName="Greenbacks7" />
+                <ScalarProperty Name="Greenbacks6" ColumnName="Greenbacks6" />
+                <ScalarProperty Name="Greenbacks5" ColumnName="Greenbacks5" />
+                <ScalarProperty Name="Greenbacks4" ColumnName="Greenbacks4" />
+                <ScalarProperty Name="Greenbacks3" ColumnName="Greenbacks3" />
+                <ScalarProperty Name="Greenbacks2" ColumnName="Greenbacks2" />
+                <ScalarProperty Name="Greenbacks1" ColumnName="Greenbacks1" />
+                <ScalarProperty Name="HomeLoanAmt12" ColumnName="HomeLoanAmt12" />
+                <ScalarProperty Name="HomeLoanAmt11" ColumnName="HomeLoanAmt11" />
+                <ScalarProperty Name="HomeLoanAmt10" ColumnName="HomeLoanAmt10" />
+                <ScalarProperty Name="HomeLoanAmt9" ColumnName="HomeLoanAmt9" />
+                <ScalarProperty Name="HomeLoanAmt8" ColumnName="HomeLoanAmt8" />
+                <ScalarProperty Name="HomeLoanAmt7" ColumnName="HomeLoanAmt7" />
+                <ScalarProperty Name="HomeLoanAmt6" ColumnName="HomeLoanAmt6" />
+                <ScalarProperty Name="HomeLoanAmt5" ColumnName="HomeLoanAmt5" />
+                <ScalarProperty Name="HomeLoanAmt4" ColumnName="HomeLoanAmt4" />
+                <ScalarProperty Name="HomeLoanAmt3" ColumnName="HomeLoanAmt3" />
+                <ScalarProperty Name="HomeLoanAmt2" ColumnName="HomeLoanAmt2" />
+                <ScalarProperty Name="HomeLoanAmt1" ColumnName="HomeLoanAmt1" />
+                <ScalarProperty Name="PersonalLoanAmt12" ColumnName="PersonalLoanAmt12" />
+                <ScalarProperty Name="PersonalLoanAmt11" ColumnName="PersonalLoanAmt11" />
+                <ScalarProperty Name="PersonalLoanAmt10" ColumnName="PersonalLoanAmt10" />
+                <ScalarProperty Name="PersonalLoanAmt9" ColumnName="PersonalLoanAmt9" />
+                <ScalarProperty Name="PersonalLoanAmt8" ColumnName="PersonalLoanAmt8" />
+                <ScalarProperty Name="PersonalLoanAmt7" ColumnName="PersonalLoanAmt7" />
+                <ScalarProperty Name="PersonalLoanAmt6" ColumnName="PersonalLoanAmt6" />
+                <ScalarProperty Name="PersonalLoanAmt5" ColumnName="PersonalLoanAmt5" />
+                <ScalarProperty Name="PersonalLoanAmt4" ColumnName="PersonalLoanAmt4" />
+                <ScalarProperty Name="PersonalLoanAmt3" ColumnName="PersonalLoanAmt3" />
+                <ScalarProperty Name="PersonalLoanAmt2" ColumnName="PersonalLoanAmt2" />
+                <ScalarProperty Name="PersonalLoanAmt1" ColumnName="PersonalLoanAmt1" />
+                <ScalarProperty Name="InvestmentAmt12" ColumnName="InvestmentAmt12" />
+                <ScalarProperty Name="InvestmentAmt11" ColumnName="InvestmentAmt11" />
+                <ScalarProperty Name="InvestmentAmt10" ColumnName="InvestmentAmt10" />
+                <ScalarProperty Name="InvestmentAmt9" ColumnName="InvestmentAmt9" />
+                <ScalarProperty Name="InvestmentAmt8" ColumnName="InvestmentAmt8" />
+                <ScalarProperty Name="InvestmentAmt7" ColumnName="InvestmentAmt7" />
+                <ScalarProperty Name="InvestmentAmt6" ColumnName="InvestmentAmt6" />
+                <ScalarProperty Name="InvestmentAmt5" ColumnName="InvestmentAmt5" />
+                <ScalarProperty Name="InvestmentAmt4" ColumnName="InvestmentAmt4" />
+                <ScalarProperty Name="InvestmentAmt3" ColumnName="InvestmentAmt3" />
+                <ScalarProperty Name="InvestmentAmt2" ColumnName="InvestmentAmt2" />
+                <ScalarProperty Name="InvestmentAmt1" ColumnName="InvestmentAmt1" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_AccountSummaryRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_AccountSummaryRecord">
+              <MappingFragment StoreEntitySet="DM_AccountSummary">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Greenbacks" ColumnName="Greenbacks" />
+                <ScalarProperty Name="HomeLoanAmt" ColumnName="HomeLoanAmt" />
+                <ScalarProperty Name="PersonalLoanAmt" ColumnName="PersonalLoanAmt" />
+                <ScalarProperty Name="InvestmentAmt" ColumnName="InvestmentAmt" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_CustomerNewsAndAlertsRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_CustomerNewsAndAlertsRecord">
+              <MappingFragment StoreEntitySet="DM_CustomerNewsAndAlerts">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="NewsAndAlertId" ColumnName="NewsAndAlertId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_CustomerProductWiseRewardPointsRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_CustomerProductWiseRewardPointsRecord">
+              <MappingFragment StoreEntitySet="DM_CustomerProductWiseRewardPoints">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="HomeLoanGreenbacks12" ColumnName="HomeLoanGreenbacks12" />
+                <ScalarProperty Name="HomeLoanGreenbacks11" ColumnName="HomeLoanGreenbacks11" />
+                <ScalarProperty Name="HomeLoanGreenbacks10" ColumnName="HomeLoanGreenbacks10" />
+                <ScalarProperty Name="HomeLoanGreenbacks9" ColumnName="HomeLoanGreenbacks9" />
+                <ScalarProperty Name="HomeLoanGreenbacks8" ColumnName="HomeLoanGreenbacks8" />
+                <ScalarProperty Name="HomeLoanGreenbacks7" ColumnName="HomeLoanGreenbacks7" />
+                <ScalarProperty Name="HomeLoanGreenbacks6" ColumnName="HomeLoanGreenbacks6" />
+                <ScalarProperty Name="HomeLoanGreenbacks5" ColumnName="HomeLoanGreenbacks5" />
+                <ScalarProperty Name="HomeLoanGreenbacks4" ColumnName="HomeLoanGreenbacks4" />
+                <ScalarProperty Name="HomeLoanGreenbacks3" ColumnName="HomeLoanGreenbacks3" />
+                <ScalarProperty Name="HomeLoanGreenbacks2" ColumnName="HomeLoanGreenbacks2" />
+                <ScalarProperty Name="HomeLoanGreenbacks1" ColumnName="HomeLoanGreenbacks1" />
+                <ScalarProperty Name="PersonalLoanGreenbacks12" ColumnName="PersonalLoanGreenbacks12" />
+                <ScalarProperty Name="PersonalLoanGreenbacks11" ColumnName="PersonalLoanGreenbacks11" />
+                <ScalarProperty Name="PersonalLoanGreenbacks10" ColumnName="PersonalLoanGreenbacks10" />
+                <ScalarProperty Name="PersonalLoanGreenbacks9" ColumnName="PersonalLoanGreenbacks9" />
+                <ScalarProperty Name="PersonalLoanGreenbacks8" ColumnName="PersonalLoanGreenbacks8" />
+                <ScalarProperty Name="PersonalLoanGreenbacks7" ColumnName="PersonalLoanGreenbacks7" />
+                <ScalarProperty Name="PersonalLoanGreenbacks6" ColumnName="PersonalLoanGreenbacks6" />
+                <ScalarProperty Name="PersonalLoanGreenbacks5" ColumnName="PersonalLoanGreenbacks5" />
+                <ScalarProperty Name="PersonalLoanGreenbacks4" ColumnName="PersonalLoanGreenbacks4" />
+                <ScalarProperty Name="PersonalLoanGreenbacks3" ColumnName="PersonalLoanGreenbacks3" />
+                <ScalarProperty Name="PersonalLoanGreenbacks2" ColumnName="PersonalLoanGreenbacks2" />
+                <ScalarProperty Name="PersonalLoanGreenbacks1" ColumnName="PersonalLoanGreenbacks1" />
+                <ScalarProperty Name="InvestmentGreenbacks12" ColumnName="InvestmentGreenbacks12" />
+                <ScalarProperty Name="InvestmentGreenbacks11" ColumnName="InvestmentGreenbacks11" />
+                <ScalarProperty Name="InvestmentGreenbacks10" ColumnName="InvestmentGreenbacks10" />
+                <ScalarProperty Name="InvestmentGreenbacks9" ColumnName="InvestmentGreenbacks9" />
+                <ScalarProperty Name="InvestmentGreenbacks8" ColumnName="InvestmentGreenbacks8" />
+                <ScalarProperty Name="InvestmentGreenbacks7" ColumnName="InvestmentGreenbacks7" />
+                <ScalarProperty Name="InvestmentGreenbacks6" ColumnName="InvestmentGreenbacks6" />
+                <ScalarProperty Name="InvestmentGreenbacks5" ColumnName="InvestmentGreenbacks5" />
+                <ScalarProperty Name="InvestmentGreenbacks4" ColumnName="InvestmentGreenbacks4" />
+                <ScalarProperty Name="InvestmentGreenbacks3" ColumnName="InvestmentGreenbacks3" />
+                <ScalarProperty Name="InvestmentGreenbacks2" ColumnName="InvestmentGreenbacks2" />
+                <ScalarProperty Name="InvestmentGreenbacks1" ColumnName="InvestmentGreenbacks1" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_CustomerReminderRecosRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_CustomerReminderRecosRecord">
+              <MappingFragment StoreEntitySet="DM_CustomerReminderRecos">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ReminderId" ColumnName="ReminderId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_CustomerRewardPointsRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_CustomerRewardPointsRecord">
+              <MappingFragment StoreEntitySet="DM_CustomerRewardPoints">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Greenbacks12" ColumnName="Greenbacks12" />
+                <ScalarProperty Name="Greenbacks11" ColumnName="Greenbacks11" />
+                <ScalarProperty Name="Greenbacks10" ColumnName="Greenbacks10" />
+                <ScalarProperty Name="Greenbacks9" ColumnName="Greenbacks9" />
+                <ScalarProperty Name="Greenbacks8" ColumnName="Greenbacks8" />
+                <ScalarProperty Name="Greenbacks7" ColumnName="Greenbacks7" />
+                <ScalarProperty Name="Greenbacks6" ColumnName="Greenbacks6" />
+                <ScalarProperty Name="Greenbacks5" ColumnName="Greenbacks5" />
+                <ScalarProperty Name="Greenbacks4" ColumnName="Greenbacks4" />
+                <ScalarProperty Name="Greenbacks3" ColumnName="Greenbacks3" />
+                <ScalarProperty Name="Greenbacks2" ColumnName="Greenbacks2" />
+                <ScalarProperty Name="Greenbacks1" ColumnName="Greenbacks1" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_CustomerRewardPointsRedeemedRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_CustomerRewardPointsRedeemedRecord">
+              <MappingFragment StoreEntitySet="DM_CustomerRewardPointsRedeemed">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Greenbacks12" ColumnName="Greenbacks12" />
+                <ScalarProperty Name="Greenbacks11" ColumnName="Greenbacks11" />
+                <ScalarProperty Name="Greenbacks10" ColumnName="Greenbacks10" />
+                <ScalarProperty Name="Greenbacks9" ColumnName="Greenbacks9" />
+                <ScalarProperty Name="Greenbacks8" ColumnName="Greenbacks8" />
+                <ScalarProperty Name="Greenbacks7" ColumnName="Greenbacks7" />
+                <ScalarProperty Name="Greenbacks6" ColumnName="Greenbacks6" />
+                <ScalarProperty Name="Greenbacks5" ColumnName="Greenbacks5" />
+                <ScalarProperty Name="Greenbacks4" ColumnName="Greenbacks4" />
+                <ScalarProperty Name="Greenbacks3" ColumnName="Greenbacks3" />
+                <ScalarProperty Name="Greenbacks2" ColumnName="Greenbacks2" />
+                <ScalarProperty Name="Greenbacks1" ColumnName="Greenbacks1" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_CustomerRewardSpendByCategoryRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_CustomerRewardSpendByCategoryRecord">
+              <MappingFragment StoreEntitySet="DM_CustomerRewardSpendByCategory">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_GreenbacksMasterRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_GreenbacksMasterRecord">
+              <MappingFragment StoreEntitySet="DM_GreenbacksMaster">
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="UseUsUrl" ColumnName="UseUsUrl" />
+                <ScalarProperty Name="JoinUsUrl" ColumnName="JoinUsUrl" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_NewsAndAlertsRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_NewsAndAlertsRecord">
+              <MappingFragment StoreEntitySet="DM_NewsAndAlerts">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="IsGeneric" ColumnName="IsGeneric" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DM_ReminderRecosRecord">
+            <EntityTypeMapping TypeName="NISModel.DM_ReminderRecosRecord">
+              <MappingFragment StoreEntitySet="DM_ReminderRecos">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="TargetURL" ColumnName="TargetURL" />
+                <ScalarProperty Name="LabelText" ColumnName="LabelText" />
+                <ScalarProperty Name="IsActionable" ColumnName="IsActionable" />
+                <ScalarProperty Name="IsGeneric" ColumnName="IsGeneric" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemActivityHistoryRecords">
+            <EntityTypeMapping TypeName="NISModel.SystemActivityHistoryRecord">
+              <MappingFragment StoreEntitySet="SystemActivityHistory">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ActionTakenDate" ColumnName="ActionTakenDate" />
+                <ScalarProperty Name="ActionTakenByUserName" ColumnName="ActionTakenByUserName" />
+                <ScalarProperty Name="ActionTakenBy" ColumnName="ActionTakenBy" />
+                <ScalarProperty Name="ActionTaken" ColumnName="ActionTaken" />
+                <ScalarProperty Name="SubEntityName" ColumnName="SubEntityName" />
+                <ScalarProperty Name="SubEntityId" ColumnName="SubEntityId" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="Module" ColumnName="Module" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

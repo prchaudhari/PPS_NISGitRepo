@@ -83,6 +83,18 @@
         <EntityTypeShape EntityType="NISModel.DM_HomeLoanSummaryRecord" Width="1.5" PointX="2.75" PointY="11.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.DM_HomeLoanTransactionRecord" Width="1.5" PointX="4.75" PointY="11.125" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.DM_MarketingMessagesRecord" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_AccountAnalysisRecord" Width="1.5" PointX="8.75" PointY="11.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_AccountSummaryRecord" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerNewsAndAlertsRecord" Width="1.5" PointX="2.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerProductWiseRewardPointsRecord" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerReminderRecosRecord" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardPointsRecord" Width="1.5" PointX="8.75" PointY="12.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardPointsRedeemedRecord" Width="1.5" PointX="0.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardSpendByCategoryRecord" Width="1.5" PointX="2.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_GreenbacksMasterRecord" Width="1.5" PointX="8.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_NewsAndAlertsRecord" Width="1.5" PointX="4.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.DM_ReminderRecosRecord" Width="1.5" PointX="6.75" PointY="11.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.SystemActivityHistoryRecord" Width="1.5" PointX="9.125" PointY="0.75" IsExpanded="false" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

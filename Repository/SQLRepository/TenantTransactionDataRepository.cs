@@ -60,6 +60,8 @@ namespace nIS
 
         #region Public Methods
 
+        #region Public methods for Financial Tenant
+
         /// <summary>
         /// This method gets the specified list of customer master from tenant transaction data repository.
         /// </summary>
@@ -439,7 +441,9 @@ namespace nIS
             return reminders;
         }
 
-        #region Nedbank Tenant
+        #endregion
+
+        #region Public methods for Nedbank Tenant
 
         /// <summary>
         /// This method gets the specified list of customer master from Dm customer master repository.
@@ -1140,12 +1144,622 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// This method gets the specified list of customer account summaries from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account summary records
+        /// </returns>
+        public IList<DM_AccountsSummary> GET_DM_AccountSummaries(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_AccountsSummary> records = new List<DM_AccountsSummary>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_AccountSummaryRecord.Where(whereClause).ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_AccountsSummary()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE,
+                                TotalAmount = item.InvestmentAmt
+                            });
+
+                            records.Add(new DM_AccountsSummary()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.PERSONAL_LOAN_PAGE_TYPE,
+                                TotalAmount = item.PersonalLoanAmt
+                            });
+
+                            records.Add(new DM_AccountsSummary()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.HOME_LOAN_PAGE_TYPE,
+                                TotalAmount = item.HomeLoanAmt
+                            });
+
+                            records.Add(new DM_AccountsSummary()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = "Greenbacks rewards points",
+                                TotalAmount = item.Greenbacks
+                            });
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer account analysis records from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer account analysis records
+        /// </returns>
+        public IList<DM_AccountAnanlysis> GET_DM_AccountAnalysisDetails(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_AccountAnanlysis> records = new List<DM_AccountAnanlysis>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_AccountAnalysisRecord.Where(whereClause).ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_AccountAnanlysis()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE,
+                                MonthwiseAmount = this.Get_MonthwiseAccountAnanlyses(item, HtmlConstants.INVESTMENT_PAGE_TYPE).ToList()
+                            });
+
+                            records.Add(new DM_AccountAnanlysis()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.PERSONAL_LOAN_PAGE_TYPE,
+                                MonthwiseAmount = this.Get_MonthwiseAccountAnanlyses(item, HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList()
+                            });
+
+                            records.Add(new DM_AccountAnanlysis()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.HOME_LOAN_PAGE_TYPE,
+                                MonthwiseAmount = this.Get_MonthwiseAccountAnanlyses(item, HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList()
+                            });
+
+                            //records.Add(new DM_AccountAnanlysis()
+                            //{
+                            //    CustomerId = item.CustomerId,
+                            //    BatchId = item.BatchId,
+                            //    AccountType = HtmlConstants.GREENBACKS_PAGE_TYPE,
+                            //    MonthwiseAmount = this.Get_MonthwiseAccountAnanlyses(item, HtmlConstants.GREENBACKS_PAGE_TYPE).ToList()
+                            //});
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of reminder and recommendation records from repository.
+        /// </summary>
+        /// <param name="ReminderId">The reminder identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of reminder and recommendation records
+        /// </returns>
+        public IList<DM_ReminderAndRecommendation> GET_DM_ReminderAndRecommendations(long ReminderId, string tenantCode)
+        {
+            IList<DM_ReminderAndRecommendation> records = new List<DM_ReminderAndRecommendation>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    List<DM_ReminderRecosRecord> dbRecords = new List<DM_ReminderRecosRecord>();
+                    if (ReminderId > 0)
+                    {
+                        dbRecords = nISEntitiesDataContext.DM_ReminderRecosRecord.Where(it => it.Id == ReminderId && it.TenantCode == tenantCode).ToList();
+                    }
+                    else
+                    {
+                        dbRecords = nISEntitiesDataContext.DM_ReminderRecosRecord.ToList();
+                    }
+
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_ReminderAndRecommendation()
+                            {
+                                Identifier = item.Id,
+                                Description = item.Description,
+                                IsGeneric = item.IsGeneric,
+                                IsActionable = item.IsActionable,
+                                ActionTitle = item.LabelText,
+                                ActionUrl = item.TargetURL,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer reminder and recommendation records from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer reminder and recommendation records
+        /// </returns>
+        public IList<DM_CustomerReminderAndRecommendation> GET_DM_CustomerReminderAndRecommendations(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_CustomerReminderAndRecommendation> records = new List<DM_CustomerReminderAndRecommendation>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_CustomerReminderRecosRecord.Where(whereClause).ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_CustomerReminderAndRecommendation()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                reminderAndRecommendation = this.GET_DM_ReminderAndRecommendations(item.ReminderId, tenantCode)?.FirstOrDefault()
+                            });
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of news and alerts records from repository.
+        /// </summary>
+        /// <param name="NewsAndAlertId">The news/alert identifier</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of news and alerts records
+        /// </returns>
+        public IList<DM_NewsAndAlerts> GET_DM_NewsAndAlerts(long NewsAndAlertId, string tenantCode)
+        {
+            IList<DM_NewsAndAlerts> records = new List<DM_NewsAndAlerts>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    List<DM_NewsAndAlertsRecord> dbRecords = new List<DM_NewsAndAlertsRecord>();
+                    if (NewsAndAlertId > 0)
+                    {
+                        dbRecords = nISEntitiesDataContext.DM_NewsAndAlertsRecord.Where(it => it.Id == NewsAndAlertId && it.TenantCode == tenantCode).ToList();
+                    }
+                    else
+                    {
+                        dbRecords = nISEntitiesDataContext.DM_NewsAndAlertsRecord.ToList();
+                    }
+
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_NewsAndAlerts()
+                            {
+                                Identifier = item.Id,
+                                Description = item.Description,
+                                IsGeneric = item.IsGeneric,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the specified list of customer news and alerts records from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer news and alerts records
+        /// </returns>
+        public IList<DM_CustomerNewsAndAlert> GET_DM_CustomerNewsAndAlert(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_CustomerNewsAndAlert> records = new List<DM_CustomerNewsAndAlert>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_CustomerNewsAndAlertsRecord.Where(whereClause).ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_CustomerNewsAndAlert()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                NewsAndAlert = this.GET_DM_NewsAndAlerts(item.NewsAndAlertId, tenantCode)?.FirstOrDefault()
+                            });
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the greenbacks master details from repository.
+        /// </summary>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the greenbacks master details record
+        /// </returns>
+        public IList<DM_GreenbacksMaster> GET_DM_GreenbacksMasterDetails(string tenantCode)
+        {
+            IList<DM_GreenbacksMaster> records = new List<DM_GreenbacksMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_GreenbacksMasterRecord.ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_GreenbacksMaster()
+                            {
+                                Identifier = item.Id,
+                                JoinUsUrl = item.JoinUsUrl,
+                                UseUsUrl = item.UseUsUrl,
+                                ContactNumber = item.ContactNumber
+                            });
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the customer greenbacks reward points from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the customer greenbacks reward points records
+        /// </returns>
+        public IList<DM_GreenbacksRewardPoints> GET_DM_GreenbacksRewardPoints(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_GreenbacksRewardPoints> records = new List<DM_GreenbacksRewardPoints>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_CustomerRewardPointsRecord.Where(whereClause).ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        var res = 0.0m;
+                        dbRecords.ForEach(item =>
+                        {
+                            if (!string.IsNullOrEmpty(item.Greenbacks1) && item.Greenbacks1 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Jan", RewardPoint = decimal.TryParse(item.Greenbacks1, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks2) && item.Greenbacks2 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Feb", RewardPoint = decimal.TryParse(item.Greenbacks2, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks3) && item.Greenbacks3 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Mar", RewardPoint = decimal.TryParse(item.Greenbacks3, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks4) && item.Greenbacks4 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Apr", RewardPoint = decimal.TryParse(item.Greenbacks4, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks5) && item.Greenbacks5 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "May", RewardPoint = decimal.TryParse(item.Greenbacks5, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks6) && item.Greenbacks6 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Jun", RewardPoint = decimal.TryParse(item.Greenbacks6, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks7) && item.Greenbacks7 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Jul", RewardPoint = decimal.TryParse(item.Greenbacks7, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks8) && item.Greenbacks8 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Aug", RewardPoint = decimal.TryParse(item.Greenbacks8, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks9) && item.Greenbacks9 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Sep", RewardPoint = decimal.TryParse(item.Greenbacks9, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks10) && item.Greenbacks10 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Oct", RewardPoint = decimal.TryParse(item.Greenbacks10, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks11) && item.Greenbacks11 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Nov", RewardPoint = decimal.TryParse(item.Greenbacks11, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks12) && item.Greenbacks12 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPoints() { Month = "Dec", RewardPoint = decimal.TryParse(item.Greenbacks12, out res) ? res : 0 });
+                            }
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the customer redeemed greenbacks reward points from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the customer redeemed greenbacks reward points records
+        /// </returns>
+        public IList<DM_GreenbacksRewardPointsRedeemed> GET_DM_GreenbacksRewardPointsRedeemed(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_GreenbacksRewardPointsRedeemed> records = new List<DM_GreenbacksRewardPointsRedeemed>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_CustomerRewardPointsRedeemedRecord.Where(whereClause).ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        var res = 0.0m;
+                        dbRecords.ForEach(item =>
+                        {
+                            if (!string.IsNullOrEmpty(item.Greenbacks1) && item.Greenbacks1 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Jan", RedeemedPoints = decimal.TryParse(item.Greenbacks1, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks2) && item.Greenbacks2 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Feb", RedeemedPoints = decimal.TryParse(item.Greenbacks2, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks3) && item.Greenbacks3 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Mar", RedeemedPoints = decimal.TryParse(item.Greenbacks3, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks4) && item.Greenbacks4 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Apr", RedeemedPoints = decimal.TryParse(item.Greenbacks4, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks5) && item.Greenbacks5 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "May", RedeemedPoints = decimal.TryParse(item.Greenbacks5, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks6) && item.Greenbacks6 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Jun", RedeemedPoints = decimal.TryParse(item.Greenbacks6, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks7) && item.Greenbacks7 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Jul", RedeemedPoints = decimal.TryParse(item.Greenbacks7, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks8) && item.Greenbacks8 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Aug", RedeemedPoints = decimal.TryParse(item.Greenbacks8, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks9) && item.Greenbacks9 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Sep", RedeemedPoints = decimal.TryParse(item.Greenbacks9, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks10) && item.Greenbacks10 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Oct", RedeemedPoints = decimal.TryParse(item.Greenbacks10, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks11) && item.Greenbacks11 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Nov", RedeemedPoints = decimal.TryParse(item.Greenbacks11, out res) ? res : 0 });
+                            }
+                            if (!string.IsNullOrEmpty(item.Greenbacks12) && item.Greenbacks12 != "0")
+                            {
+                                records.Add(new DM_GreenbacksRewardPointsRedeemed() { Month = "Dec", RedeemedPoints = decimal.TryParse(item.Greenbacks12, out res) ? res : 0 });
+                            }
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the customer's product monthwise reward points earned data from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the customer's product monthwise reward points earned records
+        /// </returns>
+        public IList<DM_CustomerProductWiseRewardPoints> GET_DM_CustomerProductWiseRewardPoints(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_CustomerProductWiseRewardPoints> records = new List<DM_CustomerProductWiseRewardPoints>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_CustomerProductWiseRewardPointsRecord.Where(whereClause).ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_CustomerProductWiseRewardPoints()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.INVESTMENT_PAGE_TYPE,
+                                MonthwiseRewardPoints = this.Get_MonthwiseRewardPoints(item, HtmlConstants.INVESTMENT_PAGE_TYPE).ToList(),
+                                TenantCode = item.TenantCode
+                            });
+
+                            records.Add(new DM_CustomerProductWiseRewardPoints()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.HOME_LOAN_PAGE_TYPE,
+                                MonthwiseRewardPoints = this.Get_MonthwiseRewardPoints(item, HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList(),
+                                TenantCode = item.TenantCode
+                            });
+
+                            records.Add(new DM_CustomerProductWiseRewardPoints()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                AccountType = HtmlConstants.PERSONAL_LOAN_PAGE_TYPE,
+                                MonthwiseRewardPoints = this.Get_MonthwiseRewardPoints(item, HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList(),
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method gets the category wise customer's spend reward points from repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the category wise customer's spend reward points records
+        /// </returns>
+        public IList<DM_CustomerRewardSpendByCategory> GET_DM_CustomerRewardSpendByCategory(CustomerSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_CustomerRewardSpendByCategory> records = new List<DM_CustomerRewardSpendByCategory>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForDmCustomer(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    var dbRecords = nISEntitiesDataContext.DM_CustomerRewardSpendByCategoryRecord.Where(whereClause).ToList();
+                    if (dbRecords != null && dbRecords.Count > 0)
+                    {
+                        var res = 0.0m;
+                        dbRecords.ForEach(item =>
+                        {
+                            records.Add(new DM_CustomerRewardSpendByCategory()
+                            {
+                                CustomerId = item.CustomerId,
+                                BatchId = item.BatchId,
+                                Category = item.Category,
+                                SpendReward = decimal.TryParse(item.Points, out res) ? res : 0,
+                                TenantCode = item.TenantCode,
+                                Identifier = item.Id
+                            });
+                        });
+                    }
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #endregion
 
         #region Private Methods
 
+        #region Private methods for Financial Tenant
         private string WhereClauseGeneratorForCustomer(CustomerSearchParameter searchParameter, string tenantCode)
         {
             StringBuilder queryString = new StringBuilder();
@@ -1223,6 +1837,10 @@ namespace nIS
             queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
+
+        #endregion
+
+        #region Private methods for Nedbank Tenant
 
         private string WhereClauseGeneratorForDmCustomer(CustomerSearchParameter searchParameter, string tenantCode)
         {
@@ -1410,6 +2028,397 @@ namespace nIS
             queryString.Append(string.Format(" and TenantCode.Equals(\"{0}\") ", tenantCode));
             return queryString.ToString();
         }
+
+        private IList<DM_MonthwiseAccountAnanlysis> Get_MonthwiseAccountAnanlyses(DM_AccountAnalysisRecord _AccountAnanlysis, string dataFor)
+        {
+            IList<DM_MonthwiseAccountAnanlysis> records = new List<DM_MonthwiseAccountAnanlysis>();
+            try
+            {
+                decimal res = 0.0m;
+                switch (dataFor)
+                {
+                    case HtmlConstants.INVESTMENT_PAGE_TYPE:
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt1) && _AccountAnanlysis.InvestmentAmt1 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jan", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt1, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt2) && _AccountAnanlysis.InvestmentAmt2 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Feb", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt2, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt3) && _AccountAnanlysis.InvestmentAmt3 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Mar", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt3, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt4) && _AccountAnanlysis.InvestmentAmt4 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Apr", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt4, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt5) && _AccountAnanlysis.InvestmentAmt5 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "May", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt5, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt6) && _AccountAnanlysis.InvestmentAmt6 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jun", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt6, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt7) && _AccountAnanlysis.InvestmentAmt7 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jul", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt7, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt8) && _AccountAnanlysis.InvestmentAmt8 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Aug", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt8, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt9) && _AccountAnanlysis.InvestmentAmt9 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Sep", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt9, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt10) && _AccountAnanlysis.InvestmentAmt10 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Oct", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt10, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt11) && _AccountAnanlysis.InvestmentAmt11 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Nov", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt11, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.InvestmentAmt12) && _AccountAnanlysis.InvestmentAmt12 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Dec", Amount = decimal.TryParse(_AccountAnanlysis.InvestmentAmt12, out res) ? res : 0 });
+                        }
+                        break;
+
+                    case HtmlConstants.HOME_LOAN_PAGE_TYPE:
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt1) && _AccountAnanlysis.HomeLoanAmt1 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jan", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt1, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt2) && _AccountAnanlysis.HomeLoanAmt2 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Feb", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt2, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt3) && _AccountAnanlysis.HomeLoanAmt3 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Mar", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt3, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt4) && _AccountAnanlysis.HomeLoanAmt4 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Apr", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt4, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt5) && _AccountAnanlysis.HomeLoanAmt5 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "May", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt5, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt6) && _AccountAnanlysis.HomeLoanAmt6 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jun", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt6, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt7) && _AccountAnanlysis.HomeLoanAmt7 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jul", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt7, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt8) && _AccountAnanlysis.HomeLoanAmt8 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Aug", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt8, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt9) && _AccountAnanlysis.HomeLoanAmt9 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Sep", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt9, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt10) && _AccountAnanlysis.HomeLoanAmt10 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Oct", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt10, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt11) && _AccountAnanlysis.HomeLoanAmt11 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Nov", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt11, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.HomeLoanAmt12) && _AccountAnanlysis.HomeLoanAmt12 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Dec", Amount = decimal.TryParse(_AccountAnanlysis.HomeLoanAmt12, out res) ? res : 0 });
+                        }
+                        break;
+
+                    case HtmlConstants.PERSONAL_LOAN_PAGE_TYPE:
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt1) && _AccountAnanlysis.PersonalLoanAmt1 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jan", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt1, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt2) && _AccountAnanlysis.PersonalLoanAmt2 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Feb", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt2, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt3) && _AccountAnanlysis.PersonalLoanAmt3 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Mar", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt3, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt4) && _AccountAnanlysis.PersonalLoanAmt4 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Apr", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt4, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt5) && _AccountAnanlysis.PersonalLoanAmt5 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "May", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt5, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt6) && _AccountAnanlysis.PersonalLoanAmt6 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jun", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt6, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt7) && _AccountAnanlysis.PersonalLoanAmt7 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jul", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt7, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt8) && _AccountAnanlysis.PersonalLoanAmt8 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Aug", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt8, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt9) && _AccountAnanlysis.PersonalLoanAmt9 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Sep", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt9, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt10) && _AccountAnanlysis.PersonalLoanAmt10 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Oct", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt10, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt11) && _AccountAnanlysis.PersonalLoanAmt11 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Nov", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt11, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.PersonalLoanAmt12) && _AccountAnanlysis.PersonalLoanAmt12 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Dec", Amount = decimal.TryParse(_AccountAnanlysis.PersonalLoanAmt12, out res) ? res : 0 });
+                        }
+                        break;
+
+                    case HtmlConstants.GREENBACKS_PAGE_TYPE:
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks1) && _AccountAnanlysis.Greenbacks1 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jan", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks1, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks2) && _AccountAnanlysis.Greenbacks2 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Feb", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks2, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks3) && _AccountAnanlysis.Greenbacks3 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Mar", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks3, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks4) && _AccountAnanlysis.Greenbacks4 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Apr", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks4, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks5) && _AccountAnanlysis.Greenbacks5 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "May", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks5, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks6) && _AccountAnanlysis.Greenbacks6 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jun", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks6, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks7) && _AccountAnanlysis.Greenbacks7 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Jul", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks7, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks8) && _AccountAnanlysis.Greenbacks8 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Aug", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks8, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks9) && _AccountAnanlysis.Greenbacks9 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Sep", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks9, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks10) && _AccountAnanlysis.Greenbacks10 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Oct", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks10, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks11) && _AccountAnanlysis.Greenbacks11 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Nov", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks11, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(_AccountAnanlysis.Greenbacks12) && _AccountAnanlysis.Greenbacks12 != "0")
+                        {
+                            records.Add(new DM_MonthwiseAccountAnanlysis() { Month = "Dec", Amount = decimal.TryParse(_AccountAnanlysis.Greenbacks12, out res) ? res : 0 });
+                        }
+                        break;
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private IList<DM_MonthwiseProductRewardPoints> Get_MonthwiseRewardPoints(DM_CustomerProductWiseRewardPointsRecord rp, string dataFor)
+        {
+            IList<DM_MonthwiseProductRewardPoints> records = new List<DM_MonthwiseProductRewardPoints>();
+            try
+            {
+                decimal res = 0.0m;
+                switch (dataFor)
+                {
+                    case HtmlConstants.INVESTMENT_PAGE_TYPE:
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks1) && rp.InvestmentGreenbacks1 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jan", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks1, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks2) && rp.InvestmentGreenbacks2 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Feb", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks2, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks3) && rp.InvestmentGreenbacks3 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Mar", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks3, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks4) && rp.InvestmentGreenbacks4 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Apr", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks4, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks5) && rp.InvestmentGreenbacks5 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "May", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks5, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks6) && rp.InvestmentGreenbacks6 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jun", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks6, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks7) && rp.InvestmentGreenbacks7 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jul", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks7, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks8) && rp.InvestmentGreenbacks8 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Aug", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks8, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks9) && rp.InvestmentGreenbacks9 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Sep", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks9, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks10) && rp.InvestmentGreenbacks10 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Oct", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks10, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks11) && rp.InvestmentGreenbacks11 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Nov", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks11, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.InvestmentGreenbacks12) && rp.InvestmentGreenbacks12 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Dec", RewardPoint = decimal.TryParse(rp.InvestmentGreenbacks12, out res) ? res : 0 });
+                        }
+                        break;
+
+                    case HtmlConstants.HOME_LOAN_PAGE_TYPE:
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks1) && rp.HomeLoanGreenbacks1 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jan", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks1, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks2) && rp.HomeLoanGreenbacks2 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Feb", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks2, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks3) && rp.HomeLoanGreenbacks3 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Mar", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks3, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks4) && rp.HomeLoanGreenbacks4 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Apr", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks4, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks5) && rp.HomeLoanGreenbacks5 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "May", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks5, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks6) && rp.HomeLoanGreenbacks6 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jun", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks6, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks7) && rp.HomeLoanGreenbacks7 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jul", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks7, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks8) && rp.HomeLoanGreenbacks8 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Aug", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks8, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks9) && rp.HomeLoanGreenbacks9 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Sep", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks9, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks10) && rp.HomeLoanGreenbacks10 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Oct", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks10, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks11) && rp.HomeLoanGreenbacks11 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Nov", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks11, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.HomeLoanGreenbacks12) && rp.HomeLoanGreenbacks12 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Dec", RewardPoint = decimal.TryParse(rp.HomeLoanGreenbacks12, out res) ? res : 0 });
+                        }
+                        break;
+
+                    case HtmlConstants.PERSONAL_LOAN_PAGE_TYPE:
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks1) && rp.PersonalLoanGreenbacks1 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jan", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks1, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks2) && rp.PersonalLoanGreenbacks2 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Feb", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks2, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks3) && rp.PersonalLoanGreenbacks3 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Mar", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks3, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks4) && rp.PersonalLoanGreenbacks4 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Apr", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks4, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks5) && rp.PersonalLoanGreenbacks5 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "May", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks5, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks6) && rp.PersonalLoanGreenbacks6 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jun", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks6, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks7) && rp.PersonalLoanGreenbacks7 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Jul", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks7, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks8) && rp.PersonalLoanGreenbacks8 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Aug", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks8, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks9) && rp.PersonalLoanGreenbacks9 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Sep", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks9, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks10) && rp.PersonalLoanGreenbacks10 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Oct", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks10, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks11) && rp.PersonalLoanGreenbacks11 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Nov", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks11, out res) ? res : 0 });
+                        }
+                        if (!string.IsNullOrEmpty(rp.PersonalLoanGreenbacks12) && rp.PersonalLoanGreenbacks12 != "0")
+                        {
+                            records.Add(new DM_MonthwiseProductRewardPoints() { Month = "Dec", RewardPoint = decimal.TryParse(rp.PersonalLoanGreenbacks12, out res) ? res : 0 });
+                        }
+                        break;
+                }
+                return records;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// This method help to set and validate connection string

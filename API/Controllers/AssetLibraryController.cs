@@ -510,58 +510,44 @@ namespace nIS
         [Route("Asset/Override")]
         public bool Override()
         {
+            bool uploadStatus = false;
             try
             {
-                bool uploadStatus = false;
-                string fileName = string.Empty;
-                var filePath = string.Empty;
-                string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                long assetLibraryIdentifier = 0;
-                long assetIdentifier = 0;
-                bool isFolderUpload = false;
                 HttpResponseMessage result = null;
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 var httpRequest = HttpContext.Current.Request;
-
-
-                if (httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault() == string.Empty
-                    || httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault() == "0"
-                    )
+                if (httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault() == string.Empty || httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault() == "0")
                 {
                     throw new InvalidAssetLibraryException(tenantCode);
                 }
-                if (httpRequest.Form.GetValues("AssetIdentifier").FirstOrDefault() == string.Empty
-                   || httpRequest.Form.GetValues("AssetIdentifier").FirstOrDefault() == "0"
-                   )
+                if (httpRequest.Form.GetValues("AssetIdentifier").FirstOrDefault() == string.Empty || httpRequest.Form.GetValues("AssetIdentifier").FirstOrDefault() == "0")
                 {
                     throw new AssetNotFoundException(tenantCode);
                 }
-                if (httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault() == string.Empty
-                   || httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault() == "0"
-                   )
+                if (httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault() == string.Empty || httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault() == "0")
                 {
                     throw new UserNotFoundException(tenantCode);
                 }
-                assetIdentifier = long.Parse(httpRequest.Form.GetValues("AssetIdentifier").FirstOrDefault());
-                assetLibraryIdentifier = long.Parse(httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault());
-                isFolderUpload = bool.Parse(httpRequest.Form.GetValues("IsFolderUpload").FirstOrDefault());
+
+                var assetIdentifier = long.Parse(httpRequest.Form.GetValues("AssetIdentifier").FirstOrDefault());
+                var assetLibraryIdentifier = long.Parse(httpRequest.Form.GetValues(ModelConstant.ASSET_LIBRARY_IDENTIFIER).FirstOrDefault());
+                var isFolderUpload = bool.Parse(httpRequest.Form.GetValues("IsFolderUpload").FirstOrDefault());
                 long lastUpdatedBy = long.Parse(httpRequest.Form.GetValues("LastUpdatedBy").FirstOrDefault());
 
                 if (httpRequest.Files.Count > 0)
                 {
                     int count = 0;
-                    Asset oldAsset = new Asset();
                     AssetSearchParameter assetSearchParameter = new AssetSearchParameter();
                     assetSearchParameter.Identifier = assetIdentifier.ToString();
                     assetSearchParameter.SortParameter.SortColumn = "Id";
-                    oldAsset = this.assetLibraryManager.GetAssets(assetSearchParameter, tenantCode).FirstOrDefault();
+                    var oldAsset = this.assetLibraryManager.GetAssets(assetSearchParameter, tenantCode).FirstOrDefault();
                     var docfiles = new List<string>();
                     foreach (string file in httpRequest.Files)
                     {
                         IList<Asset> assets = new List<Asset>();
                         var postedFile = httpRequest.Files[count];
                         string basePath = string.Empty;
-                        TenantConfiguration tenantConfiguration = new TenantConfiguration();
-                        tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
+                        var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
                         if (tenantConfiguration != null && !string.IsNullOrEmpty(tenantConfiguration.AssetPath))
                         {
                             basePath = tenantConfiguration.AssetPath;
@@ -570,6 +556,7 @@ namespace nIS
                         {
                             basePath = HttpContext.Current.Server.MapPath("~");
                         }
+
                         string path = string.Empty;
                         if (!basePath.EndsWith(ModelConstant.ASSETPATHSLASH))
                         {
@@ -581,26 +568,22 @@ namespace nIS
                         }
                         if (!Directory.Exists(path))
                         {
-                            //If No any such directory then creates the new one based on tenant code
                             Directory.CreateDirectory(path);
                         }
+                        
                         var assetPath = path + ModelConstant.ASSETS + ModelConstant.ASSETPATHSLASH + assetLibraryIdentifier + ModelConstant.ASSETPATHSLASH;
-
                         if (!Directory.Exists(assetPath))
                         {
-                            //If No any such directory then creates the new one based on tenant code
                             Directory.CreateDirectory(assetPath);
                         }
-                        fileName = postedFile.FileName;
-
+                        
+                        var fileName = postedFile.FileName;
                         if (isFolderUpload)
                         {
-                            fileName = fileName.Split('/')[1];  // demo/sampleDMP4.mp4
+                            fileName = fileName.Split('/')[1];
                         }
-                        filePath = assetPath + fileName;
-
+                        var filePath = assetPath + fileName;
                         var items = postedFile.FileName.Split('.');
-
                         string fileExtension = items[items.Length - 1];
                         fileName = fileName.Replace(fileExtension, fileExtension.ToLower());
                         assets.Add(new Asset()
@@ -620,9 +603,7 @@ namespace nIS
                         }
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);
-
                         uploadStatus = true;
-
                         count++;
                     }
                     result = Request.CreateResponse(HttpStatusCode.Created, docfiles);
@@ -631,7 +612,6 @@ namespace nIS
                 {
                     result = Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
-
                 return uploadStatus;
             }
             catch (Exception exception)

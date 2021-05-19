@@ -940,7 +940,7 @@ namespace nIS
                                                                 break;
 
                                                             case HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_NAME:
-                                                                pageHtmlContent.Append(this.GreenbacksContactUsWidgetFormatting(pageWidget, counter));
+                                                                pageHtmlContent.Append(this.GreenbacksContactUsWidgetFormatting(pageWidget, counter, tenantCode));
                                                                 break;
 
                                                             case HtmlConstants.NEDBANK_YTD_REWARDS_POINTS_BAR_GRAPH_WIDGET_NAME:
@@ -4441,10 +4441,23 @@ namespace nIS
             return htmlwidget.ToString();
         }
 
-        private string GreenbacksContactUsWidgetFormatting(PageWidget pageWidget, int counter)
+        private string GreenbacksContactUsWidgetFormatting(PageWidget pageWidget, int counter, string tenantCode)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_HTML);
+            var htmlwidget = new StringBuilder(HtmlConstants.NEDBANK_GREENBACKS_CONTACT_US_WIDGET_HTML_SMT);
+            var greenbackmaster = this.tenantTransactionDataManager.GET_DM_GreenbacksMasterDetails(tenantCode)?.FirstOrDefault();
+            if (greenbackmaster != null)
+            {
+                htmlwidget.Replace("{{JoinGreenbackUrl}}", (!string.IsNullOrEmpty(greenbackmaster.JoinUsUrl) ? greenbackmaster.JoinUsUrl : "javascript:void(0)"));
+                htmlwidget.Replace("{{UseGreenbackUrl}}", (!string.IsNullOrEmpty(greenbackmaster.UseUsUrl) ? greenbackmaster.JoinUsUrl : "javascript:void(0)"));
+                htmlwidget.Replace("{{SupportDeskContactNumber}}", (!string.IsNullOrEmpty(greenbackmaster.ContactNumber) ? greenbackmaster.ContactNumber : "0860 553 111"));
+            }
+            else
+            {
+                htmlwidget.Replace("{{JoinGreenbackUrl}}", "javascript:void(0)");
+                htmlwidget.Replace("{{UseGreenbackUrl}}", "javascript:void(0)");
+                htmlwidget.Replace("{{SupportDeskContactNumber}}", "0860 553 111");
+            }
             htmlwidget.Replace("{{WidgetId}}", widgetId);
             return htmlwidget.ToString();
         }
@@ -6059,7 +6072,7 @@ namespace nIS
 
         private void BindDummyDataToGreenbacksProductRelatedPonitsEarnedGraphWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, PageWidget widget)
         {
-            var data = "[{\"AccountType\": \"Investment\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 34}, {\"Month\": \"Feb\", \"RewardPoint\": 29},{\"Month\": \"Mar\", \"RewardPoint\": 41}, {\"Month\": \"Apr\", \"RewardPoint\": 48}]}, {\"AccountType\": \"Personal Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 27}, {\"Month\": \"Feb\", \"RewardPoint\": 45},{\"Month\": \"Mar\", \"RewardPoint\": 36}, {\"Month\": \"Apr\", \"RewardPoint\": 51}]}, {\"AccountType\": \"Home Loan\",\"MonthwiseAmount\" : [{\"Month\": \"Jan\", \"RewardPoint\": 37}, {\"Month\": \"Feb\", \"RewardPoint\": 38},{\"Month\": \"Mar\", \"RewardPoint\": 51}, {\"Month\": \"Apr\", \"RewardPoint\": 45}]}]";
+            var data = "[{\"AccountType\": \"Investment\",\"MonthwiseRewardPoints\" : [{\"Month\": \"Jan\", \"RewardPoint\": 34}, {\"Month\": \"Feb\", \"RewardPoint\": 29},{\"Month\": \"Mar\", \"RewardPoint\": 41}, {\"Month\": \"Apr\", \"RewardPoint\": 48}]}, {\"AccountType\": \"Personal Loan\",\"MonthwiseRewardPoints\" : [{\"Month\": \"Jan\", \"RewardPoint\": 27}, {\"Month\": \"Feb\", \"RewardPoint\": 45},{\"Month\": \"Mar\", \"RewardPoint\": 36}, {\"Month\": \"Apr\", \"RewardPoint\": 51}]}, {\"AccountType\": \"Home Loan\",\"MonthwiseRewardPoints\" : [{\"Month\": \"Jan\", \"RewardPoint\": 37}, {\"Month\": \"Feb\", \"RewardPoint\": 38},{\"Month\": \"Mar\", \"RewardPoint\": 51}, {\"Month\": \"Apr\", \"RewardPoint\": 45}]}]";
             pageContent.Replace("HiddenProductRelatedPointsEarnedGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
             scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_SCRIPT.Replace("ProductRelatedPointsEarnedBarGraphcontainer", "ProductRelatedPointsEarnedBarGraphcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenProductRelatedPointsEarnedGraph", "HiddenProductRelatedPointsEarnedGraph_" + page.Identifier + "_" + widget.Identifier));
         }
