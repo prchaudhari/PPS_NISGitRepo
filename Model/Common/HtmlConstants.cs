@@ -249,7 +249,7 @@ namespace nIS
 
         public const string NEDBANK_PORTFOLIO_REMINDER_AND_RECOMMENDATION_WIDGET_HTML = "<div id={{WidgetId}} class='card OnlyBorderRight'><div class='card-body ReminderDiv py-1'><div class='card-body-header pb-2 fnt-14pt'>Reminders and Recommendations</div>{{ReminderAndRecommendation}}</div></div>";
 
-        public const string NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-1'><div class='NewAlertDiv'><div class='card-body-header pb-2'>News Alerts</div>{{NewsAlert}}<div class='float-right'><a href='javascript:void(0)' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>More Info</span></a></div></div></div></div>";
+        public const string NEDBANK_PORTFOLIO_NEWS_ALERT_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-1'><div class='NewAlertDiv'><div class='card-body-header pb-2'>News Alerts</div>{{NewsAlert}}<div class='float-right'></div></div></div></div>";
 
         public const string NEDBANK_GREENBACKS_TOTAL_REWARDS_POINTS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body py-2 text-center'><span class='TotalRewardPointsSpan' title='Total Rewards Points'>{{TotalRewardsPoints}}</span></div></div>";
 
