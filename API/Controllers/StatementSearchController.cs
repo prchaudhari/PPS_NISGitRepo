@@ -308,14 +308,14 @@ namespace nIS
             }
             finally
             {
-                //if (File.Exists(zipFile))
-                //{
-                //    File.Delete(zipFile);
-                //}
-                //if (Directory.Exists(outputpath))
-                //{
-                //    Directory.Delete(outputpath, true);
-                //}
+                if (File.Exists(zipFile))
+                {
+                    File.Delete(zipFile);
+                }
+                if (Directory.Exists(outputpath))
+                {
+                    Directory.Delete(outputpath, true);
+                }
             }
         }
 

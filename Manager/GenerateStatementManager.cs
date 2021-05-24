@@ -577,6 +577,17 @@ namespace nIS
                         resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
                     }
 
+                    //Update mark pro fonts url in ltr.css
+                    var cssFIlePath = AppDomain.CurrentDomain.BaseDirectory + @"\Resources\css\ltr.css";
+                    var css = File.ReadAllText(cssFIlePath);
+                    css = css.Replace("../fonts/", "./");
+                    File.WriteAllText(cssFIlePath, css);
+
+                    cssFIlePath = AppDomain.CurrentDomain.BaseDirectory + @"\Resources\css\font-awesome.min.css";
+                    css = File.ReadAllText(cssFIlePath);
+                    css = css.Replace("../fonts/", "./");
+                    File.WriteAllText(cssFIlePath, css);
+
                     //Copying all neccessories files which requires to genearate PDF statement of current customer
                     this.utility.DirectoryCopy(resourceFilePath + "\\css", samplefilespath, false);
                     this.utility.DirectoryCopy(resourceFilePath + "\\js", samplefilespath, false);
