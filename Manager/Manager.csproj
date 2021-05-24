@@ -76,6 +76,7 @@
     <Compile Include="MultiTenantUserRoleAccessManager.cs" />
     <Compile Include="StateManager.cs" />
     <Compile Include="StatementSearchManager.cs" />
+    <Compile Include="SystemActivityHistoryManager.cs" />
     <Compile Include="TenantConfigurationManager.cs" />
     <Compile Include="AssetSettingManager.cs" />
     <Compile Include="AssetLibraryManager.cs" />

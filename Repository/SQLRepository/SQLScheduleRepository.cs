@@ -111,6 +111,7 @@ namespace nIS
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
                 int userId = 1;
                 int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
                 this.SetAndValidateConnectionString(tenantCode);
 
@@ -161,6 +162,7 @@ namespace nIS
                 }
                 if (result)
                 {
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                     scheduleRecords.ToList().ForEach(schedulerecord =>
                     {
                         int batchIndex = 1;
@@ -184,7 +186,30 @@ namespace nIS
                         {
                             this.AddYearlyOccurenceScheduleBatches(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
                         }
+
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                            EntityId = schedulerecord.Id,
+                            EntityName = schedulerecord.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Add",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
+
+                    if (Records.Count > 0)
+                    {
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                            nISEntitiesDataContext.SaveChanges();
+                        }
+                    }
                 }
             }
 
@@ -212,6 +237,7 @@ namespace nIS
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
                 int userId = 1;
                 int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
 
                 this.SetAndValidateConnectionString(tenantCode);
                 if (this.IsDuplicateSchedule(schedules, "UpdateOperation", tenantCode))
@@ -230,6 +256,7 @@ namespace nIS
                         throw new ScheduleNotFoundException(tenantCode);
                     }
 
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                     schedules.ToList().ForEach(item =>
                     {
                         //DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.StartDate), DateTimeKind.Utc);
@@ -321,7 +348,26 @@ namespace nIS
                             }
                         }
 
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                            EntityId = scheduleRecord.Id,
+                            EntityName = scheduleRecord.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Update",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
+
+                    if (Records.Count > 0)
+                    {
+                        nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
 
                     result = true;
                 }
@@ -346,6 +392,11 @@ namespace nIS
             bool result = false;
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId = 1;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
                 this.SetAndValidateConnectionString(tenantCode);
 
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
@@ -367,11 +418,32 @@ namespace nIS
                         throw new RunningScheduleRefrenceException(tenantCode);
                     }
 
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                     scheduleRecords.ToList().ForEach(item =>
                     {
                         item.IsDeleted = true;
+                        item.UpdateBy = userId;
+                        item.LastUpdatedDate = DateTime.Now;
+
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                            EntityId = item.Id,
+                            EntityName = item.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Delete",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
 
+                    if (Records.Count > 0)
+                    {
+                        nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                    }
                     nISEntitiesDataContext.SaveChanges();
                 }
                 result = true;
@@ -561,6 +633,8 @@ namespace nIS
                 throw exception;
             }
         }
+
+        #endregion
 
         /// <summary>
         /// This method helps to run the schedule
@@ -1158,7 +1232,6 @@ namespace nIS
             return result;
         }
 
-        #endregion
 
         #endregion
 
@@ -1535,25 +1608,35 @@ namespace nIS
         /// <returns>True if success, otherwise false</returns>
         public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
         {
+            List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+            List<DM_CustomerMasterRecord> dm_customerMasterRecords = new List<DM_CustomerMasterRecord>();
+            List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+            IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
+            IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
+            IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
+
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
                 this.SetAndValidateConnectionString(tenantCode);
-
-
-                List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
-                List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
-                IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
-                IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
+                    if (customerMasterRecords == null || customerMasterRecords.Count == 0)
+                    {
+                        dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => it.BatchId == BatchIdentifier && it.TenantCode == tenantCode)?.ToList();
+                    }
                     scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.BatchId == BatchIdentifier).ToList();
                 }
                 StringBuilder query = new StringBuilder();
                 if (scheduleLogRecords?.Count > 0)
                 {
                     query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
-                    query = query.Append("(" + string.Join("or ", customerMasterRecords.Select(item => string.Format("CustomerId.Equals({0}) ", item.Id))) + ")  ");
+                    query.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
@@ -1577,83 +1660,164 @@ namespace nIS
                         fields[i] = fields[i].Remove(fields[i].Length - 1);
                     }
                     IList<StatementMetadataRecord> newStatementMetadataRecords = new List<StatementMetadataRecord>();
-                    customerMasterRecords.ToList().ForEach(item =>
+                    if (customerMasterRecords != null && customerMasterRecords.Count > 0)
                     {
-                        string password = string.Empty;
-                        JObject customerDetails = JObject.FromObject(item);
-                        int startIndex = 0;
-                        int count = 0;
-
-                        fields.ToList().ForEach(field =>
+                        customerMasterRecords.ToList().ForEach(item =>
                         {
-                            string fieldValue = string.Empty;
-                            List<string> fieldDetail = field.Split(':').ToList();
-                            if (customerDetails[fieldDetail[0]].ToString() == "")
-                            {
-                                throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
-                            }
-                            if (fieldDetail.Count == 1)
-                            {
-                                fieldValue = customerDetails[fieldDetail[0]].ToString();
-                            }
-                            else if (fieldDetail.Count == 3)
-                            {
-                                fieldValue = fieldDetail[0];
+                            string password = string.Empty;
+                            JObject customerDetails = JObject.FromObject(item);
+                            int count = 0;
 
-                                if (fieldDetail[2] == "F")
+                            fields.ToList().ForEach(field =>
+                            {
+                                string fieldValue = string.Empty;
+                                List<string> fieldDetail = field.Split(':').ToList();
+                                if (customerDetails[fieldDetail[0]].ToString() == "")
                                 {
-                                    count = Convert.ToInt32(fieldDetail[1]);
-                                    fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(0, count);
+                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
                                 }
-                                else if (fieldDetail[2] == "L")
+                                if (fieldDetail.Count == 1)
                                 {
-                                    count = Convert.ToInt32(fieldDetail[1]);
-                                    int length = customerDetails[fieldDetail[0]].ToString().Length;
-                                    fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length - count, count);
+                                    fieldValue = customerDetails[fieldDetail[0]].ToString();
                                 }
-                            }
-                            password = password + fieldValue;
-
-                        });
-                        statementMetadataRecords.Where(stmt => stmt.CustomerId == item.Id).ToList().ForEach(st =>
-                        {
-                            StatementMetadataRecord statement = new StatementMetadataRecord();
-                            statement = st;
-                            statement.Password = this.cryptoManager.Encrypt(password);
-                            newStatementMetadataRecords.Add(statement);
-                        });
-
-                    });
-
-                    if (newStatementMetadataRecords?.Count > 0)
-                    {
-                        IList<StatementMetadataRecord> statementToBeUpdate = new List<StatementMetadataRecord>();
-                        query = new StringBuilder();
-                        query = query.Append("(" + string.Join("or ", newStatementMetadataRecords.Select(item => string.Format("Id.Equals({0}) ", item.Id))) + ") ");
-                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                        {
-                            statementToBeUpdate = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
-                            statementToBeUpdate.ToList().ForEach(item =>
-                            {
-                                item.Password = newStatementMetadataRecords.Where(s => s.Id == item.Id).FirstOrDefault().Password;
-                                item.IsPasswordGenerated = true;
+                                else if (fieldDetail.Count == 3)
+                                {
+                                    fieldValue = fieldDetail[0];
+                                    if (fieldDetail[2] == "F")
+                                    {
+                                        count = Convert.ToInt32(fieldDetail[1]);
+                                        fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(0, count);
+                                    }
+                                    else if (fieldDetail[2] == "L")
+                                    {
+                                        count = Convert.ToInt32(fieldDetail[1]);
+                                        int length = customerDetails[fieldDetail[0]].ToString().Length;
+                                        fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length - count, count);
+                                    }
+                                }
+                                password = password + fieldValue;
                             });
-                            nISEntitiesDataContext.SaveChanges();
+                            statementMetadataRecords.Where(stmt => stmt.CustomerId == item.Id).ToList().ForEach(st =>
+                            {
+                                StatementMetadataRecord statement = new StatementMetadataRecord();
+                                statement = st;
+                                statement.Password = this.cryptoManager.Encrypt(password);
+                                newStatementMetadataRecords.Add(statement);
+                            });
+                        });
+
+                        if (newStatementMetadataRecords?.Count > 0)
+                        {
+                            IList<StatementMetadataRecord> statementToBeUpdate = new List<StatementMetadataRecord>();
+                            query = new StringBuilder();
+                            query = query.Append("(" + string.Join("or ", newStatementMetadataRecords.Select(item => string.Format("Id.Equals({0}) ", item.Id))) + ") ");
+                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                            {
+                                statementToBeUpdate = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+                                statementToBeUpdate.ToList().ForEach(item =>
+                                {
+                                    item.Password = newStatementMetadataRecords.Where(s => s.Id == item.Id).FirstOrDefault().Password;
+                                    item.IsPasswordGenerated = true;
+                                });
+                                nISEntitiesDataContext.SaveChanges();
+                            }
+                        }
+                    }
+                    else if (dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
+                    {
+                        dm_customerMasterRecords.ToList().ForEach(item =>
+                        {
+                            string password = string.Empty;
+                            JObject customerDetails = JObject.FromObject(item);
+                            int count = 0;
+
+                            fields.ToList().ForEach(field =>
+                            {
+                                string fieldValue = string.Empty;
+                                List<string> fieldDetail = field.Split(':').ToList();
+                                if (customerDetails[fieldDetail[0]].ToString() == "")
+                                {
+                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+                                }
+                                if (fieldDetail.Count == 1)
+                                {
+                                    fieldValue = customerDetails[fieldDetail[0]].ToString();
+                                }
+                                else if (fieldDetail.Count == 3)
+                                {
+                                    fieldValue = fieldDetail[0];
+                                    if (fieldDetail[2] == "F")
+                                    {
+                                        count = Convert.ToInt32(fieldDetail[1]);
+                                        fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(0, count);
+                                    }
+                                    else if (fieldDetail[2] == "L")
+                                    {
+                                        count = Convert.ToInt32(fieldDetail[1]);
+                                        int length = customerDetails[fieldDetail[0]].ToString().Length;
+                                        fieldValue = customerDetails[fieldDetail[0]].ToString().Substring(length - count, count);
+                                    }
+                                }
+                                password = password + fieldValue;
+                            });
+                            statementMetadataRecords.Where(stmt => stmt.CustomerId == item.Id).ToList().ForEach(st =>
+                            {
+                                StatementMetadataRecord statement = new StatementMetadataRecord();
+                                statement = st;
+                                statement.Password = this.cryptoManager.Encrypt(password);
+                                newStatementMetadataRecords.Add(statement);
+                            });
+                        });
+
+                        if (newStatementMetadataRecords?.Count > 0)
+                        {
+                            IList<StatementMetadataRecord> statementToBeUpdate = new List<StatementMetadataRecord>();
+                            query = new StringBuilder();
+                            query = query.Append("(" + string.Join("or ", newStatementMetadataRecords.Select(item => string.Format("Id.Equals({0}) ", item.Id))) + ") ");
+                            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                            {
+                                statementToBeUpdate = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
+                                statementToBeUpdate.ToList().ForEach(item =>
+                                {
+                                    item.Password = newStatementMetadataRecords.Where(s => s.Id == item.Id).FirstOrDefault().Password;
+                                    item.IsPasswordGenerated = true;
+                                });
+                                nISEntitiesDataContext.SaveChanges();
+                            }
                         }
                     }
                 }
+
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     var batchs = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.Id == BatchIdentifier && item.TenantCode == tenantCode).ToList();
                     batchs.ForEach(batch =>
                     {
                         batch.Status = BatchStatus.Approved.ToString();
+
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                            EntityId = batch.ScheduleId,
+                            EntityName = (scheduleLogRecords != null && scheduleLogRecords.Count > 0) ? scheduleLogRecords[0].ScheduleName : string.Empty,
+                            SubEntityId = batch.Id,
+                            SubEntityName = batch.BatchName,
+                            ActionTaken = "ApproveBatch",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
                     });
+
+                    if (Records.Count > 0)
+                    {
+                        nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                    }
 
                     nISEntitiesDataContext.SaveChanges();
                 }
                 return true;
-
             }
             catch (Exception ex)
             {
@@ -1669,25 +1833,29 @@ namespace nIS
         /// <returns>True if success, otherwise false</returns>
         public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
         {
+            List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
+            List<DM_CustomerMasterRecord> dm_customerMasterRecords = new List<DM_CustomerMasterRecord>();
+            List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
+            IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
+            IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
+
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-
-
-                List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
-                List<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
-                IList<ScheduleLogRecord> scheduleLogRecords = new List<ScheduleLogRecord>();
-                IList<ScheduleLogDetailRecord> scheduleLogDetailRecords = new List<ScheduleLogDetailRecord>();
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode).ToList();
+                    customerMasterRecords = nISEntitiesDataContext.CustomerMasterRecords.Where(item => item.BatchId == BatchIdentifier && item.TenantCode == tenantCode)?.ToList();
+                    if (customerMasterRecords == null || customerMasterRecords.Count == 0)
+                    {
+                        dm_customerMasterRecords = nISEntitiesDataContext.DM_CustomerMasterRecord.Where(it => it.BatchId == BatchIdentifier && it.TenantCode == tenantCode)?.ToList();
+                    }
                     scheduleLogRecords = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.BatchId == BatchIdentifier).ToList();
                 }
                 StringBuilder query = new StringBuilder();
                 if (scheduleLogRecords?.Count > 0)
                 {
                     query = query.Append("(" + string.Join("or ", scheduleLogRecords.Select(item => string.Format("ScheduleLogId.Equals({0}) ", item.Id))) + ") and ");
-                    query = query.Append("(" + string.Join("or ", customerMasterRecords.Select(item => string.Format("CustomerId.Equals({0}) ", item.Id))) + ")  ");
+                    query.Append(string.Format(" TenantCode.Equals(\"{0}\") ", tenantCode));
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         statementMetadataRecords = nISEntitiesDataContext.StatementMetadataRecords.Where(query.ToString()).ToList();
@@ -1711,19 +1879,38 @@ namespace nIS
                         fields[i] = fields[i].Remove(fields[i].Length - 1);
                     }
                     IList<StatementMetadataRecord> newStatementMetadataRecords = new List<StatementMetadataRecord>();
-                    customerMasterRecords.ToList().ForEach(item =>
+                    if (customerMasterRecords != null && customerMasterRecords.Count > 0)
                     {
-                        JObject customerDetails = JObject.FromObject(item);
-                        fields.ToList().ForEach(field =>
+                        customerMasterRecords.ToList().ForEach(item =>
                         {
-                            string fieldValue = string.Empty;
-                            List<string> fieldDetail = field.Split(':').ToList();
-                            if (customerDetails[fieldDetail[0]].ToString() == "")
+                            JObject customerDetails = JObject.FromObject(item);
+                            fields.ToList().ForEach(field =>
                             {
-                                throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
-                            }
+                                string fieldValue = string.Empty;
+                                List<string> fieldDetail = field.Split(':').ToList();
+                                if (customerDetails[fieldDetail[0]].ToString() == "")
+                                {
+                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+                                }
+                            });
                         });
-                    });
+                    }
+                    else if(dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
+                    {
+                        dm_customerMasterRecords.ToList().ForEach(item =>
+                        {
+                            JObject customerDetails = JObject.FromObject(item);
+                            fields.ToList().ForEach(field =>
+                            {
+                                string fieldValue = string.Empty;
+                                List<string> fieldDetail = field.Split(':').ToList();
+                                if (customerDetails[fieldDetail[0]].ToString() == "")
+                                {
+                                    throw new TenantSecurityCodeFieldDataNotAvailable(tenantCode);
+                                }
+                            });
+                        });
+                    }
                 }
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
@@ -1736,7 +1923,6 @@ namespace nIS
                     nISEntitiesDataContext.SaveChanges();
                 }
                 return true;
-
             }
             catch (Exception ex)
             {
@@ -1755,9 +1941,15 @@ namespace nIS
             bool result = false;
             var HtmlFilePath = string.Empty;
             long BatchId = 0;
+            IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
 
             try
             {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
@@ -1774,6 +1966,7 @@ namespace nIS
                         var scheduleLogs = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.BatchId == batch.Id && item.TenantCode == tenantCode).ToList();
                         scheduleLogs.ForEach(log =>
                         {
+                            
                             //get and delete schedule log details
                             var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
                             nISEntitiesDataContext.ScheduleLogDetailRecords.RemoveRange(schedulelogdetails);
@@ -1790,10 +1983,29 @@ namespace nIS
                             //get and delete statement metadata
                             var statementMetadatas = nISEntitiesDataContext.StatementMetadataRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
                             nISEntitiesDataContext.StatementMetadataRecords.RemoveRange(statementMetadatas);
+
+                            Records.Add(new SystemActivityHistoryRecord()
+                            {
+                                Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                                EntityId = batch.ScheduleId,
+                                EntityName = log.ScheduleName,
+                                SubEntityId = batch.Id,
+                                SubEntityName = batch.BatchName,
+                                ActionTaken = "CleanBatch",
+                                ActionTakenBy = userId,
+                                ActionTakenByUserName = userFullName,
+                                ActionTakenDate = DateTime.Now,
+                                TenantCode = tenantCode
+                            });
                         });
 
                         //delete schedule log
                         nISEntitiesDataContext.ScheduleLogRecords.RemoveRange(scheduleLogs);
+
+                        if (Records.Count > 0)
+                        {
+                            nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                        }
 
                         //to save all above delete records in database
                         nISEntitiesDataContext.SaveChanges();

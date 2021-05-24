@@ -495,7 +495,7 @@ namespace nIS
                             EntityName = assetLibRecord.Name,
                             SubEntityId = assetrec.Id,
                             SubEntityName = assetrec.Name,
-                            ActionTaken = "Upload",
+                            ActionTaken = "AssetUpload",
                             ActionTakenBy = userId,
                             ActionTakenByUserName = userFullName,
                             ActionTakenDate = DateTime.Now,
@@ -503,7 +503,7 @@ namespace nIS
                         });
                     });
 
-                    nISEntitiesDataContext.AssetRecords.AddRange(assetRecords);
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
                     nISEntitiesDataContext.SaveChanges();
                     result = true;
                 }
@@ -570,7 +570,7 @@ namespace nIS
                             EntityName = assetLibRecord.Name,
                             SubEntityId = assetRecord.Id,
                             SubEntityName = assetRecord.Name,
-                            ActionTaken = "Override",
+                            ActionTaken = "AssetOverride",
                             ActionTakenBy = userId,
                             ActionTakenByUserName = userFullName,
                             ActionTakenDate = DateTime.Now,
@@ -672,7 +672,7 @@ namespace nIS
                             EntityName = assetLibRecord.Name,
                             SubEntityId = item.Id,
                             SubEntityName = item.Name,
-                            ActionTaken = "Delete",
+                            ActionTaken = "AssetDelete",
                             ActionTakenBy = userId,
                             ActionTakenByUserName = userFullName,
                             ActionTakenDate = DateTime.Now,

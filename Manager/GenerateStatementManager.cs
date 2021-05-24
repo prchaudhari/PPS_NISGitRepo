@@ -4167,9 +4167,9 @@ namespace nIS
 
         private void BindPortfolioRemindersWidgetData(StringBuilder pageContent, List<DM_CustomerReminderAndRecommendation> Reminders, Page page, PageWidget widget)
         {
+            StringBuilder reminderstr = new StringBuilder();
             if (Reminders != null && Reminders.Count > 0)
             {
-                StringBuilder reminderstr = new StringBuilder();
                 Reminders.ToList().ForEach(item =>
                 {
                     if (!string.IsNullOrEmpty(item.reminderAndRecommendation.Description))
@@ -4177,8 +4177,8 @@ namespace nIS
                         reminderstr.Append("<div class='row'><div class='col-lg-9 text-left'><p class='p-1' style='background-color: #dce3dc;'>" + item.reminderAndRecommendation.Description + " </p></div><div class='col-lg-3 text-left'><a href='" + item.reminderAndRecommendation.ActionUrl + "' target='_blank'><i class='fa fa-caret-left fa-3x float-left text-success'></i><span class='mt-2 d-inline-block ml-2'>" + item.reminderAndRecommendation.ActionTitle + "</span></a></div></div>");
                     }
                 });
-                pageContent.Replace("{{ReminderAndRecommendation_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
             }
+            pageContent.Replace("{{ReminderAndRecommendation_" + page.Identifier + "_" + widget.Identifier + "}}", reminderstr.ToString());
         }
 
         private void BindPortfolioNewsAlertsWidgetData(StringBuilder pageContent, List<DM_CustomerNewsAndAlert> NewsAndAlerts, Page page, PageWidget widget)

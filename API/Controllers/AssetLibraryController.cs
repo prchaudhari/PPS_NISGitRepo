@@ -48,7 +48,6 @@ namespace nIS
         {
             this.assetLibraryManager = new AssetLibraryManager(unityContainer);
             this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
-
         }
 
         #endregion
@@ -596,10 +595,10 @@ namespace nIS
                             LastUpdatedDate = DateTime.UtcNow
                         }); ;
                         this.assetLibraryManager.UpdateAssets(assets, tenantCode);
-                        //}
-                        if ((System.IO.File.Exists(oldAsset.FilePath)))
+                        
+                        if ((File.Exists(oldAsset.FilePath)))
                         {
-                            System.IO.File.Delete(oldAsset.FilePath);
+                            File.Delete(oldAsset.FilePath);
                         }
                         postedFile.SaveAs(filePath);
                         docfiles.Add(filePath);

@@ -193,13 +193,17 @@ namespace nIS
                         ActionTakenDate = DateTime.Now,
                         TenantCode = tenantCode
                     });
-                    
+                });
+
+                if (Records.Count > 0)
+                {
                     using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                     {
                         nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
                         nISEntitiesDataContext.SaveChanges();
                     }
-                });
+                }
+
                 result = true;
             }
             catch(Exception ex)
@@ -585,6 +589,7 @@ namespace nIS
                     nISEntitiesDataContext.SaveChanges();
                 }
 
+                IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
                 pages.ToList().ForEach(item =>
                 {
                     item.Identifier = pageRecords.ToList().Where(pageRec => pageRec.DisplayName == item.DisplayName && pageRec.PageTypeId == item.PageTypeId).FirstOrDefault().Id;
@@ -600,7 +605,7 @@ namespace nIS
                         this.AddPageWidgets(item.PageWidgets, item.Identifier, tenantCode);
                     }
 
-                    SystemActivityHistoryRecord record = new SystemActivityHistoryRecord()
+                    Records.Add(new SystemActivityHistoryRecord()
                     {
                         Module = ModelConstant.PAGE_SECTION,
                         EntityId = item.Identifier,
@@ -612,13 +617,14 @@ namespace nIS
                         ActionTakenByUserName = userFullName,
                         ActionTakenDate = DateTime.Now,
                         TenantCode = tenantCode
-                    };
-                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
-                    {
-                        nISEntitiesDataContext.SystemActivityHistoryRecords.Add(record);
-                        nISEntitiesDataContext.SaveChanges();
-                    }
+                    });
                 });
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                    nISEntitiesDataContext.SaveChanges();
+                }
                 result = true;
             }
             catch (Exception ex)

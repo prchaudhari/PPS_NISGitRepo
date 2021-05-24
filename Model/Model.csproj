@@ -162,6 +162,7 @@
     <Compile Include="Statement.cs" />
     <Compile Include="StatementPage.cs" />
     <Compile Include="StatementPageContent.cs" />
+    <Compile Include="SystemActivityHistory.cs" />
     <Compile Include="TenantConfiguration.cs" />
     <Compile Include="TenantContact.cs" />
     <Compile Include="TenantSecurityCodeFormat.cs" />

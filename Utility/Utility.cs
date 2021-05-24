@@ -1072,7 +1072,28 @@
                 client.setPageWidth("12in");
 
                 //Set the output page height. Use -1 for a single page PDF. The safe maximum is 200in otherwise some PDF viewers may be unable to open the PDF.
-                client.setPageHeight("10in");
+                client.setPageHeight("-1");
+
+                //Set the output page top margin.
+                client.setMarginTop("0.4in");
+
+                //Set the output page right margin.
+                client.setMarginRight("0.2in");
+
+                //Set the output page bottom margin.
+                client.setMarginBottom("0.4in");
+
+                //Set the output page left margin.
+                client.setMarginLeft("0.2in");
+
+                //Set the output page header height.
+                client.setHeaderHeight("0.4in");
+
+                //Use the specified HTML as the output page footer. 
+                //client.setFooterHtml("Page <span class='pdfcrowd-page-number'></span> of <span class='pdfcrowd-page-count'></span> pages");
+
+                //Set the output page footer height.
+                client.setFooterHeight("0.4in");
 
                 //The viewport width affects the @media min-width and max-width CSS properties. 
                 //This mode can be used to choose a particular version (mobile, desktop, ..) of a responsive page
@@ -1090,6 +1111,12 @@
 
                 //Set the DPI of images in PDF. A lower DPI may result in a smaller PDF file.
                 client.setImageDpi(300);
+
+                //Set the title of the PDF.
+                client.setTitle("PDF statement");
+
+                //Set the author of the PDF.
+                client.setAuthor("NedBank");
 
                 if (password != string.Empty)
                 {

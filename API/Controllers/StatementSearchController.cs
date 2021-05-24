@@ -55,6 +55,11 @@ namespace nIS
         /// </summary>
         private readonly ICryptoManager cryptoManager;
 
+        /// <summary>
+        /// The system activity history manager object.
+        /// </summary>
+        private SystemActivityHistoryManager systemActivityHistoryManager = null;
+
         #endregion
 
         #region Constructor
@@ -66,6 +71,7 @@ namespace nIS
             this.StatementSearchManager = new StatementSearchManager(this.unityContainer);
             this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
             this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
+            this.systemActivityHistoryManager = new SystemActivityHistoryManager(unityContainer);
 
         }
 
@@ -190,6 +196,18 @@ namespace nIS
                                         httpResponseMessage.Content.Headers.ContentDisposition.FileName = FileName;
                                         httpResponseMessage.StatusCode = HttpStatusCode.OK;
                                     }
+
+                                    IList<SystemActivityHistory> activityHistories = new List<SystemActivityHistory>();
+                                    activityHistories.Add(new SystemActivityHistory()
+                                    {
+                                        Module = "Statement Search",
+                                        EntityId = statement.Identifier,
+                                        EntityName = "BatchId: " + statement.BatchId + "_BatchName: " + statement.BatchName,
+                                        SubEntityId = statement.CustomerId,
+                                        SubEntityName = statement.CustomerName,
+                                        ActionTaken = "HtmlStatementDownload",
+                                    });
+                                    this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
                                 }
                                 return httpResponseMessage;
                             }
@@ -230,12 +248,14 @@ namespace nIS
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                outputpath = this.StatementSearchManager.GenerateStatementNew(identifier, tenantCode);
                 StatementSearch statement = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
                 {
                     Identifier = identifier.ToString(),
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
+
+                outputpath = this.StatementSearchManager.GenerateStatementNew(statement, tenantCode);
+                
                 zipFile = AppDomain.CurrentDomain.BaseDirectory + "\\Resources" + "\\" + "tempStatementZip" + identifier + ".zip";
                 ZipFile.CreateFromDirectory(outputpath, zipFile);
                 var pdfName = "Statement_" + DateTime.Now.ToShortDateString().Replace(" - ", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
@@ -263,6 +283,19 @@ namespace nIS
                         }
                     }
                 }
+
+                IList<SystemActivityHistory> activityHistories = new List<SystemActivityHistory>();
+                activityHistories.Add(new SystemActivityHistory()
+                {
+                    Module = "Statement Search",
+                    EntityId = statement.Identifier,
+                    EntityName = "BatchId: " + statement.BatchId + "_BatchName: " + statement.BatchName,
+                    SubEntityId = statement.CustomerId,
+                    SubEntityName = statement.CustomerName,
+                    ActionTaken = "PdfStatementDownload",
+                });
+                this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
+
                 return httpResponseMessage;
             }
             catch (IOException)
@@ -275,14 +308,14 @@ namespace nIS
             }
             finally
             {
-                if (File.Exists(zipFile))
-                {
-                    File.Delete(zipFile);
-                }
-                if (Directory.Exists(outputpath))
-                {
-                    Directory.Delete(outputpath, true);
-                }
+                //if (File.Exists(zipFile))
+                //{
+                //    File.Delete(zipFile);
+                //}
+                //if (Directory.Exists(outputpath))
+                //{
+                //    Directory.Delete(outputpath, true);
+                //}
             }
         }
 

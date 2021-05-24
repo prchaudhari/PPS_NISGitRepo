@@ -221,6 +221,7 @@
     <Compile Include="IRepository\IContactTypeRepository.cs" />
     <Compile Include="IRepository\IDynamicWidgetRepository.cs" />
     <Compile Include="IRepository\IMultiTenantUserRoleAccessRepository.cs" />
+    <Compile Include="IRepository\ISQLSystemActivityHistoryRepository.cs" />
     <Compile Include="IRepository\ISQLTenantContactRepository.cs" />
     <Compile Include="IRepository\IAnalyticsDataRepository.cs" />
     <Compile Include="IRepository\ICityRepository.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="SQLRepository\SQLDynamicWidgetRepository.cs" />
     <Compile Include="SQLRepository\SQLCountryRepository.cs" />
     <Compile Include="SQLRepository\SQLMultiTenantUserRoleAccessRepository.cs" />
+    <Compile Include="SQLRepository\SQLSystemActivityHistoryRepository.cs" />
     <Compile Include="SQLRepository\SQLTenantContactRepository.cs" />
     <Compile Include="SQLRepository\SQLStatementSearchRepository.cs" />
     <Compile Include="SQLRepository\SQLTenantConfigurationRepository.cs" />

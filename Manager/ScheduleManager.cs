@@ -78,6 +78,11 @@ namespace nIS
         /// </summary>
         private IUtility utility = null;
 
+        /// <summary>
+        /// The system activity history manager object.
+        /// </summary>
+        private SystemActivityHistoryManager systemActivityHistoryManager = null;
+
         #endregion
 
         #region Constructor
@@ -101,6 +106,7 @@ namespace nIS
                 this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
                 this.clientManager = this.unityContainer.Resolve<ClientManager>();
                 this.tenantConfigurationManager = this.unityContainer.Resolve<TenantConfigurationManager>();
+                this.systemActivityHistoryManager = new SystemActivityHistoryManager(unityContainer);
             }
             catch (Exception ex)
             {
@@ -426,6 +432,7 @@ namespace nIS
         public bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode)
         {
             bool scheduleRunStatus = false;
+            IList<SystemActivityHistory> activityHistories = null;
 
             try
             {
@@ -463,6 +470,7 @@ namespace nIS
                     {
                         schedules.ToList().ForEach(schedule =>
                         {
+                            activityHistories = new List<SystemActivityHistory>();
                             tenantCode = schedule.TenantCode;
                             var batch = batches.Where(item => item.ScheduleId == schedule.Identifier && !item.IsExecuted && item.Status == BatchStatus.New.ToString()).ToList().FirstOrDefault();
 
@@ -533,9 +541,30 @@ namespace nIS
                                                 this.GenerateFinancialTenantCustomerStatementsByScheduleRunTime(statement, tenantConfiguration, batch, schedule, tenantCode, baseURL, outputLocation, parallelThreadCount);
                                                 break;
                                         }
+                                        
+                                        activityHistories.Add(new SystemActivityHistory()
+                                        {
+                                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                                            EntityId = schedule.Identifier,
+                                            EntityName = schedule.Name,
+                                            SubEntityId = batch.Identifier,
+                                            SubEntityName = batch.BatchName,
+                                            ActionTaken = "AutoScheduleRunSuccess",
+                                        });
+                                        this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
                                     }
-                                    else 
+                                    else
                                     {
+                                        activityHistories.Add(new SystemActivityHistory()
+                                        {
+                                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                                            EntityId = schedule.Identifier,
+                                            EntityName = schedule.Name,
+                                            SubEntityId = batch.Identifier,
+                                            SubEntityName = batch.BatchName,
+                                            ActionTaken = "AutoScheduleRun - Statement not found error",
+                                        });
+                                        this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
                                         throw new StatementNotFoundException(tenantCode);
                                     }
                                 }
@@ -544,6 +573,17 @@ namespace nIS
                                     this.scheduleRepository.UpdateBatchStatus(batch.Identifier, BatchStatus.BatchDataNotAvailable.ToString(), false, tenantCode);
                                     this.scheduleLogRepository.UpdateScheduleLogStatus(scheduleLog.Identifier, ScheduleLogStatus.BatchDataNotAvailable.ToString(), tenantCode);
                                     this.scheduleRepository.UpdateScheduleStatus(schedule.Identifier, ScheduleStatus.BatchDataNotAvailable.ToString(), tenantCode);
+
+                                    activityHistories.Add(new SystemActivityHistory()
+                                    {
+                                        Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                                        EntityId = schedule.Identifier,
+                                        EntityName = schedule.Name,
+                                        SubEntityId = batch.Identifier,
+                                        SubEntityName = batch.BatchName,
+                                        ActionTaken = "AutoScheduleRun - Batch data not availalble error",
+                                    });
+                                    this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
                                 }
                             }
                         });
@@ -612,6 +652,8 @@ namespace nIS
         public bool RunScheduleNowNew(BatchMaster batchMaster, string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             bool scheduleRunStatus = false;
+            IList<SystemActivityHistory> activityHistories = new List<SystemActivityHistory>();
+
             try
             {
                 var parallelThreadCount = int.Parse(ConfigurationManager.AppSettings[ModelConstant.PARALLEL_THREAD_COUNT]);
@@ -679,6 +721,17 @@ namespace nIS
 
                     if (!IsDataAvail)
                     {
+                        activityHistories.Add(new SystemActivityHistory()
+                        {
+                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                            EntityId = scheduleRecord.Identifier,
+                            EntityName = scheduleRecord.Name,
+                            SubEntityId = batch.Identifier,
+                            SubEntityName = batch.BatchName,
+                            ActionTaken = "ManualScheduleRun - Batch data not available error",
+                        });
+                        this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
+
                         return scheduleRunStatus;
                     }
 
@@ -701,6 +754,16 @@ namespace nIS
                     }, tenantCode);
                     if (statements.Count == 0)
                     {
+                        activityHistories.Add(new SystemActivityHistory()
+                        {
+                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                            EntityId = scheduleRecord.Identifier,
+                            EntityName = scheduleRecord.Name,
+                            SubEntityId = batch.Identifier,
+                            SubEntityName = batch.BatchName,
+                            ActionTaken = "ManualScheduleRun - Statement not found error",
+                        });
+                        this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
                         throw new StatementNotFoundException(tenantCode);
                     }
 
@@ -725,6 +788,17 @@ namespace nIS
                             scheduleRunStatus = this.GenerateFinancialTenantCustomerStatementsByScheduleRunNow(statement, tenantConfiguration, batch, scheduleRecord, tenantCode, baseURL, outputLocation, parallelThreadCount);
                             break;
                     }
+
+                    activityHistories.Add(new SystemActivityHistory()
+                    {
+                        Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                        EntityId = scheduleRecord.Identifier,
+                        EntityName = scheduleRecord.Name,
+                        SubEntityId = batch.Identifier,
+                        SubEntityName = batch.BatchName,
+                        ActionTaken = "ManualScheduleRunSuccess",
+                    });
+                    this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
                 }
             }
             catch (Exception ex)
@@ -834,6 +908,7 @@ namespace nIS
                 throw ex;
             }
         }
+
         /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
