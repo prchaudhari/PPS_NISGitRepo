@@ -2344,7 +2344,7 @@ namespace nIS
                     {
                         var path = asset.FilePath.ToString();
                         var fileName = asset.Name;
-                        var imagePath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customerId;
+                        var imagePath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\common\\media";
                         if (!Directory.Exists(imagePath))
                         {
                             Directory.CreateDirectory(imagePath);
@@ -2353,7 +2353,7 @@ namespace nIS
                         {
                             File.Copy(path, Path.Combine(imagePath, fileName));
                         }
-                        imgAssetFilepath = "./" + fileName;
+                        imgAssetFilepath = "../common/media/" + fileName;
                     }
                     else
                     {
@@ -2425,7 +2425,7 @@ namespace nIS
                     {
                         var path = asset.FilePath.ToString();
                         var fileName = asset.Name;
-                        var videoPath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\" + customerId;
+                        var videoPath = outputLocation + "\\Statements\\" + batchMaster.Identifier + "\\common\\media";
                         if (!Directory.Exists(videoPath))
                         {
                             Directory.CreateDirectory(videoPath);
@@ -2434,7 +2434,7 @@ namespace nIS
                         {
                             File.Copy(path, Path.Combine(videoPath, fileName));
                         }
-                        vdoAssetFilepath = "./" + fileName;
+                        vdoAssetFilepath = "../common/media/" + fileName;
                     }
                     else
                     {

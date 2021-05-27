@@ -710,41 +710,61 @@
         /// <param name="batchId"> the batch id </param>
         public string CreateAndWriteToZipFile(string htmlstr, string fileName, long batchId, string baseURL, string outputLocation, IDictionary<string, string> filesDictionary = null)
         {
-            //string destPath = baseURL + "\\Statements";
+            //create folder to store the html statement files for current batch customers
             string path = outputLocation + "\\Statements" + "\\" + batchId + "\\";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
+            //create media folder for common images and videos files of asset library
+            string mediaPath = path + "\\common\\media\\";
+            if (!Directory.Exists(mediaPath))
+            {
+                Directory.CreateDirectory(mediaPath);
+            }
+
+            //common resource files path 
             string resourceFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources";
-            //string resourceFilePath = destPath + "\\" + batchId + "\\common";
+
             string zipFileVirtualPath = "\\Statements" + "\\" + batchId + "\\statement" + DateTime.Now.ToString().Replace("-", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".zip";
-            string zipfilepath = baseURL + zipFileVirtualPath;
             string zipPath = outputLocation + zipFileVirtualPath;
+
+            //create temp folder for common html statement
             string temppath = path + "\\temp\\";
             if (!Directory.Exists(temppath))
             {
                 Directory.CreateDirectory(temppath);
             }
 
+            //create temp media folder for common images and videos files of asset library
+            string tempmediaPath = temppath + "\\common\\media\\";
+            if (!Directory.Exists(tempmediaPath))
+            {
+                Directory.CreateDirectory(tempmediaPath);
+            }
+
+            //folder to save actual common html statement file
             string spath = temppath + "\\statement\\";
             if (!Directory.Exists(spath))
             {
                 Directory.CreateDirectory(spath);
             }
+
+            //to delete any common html statement file, if exist 
             string filepath = spath + fileName;
             if (File.Exists(filepath))
             {
                 File.Delete(filepath);
             }
 
-            // Create a file to write to.
+            // Create a html file to write to common html statement
             using (StreamWriter sw = File.CreateText(filepath))
             {
                 sw.WriteLine(htmlstr);
             }
 
+            //asset (images and videos) files as well as json files
             if (filesDictionary != null && filesDictionary?.Count > 0)
             {
                 //WebClient webClient = new WebClient();
@@ -752,16 +772,28 @@
                 {
                     if (File.Exists(file.Value))
                     {
-                        File.Copy(file.Value, Path.Combine(spath, file.Key));
+                        if(file.Key.Contains(".json"))
+                        {
+                            File.Copy(file.Value, Path.Combine(spath, file.Key));
+                        }
+                        else
+                        {
+                            File.Copy(file.Value, Path.Combine(mediaPath, file.Key));
+                            File.Copy(file.Value, Path.Combine(tempmediaPath, file.Key));
+                        }
                     }
                     //webClient.DownloadFile(file.Value, (spath + file.Key));
                 }
             }
 
+            //copy all common resource file to current batch statement folder as well as at common statement folder
             DirectoryCopy(resourceFilePath, (path + "\\common"), true);
             DirectoryCopy(resourceFilePath, (temppath + "\\common"), true);
+
+            //create a zip file for common html statement and related resources and media files
             ZipFile.CreateFromDirectory(temppath, zipPath);
 
+            //delete temp folder after zip file created
             string deleteFile = path + "\\temp";
             DirectoryInfo directoryInfo = new DirectoryInfo(deleteFile);
             if (directoryInfo.Exists)

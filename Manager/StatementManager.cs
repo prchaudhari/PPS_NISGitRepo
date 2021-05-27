@@ -6103,10 +6103,10 @@ namespace nIS
                     if (asset != null)
                     {
                         var fileData = new FileData();
-                        fileData.FileName = "Image" + page.Identifier + widget.Identifier + ".jpg";
+                        fileData.FileName = asset.Name;
                         fileData.FileUrl = asset.FilePath;
                         SampleFiles.Add(fileData);
-                        imageAssetPath = "./" + fileData.FileName;
+                        imageAssetPath = "../common/media/" + fileData.FileName;
                     }
                 }
 
@@ -6142,10 +6142,10 @@ namespace nIS
                     if (asset != null)
                     {
                         var fileData = new FileData();
-                        fileData.FileName = "Video" + page.Identifier + widget.Identifier + ".mp4";
+                        fileData.FileName = asset.Name;
                         fileData.FileUrl = asset.FilePath;
                         SampleFiles.Add(fileData);
-                        videoAssetPath = "./" + fileData.FileName;
+                        videoAssetPath = "../common/media/" + fileData.FileName;
                     }
                 }
             }

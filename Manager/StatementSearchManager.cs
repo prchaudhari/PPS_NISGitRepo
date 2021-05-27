@@ -1162,21 +1162,40 @@ namespace nIS
                         Directory.CreateDirectory(outputlocation);
                     }
 
-                    //Update mark pro fonts url in ltr.css
-                    var cssFIlePath = AppDomain.CurrentDomain.BaseDirectory + @"\Resources\css\ltr.css";
-                    var css = File.ReadAllText(cssFIlePath);
-                    css = css.Replace("../fonts/", "./");
-                    File.WriteAllText(cssFIlePath, css);
-
-                    cssFIlePath = AppDomain.CurrentDomain.BaseDirectory + @"\Resources\css\font-awesome.min.css";
-                    css = File.ReadAllText(cssFIlePath);
-                    css = css.Replace("../fonts/", "./");
-                    File.WriteAllText(cssFIlePath, css);
-
                     this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\css", outputlocation, false);
                     this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\js", outputlocation, false);
                     this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\images", outputlocation, false);
                     this.utility.DirectoryCopy(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\fonts", outputlocation, false);
+
+                    //Update mark pro fonts url in ltr.css
+                    var cssFIlePath = string.Empty;
+                    var css = string.Empty;
+                    if (File.Exists(outputlocation + @"\ltr.css"))
+                    {
+                        cssFIlePath = outputlocation + @"\ltr.css";
+                        css = File.ReadAllText(cssFIlePath);
+                        css = css.Replace("../fonts/", "./");
+                        File.WriteAllText(cssFIlePath, css);
+                    }
+
+                    //Update mark pro fonts url in site.css
+                    if (File.Exists(outputlocation + @"\site.css"))
+                    {
+                        cssFIlePath = outputlocation + @"\site.css";
+                        css = File.ReadAllText(cssFIlePath);
+                        css = css.Replace("../fonts/", "./");
+                        File.WriteAllText(cssFIlePath, css);
+                    }
+
+                    //Update font awesome fonts url in fone-awesome.min.css
+                    if (File.Exists(outputlocation + @"\font-awesome.min.css"))
+                    {
+                        cssFIlePath = outputlocation + @"\font-awesome.min.css";
+                        css = File.ReadAllText(cssFIlePath);
+                        css = css.Replace("../fonts/", "./");
+                        File.WriteAllText(cssFIlePath, css);
+                    }
+                    
                     this.GenerateNedbankHtmlStatementForPdfGeneration(customer, statement, statementPageContents, batch, BatchDetails, tenantCode, outputlocation, tenantConfiguration);
                 }
 

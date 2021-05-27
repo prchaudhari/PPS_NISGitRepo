@@ -432,7 +432,7 @@ export class LogsDetailsComponent implements OnInit {
 
   ExportToPDF(log: ScheduleLogDetail): void {
     this.uiLoader.start();
-    this.http.post(this.baseURL + 'ScheduleLogDetail/ExportToPDF' , log, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
+    this.http.post(this.baseURL + 'ScheduleLog/ScheduleLogDetail/ExportToPDF' , log, { responseType: "arraybuffer", observe: 'response' }).pipe(map(response => response))
       .subscribe(
         data => {
           this.uiLoader.stop();

@@ -2,21 +2,21 @@
     font-family: 'Mark Pro Regular';
     font-style: normal;
     font-weight: normal;
-    src: local('Mark Pro Regular'), url('./MARKPRO.woff') format('woff');
+    src: local('Mark Pro Regular'), url('../fonts/MARKPRO.woff') format('woff');
 }
 
 @font-face {
     font-family: 'Mark Pro Medium';
     font-style: normal;
     font-weight: normal;
-    src: local('Mark Pro Medium'), url('./MARKPROMEDIUM.woff') format('woff');
+    src: local('Mark Pro Medium'), url('../fonts/MARKPROMEDIUM.woff') format('woff');
 }
 
 @font-face {
     font-family: 'Mark Pro Bold';
     font-style: normal;
     font-weight: normal;
-    src: local('Mark Pro Bold'), url('./MARKPROBOLD.woff') format('woff');
+    src: local('Mark Pro Bold'), url('../fonts/MARKPROBOLD.woff') format('woff');
 }
   
 .show-sidebar .nav-icon,
