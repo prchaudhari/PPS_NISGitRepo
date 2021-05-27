@@ -1072,7 +1072,7 @@
                 client.setPageWidth("12in");
 
                 //Set the output page height. Use -1 for a single page PDF. The safe maximum is 200in otherwise some PDF viewers may be unable to open the PDF.
-                client.setPageHeight("-1");
+                client.setPageHeight("10in");
 
                 //Set the output page top margin.
                 client.setMarginTop("0.4in");
@@ -1090,7 +1090,7 @@
                 client.setHeaderHeight("0.4in");
 
                 //Use the specified HTML as the output page footer. 
-                //client.setFooterHtml("Page <span class='pdfcrowd-page-number'></span> of <span class='pdfcrowd-page-count'></span> pages");
+                client.setFooterHtml("Page <span class='pdfcrowd-page-number'></span> of <span class='pdfcrowd-page-count'></span> pages");
 
                 //Set the output page footer height.
                 client.setFooterHeight("0.4in");

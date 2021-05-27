@@ -4531,7 +4531,7 @@ namespace nIS
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             var widgetHTML = HtmlConstants.VIDEO_WIDGET_HTML_FOR_STMT.Replace("{{VideoSource}}", "{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-           widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", "auto");
+            widgetHTML = widgetHTML.Replace("{{WidgetDivHeight}}", "auto");
             widgetHTML = widgetHTML.Replace("{{WidgetId}}", widgetId);
             return widgetHTML;
         }

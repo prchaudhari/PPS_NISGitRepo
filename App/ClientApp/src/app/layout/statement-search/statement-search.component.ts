@@ -186,6 +186,7 @@ export class StatementSearchComponent implements OnInit {
     let scheduleLogService = this.injector.get(StatementSearchService);
     if (searchParameter == null) {
       searchParameter = {};
+      searchParameter.IsPasswordRequired = false;
       searchParameter.PagingParameter = {};
       searchParameter.PagingParameter.PageIndex = this.currentPage + 1;
       searchParameter.PagingParameter.PageSize = this.pageSize;
@@ -281,6 +282,7 @@ export class StatementSearchComponent implements OnInit {
         if (this.validateFilterDate()) {
           let searchParameter: any = {};
           searchParameter.PagingParameter = {};
+          searchParameter.IsPasswordRequired = false;
           searchParameter.PagingParameter.PageIndex = 1;
           searchParameter.PagingParameter.PageSize = this.pageSize;
           searchParameter.SortParameter = {};

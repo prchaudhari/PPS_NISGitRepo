@@ -128,7 +128,7 @@ namespace nIS
 
         [HttpGet]
         [Route("StatementSearch/Download")]
-        public HttpResponseMessage Download(string identifier)
+        public HttpResponseMessage Download(long identifier)
         {
             string zipFile = string.Empty;
             string destinationFolder = string.Empty;
@@ -138,85 +138,92 @@ namespace nIS
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 StatementSearch statement = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
                 {
-                    Identifier = identifier,
+                    Identifier = identifier.ToString(),
+                    IsPasswordRequired = false,
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
-
-                string FileName = statement.StatementURL.Split('\\').ToList().LastOrDefault();
-                if (File.Exists(statement.StatementURL))
+                if (statement != null)
                 {
-                    DirectoryInfo di = new DirectoryInfo(statement.StatementURL);
-                    var customerId = di.Parent.Name;
-                    var batchId = di.Parent.Parent.Name;
-                    var batchFolderPath = di.Parent.Parent.FullName;
-                    string batchURL = di.Parent.Parent.Parent.FullName + "\\" + batchId;
-                    if (Directory.Exists(batchURL + "\\" + "common"))
+                    string FileName = statement.StatementURL.Split('\\').ToList().LastOrDefault();
+                    if (File.Exists(statement.StatementURL))
                     {
-                        string tempStatement = "tempStatement" + identifier;
-                        var commonFolder = batchURL + "\\" + "common";
-                        var customerFolder = batchURL + "\\" + customerId;
-                        destinationFolder = batchURL + "\\" + tempStatement;
-                        // If the destination directory doesn't exist, create it.
-                        if (!Directory.Exists(destinationFolder))
+                        DirectoryInfo di = new DirectoryInfo(statement.StatementURL);
+                        var customerId = di.Parent.Name;
+                        var batchId = di.Parent.Parent.Name;
+                        var batchFolderPath = di.Parent.Parent.FullName;
+                        string batchURL = di.Parent.Parent.Parent.FullName + "\\" + batchId;
+                        if (Directory.Exists(batchURL + "\\" + "common"))
                         {
-                            Directory.CreateDirectory(destinationFolder);
-                        }
-                        if (!Directory.Exists(destinationFolder + "\\" + "common"))
-                        {
-                            Directory.CreateDirectory(destinationFolder + "\\" + "common");
-                        }
-                        if (!Directory.Exists(destinationFolder + "\\" + customerId))
-                        {
-                            Directory.CreateDirectory(destinationFolder + "\\" + customerId);
-                        }
-                        this.utility.DirectoryCopy(commonFolder, (destinationFolder + "\\" + "common"), true);
-                        this.utility.DirectoryCopy(customerFolder, (destinationFolder + "\\" + customerId), true);
-                        zipFile = batchURL + "\\" + "tempStatementZip" + identifier + ".zip";
-                        ZipFile.CreateFromDirectory(destinationFolder, zipFile);
-                        if (File.Exists(zipFile))
-                        {
-                            if (!File.Exists(zipFile))
+                            string tempStatement = "tempStatement" + statement.Identifier;
+                            var commonFolder = batchURL + "\\" + "common";
+                            var customerFolder = batchURL + "\\" + customerId;
+                            destinationFolder = batchURL + "\\" + tempStatement;
+                            // If the destination directory doesn't exist, create it.
+                            if (!Directory.Exists(destinationFolder))
                             {
-                                throw new HttpResponseException(HttpStatusCode.NotFound);
+                                Directory.CreateDirectory(destinationFolder);
                             }
-                            try
+                            if (!Directory.Exists(destinationFolder + "\\" + "common"))
                             {
-                                using (MemoryStream ms = new MemoryStream())
+                                Directory.CreateDirectory(destinationFolder + "\\" + "common");
+                            }
+                            if (!Directory.Exists(destinationFolder + "\\" + customerId))
+                            {
+                                Directory.CreateDirectory(destinationFolder + "\\" + customerId);
+                            }
+                            this.utility.DirectoryCopy(commonFolder, (destinationFolder + "\\" + "common"), true);
+                            this.utility.DirectoryCopy(customerFolder, (destinationFolder + "\\" + customerId), true);
+                            zipFile = batchURL + "\\" + "tempStatementZip" + statement.Identifier + ".zip";
+                            ZipFile.CreateFromDirectory(destinationFolder, zipFile);
+                            if (File.Exists(zipFile))
+                            {
+                                if (!File.Exists(zipFile))
                                 {
-                                    using (FileStream file = new FileStream(zipFile, FileMode.Open, FileAccess.Read))
-                                    {
-                                        byte[] bytes = new byte[file.Length];
-                                        file.Read(bytes, 0, (int)file.Length);
-                                        ms.Write(bytes, 0, (int)file.Length);
-                                        FileName = FileName.Replace(".html", ".zip");
-                                        httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
-                                        httpResponseMessage.Content.Headers.Add("x-filename", FileName);
-                                        httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                                        httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                                        httpResponseMessage.Content.Headers.ContentDisposition.FileName = FileName;
-                                        httpResponseMessage.StatusCode = HttpStatusCode.OK;
-                                    }
-
-                                    IList<SystemActivityHistory> activityHistories = new List<SystemActivityHistory>();
-                                    activityHistories.Add(new SystemActivityHistory()
-                                    {
-                                        Module = "Statement Search",
-                                        EntityId = statement.Identifier,
-                                        EntityName = "BatchId: " + statement.BatchId + "_BatchName: " + statement.BatchName,
-                                        SubEntityId = statement.CustomerId,
-                                        SubEntityName = statement.CustomerName,
-                                        ActionTaken = "HtmlStatementDownload",
-                                    });
-                                    this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
+                                    throw new HttpResponseException(HttpStatusCode.NotFound);
                                 }
-                                return httpResponseMessage;
-                            }
-                            catch (IOException)
-                            {
-                                throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                                try
+                                {
+                                    using (MemoryStream ms = new MemoryStream())
+                                    {
+                                        using (FileStream file = new FileStream(zipFile, FileMode.Open, FileAccess.Read))
+                                        {
+                                            byte[] bytes = new byte[file.Length];
+                                            file.Read(bytes, 0, (int)file.Length);
+                                            ms.Write(bytes, 0, (int)file.Length);
+                                            FileName = FileName.Replace(".html", ".zip");
+                                            httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
+                                            httpResponseMessage.Content.Headers.Add("x-filename", FileName);
+                                            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                                            httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                                            httpResponseMessage.Content.Headers.ContentDisposition.FileName = FileName;
+                                            httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                                        }
+
+                                        IList<SystemActivityHistory> activityHistories = new List<SystemActivityHistory>();
+                                        activityHistories.Add(new SystemActivityHistory()
+                                        {
+                                            Module = "Statement Search",
+                                            EntityId = statement.Identifier,
+                                            EntityName = "BatchId: " + statement.BatchId + "_BatchName: " + statement.BatchName,
+                                            SubEntityId = statement.CustomerId,
+                                            SubEntityName = statement.CustomerName,
+                                            ActionTaken = "HtmlStatementDownload",
+                                        });
+                                        this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
+                                    }
+                                    return httpResponseMessage;
+                                }
+                                catch (IOException)
+                                {
+                                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                                }
                             }
                         }
                     }
+                }
+                else
+                {
+                    httpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
                 }
             }
             catch (Exception ex)
@@ -251,50 +258,58 @@ namespace nIS
                 StatementSearch statement = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
                 {
                     Identifier = identifier.ToString(),
+                    IsPasswordRequired = true,
                     SortParameter = new SortParameter() { SortColumn = ModelConstant.SORT_COLUMN }
                 }, tenantCode).FirstOrDefault();
 
-                outputpath = this.StatementSearchManager.GenerateStatementNew(statement, tenantCode);
-                
-                zipFile = AppDomain.CurrentDomain.BaseDirectory + "\\Resources" + "\\" + "tempStatementZip" + identifier + ".zip";
-                ZipFile.CreateFromDirectory(outputpath, zipFile);
-                var pdfName = "Statement_" + DateTime.Now.ToShortDateString().Replace(" - ", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
-                string password = string.Empty;
-                if (statement.IsPasswordGenerated)
+                if (statement != null)
                 {
-                    password = this.cryptoManager.Decrypt(statement.Password);
-                }
-                var isPdfSuccess = this.utility.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName,password);
-                if (isPdfSuccess)
-                {
-                    using (MemoryStream ms = new MemoryStream())
+                    outputpath = this.StatementSearchManager.GenerateStatementNew(statement, tenantCode);
+
+                    zipFile = AppDomain.CurrentDomain.BaseDirectory + "\\Resources" + "\\" + "tempStatementZip" + identifier + ".zip";
+                    ZipFile.CreateFromDirectory(outputpath, zipFile);
+                    var pdfName = "Statement_" + DateTime.Now.ToShortDateString().Replace(" - ", "_").Replace(":", "_").Replace(" ", "_").Replace('/', '_') + ".pdf";
+                    string password = string.Empty;
+                    if (statement.IsPasswordGenerated)
                     {
-                        using (FileStream file = new FileStream((outputpath + "\\" + pdfName), FileMode.Open, FileAccess.Read))
+                        password = this.cryptoManager.Decrypt(statement.Password);
+                    }
+                    var isPdfSuccess = this.utility.HtmlStatementToPdf(zipFile, outputpath + "\\" + pdfName, password);
+                    if (isPdfSuccess)
+                    {
+                        using (MemoryStream ms = new MemoryStream())
                         {
-                            byte[] bytes = new byte[file.Length];
-                            file.Read(bytes, 0, (int)file.Length);
-                            ms.Write(bytes, 0, (int)file.Length);
-                            httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
-                            httpResponseMessage.Content.Headers.Add("x-filename", pdfName);
-                            httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
-                            httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                            httpResponseMessage.Content.Headers.ContentDisposition.FileName = pdfName;
-                            httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                            using (FileStream file = new FileStream((outputpath + "\\" + pdfName), FileMode.Open, FileAccess.Read))
+                            {
+                                byte[] bytes = new byte[file.Length];
+                                file.Read(bytes, 0, (int)file.Length);
+                                ms.Write(bytes, 0, (int)file.Length);
+                                httpResponseMessage.Content = new ByteArrayContent(bytes.ToArray());
+                                httpResponseMessage.Content.Headers.Add("x-filename", pdfName);
+                                httpResponseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+                                httpResponseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                                httpResponseMessage.Content.Headers.ContentDisposition.FileName = pdfName;
+                                httpResponseMessage.StatusCode = HttpStatusCode.OK;
+                            }
                         }
                     }
-                }
 
-                IList<SystemActivityHistory> activityHistories = new List<SystemActivityHistory>();
-                activityHistories.Add(new SystemActivityHistory()
+                    IList<SystemActivityHistory> activityHistories = new List<SystemActivityHistory>();
+                    activityHistories.Add(new SystemActivityHistory()
+                    {
+                        Module = "Statement Search",
+                        EntityId = statement.Identifier,
+                        EntityName = "BatchId: " + statement.BatchId + "_BatchName: " + statement.BatchName,
+                        SubEntityId = statement.CustomerId,
+                        SubEntityName = statement.CustomerName,
+                        ActionTaken = "PdfStatementDownload",
+                    });
+                    this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
+                }
+                else
                 {
-                    Module = "Statement Search",
-                    EntityId = statement.Identifier,
-                    EntityName = "BatchId: " + statement.BatchId + "_BatchName: " + statement.BatchName,
-                    SubEntityId = statement.CustomerId,
-                    SubEntityName = statement.CustomerName,
-                    ActionTaken = "PdfStatementDownload",
-                });
-                this.systemActivityHistoryManager.SaveSystemActivityHistoryDetails(activityHistories, tenantCode);
+                    httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                }
 
                 return httpResponseMessage;
             }

@@ -530,6 +530,7 @@ namespace nIS
                 {
                     CustomerId = archivalProcessRawData.CustomerId.ToString(),
                     StatementId = archivalProcessRawData.Statement.Identifier.ToString(),
+                    IsPasswordRequired = true,
                     PagingParameter = new PagingParameter
                     {
                         PageIndex = 0,

@@ -107,6 +107,8 @@ namespace nIS
 
         public const string TENANT_SELF_MANAGE_TYPE = "Self";
 
+        public const string WEB_API_BASE_URL = "WebApiBaseUrl";
+
         #endregion
 
         #region Operations

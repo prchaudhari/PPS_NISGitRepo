@@ -263,7 +263,7 @@ namespace nIS
                             AccountType = statementRecord.AccountType,
                             StatementURL = statementRecord.StatementURL,
                             IsPasswordGenerated = statementRecord.IsPasswordGenerated,
-                            Password = statementRecord.Password,
+                            Password = statementSearchParameter.IsPasswordRequired ? statementRecord.Password : string.Empty,
                             TenantCode = statementRecord.TenantCode
                         });
                     });
@@ -1480,6 +1480,11 @@ namespace nIS
             if (validationEngine.IsValidText(searchParameter.StatementId))
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.StatementId.ToString().Split(',').Select(item => string.Format("StatementId.Equals({0}) ", item))) + ") and ");
+            }
+
+            if (validationEngine.IsValidText(searchParameter.ScheduleLogId))
+            {
+                queryString.Append("(" + string.Join("or ", searchParameter.ScheduleLogId.ToString().Split(',').Select(item => string.Format("ScheduleLogId.Equals({0}) ", item))) + ") and ");
             }
 
             if (this.validationEngine.IsValidDate(searchParameter.StatementStartDate) || this.validationEngine.IsValidDate(searchParameter.StatementEndDate))

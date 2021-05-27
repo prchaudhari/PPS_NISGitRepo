@@ -89,6 +89,16 @@ namespace nIS
         /// </summary>
         public string StatementId { get; set; }
 
+        /// <summary>
+        /// The schedule log identifier
+        /// </summary>
+        public string ScheduleLogId { get; set; }
+
+        /// <summary>
+        /// The statement password required or not
+        /// </summary>
+        public bool IsPasswordRequired { get; set; }
+
         #endregion
 
         #region Public methods

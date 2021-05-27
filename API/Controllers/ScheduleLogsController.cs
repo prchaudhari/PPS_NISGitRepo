@@ -5,6 +5,7 @@
 
 namespace nIS
 {
+    using Newtonsoft.Json;
 
     #region References
 
@@ -12,11 +13,13 @@ namespace nIS
     using OfficeOpenXml.Style;
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Text;
     using System.Web;
     using System.Web.Http;
     using System.Web.Http.Cors;
@@ -53,6 +56,11 @@ namespace nIS
         /// </summary>
         private TenantConfigurationManager tenantConfigurationManager = null;
 
+        /// <summary>
+        /// The StatementSearch manager object.
+        /// </summary>
+        private StatementSearchManager StatementSearchManager = null;
+
         #endregion
 
         #region Constructor
@@ -63,6 +71,7 @@ namespace nIS
             this.utility = new Utility();
             this.scheduleLogManager = new ScheduleLogManager(this.unityContainer);
             this.tenantConfigurationManager = new TenantConfigurationManager(unityContainer);
+            this.StatementSearchManager = new StatementSearchManager(unityContainer);
         }
 
         #endregion
@@ -178,8 +187,7 @@ namespace nIS
         /// <param name="ScheduleLogIndentifier">The schedule log detail object list</param>
         /// <returns>return excel file in the http response</returns>
         [HttpGet]
-        [Route("ScheduleLog/DownloadErrorLogs")]
-        public HttpResponseMessage DownloadScheduleErrorLogs(long ScheduleLogIndentifier)
+        public HttpResponseMessage DownloadErrorLogs(long ScheduleLogIndentifier)
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
             string filePath = string.Empty;
@@ -265,6 +273,115 @@ namespace nIS
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 return this.scheduleLogManager.GetDashboardData(tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to download statement in HTML format
+        /// </summary>
+        /// <param name="logDetail">The schedule log detail object </param>
+        /// <returns>return HTML statement file in the http response</returns>
+        [HttpPost]
+        [Route("ScheduleLogDetail/DownloadHTMLStatement")]
+        public HttpResponseMessage DownloadHTMLStatement(ScheduleLogDetail logDetail)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                var metadataRecord = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
+                {
+                    CustomerId = logDetail.CustomerId.ToString(),
+                    ScheduleLogId = logDetail.ScheduleLogId.ToString(),
+                    IsPasswordRequired = false,
+                    PagingParameter = new PagingParameter
+                    {
+                        PageIndex = 0,
+                        PageSize = 0,
+                    },
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = "Id",
+                    },
+                    SearchMode = SearchMode.Equals
+                }, tenantCode)?.ToList()?.FirstOrDefault();
+                if (metadataRecord != null)
+                {
+                    string BaseUrl = ConfigurationManager.AppSettings[ModelConstant.WEB_API_BASE_URL].ToString();
+                    var apiName = "StatementSearch/Download?identifier=" + metadataRecord.Identifier;
+
+                    HttpClient client = new HttpClient();
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+                    client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
+                    client.DefaultRequestHeaders.Authorization = Request.Headers.Authorization;
+                    return client.GetAsync(apiName)?.Result;
+                }
+                else
+                {
+                    HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+                    httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    return httpResponseMessage;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// This method helps to download statement in PDF format
+        /// </summary>
+        /// <param name="logDetail">The schedule log detail object </param>
+        /// <returns>return PDF statement file in the http response</returns>
+        [HttpPost]
+        [Route("ScheduleLogDetail/ExportToPDF")]
+        public HttpResponseMessage ExportHtmlStatementToPDF(ScheduleLogDetail logDetail)
+        {
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+
+                var metadataRecord = this.StatementSearchManager.GetStatementSearchs(new StatementSearchSearchParameter()
+                {
+                    CustomerId = logDetail.CustomerId.ToString(),
+                    ScheduleLogId = logDetail.ScheduleLogId.ToString(),
+                    IsPasswordRequired = false,
+                    PagingParameter = new PagingParameter
+                    {
+                        PageIndex = 0,
+                        PageSize = 0,
+                    },
+                    SortParameter = new SortParameter()
+                    {
+                        SortOrder = SortOrder.Ascending,
+                        SortColumn = "Id",
+                    },
+                    SearchMode = SearchMode.Equals
+                }, tenantCode)?.ToList()?.FirstOrDefault();
+                if (metadataRecord != null)
+                {
+                    string BaseUrl = ConfigurationManager.AppSettings[ModelConstant.WEB_API_BASE_URL].ToString();
+                    var apiName = "StatementSearch/ExportToPDF?identifier=" + metadataRecord.Identifier;
+
+                    HttpClient client = new HttpClient();
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ModelConstant.APPLICATION_JSON_MEDIA_TYPE));
+                    client.DefaultRequestHeaders.Add(ModelConstant.TENANT_CODE_KEY, tenantCode);
+                    client.DefaultRequestHeaders.Authorization = Request.Headers.Authorization;
+                    return client.GetAsync(apiName)?.Result;
+                }
+                else
+                {
+                    HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+                    httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    return httpResponseMessage;
+                }
             }
             catch (Exception ex)
             {
