@@ -136,14 +136,15 @@ namespace nIS
         public void CreateCustomerStatement(GenerateStatementRawData statementRawData, string tenantCode)
         {
             IList<StatementMetadata> statementMetadataRecords = new List<StatementMetadata>();
+            var customer = statementRawData.Customer;
+
             try
             {
                 //call to generate actual HTML statement file for current customer record
                 var logDetailRecord = this.GenerateStatements(statementRawData, tenantCode);
                 if (logDetailRecord != null)
                 {
-                    var customer = statementRawData.Customer;
-
+                    
                     //save schedule log details for current customer
                     var logDetails = new List<ScheduleLogDetail>();
                     logDetailRecord.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
@@ -187,8 +188,27 @@ namespace nIS
             }
             catch (Exception ex)
             {
+                //save schedule log details for current customer, if something went wrong while statement generation...
+                var logDetails = new List<ScheduleLogDetail>();
+                logDetails.Add(new ScheduleLogDetail()
+                {
+                    ScheduleLogId = statementRawData.ScheduleLog.Identifier,
+                    CustomerId = customer.Identifier,
+                    CustomerName = customer.FirstName.Trim() + (customer.MiddleName == "" ? string.Empty : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim(),
+                    ScheduleId = statementRawData.ScheduleLog.ScheduleId,
+                    RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
+                    RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
+                    RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "",
+                    NumberOfRetry = 1,
+                    CreateDate = DateTime.UtcNow,
+                    Status = ScheduleLogStatus.Failed.ToString(),
+                    LogMessage = "Something went wrong while generating statement: " + ex.Message
+                });
+                this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
+
+                //write error log
                 WriteToFile(ex.StackTrace.ToString());
-                throw ex;
+                //throw ex;
             }
         }
 
@@ -200,14 +220,14 @@ namespace nIS
         public void CreateCustomerNedbankStatement(GenerateStatementRawData statementRawData, string tenantCode)
         {
             IList<StatementMetadata> statementMetadataRecords = new List<StatementMetadata>();
+            var customer = statementRawData.DM_Customer;
+
             try
             {
                 //call to generate actual NedBank HTML statement file for current customer record
                 var logDetailRecord = this.GenerateNedbankStatements(statementRawData, tenantCode);
                 if (logDetailRecord != null)
                 {
-                    var customer = statementRawData.DM_Customer;
-
                     //save schedule log details for current customer
                     var logDetails = new List<ScheduleLogDetail>();
                     logDetailRecord.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
@@ -251,8 +271,27 @@ namespace nIS
             }
             catch (Exception ex)
             {
+                //save schedule log details for current customer, if something went wrong while statement generation...
+                var logDetails = new List<ScheduleLogDetail>();
+                logDetails.Add(new ScheduleLogDetail()
+                {
+                    ScheduleLogId = statementRawData.ScheduleLog.Identifier,
+                    CustomerId = customer.CustomerId,
+                    CustomerName = customer.FirstName.Trim() + " " + customer.SurName.Trim(),
+                    ScheduleId = statementRawData.ScheduleLog.ScheduleId,
+                    RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
+                    RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
+                    RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "",
+                    NumberOfRetry = 1,
+                    CreateDate = DateTime.UtcNow,
+                    Status = ScheduleLogStatus.Failed.ToString(),
+                    LogMessage = "Something went wrong while generating statement: "+ ex.Message
+                });
+                this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
+
+                //write error log
                 WriteToFile(ex.StackTrace.ToString());
-                throw ex;
+                //throw ex;
             }
         }
 
@@ -377,7 +416,27 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                //save schedule log details for current customer, if something went wrong while statement generation...
+                var logDetails = new List<ScheduleLogDetail>();
+                logDetails.Add(new ScheduleLogDetail()
+                {
+                    ScheduleLogId = statementRawData.ScheduleLog.Identifier,
+                    CustomerId = statementRawData.Customer.Identifier,
+                    CustomerName = statementRawData.Customer.FirstName.Trim() + (statementRawData.Customer.MiddleName == "" ? string.Empty : " " + statementRawData.Customer.MiddleName.Trim()) + " " + statementRawData.Customer.LastName.Trim(),
+                    ScheduleId = statementRawData.ScheduleLog.ScheduleId,
+                    RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
+                    RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
+                    RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "",
+                    NumberOfRetry = 1,
+                    CreateDate = DateTime.UtcNow,
+                    Status = ScheduleLogStatus.Failed.ToString(),
+                    LogMessage = "Something went wrong while generating statement: " + ex.Message
+                });
+                this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
+
+                //write error log
+                WriteToFile(ex.StackTrace.ToString());
+                //throw ex;
             }
         }
 
@@ -502,7 +561,27 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                //save schedule log details for current customer, if something went wrong while statement generation...
+                var logDetails = new List<ScheduleLogDetail>();
+                logDetails.Add(new ScheduleLogDetail()
+                {
+                    ScheduleLogId = statementRawData.ScheduleLog.Identifier,
+                    CustomerId = statementRawData.DM_Customer.CustomerId,
+                    CustomerName = statementRawData.DM_Customer.FirstName.Trim() + " " + statementRawData.DM_Customer.SurName.Trim(),
+                    ScheduleId = statementRawData.ScheduleLog.ScheduleId,
+                    RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0,
+                    RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : "",
+                    RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : "",
+                    NumberOfRetry = 1,
+                    CreateDate = DateTime.UtcNow,
+                    Status = ScheduleLogStatus.Failed.ToString(),
+                    LogMessage = "Something went wrong while generating statement: " + ex.Message
+                });
+                this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
+
+                //write error log
+                WriteToFile(ex.StackTrace.ToString());
+                //throw ex;
             }
         }
 
