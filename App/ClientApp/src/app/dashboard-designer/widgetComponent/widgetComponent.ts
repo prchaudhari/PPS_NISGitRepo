@@ -1881,7 +1881,7 @@ export class CustomerDetailsComponent {
               <br>Bank VAT Reg No XXXXXXXXXX
           </div>
           <div class="ConactCenterDiv text-success float-right pt-3">
-              Contact centre: XXXX XXX XXX
+              Nedbank Private Wealth Service Suite: XXXX XXX XXX
           </div>
       </div>
     </div>

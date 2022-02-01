@@ -779,7 +779,7 @@ namespace nIS
                                                         htmlWidget.Replace("{{AddressLine2}}", branchDetails.AddressLine2.ToUpper());
                                                         htmlWidget.Replace("{{AddressLine3}}", branchDetails.AddressLine3.ToUpper());
                                                         htmlWidget.Replace("{{BankVATRegNo}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
-                                                        htmlWidget.Replace("{{ContactCenter}}", "Contact centre: " + branchDetails.ContactNo);
+                                                        htmlWidget.Replace("{{ContactCenter}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
                                                         htmlString.Append(htmlWidget.ToString());
                                                     }
                                                 }
