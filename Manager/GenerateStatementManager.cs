@@ -2902,7 +2902,8 @@ namespace nIS
                         (!string.IsNullOrEmpty(branchDetails.AddressLine1) ? (branchDetails.AddressLine1.ToUpper() + "<br>") : string.Empty) +
                         (!string.IsNullOrEmpty(branchDetails.AddressLine2) ? (branchDetails.AddressLine2.ToUpper() + "<br>") : string.Empty) +
                         (!string.IsNullOrEmpty(branchDetails.AddressLine3) ? (branchDetails.AddressLine3.ToUpper() + "<br>") : string.Empty) +
-                        (!string.IsNullOrEmpty(branchDetails.VatRegNo) ? "Bank VAT Reg No " + branchDetails.VatRegNo : string.Empty);
+                        (!string.IsNullOrEmpty(branchDetails.VatRegNo) ? "Bank VAT Reg No " + branchDetails.VatRegNo : string.Empty) + "<br>" + "<br>" +
+                        (!string.IsNullOrEmpty(branchDetails.VatRegNo) ? "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo : string.Empty);
 
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
                     pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Contact centre: " + branchDetails.ContactNo);

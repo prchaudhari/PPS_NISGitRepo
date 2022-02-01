@@ -2044,7 +2044,7 @@ namespace nIS
                         (!string.IsNullOrEmpty(branchDetails.VatRegNo) ? "Bank VAT Reg No " + branchDetails.VatRegNo : string.Empty);
 
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
-                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Contact centre: " + branchDetails.ContactNo);
+                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
                 }
             }
             catch (Exception)

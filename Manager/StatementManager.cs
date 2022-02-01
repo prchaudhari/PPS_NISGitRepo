@@ -2683,7 +2683,7 @@ namespace nIS
                                                             htmlWidget.Replace("{{AddressLine2}}", branchDetails.AddressLine2.ToUpper());
                                                             htmlWidget.Replace("{{AddressLine3}}", branchDetails.AddressLine3.ToUpper());
                                                             htmlWidget.Replace("{{BankVATRegNo}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
-                                                            htmlWidget.Replace("{{ContactCenter}}", "Contact centre: " + branchDetails.ContactNo);
+                                                            htmlWidget.Replace("{{ContactCenter}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
                                                             htmlString.Append(htmlWidget.ToString());
                                                         }
                                                     }
@@ -4885,7 +4885,7 @@ namespace nIS
                             (!string.IsNullOrEmpty(branchDetails.AddressLine3) ? (branchDetails.AddressLine3.ToUpper() + "<br>") : string.Empty) +
                             (!string.IsNullOrEmpty(branchDetails.VatRegNo) ? "Bank VAT Reg No " + branchDetails.VatRegNo : string.Empty);
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
-                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Contact centre: " + branchDetails.ContactNo);
+                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
                 }
             }
         }
