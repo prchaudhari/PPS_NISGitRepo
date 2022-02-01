@@ -2097,6 +2097,13 @@
         color: #2d6444 !important;
     }
 
+    .card-body-header-name {
+        font-size: 18px;
+        color: #2d6444 !important;
+        font-weight: bolder;
+        font-family: sans-serif;
+    }
+
     .card-body-sub-header {
         font-size: 18px;
         color: #005b00 !important;
