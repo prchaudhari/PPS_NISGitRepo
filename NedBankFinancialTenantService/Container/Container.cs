@@ -8,9 +8,8 @@ namespace FinancialTenantService
     #region References
     using Microsoft.Practices.Unity;
     using NedbankRepository;
-    using NedBankUtility;
+    using NedbankUtility;
     using NedBankValidationEngine;
-    using nIS;
     #endregion
 
     /// <summary>

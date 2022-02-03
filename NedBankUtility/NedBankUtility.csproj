@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BFA764A0-9A52-4A73-8570-420D9BAB27F4}</ProjectGuid>
+    <ProjectGuid>{6C23AA0C-75E6-48A8-8693-2FA6719E7CE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NedBankUtility</RootNamespace>
-    <AssemblyName>NedBankUtility</AssemblyName>
+    <RootNamespace>nIS</RootNamespace>
+    <AssemblyName>nIS.Utility</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -43,27 +43,110 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="pdfcrowd, Version=4.12.0.0, Culture=neutral, PublicKeyToken=747913b00a4ba166, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pdfcrowd.Official.4.12.0\lib\net20\pdfcrowd.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.3.3.1\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.ConfigurationManager.Exception, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Exception.dll</HintPath>
+    </Reference>
     <Reference Include="Websym.Core.ConfigurationManager.Manager">
       <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Manager.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.ConfigurationManager.Model">
       <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Model.dll</HintPath>
     </Reference>
+    <Reference Include="Websym.Core.ConfigurationManager.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.ConfigurationManager.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EntityManager.Exception">
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Exception.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EntityManager.Manager">
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Manager.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EntityManager.Model">
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EntityManager.Repository">
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EntityManager.Utility">
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EventManager.Exception">
+      <HintPath>..\References\Event Manager\Websym.Core.EventManager.Exception.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EventManager.Manager">
+      <HintPath>..\References\Event Manager\Websym.Core.EventManager.Manager.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EventManager.Model">
+      <HintPath>..\References\Event Manager\Websym.Core.EventManager.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EventManager.Repository">
+      <HintPath>..\References\Event Manager\Websym.Core.EventManager.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.EventManager.Utility">
+      <HintPath>..\References\Event Manager\Websym.Core.EventManager.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.ResourceManager.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Resource Manager\Websym.Core.ResourceManager.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.TenantManager.Exception">
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Exception.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.TenantManager.Manager">
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Manager.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.TenantManager.Model">
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.TenantManager.Repository">
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.TenantManager.Utility">
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Utility.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationUtility.cs" />
     <Compile Include="IConfigurationUtility.cs" />
+    <Compile Include="IUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

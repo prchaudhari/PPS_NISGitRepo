@@ -1,10 +1,12 @@
 ﻿
-namespace NedBankUtility
+namespace NedbankUtility
 {
     #region References
 
     using System.Collections.Generic;
     using Websym.Core.ConfigurationManager;
+    using Websym.Core.EntityManager;
+    using Websym.Core.TenantManager;
 
     #endregion
 
@@ -34,5 +36,60 @@ namespace NedBankUtility
         /// Returns the connection string for the specified configuration key(s).
         /// </returns>
         string GetConnectionString(string section, string configurationKey, string configurationBaseURLKey, string tenantKey, string tenantCode);
+
+        /// <summary>
+        /// THis method will call get method of entity manager.
+        /// </summary>
+        /// <param name="entitySearchParameter">The entity search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </returns>
+        IList<Entity> GetRolePrivileges(EntitySearchParameter entitySearchParameter, string tenantCode);
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        IList<Tenant> GetTenant(TenantSearchParameter tenantSearchParameter);
+
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool AddTenant(IList<Tenant> tenants);
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool UpdateTenant(IList<Tenant> tenants);
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool DeleteTenant(IList<Tenant> tenants);
+
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool ActivateTenant(IList<Tenant> tenants);
+
+
+        /// <summary>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </summary>
+        /// <param name="tenantSearchParameter"></param>
+        /// <returns></returns>
+        bool DeactivateTenant(IList<Tenant> tenants);
     }
 }
