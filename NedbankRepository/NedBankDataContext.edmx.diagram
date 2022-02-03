@@ -4,120 +4,120 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c1069f61c65f4122baff73cf7aa4c8bb" Name="Diagram1" >
-        <EntityTypeShape EntityType="NISModel.UserRecord" Width="1.625" PointX="0.75" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.UserCredentialHistoryRecord" Width="1.625" PointX="0.75" PointY="1.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.UserLoginRecord" Width="1.625" PointX="0.75" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.UserLoginActivityHistoryRecord" Width="1.625" PointX="0.75" PointY="2.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.UserRoleMapRecord" Width="1.625" PointX="0.75" PointY="3.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.RolePrivilegeRecord" Width="1.75" PointX="2.75" PointY="1.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.AssetRecord" Width="1.75" PointX="2.75" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.AssetLibraryRecord" Width="1.75" PointX="2.75" PointY="2.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.AssetPathSettingRecord" Width="1.75" PointX="4.875" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.PageRecord" Width="1.75" PointX="2.75" PointY="3.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.PageTypeRecord" Width="1.75" PointX="4.875" PointY="1.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.PageWidgetMapRecord" Width="1.75" PointX="4.875" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleRecord" Width="1.75" PointX="7" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.StatementRecord" Width="1.75" PointX="7" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.StatementPageMapRecord" Width="1.75" PointX="7" PointY="1.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantRecord" Width="1.75" PointX="7" PointY="2.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.RoleRecord" Width="1.75" PointX="2.75" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.CityRecord" Width="1.625" PointX="0.75" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.StateRecord" Width="1.75" PointX="4.875" PointY="3.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.WidgetRecord" Width="1.75" PointX="4.875" PointY="2.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.AssetSettingRecord" Width="1.75" PointX="2.75" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleRunHistoryRecord" Width="1.75" PointX="4.875" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.RenderEngineRecord" Width="1.5" PointX="7" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.BatchDetailRecord" Width="1.5" PointX="7" PointY="4.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.CustomerMediaRecord" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.CustomerMasterRecord" Width="1.5" PointX="2.75" PointY="4.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ReminderAndRecommendationRecord" Width="1.5" PointX="0.875" PointY="5.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogDetailRecord" Width="1.5" PointX="8.625" PointY="8.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.AccountTransactionRecord" Width="1.5" PointX="2.75" PointY="6" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.SavingTrendRecord" Width="1.5" PointX="8.625" PointY="5.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.Top4IncomeSourcesRecord" Width="1.5" PointX="4.875" PointY="6" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TransactionDetailRecord" Width="1.5" PointX="4.875" PointY="4.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.AccountMasterRecord" Width="1.5" PointX="2.75" PointY="5.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.BatchMasterRecord" Width="1.5" PointX="9" PointY="4.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.AnalyticsDataRecord" Width="1.5" PointX="6.75" PointY="6.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_ScheduleRecord" Width="1.5" PointX="2.75" PointY="7.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_PageRecord" PointX="0.75" PointY="7.375" Width="1.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_StatementDefinitionRecord" Width="1.5" PointX="6.75" PointY="7.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_SourceDataRecord" Width="1.5" PointX="4.875" PointY="7.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ContactTypeRecord" Width="1.5" PointX="2.75" PointY="8.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantContactRecord" Width="1.5" PointX="4.875" PointY="8.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantUserRecord" Width="1.5" PointX="6.75" PointY="8.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.MultiTenantUserAccessMapRecord" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_MultiTenantUserAccessMapRecord" Width="1.5" PointX="2.75" PointY="8.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.CountryRecord" Width="1.5" PointX="7" PointY="3.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DynamicWidgetRecord" Width="1.5" PointX="4.875" PointY="8.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.EntityFieldMapRecord" Width="1.5" PointX="6.75" PointY="8.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantEntityRecord" Width="1.5" PointX="8.625" PointY="6.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DynamicWidgetFilterDetail" Width="1.5" PointX="8.625" PointY="7.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.WidgetPageTypeMap" Width="1.5" PointX="9" PointY="3.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_PageWidgetMapRecord" Width="1.5" PointX="9" PointY="3.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogDetailArchiveRecord" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.StatementMetadataRecord" Width="1.5" PointX="2.75" PointY="6.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.StatementMetadataArchiveRecord" Width="1.5" PointX="8.625" PointY="8.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_DynamicWidgetRecord" Width="1.5" PointX="9" PointY="2.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantSubscriptionRecord" Width="1.5" PointX="9.125" PointY="1.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogRecord" Width="1.5" PointX="6.75" PointY="6" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleLogArchiveRecord" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_TenantSubscriptionRecord" Width="1.5" PointX="5" PointY="5.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantSecurityCodeFormatRecord" Width="1.5" PointX="6.875" PointY="5.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_StatementMetadataRecord" Width="1.5" PointX="9" PointY="1.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_ScheduleLog" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_UserRecord" Width="1.5" PointX="8.75" PointY="5.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.TenantConfigurationRecord" Width="1.5" PointX="0.875" PointY="6.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_BranchMasterRecord" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_CustomerMasterRecord" Width="1.5" PointX="2.75" PointY="10.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_ExplanatoryNotesRecord" Width="1.5" PointX="4.75" PointY="10.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_InvestmentMasterRecord" Width="1.5" PointX="6.75" PointY="10.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_InvestmentTransactionRecord" Width="1.5" PointX="8.75" PointY="10.375" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanArrearsRecord" Width="1.5" PointX="2.75" PointY="9.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanMasterRecord" Width="1.5" PointX="6.75" PointY="9.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_PersonalLoanTransactionRecord" Width="1.5" PointX="8.625" PointY="9.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_SpecialMessagesRecord" Width="1.5" PointX="4.875" PointY="9.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_HomeLoanArrearsRecord" Width="1.5" PointX="6.75" PointY="11.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_HomeLoanMasterRecord" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_HomeLoanSummaryRecord" Width="1.5" PointX="2.75" PointY="11.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_HomeLoanTransactionRecord" Width="1.5" PointX="4.75" PointY="11.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_MarketingMessagesRecord" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_AccountAnalysisRecord" Width="1.5" PointX="8.75" PointY="11.125" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_AccountSummaryRecord" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_CustomerNewsAndAlertsRecord" Width="1.5" PointX="2.75" PointY="12.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_CustomerProductWiseRewardPointsRecord" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_CustomerReminderRecosRecord" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardPointsRecord" Width="1.5" PointX="8.75" PointY="12.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardPointsRedeemedRecord" Width="1.5" PointX="0.75" PointY="11.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_CustomerRewardSpendByCategoryRecord" Width="1.5" PointX="2.75" PointY="11.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_GreenbacksMasterRecord" Width="1.5" PointX="8.75" PointY="11.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_NewsAndAlertsRecord" Width="1.5" PointX="4.75" PointY="11.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.DM_ReminderRecosRecord" Width="1.5" PointX="6.75" PointY="11.875" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.SystemActivityHistoryRecord" Width="1.5" PointX="9.125" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ConfigurationManager" Width="1.5" PointX="11.75" PointY="0.75" />
-        <EntityTypeShape EntityType="NISModel.C__RefactorLog" Width="1.5" PointX="11.75" PointY="3.75" />
-        <EntityTypeShape EntityType="NISModel.DependentOperation" Width="1.5" PointX="11.75" PointY="5.75" />
-        <EntityTypeShape EntityType="NISModel.Entity" Width="1.5" PointX="11.75" PointY="8.75" />
-        <EntityTypeShape EntityType="NISModel.Operation" Width="1.5" PointX="13.75" PointY="0.75" />
-        <EntityTypeShape EntityType="NISModel.DM_AgentDetails" Width="1.5" PointX="13.75" PointY="3.75" />
-        <EntityTypeShape EntityType="NISModel.NB_BranchMaster" Width="1.5" PointX="13.75" PointY="8.75" />
-        <EntityTypeShape EntityType="NISModel.NB_CustomerMaster" Width="1.5" PointX="11.75" PointY="13.75" />
-        <EntityTypeShape EntityType="NISModel.NB_InvestmentMaster" Width="1.5" PointX="13.75" PointY="12.75" />
-        <EntityTypeShape EntityType="NISModel.NB_InvestmentTransaction" Width="1.5" PointX="0.75" PointY="14.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_CustomerMaster" Width="1.5" PointX="2.75" PointY="14.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_DataUsage" Width="1.5" PointX="4.75" PointY="14.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_EmailsBySubscription" Width="1.5" PointX="6.75" PointY="14.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_MeetingUsage" Width="1.5" PointX="8.75" PointY="14.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_SubscriptionMaster" Width="1.5" PointX="15.75" PointY="0.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_SubscriptionSpend" Width="1.5" PointX="15.75" PointY="4.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_SubscriptionSummary" Width="1.5" PointX="15.75" PointY="8.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_SubscriptionUsage" Width="1.5" PointX="15.75" PointY="12.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_UserSubscriptions" Width="1.5" PointX="15.75" PointY="16.75" />
-        <EntityTypeShape EntityType="NISModel.TTD_VendorSubscription" Width="1.5" PointX="17.75" PointY="0.75" />
-        <EntityTypeShape EntityType="NISModel.View_DynamicWidget1" Width="1.5" PointX="17.75" PointY="3.75" />
-        <EntityTypeShape EntityType="NISModel.database_firewall_rules" Width="1.5" PointX="17.75" PointY="10.75" />
-        </Diagram>
+      <Diagram DiagramId="bc41673e4d9240a1a32de6d1e2df6e57" Name="Diagram1">
+        <EntityTypeShape EntityType="NenbankDataContextModel.ConfigurationManager" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.C__RefactorLog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DependentOperation" Width="1.5" PointX="2.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Entity" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Operation" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.AccountMaster" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.AccountTransaction" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.AnalyticsData" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Asset" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.AssetLibrary" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.AssetPathSetting" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.AssetSetting" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.BatchDetail" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.BatchMaster" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.City" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.ContactType" Width="1.5" PointX="10.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Country" Width="1.5" PointX="4.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.CustomerMaster" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.CustomerMedia" Width="1.5" PointX="10.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_AccountAnalysis" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_AccountSummary" Width="1.5" PointX="10.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_AgentDetails" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_BranchMaster" Width="1.5" PointX="12.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_CustomerMaster" Width="1.5" PointX="12.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_CustomerNewsAndAlerts" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_CustomerProductWiseRewardPoints" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_CustomerReminderRecos" Width="1.5" PointX="2.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_CustomerRewardPoints" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_CustomerRewardPointsRedeemed" Width="1.5" PointX="14.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_CustomerRewardSpendByCategory" Width="1.5" PointX="14.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_ExplanatoryNotes" Width="1.5" PointX="10.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_GreenbacksMaster" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_HomeLoanArrears" Width="1.5" PointX="16.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_HomeLoanMaster" Width="1.5" PointX="4.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_HomeLoanSummary" Width="1.5" PointX="16.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_HomeLoanTransaction" Width="1.5" PointX="12.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_InvestmentMaster" Width="1.5" PointX="16.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_InvestmentTransaction" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_MarketingMessages" Width="1.5" PointX="18.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_NewsAndAlerts" Width="1.5" PointX="18.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_PersonalLoanArrears" Width="1.5" PointX="18.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_PersonalLoanMaster" Width="1.5" PointX="18.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_PersonalLoanTransaction" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_ReminderRecos" Width="1.5" PointX="20.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DM_SpecialMessages" Width="1.5" PointX="20.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DynamicWidget" Width="1.5" PointX="10.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.DynamicWidgetFilterDetail" Width="1.5" PointX="20.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.EntityFieldMap" Width="1.5" PointX="12.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.MultiTenantUserAccessMap" Width="1.5" PointX="14.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_BranchMaster" Width="1.5" PointX="20.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_CustomerMaster" Width="1.5" PointX="20.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_InvestmentMaster" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_InvestmentTransaction" Width="1.5" PointX="2.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Page" Width="1.5" PointX="4.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.PageType" Width="1.5" PointX="22.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.PageWidgetMap" Width="1.5" PointX="22.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.ReminderAndRecommendation" Width="1.5" PointX="22.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.RenderEngine" Width="1.5" PointX="16.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Role" Width="1.5" PointX="22.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.RolePrivilege" Width="1.5" PointX="22.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.SavingTrend" Width="1.5" PointX="6.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Schedule" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.ScheduleLog" Width="1.5" PointX="24.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.ScheduleLogArchive" Width="1.5" PointX="24.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.ScheduleLogDetail" Width="1.5" PointX="12.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.ScheduleLogDetailArchive" Width="1.5" PointX="24.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.ScheduleRunHistory" Width="1.5" PointX="24.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.State" Width="1.5" PointX="22.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Statement" Width="1.5" PointX="24.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.StatementMetadata" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.StatementMetadataArchive" Width="1.5" PointX="26.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.StatementPageMap" Width="1.5" PointX="26.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.SystemActivityHistory" Width="1.5" PointX="26.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TenantConfiguration" Width="1.5" PointX="26.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TenantContact" Width="1.5" PointX="18.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TenantEntity" Width="1.5" PointX="26.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TenantSubscription" Width="1.5" PointX="0.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TenantUser" Width="1.5" PointX="2.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Top4IncomeSources" Width="1.5" PointX="4.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TransactionDetail" Width="1.5" PointX="6.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_CustomerMaster" Width="1.5" PointX="8.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_DataUsage" Width="1.5" PointX="14.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_EmailsBySubscription" Width="1.5" PointX="20.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_MeetingUsage" Width="1.5" PointX="28.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_SubscriptionMaster" Width="1.5" PointX="28.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_SubscriptionSpend" Width="1.5" PointX="28.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_SubscriptionSummary" Width="1.5" PointX="28.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_SubscriptionUsage" Width="1.5" PointX="28.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_UserSubscriptions" Width="1.5" PointX="28.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TTD_VendorSubscription" Width="1.5" PointX="28.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.User" Width="1.5" PointX="28.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.UserCredentialHistory" Width="1.5" PointX="10.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.UserLogin" Width="1.5" PointX="22.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.UserLoginActivityHistory" Width="1.5" PointX="24.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.UserRoleMap" Width="1.5" PointX="30.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Widget" Width="1.5" PointX="30.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.WidgetPageTypeMap" Width="1.5" PointX="30.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.Tenant" Width="1.5" PointX="30.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.TenantSecurityCodeFormat" Width="1.5" PointX="30.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_DynamicWidget" Width="1.5" PointX="30.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_DynamicWidget1" Width="1.5" PointX="4.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_MultiTenantUserAccessMap" Width="1.5" PointX="12.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_Page" Width="1.5" PointX="14.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_PageWidgetMap" Width="1.5" PointX="16.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_Schedule" Width="1.5" PointX="18.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_ScheduleLog" Width="1.5" PointX="26.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_SourceData" Width="1.5" PointX="32.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_StatementDefinition" Width="1.5" PointX="0.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_StatementMetadata" Width="1.5" PointX="32.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_TenantSubscription" Width="1.5" PointX="6.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.View_User" Width="1.5" PointX="8.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.database_firewall_rules" Width="1.5" PointX="32.75" PointY="10.75" IsExpanded="true" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

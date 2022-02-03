@@ -7,15 +7,11 @@ namespace NedBankManager
 {
     #region References
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Mail;
-    using System.Text;
-    using System.Text.RegularExpressions;
     using Microsoft.Practices.Unity;
     using NedbankModel;
     using NedbankRepository;
+    using System;
+    using System.Collections.Generic;
 
     #endregion
 

@@ -61,12 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NedbankRepository\NedbankRepository.csproj">
-      <Project>{685904b0-ca52-4c27-8f26-80b748e7d601}</Project>
+      <Project>{353F08EF-0AF6-43CF-9276-309973AB9212}</Project>
       <Name>NedbankRepository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NedBankUtility\NedBankUtility.csproj">
-      <Project>{bfa764a0-9a52-4a73-8570-420d9bab27f4}</Project>
-      <Name>NedBankUtility</Name>
+    <ProjectReference Include="..\NedbankUtility\NedbankUtility.csproj">
+      <Project>{6C23AA0C-75E6-48A8-8693-2FA6719E7CE7}</Project>
+      <Name>NedbankUtility</Name>
     </ProjectReference>
     <ProjectReference Include="..\NedBankValidationEngine\NedBankValidationEngine.csproj">
       <Project>{7585d9f9-6f1f-40ad-a0b9-4a99f7d716d7}</Project>
