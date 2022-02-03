@@ -3,10 +3,7 @@ namespace NedbankUtility
 {
     #region References
 
-    using System;
     using System.Collections.Generic;
-    using System.Net.Http;
-    using System.Net.Mail;
     using Websym.Core.ConfigurationManager;
     using Websym.Core.EntityManager;
     using Websym.Core.TenantManager;

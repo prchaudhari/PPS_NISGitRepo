@@ -6,22 +6,9 @@ namespace NedbankUtility
 
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.IO;
     using System.Linq;
-    using System.Net;
-    using System.Text;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using System.Net.Mail;
-    using System.Net.Http;
-
-    using System.Configuration;
-    using System.Reflection;
-    using System.Net.Http.Headers;
-    using Websym.Core.ConfigurationManager;
     using Unity;
-    using Websym.Core.EventManager;
+    using Websym.Core.ConfigurationManager;
     using Websym.Core.EntityManager;
     using Websym.Core.TenantManager;
     #endregion

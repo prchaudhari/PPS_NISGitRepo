@@ -1,4 +1,4 @@
-﻿// <copyright file="IAnalyticsDataRepository.cs" company="Websym Solutions Pvt. Ltd.">
+﻿// <copyright file="ICustomerRepository.cs" company="Websym Solutions Pvt. Ltd.">
 // Copyright (c) 2018 Websym Solutions Pvt. Ltd..
 // </copyright>
 //-----------------------------------------------------------------------
