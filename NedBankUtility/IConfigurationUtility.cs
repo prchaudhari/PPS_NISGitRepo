@@ -54,29 +54,6 @@ namespace NedbankUtility
         /// <returns></returns>
         IList<Tenant> GetTenant(TenantSearchParameter tenantSearchParameter);
 
-
-        /// <summary>
-        /// Return list of roleprivileges if exist other wise return null
-        /// </summary>
-        /// <param name="tenantSearchParameter"></param>
-        /// <returns></returns>
-        bool AddTenant(IList<Tenant> tenants);
-
-        /// <summary>
-        /// Return list of roleprivileges if exist other wise return null
-        /// </summary>
-        /// <param name="tenantSearchParameter"></param>
-        /// <returns></returns>
-        bool UpdateTenant(IList<Tenant> tenants);
-
-        /// <summary>
-        /// Return list of roleprivileges if exist other wise return null
-        /// </summary>
-        /// <param name="tenantSearchParameter"></param>
-        /// <returns></returns>
-        bool DeleteTenant(IList<Tenant> tenants);
-
-
         /// <summary>
         /// Return list of roleprivileges if exist other wise return null
         /// </summary>

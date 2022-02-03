@@ -5,13 +5,13 @@
 
 namespace NedbankAPI
 {
-    using NedBankException;
-    using NedbankModel;
     #region References
 
     using System;
     using System.Linq;
     using System.Net.Http.Headers;
+    using NedBankException;
+    using NedbankModel;
 
     #endregion
 

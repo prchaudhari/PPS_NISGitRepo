@@ -7,11 +7,11 @@ namespace NedbankAPI.Controllers
 {
     #region References
 
+    using NedbankModel;
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
-    using Microsoft.Practices.Unity;
-    using NedbankModel;
+    using Unity;
     using NedBankManager;
 
     #endregion
@@ -58,13 +58,14 @@ namespace NedbankAPI.Controllers
         /// </param>
         /// <returns>Returns list of customers</returns>
         [HttpPost]
-        public IList<CustomerInformation> List(int investorId)
+        [Route("List")]
+        public IList<CustomerInformation> List(long investorId)
         {
             IList<CustomerInformation> customers = new List<CustomerInformation>();
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                customers = this.customerManager.GetCustomersByInvesterId(tenantCode, investorId);
+                customers = this.customerManager.GetCustomersByInvesterId(investorId, tenantCode);
             }
             catch (Exception exception)
             {

@@ -7,11 +7,12 @@ namespace NedBankManager
 {
     #region References
 
-    using Microsoft.Practices.Unity;
     using NedbankModel;
     using NedbankRepository;
     using System;
     using System.Collections.Generic;
+    using Unity;
+
 
     #endregion
 
@@ -55,6 +56,8 @@ namespace NedBankManager
 
         #endregion
 
+        #region Public Methods
+
         #region Get
 
         /// <summary>
@@ -69,11 +72,11 @@ namespace NedBankManager
         /// <returns>
         /// Returns a list of customer if any found otherwise it will return enpty list.
         /// </returns>
-        public IList<CustomerInformation> GetCustomersByInvesterId(string tenantCode, int investorId)
+        public IList<CustomerInformation> GetCustomersByInvesterId(long investorId, string tenantCode)
         {
             try
             {
-                IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(tenantCode, investorId);
+                IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(investorId, tenantCode);
 
                 return customers;
             }
@@ -83,6 +86,6 @@ namespace NedBankManager
             }
         }
         #endregion
-
+        #endregion
     }
 }

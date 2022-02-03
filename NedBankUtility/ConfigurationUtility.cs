@@ -75,13 +75,9 @@ namespace NedbankUtility
             string sqlConnectionString = string.Empty;
             try
             {
-                //sqlConnectionString = "metadata=res://*/nVidYoDataContext.csdl|res://*/nVidYoDataContext.ssdl|res://*/nVidYoDataContext.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=192.168.100.7;Initial Catalog=nvidyo;User ID=sa;Password=Admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
-                //return sqlConnectionString;
-                //return System.Configuration.ConfigurationManager.ConnectionStrings["FMSEntitiesDataContext"].ConnectionString;
                 ConfigurationSearchParameter configurationSearchParameter = new ConfigurationSearchParameter();
                 configurationSearchParameter.SectionName = section;
                 configurationSearchParameter.ConfigurationKey = configurationKey;
-
                 IList<Websym.Core.ConfigurationManager.ConfigurationSection> configurationSectionList = this.GetConfigurationValues(configurationSearchParameter, configurationBaseURLKey, tenantKey, tenantCode);
                 if (configurationSectionList != null && configurationSectionList.Count > 0)
                 {
@@ -93,15 +89,16 @@ namespace NedbankUtility
 
                 sqlConnectionString = sqlConnectionString.EndsWith(";") ? sqlConnectionString : sqlConnectionString + ";";
                 // sqlConnectionString = "metadata=res://*/NISDataContext.csdl|res://*/NISDataContext.ssdl|res://*/NISDataContext.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=192.168.100.7;Initial Catalog=nvidyo;User ID=sa;Password=Admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
-                sqlConnectionString = @"metadata=res://*/NISDataContext.csdl|res://*/NISDataContext.ssdl|res://*/NISDataContext.msl;provider=System.Data.SqlClient;provider connection string=';" + sqlConnectionString + "multipleactiveresultsets=True;application name=EntityFramework';";
 
+                sqlConnectionString = "Data Source=nis.database.windows.net;Initial Catalog=NIS;User ID=websym;Password=Admin@123;";
 
-
+                sqlConnectionString = @"metadata=res://*/;provider=System.Data.SqlClient;provider connection string='" + sqlConnectionString + "multipleactiveresultsets=True;application name=EntityFramework';";
             }
             catch (Exception exception)
             {
                 throw exception;
             }
+
 
             return sqlConnectionString;
         }
@@ -175,23 +172,6 @@ namespace NedbankUtility
             return result;
         }
 
-        public bool AddTenant(IList<Tenant> tenants)
-        {
-            bool result = false;
-            try
-            {
-
-                TenantManager manager = new TenantManager(this.unityContainer);
-
-                result = manager.AddTenants(tenants, false);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return result;
-        }
-
         public bool DeactivateTenant(IList<Tenant> tenants)
         {
             bool result = false;
@@ -201,40 +181,6 @@ namespace NedbankUtility
                 TenantManager manager = new TenantManager(this.unityContainer);
 
                 result = manager.UpdateTenantStatus(tenants, false);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return result;
-        }
-
-        public bool DeleteTenant(IList<Tenant> tenants)
-        {
-            bool result = false;
-            try
-            {
-
-                TenantManager manager = new TenantManager(this.unityContainer);
-
-                result = manager.DeleteTenants(tenants);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return result;
-        }
-
-        public bool UpdateTenant(IList<Tenant> tenants)
-        {
-            bool result = false;
-            try
-            {
-
-                TenantManager manager = new TenantManager(this.unityContainer);
-
-                result = manager.UpdateTenants(tenants);
             }
             catch (Exception ex)
             {
