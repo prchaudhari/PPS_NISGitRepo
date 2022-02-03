@@ -7,8 +7,8 @@ namespace NedbankRepository
 {
     #region References
 
-    using System.Collections.Generic;
     using NedbankModel;
+    using System.Collections.Generic;
     #endregion
 
     /// <summary>
@@ -17,7 +17,7 @@ namespace NedbankRepository
     public interface ICustomerRepository
     {
         #region Customer Data
-        IList<CustomerInformation> GetCustomersByInvesterId(string tenantCode, int investorId);
+        IList<CustomerInformation> GetCustomersByInvesterId(long investorId, string tenantCode);
         #endregion
 
     }

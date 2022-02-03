@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NenbankDataContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NenbankDataContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ConfigurationManager">
           <Key>
             <PropertyRef Name="Id" />
@@ -2512,8 +2512,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
     FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NenbankDataContextModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4711,14 +4710,14 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySet Name="View_User" EntityType="Self.View_User" />
           <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" />
           <FunctionImport Name="FnGetParentAndChildTenant" IsComposable="true" ReturnType="Collection(NenbankDataContextModel.FnGetParentAndChildTenant_Result)">
-            <Parameter Name="ParentTenantCode" Mode="In" Type="String" />
+          <Parameter Name="ParentTenantCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FnGetStaticAndDynamicWidgets" IsComposable="true" ReturnType="Collection(NenbankDataContextModel.FnGetStaticAndDynamicWidgets_Result)">
             <Parameter Name="PageTypeId" Mode="In" Type="Int64" />
             <Parameter Name="TenantCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FnUserTenant" IsComposable="true" ReturnType="Collection(NenbankDataContextModel.FnUserTenant_Result)">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
       </Schema>

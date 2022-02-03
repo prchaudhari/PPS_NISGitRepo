@@ -5,15 +5,18 @@
 
 namespace NedbankRepository
 {
-    using NedBankException;
-    using NedbankModel;
-    using NedbankUtility;
     #region References
     using NedBankValidationEngine;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.Linq;
+    using System.Linq.Dynamic;
+    using System.Text;
     using Unity;
+    using NedBankException;
+    using NedbankModel;
+    using NedbankUtility;
 
     #endregion
 
@@ -60,12 +63,44 @@ namespace NedbankRepository
 
         #region Public Functions
 
-        public IList<CustomerInformation> GetCustomersByInvesterId(string tenantCode, int investorId)
+        public IList<CustomerInformation> GetCustomersByInvesterId(long investorId, string tenantCode)
         {
             IList<CustomerInformation> customers = new List<CustomerInformation>();
+            IList<NB_CustomerMaster> customerRecords = null;
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
+                using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
+                {
+                    string whereClause = this.WhereClauseGenerator(investorId, tenantCode);
+                    customerRecords = new List<NB_CustomerMaster>();
+                    customerRecords = nedbankEntities.NB_CustomerMaster.Where(whereClause).ToList();
+                }
+                IList<CustomerInformation> tempCustomers = new List<CustomerInformation>();
+                customerRecords?.ToList().ForEach(customerRecord =>
+                {
+                    tempCustomers.Add(new CustomerInformation()
+                    {
+                        Id = customerRecord.Id,
+                        BatchId = customerRecord.BatchId,
+                        CustomerId = customerRecord.CustomerId,
+                        InvestorId = customerRecord.InvestorId,
+                        BranchId = customerRecord.BranchId,
+                        Title = customerRecord.Title,
+                        FirstName = customerRecord.FirstName,
+                        SurName = customerRecord.SurName,
+                        AddressLine0 = customerRecord.AddressLine0,
+                        AddressLine1 = customerRecord.AddressLine1,
+                        AddressLine2 = customerRecord.AddressLine2,
+                        AddressLine3 = customerRecord.AddressLine3,
+                        AddressLine4 = customerRecord.AddressLine4,
+                        EmailAddress = customerRecord.EmailAddress,
+                        MaskCellNo = customerRecord.MaskCellNo,
+                        Barcode = customerRecord.Barcode,
+                        TenantCode = customerRecord.TenantCode,
+                    });
+                });
+                customers = tempCustomers;
             }
             catch (SqlException)
             {
@@ -102,6 +137,26 @@ namespace NedbankRepository
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Generate string for dynamic linq.
+        /// </summary>
+        /// <param name="searchParameter">User search Parameters</param>
+        /// <returns>
+        /// Returns a string.
+        /// </returns>
+        private string WhereClauseGenerator(long investorId, string tenantCode)
+        {
+            StringBuilder queryString = new StringBuilder();
+            if (tenantCode != ModelConstant.DEFAULT_TENANT_CODE)
+            {
+                queryString.Append(string.Format(" TenantCode.Equals(\"{0}\") and", tenantCode));
+            }
+            queryString.Append(string.Format(" InvestorId.Equals({0})", investorId));
+
+            return queryString.ToString();
+        }
+
         #endregion
     }
 }

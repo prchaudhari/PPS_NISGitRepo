@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace nIS
+namespace NedbankRepository
 {
     using System;
     
