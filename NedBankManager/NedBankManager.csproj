@@ -65,7 +65,7 @@
       <Name>NedbankModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\NedbankRepository\NedbankRepository.csproj">
-      <Project>{685904b0-ca52-4c27-8f26-80b748e7d601}</Project>
+      <Project>{353f08ef-0af6-43cf-9276-309973ab9212}</Project>
       <Name>NedbankRepository</Name>
     </ProjectReference>
   </ItemGroup>

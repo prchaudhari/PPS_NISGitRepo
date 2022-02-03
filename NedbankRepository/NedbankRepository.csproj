@@ -4,14 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{685904B0-CA52-4C27-8F26-80B748E7D601}</ProjectGuid>
+    <ProjectGuid>{353F08EF-0AF6-43CF-9276-309973AB9212}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NedbankRepository</RootNamespace>
-    <AssemblyName>NedbankRepository</AssemblyName>
+    <RootNamespace>nIS</RootNamespace>
+    <AssemblyName>nIS.Repository</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,403 +51,412 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=3.3.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.3.3.1\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="AccountMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="AccountTransactionRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="AccountTransaction.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="AnalyticsDataRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="AnalyticsData.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="AssetLibraryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Asset.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="AssetPathSettingRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="AssetLibrary.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="AssetRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="AssetPathSetting.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="AssetSettingRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="AssetSetting.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="BatchDetailRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="BatchDetail.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="BatchMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="BatchMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CityRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="City.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationManager.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ContactTypeRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="ContactType.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CountryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Country.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CustomerMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="CustomerMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="CustomerMediaRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="CustomerMedia.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="C__RefactorLog.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="database_firewall_rules.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DependentOperation.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_AccountAnalysisRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_AccountAnalysis.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_AccountSummaryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_AccountSummary.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DM_AgentDetails.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_BranchMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_BranchMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_CustomerMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_CustomerMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_CustomerNewsAndAlertsRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_CustomerNewsAndAlerts.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_CustomerProductWiseRewardPointsRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_CustomerProductWiseRewardPoints.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_CustomerReminderRecosRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_CustomerReminderRecos.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_CustomerRewardPointsRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_CustomerRewardPoints.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_CustomerRewardPointsRedeemedRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_CustomerRewardPointsRedeemed.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_CustomerRewardSpendByCategoryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_CustomerRewardSpendByCategory.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_ExplanatoryNotesRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_ExplanatoryNotes.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_GreenbacksMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_GreenbacksMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_HomeLoanArrearsRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_HomeLoanArrears.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_HomeLoanMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_HomeLoanMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_HomeLoanSummaryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_HomeLoanSummary.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_HomeLoanTransactionRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_HomeLoanTransaction.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_InvestmentMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_InvestmentMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_InvestmentTransactionRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_InvestmentTransaction.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_MarketingMessagesRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_MarketingMessages.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_NewsAndAlertsRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_NewsAndAlerts.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_PersonalLoanArrearsRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_PersonalLoanArrears.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_PersonalLoanMasterRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_PersonalLoanMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_PersonalLoanTransactionRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_PersonalLoanTransaction.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_ReminderRecosRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_ReminderRecos.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DM_SpecialMessagesRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="DM_SpecialMessages.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicWidget.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DynamicWidgetFilterDetail.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicWidgetRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="EntityFieldMapRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="EntityFieldMap.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="FnGetParentAndChildTenant_Result.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="FnGetStaticAndDynamicWidgets_Result.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="FnUserTenant_Result.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="IRepository\ICustomerRepository.cs" />
-    <Compile Include="MultiTenantUserAccessMapRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="MultiTenantUserAccessMap.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_BranchMaster.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_CustomerMaster.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_InvestmentMaster.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_InvestmentTransaction.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="NedBankDataContext.Context.cs">
+    <Compile Include="NedbankDataContext.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>NedBankDataContext.Context.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="NedBankDataContext.cs">
+    <Compile Include="NedbankDataContext.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="NISDataContext.Context.cs">
-      <DependentUpon>NISDataContext.Context.tt</DependentUpon>
+    <Compile Include="NedbankDataContext.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="NISDataContext.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="NedBankDataContext.Designer.cs">
-      <DependentUpon>NedBankDataContext.edmx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+      <DependentUpon>NedbankDataContext.edmx</DependentUpon>
     </Compile>
     <Compile Include="Operation.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="PageRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Page.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="PageTypeRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="PageType.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="PageWidgetMapRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="PageWidgetMap.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReminderAndRecommendationRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="ReminderAndRecommendation.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="RenderEngineRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="RenderEngine.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="RolePrivilegeRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Role.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="RoleRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="RolePrivilege.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="SavingTrendRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="SavingTrend.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ScheduleLogArchiveRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Schedule.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ScheduleLogDetailArchiveRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="ScheduleLog.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ScheduleLogDetailRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="ScheduleLogArchive.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ScheduleLogRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="ScheduleLogDetail.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ScheduleRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="ScheduleLogDetailArchive.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ScheduleRunHistoryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="ScheduleRunHistory.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="SQLRepository\SQLCustomerRepository.cs" />
-    <Compile Include="StatementMetadataArchiveRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="State.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="StatementMetadataRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Statement.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="StatementPageMapRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="StatementMetadata.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="StatementRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="StatementMetadataArchive.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="StateRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="StatementPageMap.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="SystemActivityHistoryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="SystemActivityHistory.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TenantConfigurationRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Tenant.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TenantContactRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="TenantConfiguration.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TenantEntityRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="TenantContact.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TenantRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="TenantEntity.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TenantSecurityCodeFormatRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="TenantSecurityCodeFormat.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TenantSubscriptionRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="TenantSubscription.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TenantUserRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="TenantUser.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Top4IncomeSourcesRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Top4IncomeSources.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="TransactionDetailRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="TransactionDetail.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_CustomerMaster.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_DataUsage.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_EmailsBySubscription.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_MeetingUsage.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_SubscriptionMaster.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_SubscriptionSpend.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_SubscriptionSummary.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_SubscriptionUsage.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_UserSubscriptions.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TTD_VendorSubscription.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserCredentialHistoryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="User.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserLoginActivityHistoryRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="UserCredentialHistory.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserLoginRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="UserLogin.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="UserLoginActivityHistory.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserRoleMapRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="UserRoleMap.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="View_DynamicWidget.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="View_DynamicWidget1.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_DynamicWidgetRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_MultiTenantUserAccessMap.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_MultiTenantUserAccessMapRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_Page.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_PageRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_PageWidgetMap.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_PageWidgetMapRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_Schedule.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="View_ScheduleLog.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_ScheduleRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_SourceData.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_SourceDataRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_StatementDefinition.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_StatementDefinitionRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_StatementMetadata.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_StatementMetadataRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_TenantSubscription.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_TenantSubscriptionRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="View_User.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="View_UserRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+    <Compile Include="Widget.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="WidgetPageTypeMap.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="WidgetRecord.cs">
-      <DependentUpon>NedBankDataContext.tt</DependentUpon>
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NedBankException\NedBankException.csproj">
-      <Project>{22f04d00-9e80-4943-bc96-183c75278689}</Project>
+      <Project>{22F04D00-9E80-4943-BC96-183C75278689}</Project>
       <Name>NedBankException</Name>
     </ProjectReference>
     <ProjectReference Include="..\NedbankModel\NedbankModel.csproj">
       <Project>{19ee7e7c-40ce-4fd3-98cf-1f1f31aae8b5}</Project>
       <Name>NedbankModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NedBankUtility\NedBankUtility.csproj">
-      <Project>{bfa764a0-9a52-4a73-8570-420d9bab27f4}</Project>
-      <Name>NedBankUtility</Name>
+    <ProjectReference Include="..\NedbankUtility\NedbankUtility.csproj">
+      <Project>{6C23AA0C-75E6-48A8-8693-2FA6719E7CE7}</Project>
+      <Name>NedbankUtility</Name>
     </ProjectReference>
     <ProjectReference Include="..\NedBankValidationEngine\NedBankValidationEngine.csproj">
       <Project>{7585d9f9-6f1f-40ad-a0b9-4a99f7d716d7}</Project>
@@ -453,42 +464,30 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="NedBankDataContext.edmx">
+    <None Include="App.config" />
+    <EntityDeploy Include="NedbankDataContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>NedBankDataContext.Designer.cs</LastGenOutput>
+      <LastGenOutput>NedbankDataContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="NedBankDataContext.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NedBankDataContext.Context.cs</LastGenOutput>
-      <DependentUpon>NedBankDataContext.edmx</DependentUpon>
-    </Content>
-    <Content Include="NedBankDataContext.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NedBankDataContext.cs</LastGenOutput>
-      <DependentUpon>NedBankDataContext.edmx</DependentUpon>
-    </Content>
-    <Content Include="NISDataContext.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NedBankDataContext.edmx</DependentUpon>
-      <LastGenOutput>NISDataContext.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="NISDataContext.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NedBankDataContext.edmx</DependentUpon>
-      <LastGenOutput>NISDataContext.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
-    <None Include="NedBankDataContext.edmx.diagram">
-      <DependentUpon>NedBankDataContext.edmx</DependentUpon>
+    <None Include="NedbankDataContext.edmx.diagram">
+      <DependentUpon>NedbankDataContext.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NedbankDataContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>NedbankDataContext.edmx</DependentUpon>
+      <LastGenOutput>NedbankDataContext.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="NedbankDataContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>NedbankDataContext.edmx</DependentUpon>
+      <LastGenOutput>NedbankDataContext.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

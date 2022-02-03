@@ -1,14 +1,29 @@
 ﻿
 
-namespace NedBankUtility
+namespace NedbankUtility
 {
     #region References
 
-    using Microsoft.Practices.Unity;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
     using System.Linq;
+    using System.Net;
+    using System.Text;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using System.Net.Mail;
+    using System.Net.Http;
+
+    using System.Configuration;
+    using System.Reflection;
+    using System.Net.Http.Headers;
     using Websym.Core.ConfigurationManager;
+    using Unity;
+    using Websym.Core.EventManager;
+    using Websym.Core.EntityManager;
+    using Websym.Core.TenantManager;
     #endregion
 
     public class ConfigurationUtility : IConfigurationUtility
@@ -43,9 +58,9 @@ namespace NedBankUtility
                 #region DLL related changes
 
                 //container = unityresolver.GetDependency();
-                //Websym.Core.ConfigurationManager.ConfigurationManager configmanager = null;
-                //configmanager = new Websym.Core.ConfigurationManager.ConfigurationManager(this.unityContainer);
-                //configurationSectionList = configmanager.GetConfigurations(configurationSearchParameter, tenantCode.ToString())?.ToList();
+                Websym.Core.ConfigurationManager.ConfigurationManager configmanager = null;
+                configmanager = new Websym.Core.ConfigurationManager.ConfigurationManager(this.unityContainer);
+                configurationSectionList = configmanager.GetConfigurations(configurationSearchParameter, tenantCode.ToString())?.ToList();
 
                 #endregion
 
@@ -102,6 +117,143 @@ namespace NedBankUtility
             }
 
             return sqlConnectionString;
+        }
+
+        /// <summary>
+        /// THis method will call get method of entity manager.
+        /// </summary>
+        /// <param name="entitySearchParameter">The entity search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </returns>
+        public IList<Entity> GetRolePrivileges(EntitySearchParameter entitySearchParameter, string tenantCode)
+        {
+            IList<Entity> entities = new List<Entity>();
+            try
+            {
+
+                EntityManager manager = new EntityManager(this.unityContainer);
+
+                entities = manager.GetEntities(entitySearchParameter, tenantCode);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return entities;
+        }
+
+        /// <summary>
+        /// THis method will call get method of entity manager.
+        /// </summary>
+        /// <param name="entitySearchParameter">The entity search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Return list of roleprivileges if exist other wise return null
+        /// </returns>
+        public IList<Tenant> GetTenant(TenantSearchParameter tenantSearchParameter)
+        {
+            IList<Tenant> tenants = new List<Tenant>();
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                tenants = manager.GetTenants(tenantSearchParameter);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return tenants;
+        }
+
+        public bool ActivateTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.UpdateTenantStatus(tenants, true);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public bool AddTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.AddTenants(tenants, false);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public bool DeactivateTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.UpdateTenantStatus(tenants, false);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public bool DeleteTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.DeleteTenants(tenants);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public bool UpdateTenant(IList<Tenant> tenants)
+        {
+            bool result = false;
+            try
+            {
+
+                TenantManager manager = new TenantManager(this.unityContainer);
+
+                result = manager.UpdateTenants(tenants);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
         }
     }
 }
