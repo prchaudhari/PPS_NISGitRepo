@@ -20,9 +20,11 @@ namespace NedbankAPI
     public class Container
     {
         /// <summary>
-        ///  This method use to create unity container
+        /// This method use to create unity container
         /// </summary>
-        /// <returns>Returns unity container object</returns>
+        /// <returns>
+        /// Returns unity container object
+        /// </returns>
         public static IUnityContainer GetUnityContainer()
         {
             IUnityContainer unityContainer = new UnityContainer();
@@ -34,6 +36,7 @@ namespace NedbankAPI
             unityContainer.RegisterType<IUtility, Utility>();
             unityContainer.RegisterType<INedBankValidationEngine, NedBankValidationEngine>();
             unityContainer.RegisterType<ICustomerRepository, SQLCustomerRepository>();
+            unityContainer.RegisterType<IInvestmentRepository, SQLInvestmentRepository>();
             return unityContainer;
         }
     }

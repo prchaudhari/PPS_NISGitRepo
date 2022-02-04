@@ -1,9 +1,4 @@
-﻿// <copyright file="RoleManager.cs" company="Websym Solutions Pvt. Ltd.">
-// Copyright (c) 2018 Websym Solutions Pvt. Ltd..
-// </copyright>
-//-----------------------------------------------------------------------
-
-namespace NedBankManager
+﻿namespace NedBankManager
 {
     #region References
 
@@ -14,11 +9,10 @@ namespace NedBankManager
     using Unity;
 
     #endregion
-
     /// <summary>
-    /// This class implements manager layer of customer manager.
+    /// The InvestmentManager
     /// </summary>
-    public class CustomerManager
+    public class InvestmentManager
     {
         #region Private members
         /// <summary>
@@ -29,7 +23,7 @@ namespace NedBankManager
         /// <summary>
         /// The customer repository.
         /// </summary>
-        ICustomerRepository customerRepository = null;
+        IInvestmentRepository investmentRepository = null;
 
         #endregion
 
@@ -40,12 +34,12 @@ namespace NedBankManager
         /// role repository.
         /// </summary>
         /// <param name="unityContainer">The unity container.</param>
-        public CustomerManager(IUnityContainer unityContainer)
+        public InvestmentManager(IUnityContainer unityContainer)
         {
             try
             {
                 this.unityContainer = unityContainer;
-                this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
+                this.investmentRepository = this.unityContainer.Resolve<IInvestmentRepository>();
             }
             catch (Exception ex)
             {
@@ -67,13 +61,13 @@ namespace NedBankManager
         /// <returns>
         /// Returns a list of customer if any found otherwise it will return enpty list.
         /// </returns>
-        public IList<CustomerInformation> GetCustomersByInvesterId(long investorId, string tenantCode)
+        public IList<InvestmentPottfolio> GetInvestmentPottfolioByInvesterId(long investorId, string tenantCode)
         {
             try
             {
-                IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(investorId, tenantCode);
+                IList<InvestmentPottfolio> investments = this.investmentRepository.GetInvestmentPottfolioByInvesterId(investorId, tenantCode);
 
-                return customers;
+                return investments;
             }
             catch (Exception exception)
             {
