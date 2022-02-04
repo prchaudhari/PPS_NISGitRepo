@@ -1,4 +1,4 @@
-﻿// <copyright file="CustomerController.cs" company="Websym Solutions Pvt Ltd">
+﻿// <copyright file="InvestmentController.cs" company="Websym Solutions Pvt Ltd">
 // Copyright (c) 2018 Websym Solutions Pvt Ltd.
 // </copyright>
 // -----------------------------------------------------------------------  
@@ -7,28 +7,28 @@ namespace NedbankAPI.Controllers
 {
     #region References
 
-    using NedBankManager;
     using NedbankModel;
     using System;
     using System.Collections.Generic;
     using System.Web.Http;
     using Unity;
+    using NedBankManager;
 
     #endregion
 
     /// <summary>
-    /// This class represent api controller for NedBank
+    /// The InvestmentController
     /// </summary>
     /// <seealso cref="System.Web.Http.ApiController" />
-    [RoutePrefix("Customer")]
-    public class CustomerController : ApiController
+    [RoutePrefix("Investment")]
+    public class InvestmentController : ApiController
     {
         #region Private Members
 
         /// <summary>
         /// The role manager object.
         /// </summary>
-        private CustomerManager customerManager = null;
+        private InvestmentManager investmentManager = null;
 
         /// <summary>
         /// The unity container
@@ -40,13 +40,13 @@ namespace NedbankAPI.Controllers
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomerController"/> class.
+        /// Initializes a new instance of the <see cref="InvestmentController"/> class.
         /// </summary>
         /// <param name="unityContainer">The unity container.</param>
-        public CustomerController(IUnityContainer unityContainer)
+        public InvestmentController(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
-            this.customerManager = new CustomerManager(this.unityContainer);
+            this.investmentManager = new InvestmentManager(this.unityContainer);
         }
 
         #endregion
@@ -64,13 +64,13 @@ namespace NedbankAPI.Controllers
         /// </returns>
         [HttpPost]
         [Route("List")]
-        public IList<CustomerInformation> List(long investorId)
+        public IList<InvestmentPottfolio> List(long investorId)
         {
-            IList<CustomerInformation> customers = new List<CustomerInformation>();
+            IList<InvestmentPottfolio> customers = new List<InvestmentPottfolio>();
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                customers = this.customerManager.GetCustomersByInvesterId(investorId, tenantCode);
+                customers = this.investmentManager.GetInvestmentPottfolioByInvesterId(investorId, tenantCode);
             }
             catch (Exception exception)
             {

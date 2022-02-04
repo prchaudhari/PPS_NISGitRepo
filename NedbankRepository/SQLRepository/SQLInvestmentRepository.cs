@@ -1,10 +1,6 @@
-﻿// <copyright file="SQLAnalyticsDataRepository.cs" company="Websym Solutions Pvt Ltd">
-// Copyright (c) 2017 Websym Solutions Pvt Ltd.
-// </copyright>
-// -----------------------------------------------------------------------  
-
-namespace NedbankRepository
+﻿namespace NedbankRepository
 {
+
     #region References
     using NedBankException;
     using NedbankModel;
@@ -21,12 +17,11 @@ namespace NedbankRepository
     #endregion
 
     /// <summary>
-    /// This class represents repository layer of accet library for crud operation.
+    /// The SQLInvestmentRepository
     /// </summary>
-    /// <seealso cref="NedbankRepository.ICustomerRepository" />
-    public class SQLCustomerRepository : ICustomerRepository
+    /// <seealso cref="NedbankRepository.IInvestmentRepository" />
+    public class SQLInvestmentRepository : IInvestmentRepository
     {
-
         #region Private Members
 
         /// <summary>
@@ -57,7 +52,7 @@ namespace NedbankRepository
         /// Initializing instance of class.
         /// </summary>
         /// <param name="unityContainer">The unity container.</param>
-        public SQLCustomerRepository(IUnityContainer unityContainer)
+        public SQLInvestmentRepository(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
             this.validationEngine = new NedBankValidationEngine();
@@ -69,50 +64,39 @@ namespace NedbankRepository
         #region Public Functions
 
         /// <summary>
-        /// Gets the customers by invester identifier.
+        /// Gets the investment pottfolio by invester identifier.
         /// </summary>
         /// <param name="investorId">The investor identifier.</param>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns></returns>
         /// <exception cref="NedBankException.RepositoryStoreNotAccessibleException"></exception>
-        public IList<CustomerInformation> GetCustomersByInvesterId(long investorId, string tenantCode)
+        public IList<InvestmentPottfolio> GetInvestmentPottfolioByInvesterId(long investorId, string tenantCode)
         {
-            IList<CustomerInformation> customers = new List<CustomerInformation>();
-            IList<NB_CustomerMaster> customerRecords = null;
+            IList<InvestmentPottfolio> investments = new List<InvestmentPottfolio>();
+            IList<NB_InvestmentMaster> investmentRecords = null;
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
                     string whereClause = this.WhereClauseGenerator(investorId, tenantCode);
-                    customerRecords = new List<NB_CustomerMaster>();
-                    customerRecords = nedbankEntities.NB_CustomerMaster.Where(whereClause).ToList();
+                    investmentRecords = new List<NB_InvestmentMaster>();
+                    investmentRecords = nedbankEntities.NB_InvestmentMaster.Where(whereClause).ToList();
                 }
-                IList<CustomerInformation> tempCustomers = new List<CustomerInformation>();
-                customerRecords?.ToList().ForEach(customerRecord =>
+                IList<InvestmentPottfolio> tempInvestments = new List<InvestmentPottfolio>();
+                investmentRecords?.ToList().ForEach(investmentRecord =>
                 {
-                    tempCustomers.Add(new CustomerInformation()
+                    tempInvestments.Add(new InvestmentPottfolio()
                     {
-                        Id = customerRecord.Id,
-                        BatchId = customerRecord.BatchId,
-                        CustomerId = customerRecord.CustomerId,
-                        InvestorId = customerRecord.InvestorId,
-                        BranchId = customerRecord.BranchId,
-                        Title = customerRecord.Title,
-                        FirstName = customerRecord.FirstName,
-                        SurName = customerRecord.SurName,
-                        AddressLine0 = customerRecord.AddressLine0,
-                        AddressLine1 = customerRecord.AddressLine1,
-                        AddressLine2 = customerRecord.AddressLine2,
-                        AddressLine3 = customerRecord.AddressLine3,
-                        AddressLine4 = customerRecord.AddressLine4,
-                        EmailAddress = customerRecord.EmailAddress,
-                        MaskCellNo = customerRecord.MaskCellNo,
-                        Barcode = customerRecord.Barcode,
-                        TenantCode = customerRecord.TenantCode,
+                        InvestorId = investmentRecord.InvestorId,
+                        ProductType = investmentRecord.ProductType,
+                        StatementDate = investmentRecord.StatementDate,
+                        DayOfStatement = investmentRecord.DayOfStatement,
+                        StatementPeriod = investmentRecord.StatementPeriod,
+                        ClosingBalance = investmentRecord.ClosingBalance,
                     });
                 });
-                customers = tempCustomers;
+                investments = tempInvestments;
             }
             catch (SqlException)
             {
@@ -122,7 +106,7 @@ namespace NedbankRepository
             {
                 throw exception;
             }
-            return customers;
+            return investments;
         }
         #endregion
 
