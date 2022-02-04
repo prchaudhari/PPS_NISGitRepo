@@ -74,6 +74,28 @@
                 throw exception;
             }
         }
+
+        /// <summary>
+        /// This method helps to get specified customer.
+        /// </summary>
+        /// <param name="investorId">The investor id</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns a list of customer if any found otherwise it will return enpty list.
+        /// </returns>
+        public IList<InvestorPerformance> GetInvestorPerformanceByInvesterId(long investorId, string tenantCode)
+        {
+            try
+            {
+                IList<InvestorPerformance> investments = this.investmentRepository.GetInvestorPerformanceByInvesterId(investorId, tenantCode);
+
+                return investments;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
         #endregion
         #endregion
     }

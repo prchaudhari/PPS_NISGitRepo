@@ -37,5 +37,6 @@ namespace NedbankRepository
         public string StatementPeriod { get; set; }
         public string ClosingBalance { get; set; }
         public string TenantCode { get; set; }
+        public string OpeningBalance { get; set; }
     }
 }
