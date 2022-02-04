@@ -108,6 +108,48 @@
             }
             return investments;
         }
+
+        /// <summary>
+        /// Gets the investment pottfolio by invester identifier.
+        /// </summary>
+        /// <param name="investorId">The investor identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        /// <exception cref="NedBankException.RepositoryStoreNotAccessibleException"></exception>
+        public IList<InvestorPerformance> GetInvestorPerformanceByInvesterId(long investorId, string tenantCode)
+        {
+            IList<InvestorPerformance> investors = new List<InvestorPerformance>();
+            IList<NB_InvestmentMaster> investorRecords = null;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
+                {
+                    string whereClause = this.WhereClauseGenerator(investorId, tenantCode);
+                    investorRecords = new List<NB_InvestmentMaster>();
+                    investorRecords = nedbankEntities.NB_InvestmentMaster.Where(whereClause).ToList();
+                }
+                IList<InvestorPerformance> tempInvestments = new List<InvestorPerformance>();
+                investorRecords?.ToList().ForEach(investmentRecord =>
+                {
+                    tempInvestments.Add(new InvestorPerformance()
+                    {
+                        ClosingBalance = investmentRecord.ClosingBalance,
+                        OpeningBalance = investmentRecord.OpeningBalance,
+                    });
+                });
+                investors = tempInvestments;
+            }
+            catch (SqlException)
+            {
+                throw new RepositoryStoreNotAccessibleException(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return investors;
+        }
         #endregion
 
         #region Private Method

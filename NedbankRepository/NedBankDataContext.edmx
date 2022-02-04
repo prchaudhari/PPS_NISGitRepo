@@ -886,6 +886,7 @@
           <Property Name="StatementPeriod" Type="nvarchar" MaxLength="500" />
           <Property Name="ClosingBalance" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="OpeningBalance" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="NB_InvestmentTransaction">
           <Key>
@@ -3456,6 +3457,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="StatementPeriod" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ClosingBalance" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OpeningBalance" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NB_InvestmentTransaction">
           <Key>
@@ -5634,6 +5636,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySetMapping Name="NB_InvestmentMaster">
             <EntityTypeMapping TypeName="NenbankDataContextModel.NB_InvestmentMaster">
               <MappingFragment StoreEntitySet="NB_InvestmentMaster">
+                <ScalarProperty Name="OpeningBalance" ColumnName="OpeningBalance" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />

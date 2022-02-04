@@ -40,7 +40,7 @@ namespace NedbankAPI.Controllers
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvestmentController"/> class.
+        /// Initializes a new instance of the <see cref="InvestmentController" /> class.
         /// </summary>
         /// <param name="unityContainer">The unity container.</param>
         public InvestmentController(IUnityContainer unityContainer)
@@ -63,14 +63,39 @@ namespace NedbankAPI.Controllers
         /// Returns list of customers
         /// </returns>
         [HttpPost]
-        [Route("List")]
-        public IList<InvestmentPottfolio> List(long investorId)
+        [Route("InvestmentPottfolioList")]
+        public IList<InvestmentPottfolio> InvestmentPottfolioList(long investorId)
         {
             IList<InvestmentPottfolio> customers = new List<InvestmentPottfolio>();
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
                 customers = this.investmentManager.GetInvestmentPottfolioByInvesterId(investorId, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return customers;
+        }
+
+        /// <summary>
+        /// This api call use to get single or list of customer
+        /// </summary>
+        /// <param name="investorId">The investor identifier.</param>
+        /// <returns>
+        /// Returns list of customers
+        /// </returns>
+        [HttpPost]
+        [Route("InvestorPerformanceList")]
+        public IList<InvestorPerformance> InvestorPerformanceList(long investorId)
+        {
+            IList<InvestorPerformance> customers = new List<InvestorPerformance>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                customers = this.investmentManager.GetInvestorPerformanceByInvesterId(investorId, tenantCode);
             }
             catch (Exception exception)
             {
