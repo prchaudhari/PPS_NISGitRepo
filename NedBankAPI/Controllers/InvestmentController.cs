@@ -66,18 +66,18 @@ namespace NedbankAPI.Controllers
         [Route("InvestmentPottfolioList")]
         public IList<InvestmentPottfolio> InvestmentPottfolioList(long investorId)
         {
-            IList<InvestmentPottfolio> customers = new List<InvestmentPottfolio>();
+            IList<InvestmentPottfolio> investmentPottfolios = new List<InvestmentPottfolio>();
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                customers = this.investmentManager.GetInvestmentPottfolioByInvesterId(investorId, tenantCode);
+                investmentPottfolios = this.investmentManager.GetInvestmentPottfolioByInvesterId(investorId, tenantCode);
             }
             catch (Exception exception)
             {
                 throw exception;
             }
 
-            return customers;
+            return investmentPottfolios;
         }
 
         /// <summary>
@@ -91,21 +91,47 @@ namespace NedbankAPI.Controllers
         [Route("InvestorPerformanceList")]
         public IList<InvestorPerformance> InvestorPerformanceList(long investorId)
         {
-            IList<InvestorPerformance> customers = new List<InvestorPerformance>();
+            IList<InvestorPerformance> investorPerformances = new List<InvestorPerformance>();
             try
             {
                 string tenantCode = Helper.CheckTenantCode(Request.Headers);
-                customers = this.investmentManager.GetInvestorPerformanceByInvesterId(investorId, tenantCode);
+                investorPerformances = this.investmentManager.GetInvestorPerformanceByInvesterId(investorId, tenantCode);
             }
             catch (Exception exception)
             {
                 throw exception;
             }
 
-            return customers;
+            return investorPerformances;
+        }
+
+        /// <summary>
+        /// This api call use to get single or list of customer
+        /// </summary>
+        /// <param name="investorId">The investor identifier.</param>
+        /// <returns>
+        /// Returns list of customers
+        /// </returns>
+        [HttpPost]
+        [Route("BreakdownOfInvestmentAccountsList")]
+        public IList<BreakdownOfInvestmentAccounts> BreakdownOfInvestmentAccountsList(long investorId)
+        {
+            IList<BreakdownOfInvestmentAccounts> breakdownOfInvestmentAccounts = new List<BreakdownOfInvestmentAccounts>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                breakdownOfInvestmentAccounts = this.investmentManager.GetBreakdownOfInvestmentAccountsByInvesterId(investorId, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return breakdownOfInvestmentAccounts;
         }
 
         #endregion
+
         #endregion
     }
 }

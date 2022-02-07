@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreakdownOfInvestmentAccounts.cs" />
     <Compile Include="Common\ModelConstant.cs" />
     <Compile Include="InvestmentPottfolio.cs" />
+    <Compile Include="InvestmentTransaction.cs" />
     <Compile Include="InvestorPerformance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomerInformation.cs" />

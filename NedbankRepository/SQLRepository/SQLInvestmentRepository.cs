@@ -110,7 +110,7 @@
         }
 
         /// <summary>
-        /// Gets the investment pottfolio by invester identifier.
+        /// Gets the investor performance by invester identifier.
         /// </summary>
         /// <param name="investorId">The investor identifier.</param>
         /// <param name="tenantCode">The tenant code.</param>
@@ -149,6 +149,85 @@
                 throw exception;
             }
             return investors;
+        }
+
+        /// <summary>
+        /// Gets the breakdown of investment accounts by invester identifier.
+        /// </summary>
+        /// <param name="investorId">The investor identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        /// <exception cref="NedBankException.RepositoryStoreNotAccessibleException"></exception>
+        public IList<BreakdownOfInvestmentAccounts> GetBreakdownOfInvestmentAccountsByInvesterId(long investorId, string tenantCode)
+        {
+            IList<BreakdownOfInvestmentAccounts> breakdownOfInvestmentAccounts = new List<BreakdownOfInvestmentAccounts>();
+            //IList<InvestmentTransaction> investmentTransactions = new List<InvestmentTransaction>();
+            IList<NB_InvestmentMaster> investmentRecords = null;
+            IList<NB_InvestmentTransaction> investmentTransactionRecords = null;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
+                {
+                    string whereClause = this.WhereClauseGenerator(investorId, tenantCode);
+                    investmentTransactionRecords = new List<NB_InvestmentTransaction>();
+                    investmentTransactionRecords = nedbankEntities.NB_InvestmentTransaction.Where(whereClause).ToList();
+                    investmentRecords = new List<NB_InvestmentMaster>();
+                    investmentRecords = nedbankEntities.NB_InvestmentMaster.Where(whereClause).ToList();
+                    //breakdownOfInvestmentAccounts = nedbankEntities.NB_InvestmentMaster
+                    //    .Join(investmentTransactionRecords, i => i.InvestorId, it => it.InvestorId, (i, it) => new { i, it})
+                    //    .Where(whereClause)
+                    //    .Select(item => new BreakdownOfInvestmentAccounts()
+                    //    {
+                    //        InvestmentId = item.i.InvestorId,
+                    //        CurrentInterestRate = item.i.CurrentInterestRate,
+                    //        InterestDisposalDesc = item.i.InterestDisposalDesc,
+                    //        AccountOpenDate = item.i.AccountOpenDate,
+                    //        NoticePeriod = item.i.NoticePeriod,
+                    //        TransactionDate = item.it.TransactionDate,
+                    //    }).ToList();
+
+                }
+
+                IList<InvestmentTransaction> tempInvestmentTransactions = new List<InvestmentTransaction>();
+                investmentTransactionRecords?.ToList().ForEach(investmentTransactionRecord =>
+                {
+                    tempInvestmentTransactions.Add(new InvestmentTransaction()
+                    {
+                        TransactionDate = investmentTransactionRecord.TransactionDate,
+                        TransactionDesc = investmentTransactionRecord.TransactionDesc,
+                        WJXBFS2_Debit = investmentTransactionRecord.WJXBFS2_Debit,
+                        WJXBFS3_Credit = investmentTransactionRecord.WJXBFS3_Credit,
+                        WJXBFS4_Balance = investmentTransactionRecord.WJXBFS4_Balance,
+                    });
+                });
+
+                IList<BreakdownOfInvestmentAccounts> tempInvestments = new List<BreakdownOfInvestmentAccounts>();
+
+                investmentRecords?.ToList().ForEach(investmentRecord =>
+                {
+                    tempInvestments.Add(new BreakdownOfInvestmentAccounts()
+                    {
+                        InvestmentId = investmentRecord.InvestmentId,
+                        CurrentInterestRate = investmentRecord.CurrentInterestRate,
+                        InterestDisposalDesc = investmentRecord.InterestDisposalDesc,
+                        AccountOpenDate = investmentRecord.AccountOpenDate,
+                        NoticePeriod = investmentRecord.NoticePeriod,
+                        LastTransactionDate = tempInvestmentTransactions.Count() > 0 ? tempInvestmentTransactions.Max(a => a.TransactionDate) : DateTime.Now,
+                        InvestmentTransaction = tempInvestmentTransactions
+                    });
+                });
+                breakdownOfInvestmentAccounts = tempInvestments;
+            }
+            catch (SqlException)
+            {
+                throw new RepositoryStoreNotAccessibleException(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return breakdownOfInvestmentAccounts;
         }
         #endregion
 
