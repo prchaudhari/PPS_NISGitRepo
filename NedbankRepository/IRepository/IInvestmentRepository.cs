@@ -24,10 +24,19 @@ namespace NedbankRepository
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns></returns>
         IList<InvestmentPottfolio> GetInvestmentPottfolioByInvesterId(long investorId, string tenantCode);
+
+        /// <summary>
+        /// Gets the breakdown of investment accounts by invester identifier.
+        /// </summary>
+        /// <param name="investorId">The investor identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        IList<BreakdownOfInvestmentAccounts> GetBreakdownOfInvestmentAccountsByInvesterId(long investorId, string tenantCode);
         #endregion
+
         #region Investor Data
         /// <summary>
-        /// Gets the investment pottfolio by invester identifier.
+        /// Gets the investor performance by invester identifier.
         /// </summary>
         /// <param name="investorId">The investor identifier.</param>
         /// <param name="tenantCode">The tenant code.</param>
