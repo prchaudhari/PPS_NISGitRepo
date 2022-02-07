@@ -1991,11 +1991,7 @@ export class InvestorPerformanceComponent {
       <div class='card border-0'>
           <div class='card-body text-left'>
               <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
-              <ul class='nav nav-tabs Investment-nav-tabs'>
-                  <li class='nav-item active'><a id='tab0-tab' data-toggle='tab' data-target='#JustInvest-9929' role='tab' class='nav-link active'> JustInvest - xx29</a></li>
-                  <li class='nav-item'><a id='tab0-tab' data-toggle='tab' data-target='#JustInvest-6789' role='tab' class='nav-link'> JustInvest - xx89</a></li>
-              </ul>
-              <div class="tab-content">
+              
                   <div id='JustInvest-9929' class='tab-pane fade in active show'>
                       <div style="background-color: #f3f3f3;padding:10px 0px">
                           <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
@@ -2097,8 +2093,9 @@ export class InvestorPerformanceComponent {
                               </tbody>
                           </table>
                       </div>
-                  </div>
-                  <div id='JustInvest-6789' class='tab-pane'>
+
+                      <br/><br/>
+
                       <div style="background-color: #f3f3f3;padding:10px 0px">
                           <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
                           <table border="0" class="InvestmentDetail customTable">
@@ -2199,7 +2196,7 @@ export class InvestorPerformanceComponent {
                               </tbody>
                           </table>
                       </div>
-                  </div>
+                  
               </div>
 
           </div>

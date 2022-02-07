@@ -3033,23 +3033,11 @@ namespace nIS
                 //Create Nav tab if investment accounts is more than 1
                 var NavTabs = new StringBuilder();
                 var InvestmentAccountsCount = investmentMasters.Count;
-                if (InvestmentAccountsCount > 1)
-                {
-                    NavTabs.Append("<ul class='nav nav-tabs Investment-nav-tabs'>");
-                    var cnt = 0;
-                    investmentMasters.ToList().ForEach(acc =>
-                    {
-                        NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : string.Empty) + "'><a id='tab0-tab' data-toggle='tab' data-target='#" + acc.ProductDesc + "-" + acc.InvestmentId + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : string.Empty) + "'> " + acc.ProductDesc + " - " + acc.InvestmentId + "</a></li>");
-                        cnt++;
-                    });
-                    NavTabs.Append("</ul>");
-                }
                 pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", NavTabs.ToString());
 
                 //create tab-content div if accounts is greater than 1, otherwise create simple div
                 var TabContentHtml = new StringBuilder();
                 var counter = 0;
-                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
                 investmentMasters.ToList().ForEach(acc =>
                 {
                     var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML_SMT);
