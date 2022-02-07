@@ -27,6 +27,7 @@ namespace FinancialTenantService
             unityContainer.RegisterType<ICustomerRepository, SQLCustomerRepository>();
             unityContainer.RegisterType<IConfigurationUtility, ConfigurationUtility>();
             unityContainer.RegisterType<INedBankValidationEngine, NedBankValidationEngine>();
+            unityContainer.RegisterType<IBranchRepository, SQLBranchRepository>();
             return unityContainer;
         }
     }
