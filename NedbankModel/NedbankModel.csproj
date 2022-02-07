@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ModelConstant.cs" />
+    <Compile Include="BranchInformation.cs" />
     <Compile Include="InvestmentPottfolio.cs" />
     <Compile Include="InvestorPerformance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

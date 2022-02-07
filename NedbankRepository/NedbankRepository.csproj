@@ -234,6 +234,7 @@
     <Compile Include="FnUserTenant_Result.cs">
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="IRepository\IBranchRepository.cs" />
     <Compile Include="IRepository\ICustomerRepository.cs" />
     <Compile Include="IRepository\IInvestmentRepository.cs" />
     <Compile Include="MultiTenantUserAccessMap.cs">
@@ -312,6 +313,7 @@
     <Compile Include="ScheduleRunHistory.cs">
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLRepository\SQLBranchRepository.cs" />
     <Compile Include="SQLRepository\SQLCustomerRepository.cs" />
     <Compile Include="SQLRepository\SQLInvestmentRepository.cs" />
     <Compile Include="State.cs">
