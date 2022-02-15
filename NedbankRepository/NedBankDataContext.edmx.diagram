@@ -118,6 +118,7 @@
         <EntityTypeShape EntityType="NenbankDataContextModel.View_User" Width="1.5" PointX="8.75" PointY="32.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NenbankDataContextModel.database_firewall_rules" Width="1.5" PointX="32.75" PointY="10.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NenbankDataContextModel.LanguageMaster" Width="1.5" PointX="21.375" PointY="32.75" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.LanguageTenantMapping" Width="1.5" PointX="0.75" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

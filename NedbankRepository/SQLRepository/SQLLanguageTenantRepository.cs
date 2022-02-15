@@ -16,8 +16,9 @@
     /// <summary>
     /// This class represents the methods to perform operation with database for role entity.
     /// </summary>
+    /// <seealso cref="NedbankRepository.ILanguageTenantRepository" />
     /// <seealso cref="NedbankRepository.ILanguageRepository" />
-    public class SQLLanguageRepository : ILanguageRepository
+    public class SQLLanguageTenantRepository : ILanguageTenantRepository
     {
         #region Private Members
 
@@ -49,7 +50,7 @@
         /// Initializes a new instance of the <see cref="SQLLanguageRepository" /> class.
         /// </summary>
         /// <param name="unityContainer">The unity container.</param>
-        public SQLLanguageRepository(IUnityContainer unityContainer)
+        public SQLLanguageTenantRepository(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
             this.validationEngine = new NedBankValidationEngine();
@@ -65,20 +66,19 @@
         /// </summary>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns></returns>
-        public IList<Language> GetAllLanguages(string tenantCode)
+        public IList<LanguageTenant> GetAllLanguages(string tenantCode)
         {
-            IList<Language> languages = new List<Language>();
+            IList<LanguageTenant> languages = new List<LanguageTenant>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    languages = nedbankEntities.LanguageMaster.Where(a => a.IsDeleted == false).Select(language => new Language()
+                    languages = nedbankEntities.LanguageTenantMapping.Select(language => new LanguageTenant()
                     {
                         Id = language.Id,
-                        Code = language.Code,
-                        Description = language.Description,
-                        IsDeleted = language.IsDeleted,
+                        LanguageCode = language.LanguageCode,
+                        TenantCode = language.TenantCode,
                     }).ToList();
                 }
             }
@@ -97,25 +97,34 @@
         /// <param name="languages">The languages.</param>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns></returns>
-        public bool AddLanguages(IList<Language> languages, string tenantCode)
+        public bool AddLanguages(IList<LanguageTenant> languages, string tenantCode)
         {
-            IList<LanguageMaster> languageRecords = new List<LanguageMaster>();
+            IList<LanguageTenantMapping> languageRecords = new List<LanguageTenantMapping>();
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
-                languages.ToList().ForEach(l =>
-                {
-                    languageRecords.Add(new LanguageMaster()
-                    {
-                        Code = l.Code,
-                        Description = l.Description,
-                        IsDeleted = true,
-                    });
-                });
-
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    nedbankEntities.LanguageMaster.AddRange(languageRecords);
+                    IList<LanguageTenantMapping> existingLanguages = nedbankEntities.LanguageTenantMapping.Select(item => item).ToList();
+
+                    existingLanguages.ToList().ForEach(item =>
+                    {
+                        if (languages.Any(a => a.LanguageCode == item.LanguageCode && a.TenantCode == item.TenantCode))
+                        {
+                            throw new LanguageAlreadyExistsException(tenantCode);
+                        }
+                    });
+
+                    languages.ToList().ForEach(l =>
+                    {
+                        languageRecords.Add(new LanguageTenantMapping()
+                        {
+                            LanguageCode = l.LanguageCode,
+                            TenantCode = l.TenantCode,
+                        });
+                    });
+
+                    nedbankEntities.LanguageTenantMapping.AddRange(languageRecords);
                     nedbankEntities.SaveChanges();
                 }
                 return true;
@@ -133,26 +142,34 @@
         /// <param name="language">The language.</param>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns></returns>
-        public bool UpdateLanguages(Language language, string tenantCode)
+        /// <exception cref="NedBankException.LanguageNotFoundException"></exception>
+        /// <exception cref="NedBankException.LanguageAlreadyExistsException"></exception>
+        public bool UpdateLanguages(LanguageTenant language, string tenantCode)
         {
             try
             {
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    IList<LanguageMaster> languageRecords = nedbankEntities.LanguageMaster.Where(a => a.Id == language.Id).Select(item => item).AsQueryable().ToList();
+                    IList<LanguageTenantMapping> languageRecords = nedbankEntities.LanguageTenantMapping.Select(item => item).ToList();
 
-                    if (languageRecords == null || languageRecords.Count <= 0 || languageRecords.Count() != string.Join(",", languageRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
+                    IList<LanguageTenantMapping> languages = languageRecords.Where(a => a.Id == language.Id).ToList();
+                    IList<LanguageTenantMapping> existingLanguages = languageRecords.Where(a => a.LanguageCode.Equals(language.LanguageCode) && a.Id != language.Id && a.TenantCode == language.TenantCode).ToList();
+                    if (languages == null || languages.Count <= 0)
                     {
                         throw new LanguageNotFoundException(tenantCode);
                     }
 
-                    LanguageMaster languageRecord = nedbankEntities.LanguageMaster.FirstOrDefault(a => a.Id == language.Id);
+                    if (existingLanguages.Any())
+                    {
+                        throw new LanguageAlreadyExistsException(tenantCode);
+                    }
+
+                    LanguageTenantMapping languageRecord = nedbankEntities.LanguageTenantMapping.FirstOrDefault(a => a.Id == language.Id);
                     if (languageRecord != null)
                     {
-                        languageRecord.Code = language.Code;
-                        languageRecord.Description = language.Description;
-                        languageRecord.IsDeleted = language.IsDeleted;
+                        languageRecord.LanguageCode = language.LanguageCode;
+                        languageRecord.TenantCode = language.TenantCode;
                     }
 
                     nedbankEntities.SaveChanges();
@@ -173,7 +190,7 @@
         /// <param name="languages">The languages.</param>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns></returns>
-        public bool DeleteLanguages(IList<Language> languages, string tenantCode)
+        public bool DeleteLanguages(IList<LanguageTenant> languages, string tenantCode)
         {
             try
             {
@@ -182,15 +199,9 @@
                 {
                     StringBuilder query = new StringBuilder();
                     query.Append("(" + string.Join("or ", string.Join(",", languages.Select(item => item.Id).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
-                    query.Append("and IsDeleted.Equals(false)");
+                    IList<LanguageTenantMapping> languageRecords = nedbankEntities.LanguageTenantMapping.Where(query.ToString()).Select(item => item).ToList();
 
-                    IList<LanguageMaster> languageRecords = nedbankEntities.LanguageMaster.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
-
-                    languageRecords.ToList().ForEach(l =>
-                    {
-                        l.IsDeleted = true;
-                    });
-
+                    nedbankEntities.LanguageTenantMapping.RemoveRange(languageRecords);
                     nedbankEntities.SaveChanges();
                 }
 

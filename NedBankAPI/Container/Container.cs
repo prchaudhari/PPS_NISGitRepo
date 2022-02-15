@@ -39,6 +39,7 @@ namespace NedbankAPI
             unityContainer.RegisterType<IInvestmentRepository, SQLInvestmentRepository>();
             unityContainer.RegisterType<IBranchRepository, SQLBranchRepository>();
             unityContainer.RegisterType<ILanguageRepository, SQLLanguageRepository>();
+            unityContainer.RegisterType<ILanguageTenantRepository, SQLLanguageTenantRepository>();
             return unityContainer;
         }
     }

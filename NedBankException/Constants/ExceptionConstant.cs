@@ -27,7 +27,7 @@ namespace NedBankException
         public const string INVALID_CONNECTIONSTRING_EXCEPTION = "msgConnectionStringNotFoundException";
 
         /// <summary>
-        /// The repository not accessible exception 
+        /// The repository not accessible exception
         /// </summary>
         public const string REPOSITORY_NOT_ACCESSIBLE = "RepositoryNotAccessibleException";
 
@@ -40,6 +40,16 @@ namespace NedBankException
         /// The invalid tenant exception
         /// </summary>
         public const string INVALID_TENANT_EXCEPTION = "InvalidTenantException";
+
+        /// <summary>
+        /// The language not found exception
+        /// </summary>
+        public const string LANGUAGE_NOT_FOUND_EXCEPTION = "LanguageNotFoundException";
+
+        /// <summary>
+        /// The language already exists exception
+        /// </summary>
+        public const string LANGUAGE_ALREADY_EXISTS_EXCEPTION = "LanguageAlreadyExistsException";
 
         #endregion
     }

@@ -815,6 +815,14 @@
           <Property Name="Code" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="LanguageTenantMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LanguageCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="MultiTenantUserAccessMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -2195,6 +2203,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySet Name="DynamicWidgetFilterDetail" EntityType="Self.DynamicWidgetFilterDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="EntityFieldMap" EntityType="Self.EntityFieldMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="LanguageMaster" EntityType="Self.LanguageMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="LanguageTenantMapping" EntityType="Self.LanguageTenantMapping" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="MultiTenantUserAccessMap" EntityType="Self.MultiTenantUserAccessMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_BranchMaster" EntityType="Self.NB_BranchMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_CustomerMaster" EntityType="Self.NB_CustomerMaster" Schema="NIS" store:Type="Tables" />
@@ -3424,7 +3433,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BatchId" Type="Int64" />
-          <Property Name="CustomerId" Type="String" Nullable="false" />
+          <Property Name="CustomerId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="InvestorId" Type="Int64" Nullable="false" />
           <Property Name="BranchId" Type="Int64" />
           <Property Name="Title" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -3446,7 +3455,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BatchId" Type="Int64" />
-          <Property Name="CustomerId" Type="String" Nullable="false" />
+          <Property Name="CustomerId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="InvestorId" Type="Int64" />
           <Property Name="InvestmentId" Type="Int64" />
           <Property Name="BranchId" Type="Int64" />
@@ -3475,7 +3484,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="String" Nullable="false" />
+          <Property Name="CustomerId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="InvestorId" Type="Int64" Nullable="false" />
           <Property Name="InvestmentId" Type="Int64" Nullable="false" />
           <Property Name="ProductId" Type="Int64" Nullable="false" />
@@ -4732,6 +4741,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="LanguageMasters" EntityType="NenbankDataContextModel.LanguageMaster" />
+          <EntitySet Name="LanguageTenantMappings" EntityType="NenbankDataContextModel.LanguageTenantMapping" />
         </EntityContainer>
         <EntityType Name="LanguageMaster">
           <Key>
@@ -4741,6 +4751,14 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="Code" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LanguageTenantMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LanguageCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6833,6 +6851,15 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LanguageTenantMappings">
+            <EntityTypeMapping TypeName="NenbankDataContextModel.LanguageTenantMapping">
+              <MappingFragment StoreEntitySet="LanguageTenantMapping">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="LanguageCode" ColumnName="LanguageCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
