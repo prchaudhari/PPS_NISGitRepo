@@ -15,10 +15,10 @@ namespace NedbankRepository
     public partial class NB_CustomerMaster
     {
         public long Id { get; set; }
-        public long BatchId { get; set; }
-        public long CustomerId { get; set; }
+        public Nullable<long> BatchId { get; set; }
+        public string CustomerId { get; set; }
         public long InvestorId { get; set; }
-        public long BranchId { get; set; }
+        public Nullable<long> BranchId { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
         public string SurName { get; set; }

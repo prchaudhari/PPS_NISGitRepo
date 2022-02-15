@@ -237,6 +237,10 @@
     <Compile Include="IRepository\IBranchRepository.cs" />
     <Compile Include="IRepository\ICustomerRepository.cs" />
     <Compile Include="IRepository\IInvestmentRepository.cs" />
+    <Compile Include="IRepository\ILanguageRepository.cs" />
+    <Compile Include="LanguageMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="MultiTenantUserAccessMap.cs">
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
@@ -316,6 +320,7 @@
     <Compile Include="SQLRepository\SQLBranchRepository.cs" />
     <Compile Include="SQLRepository\SQLCustomerRepository.cs" />
     <Compile Include="SQLRepository\SQLInvestmentRepository.cs" />
+    <Compile Include="SQLRepository\SQLLanguageRepository.cs" />
     <Compile Include="State.cs">
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>

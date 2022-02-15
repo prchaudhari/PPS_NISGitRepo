@@ -23,14 +23,14 @@ namespace NedbankModel
         /// <value>
         /// The batch identifier.
         /// </value>
-        public long BatchId { get; set; }
+        public long? BatchId { get; set; }
         /// <summary>
         /// Gets or sets the customer identifier.
         /// </summary>
         /// <value>
         /// The customer identifier.
         /// </value>
-        public long CustomerId { get; set; }
+        public string CustomerId { get; set; }
         /// <summary>
         /// Gets or sets the investor identifier.
         /// </summary>
@@ -44,7 +44,7 @@ namespace NedbankModel
         /// <value>
         /// The branch identifier.
         /// </value>
-        public long BranchId { get; set; }
+        public long? BranchId { get; set; }
         /// <summary>
         /// Gets or sets the title.
         /// </summary>

@@ -15,7 +15,7 @@
         /// <value>
         /// The investor identifier.
         /// </value>
-        public long InvestorId { get; set; }
+        public long? InvestorId { get; set; }
         /// <summary>
         /// Gets or sets the type of the product.
         /// </summary>
@@ -44,7 +44,7 @@
         /// <value>
         /// The day of statement.
         /// </value>
-        public string DayOfStatement { get; set; }
+        public long DayOfStatement { get; set; }
         /// <summary>
         /// Gets or sets the statement period.
         /// </summary>
