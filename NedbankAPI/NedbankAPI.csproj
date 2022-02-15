@@ -313,6 +313,7 @@
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\InvestmentController.cs" />
+    <Compile Include="Controllers\LanguageTenantController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Filters\HandleExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">

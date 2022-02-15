@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="BranchManager.cs" />
     <Compile Include="InvestmentManager.cs" />
+    <Compile Include="LanguageTenantManager.cs" />
     <Compile Include="LanguageManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomerManager.cs" />
