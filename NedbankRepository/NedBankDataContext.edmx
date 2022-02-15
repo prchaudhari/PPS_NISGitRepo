@@ -806,6 +806,15 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DataType" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="LanguageMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="MultiTenantUserAccessMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -833,20 +842,20 @@
           <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
           <Property Name="AddressLine3" Type="nvarchar" MaxLength="500" />
           <Property Name="AddressLine4" Type="nvarchar" MaxLength="500" />
-          <Property Name="VatRegNo" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="VatRegNo" Type="nvarchar" MaxLength="200" />
           <Property Name="ContactNo" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="NB_CustomerMaster">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" />
+          <Property Name="CustomerId" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="InvestorId" Type="bigint" Nullable="false" />
-          <Property Name="BranchId" Type="bigint" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="BranchId" Type="bigint" />
+          <Property Name="Title" Type="nvarchar" MaxLength="20" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="SurName" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="AddressLine0" Type="nvarchar" MaxLength="500" />
@@ -855,7 +864,7 @@
           <Property Name="AddressLine3" Type="nvarchar" MaxLength="500" />
           <Property Name="AddressLine4" Type="nvarchar" MaxLength="500" />
           <Property Name="EmailAddress" Type="nvarchar" MaxLength="500" />
-          <Property Name="MaskCellNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="MaskCellNo" Type="nvarchar" MaxLength="500" />
           <Property Name="Barcode" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
         </EntityType>
@@ -864,15 +873,15 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="InvestorId" Type="bigint" Nullable="false" />
-          <Property Name="InvestmentId" Type="bigint" Nullable="false" />
-          <Property Name="BranchId" Type="bigint" Nullable="false" />
-          <Property Name="ProductId" Type="bigint" Nullable="false" />
-          <Property Name="ProductType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" />
+          <Property Name="CustomerId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" />
+          <Property Name="InvestmentId" Type="bigint" />
+          <Property Name="BranchId" Type="bigint" />
+          <Property Name="ProductId" Type="bigint" />
+          <Property Name="ProductType" Type="nvarchar" MaxLength="100" />
           <Property Name="Currency" Type="nvarchar" MaxLength="10" />
-          <Property Name="ProductDesc" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ProductDesc" Type="nvarchar" MaxLength="100" />
           <Property Name="AccountOpenDate" Type="datetime" />
           <Property Name="CurrentInterestRate" Type="nvarchar" MaxLength="50" />
           <Property Name="ArchiveDate" Type="datetime" />
@@ -882,11 +891,11 @@
           <Property Name="NoticePeriod" Type="nvarchar" MaxLength="100" />
           <Property Name="AccuredInterest" Type="nvarchar" MaxLength="50" />
           <Property Name="StatementDate" Type="datetime" />
-          <Property Name="DayOfStatement" Type="nvarchar" MaxLength="20" />
+          <Property Name="DayOfStatement" Type="bigint" Nullable="false" />
           <Property Name="StatementPeriod" Type="nvarchar" MaxLength="500" />
           <Property Name="ClosingBalance" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="OpeningBalance" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="OpeningBalance" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="NB_InvestmentTransaction">
           <Key>
@@ -894,7 +903,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="InvestorId" Type="bigint" Nullable="false" />
           <Property Name="InvestmentId" Type="bigint" Nullable="false" />
           <Property Name="ProductId" Type="bigint" Nullable="false" />
@@ -2185,6 +2194,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySet Name="DynamicWidget" EntityType="Self.DynamicWidget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="DynamicWidgetFilterDetail" EntityType="Self.DynamicWidgetFilterDetail" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="EntityFieldMap" EntityType="Self.EntityFieldMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="LanguageMaster" EntityType="Self.LanguageMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="MultiTenantUserAccessMap" EntityType="Self.MultiTenantUserAccessMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_BranchMaster" EntityType="Self.NB_BranchMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_CustomerMaster" EntityType="Self.NB_CustomerMaster" Schema="NIS" store:Type="Tables" />
@@ -3404,20 +3414,20 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="AddressLine3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="AddressLine4" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="VatRegNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VatRegNo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ContactNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NB_CustomerMaster">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" />
+          <Property Name="CustomerId" Type="String" Nullable="false" />
           <Property Name="InvestorId" Type="Int64" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BranchId" Type="Int64" />
+          <Property Name="Title" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SurName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AddressLine0" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -3426,7 +3436,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="AddressLine3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="AddressLine4" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="EmailAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="MaskCellNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MaskCellNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -3435,15 +3445,15 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="InvestorId" Type="Int64" Nullable="false" />
-          <Property Name="InvestmentId" Type="Int64" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="ProductId" Type="Int64" Nullable="false" />
-          <Property Name="ProductType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" />
+          <Property Name="CustomerId" Type="String" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" />
+          <Property Name="InvestmentId" Type="Int64" />
+          <Property Name="BranchId" Type="Int64" />
+          <Property Name="ProductId" Type="Int64" />
+          <Property Name="ProductType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Currency" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AccountOpenDate" Type="DateTime" Precision="3" />
           <Property Name="CurrentInterestRate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ArchiveDate" Type="DateTime" Precision="3" />
@@ -3453,11 +3463,11 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="NoticePeriod" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AccuredInterest" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StatementDate" Type="DateTime" Precision="3" />
-          <Property Name="DayOfStatement" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DayOfStatement" Type="Int64" Nullable="false" />
           <Property Name="StatementPeriod" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ClosingBalance" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OpeningBalance" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OpeningBalance" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NB_InvestmentTransaction">
           <Key>
@@ -3465,7 +3475,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="String" Nullable="false" />
           <Property Name="InvestorId" Type="Int64" Nullable="false" />
           <Property Name="InvestmentId" Type="Int64" Nullable="false" />
           <Property Name="ProductId" Type="Int64" Nullable="false" />
@@ -4721,7 +4731,17 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <FunctionImport Name="FnUserTenant" IsComposable="true" ReturnType="Collection(NenbankDataContextModel.FnUserTenant_Result)">
           <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="LanguageMasters" EntityType="NenbankDataContextModel.LanguageMaster" />
         </EntityContainer>
+        <EntityType Name="LanguageMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6807,6 +6827,16 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="LanguageMasters">
+            <EntityTypeMapping TypeName="NenbankDataContextModel.LanguageMaster">
+              <MappingFragment StoreEntitySet="LanguageMaster">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

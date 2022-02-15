@@ -35,7 +35,8 @@ namespace NedbankRepository
         public virtual DbSet<NB_CustomerMaster> NB_CustomerMaster { get; set; }
         public virtual DbSet<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
         public virtual DbSet<NB_InvestmentTransaction> NB_InvestmentTransaction { get; set; }
-    
+        public virtual DbSet<LanguageMaster> LanguageMaster { get; set; }
+
         [DbFunction("NedbankEntities", "FnGetParentAndChildTenant")]
         public virtual IQueryable<FnGetParentAndChildTenant_Result> FnGetParentAndChildTenant(string parentTenantCode)
         {

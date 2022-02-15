@@ -16,7 +16,7 @@
         /// <value>
         /// The investment identifier.
         /// </value>
-        public long InvestmentId { get; set; }
+        public long? InvestmentId { get; set; }
         /// <summary>
         /// Gets or sets the current interest rate.
         /// </summary>
