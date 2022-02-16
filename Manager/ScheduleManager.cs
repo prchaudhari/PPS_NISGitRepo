@@ -270,6 +270,35 @@ namespace nIS
             return schedules;
         }
 
+        public IList<Schedule> GetSchedulesWithLanguage(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
+        {
+            IList<Schedule> schedules = new List<Schedule>();
+            try
+            {
+                InvalidSearchParameterException invalidSearchParameterException = new InvalidSearchParameterException(tenantCode);
+                try
+                {
+                    scheduleSearchParameter.IsValid();
+                }
+                catch (Exception exception)
+                {
+                    invalidSearchParameterException.Data.Add("InvalidPagingParameter", exception.Data);
+                }
+
+                if (invalidSearchParameterException.Data.Count > 0)
+                {
+                    throw invalidSearchParameterException;
+                }
+
+                schedules = this.scheduleRepository.GetSchedulesWithLanguage(scheduleSearchParameter, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return schedules;
+        }
+
         /// <summary>
         /// This method helps to get count of schedules.
         /// </summary>
