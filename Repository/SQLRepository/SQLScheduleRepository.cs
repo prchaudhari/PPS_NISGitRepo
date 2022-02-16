@@ -24,7 +24,7 @@ namespace nIS
     /// <summary>
     /// This class represents the methods to perform operation with database for schedule entity.
     /// </summary>
-    /// 
+    /// <seealso cref="nIS.IScheduleRepository" />
     public class SQLScheduleRepository : IScheduleRepository
     {
         #region Private Members
@@ -78,6 +78,10 @@ namespace nIS
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SQLScheduleRepository"/> class.
+        /// </summary>
+        /// <param name="unityContainer">The unity container.</param>
         public SQLScheduleRepository(IUnityContainer unityContainer)
         {
             this.unityContainer = unityContainer;
@@ -99,10 +103,11 @@ namespace nIS
         /// This method adds the specified list of schedule in the repository.
         /// </summary>
         /// <param name="schedules"></param>
-        /// <param name="tenantCode"></param>
+        /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// True, if the schedule values are added successfully, false otherwise
         /// </returns>
+        /// <exception cref="nIS.DuplicateScheduleFoundException"></exception>
         public bool AddSchedules(IList<Schedule> schedules, string tenantCode)
         {
             bool result = false;
@@ -222,13 +227,141 @@ namespace nIS
         }
 
         /// <summary>
+        /// Adds the schedules with language.
+        /// </summary>
+        /// <param name="schedules"></param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        /// <exception cref="nIS.DuplicateScheduleFoundException"></exception>
+        public bool AddSchedulesWithLanguage(IList<Schedule> schedules, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId = 1;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
+                this.SetAndValidateConnectionString(tenantCode);
+
+                if (this.IsDuplicateSchedule(schedules, "AddOperation", tenantCode))
+                {
+                    throw new DuplicateScheduleFoundException(tenantCode);
+                }
+                IList<ScheduleRecord> scheduleRecords = new List<ScheduleRecord>();
+                schedules.ToList().ForEach(schedule =>
+                {
+                    //DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(schedule.StartDate), DateTimeKind.Utc);
+                    //DateTime? endDateTime = DateTime.SpecifyKind(Convert.ToDateTime(schedule.EndDate), DateTimeKind.Utc);
+
+                    var startDateTime = schedule.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    var endDateTime = schedule.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+
+                    scheduleRecords.Add(new ScheduleRecord()
+                    {
+                        Name = schedule.Name,
+                        Description = schedule.Description,
+                        DayOfMonth = schedule.DayOfMonth,
+                        HourOfDay = schedule.HourOfDay,
+                        MinuteOfDay = schedule.MinuteOfDay,
+                        StartDate = startDateTime,
+                        EndDate = schedule.EndDate != null ? endDateTime : null,
+                        Status = schedule.Status,
+                        IsDeleted = false,
+                        IsActive = true,
+                        TenantCode = tenantCode,
+                        StatementId = schedule.Statement.Identifier,
+                        IsExportToPDF = schedule.IsExportToPDF,
+                        UpdateBy = userId,
+                        LastUpdatedDate = DateTime.UtcNow,
+                        RecurrancePattern = schedule.RecurrancePattern,
+                        RepeatEveryDayMonWeekYear = schedule.RepeatEveryDayMonWeekYear,
+                        WeekDays = schedule.WeekDays,
+                        IsEveryWeekDay = schedule.IsEveryWeekDay,
+                        MonthOfYear = schedule.MonthOfYear,
+                        IsEndsAfterNoOfOccurrences = schedule.IsEndsAfterNoOfOccurrences,
+                        NoOfOccurrences = schedule.NoOfOccurrences,
+                        Languages = string.Join(",", schedule.Languages),
+                    });
+                });
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.ScheduleRecords.AddRange(scheduleRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+                if (result)
+                {
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
+                    scheduleRecords.ToList().ForEach(schedulerecord =>
+                    {
+                        int batchIndex = 1;
+                        if (schedulerecord.RecurrancePattern == ModelConstant.DOES_NOT_REPEAT)
+                        {
+                            this.AddDoesNotRepeatBatchWithLanguage(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId);
+                        }
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.DAILY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
+                        {
+                            this.AddDailyOccurenceScheduleBatchesWithLanguage(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                        }
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.WEEKDAY || schedulerecord.RecurrancePattern == ModelConstant.WEEKLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
+                        {
+                            this.AddWeeklyOccurenceScheduleBatchesWithLanguage(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                        }
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.MONTHLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
+                        {
+                            this.AddMonthlyOccurenceScheduleBatchesWithLanguage(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                        }
+                        else if (schedulerecord.RecurrancePattern == ModelConstant.YEARLY || schedulerecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
+                        {
+                            this.AddYearlyOccurenceScheduleBatchesWithLanguage(schedulerecord.StartDate ?? DateTime.Now, schedulerecord, tenantCode, userId, batchIndex);
+                        }
+
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                            EntityId = schedulerecord.Id,
+                            EntityName = schedulerecord.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Add",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
+                    });
+
+                    if (Records.Count > 0)
+                    {
+                        using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                        {
+                            nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                            nISEntitiesDataContext.SaveChanges();
+                        }
+                    }
+                }
+            }
+
+            catch
+            {
+                throw;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// This method helps to update already added schedules entry to database.
         /// </summary>
         /// <param name="schedules"></param>
-        /// <param name="tenantCode"></param>
+        /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// True, if the schedule values are updated successfully,otherwise false
         /// </returns>
+        /// <exception cref="nIS.DuplicateScheduleFoundException"></exception>
+        /// <exception cref="nIS.ScheduleNotFoundException"></exception>
         public bool UpdateSchedules(IList<Schedule> schedules, string tenantCode)
         {
             bool result = false;
@@ -381,12 +514,176 @@ namespace nIS
         }
 
         /// <summary>
+        /// Updates the schedules with language.
+        /// </summary>
+        /// <param name="schedules"></param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        /// <exception cref="nIS.DuplicateScheduleFoundException"></exception>
+        /// <exception cref="nIS.ScheduleNotFoundException"></exception>
+        public bool UpdateSchedulesWithLanguage(IList<Schedule> schedules, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                int userId = 1;
+                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+
+                this.SetAndValidateConnectionString(tenantCode);
+                if (this.IsDuplicateSchedule(schedules, "UpdateOperation", tenantCode))
+                {
+                    throw new DuplicateScheduleFoundException(tenantCode);
+                }
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    StringBuilder query = new StringBuilder();
+                    query.Append("(" + string.Join("or ", string.Join(",", schedules.Select(item => item.Identifier).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
+
+                    IList<ScheduleRecord> scheduleRecords = nISEntitiesDataContext.ScheduleRecords.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    if (scheduleRecords == null || scheduleRecords.Count <= 0 || scheduleRecords.Count() != string.Join(",", scheduleRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
+                    {
+                        throw new ScheduleNotFoundException(tenantCode);
+                    }
+
+                    IList<SystemActivityHistoryRecord> Records = new List<SystemActivityHistoryRecord>();
+                    schedules.ToList().ForEach(item =>
+                    {
+                        //DateTime startDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.StartDate), DateTimeKind.Utc);
+                        //DateTime? endDateTime = DateTime.SpecifyKind(Convert.ToDateTime(item.EndDate), DateTimeKind.Utc);
+
+                        var startDateTime = item.StartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                        var endDateTime = item.EndDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                        ScheduleRecord scheduleRecord = scheduleRecords.FirstOrDefault(data => data.Id == item.Identifier && data.TenantCode == tenantCode && data.IsDeleted == false);
+                        scheduleRecord.Name = item.Name;
+                        scheduleRecord.Description = item.Description;
+                        scheduleRecord.DayOfMonth = item.DayOfMonth;
+                        scheduleRecord.HourOfDay = item.HourOfDay;
+                        scheduleRecord.MinuteOfDay = item.MinuteOfDay;
+                        scheduleRecord.StartDate = startDateTime;
+                        scheduleRecord.EndDate = item.EndDate != null ? endDateTime : null;
+                        scheduleRecord.Status = item.Status;
+                        scheduleRecord.IsDeleted = false;
+                        scheduleRecord.IsActive = item.IsActive;
+                        scheduleRecord.TenantCode = tenantCode;
+                        scheduleRecord.IsExportToPDF = item.IsExportToPDF;
+                        scheduleRecord.StatementId = item.Statement.Identifier;
+                        scheduleRecord.UpdateBy = userId;
+                        scheduleRecord.LastUpdatedDate = DateTime.UtcNow;
+                        scheduleRecord.RecurrancePattern = item.RecurrancePattern;
+                        scheduleRecord.RepeatEveryDayMonWeekYear = item.RepeatEveryDayMonWeekYear;
+                        scheduleRecord.WeekDays = item.WeekDays;
+                        scheduleRecord.IsEveryWeekDay = item.IsEveryWeekDay;
+                        scheduleRecord.MonthOfYear = item.MonthOfYear;
+                        scheduleRecord.IsEndsAfterNoOfOccurrences = item.IsEndsAfterNoOfOccurrences;
+                        scheduleRecord.NoOfOccurrences = item.NoOfOccurrences;
+                        scheduleRecord.Languages = string.Join(",", item.Languages);
+                        nISEntitiesDataContext.SaveChanges();
+
+                        //If any batch is not executed or data ready for it, then delete all batches and re-insert it as per start date and end date, 
+                        //Else insert new batches as per new end date and previous end date logic
+                        var batches = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id && (batch.IsExecuted || batch.IsDataReady)).ToList();
+                        if (batches.Count == 0)
+                        {
+                            var batchesToDelete = nISEntitiesDataContext.BatchMasterRecords.Where(batch => batch.ScheduleId == scheduleRecord.Id).ToList();
+                            nISEntitiesDataContext.BatchMasterRecords.RemoveRange(batchesToDelete);
+                            nISEntitiesDataContext.SaveChanges();
+                            int batchIndex = 1;
+                            if (scheduleRecord.RecurrancePattern == ModelConstant.DOES_NOT_REPEAT)
+                            {
+                                this.AddDoesNotRepeatBatchWithLanguage(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId);
+                            }
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.DAILY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
+                            {
+                                this.AddDailyOccurenceScheduleBatchesWithLanguage(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
+                            }
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.WEEKDAY || scheduleRecord.RecurrancePattern == ModelConstant.WEEKLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
+                            {
+                                this.AddWeeklyOccurenceScheduleBatchesWithLanguage(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
+                            }
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.MONTHLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
+                            {
+                                this.AddMonthlyOccurenceScheduleBatchesWithLanguage(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
+                            }
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.YEARLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
+                            {
+                                this.AddYearlyOccurenceScheduleBatchesWithLanguage(scheduleRecord.StartDate ?? DateTime.Now, scheduleRecord, tenantCode, userId, batchIndex);
+                            }
+                        }
+                        else
+                        {
+                            var Batches = nISEntitiesDataContext.BatchMasterRecords.Where(b => b.ScheduleId == scheduleRecord.Id).OrderByDescending(x => x.BatchExecutionDate).ToList();
+                            int batchIndex = Batches.Count + 1;
+                            var lastExecutedBatch = Batches.FirstOrDefault();
+                            var newStartDate = lastExecutedBatch.BatchExecutionDate;
+                            if (scheduleRecord.RecurrancePattern == ModelConstant.DAILY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_DAY)
+                            {
+                                newStartDate.AddDays(1);
+                                this.AddDailyOccurenceScheduleBatchesWithLanguage(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
+                            }
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.WEEKDAY || scheduleRecord.RecurrancePattern == ModelConstant.WEEKLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_WEEK)
+                            {
+                                newStartDate.AddDays(1);
+                                this.AddWeeklyOccurenceScheduleBatchesWithLanguage(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
+                            }
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.MONTHLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_MONTH)
+                            {
+                                newStartDate.AddMonths(1);
+                                this.AddMonthlyOccurenceScheduleBatchesWithLanguage(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
+                            }
+                            else if (scheduleRecord.RecurrancePattern == ModelConstant.YEARLY || scheduleRecord.RecurrancePattern == ModelConstant.CUSTOM_YEAR)
+                            {
+                                newStartDate.AddYears(1);
+                                this.AddYearlyOccurenceScheduleBatchesWithLanguage(newStartDate, scheduleRecord, tenantCode, userId, batchIndex);
+                            }
+                        }
+
+                        Records.Add(new SystemActivityHistoryRecord()
+                        {
+                            Module = ModelConstant.SCHEDULE_MODEL_SECTION,
+                            EntityId = scheduleRecord.Id,
+                            EntityName = scheduleRecord.Name,
+                            SubEntityId = null,
+                            SubEntityName = null,
+                            ActionTaken = "Update",
+                            ActionTakenBy = userId,
+                            ActionTakenByUserName = userFullName,
+                            ActionTakenDate = DateTime.Now,
+                            TenantCode = tenantCode
+                        });
+
+                    });
+
+                    if (Records.Count > 0)
+                    {
+                        nISEntitiesDataContext.SystemActivityHistoryRecords.AddRange(Records);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
+
+                    result = true;
+                }
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Delete schedules from database
         /// </summary>
         /// <param name="schedules"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True, if the schedule values are deleted successfully(soft delete), 
-        /// otherwise false</returns>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// True, if the schedule values are deleted successfully(soft delete),
+        /// otherwise false
+        /// </returns>
+        /// <exception cref="nIS.ScheduleNotFoundException"></exception>
+        /// <exception cref="nIS.RunningScheduleRefrenceException"></exception>
         public bool DeleteSchedules(IList<Schedule> schedules, string tenantCode)
         {
             bool result = false;
@@ -458,9 +755,11 @@ namespace nIS
         /// <summary>
         /// This method used to get the rolse based on search paramter.
         /// </summary>
-        /// <param name="scheduleSearchParameter"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>List of schedules</returns>
+        /// <param name="scheduleSearchParameter">The schedule search parameter.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// List of schedules
+        /// </returns>
         public IList<Schedule> GetSchedules(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
         {
             IList<Schedule> schedules = new List<Schedule>();
@@ -532,8 +831,10 @@ namespace nIS
         /// This method helps to get count of schedules.
         /// </summary>
         /// <param name="scheduleSearchParameter"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns></returns>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// Schedule count
+        /// </returns>
         public int GetScheduleCount(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
         {
             int scheduleCount = 0;
@@ -561,7 +862,10 @@ namespace nIS
         /// </summary>
         /// <param name="scheduleIdentifier">The schedule identifier</param>
         /// <param name="tenantCode">The tenant code</param>
-        /// <returns>True if schedule activated successfully false otherwise</returns>
+        /// <returns>
+        /// True if schedule activated successfully false otherwise
+        /// </returns>
+        /// <exception cref="nIS.ScheduleNotFoundException"></exception>
         public bool ActivateSchedule(long scheduleIdentifier, string tenantCode)
         {
             bool result = false;
@@ -602,7 +906,10 @@ namespace nIS
         /// </summary>
         /// <param name="scheduleIdentifier">The schedule identifier</param>
         /// <param name="tenantCode">The tenant code</param>
-        /// <returns>True if schedule deactivated successfully false otherwise</returns>
+        /// <returns>
+        /// True if schedule deactivated successfully false otherwise
+        /// </returns>
+        /// <exception cref="nIS.ScheduleNotFoundException"></exception>
         public bool DeActivateSchedule(long scheduleIdentifier, string tenantCode)
         {
             bool result = false;
@@ -640,9 +947,14 @@ namespace nIS
         /// This method helps to run the schedule
         /// </summary>
         /// <param name="baseURL">The base URL</param>
+        /// <param name="outputLocation">The output location.</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
-        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        /// <param name="tenantConfiguration">The tenant configuration.</param>
+        /// <param name="client">The client.</param>
+        /// <returns>
+        /// True if schedules runs successfully, false otherwise
+        /// </returns>
         public bool RunSchedule(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client)
         {
             bool scheduleRunStatus = false;
@@ -836,9 +1148,14 @@ namespace nIS
         /// This method helps to run the schedule
         /// </summary>
         /// <param name="baseURL">The base URL</param>
+        /// <param name="outputLocation">The output location.</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
-        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        /// <param name="tenantConfiguration">The tenant configuration.</param>
+        /// <param name="client">The client.</param>
+        /// <returns>
+        /// True if schedules runs successfully, false otherwise
+        /// </returns>
         public bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client)
         {
             bool scheduleRunStatus = false;
@@ -1043,9 +1360,16 @@ namespace nIS
         /// </summary>
         /// <param name="batch">The batch object</param>
         /// <param name="baseURL">The base URL</param>
+        /// <param name="outputLocation">The output location.</param>
         /// <param name="tenantCode">The tenant code</param>
         /// <param name="parallelThreadCount">The parallel thread count</param>
-        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        /// <param name="tenantConfiguration">The tenant configuration.</param>
+        /// <param name="client">The client.</param>
+        /// <returns>
+        /// True if schedules runs successfully, false otherwise
+        /// </returns>
+        /// <exception cref="nIS.ScheduleNotFoundException"></exception>
+        /// <exception cref="nIS.StatementNotFoundException"></exception>
         public bool RunScheduleNow(BatchMaster batch, string baseURL, string outputLocation, string tenantCode, int parallelThreadCount, TenantConfiguration tenantConfiguration, Client client)
         {
             bool isScheduleSuccess = false;
@@ -1206,10 +1530,12 @@ namespace nIS
         /// <summary>
         /// This method helps to update schedule status.
         /// </summary>
-        /// <param name="SchedulIdentifier"></param>
-        /// <param name="Status"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="ScheduleIdentifier">The schedule identifier.</param>
+        /// <param name="Status">The status.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool UpdateScheduleStatus(long ScheduleIdentifier, string Status, string tenantCode)
         {
             bool result = false;
@@ -1240,7 +1566,7 @@ namespace nIS
         /// This method adds the specified list of schedule in the repository.
         /// </summary>
         /// <param name="schedules"></param>
-        /// <param name="tenantCode"></param>
+        /// <param name="tenantCode">The tenant code</param>
         /// <returns>
         /// True, if the schedule values are added successfully, false otherwise
         /// </returns>
@@ -1284,9 +1610,11 @@ namespace nIS
         /// <summary>
         /// This method used to get the rolse based on search paramter.
         /// </summary>
-        /// <param name="scheduleSearchParameter"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>List of schedules</returns>
+        /// <param name="scheduleSearchParameter">The schedule search parameter.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// List of schedules
+        /// </returns>
         public IList<ScheduleRunHistory> GetScheduleRunHistorys(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
         {
             IList<ScheduleRunHistory> schedules = new List<ScheduleRunHistory>();
@@ -1400,8 +1728,10 @@ namespace nIS
         /// This method helps to get count of schedules.
         /// </summary>
         /// <param name="scheduleSearchParameter"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns></returns>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// ScheduleRunHistory count
+        /// </returns>
         public int GetScheduleRunHistoryCount(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
         {
             int scheduleCount = 0;
@@ -1425,9 +1755,11 @@ namespace nIS
         /// <summary>
         /// This method helps to update schedule run history end date.
         /// </summary>
-        /// <param name="ScheduleLogIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="ScheduleLogIdentifier">The schedule log identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool UpdateScheduleRunHistoryEndDate(long ScheduleLogIdentifier, string tenantCode)
         {
             bool result = false;
@@ -1453,6 +1785,15 @@ namespace nIS
         #endregion
 
         #region Batch master
+        /// <summary>
+        /// Adds the batch master.
+        /// </summary>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="start">The start.</param>
+        /// <param name="end">The end.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public bool AddBatchMaster(ScheduleRecord schedule, int start, int end, string tenantCode, int userId)
         {
             bool result = false;
@@ -1516,6 +1857,12 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Gets the batch masters.
+        /// </summary>
+        /// <param name="schdeuleIdentifier">The schdeule identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
         public IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode)
         {
             IList<BatchMaster> batchMasters = new List<BatchMaster>();
@@ -1561,8 +1908,10 @@ namespace nIS
         /// This method helps to get batch list by search parameter.
         /// </summary>
         /// <param name="batchSearchParameter">The batch search parameter</param>
-        /// <param name="tenantCode"></param>
-        /// <returns>return list of batches</returns>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// return list of batches
+        /// </returns>
         public IList<BatchMaster> GetBatches(BatchSearchParameter batchSearchParameter, string tenantCode)
         {
             IList<BatchMaster> batches = new List<BatchMaster>();
@@ -1603,9 +1952,12 @@ namespace nIS
         /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
+        /// <exception cref="nIS.TenantSecurityCodeFormatNotAvailableException"></exception>
         public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
         {
             List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
@@ -1828,9 +2180,12 @@ namespace nIS
         /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
+        /// <exception cref="nIS.TenantSecurityCodeFormatNotAvailableException"></exception>
         public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
         {
             List<CustomerMasterRecord> customerMasterRecords = new List<CustomerMasterRecord>();
@@ -1895,7 +2250,7 @@ namespace nIS
                             });
                         });
                     }
-                    else if(dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
+                    else if (dm_customerMasterRecords != null && dm_customerMasterRecords.Count > 0)
                     {
                         dm_customerMasterRecords.ToList().ForEach(item =>
                         {
@@ -1933,9 +2288,11 @@ namespace nIS
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool CleanScheduleBatch(long BatchIdentifier, string tenantCode)
         {
             bool result = false;
@@ -1966,7 +2323,7 @@ namespace nIS
                         var scheduleLogs = nISEntitiesDataContext.ScheduleLogRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.BatchId == batch.Id && item.TenantCode == tenantCode).ToList();
                         scheduleLogs.ForEach(log =>
                         {
-                            
+
                             //get and delete schedule log details
                             var schedulelogdetails = nISEntitiesDataContext.ScheduleLogDetailRecords.Where(item => item.ScheduleId == batch.ScheduleId && item.ScheduleLogId == log.Id && item.TenantCode == tenantCode).ToList();
                             nISEntitiesDataContext.ScheduleLogDetailRecords.RemoveRange(schedulelogdetails);
@@ -2045,10 +2402,13 @@ namespace nIS
         /// <summary>
         /// This method helps to update batch status.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <param name="Status"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <param name="Status">The status.</param>
+        /// <param name="IsExecuted">if set to <c>true</c> [is executed].</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool UpdateBatchStatus(long BatchIdentifier, string Status, bool IsExecuted, string tenantCode)
         {
             bool result = false;
@@ -2082,6 +2442,7 @@ namespace nIS
         /// Generate string for dynamic linq.
         /// </summary>
         /// <param name="searchParameter">Schedule search Parameters</param>
+        /// <param name="tenantCode">The tenant code.</param>
         /// <returns>
         /// Returns a string.
         /// </returns>
@@ -2158,6 +2519,7 @@ namespace nIS
         /// Generate string for dynamic linq.
         /// </summary>
         /// <param name="searchParameter">batch search Parameters</param>
+        /// <param name="tenantCode">The tenant code.</param>
         /// <returns>
         /// Returns a string.
         /// </returns>
@@ -2220,6 +2582,7 @@ namespace nIS
         /// Generate string for dynamic linq.
         /// </summary>
         /// <param name="searchParameter">Schedule search Parameters</param>
+        /// <param name="tenantCode">The tenant code.</param>
         /// <returns>
         /// Returns a string.
         /// </returns>
@@ -2250,8 +2613,9 @@ namespace nIS
         /// This method determines uniqueness of elements in repository.
         /// </summary>
         /// <param name="schedules">The schedules to save.</param>
+        /// <param name="operation">The operation.</param>
         /// <param name="tenantCode">The tenant code.</param>
-        /// <returns name="result">
+        /// <returns>
         /// Returns true if all elements are not present in repository, false otherwise.
         /// </returns>
         private bool IsDuplicateSchedule(IList<Schedule> schedules, string operation, string tenantCode)
@@ -2295,9 +2659,8 @@ namespace nIS
         /// <summary>
         /// This method help to set and validate connection string
         /// </summary>
-        /// <param name="tenantCode">
-        /// The tenant code
-        /// </param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <exception cref="nIS.ConnectionStringNotFoundException"></exception>
         private void SetAndValidateConnectionString(string tenantCode)
         {
             try
@@ -2314,6 +2677,23 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Creates the customer statement.
+        /// </summary>
+        /// <param name="customer">The customer.</param>
+        /// <param name="statement">The statement.</param>
+        /// <param name="scheduleLog">The schedule log.</param>
+        /// <param name="statementPageContents">The statement page contents.</param>
+        /// <param name="batchMaster">The batch master.</param>
+        /// <param name="batchDetails">The batch details.</param>
+        /// <param name="baseURL">The base URL.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="customerCount">The customer count.</param>
+        /// <param name="outputLocation">The output location.</param>
+        /// <param name="tenantConfiguration">The tenant configuration.</param>
+        /// <param name="client">The client.</param>
+        /// <param name="tenantEntities">The tenant entities.</param>
+        /// <param name="renderEngine">The render engine.</param>
         private void CreateCustomerStatement(CustomerMasterRecord customer, Statement statement, ScheduleLogRecord scheduleLog, IList<StatementPageContent> statementPageContents, BatchMasterRecord batchMaster, IList<BatchDetailRecord> batchDetails, string baseURL, string tenantCode, int customerCount, string outputLocation, TenantConfiguration tenantConfiguration, Client client, IList<TenantEntity> tenantEntities, RenderEngineRecord renderEngine)
         {
             IList<StatementMetadataRecord> statementMetadataRecords = new List<StatementMetadataRecord>();
@@ -2397,6 +2777,10 @@ namespace nIS
 
         }
 
+        /// <summary>
+        /// Writes to file.
+        /// </summary>
+        /// <param name="Message">The message.</param>
         private void WriteToFile(string Message)
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
@@ -2428,10 +2812,13 @@ namespace nIS
         /// <summary>
         /// This method helps to add batch with no repeat occurence.
         /// </summary>
-        /// <param name="schedule"></param>
-        /// <param name="tenantCode"></param>
-        /// <param name="userId"></param>
-        /// <returns>true if added successfully otherwise false</returns>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>
+        /// true if added successfully otherwise false
+        /// </returns>
         private bool AddDoesNotRepeatBatch(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId)
         {
             try
@@ -2466,13 +2853,61 @@ namespace nIS
         }
 
         /// <summary>
+        /// Adds the does not repeat batch with language.
+        /// </summary>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        private bool AddDoesNotRepeatBatchWithLanguage(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId)
+        {
+            try
+            {
+                //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    schedule.Languages.Split(',').ToList().ForEach(language => 
+                    {
+                        BatchMasterRecord record = new BatchMasterRecord();
+                        record.BatchName = "Batch 1 of " + schedule.Name;
+                        record.TenantCode = tenantCode;
+                        record.CreatedBy = userId;
+                        record.CreatedDate = DateTime.UtcNow;
+                        record.ScheduleId = schedule.Id;
+                        record.IsExecuted = false;
+                        record.IsDataReady = false;
+                        var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                        record.BatchExecutionDate = batchExecutionDate;
+                        record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                        record.Status = BatchStatus.New.ToString();
+                        record.LanguageCode = language;
+                        nISEntitiesDataContext.BatchMasterRecords.Add(record);
+                        nISEntitiesDataContext.SaveChanges();
+                    });
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method helps to add batch on daily basis schedule run occurenace.
         /// </summary>
-        /// <param name="schedule"></param>
-        /// <param name="tenantCode"></param>
-        /// <param name="userId"></param>
-        /// <param name="isCustom"></param>
-        /// <returns>true if added successfully otherwise false</returns>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="batchIndex">Index of the batch.</param>
+        /// <returns>
+        /// true if added successfully otherwise false
+        /// </returns>
         private bool AddDailyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
         {
             bool result = false;
@@ -2533,13 +2968,88 @@ namespace nIS
         }
 
         /// <summary>
+        /// Adds the daily occurence schedule batches with language.
+        /// </summary>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="batchIndex">Index of the batch.</param>
+        /// <returns></returns>
+        private bool AddDailyOccurenceScheduleBatchesWithLanguage(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        {
+            bool result = false;
+            try
+            {
+                var repeatEveryDays = schedule.RecurrancePattern == ModelConstant.CUSTOM_DAY ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+                int dayDiff = 0;
+                if (schedule.EndDate != null)
+                {
+                    //var newenddate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
+                    var newenddate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    dayDiff = this.utility.DayDifference(newenddate, scheduleStartDate) + 1;
+                }
+                else
+                {
+                    dayDiff = Convert.ToInt32(schedule.NoOfOccurrences ?? 1) * repeatEveryDays;
+                }
+
+                if (dayDiff > 0)
+                {
+                    var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                    newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
+                    int idx = 1;
+                    while (idx <= dayDiff)
+                    {
+                        schedule.Languages.Split(',').ToList().ForEach(language =>
+                        {
+                            BatchMasterRecord record = new BatchMasterRecord();
+                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                            record.TenantCode = tenantCode;
+                            record.CreatedBy = userId;
+                            record.CreatedDate = DateTime.UtcNow;
+                            record.ScheduleId = schedule.Id;
+                            record.IsExecuted = false;
+                            record.IsDataReady = false;
+                            var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                            record.BatchExecutionDate = batchExecutionDate;
+                            record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                            record.Status = BatchStatus.New.ToString();
+                            record.LanguageCode = language;
+                            batchMasterRecords.Add(record);
+                        });
+                        newstartdate = newstartdate.AddDays(repeatEveryDays);
+                        batchIndex++;
+                        idx = idx + repeatEveryDays;
+                    }
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                        result = true;
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method helps to add batch on weekday or weekly basis schedule run occurenace.
         /// </summary>
-        /// <param name="schedule"></param>
-        /// <param name="tenantCode"></param>
-        /// <param name="userId"></param>
-        /// <param name="isCustom"></param>
-        /// <returns>true if added successfully otherwise false</returns>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="batchIndex">Index of the batch.</param>
+        /// <returns>
+        /// true if added successfully otherwise false
+        /// </returns>
         private bool AddWeeklyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
         {
             bool result = false;
@@ -2654,13 +3164,146 @@ namespace nIS
         }
 
         /// <summary>
+        /// Adds the weekly occurence schedule batches with language.
+        /// </summary>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="batchIndex">Index of the batch.</param>
+        /// <returns></returns>
+        private bool AddWeeklyOccurenceScheduleBatchesWithLanguage(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        {
+            bool result = false;
+            try
+            {
+                var repeatEveryDays = schedule.RecurrancePattern == ModelConstant.CUSTOM_WEEK ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+
+                int dayDiff = 0;
+                //var scheduleStartDate = schedule.StartDate ?? DateTime.Now;
+                if (schedule.EndDate != null)
+                {
+                    //var newenddate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
+                    var newenddate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                    dayDiff = this.utility.DayDifference(newenddate, scheduleStartDate) + 1;
+                }
+                else
+                {
+                    dayDiff = Convert.ToInt32(schedule.NoOfOccurrences);
+                }
+
+                var newstartdate = new DateTime(scheduleStartDate.Year, scheduleStartDate.Month, (scheduleStartDate.Day + 1), 0, 0, 0);
+                newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
+                //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                if (dayDiff > 0)
+                {
+                    if (schedule.RecurrancePattern == ModelConstant.WEEKDAY)
+                    {
+                        for (int index = 1; index <= dayDiff; index++)
+                        {
+                            if (newstartdate.DayOfWeek != DayOfWeek.Saturday && newstartdate.DayOfWeek != DayOfWeek.Sunday)
+                            {
+                                schedule.Languages.Split(',').ToList().ForEach(language =>
+                                {
+                                    BatchMasterRecord record = new BatchMasterRecord();
+                                    record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                                    record.TenantCode = tenantCode;
+                                    record.CreatedBy = userId;
+                                    record.CreatedDate = DateTime.UtcNow;
+                                    record.ScheduleId = schedule.Id;
+                                    record.IsExecuted = false;
+                                    record.IsDataReady = false;
+                                    var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                                    record.BatchExecutionDate = batchExecutionDate;
+                                    record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                                    record.Status = BatchStatus.New.ToString();
+                                    record.LanguageCode = language;
+                                    batchMasterRecords.Add(record);
+                                });
+                                batchIndex++;
+                            }
+                            newstartdate = newstartdate.AddDays(repeatEveryDays);
+                        }
+                    }
+                    else
+                    {
+                        var days = schedule.WeekDays.Split(new Char[] { ',' });
+                        int idx = 1, noOfDaysInWeek = 7;
+                        while (idx <= dayDiff)
+                        {
+                            if (days.Contains(newstartdate.DayOfWeek.ToString()))
+                            {
+                                schedule.Languages.Split(',').ToList().ForEach(language =>
+                                {
+                                    BatchMasterRecord record = new BatchMasterRecord();
+                                    record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                                    record.TenantCode = tenantCode;
+                                    record.CreatedBy = userId;
+                                    record.CreatedDate = DateTime.UtcNow;
+                                    record.ScheduleId = schedule.Id;
+                                    record.IsExecuted = false;
+                                    record.IsDataReady = false;
+                                    var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, newstartdate.Day, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                                    record.BatchExecutionDate = batchExecutionDate;
+                                    record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                                    record.Status = BatchStatus.New.ToString();
+                                    record.LanguageCode = language;
+                                    batchMasterRecords.Add(record);
+                                });
+                                batchIndex++;
+                                if (schedule.NoOfOccurrences != null && schedule.NoOfOccurrences != 0)
+                                {
+                                    idx++;
+                                }
+                            }
+
+                            if (newstartdate.DayOfWeek != DayOfWeek.Sunday)
+                            {
+                                newstartdate = newstartdate.AddDays(1);
+                                if (schedule.EndDate != null)
+                                {
+                                    idx++;
+                                }
+                            }
+                            else
+                            {
+                                newstartdate = newstartdate.AddDays(repeatEveryDays > 1 ? ((repeatEveryDays--) * noOfDaysInWeek) : 1);
+                                if (schedule.EndDate != null)
+                                {
+                                    idx = idx + (repeatEveryDays > 1 ? ((repeatEveryDays--) * noOfDaysInWeek) : 1);
+                                }
+                            }
+                        }
+                    }
+
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                        result = true;
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method helps to add batch on monthly basis schedule run occurenace.
         /// </summary>
-        /// <param name="schedule"></param>
-        /// <param name="tenantCode"></param>
-        /// <param name="userId"></param>
-        /// <param name="isCustom"></param>
-        /// <returns>true if added successfully otherwise false</returns>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="batchIndex">Index of the batch.</param>
+        /// <returns>
+        /// true if added successfully otherwise false
+        /// </returns>
         private bool AddMonthlyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
         {
             bool result = false;
@@ -2760,13 +3403,131 @@ namespace nIS
         }
 
         /// <summary>
+        /// Adds the monthly occurence schedule batches with language.
+        /// </summary>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="batchIndex">Index of the batch.</param>
+        /// <returns></returns>
+        private bool AddMonthlyOccurenceScheduleBatchesWithLanguage(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        {
+            bool result = false;
+            try
+            {
+                var repeatEveryMonths = schedule.RecurrancePattern == ModelConstant.CUSTOM_MONTH ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+
+                //var newstartdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                //var newendate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
+                var newstartdate = scheduleStartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                var newendate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+
+                if (schedule.DayOfMonth < newstartdate.Day)
+                {
+                    newstartdate = newstartdate.AddMonths(1);
+                }
+
+                var scheduleExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, Convert.ToInt32(schedule.DayOfMonth), 0, 0, 0);
+                if (schedule.EndDate != null)
+                {
+                    while (DateTime.Compare(scheduleExecutionDate, newendate) <= 0)
+                    {
+                        int DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
+                        if (schedule.DayOfMonth > 28)
+                        {
+                            int lastDayOfMonth = DateTime.DaysInMonth(scheduleExecutionDate.Year, scheduleExecutionDate.Month);
+                            if (lastDayOfMonth < DayOfMonth)
+                            {
+                                DayOfMonth = lastDayOfMonth;
+                            }
+                        }
+
+                        schedule.Languages.Split(',').ToList().ForEach(language =>
+                        {
+                            BatchMasterRecord record = new BatchMasterRecord();
+                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                            record.TenantCode = tenantCode;
+                            record.CreatedBy = userId;
+                            record.CreatedDate = DateTime.UtcNow;
+                            record.ScheduleId = schedule.Id;
+                            record.IsExecuted = false;
+                            record.IsDataReady = false;
+                            var batchExecutionDate = new DateTime(scheduleExecutionDate.Year, scheduleExecutionDate.Month, DayOfMonth, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                            record.BatchExecutionDate = batchExecutionDate;
+                            record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                            record.Status = BatchStatus.New.ToString();
+                            record.LanguageCode = language;
+                            batchMasterRecords.Add(record);
+                        });
+                        scheduleExecutionDate = scheduleExecutionDate.AddMonths(repeatEveryMonths);
+                        batchIndex++;
+                    }
+                }
+                else if (schedule.NoOfOccurrences != null && schedule.NoOfOccurrences > 0)
+                {
+                    long? occurences = schedule.NoOfOccurrences;
+                    while (occurences != null && occurences > 0)
+                    {
+                        int DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
+                        if (DayOfMonth > 28)
+                        {
+                            int lastDayOfMonth = DateTime.DaysInMonth(newstartdate.Year, newstartdate.Month);
+                            if (lastDayOfMonth < DayOfMonth)
+                            {
+                                DayOfMonth = lastDayOfMonth;
+                            }
+                        }
+                        schedule.Languages.Split(',').ToList().ForEach(language =>
+                        {
+                            BatchMasterRecord record = new BatchMasterRecord();
+                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                            record.TenantCode = tenantCode;
+                            record.CreatedBy = userId;
+                            record.CreatedDate = DateTime.UtcNow;
+                            record.ScheduleId = schedule.Id;
+                            record.IsExecuted = false;
+                            record.IsDataReady = false;
+                            var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, DayOfMonth, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                            record.BatchExecutionDate = batchExecutionDate;
+                            record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                            record.Status = BatchStatus.New.ToString();
+                            record.LanguageCode = language;
+                            batchMasterRecords.Add(record);
+                        });
+                        newstartdate = newstartdate.AddMonths(repeatEveryMonths);
+                        batchIndex++;
+                        occurences--;
+                    }
+                }
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                    nISEntitiesDataContext.SaveChanges();
+                    result = true;
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method helps to add batch on yearly basis schedule run occurenace.
         /// </summary>
-        /// <param name="schedule"></param>
-        /// <param name="tenantCode"></param>
-        /// <param name="userId"></param>
-        /// <param name="isCustom"></param>
-        /// <returns>true if added successfully otherwise false</returns>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="batchIndex">Index of the batch.</param>
+        /// <returns>
+        /// true if added successfully otherwise false
+        /// </returns>
         private bool AddYearlyOccurenceScheduleBatches(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
         {
             try
@@ -2854,6 +3615,105 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Adds the yearly occurence schedule batches with language.
+        /// </summary>
+        /// <param name="scheduleStartDate">The schedule start date.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="batchIndex">Index of the batch.</param>
+        /// <returns></returns>
+        private bool AddYearlyOccurenceScheduleBatchesWithLanguage(DateTime scheduleStartDate, ScheduleRecord schedule, string tenantCode, int userId, int batchIndex)
+        {
+            try
+            {
+                var repeatEveryYears = schedule.RecurrancePattern == ModelConstant.CUSTOM_YEAR ? Convert.ToInt32(schedule.RepeatEveryDayMonWeekYear != 0 ? schedule.RepeatEveryDayMonWeekYear : 1) : 1;
+                this.SetAndValidateConnectionString(tenantCode);
+                List<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+
+                //var startdate = DateTime.SpecifyKind((DateTime)scheduleStartDate, DateTimeKind.Utc);
+                var startdate = scheduleStartDate + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+                if (this.utility.getNumericMonth(schedule.MonthOfYear) < startdate.Month
+                    || (this.utility.getNumericMonth(schedule.MonthOfYear) == startdate.Month && startdate.Day > schedule.DayOfMonth))
+                {
+                    startdate = startdate.AddYears(1);
+                }
+
+                int DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
+                if (DayOfMonth > 28)
+                {
+                    int lastDayOfMonth = DateTime.DaysInMonth(startdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear));
+                    if (lastDayOfMonth < DayOfMonth)
+                    {
+                        DayOfMonth = lastDayOfMonth;
+                    }
+                }
+
+                var newstartdate = new DateTime(startdate.Year, this.utility.getNumericMonth(schedule.MonthOfYear), DayOfMonth, 0, 0, 0);
+                newstartdate = DateTime.SpecifyKind((DateTime)newstartdate, DateTimeKind.Utc);
+                //var newenddate = DateTime.SpecifyKind((DateTime)schedule.EndDate, DateTimeKind.Utc);
+                var newenddate = (schedule.EndDate ?? DateTime.Now) + TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+
+                var yearDiff = 0;
+                if (newenddate != null)
+                {
+                    yearDiff = this.utility.YearDifference(newstartdate, newenddate) + 1;
+                }
+                else
+                {
+                    yearDiff = Convert.ToInt32(schedule.NoOfOccurrences);
+                }
+
+                if (yearDiff > 0)
+                {
+                    int idx = 1;
+                    while (idx <= yearDiff)
+                    {
+                        DayOfMonth = Convert.ToInt32(schedule.DayOfMonth);
+                        if (DayOfMonth > 28)
+                        {
+                            int lastDayOfMonth = DateTime.DaysInMonth(newstartdate.Year, newstartdate.Month);
+                            if (lastDayOfMonth < DayOfMonth)
+                            {
+                                DayOfMonth = lastDayOfMonth;
+                            }
+                        }
+
+                        schedule.Languages.Split(',').ToList().ForEach(language =>
+                        {
+                            BatchMasterRecord record = new BatchMasterRecord();
+                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                            record.TenantCode = tenantCode;
+                            record.CreatedBy = userId;
+                            record.CreatedDate = DateTime.UtcNow;
+                            record.ScheduleId = schedule.Id;
+                            record.IsExecuted = false;
+                            record.IsDataReady = false;
+                            var batchExecutionDate = new DateTime(newstartdate.Year, newstartdate.Month, DayOfMonth, Convert.ToInt32(schedule.HourOfDay), Convert.ToInt32(schedule.MinuteOfDay), 0);
+                            record.BatchExecutionDate = batchExecutionDate;
+                            record.DataExtractionDate = batchExecutionDate.AddDays(-1);
+                            record.Status = BatchStatus.New.ToString();
+                            record.LanguageCode = language;
+                            batchMasterRecords.Add(record);
+                        });
+                        newstartdate = newstartdate.AddYears(repeatEveryYears);
+                        batchIndex++;
+                        idx = idx + repeatEveryYears;
+                    }
+                    using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                    {
+                        nISEntitiesDataContext.BatchMasterRecords.AddRange(batchMasterRecords);
+                        nISEntitiesDataContext.SaveChanges();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #endregion
     }

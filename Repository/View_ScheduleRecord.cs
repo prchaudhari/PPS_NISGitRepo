@@ -39,5 +39,6 @@ namespace nIS
         public Nullable<bool> IsEndsAfterNoOfOccurrences { get; set; }
         public Nullable<long> NoOfOccurrences { get; set; }
         public Nullable<int> ExecutedBatchCount { get; set; }
+        public string Languages { get; set; }
     }
 }

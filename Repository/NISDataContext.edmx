@@ -131,6 +131,7 @@
           <Property Name="DataExtractionDate" Type="datetime" Nullable="false" />
           <Property Name="BatchExecutionDate" Type="datetime" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LanguageCode" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -823,6 +824,10 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="NumberOfThread" Type="int" Nullable="false" />
           <Property Name="InUse" Type="bit" Nullable="false" />
+          <Property Name="NetworkLocation" Type="nvarchar" MaxLength="500" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -886,6 +891,7 @@
           <Property Name="MonthOfYear" Type="nvarchar" MaxLength="50" />
           <Property Name="IsEndsAfterNoOfOccurrences" Type="bit" />
           <Property Name="NoOfOccurrences" Type="bigint" />
+          <Property Name="Languages" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ScheduleLog">
           <Key>
@@ -1089,6 +1095,11 @@
           <Property Name="GenerateHtmlFormatForStatementFunctionName" Type="nvarchar" MaxLength="500" />
           <Property Name="RetryFailedCustomerStatementApiName" Type="nvarchar" MaxLength="500" />
           <Property Name="ArchivalProcessApiName" Type="nvarchar" MaxLength="500" />
+          <Property Name="DeploymentType" Type="nvarchar" MaxLength="50" />
+          <Property Name="OutputLocationType" Type="nvarchar" MaxLength="50" />
+          <Property Name="NetworkLocation" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TenantContact">
           <Key>
@@ -1518,6 +1529,7 @@ warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key
           <Property Name="MonthOfYear" Type="nvarchar" MaxLength="50" />
           <Property Name="IsEndsAfterNoOfOccurrences" Type="bit" />
           <Property Name="NoOfOccurrences" Type="bigint" />
+          <Property Name="Languages" Type="varchar" MaxLength="100" />
           <Property Name="StatementName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="ExecutedBatchCount" Type="int" />
         </EntityType>
@@ -1985,6 +1997,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_Schedule].[MonthOfYear] AS [MonthOfYear], 
     [View_Schedule].[IsEndsAfterNoOfOccurrences] AS [IsEndsAfterNoOfOccurrences], 
     [View_Schedule].[NoOfOccurrences] AS [NoOfOccurrences], 
+    [View_Schedule].[Languages] AS [Languages], 
     [View_Schedule].[StatementName] AS [StatementName], 
     [View_Schedule].[ExecutedBatchCount] AS [ExecutedBatchCount]
     FROM [NIS].[View_Schedule] AS [View_Schedule]</DefiningQuery>
@@ -2378,6 +2391,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="MonthOfYear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsEndsAfterNoOfOccurrences" Type="Boolean" />
           <Property Name="NoOfOccurrences" Type="Int64" />
+          <Property Name="Languages" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="StatementRecord">
           <Key>
@@ -2539,6 +2553,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="NumberOfThread" Type="Int32" Nullable="false" />
           <Property Name="InUse" Type="Boolean" Nullable="false" />
+          <Property Name="NetworkLocation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="BatchDetailRecord">
           <Key>
@@ -2717,6 +2735,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="DataExtractionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="BatchExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LanguageCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="AnalyticsDataRecord">
           <Key>
@@ -2775,6 +2794,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsEndsAfterNoOfOccurrences" Type="Boolean" />
           <Property Name="NoOfOccurrences" Type="Int64" />
           <Property Name="ExecutedBatchCount" Type="Int32" />
+          <Property Name="Languages" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="View_PageRecord">
           <Key>
@@ -3432,6 +3452,11 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="GenerateHtmlFormatForStatementFunctionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="RetryFailedCustomerStatementApiName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ArchivalProcessApiName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DeploymentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OutputLocationType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NetworkLocation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DM_BranchMasterRecord">
           <Key>
@@ -4100,6 +4125,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="ScheduleRecords">
             <EntityTypeMapping TypeName="NISModel.ScheduleRecord">
               <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="Languages" ColumnName="Languages" />
                 <ScalarProperty Name="NoOfOccurrences" ColumnName="NoOfOccurrences" />
                 <ScalarProperty Name="IsEndsAfterNoOfOccurrences" ColumnName="IsEndsAfterNoOfOccurrences" />
                 <ScalarProperty Name="MonthOfYear" ColumnName="MonthOfYear" />
@@ -4286,6 +4312,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="RenderEngineRecords">
             <EntityTypeMapping TypeName="NISModel.RenderEngineRecord">
               <MappingFragment StoreEntitySet="RenderEngine">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="NetworkLocation" ColumnName="NetworkLocation" />
                 <ScalarProperty Name="InUse" ColumnName="InUse" />
                 <ScalarProperty Name="NumberOfThread" ColumnName="NumberOfThread" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
@@ -4472,6 +4502,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="BatchMasterRecords">
             <EntityTypeMapping TypeName="NISModel.BatchMasterRecord">
               <MappingFragment StoreEntitySet="BatchMaster">
+                <ScalarProperty Name="LanguageCode" ColumnName="LanguageCode" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="BatchExecutionDate" ColumnName="BatchExecutionDate" />
                 <ScalarProperty Name="DataExtractionDate" ColumnName="DataExtractionDate" />
@@ -4505,6 +4536,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="View_ScheduleRecord">
             <EntityTypeMapping TypeName="NISModel.View_ScheduleRecord">
               <MappingFragment StoreEntitySet="View_Schedule">
+                <ScalarProperty Name="Languages" ColumnName="Languages" />
                 <ScalarProperty Name="ExecutedBatchCount" ColumnName="ExecutedBatchCount" />
                 <ScalarProperty Name="NoOfOccurrences" ColumnName="NoOfOccurrences" />
                 <ScalarProperty Name="IsEndsAfterNoOfOccurrences" ColumnName="IsEndsAfterNoOfOccurrences" />
@@ -5105,6 +5137,11 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="TenantConfigurationRecords">
             <EntityTypeMapping TypeName="NISModel.TenantConfigurationRecord">
               <MappingFragment StoreEntitySet="TenantConfiguration">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="NetworkLocation" ColumnName="NetworkLocation" />
+                <ScalarProperty Name="OutputLocationType" ColumnName="OutputLocationType" />
+                <ScalarProperty Name="DeploymentType" ColumnName="DeploymentType" />
                 <ScalarProperty Name="ArchivalProcessApiName" ColumnName="ArchivalProcessApiName" />
                 <ScalarProperty Name="RetryFailedCustomerStatementApiName" ColumnName="RetryFailedCustomerStatementApiName" />
                 <ScalarProperty Name="GenerateHtmlFormatForStatementFunctionName" ColumnName="GenerateHtmlFormatForStatementFunctionName" />

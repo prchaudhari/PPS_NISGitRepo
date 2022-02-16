@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c1069f61c65f4122baff73cf7aa4c8bb" Name="Diagram1" >
+      <Diagram DiagramId="c1069f61c65f4122baff73cf7aa4c8bb" Name="Diagram1" ZoomLevel="92" >
         <EntityTypeShape EntityType="NISModel.UserRecord" Width="1.625" PointX="0.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.UserCredentialHistoryRecord" Width="1.625" PointX="0.75" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.UserLoginRecord" Width="1.625" PointX="0.75" PointY="2" IsExpanded="false" />
@@ -17,7 +17,7 @@
         <EntityTypeShape EntityType="NISModel.PageRecord" Width="1.75" PointX="2.75" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.PageTypeRecord" Width="1.75" PointX="4.875" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.PageWidgetMapRecord" Width="1.75" PointX="4.875" PointY="2" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.ScheduleRecord" Width="1.75" PointX="7" PointY="2" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.ScheduleRecord" Width="1.75" PointX="11.875" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NISModel.StatementRecord" Width="1.75" PointX="7" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.StatementPageMapRecord" Width="1.75" PointX="7" PointY="1.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.TenantRecord" Width="1.75" PointX="7" PointY="2.625" IsExpanded="false" />
@@ -40,7 +40,7 @@
         <EntityTypeShape EntityType="NISModel.AccountMasterRecord" Width="1.5" PointX="2.75" PointY="5.25" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.BatchMasterRecord" Width="1.5" PointX="9" PointY="4.5" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.AnalyticsDataRecord" Width="1.5" PointX="6.75" PointY="6.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="NISModel.View_ScheduleRecord" Width="1.5" PointX="2.75" PointY="7.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="NISModel.View_ScheduleRecord" Width="1.5" PointX="14.5" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NISModel.View_PageRecord" PointX="0.75" PointY="7.375" Width="1.625" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_StatementDefinitionRecord" Width="1.5" PointX="6.75" PointY="7.375" IsExpanded="false" />
         <EntityTypeShape EntityType="NISModel.View_SourceDataRecord" Width="1.5" PointX="4.875" PointY="7.375" IsExpanded="false" />
