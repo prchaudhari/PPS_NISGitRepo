@@ -63,8 +63,8 @@ namespace NedbankAPI.Controllers
         /// Returns list of customers
         /// </returns>
         [HttpPost]
-        [Route("InvestmentPottfolioList")]
-        public IList<InvestmentPottfolio> InvestmentPottfolioList(long investorId)
+        [Route("InvestmentPortfolioList")]
+        public IList<InvestmentPottfolio> InvestmentPortfolioList(long investorId)
         {
             IList<InvestmentPottfolio> investmentPottfolios = new List<InvestmentPottfolio>();
             try

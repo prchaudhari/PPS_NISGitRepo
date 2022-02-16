@@ -91,7 +91,7 @@ namespace nIS
         /// This is constructor for schedule manager, which initialise
         /// schedule repository.
         /// </summary>
-        /// <param name="container">IUnity container implementation object.</param>
+        /// <param name="unityContainer">The unity container.</param>
         public ScheduleManager(IUnityContainer unityContainer)
         {
             try
@@ -144,6 +144,28 @@ namespace nIS
         }
 
         /// <summary>
+        /// Adds the schedules with language.
+        /// </summary>
+        /// <param name="schedules">The schedules.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        public bool AddSchedulesWithLanguage(IList<Schedule> schedules, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.IsValidSchedules(schedules, tenantCode);
+                this.IsDuplicateSchedule(schedules, tenantCode);
+                result = this.scheduleRepository.AddSchedulesWithLanguage(schedules, tenantCode);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// This method will call update schedules method of repository
         /// </summary>
         /// <param name="schedules">Schedules are to be update.</param>
@@ -159,6 +181,28 @@ namespace nIS
                 this.IsValidSchedules(schedules, tenantCode);
                 this.IsDuplicateSchedule(schedules, tenantCode);
                 result = this.scheduleRepository.UpdateSchedules(schedules, tenantCode);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Updates the schedules with language.
+        /// </summary>
+        /// <param name="schedules">The schedules.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        public bool UpdateSchedulesWithLanguage(IList<Schedule> schedules, string tenantCode)
+        {
+            bool result = false;
+            try
+            {
+                this.IsValidSchedules(schedules, tenantCode);
+                this.IsDuplicateSchedule(schedules, tenantCode);
+                result = this.scheduleRepository.UpdateSchedulesWithLanguage(schedules, tenantCode);
                 return result;
             }
             catch (Exception ex)
@@ -229,6 +273,7 @@ namespace nIS
         /// <summary>
         /// This method helps to get count of schedules.
         /// </summary>
+        /// <param name="scheduleSearchParameter">The schedule search parameter.</param>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns>
         /// Returns count of schedules
@@ -252,7 +297,9 @@ namespace nIS
         /// </summary>
         /// <param name="scheduleIdentifier">The schedule identifier</param>
         /// <param name="tenantCode">The tenant code</param>
-        /// <returns>True if schedule activated successfully false otherwise</returns>
+        /// <returns>
+        /// True if schedule activated successfully false otherwise
+        /// </returns>
         public bool ActivateSchedule(long scheduleIdentifier, string tenantCode)
         {
             bool result = false;
@@ -273,7 +320,9 @@ namespace nIS
         /// </summary>
         /// <param name="scheduleIdentifier">The schedule identifier</param>
         /// <param name="tenantCode">The tenant code</param>
-        /// <returns>True if schedule deactivated successfully false otherwise</returns>
+        /// <returns>
+        /// True if schedule deactivated successfully false otherwise
+        /// </returns>
         public bool DeactivateSchedule(long scheduleIdentifier, string tenantCode)
         {
             bool result = false;
@@ -366,6 +415,7 @@ namespace nIS
         /// <summary>
         /// This method helps to get count of schedules.
         /// </summary>
+        /// <param name="scheduleSearchParameter">The schedule search parameter.</param>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns>
         /// Returns count of schedules
@@ -391,7 +441,9 @@ namespace nIS
         /// <param name="outputLocation">The output location for HTML statements</param>
         /// <param name="tenantConfiguration">The tenant configuration object</param>
         /// <param name="tenantCode">The tenant code</param>
-        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        /// <returns>
+        /// True if schedules runs successfully, false otherwise
+        /// </returns>
         public bool RunSchedule(string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             try
@@ -428,7 +480,9 @@ namespace nIS
         /// <param name="baseURL">The base URL</param>
         /// <param name="outputLocation">The output location for HTML statements</param>
         /// <param name="tenantCode">The tenant code</param>
-        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        /// <returns>
+        /// True if schedules runs successfully, false otherwise
+        /// </returns>
         public bool RunScheduleNew(string baseURL, string outputLocation, string tenantCode)
         {
             bool scheduleRunStatus = false;
@@ -609,7 +663,9 @@ namespace nIS
         /// <param name="outputLocation">The output location for HTML statements</param>
         /// <param name="tenantConfiguration">The tenant configuration object</param>
         /// <param name="tenantCode">The tenant code</param>
-        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        /// <returns>
+        /// True if schedules runs successfully, false otherwise
+        /// </returns>
         public bool RunScheduleNow(BatchMaster batchMaster, string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             try
@@ -648,7 +704,11 @@ namespace nIS
         /// <param name="outputLocation">The output location for HTML statements</param>
         /// <param name="tenantConfiguration">The tenant configuration object</param>
         /// <param name="tenantCode">The tenant code</param>
-        /// <returns>True if schedules runs successfully, false otherwise</returns>
+        /// <returns>
+        /// True if schedules runs successfully, false otherwise
+        /// </returns>
+        /// <exception cref="nIS.ScheduleNotFoundException"></exception>
+        /// <exception cref="nIS.StatementNotFoundException"></exception>
         public bool RunScheduleNowNew(BatchMaster batchMaster, string baseURL, string outputLocation, TenantConfiguration tenantConfiguration, string tenantCode)
         {
             bool scheduleRunStatus = false;
@@ -813,10 +873,12 @@ namespace nIS
         /// <summary>
         /// This method helps to update schedule status.
         /// </summary>
-        /// <param name="SchedulIdentifier"></param>
-        /// <param name="Status"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="ScheduleIdentifier">The schedule identifier.</param>
+        /// <param name="Status">The status.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool UpdateScheduleStatus(long ScheduleIdentifier, string Status, string tenantCode)
         {
             try
@@ -832,9 +894,11 @@ namespace nIS
         /// <summary>
         /// This method helps to update schedule run history end date.
         /// </summary>
-        /// <param name="ScheduleLogIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="ScheduleLogIdentifier">The schedule log identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool UpdateScheduleRunHistoryEndDate(long ScheduleLogIdentifier, string tenantCode)
         {
             try
@@ -854,7 +918,7 @@ namespace nIS
         /// <summary>
         /// This method will call get schedules method of repository.
         /// </summary>
-        /// <param name="scheduleSearchParameter">The schedule search parameters.</param>
+        /// <param name="scheduleIdentifer">The schedule identifer.</param>
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns>
         /// Returns schedules if found for given parameters, else return null
@@ -877,8 +941,10 @@ namespace nIS
         /// This method helps to get batch list by search parameter.
         /// </summary>
         /// <param name="batchSearchParameter">The batch search parameter</param>
-        /// <param name="tenantCode"></param>
-        /// <returns>return list of batches</returns>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// return list of batches
+        /// </returns>
         public IList<BatchMaster> GetBatches(BatchSearchParameter batchSearchParameter, string tenantCode)
         {
             try
@@ -894,9 +960,11 @@ namespace nIS
         /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool ApproveScheduleBatch(long BatchIdentifier, string tenantCode)
         {
             try
@@ -912,9 +980,11 @@ namespace nIS
         /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool ValidateApproveScheduleBatch(long BatchIdentifier, string tenantCode)
         {
             try
@@ -930,9 +1000,11 @@ namespace nIS
         /// <summary>
         /// This method helps to clean batch and related data of the respective schedule.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool CleanScheduleBatch(long BatchIdentifier, string tenantCode)
         {
             try
@@ -948,10 +1020,13 @@ namespace nIS
         /// <summary>
         /// This method helps to update batch status.
         /// </summary>
-        /// <param name="BatchIdentifier"></param>
-        /// <param name="Status"></param>
-        /// <param name="tenantCode"></param>
-        /// <returns>True if success, otherwise false</returns>
+        /// <param name="BatchIdentifier">The batch identifier.</param>
+        /// <param name="Status">The status.</param>
+        /// <param name="IsExecuted">if set to <c>true</c> [is executed].</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns>
+        /// True if success, otherwise false
+        /// </returns>
         public bool UpdateBatchStatus(long BatchIdentifier, string Status, bool IsExecuted, string tenantCode)
         {
             try
@@ -973,8 +1048,9 @@ namespace nIS
         /// <summary>
         /// This method is responsible for validate schedules.
         /// </summary>
-        /// <param name="schedules"></param>
-        /// <param name="tenantCode"></param>
+        /// <param name="schedules">The schedules.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <exception cref="nIS.NullArgumentException"></exception>
         private void IsValidSchedules(IList<Schedule> schedules, string tenantCode)
         {
             try
@@ -1011,8 +1087,9 @@ namespace nIS
         /// <summary>
         /// This method helps to check duplicate schedule in the list
         /// </summary>
-        /// <param name="schedules"></param>
-        /// <param name="tenantCode"></param>
+        /// <param name="schedules">The schedules.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <exception cref="nIS.DuplicateScheduleFoundException"></exception>
         private void IsDuplicateSchedule(IList<Schedule> schedules, string tenantCode)
         {
             try
@@ -1062,8 +1139,10 @@ namespace nIS
         /// This method helps to process request in parallel
         /// </summary>
         /// <param name="statementRawData">raw data object requires in statement generate process</param>
+        /// <param name="tenantCode">The tenant code.</param>
         /// <param name="parallelOptions">parallel option object of threading</param>
         /// <param name="parallelRequests">the list of customer parallel request object</param>
+        /// <param name="parallelThreadCount">The parallel thread count.</param>
         private void ParalllelProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<CustomerParallelRequest> parallelRequests, int parallelThreadCount)
         {
             Parallel.ForEach(parallelRequests, parallelOptions, item =>
@@ -1125,8 +1204,10 @@ namespace nIS
         /// This method helps to process request in parallel
         /// </summary>
         /// <param name="statementRawData">raw data object requires in statement generate process</param>
+        /// <param name="tenantCode">The tenant code.</param>
         /// <param name="parallelOptions">parallel option object of threading</param>
         /// <param name="parallelRequests">the list of customer parallel request object</param>
+        /// <param name="parallelThreadCount">The parallel thread count.</param>
         private void DM_Customer_ParalllelProcessing(GenerateStatementRawData statementRawData, string tenantCode, ParallelOptions parallelOptions, List<DM_CustomerParallelRequest> parallelRequests, int parallelThreadCount)
         {
             Parallel.ForEach(parallelRequests, parallelOptions, item =>
@@ -1184,6 +1265,18 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Generates the financial tenant customer statements by schedule run now.
+        /// </summary>
+        /// <param name="statement">The statement.</param>
+        /// <param name="tenantConfiguration">The tenant configuration.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="scheduleRecord">The schedule record.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="baseURL">The base URL.</param>
+        /// <param name="outputLocation">The output location.</param>
+        /// <param name="parallelThreadCount">The parallel thread count.</param>
+        /// <returns></returns>
         private bool GenerateFinancialTenantCustomerStatementsByScheduleRunNow(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule scheduleRecord, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
         {
             try
@@ -1425,6 +1518,17 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Generates the financial tenant customer statements by schedule run time.
+        /// </summary>
+        /// <param name="statement">The statement.</param>
+        /// <param name="tenantConfiguration">The tenant configuration.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="baseURL">The base URL.</param>
+        /// <param name="outputLocation">The output location.</param>
+        /// <param name="parallelThreadCount">The parallel thread count.</param>
         private void GenerateFinancialTenantCustomerStatementsByScheduleRunTime(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule schedule, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
         {
             try
@@ -1671,6 +1775,18 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Generates the nedbank customer statements by schedule run now.
+        /// </summary>
+        /// <param name="statement">The statement.</param>
+        /// <param name="tenantConfiguration">The tenant configuration.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="scheduleRecord">The schedule record.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="baseURL">The base URL.</param>
+        /// <param name="outputLocation">The output location.</param>
+        /// <param name="parallelThreadCount">The parallel thread count.</param>
+        /// <returns></returns>
         private bool GenerateNedbankCustomerStatementsByScheduleRunNow(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule scheduleRecord, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
         {
             try
@@ -1889,6 +2005,17 @@ namespace nIS
             }
         }
 
+        /// <summary>
+        /// Generates the nedbank customer statements by schedule run time.
+        /// </summary>
+        /// <param name="statement">The statement.</param>
+        /// <param name="tenantConfiguration">The tenant configuration.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="schedule">The schedule.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <param name="baseURL">The base URL.</param>
+        /// <param name="outputLocation">The output location.</param>
+        /// <param name="parallelThreadCount">The parallel thread count.</param>
         private void GenerateNedbankCustomerStatementsByScheduleRunTime(Statement statement, TenantConfiguration tenantConfiguration, BatchMaster batch, Schedule schedule, string tenantCode, string baseURL, string outputLocation, int parallelThreadCount)
         {
             try
@@ -2119,15 +2246,45 @@ namespace nIS
 
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
         public class CustomerParallelRequest
         {
+            /// <summary>
+            /// Gets or sets the customers.
+            /// </summary>
+            /// <value>
+            /// The customers.
+            /// </value>
             public List<CustomerMaster> Customers { get; set; }
+            /// <summary>
+            /// Gets or sets the render engine.
+            /// </summary>
+            /// <value>
+            /// The render engine.
+            /// </value>
             public RenderEngine RenderEngine { get; set; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public class DM_CustomerParallelRequest
         {
+            /// <summary>
+            /// Gets or sets the dm customers.
+            /// </summary>
+            /// <value>
+            /// The dm customers.
+            /// </value>
             public List<DM_CustomerMaster> DM_Customers { get; set; }
+            /// <summary>
+            /// Gets or sets the render engine.
+            /// </summary>
+            /// <value>
+            /// The render engine.
+            /// </value>
             public RenderEngine RenderEngine { get; set; }
         }
     }
