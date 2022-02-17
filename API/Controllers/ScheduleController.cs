@@ -210,6 +210,25 @@ namespace nIS
             return schedules;
         }
 
+        [HttpPost]
+        [Route("ListWithLanguage")]
+        public IList<Schedule> ListWithLanguage(ScheduleSearchParameter scheduleSearchParameter)
+        {
+            IList<Schedule> schedules = new List<Schedule>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                schedules = this.scheduleManager.GetSchedulesWithLanguage(scheduleSearchParameter, tenantCode);
+                HttpContext.Current.Response.AppendHeader("recordCount", this.scheduleManager.GetScheduleCount(scheduleSearchParameter, tenantCode).ToString());
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return schedules;
+        }
+
         /// <summary>
         /// This method helps to get schedule based on given identifier.
         /// </summary>

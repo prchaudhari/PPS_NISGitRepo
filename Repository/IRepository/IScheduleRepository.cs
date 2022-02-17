@@ -69,6 +69,8 @@ namespace nIS
         /// </returns>
         IList<Schedule> GetSchedules(ScheduleSearchParameter roleSearchParameter, string tenantCode);
 
+        IList<Schedule> GetSchedulesWithLanguage(ScheduleSearchParameter roleSearchParameter, string tenantCode);
+
         /// <summary>
         /// This method reference to get role count
         /// </summary>

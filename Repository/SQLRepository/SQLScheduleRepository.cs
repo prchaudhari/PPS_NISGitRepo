@@ -827,6 +827,74 @@ namespace nIS
             return schedules;
         }
 
+        public IList<Schedule> GetSchedulesWithLanguage(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
+        {
+            IList<Schedule> schedules = new List<Schedule>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGenerator(scheduleSearchParameter, tenantCode);
+
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    IList<ScheduleRecord> scheduleRecords = new List<ScheduleRecord>();
+                    IList<View_ScheduleRecord> view_ScheduleRecords = new List<View_ScheduleRecord>();
+                    if (scheduleSearchParameter.PagingParameter.PageIndex > 0 && scheduleSearchParameter.PagingParameter.PageSize > 0)
+                    {
+                        view_ScheduleRecords = nISEntitiesDataContext.View_ScheduleRecord
+                        .OrderBy(scheduleSearchParameter.SortParameter.SortColumn + " " + scheduleSearchParameter.SortParameter.SortOrder.ToString())
+                        .Where(whereClause)
+                        .Skip((scheduleSearchParameter.PagingParameter.PageIndex - 1) * scheduleSearchParameter.PagingParameter.PageSize)
+                        .Take(scheduleSearchParameter.PagingParameter.PageSize)
+                        .ToList();
+                    }
+                    else
+                    {
+                        view_ScheduleRecords = nISEntitiesDataContext.View_ScheduleRecord
+                        .Where(whereClause)
+                        .OrderBy(scheduleSearchParameter.SortParameter.SortColumn + " " + scheduleSearchParameter.SortParameter.SortOrder.ToString().ToLower())
+                        .ToList();
+                    }
+
+                    if (view_ScheduleRecords != null && view_ScheduleRecords.Count > 0)
+                    {
+                        schedules = view_ScheduleRecords.Select(scheduleRecord => new Schedule()
+                        {
+                            Identifier = scheduleRecord.Id,
+                            Name = scheduleRecord.Name,
+                            Description = scheduleRecord.Description,
+                            IsActive = scheduleRecord.IsActive,
+                            DayOfMonth = scheduleRecord.DayOfMonth,
+                            HourOfDay = scheduleRecord.HourOfDay,
+                            MinuteOfDay = scheduleRecord.MinuteOfDay,
+                            StartDate = DateTime.SpecifyKind((DateTime)scheduleRecord.StartDate, DateTimeKind.Utc),
+                            EndDate = scheduleRecord.EndDate != null ? DateTime.SpecifyKind((DateTime)scheduleRecord.EndDate, DateTimeKind.Utc) : DateTime.MinValue,
+                            Status = scheduleRecord.Status,
+                            IsExportToPDF = scheduleRecord.IsExportToPDF,
+                            LastUpdatedDate = scheduleRecord.LastUpdatedDate,
+                            Statement = new Statement { Identifier = scheduleRecord.StatementId, Name = scheduleRecord.StatementName },
+                            RecurrancePattern = scheduleRecord.RecurrancePattern,
+                            RepeatEveryDayMonWeekYear = scheduleRecord.RepeatEveryDayMonWeekYear,
+                            WeekDays = scheduleRecord.WeekDays,
+                            IsEveryWeekDay = scheduleRecord.IsEveryWeekDay,
+                            MonthOfYear = scheduleRecord.MonthOfYear,
+                            IsEndsAfterNoOfOccurrences = scheduleRecord.IsEndsAfterNoOfOccurrences,
+                            NoOfOccurrences = scheduleRecord.NoOfOccurrences,
+                            ExecutedBatchCount = scheduleRecord.ExecutedBatchCount ?? 0,
+                            TenantCode = scheduleRecord.TenantCode,
+                            Languages = scheduleRecord.Languages.Split(',').ToList(),
+                        }).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return schedules;
+        }
+
         /// <summary>
         /// This method helps to get count of schedules.
         /// </summary>
