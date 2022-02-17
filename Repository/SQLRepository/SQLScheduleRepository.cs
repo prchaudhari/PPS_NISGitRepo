@@ -79,7 +79,7 @@ namespace nIS
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SQLScheduleRepository"/> class.
+        /// Initializes a new instance of the <see cref="SQLScheduleRepository" /> class.
         /// </summary>
         /// <param name="unityContainer">The unity container.</param>
         public SQLScheduleRepository(IUnityContainer unityContainer)
@@ -827,6 +827,12 @@ namespace nIS
             return schedules;
         }
 
+        /// <summary>
+        /// Gets the schedules with language.
+        /// </summary>
+        /// <param name="scheduleSearchParameter">The schedule search parameter.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
         public IList<Schedule> GetSchedulesWithLanguage(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
         {
             IList<Schedule> schedules = new List<Schedule>();
@@ -1973,6 +1979,54 @@ namespace nIS
         }
 
         /// <summary>
+        /// Gets the batch masters by language.
+        /// </summary>
+        /// <param name="schdeuleIdentifier">The schdeule identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        public IList<BatchMaster> GetBatchMastersByLanguage(long schdeuleIdentifier, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            IList<BatchMasterRecord> batchMasterRecords = new List<BatchMasterRecord>();
+
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    batchMasterRecords = nISEntitiesDataContext.BatchMasterRecords.Where(item => item.ScheduleId == schdeuleIdentifier && item.TenantCode == tenantCode).ToList();
+                    if (batchMasterRecords?.Count() > 0)
+                    {
+                        batchMasterRecords.ToList().ForEach(item =>
+                        {
+                            batchMasters.Add(new BatchMaster
+                            {
+                                Identifier = item.Id,
+                                BatchName = item.BatchName,
+                                TenantCode = item.TenantCode == string.Empty ? tenantCode : item.TenantCode,
+                                CreatedBy = item.CreatedBy,
+                                CreatedDate = item.CreatedDate,
+                                ScheduleId = item.ScheduleId,
+                                IsExecuted = item.IsExecuted,
+                                IsDataReady = item.IsDataReady,
+                                BatchExecutionDate = item.BatchExecutionDate,
+                                DataExtractionDate = item.DataExtractionDate,
+                                Status = item.Status,
+                                LanguageCode = item.LanguageCode
+                            });
+                        });
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return batchMasters;
+        }
+
+        /// <summary>
         /// This method helps to get batch list by search parameter.
         /// </summary>
         /// <param name="batchSearchParameter">The batch search parameter</param>
@@ -2941,7 +2995,7 @@ namespace nIS
                     schedule.Languages.Split(',').ToList().ForEach(language => 
                     {
                         BatchMasterRecord record = new BatchMasterRecord();
-                        record.BatchName = "Batch 1 of " + schedule.Name;
+                        record.BatchName = "Batch 1 of " + schedule.Name + "_" + language;
                         record.TenantCode = tenantCode;
                         record.CreatedBy = userId;
                         record.CreatedDate = DateTime.UtcNow;
@@ -3074,7 +3128,7 @@ namespace nIS
                         schedule.Languages.Split(',').ToList().ForEach(language =>
                         {
                             BatchMasterRecord record = new BatchMasterRecord();
-                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name + "_" + language;
                             record.TenantCode = tenantCode;
                             record.CreatedBy = userId;
                             record.CreatedDate = DateTime.UtcNow;
@@ -3276,7 +3330,7 @@ namespace nIS
                                 schedule.Languages.Split(',').ToList().ForEach(language =>
                                 {
                                     BatchMasterRecord record = new BatchMasterRecord();
-                                    record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                                    record.BatchName = "Batch " + batchIndex + " of " + schedule.Name + "_" + language;
                                     record.TenantCode = tenantCode;
                                     record.CreatedBy = userId;
                                     record.CreatedDate = DateTime.UtcNow;
@@ -3306,7 +3360,7 @@ namespace nIS
                                 schedule.Languages.Split(',').ToList().ForEach(language =>
                                 {
                                     BatchMasterRecord record = new BatchMasterRecord();
-                                    record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                                    record.BatchName = "Batch " + batchIndex + " of " + schedule.Name + "_" + language;
                                     record.TenantCode = tenantCode;
                                     record.CreatedBy = userId;
                                     record.CreatedDate = DateTime.UtcNow;
@@ -3516,7 +3570,7 @@ namespace nIS
                         schedule.Languages.Split(',').ToList().ForEach(language =>
                         {
                             BatchMasterRecord record = new BatchMasterRecord();
-                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name + "_" + language;
                             record.TenantCode = tenantCode;
                             record.CreatedBy = userId;
                             record.CreatedDate = DateTime.UtcNow;
@@ -3551,7 +3605,7 @@ namespace nIS
                         schedule.Languages.Split(',').ToList().ForEach(language =>
                         {
                             BatchMasterRecord record = new BatchMasterRecord();
-                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name + "_" + language;
                             record.TenantCode = tenantCode;
                             record.CreatedBy = userId;
                             record.CreatedDate = DateTime.UtcNow;
@@ -3751,7 +3805,7 @@ namespace nIS
                         schedule.Languages.Split(',').ToList().ForEach(language =>
                         {
                             BatchMasterRecord record = new BatchMasterRecord();
-                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name;
+                            record.BatchName = "Batch " + batchIndex + " of " + schedule.Name + "_" + language;
                             record.TenantCode = tenantCode;
                             record.CreatedBy = userId;
                             record.CreatedDate = DateTime.UtcNow;

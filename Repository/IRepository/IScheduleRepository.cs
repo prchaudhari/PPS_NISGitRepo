@@ -69,6 +69,12 @@ namespace nIS
         /// </returns>
         IList<Schedule> GetSchedules(ScheduleSearchParameter roleSearchParameter, string tenantCode);
 
+        /// <summary>
+        /// Gets the schedules with language.
+        /// </summary>
+        /// <param name="roleSearchParameter">The role search parameter.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
         IList<Schedule> GetSchedulesWithLanguage(ScheduleSearchParameter roleSearchParameter, string tenantCode);
 
         /// <summary>
@@ -162,6 +168,14 @@ namespace nIS
         /// <param name="tenantCode">The tenant code.</param>
         /// <returns></returns>
         IList<BatchMaster> GetBatchMasters(long schdeuleIdentifier, string tenantCode);
+
+        /// <summary>
+        /// Gets the batch masters by language.
+        /// </summary>
+        /// <param name="schdeuleIdentifier">The schdeule identifier.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        IList<BatchMaster> GetBatchMastersByLanguage(long schdeuleIdentifier, string tenantCode);
 
         /// <summary>
         /// This method helps to get batch list by search parameter.
