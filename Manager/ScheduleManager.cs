@@ -270,6 +270,12 @@ namespace nIS
             return schedules;
         }
 
+        /// <summary>
+        /// Gets the schedules with language.
+        /// </summary>
+        /// <param name="scheduleSearchParameter">The schedule search parameter.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
         public IList<Schedule> GetSchedulesWithLanguage(ScheduleSearchParameter scheduleSearchParameter, string tenantCode)
         {
             IList<Schedule> schedules = new List<Schedule>();
@@ -958,6 +964,26 @@ namespace nIS
             try
             {
                 batchMasters = this.scheduleRepository.GetBatchMasters(scheduleIdentifer, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return batchMasters;
+        }
+
+        /// <summary>
+        /// Gets the batch masters by language.
+        /// </summary>
+        /// <param name="scheduleIdentifer">The schedule identifer.</param>
+        /// <param name="tenantCode">The tenant code.</param>
+        /// <returns></returns>
+        public IList<BatchMaster> GetBatchMastersByLanguage(long scheduleIdentifer, string tenantCode)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                batchMasters = this.scheduleRepository.GetBatchMastersByLanguage(scheduleIdentifer, tenantCode);
             }
             catch (Exception exception)
             {

@@ -383,6 +383,25 @@ namespace nIS
 
             return batchMasters;
         }
+
+        [HttpPost]
+        [Route("GetBatchMastersByLanguage")]
+        public IList<BatchMaster> GetBatchMastersByLanguage(long scheduleIdentifier)
+        {
+            IList<BatchMaster> batchMasters = new List<BatchMaster>();
+            try
+            {
+                string tenantCode = Helper.CheckTenantCode(Request.Headers);
+                batchMasters = this.scheduleManager.GetBatchMastersByLanguage(scheduleIdentifier, tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+
+            return batchMasters;
+        }
+
         /// <summary>
         /// This method helps to approve batch of the respective schedule.
         /// </summary>
