@@ -182,6 +182,7 @@
           <Property Name="DataExtractionDate" Type="datetime" Nullable="false" />
           <Property Name="BatchExecutionDate" Type="datetime" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LanguageCode" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -904,6 +905,7 @@
           <Property Name="ClosingBalance" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
           <Property Name="OpeningBalance" Type="nvarchar" MaxLength="200" />
+          <Property Name="SegmentMasterId" Type="bigint" />
         </EntityType>
         <EntityType Name="NB_InvestmentTransaction">
           <Key>
@@ -1062,6 +1064,7 @@
           <Property Name="MonthOfYear" Type="nvarchar" MaxLength="50" />
           <Property Name="IsEndsAfterNoOfOccurrences" Type="bit" />
           <Property Name="NoOfOccurrences" Type="bigint" />
+          <Property Name="Languages" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ScheduleLog">
           <Key>
@@ -1874,6 +1877,7 @@ warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key
           <Property Name="MonthOfYear" Type="nvarchar" MaxLength="50" />
           <Property Name="IsEndsAfterNoOfOccurrences" Type="bit" />
           <Property Name="NoOfOccurrences" Type="bigint" />
+          <Property Name="Languages" Type="varchar" MaxLength="100" />
           <Property Name="StatementName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="ExecutedBatchCount" Type="int" />
         </EntityType>
@@ -2412,6 +2416,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
     [View_Schedule].[MonthOfYear] AS [MonthOfYear], 
     [View_Schedule].[IsEndsAfterNoOfOccurrences] AS [IsEndsAfterNoOfOccurrences], 
     [View_Schedule].[NoOfOccurrences] AS [NoOfOccurrences], 
+    [View_Schedule].[Languages] AS [Languages], 
     [View_Schedule].[StatementName] AS [StatementName], 
     [View_Schedule].[ExecutedBatchCount] AS [ExecutedBatchCount]
     FROM [NIS].[View_Schedule] AS [View_Schedule]</DefiningQuery>
@@ -2772,6 +2777,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="DataExtractionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="BatchExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LanguageCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -3477,6 +3483,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="ClosingBalance" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OpeningBalance" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SegmentMasterId" Type="Int64" />
         </EntityType>
         <EntityType Name="NB_InvestmentTransaction">
           <Key>
@@ -3635,6 +3642,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="MonthOfYear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsEndsAfterNoOfOccurrences" Type="Boolean" />
           <Property Name="NoOfOccurrences" Type="Int64" />
+          <Property Name="Languages" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ScheduleLog">
           <Key>
@@ -4435,6 +4443,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="NoOfOccurrences" Type="Int64" />
           <Property Name="StatementName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ExecutedBatchCount" Type="Int32" />
+          <Property Name="Languages" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="View_ScheduleLog">
           <Key>
@@ -4944,6 +4953,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySetMapping Name="BatchMasters">
             <EntityTypeMapping TypeName="NenbankDataContextModel.BatchMaster">
               <MappingFragment StoreEntitySet="BatchMaster">
+                <ScalarProperty Name="LanguageCode" ColumnName="LanguageCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="BatchName" ColumnName="BatchName" />
@@ -5674,6 +5684,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySetMapping Name="NB_InvestmentMaster">
             <EntityTypeMapping TypeName="NenbankDataContextModel.NB_InvestmentMaster">
               <MappingFragment StoreEntitySet="NB_InvestmentMaster">
+                <ScalarProperty Name="SegmentMasterId" ColumnName="SegmentMasterId" />
                 <ScalarProperty Name="OpeningBalance" ColumnName="OpeningBalance" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
@@ -5843,6 +5854,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySetMapping Name="Schedules">
             <EntityTypeMapping TypeName="NenbankDataContextModel.Schedule">
               <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="Languages" ColumnName="Languages" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />
@@ -6617,6 +6629,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySetMapping Name="View_Schedule">
             <EntityTypeMapping TypeName="NenbankDataContextModel.View_Schedule">
               <MappingFragment StoreEntitySet="View_Schedule">
+                <ScalarProperty Name="Languages" ColumnName="Languages" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="StatementId" ColumnName="StatementId" />

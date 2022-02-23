@@ -7,8 +7,8 @@
     <ProjectGuid>{353F08EF-0AF6-43CF-9276-309973AB9212}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>nIS</RootNamespace>
-    <AssemblyName>nIS.Repository</AssemblyName>
+    <RootNamespace>NedbankRepository</RootNamespace>
+    <AssemblyName>Nedbank.Repository</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

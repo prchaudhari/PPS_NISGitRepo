@@ -73,7 +73,7 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    languages = nedbankEntities.LanguageMaster.Where(a => a.IsDeleted == false).Select(language => new Language()
+                    languages = nedbankEntities.LanguageMasters.Where(a => a.IsDeleted == false).Select(language => new Language()
                     {
                         Id = language.Id,
                         Code = language.Code,
@@ -115,7 +115,7 @@
 
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    nedbankEntities.LanguageMaster.AddRange(languageRecords);
+                    nedbankEntities.LanguageMasters.AddRange(languageRecords);
                     nedbankEntities.SaveChanges();
                 }
                 return true;
@@ -140,14 +140,14 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    IList<LanguageMaster> languageRecords = nedbankEntities.LanguageMaster.Where(a => a.Id == language.Id).Select(item => item).AsQueryable().ToList();
+                    IList<LanguageMaster> languageRecords = nedbankEntities.LanguageMasters.Where(a => a.Id == language.Id).Select(item => item).AsQueryable().ToList();
 
                     if (languageRecords == null || languageRecords.Count <= 0 || languageRecords.Count() != string.Join(",", languageRecords.Select(item => item.Id).Distinct()).ToString().Split(',').Length)
                     {
                         throw new LanguageNotFoundException(tenantCode);
                     }
 
-                    LanguageMaster languageRecord = nedbankEntities.LanguageMaster.FirstOrDefault(a => a.Id == language.Id);
+                    LanguageMaster languageRecord = nedbankEntities.LanguageMasters.FirstOrDefault(a => a.Id == language.Id);
                     if (languageRecord != null)
                     {
                         languageRecord.Code = language.Code;
@@ -184,7 +184,7 @@
                     query.Append("(" + string.Join("or ", string.Join(",", languages.Select(item => item.Id).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
                     query.Append("and IsDeleted.Equals(false)");
 
-                    IList<LanguageMaster> languageRecords = nedbankEntities.LanguageMaster.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
+                    IList<LanguageMaster> languageRecords = nedbankEntities.LanguageMasters.Where(query.ToString()).Select(item => item).AsQueryable().ToList();
 
                     languageRecords.ToList().ForEach(l =>
                     {

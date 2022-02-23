@@ -74,7 +74,7 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    languages = nedbankEntities.LanguageTenantMapping.Select(language => new LanguageTenant()
+                    languages = nedbankEntities.LanguageTenantMappings.Select(language => new LanguageTenant()
                     {
                         Id = language.Id,
                         LanguageCode = language.LanguageCode,
@@ -105,7 +105,7 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    IList<LanguageTenantMapping> existingLanguages = nedbankEntities.LanguageTenantMapping.Select(item => item).ToList();
+                    IList<LanguageTenantMapping> existingLanguages = nedbankEntities.LanguageTenantMappings.Select(item => item).ToList();
 
                     existingLanguages.ToList().ForEach(item =>
                     {
@@ -124,7 +124,7 @@
                         });
                     });
 
-                    nedbankEntities.LanguageTenantMapping.AddRange(languageRecords);
+                    nedbankEntities.LanguageTenantMappings.AddRange(languageRecords);
                     nedbankEntities.SaveChanges();
                 }
                 return true;
@@ -151,7 +151,7 @@
                 this.SetAndValidateConnectionString(tenantCode);
                 using (NedbankEntities nedbankEntities = new NedbankEntities(this.connectionString))
                 {
-                    IList<LanguageTenantMapping> languageRecords = nedbankEntities.LanguageTenantMapping.Select(item => item).ToList();
+                    IList<LanguageTenantMapping> languageRecords = nedbankEntities.LanguageTenantMappings.Select(item => item).ToList();
 
                     IList<LanguageTenantMapping> languages = languageRecords.Where(a => a.Id == language.Id).ToList();
                     IList<LanguageTenantMapping> existingLanguages = languageRecords.Where(a => a.LanguageCode.Equals(language.LanguageCode) && a.Id != language.Id && a.TenantCode == language.TenantCode).ToList();
@@ -165,7 +165,7 @@
                         throw new LanguageAlreadyExistsException(tenantCode);
                     }
 
-                    LanguageTenantMapping languageRecord = nedbankEntities.LanguageTenantMapping.FirstOrDefault(a => a.Id == language.Id);
+                    LanguageTenantMapping languageRecord = nedbankEntities.LanguageTenantMappings.FirstOrDefault(a => a.Id == language.Id);
                     if (languageRecord != null)
                     {
                         languageRecord.LanguageCode = language.LanguageCode;
@@ -199,9 +199,9 @@
                 {
                     StringBuilder query = new StringBuilder();
                     query.Append("(" + string.Join("or ", string.Join(",", languages.Select(item => item.Id).Distinct()).ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") ");
-                    IList<LanguageTenantMapping> languageRecords = nedbankEntities.LanguageTenantMapping.Where(query.ToString()).Select(item => item).ToList();
+                    IList<LanguageTenantMapping> languageRecords = nedbankEntities.LanguageTenantMappings.Where(query.ToString()).Select(item => item).ToList();
 
-                    nedbankEntities.LanguageTenantMapping.RemoveRange(languageRecords);
+                    nedbankEntities.LanguageTenantMappings.RemoveRange(languageRecords);
                     nedbankEntities.SaveChanges();
                 }
 

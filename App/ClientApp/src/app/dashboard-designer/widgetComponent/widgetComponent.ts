@@ -1399,10 +1399,10 @@ export class StaticHtmlComponent {
 
 // Component Created for SegmentBasedContent Widget--
 @Component({
-  selector: 'static-html-widget',
+  selector: 'Segment-based-content-widget',
   template: `<div class="widget">
     <div class="widget-header">
-      <span class="widget-header-title"> SegmentvBased Content </span>
+      <span class="widget-header-title"> Segment Based Content </span>
     </div>
     <div class="widget-area position-relative width100">
       <div class="widget-indicator-inner text-center pt-2">

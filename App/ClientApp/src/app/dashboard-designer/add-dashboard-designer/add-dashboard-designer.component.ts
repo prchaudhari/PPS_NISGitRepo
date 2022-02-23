@@ -49,6 +49,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   public isImageConfig: boolean = false;
   public isVideoConfig: boolean = false;
   public isStaticHtmlConfig: boolean = false;
+  public issegmentBasedContentConfig: boolean = false;
   public isWidgetSidebar: boolean = false;
   public isEmbedded: boolean = false;
   public isPersonalizeImage: boolean = false;
@@ -91,6 +92,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   public imageWidgetId: number = 0;
   public videoWidgetId: number = 0;
   public staticHtmlWidgetId: number = 0;
+  public segmentBasedContentWidgetId: number = 0;
   public widgetItemCount: number = 0;
   public selectedWidgetItemCount: number = 0;
   public pageVersion: string;
@@ -101,6 +103,9 @@ export class AddDashboardDesignerComponent implements OnInit {
 
   public StaticConfigForm: FormGroup;
   public staticHtmlContent: string = "";
+
+  public SegmentBasedContentForm: FormGroup;
+  public segmentBasedContentContent: string = "";
 
   public BackgroundImageAssetId = 0;
   public BackgroundImageURL = '';
@@ -304,6 +309,13 @@ export class AddDashboardDesignerComponent implements OnInit {
     return true;
   }
 
+  saveSegmentBasedContentFormValidation(): boolean {
+    // if (this.rteObj.value != undefined && this.rteObj.value.length > 0) {
+    //   return false;
+    // }
+    return true;
+  }
+
   isImageConfigForm(widgetId, widgetItemCount) {
     this.imageFormErrorObject.showAssetLibraryError = false;
     this.imageFormErrorObject.showAssetError = false;
@@ -490,6 +502,31 @@ export class AddDashboardDesignerComponent implements OnInit {
 
   }
 
+  isSegmentBasedContentConfigForm(widgetId, widgetItemCount) {
+    debugger
+    this.isMasterSaveBtnDisabled = true;
+    this.issegmentBasedContentConfig = true;
+    this.segmentBasedContentWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+
+    var records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.segmentBasedContentWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      var widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        var widgetConfigObj = JSON.parse(widgetSetting);
+        this.SegmentBasedContentForm.patchValue({
+          segmentBasedContent: widgetConfigObj.html
+        });
+      } else {
+        this.SegmentBasedContentForm.patchValue({
+          segmentBasedContent: ''
+        });
+        this.markFormGroupUnTouched(this.SegmentBasedContentForm);
+      }
+    }
+
+  }
+
   ngOnInit() {
 
     $(document).ready(function () {
@@ -514,6 +551,10 @@ export class AddDashboardDesignerComponent implements OnInit {
 
     this.StaticConfigForm = this.fb.group({
       staticHtml: [null, [Validators.required]]
+    });
+
+    this.SegmentBasedContentForm = this.fb.group({
+      SegmentBasedContent: [null, [Validators.required]]
     });
 
     this.getAssetLibraries();
@@ -2023,6 +2064,27 @@ export class AddDashboardDesignerComponent implements OnInit {
       this.widgetsGridsterItemArray.push(newItem);
     }
     this.isStaticHtmlConfig = !this.isStaticHtmlConfig;
+    this.selectedWidgetItemCount = 0;
+    this.isMasterSaveBtnDisabled = false;
+  }
+
+  OnSegmentBasedContentConfigBtnClicked(actionFor) {
+    debugger
+    if (actionFor == 'submit') {
+      let segmentBasedContent = this.SegmentBasedContentForm.value['segmentBasedContent'];
+      let segmentBasedContentConfig: any = {};
+      segmentBasedContentConfig.WidgetId = this.segmentBasedContentWidgetId;
+      segmentBasedContentConfig.html = segmentBasedContent;
+
+
+      let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.segmentBasedContentWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
+      let newItem = Object.assign({}, oldItem)
+      newItem.WidgetSetting = JSON.stringify(segmentBasedContentConfig);
+      const index: number = this.widgetsGridsterItemArray.indexOf(oldItem);
+      this.widgetsGridsterItemArray.splice(index, 1);
+      this.widgetsGridsterItemArray.push(newItem);
+    }
+    this.issegmentBasedContentConfig = !this.issegmentBasedContentConfig;
     this.selectedWidgetItemCount = 0;
     this.isMasterSaveBtnDisabled = false;
   }
