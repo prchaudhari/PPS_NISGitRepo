@@ -16,7 +16,7 @@ import {
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
+  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
@@ -1020,6 +1020,21 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "InvestmentWealthPortfolioStatement") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: InvestmentWealthPortfolioStatementComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
           else if (widget.WidgetName == "InvestorPerformance") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
@@ -1671,6 +1686,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widgetName == 'InvestmentPortfolioStatement') {
         gridObj.component = InvestmentPortfolioStatementComponent;
+      }
+      else if (widgetName == 'InvestmentWealthPortfolioStatement') {
+        gridObj.component = InvestmentWealthPortfolioStatementComponent;
       }
       else if (widgetName == 'InvestorPerformance') {
         gridObj.component = InvestorPerformanceComponent;

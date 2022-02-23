@@ -144,6 +144,10 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/BreakdownOfInvestmentAccounts.JPG"
           this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
         }
+        else if (this.widgetList[i].WidgetName == "WealthBreakdownOfInvestmentAccounts") {
+          this.widgetList[i].ImageSource = "assets/images/WealthBreakdownOfInvestmentAccounts.PNG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
         else if (this.widgetList[i].WidgetName == "Image") {
           this.widgetList[i].ImageSource = "assets/images/icon-image.png"
           this.widgetList[i].WidgetIcon = "fa fa-image";
@@ -154,6 +158,10 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "InvestmentPortfolioStatement") {
           this.widgetList[i].ImageSource = "assets/images/InvestmentPortfolioStatement.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "InvestmentWealthPortfolioStatement") {
+          this.widgetList[i].ImageSource = "assets/images/InvestmentWealthPortfolioStatement.PNG"
           this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
         }
         else if (this.widgetList[i].WidgetName == "InvestorPerformance") {

@@ -14,7 +14,7 @@ import {
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
+  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, WealthBreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
@@ -338,11 +338,17 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if (widgetName == 'InvestmentPortfolioStatement') {
               gridObj.component = InvestmentPortfolioStatementComponent;
             }
+            else if (widgetName == 'InvestmentWealthPortfolioStatement') {
+              gridObj.component = InvestmentWealthPortfolioStatementComponent;
+            }
             else if (widgetName == 'InvestorPerformance') {
               gridObj.component = InvestorPerformanceComponent;
             }
             else if (widgetName == 'BreakdownOfInvestmentAccounts') {
               gridObj.component = BreakdownOfInvestmentAccountsComponent;
+            }
+            else if (widgetName == 'WealthBreakdownOfInvestmentAccounts') {
+              gridObj.component = WealthBreakdownOfInvestmentAccountsComponent;
             }
             else if (widgetName == 'ExplanatoryNotes') {
               gridObj.component = ExplanatoryNotesComponent;
