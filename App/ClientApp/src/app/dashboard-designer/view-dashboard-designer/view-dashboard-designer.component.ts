@@ -13,7 +13,7 @@ import {
     CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
@@ -421,6 +421,12 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widget.WidgetName == "CategorySpendRewards") {
               gridObj.component = CategorySpendRewardsComponent
+            }
+            else if (widget.WidgetName == "StaticHtml") {
+              gridObj.component = StaticHtmlComponent
+            }
+            else if (widget.WidgetName == "SegmentBasedContent") {
+              gridObj.component = SegmentBasedContentComponent
             }
         }
         else {

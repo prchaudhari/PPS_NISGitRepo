@@ -579,6 +579,36 @@ namespace nIS
                                                 vdoHtmlWidget = vdoHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                 htmlString.Append(vdoHtmlWidget);
                                             }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_HTML_WIDGET_NAME)
+                                            {
+                                                var html = "<div>This is sample <b>HTML</b> for preview</div>";
+                                                if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                {
+                                                    dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                    if (widgetSetting.html.ToString().Length > 0)
+                                                    {
+                                                        html = widgetSetting.html;
+                                                    }
+                                                }
+                                                var staticHtmlWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{StaticHtml}}", html);
+                                                staticHtmlWidget = staticHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                htmlString.Append(staticHtmlWidget);
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
+                                            {
+                                                var html = "<div>This is sample SegmentBasedContent</div>";
+                                                if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                {
+                                                    dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                    if (widgetSetting.html.ToString().Length > 0)
+                                                    {
+                                                        html = widgetSetting.html;
+                                                    }
+                                                }
+                                                var segmentBasedContentWidget = HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML.Replace("{{SegmentBasedContent}}", html);
+                                                segmentBasedContentWidget = segmentBasedContentWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                htmlString.Append(segmentBasedContentWidget);
+                                            }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
                                             {
                                                 string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"8356\"},{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"5654\"},{\"AccountType\":\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"4367\"},{\"AccountType\":\"Wealth\",\"Currency\":\"$\",\"Amount\":\"4589\"}]";
@@ -736,20 +766,21 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME)
                                             {
-                                                string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786'}";
+                                                string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'BARCODE': 'http://3.69.64.41:8020/API/Barcode.png'}";
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
                                                     var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(jsonstr);
                                                     var customerHtmlWidget = HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML;
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{Title}}", customerInfo.TITLE_TEXT);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{FirstName}}", customerInfo.FIRST_NAME_TEXT);
-                                                    customerHtmlWidget = customerHtmlWidget.Replace("{{Surname}}", customerInfo.SURNAME_TEXT);
+                                                    customerHtmlWidget = customerHtmlWidget.Replace("{{SurName}}", customerInfo.SURNAME_TEXT);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine0}}", customerInfo.ADDR_LINE_0);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine1}}", customerInfo.ADDR_LINE_1);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", customerInfo.ADDR_LINE_2);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", customerInfo.ADDR_LINE_3);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", customerInfo.ADDR_LINE_4);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", customerInfo.MASK_CELL_NO != string.Empty ? "Cell: " + customerInfo.MASK_CELL_NO : string.Empty);
+                                                    customerHtmlWidget = customerHtmlWidget.Replace("{{Barcode}}", customerInfo.Barcode != string.Empty ? customerInfo.Barcode : string.Empty);
                                                     htmlString.Append(customerHtmlWidget);
                                                 }
                                             }
@@ -788,7 +819,7 @@ namespace nIS
                                             else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                             {
                                                 string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021','StatementDate':'21/01/2021', 'DsInvestorName' : '' }";
-                                                string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'FIRSTNAME': 'MATHYS', 'LASTNAME': 'SMIT'}";
+                                                string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'FIRSTNAME': 'MATHYS', 'LASTNAME': 'SMIT', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
 
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
@@ -802,7 +833,7 @@ namespace nIS
                                                     InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", Convert.ToString(InvestmentPortfolio.StatementPeriod));
                                                     InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", Convert.ToString(InvestmentPortfolio.StatementDate));
                                                     InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", Convert.ToString(customerInfo.FirstName));
-                                                    InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{Surname}}", Convert.ToString(customerInfo.LastName));
+                                                    InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{SurName}}", Convert.ToString(customerInfo.LastName));
                                                     htmlString.Append(InvestmentPortfolioHtmlWidget);
                                                 }
                                             }
@@ -1838,7 +1869,7 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME)
                                             {
-                                                string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com'}";
+                                                string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
                                                     var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);
@@ -1852,7 +1883,7 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME)
                                             {
-                                                string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com'}";
+                                                string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
                                                     var customer = JsonConvert.DeserializeObject<DM_CustomerMaster>(jsonstr);

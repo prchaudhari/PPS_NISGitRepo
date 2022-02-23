@@ -264,6 +264,14 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/TotalRewardsPoints.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-trophy";
         }
+        else if (this.widgetList[i].WidgetName == "StaticHtml") {
+          this.widgetList[i].ImageSource = "assets/images/StaticHtml.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-html5";
+        }
+        else if (this.widgetList[i].WidgetName == "SegmentBasedContent") {
+          this.widgetList[i].ImageSource = "assets/images/SegmentBasedContent.JPG";
+          this.widgetList[i].WidgetIcon = "fa fa-ruler-combined";
+        }
       }
     }
 

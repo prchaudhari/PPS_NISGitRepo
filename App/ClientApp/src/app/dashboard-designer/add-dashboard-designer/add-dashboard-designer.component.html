@@ -53,7 +53,9 @@
                   'fa-code fa-lg': widget.WidgetType == 'Html',
                   'fa-bar-chart fa-lg': widget.WidgetType == 'BarGraph' || widget.WidgetName == 'AccountAnalysis' || widget.WidgetName == 'YTDRewardsPoints' || widget.WidgetName == 'PointsRedeemedYTD' || widget.WidgetName == 'ProductRelatedPointsEarned',
                   'fa-line-chart fa-lg': widget.WidgetType == 'LineGraph',
-                  'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart' || widget.WidgetName == 'CategorySpendRewards'
+                  'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart' || widget.WidgetName == 'CategorySpendRewards',
+                  'fa-code fa-code': widget.WidgetName == 'StaticHtml',
+                  'fa-ruler-combined': widget.WidgetName == 'SegmentBasedContent'
               }">
           </span><span class="nav-title text-truncate"> {{widget.DisplayName}} </span>
         </a>
@@ -69,6 +71,8 @@
           <button class='fa fa-trash-o widget-action' (click)="removeItem($event,item)"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isStaticHtmlConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='StaticHtml'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isSegmentBasedContentConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='SegmentBasedImage'"></button>
           <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
           <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
           <DynamicBarChartWidget [barchartItem]='item' *ngIf="item.WidgetType=='BarGraph'"></DynamicBarChartWidget>
@@ -285,7 +289,87 @@
       </div>
     </div>
   </form>
-  
+
+  <!--Static Html config-->
+  <form [formGroup]="StaticConfigForm" name="staticHtmlConfigform">
+    <div class="form-popup side-popup width70Percent" [ngClass]="isStaticHtmlConfig? 'show' : 'hide'">
+      <div class="filter-head">
+        <label class="m-0">Static Html Configuration</label>
+      </div>
+      <div class="filter-body stylescrollbar">
+        <div>
+          <div class="col-sm-12 form-group">
+
+            <!-- <ejs-richtexteditor id='customRTE' #customRTE
+            [toolbarSettings]='tools'
+            [value]='editorValue' [insertImageSettings]='insertImageSettings'
+            >
+
+            </ejs-richtexteditor> -->
+
+            <ejs-richtexteditor #staticHtmlRTE [toolbarSettings]='tools' [enableResize]='true' [value]="staticHtmlContent" formControlName="staticHtml">
+
+            </ejs-richtexteditor>
+
+
+          </div>
+        </div>
+
+      </div>
+      <div class="filter-footer">
+        <ul class="nav nav-toolbar">
+          <li class="nav-item width50">
+            <button title="Save" id="btnSubmitStaticHtmlForm" class="btn-footer-fill btn-block rounded-0 height100" [disabled]="saveStaticHtmlFormValidation()"
+                    (click)="OnStaticHtmlConfigBtnClicked('submit')">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width50" (click)="OnStaticHtmlConfigBtnClicked('cancel')">
+            <button title="Close" id="btnCloseStaticHtmlForm" class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-close"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
+
+  <!--Segment Based Content config-->
+  <form [formGroup]="segmentBasedContentForm" name="segmentBasedContentConfigform">
+    <div class="form-popup side-popup width70Percent" [ngClass]="isSegmentBasedContentConfig? 'show' : 'hide'">
+      <div class="filter-head">
+        <label class="m-0">Segment Based Content Configuration</label>
+      </div>
+      <div class="filter-body stylescrollbar">
+        <div>
+          <div class="col-sm-12 form-group">
+
+            <ejs-richtexteditor #segmentBasedContentRTE [toolbarSettings]='tools' [enableResize]='true' [value]="segmentBasedContentContent" formControlName="segmentBasedContent">
+
+            </ejs-richtexteditor>
+
+
+          </div>
+        </div>
+
+      </div>
+      <div class="filter-footer">
+        <ul class="nav nav-toolbar">
+          <li class="nav-item width50">
+            <button title="Save" id="btnSubmitSegmentBasedContentForm" class="btn-footer-fill btn-block rounded-0 height100" [disabled]="saveSegmentBasedContentFormValidation()"
+                    (click)="OnSegmentBasedContentConfigBtnClicked('submit')">
+              <span class="fa fa-check"></span>
+            </button>
+          </li>
+          <li class="nav-item width50" (click)="OnSegmentBasedContentConfigBtnClicked('cancel')">
+            <button title="Close" id="btnCloseSegmentBasedContentForm" class="btn-footer-fill btn-block rounded-0 height100">
+              <span class="fa fa-close"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </form>
 
 </div>
 

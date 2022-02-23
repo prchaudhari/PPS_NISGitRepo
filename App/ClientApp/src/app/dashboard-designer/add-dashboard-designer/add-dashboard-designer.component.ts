@@ -1,5 +1,5 @@
 import { AppSettings } from '../../appsettings';
-import { Component, OnInit, Injector, SecurityContext } from '@angular/core';
+import { Component, OnInit, Injector, SecurityContext, ViewChild } from '@angular/core';
 import { CompactType, DisplayGrid, GridsterConfig, GridsterItem, GridType, GridsterItemComponentInterface, GridsterComponentInterface } from 'angular-gridster2';
 import { Location } from '@angular/common';
 import { Constants } from 'src/app/shared/constants/constants';
@@ -15,12 +15,12 @@ import {
   CustomerInformationComponent, AccountInformationComponent, ImageComponent, VideoComponent, SummaryAtGlanceComponent, TransactionDetailsComponent,
   SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
   SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
-  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, CustomerDetailsComponent, BankDetailsComponent,
+  DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent,
   InvestmentPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
-  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent
+  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent,
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -34,21 +34,27 @@ import { map } from 'rxjs/operators';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { DynamicWidgetService } from '../../layout/widget-dynamic/dynamicwidget.service';
 import { PreviewDialogService } from '../../shared/services/preview-dialog.service';
+import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
+import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 
 @Component({
   selector: 'app-add-dashboard-designer',
   templateUrl: './add-dashboard-designer.component.html',
-  styleUrls: ['./add-dashboard-designer.component.scss']
+  styleUrls: ['./add-dashboard-designer.component.scss'],
+  providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService]
 })
 
 export class AddDashboardDesignerComponent implements OnInit {
+  @ViewChild('staticHtmlRTE', null) rteObj: RichTextEditorComponent;
   public isImageConfig: boolean = false;
   public isVideoConfig: boolean = false;
+  public isStaticHtmlConfig: boolean = false;
   public isWidgetSidebar: boolean = false;
   public isEmbedded: boolean = false;
   public isPersonalizeImage: boolean = false;
   public isPersonalize: boolean = false;
   public isMasterSaveBtnDisabled: boolean = false;
+
 
   options: GridsterConfig;
   dashboard: Array<GridsterItem>;
@@ -84,6 +90,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   public vdoSourceUrl: string;
   public imageWidgetId: number = 0;
   public videoWidgetId: number = 0;
+  public staticHtmlWidgetId: number = 0;
   public widgetItemCount: number = 0;
   public selectedWidgetItemCount: number = 0;
   public pageVersion: string;
@@ -92,11 +99,39 @@ export class AddDashboardDesignerComponent implements OnInit {
   public videoBlobObjectUrl;
   public imageBlobObjectUrl;
 
+  public StaticConfigForm: FormGroup;
+  public staticHtmlContent: string = "";
+
   public BackgroundImageAssetId = 0;
   public BackgroundImageURL = '';
   public BackgroundImageAssetLibraryId = 0;
 
   public dynamicBarChartWidgetId: number = 0;
+
+  //html editor code
+  public editorValue: any = "";
+  htmlContent = '';
+  public onlyNumbers = "^(?=.*[1-9])[+]?([0-9]+(?:[\\.]\\d{1,2})?|\\.[0-9])$";
+
+  public tools: object = {
+    type: 'Expand',
+    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
+      'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
+      'LowerCase', 'UpperCase', '|',
+      'Formats', 'Alignments', 'OrderedList', 'UnorderedList',
+      'Outdent', 'Indent', '|',
+      'CreateLink', 'Image', '|', 'ClearFormat', 'Print',
+      'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+  };
+
+  public quickTools: object = {
+    image: [
+      'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
+  };
+
+  public insertImageSettings: object = {
+    saveFormat: "Base64"
+  };
 
   constructor(private _location: Location,
     private injector: Injector,
@@ -262,6 +297,13 @@ export class AddDashboardDesignerComponent implements OnInit {
     return false;
   }
 
+  saveStaticHtmlFormValidation(): boolean {
+    if (this.rteObj.value != undefined && this.rteObj.value.length > 0) {
+      return false;
+    }
+    return true;
+  }
+
   isImageConfigForm(widgetId, widgetItemCount) {
     this.imageFormErrorObject.showAssetLibraryError = false;
     this.imageFormErrorObject.showAssetError = false;
@@ -313,7 +355,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           imgAsset: 0,
           imageUrl: null,
           imageHeight: null,
-          imgAlign:0
+          imgAlign: 0
         });
         this.markFormGroupUnTouched(this.ImageConfigForm);
         this.ImagePreviewSrc = '';
@@ -335,6 +377,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   isVideoConfigForm(widgetId, widgetItemCount) {
+    debugger
     this.videoFormErrorObject.showAssetLibraryError = false;
     this.videoFormErrorObject.showAssetError = false;
     this.isMasterSaveBtnDisabled = true;
@@ -422,6 +465,31 @@ export class AddDashboardDesignerComponent implements OnInit {
     }
   }
 
+  isStaticHtmlConfigForm(widgetId, widgetItemCount) {
+    debugger
+    this.isMasterSaveBtnDisabled = true;
+    this.isStaticHtmlConfig = true;
+    this.staticHtmlWidgetId = widgetId;
+    this.selectedWidgetItemCount = widgetItemCount;
+
+    var records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      var widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        var widgetConfigObj = JSON.parse(widgetSetting);
+        this.StaticConfigForm.patchValue({
+          staticHtml: widgetConfigObj.html
+        });
+      } else {
+        this.StaticConfigForm.patchValue({
+          staticHtml: ''
+        });
+        this.markFormGroupUnTouched(this.StaticConfigForm);
+      }
+    }
+
+  }
+
   ngOnInit() {
 
     $(document).ready(function () {
@@ -442,6 +510,10 @@ export class AddDashboardDesignerComponent implements OnInit {
       vdoAssetLibrary: [null, [Validators.required]],
       vdoAsset: [null, [Validators.required]],
       vdoUrl: [null, [Validators.required, Validators.pattern(this.validUrlRegexPattern)]]
+    });
+
+    this.StaticConfigForm = this.fb.group({
+      staticHtml: [null, [Validators.required]]
     });
 
     this.getAssetLibraries();
@@ -640,6 +712,7 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   selectWidget(widgetId, widgetName) {
+    debugger
     let widgets = this.widgetsArray.filter(x => x.Identifier == widgetId && x.WidgetName == widgetName);
     if (widgets.length != 0) {
       let widget = widgets[0];
@@ -1326,6 +1399,23 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "StaticHtml") {
+            debugger
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: StaticHtmlComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
         }
         else {
           if (widget.WidgetType == 'Table') {
@@ -1625,6 +1715,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widget.WidgetName == "CategorySpendRewards") {
         gridObj.component = CategorySpendRewardsComponent
       }
+      else if (widget.WidgetName == "StaticHtml") {
+        gridObj.component = StaticHtmlComponent
+      }
     }
     else {
       let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');
@@ -1864,7 +1957,7 @@ export class AddDashboardDesignerComponent implements OnInit {
       imageConfig.Align = this.isPersonalizeImage == true ? "" : this.ImageConfigForm.value.imgAlign;
       imageConfig.isPersonalize = this.isPersonalizeImage;
       imageConfig.WidgetId = this.imageWidgetId;
-      imageConfig.TempImageIdentifier = ''+this.imageWidgetId + this.selectedWidgetItemCount;
+      imageConfig.TempImageIdentifier = '' + this.imageWidgetId + this.selectedWidgetItemCount;
       //imageConfig.BlobObjectUrl = this.isPersonalizeImage == true ? "" : this.imageBlobObjectUrl;
 
       let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.imageWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
@@ -1911,6 +2004,27 @@ export class AddDashboardDesignerComponent implements OnInit {
     if (vid != undefined && vid != null) {
       vid.pause();
     }
+  }
+
+  OnStaticHtmlConfigBtnClicked(actionFor) {
+    debugger
+    if (actionFor == 'submit') {
+      let staticHtmlContent = this.StaticConfigForm.value['staticHtml'];
+      let staticHtmlConfig: any = {};
+      staticHtmlConfig.WidgetId = this.staticHtmlWidgetId;
+      staticHtmlConfig.html = staticHtmlContent;
+
+
+      let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.staticHtmlWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
+      let newItem = Object.assign({}, oldItem)
+      newItem.WidgetSetting = JSON.stringify(staticHtmlConfig);
+      const index: number = this.widgetsGridsterItemArray.indexOf(oldItem);
+      this.widgetsGridsterItemArray.splice(index, 1);
+      this.widgetsGridsterItemArray.push(newItem);
+    }
+    this.isStaticHtmlConfig = !this.isStaticHtmlConfig;
+    this.selectedWidgetItemCount = 0;
+    this.isMasterSaveBtnDisabled = false;
   }
 
   resetImageConfigForm() {

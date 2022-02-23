@@ -850,6 +850,14 @@ namespace nIS
                                                                 pageHtmlContent.Append(this.VideoWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
 
+                                                            case HtmlConstants.STATIC_HTML_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.StaticHtmlWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
+
+                                                            case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
+                                                                pageHtmlContent.Append(this.SegmentBasedContentWidgetFormatting(pageWidget, counter, statement, page, divHeight));
+                                                                break;
+
                                                             case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.InvestmentPortfolioStatementWidgetFormatting(pageWidget, counter, page));
                                                                 break;
@@ -1367,6 +1375,13 @@ namespace nIS
 
                                 case HtmlConstants.VIDEO_WIDGET_NAME:
                                     this.BindDummyDataToVideoWidget(pageContent, statement, page, widget, SampleFiles, AppBaseDirectory, tenantCode);
+                                    break;
+                                case HtmlConstants.STATIC_HTML_WIDGET_NAME:
+                                    this.BindDummyDataToStaticHtmlWidget(pageContent, statement, page, widget);
+                                    break;
+
+                                case HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML:
+                                    this.BindDummyDataToSegmentBasedContentWidget(pageContent, statement, page, widget);
                                     break;
 
                                 case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
@@ -2049,6 +2064,36 @@ namespace nIS
                                                     vdoHtmlWidget = vdoHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     htmlString.Append(vdoHtmlWidget);
                                                 }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_HTML_WIDGET_NAME)
+                                                {
+                                                    var html = "<div>This is sample <b>HTML</b> for preview</div>";
+                                                    if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                    {
+                                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                        if (widgetSetting.html.ToString().Length > 0)
+                                                        {
+                                                            html = widgetSetting.html;
+                                                        }
+                                                    }
+                                                    var staticHtmlWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{StaticHtml}}", html);
+                                                    staticHtmlWidget = staticHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    htmlString.Append(staticHtmlWidget);
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
+                                                {
+                                                    var html = "<div>This is sample SegmentBasedContent</div>";
+                                                    if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                    {
+                                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                        if (widgetSetting.html.ToString().Length > 0)
+                                                        {
+                                                            html = widgetSetting.html;
+                                                        }
+                                                    }
+                                                    var segmentBasedContentWidget = HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML.Replace("{{SegmentBasedContent}}", html);
+                                                    segmentBasedContentWidget = segmentBasedContentWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    htmlString.Append(segmentBasedContentWidget);
+                                                }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
                                                 {
                                                     string accountBalanceDataJson = "[{\"AccountType\":\"Saving Account\",\"Currency\":\"$\",\"Amount\":\"8356\"},{\"AccountType\":\"Current Account\",\"Currency\":\"$\",\"Amount\":\"6654\"},{\"AccountType\":\"Recurring Account\",\"Currency\":\"$\",\"Amount\":\"9367\"},{\"AccountType\":\"Wealth\",\"Currency\":\"$\",\"Amount\":\"4589\"}]";
@@ -2632,24 +2677,55 @@ namespace nIS
                                                     //vdoHtmlWidget = vdoHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
                                                     htmlString.Append(vdoHtmlWidget);
                                                 }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_HTML_WIDGET_NAME)
+                                                {
+                                                    var html = "<div>This is sample <b>HTML</b> for preview</div>";
+                                                    if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                    {
+                                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                        if (widgetSetting.html.ToString().Length > 0)
+                                                        {
+                                                            html = widgetSetting.html;
+                                                        }
+                                                    }
+                                                    var staticHtmlWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{StaticHtml}}", html);
+                                                    staticHtmlWidget = staticHtmlWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    htmlString.Append(staticHtmlWidget);
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
+                                                {
+                                                    var html = "<div>This is sample SegmentBasedContent</div>";
+                                                    if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                    {
+                                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                        if (widgetSetting.html.ToString().Length > 0)
+                                                        {
+                                                            html = widgetSetting.html;
+                                                        }
+                                                    }
+                                                    var segmentBasedContentWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{SegmentBasedContent}}", html);
+                                                    segmentBasedContentWidget = segmentBasedContentWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    htmlString.Append(segmentBasedContentWidget);
+                                                }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME)
                                                 {
                                                     if (statementPages.Count == 1)
                                                     {
-                                                        string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786'}";
+                                                        string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'BARCODE': 'http://3.69.64.41:8020/API/Barcode.png'}";
                                                         if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                         {
                                                             var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(jsonstr);
                                                             var customerHtmlWidget = HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML;
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{Title}}", customerInfo.TITLE_TEXT);
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{FirstName}}", customerInfo.FIRST_NAME_TEXT);
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{Surname}}", customerInfo.SURNAME_TEXT);
+                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{SurName}}", customerInfo.SURNAME_TEXT);
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine0}}", customerInfo.ADDR_LINE_0);
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine1}}", customerInfo.ADDR_LINE_1);
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", customerInfo.ADDR_LINE_2);
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", customerInfo.ADDR_LINE_3);
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", customerInfo.ADDR_LINE_4);
                                                             customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", customerInfo.MASK_CELL_NO != string.Empty ? "Cell: " + customerInfo.MASK_CELL_NO : string.Empty);
+                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{Barcode}}", customerInfo.Barcode != string.Empty ? customerInfo.Barcode : string.Empty);
                                                             htmlString.Append(customerHtmlWidget);
                                                         }
                                                     }
@@ -4534,6 +4610,32 @@ namespace nIS
 
         #endregion
 
+        #region StaticHtml Widget Formatting
+
+        private string StaticHtmlWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = new StringBuilder(HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{StaticHtml}}", "{{StaticHtml_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}"));
+            widgetHTML.Replace("{{WidgetDivHeight}}", "auto");
+            widgetHTML.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            return widgetHTML.ToString();
+        }
+
+        #endregion
+
+        #region SegmentBasedContent Widget Formatting
+
+        private string SegmentBasedContentWidgetFormatting(PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var widgetHTML = new StringBuilder(HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML.Replace("{{SegmentBasedContent}}", "{{SegmentBasedContent_" + statement.Identifier + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}"));
+            widgetHTML.Replace("{{WidgetDivHeight}}", "auto");
+            widgetHTML.Replace("{{WidgetId}}", "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString());
+            return widgetHTML.ToString();
+        }
+
+        #endregion
+
         #region Dynamic Widget formatting
 
         private string DynamicTableWidgetFormatting(CustomeTheme themeDetails, DynamicWidget dynawidget, PageWidget pageWidget, int counter, Statement statement, Page page, string divHeight)
@@ -4888,10 +4990,12 @@ namespace nIS
 
         private void BindDummyDataToInvestmentPortfolioStatementWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {
-            string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021', 'StatementDate':'21/01/2021', 'DsInvestorName' : '' }";
+            string jsonstr = "{'FirstName': 'MATHYS', 'LastName': 'SMIT','Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021', 'StatementDate':'21/01/2021', 'DsInvestorName' : '' }";
             if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
             {
                 dynamic InvestmentPortfolio = JObject.Parse(jsonstr);
+                pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.FirstName));
+                pageContent.Replace("{{SurName_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.LastName));
                 pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.DsInvestorName));
                 pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", (Convert.ToString(InvestmentPortfolio.Currency) + Convert.ToString(InvestmentPortfolio.TotalClosingBalance)));
                 pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.DayOfStatement));
@@ -6178,6 +6282,42 @@ namespace nIS
                 Name = dynawidget.EntityName
             }, entityFieldMaps, dynawidget.PreviewData);
             pageContent.Replace("{{FormData_" + page.Identifier + "_" + widget.Identifier + "}}", data);
+        }
+
+        #endregion
+
+        #region Bind dummy data to Static Html widget
+
+        private void BindDummyDataToStaticHtmlWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget)
+        {
+            var html = "<div>This is sample <b>HTML</b> for preview</div>";
+            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
+            {
+                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                if (widgetSetting.html.ToString().Length > 0)
+                {
+                    html = widgetSetting.html;
+                }
+            }
+            pageContent.Replace("{{StaticHtml_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
+        }
+
+        #endregion
+
+        #region Bind dummy data to SegmentBasedContent widget
+
+        private void BindDummyDataToSegmentBasedContentWidget(StringBuilder pageContent, Statement statement, Page page, PageWidget widget)
+        {
+            var html = "<div>This is sample SegmentBasedContent</div>";
+            if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
+            {
+                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                if (widgetSetting.html.ToString().Length > 0)
+                {
+                    html = widgetSetting.html;
+                }
+            }
+            pageContent.Replace("{{SegmentBasedContent_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
         }
 
         #endregion

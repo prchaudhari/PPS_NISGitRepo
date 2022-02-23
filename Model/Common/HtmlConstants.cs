@@ -29,6 +29,10 @@ namespace nIS
 
         public const string VIDEO_WIDGET_NAME = "Video";
 
+        public const string STATIC_HTML_WIDGET_NAME = "StaticHtml";
+
+        public const string STATIC_SEGMENT_BASED_CONTENT_NAME = "SegmentBasedContent";
+
         public const string ANALYTICS_WIDGET_NAME = "Analytics";
 
         public const string SAVING_TRANSACTION_WIDGET_NAME = "SavingTransaction";
@@ -152,6 +156,10 @@ namespace nIS
         public const string IMAGE_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='card-body {{ImgAlignmentClass}}'><img src='{{ImageSource}}' class='{{NewImageClass}}' style='height:{{ImgHeight}};max-width:100%;'/></div></div>";
 
         public const string VIDEO_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-center'><video class='video-widget w-100 float-left {{NewVideoClass}}' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
+        
+        public const string STATIC_HTML_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-left'>{{StaticHtml}}</div></div>";
+
+        public const string SEGMENT_BASED_CONTENT_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-left'>{{SegmentBasedContent}}</div></div>";
 
         public const string NO_WIDGET_MESSAGE_HTML = "<div class='card border-0'><div class='p-1 bg-light border-0'><h5 class='m-0'>No Configuration</h5> </div><div class='card-body text-center text-danger'><span>No configuration saved for this record.</span></div></div>";
 
@@ -171,7 +179,7 @@ namespace nIS
 
         public const string SPENDING_TRENDS_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'> <h5 class='m-0'>Spending Trends</h5></div><div class='card-body'> <div id=\"spendingTrendscontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
 
-        public const string CUSTOMER_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body CustomerDetails py-1 ht-130px'>{{Title}} {{FirstName}} {{Surname}}<br>{{CustAddressLine0}}<br>{{CustAddressLine1}}<br>{{CustAddressLine2}}<br>{{CustAddressLine3}}<br>{{CustAddressLine4}}<br></div><div class='CustomerCellNoDiv pt-2'>{{MaskCellNo}}</div></div>";
+        public const string CUSTOMER_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body CustomerDetails py-1 ht-130px'><img src='{{Barcode}}' style='height:25px;' /><br>{{Title}} {{FirstName}} {{SurName}}<br>{{CustAddressLine0}}<br>{{CustAddressLine1}}<br>{{CustAddressLine2}}<br>{{CustAddressLine3}}<br>{{CustAddressLine4}}<br></div><div class='CustomerCellNoDiv pt-2'>{{MaskCellNo}}</div></div>";
 
         public const string CUSTOMER_DETAILS_WIDGET_HTML_SMT = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body CustomerDetails py-1 ht-130px'>{{CustomerDetails}}</div><div class='CustomerCellNoDiv pt-2'>{{MaskCellNo}}</div></div>";
 
@@ -181,7 +189,7 @@ namespace nIS
 
         public const string INVESTOR_PERFORMANCE_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-1'><div class='card-body-header pb-2'>Investor performance</div><div class='InvestmentPermanaceDiv'><table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'><tbody><tr><td class='w-50' colspan='2'><span class='text-success fnt-10pt'>{{ProductType}}</span></td></tr><tr><td class='w-50 fnt-8pt pt-1'>Opening balance</td><td class='w-50 fnt-8pt'>Closing balance</td></tr><tr><td class='w-50 fnt-14pt'>{{OpeningBalanceAmount}}</td><td class='w-50 fnt-14pt'>{{ClosingBalanceAmount}}</td></tr></tbody></table></div></div></div>";
 
-        public const string INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-1'><div class='card-body-header-name pb-3'>Dear {{FirstName}} {{Surname}}</div><div class='card-body-header pb-2'>Investment portfolio statement {{DSName}} </div><div class='row pb-1'><div class='col-lg-4 col-sm-4 pr-1'><div class='TotalAmountDetailsDiv'><span class='fnt-10pt'>Current investor balance</span><br><span class='fnt-14pt'>{{TotalClosingBalance}}</span>&nbsp;<br></div></div><div class='col-lg-8 col-sm-8 pl-0'><div class='TotalAmountDetailsDiv'></div></div></div><div class='pt-1 pb-2' style='background-color:#f3f3f3'><table class='customTable mt-2' border='0' id='portfolio'><tbody class='fnt-8'><tr><td class='w-25'>Account type:</td><td class='w-25 text-right pr-4 text-success'>Investment</td><td class='w-25'>Statement Day:</td><td class='w-25 text-right text-success'>{{DayOfStatement}}</td></tr><tr><td class='w-25'>Investor no:</td><td class='w-25 text-right pr-4 text-success'>{{InvestorID}}</td><td class='w-25'>Statement Period:</td><td class='w-25 text-right text-success'>{{StatementPeriod}}</td></tr><tr><td class='w-25'>Statement date:</td><td class='w-25 text-right pr-4 text-success'>{{StatementDate}}</td></tr></tbody></table></div></div></div>";
+        public const string INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-1'><div class='card-body-header-name pb-3'>Dear {{FirstName}} {{SurName}}</div><div class='card-body-header pb-2'>Investment portfolio statement {{DSName}} </div><div class='row pb-1'><div class='col-lg-4 col-sm-4 pr-1'><div class='TotalAmountDetailsDiv'><span class='fnt-10pt'>Current investor balance</span><br><span class='fnt-14pt'>{{TotalClosingBalance}}</span>&nbsp;<br></div></div><div class='col-lg-8 col-sm-8 pl-0'><div class='TotalAmountDetailsDiv'></div></div></div><div class='pt-1 pb-2' style='background-color:#f3f3f3'><table class='customTable mt-2' border='0' id='portfolio'><tbody class='fnt-8'><tr><td class='w-25'>Account type:</td><td class='w-25 text-right pr-4 text-success'>Investment</td><td class='w-25'>Statement Day:</td><td class='w-25 text-right text-success'>{{DayOfStatement}}</td></tr><tr><td class='w-25'>Investor no:</td><td class='w-25 text-right pr-4 text-success'>{{InvestorID}}</td><td class='w-25'>Statement Period:</td><td class='w-25 text-right text-success'>{{StatementPeriod}}</td></tr><tr><td class='w-25'>Statement date:</td><td class='w-25 text-right pr-4 text-success'>{{StatementDate}}</td></tr></tbody></table></div></div></div>";
 
         public const string BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-1'><div class='card-body-header pb-2'>Breakdown of your investment accounts</div>{{NavTab}} {{TabContentsDiv}} </div></div>";
 
