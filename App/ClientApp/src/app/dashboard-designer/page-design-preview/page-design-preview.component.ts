@@ -29,6 +29,7 @@ import { AppSettings } from '../../appsettings';
                   <gridster-item [item]="item" *ngFor="let item of ItemArray">
                       <vidyo-widget [vdoItem]="item" *ngIf="item.value=='Video'"></vidyo-widget>
                       <image-widget [imgItem]="item" *ngIf="item.value=='Image'"></image-widget>
+                      <Segment-based-content-widget [SegmentBasedContentItem]='item' *ngIf="item.value=='SegmentBasedContent'"></Segment-based-content-widget>
                       <DynamicBarChartWidgetPreview [dynamicBarchartItem]='item' *ngIf="item.WidgetType=='BarGraph'"></DynamicBarChartWidgetPreview>
                       <DynamicLineChartWidgetPreview [linechartItem]='item' *ngIf="item.WidgetType=='LineGraph'"></DynamicLineChartWidgetPreview>
                       <DynamicPieChartWidgetPreview [piechartItem]='item' *ngIf="item.WidgetType=='PieChart'"></DynamicPieChartWidgetPreview>

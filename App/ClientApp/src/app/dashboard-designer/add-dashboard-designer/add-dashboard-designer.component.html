@@ -55,7 +55,7 @@
                   'fa-line-chart fa-lg': widget.WidgetType == 'LineGraph',
                   'fa-pie-chart fa-lg': widget.WidgetType == 'PieChart' || widget.WidgetName == 'CategorySpendRewards',
                   'fa-code fa-code': widget.WidgetName == 'StaticHtml',
-                  'fa-ruler-combined': widget.WidgetName == 'SegmentBasedContent'
+                  'fa-id-card-o': widget.WidgetName == 'SegmentBasedContent'
               }">
           </span><span class="nav-title text-truncate"> {{widget.DisplayName}} </span>
         </a>
@@ -72,9 +72,10 @@
           <button class='fa fa-gear mr-3 widget-action' (click)="isImageConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Image'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isVideoConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='Video'"></button>
           <button class='fa fa-gear mr-3 widget-action' (click)="isStaticHtmlConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='StaticHtml'"></button>
-          <button class='fa fa-gear mr-3 widget-action' (click)="isSegmentBasedContentConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='SegmentBasedImage'"></button>
+          <button class='fa fa-gear mr-3 widget-action' (click)="isSegmentBasedContentConfigForm(item.WidgetId, item.widgetItemCount)" *ngIf="item.value=='SegmentBasedContent'"></button>
           <vidyo-widget [vdoItem]='item' *ngIf="item.value=='Video'"></vidyo-widget>
           <image-widget [imgItem]='item' *ngIf="item.value=='Image'"></image-widget>
+          <Segment-based-content-widget [SegmentBasedContentItem]='item' *ngIf="item.value=='SegmentBasedContent'"></Segment-based-content-widget>
           <DynamicBarChartWidget [barchartItem]='item' *ngIf="item.WidgetType=='BarGraph'"></DynamicBarChartWidget>
           <DynamicLineChartWidget [linechartItem]='item' *ngIf="item.WidgetType=='LineGraph'"></DynamicLineChartWidget>
           <DynamicPieChartWidget [piechartItem]='item' *ngIf="item.WidgetType=='PieChart'"></DynamicPieChartWidget>
@@ -341,13 +342,33 @@
         <label class="m-0">Segment Based Content Configuration</label>
       </div>
       <div class="filter-body stylescrollbar">
-        <div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label> Segment </label>
+            <span class="text-danger"> *</span>
+            <select formControlName="SegmentId" (change)="onSegmentSelected($event)" class="form-control">
+              <option *ngFor="let al of segmentList" [value]="al.Code">{{al.Name}}</option>
+            </select>
+            <div class="validation-msg" style="color:red">
+              <ul style="list-style-type:none" *ngIf="segmentBasedContentFormErrorObject.showSegmentError">
+                <li class="text-danger">Please select segment</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-sm-12 form-group">
 
-            <ejs-richtexteditor #segmentBasedContentRTE [toolbarSettings]='tools' [enableResize]='true' [value]="segmentBasedContentContent" formControlName="segmentBasedContent">
+            <label> Html </label>
+            <span class="text-danger"> *</span>
+            <ejs-richtexteditor #segmentBasedContentRTE [toolbarSettings]='tools' [enableResize]='true' [value]="segmentBasedContentContent" formControlName="SegmentBasedContent">
 
             </ejs-richtexteditor>
-
+            <div class="validation-msg" style="color:red">
+              <ul style="list-style-type:none" *ngIf="segmentBasedContentFormErrorObject.showContentError">
+                <li class="text-danger">Please enter html content.</li>
+              </ul>
+            </div>
 
           </div>
         </div>
@@ -356,7 +377,7 @@
       <div class="filter-footer">
         <ul class="nav nav-toolbar">
           <li class="nav-item width50">
-            <button title="Save" id="btnSubmitSegmentBasedContentForm" class="btn-footer-fill btn-block rounded-0 height100" [disabled]="saveSegmentBasedContentFormValidation()"
+            <button title="Save" id="btnSubmitSegmentBasedContentForm" class="btn-footer-fill btn-block rounded-0 height100"
                     (click)="OnSegmentBasedContentConfigBtnClicked('submit')">
               <span class="fa fa-check"></span>
             </button>

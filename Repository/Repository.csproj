@@ -241,6 +241,8 @@
     <Compile Include="IRepository\IWidgetRepository.cs" />
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
+    <Compile Include="Mappings\ScheduleLogDetailRecord.cs" />
+    <Compile Include="Mappings\View_PageRecord.cs" />
     <Compile Include="MultiTenantUserAccessMapRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

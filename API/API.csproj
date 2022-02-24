@@ -283,6 +283,7 @@
     <Compile Include="Controllers\ArchivalProcessController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\GenerateStatementController.cs" />
+    <Compile Include="Controllers\NB_SegmentMasterController.cs" />
     <Compile Include="Controllers\PageTypeController.cs" />
     <Compile Include="Controllers\ContactTypeController.cs" />
     <Compile Include="Controllers\DynamicWidgetController.cs" />

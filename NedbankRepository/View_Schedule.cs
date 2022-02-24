@@ -39,5 +39,6 @@ namespace NedbankRepository
         public Nullable<long> NoOfOccurrences { get; set; }
         public string StatementName { get; set; }
         public Nullable<int> ExecutedBatchCount { get; set; }
+        public string Languages { get; set; }
     }
 }

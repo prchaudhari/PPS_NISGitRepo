@@ -180,5 +180,7 @@ namespace NedbankRepository
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FnUserTenant_Result>("[NedbankEntities].[FnUserTenant](@UserId)", userIdParameter);
         }
+
+        public System.Data.Entity.DbSet<NedbankRepository.NB_SegmentMaster> NB_SegmentMaster { get; set; }
     }
 }

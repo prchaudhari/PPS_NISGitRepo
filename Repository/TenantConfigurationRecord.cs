@@ -35,5 +35,10 @@ namespace nIS
         public string GenerateHtmlFormatForStatementFunctionName { get; set; }
         public string RetryFailedCustomerStatementApiName { get; set; }
         public string ArchivalProcessApiName { get; set; }
+        public string DeploymentType { get; set; }
+        public string OutputLocationType { get; set; }
+        public string NetworkLocation { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace NedbankRepository
     using System;
     using System.Collections.Generic;
     
-    public partial class BatchMaster
+    public partial class NB_BatchMaster_Source
     {
         public long Id { get; set; }
         public string TenantCode { get; set; }
@@ -25,6 +25,5 @@ namespace NedbankRepository
         public System.DateTime DataExtractionDate { get; set; }
         public System.DateTime BatchExecutionDate { get; set; }
         public string Status { get; set; }
-        public string LanguageCode { get; set; }
     }
 }

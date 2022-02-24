@@ -839,6 +839,22 @@
           <Property Name="LastUpdatedBy" Type="bigint" Nullable="false" />
           <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="NB_BatchMaster_Source">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenantCode" Type="varchar" MaxLength="100" />
+          <Property Name="BatchName" Type="varchar" MaxLength="100" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="IsExecuted" Type="bit" Nullable="false" />
+          <Property Name="IsDataReady" Type="bit" Nullable="false" />
+          <Property Name="DataExtractionDate" Type="datetime" Nullable="false" />
+          <Property Name="BatchExecutionDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="NB_BranchMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -876,6 +892,67 @@
           <Property Name="MaskCellNo" Type="nvarchar" MaxLength="500" />
           <Property Name="Barcode" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NB_Investment_Source">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LANGUAGE_CD" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SEG_L1_STR" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SEGMENT" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="INVESTOR_GROUP" Type="bigint" Nullable="false" />
+          <Property Name="INVESTOR_ID" Type="bigint" Nullable="false" />
+          <Property Name="BARCODE" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CUSTOMER_ID_TEXT" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FIRST_NAME_TEXT" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SURNAME_TEXT" Type="nvarchar" MaxLength="100" />
+          <Property Name="DS_INVESTOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="TITLE_TEXT" Type="nvarchar" MaxLength="10" />
+          <Property Name="ADDR_LINE_0" Type="nvarchar" MaxLength="200" />
+          <Property Name="ADDR_LINE_1" Type="nvarchar" MaxLength="200" />
+          <Property Name="ADDR_LINE_2" Type="nvarchar" MaxLength="200" />
+          <Property Name="ADDR_LINE_3" Type="nvarchar" MaxLength="200" />
+          <Property Name="ADDR_LINE_4" Type="nvarchar" MaxLength="200" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="150" />
+          <Property Name="MASKED_CELL_NO" Type="nvarchar" MaxLength="100" />
+          <Property Name="BRANCH_ID" Type="bigint" Nullable="false" />
+          <Property Name="BRANCH_DESCRIPTION" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="STREET_ADDR_1" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="STREET_ADDR_2" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="STREET_ADDR_3" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="STREET_ADDR_4" Type="nvarchar" MaxLength="200" />
+          <Property Name="STREET_CODE" Type="bigint" />
+          <Property Name="BRANCH_PHONE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="INVESTMENT_ID" Type="bigint" Nullable="false" />
+          <Property Name="PRODUCT_TYPE" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PRODUCT_TYPE_AFR" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="bigint" Nullable="false" />
+          <Property Name="PRODUCT_DESCRIPTION" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PRODUCT_DESCRIPTION_AFR" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="OPEN_DATE_ID" Type="datetime" Nullable="false" />
+          <Property Name="CURRENT_INT_RATE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EXPIRY_DATE_ID" Type="datetime" />
+          <Property Name="INV_INTEREST_DISPOSAL_ID" Type="bigint" Nullable="false" />
+          <Property Name="INV_INTEREST_DISPOSAL_DESCRIPTION" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="INV_INTEREST_DISPOSAL_DESCRIPTION_AFR" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="BONUS_INTEREST" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NOTICE_PERIOD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NOTICE_PERIOD_AFR" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TRAN_DATE_ID" Type="datetime" Nullable="false" />
+          <Property Name="DAY_OF_STATEMENT" Type="bigint" Nullable="false" />
+          <Property Name="TRANSACTION_DESCRIPTION" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="TRANSACTION_DESCRIPTION_AFR" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ACCRUED_INTEREST" Type="nvarchar" MaxLength="50" />
+          <Property Name="STATEMENT_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CustCol_4" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ARCHIVE_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CustCol_5" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WJXBFS1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WJXBFS2" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WJXBFS3" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WJXBFS4" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WJXBFS5" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="NB_InvestmentMaster">
           <Key>
@@ -925,6 +1002,41 @@
           <Property Name="WJXBFS4_Balance" Type="nvarchar" MaxLength="500" />
           <Property Name="WJXBFS5_TransId" Type="nvarchar" MaxLength="500" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NB_SegmentMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SegmentTypeId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NB_SegmentTypeMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NB_ServiceMessagesAndContacts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Language" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Segment" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="Contact" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Servicemsg1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Servicemsg2" Type="nvarchar" MaxLength="100" />
+          <Property Name="Servicemsg3" Type="nvarchar" MaxLength="100" />
+          <Property Name="Servicemsg4" Type="nvarchar" MaxLength="100" />
+          <Property Name="Servicemsg5" Type="nvarchar" MaxLength="100" />
+          <Property Name="Servicemsg6" Type="nvarchar" MaxLength="100" />
+          <Property Name="Servicemsg7" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Page">
           <Key>
@@ -2076,6 +2188,30 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="create_date" Type="datetime" Nullable="false" />
           <Property Name="modify_date" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK__NB_Invest__Segme__29CC2871">
+          <End Role="NB_SegmentMaster" Type="Self.NB_SegmentMaster" Multiplicity="0..1" />
+          <End Role="NB_InvestmentMaster" Type="Self.NB_InvestmentMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NB_SegmentMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NB_InvestmentMaster">
+              <PropertyRef Name="SegmentMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NB_Segmen__Segme__28D80438">
+          <End Role="NB_SegmentTypeMaster" Type="Self.NB_SegmentTypeMaster" Multiplicity="1" />
+          <End Role="NB_SegmentMaster" Type="Self.NB_SegmentMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NB_SegmentTypeMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NB_SegmentMaster">
+              <PropertyRef Name="SegmentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="FnGetParentAndChildTenant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="NIS">
           <Parameter Name="ParentTenantCode" Type="nvarchar" Mode="In" />
           <ReturnType>
@@ -2209,10 +2345,15 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <EntitySet Name="LanguageMaster" EntityType="Self.LanguageMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="LanguageTenantMapping" EntityType="Self.LanguageTenantMapping" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="MultiTenantUserAccessMap" EntityType="Self.MultiTenantUserAccessMap" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_BatchMaster_Source" EntityType="Self.NB_BatchMaster_Source" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_BranchMaster" EntityType="Self.NB_BranchMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_CustomerMaster" EntityType="Self.NB_CustomerMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_Investment_Source" EntityType="Self.NB_Investment_Source" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_InvestmentMaster" EntityType="Self.NB_InvestmentMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_InvestmentTransaction" EntityType="Self.NB_InvestmentTransaction" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_SegmentMaster" EntityType="Self.NB_SegmentMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_SegmentTypeMaster" EntityType="Self.NB_SegmentTypeMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_ServiceMessagesAndContacts" EntityType="Self.NB_ServiceMessagesAndContacts" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Page" EntityType="Self.Page" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageType" EntityType="Self.PageType" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="PageWidgetMap" EntityType="Self.PageWidgetMap" Schema="NIS" store:Type="Tables" />
@@ -2536,6 +2677,14 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
     [database_firewall_rules].[modify_date] AS [modify_date]
     FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK__NB_Invest__Segme__29CC2871" Association="Self.FK__NB_Invest__Segme__29CC2871">
+            <End Role="NB_SegmentMaster" EntitySet="NB_SegmentMaster" />
+            <End Role="NB_InvestmentMaster" EntitySet="NB_InvestmentMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NB_Segmen__Segme__28D80438" Association="Self.FK__NB_Segmen__Segme__28D80438">
+            <End Role="NB_SegmentTypeMaster" EntitySet="NB_SegmentTypeMaster" />
+            <End Role="NB_SegmentMaster" EntitySet="NB_SegmentMaster" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -3484,6 +3633,7 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OpeningBalance" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SegmentMasterId" Type="Int64" />
+          <NavigationProperty Name="NB_SegmentMaster" Relationship="NenbankDataContextModel.FK__NB_Invest__Segme__29CC2871" FromRole="NB_InvestmentMaster" ToRole="NB_SegmentMaster" />
         </EntityType>
         <EntityType Name="NB_InvestmentTransaction">
           <Key>
@@ -4751,6 +4901,19 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           </FunctionImport>
           <EntitySet Name="LanguageMasters" EntityType="NenbankDataContextModel.LanguageMaster" />
           <EntitySet Name="LanguageTenantMappings" EntityType="NenbankDataContextModel.LanguageTenantMapping" />
+          <EntitySet Name="NB_BatchMaster_Source" EntityType="NenbankDataContextModel.NB_BatchMaster_Source" />
+          <EntitySet Name="NB_Investment_Source" EntityType="NenbankDataContextModel.NB_Investment_Source" />
+          <EntitySet Name="NB_SegmentMaster" EntityType="NenbankDataContextModel.NB_SegmentMaster" />
+          <EntitySet Name="NB_SegmentTypeMaster" EntityType="NenbankDataContextModel.NB_SegmentTypeMaster" />
+          <EntitySet Name="NB_ServiceMessagesAndContacts" EntityType="NenbankDataContextModel.NB_ServiceMessagesAndContacts" />
+          <AssociationSet Name="FK__NB_Invest__Segme__29CC2871" Association="NenbankDataContextModel.FK__NB_Invest__Segme__29CC2871">
+            <End Role="NB_SegmentMaster" EntitySet="NB_SegmentMaster" />
+            <End Role="NB_InvestmentMaster" EntitySet="NB_InvestmentMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NB_Segmen__Segme__28D80438" Association="NenbankDataContextModel.FK__NB_Segmen__Segme__28D80438">
+            <End Role="NB_SegmentTypeMaster" EntitySet="NB_SegmentTypeMaster" />
+            <End Role="NB_SegmentMaster" EntitySet="NB_SegmentMaster" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="LanguageMaster">
           <Key>
@@ -4769,6 +4932,145 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
           <Property Name="LanguageCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="NB_BatchMaster_Source">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenantCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BatchName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="IsExecuted" Type="Boolean" Nullable="false" />
+          <Property Name="IsDataReady" Type="Boolean" Nullable="false" />
+          <Property Name="DataExtractionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="BatchExecutionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="NB_Investment_Source">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LANGUAGE_CD" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SEG_L1_STR" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SEGMENT" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="INVESTOR_GROUP" Type="Int64" Nullable="false" />
+          <Property Name="INVESTOR_ID" Type="Int64" Nullable="false" />
+          <Property Name="BARCODE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CUSTOMER_ID_TEXT" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FIRST_NAME_TEXT" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SURNAME_TEXT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DS_INVESTOR_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TITLE_TEXT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ADDR_LINE_0" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ADDR_LINE_1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ADDR_LINE_2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ADDR_LINE_3" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ADDR_LINE_4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="MASKED_CELL_NO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BRANCH_ID" Type="Int64" Nullable="false" />
+          <Property Name="BRANCH_DESCRIPTION" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="STREET_ADDR_1" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="STREET_ADDR_2" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="STREET_ADDR_3" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="STREET_ADDR_4" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="STREET_CODE" Type="Int64" />
+          <Property Name="BRANCH_PHONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="INVESTMENT_ID" Type="Int64" Nullable="false" />
+          <Property Name="PRODUCT_TYPE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PRODUCT_TYPE_AFR" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PRODUCT_ID" Type="Int64" Nullable="false" />
+          <Property Name="PRODUCT_DESCRIPTION" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PRODUCT_DESCRIPTION_AFR" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OPEN_DATE_ID" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CURRENT_INT_RATE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EXPIRY_DATE_ID" Type="DateTime" Precision="3" />
+          <Property Name="INV_INTEREST_DISPOSAL_ID" Type="Int64" Nullable="false" />
+          <Property Name="INV_INTEREST_DISPOSAL_DESCRIPTION" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="INV_INTEREST_DISPOSAL_DESCRIPTION_AFR" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BONUS_INTEREST" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NOTICE_PERIOD" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NOTICE_PERIOD_AFR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TRAN_DATE_ID" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DAY_OF_STATEMENT" Type="Int64" Nullable="false" />
+          <Property Name="TRANSACTION_DESCRIPTION" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TRANSACTION_DESCRIPTION_AFR" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ACCRUED_INTEREST" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="STATEMENT_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CustCol_4" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CustCol_5" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS2" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS3" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS4" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WJXBFS5" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NB_SegmentMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SegmentTypeId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="NB_InvestmentMaster" Relationship="NenbankDataContextModel.FK__NB_Invest__Segme__29CC2871" FromRole="NB_SegmentMaster" ToRole="NB_InvestmentMaster" />
+          <NavigationProperty Name="NB_SegmentTypeMaster" Relationship="NenbankDataContextModel.FK__NB_Segmen__Segme__28D80438" FromRole="NB_SegmentMaster" ToRole="NB_SegmentTypeMaster" />
+        </EntityType>
+        <EntityType Name="NB_SegmentTypeMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NB_SegmentMaster" Relationship="NenbankDataContextModel.FK__NB_Segmen__Segme__28D80438" FromRole="NB_SegmentTypeMaster" ToRole="NB_SegmentMaster" />
+        </EntityType>
+        <EntityType Name="NB_ServiceMessagesAndContacts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Segment" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="Contact" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Servicemsg1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Servicemsg2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Servicemsg3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Servicemsg4" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Servicemsg5" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Servicemsg6" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Servicemsg7" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__NB_Invest__Segme__29CC2871">
+          <End Type="NenbankDataContextModel.NB_SegmentMaster" Role="NB_SegmentMaster" Multiplicity="0..1" />
+          <End Type="NenbankDataContextModel.NB_InvestmentMaster" Role="NB_InvestmentMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NB_SegmentMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NB_InvestmentMaster">
+              <PropertyRef Name="SegmentMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NB_Segmen__Segme__28D80438">
+          <End Type="NenbankDataContextModel.NB_SegmentTypeMaster" Role="NB_SegmentTypeMaster" Multiplicity="1" />
+          <End Type="NenbankDataContextModel.NB_SegmentMaster" Role="NB_SegmentMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NB_SegmentTypeMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NB_SegmentMaster">
+              <PropertyRef Name="SegmentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6873,6 +7175,123 @@ warning 6002: The table/view 'NIS.sys.database_firewall_rules' does not have a p
               <MappingFragment StoreEntitySet="LanguageTenantMapping">
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="LanguageCode" ColumnName="LanguageCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_BatchMaster_Source">
+            <EntityTypeMapping TypeName="NenbankDataContextModel.NB_BatchMaster_Source">
+              <MappingFragment StoreEntitySet="NB_BatchMaster_Source">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="BatchExecutionDate" ColumnName="BatchExecutionDate" />
+                <ScalarProperty Name="DataExtractionDate" ColumnName="DataExtractionDate" />
+                <ScalarProperty Name="IsDataReady" ColumnName="IsDataReady" />
+                <ScalarProperty Name="IsExecuted" ColumnName="IsExecuted" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_Investment_Source">
+            <EntityTypeMapping TypeName="NenbankDataContextModel.NB_Investment_Source">
+              <MappingFragment StoreEntitySet="NB_Investment_Source">
+                <ScalarProperty Name="WJXBFS5" ColumnName="WJXBFS5" />
+                <ScalarProperty Name="WJXBFS4" ColumnName="WJXBFS4" />
+                <ScalarProperty Name="WJXBFS3" ColumnName="WJXBFS3" />
+                <ScalarProperty Name="WJXBFS2" ColumnName="WJXBFS2" />
+                <ScalarProperty Name="WJXBFS1" ColumnName="WJXBFS1" />
+                <ScalarProperty Name="CustCol_5" ColumnName="CustCol_5" />
+                <ScalarProperty Name="ARCHIVE_DATE" ColumnName="ARCHIVE_DATE" />
+                <ScalarProperty Name="CustCol_4" ColumnName="CustCol_4" />
+                <ScalarProperty Name="STATEMENT_DATE" ColumnName="STATEMENT_DATE" />
+                <ScalarProperty Name="ACCRUED_INTEREST" ColumnName="ACCRUED_INTEREST" />
+                <ScalarProperty Name="TRANSACTION_DESCRIPTION_AFR" ColumnName="TRANSACTION_DESCRIPTION_AFR" />
+                <ScalarProperty Name="TRANSACTION_DESCRIPTION" ColumnName="TRANSACTION_DESCRIPTION" />
+                <ScalarProperty Name="DAY_OF_STATEMENT" ColumnName="DAY_OF_STATEMENT" />
+                <ScalarProperty Name="TRAN_DATE_ID" ColumnName="TRAN_DATE_ID" />
+                <ScalarProperty Name="NOTICE_PERIOD_AFR" ColumnName="NOTICE_PERIOD_AFR" />
+                <ScalarProperty Name="NOTICE_PERIOD" ColumnName="NOTICE_PERIOD" />
+                <ScalarProperty Name="BONUS_INTEREST" ColumnName="BONUS_INTEREST" />
+                <ScalarProperty Name="INV_INTEREST_DISPOSAL_DESCRIPTION_AFR" ColumnName="INV_INTEREST_DISPOSAL_DESCRIPTION_AFR" />
+                <ScalarProperty Name="INV_INTEREST_DISPOSAL_DESCRIPTION" ColumnName="INV_INTEREST_DISPOSAL_DESCRIPTION" />
+                <ScalarProperty Name="INV_INTEREST_DISPOSAL_ID" ColumnName="INV_INTEREST_DISPOSAL_ID" />
+                <ScalarProperty Name="EXPIRY_DATE_ID" ColumnName="EXPIRY_DATE_ID" />
+                <ScalarProperty Name="CURRENT_INT_RATE" ColumnName="CURRENT_INT_RATE" />
+                <ScalarProperty Name="OPEN_DATE_ID" ColumnName="OPEN_DATE_ID" />
+                <ScalarProperty Name="PRODUCT_DESCRIPTION_AFR" ColumnName="PRODUCT_DESCRIPTION_AFR" />
+                <ScalarProperty Name="PRODUCT_DESCRIPTION" ColumnName="PRODUCT_DESCRIPTION" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="PRODUCT_TYPE_AFR" ColumnName="PRODUCT_TYPE_AFR" />
+                <ScalarProperty Name="PRODUCT_TYPE" ColumnName="PRODUCT_TYPE" />
+                <ScalarProperty Name="INVESTMENT_ID" ColumnName="INVESTMENT_ID" />
+                <ScalarProperty Name="BRANCH_PHONE" ColumnName="BRANCH_PHONE" />
+                <ScalarProperty Name="STREET_CODE" ColumnName="STREET_CODE" />
+                <ScalarProperty Name="STREET_ADDR_4" ColumnName="STREET_ADDR_4" />
+                <ScalarProperty Name="STREET_ADDR_3" ColumnName="STREET_ADDR_3" />
+                <ScalarProperty Name="STREET_ADDR_2" ColumnName="STREET_ADDR_2" />
+                <ScalarProperty Name="STREET_ADDR_1" ColumnName="STREET_ADDR_1" />
+                <ScalarProperty Name="BRANCH_DESCRIPTION" ColumnName="BRANCH_DESCRIPTION" />
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="MASKED_CELL_NO" ColumnName="MASKED_CELL_NO" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="ADDR_LINE_4" ColumnName="ADDR_LINE_4" />
+                <ScalarProperty Name="ADDR_LINE_3" ColumnName="ADDR_LINE_3" />
+                <ScalarProperty Name="ADDR_LINE_2" ColumnName="ADDR_LINE_2" />
+                <ScalarProperty Name="ADDR_LINE_1" ColumnName="ADDR_LINE_1" />
+                <ScalarProperty Name="ADDR_LINE_0" ColumnName="ADDR_LINE_0" />
+                <ScalarProperty Name="TITLE_TEXT" ColumnName="TITLE_TEXT" />
+                <ScalarProperty Name="DS_INVESTOR_NAME" ColumnName="DS_INVESTOR_NAME" />
+                <ScalarProperty Name="SURNAME_TEXT" ColumnName="SURNAME_TEXT" />
+                <ScalarProperty Name="FIRST_NAME_TEXT" ColumnName="FIRST_NAME_TEXT" />
+                <ScalarProperty Name="CUSTOMER_ID_TEXT" ColumnName="CUSTOMER_ID_TEXT" />
+                <ScalarProperty Name="BARCODE" ColumnName="BARCODE" />
+                <ScalarProperty Name="INVESTOR_ID" ColumnName="INVESTOR_ID" />
+                <ScalarProperty Name="INVESTOR_GROUP" ColumnName="INVESTOR_GROUP" />
+                <ScalarProperty Name="SEGMENT" ColumnName="SEGMENT" />
+                <ScalarProperty Name="SEG_L1_STR" ColumnName="SEG_L1_STR" />
+                <ScalarProperty Name="LANGUAGE_CD" ColumnName="LANGUAGE_CD" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_SegmentMaster">
+            <EntityTypeMapping TypeName="NenbankDataContextModel.NB_SegmentMaster">
+              <MappingFragment StoreEntitySet="NB_SegmentMaster">
+                <ScalarProperty Name="SegmentTypeId" ColumnName="SegmentTypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_SegmentTypeMaster">
+            <EntityTypeMapping TypeName="NenbankDataContextModel.NB_SegmentTypeMaster">
+              <MappingFragment StoreEntitySet="NB_SegmentTypeMaster">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_ServiceMessagesAndContacts">
+            <EntityTypeMapping TypeName="NenbankDataContextModel.NB_ServiceMessagesAndContacts">
+              <MappingFragment StoreEntitySet="NB_ServiceMessagesAndContacts">
+                <ScalarProperty Name="Servicemsg7" ColumnName="Servicemsg7" />
+                <ScalarProperty Name="Servicemsg6" ColumnName="Servicemsg6" />
+                <ScalarProperty Name="Servicemsg5" ColumnName="Servicemsg5" />
+                <ScalarProperty Name="Servicemsg4" ColumnName="Servicemsg4" />
+                <ScalarProperty Name="Servicemsg3" ColumnName="Servicemsg3" />
+                <ScalarProperty Name="Servicemsg2" ColumnName="Servicemsg2" />
+                <ScalarProperty Name="Servicemsg1" ColumnName="Servicemsg1" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Segment" ColumnName="Segment" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

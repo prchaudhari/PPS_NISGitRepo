@@ -106,6 +106,7 @@ export class AddDashboardDesignerComponent implements OnInit {
 
   public SegmentBasedContentForm: FormGroup;
   public segmentBasedContentContent: string = "";
+  public segmentList: any[] = [{ 'Identifier': '0', 'Name': 'Select Segment' }];
 
   public BackgroundImageAssetId = 0;
   public BackgroundImageURL = '';
@@ -203,6 +204,11 @@ export class AddDashboardDesignerComponent implements OnInit {
     showAssetError: false,
     showTaargetLinkError: false
   }
+
+  public segmentBasedContentFormErrorObject: any = {
+    showSegmentError: false,
+    showContentError: false
+  };
 
   //Getters for Image config Forms
   get imgAssetLibrary() {
@@ -310,10 +316,10 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   saveSegmentBasedContentFormValidation(): boolean {
-    // if (this.rteObj.value != undefined && this.rteObj.value.length > 0) {
-    //   return false;
-    // }
-    return true;
+    if (!this.segmentBasedContentFormErrorObject.showContentError && !this.segmentBasedContentFormErrorObject.showSegmentError) {
+      return true;
+    }
+    return false;
   }
 
   isImageConfigForm(widgetId, widgetItemCount) {
@@ -554,10 +560,13 @@ export class AddDashboardDesignerComponent implements OnInit {
     });
 
     this.SegmentBasedContentForm = this.fb.group({
+      SegmentId: 0,
       SegmentBasedContent: [null, [Validators.required]]
     });
 
     this.getAssetLibraries();
+
+    this.getSegments();
 
     if (this.pageEditModeOn && this.widgetsGridsterItemArray.length == 0) {
       this.getTemplate();
@@ -1517,6 +1526,23 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "SegmentBasedContent") {
+            debugger
+            return this.widgetsGridsterItemArray.push({
+              cols: 4,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: SegmentBasedContentComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
         }
         else {
           if (widget.WidgetType == 'Table') {
@@ -1831,6 +1857,10 @@ export class AddDashboardDesignerComponent implements OnInit {
       else if (widget.WidgetName == "StaticHtml") {
         gridObj.component = StaticHtmlComponent
       }
+      else if (widget.WidgetName == "SegmentBasedContent") {
+        debugger
+        gridObj.component = SegmentBasedContentComponent
+      }
     }
     else {
       let dynaWidgets = this.widgetsArray.filter(item => item.Identifier == widget.WidgetId && item.WidgetName == widgetName && item.WidgetType != 'Static');
@@ -2143,15 +2173,24 @@ export class AddDashboardDesignerComponent implements OnInit {
   OnSegmentBasedContentConfigBtnClicked(actionFor) {
     debugger
     if (actionFor == 'submit') {
-      let segmentBasedContent = this.SegmentBasedContentForm.value['segmentBasedContent'];
+      let segmentId = this.SegmentBasedContentForm.value.SegmentId;
+      let segmentBasedContent = this.SegmentBasedContentForm.value.SegmentBasedContent;
       let segmentBasedContentConfig: any = {};
       segmentBasedContentConfig.WidgetId = this.segmentBasedContentWidgetId;
-      segmentBasedContentConfig.html = segmentBasedContent;
+      segmentBasedContentConfig.SegmentId = segmentId;
+      segmentBasedContentConfig.Html = segmentBasedContent;
 
 
       let oldItem = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.segmentBasedContentWidgetId && x.widgetItemCount == this.selectedWidgetItemCount)[0];
       let newItem = Object.assign({}, oldItem)
-      newItem.WidgetSetting = JSON.stringify(segmentBasedContentConfig);
+      if(newItem.WidgetSetting === '')
+        newItem.WidgetSetting = '['+ JSON.stringify(segmentBasedContentConfig) +']';
+      else
+      {
+        var setting = JSON.parse(newItem.WidgetSetting);
+        setting.push(segmentBasedContentConfig);
+        newItem.WidgetSetting = JSON.stringify(setting);
+      }
       const index: number = this.widgetsGridsterItemArray.indexOf(oldItem);
       this.widgetsGridsterItemArray.splice(index, 1);
       this.widgetsGridsterItemArray.push(newItem);
@@ -2159,6 +2198,64 @@ export class AddDashboardDesignerComponent implements OnInit {
     this.issegmentBasedContentConfig = !this.issegmentBasedContentConfig;
     this.selectedWidgetItemCount = 0;
     this.isMasterSaveBtnDisabled = false;
+  }
+
+  onSegmentSelected(event) {
+    debugger
+
+    var selectedSegmentId = event.target.value;
+    this.isMasterSaveBtnDisabled = true;
+    this.issegmentBasedContentConfig = true;
+    //this.segmentBasedContentWidgetId = widgetId;
+    //this.selectedWidgetItemCount = widgetItemCount;
+
+    var records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.segmentBasedContentWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+    if (records.length != 0) {
+      var widgetSetting = records[0].WidgetSetting;
+      if (widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+        var widgetConfigObj = JSON.parse(widgetSetting);
+        var selectedItemVal = widgetConfigObj.filter(m=> m.SegmentId == selectedSegmentId);
+        if(selectedItemVal.length > 0)
+        {
+          this.SegmentBasedContentForm.patchValue({
+            SegmentBasedContent: selectedItemVal[0].Html
+          });
+        }
+        else
+        {
+          this.SegmentBasedContentForm.patchValue({
+            SegmentBasedContent: ''
+          });
+        }
+      } else {
+          this.SegmentBasedContentForm.patchValue({
+            SegmentBasedContent: ''
+          });
+          this.markFormGroupUnTouched(this.SegmentBasedContentForm);
+      }
+    }
+  }
+
+  getSegments() {
+    if (!this.pageEditModeOn) {
+      this.uiLoader.start();
+    }
+    this._http.get(this.baseURL + URLConfiguration.segmentGetUrl).subscribe(
+      data => {
+        debugger
+        if (!this.pageEditModeOn) {
+          this.uiLoader.stop();
+        }
+        let records = <any[]>data;
+        this.segmentList.push(...records);
+      },
+      error => {
+        if (!this.pageEditModeOn) {
+          this.uiLoader.stop();
+        }
+        this._messageDialogService.openDialogBox('Error', error.error.Message, Constants.msgBoxError);
+      }
+    );
   }
 
   resetImageConfigForm() {
