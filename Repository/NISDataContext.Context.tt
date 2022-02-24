@@ -80,6 +80,11 @@ foreach (var entitySet in container.BaseEntitySets.OfType<EntitySet>())
 #>
     }
 
+    public NISEntities(string connectionString)
+        : base(connectionString)
+    {
+    }
+
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
         throw new UnintentionalCodeFirstException();

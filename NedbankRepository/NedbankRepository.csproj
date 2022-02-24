@@ -248,6 +248,9 @@
     <Compile Include="MultiTenantUserAccessMap.cs">
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="NB_BatchMaster_Source.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="NB_BranchMaster.cs">
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
@@ -258,6 +261,18 @@
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_InvestmentTransaction.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_Investment_Source.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_SegmentMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_SegmentTypeMaster.cs">
+      <DependentUpon>NedbankDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_ServiceMessagesAndContacts.cs">
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NedbankDataContext.Context.cs">
@@ -275,6 +290,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NedbankDataContext.edmx</DependentUpon>
     </Compile>
+    <Compile Include="NedbankDbContext.cs" />
+    <Compile Include="NedbankDbInitializer.cs" />
     <Compile Include="Operation.cs">
       <DependentUpon>NedbankDataContext.tt</DependentUpon>
     </Compile>

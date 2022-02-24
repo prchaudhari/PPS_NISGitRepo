@@ -270,7 +270,7 @@ export class AddComponent implements OnInit {
         }
         else if (this.widgetList[i].WidgetName == "SegmentBasedContent") {
           this.widgetList[i].ImageSource = "assets/images/SegmentBasedContent.JPG";
-          this.widgetList[i].WidgetIcon = "fa fa-ruler-combined";
+          this.widgetList[i].WidgetIcon = "fa fa-id-card-o";
         }
       }
     }

@@ -36,6 +36,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
 
     public isImageConfig: boolean = false;
     public isVideoConfig: boolean = false;
+    public isSegmentBasedContentConfig: boolean = false;
     public isWidgetSidebar: boolean = false;
     public isEmbedded: boolean = false;
     public isPersonalizeImage: boolean = false;
@@ -59,6 +60,7 @@ export class ViewDashboardDesignerComponent implements OnInit {
     public vdoSourceUrl:  string;
     public imageWidgetId: number = 0;
     public videoWidgetId: number = 0;
+    public SegmentBasedContentWidgetId: number = 0;
     public widgetItemCount: number = 0;
     public selectedWidgetItemCount: number = 0;
 
@@ -162,6 +164,24 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
         }
     }
+
+    isSegmentBasedContentForm(widgetId, widgetItemCount) {
+      debugger
+      this.isSegmentBasedContentConfig = true;
+      this.SegmentBasedContentWidgetId = widgetId;
+      this.selectedWidgetItemCount = widgetItemCount;
+      this.isNoConfigurationSaved = false;
+      var records = this.widgetsGridsterItemArray.filter(x => x.WidgetId == this.SegmentBasedContentWidgetId && x.widgetItemCount == this.selectedWidgetItemCount);
+      if(records.length != 0) {
+          var widgetSetting = records[0].WidgetSetting;
+          if(widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
+              var widgetConfigObj = JSON.parse(widgetSetting);
+              debugger
+          }else {
+              this.isNoConfigurationSaved = true;
+          }
+      }
+  }
 
     ngOnInit() {
 

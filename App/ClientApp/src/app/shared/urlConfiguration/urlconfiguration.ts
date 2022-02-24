@@ -97,6 +97,8 @@ export class URLConfiguration {
 
   public static get assetGetUrl(): string { return "assetlibrary/asset/list" };
 
+  public static get segmentGetUrl(): string { return "NB_SegmentMaster/GetNB_SegmentMaster" };
+
   //Page Url Method
   public static get pageGetUrl(): string { return "Page/List" };
   public static get pageGetPagesForListUrl(): string { return "Page/GetPagesForList" };

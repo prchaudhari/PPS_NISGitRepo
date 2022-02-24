@@ -119,6 +119,13 @@
         <EntityTypeShape EntityType="NenbankDataContextModel.database_firewall_rules" Width="1.5" PointX="32.75" PointY="10.75" IsExpanded="false" />
         <EntityTypeShape EntityType="NenbankDataContextModel.LanguageMaster" Width="1.5" PointX="21.375" PointY="32.75" />
         <EntityTypeShape EntityType="NenbankDataContextModel.LanguageTenantMapping" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_BatchMaster_Source" Width="1.5" PointX="5.375" PointY="12.75" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_Investment_Source" Width="1.5" PointX="29.375" PointY="28.75" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_SegmentMaster" Width="1.5" PointX="20.5" PointY="35.625" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_SegmentTypeMaster" Width="1.5" PointX="18.25" PointY="36" />
+        <EntityTypeShape EntityType="NenbankDataContextModel.NB_ServiceMessagesAndContacts" Width="1.5" PointX="7.375" PointY="13.75" />
+        <AssociationConnector Association="NenbankDataContextModel.FK__NB_Invest__Segme__29CC2871" />
+        <AssociationConnector Association="NenbankDataContextModel.FK__NB_Segmen__Segme__28D80438" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

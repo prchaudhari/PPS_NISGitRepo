@@ -1405,18 +1405,64 @@ export class StaticHtmlComponent {
       <span class="widget-header-title"> Segment Based Content </span>
     </div>
     <div class="widget-area position-relative width100">
-      <div class="widget-indicator-inner text-center pt-2">
-        <i class="fa fa-lg fa-code" aria-hidden="true" style='font-size:18em;'></i>
-      </div>
+      <div>{{ html }}</div>
+      <!-- <div class="widget-indicator-inner text-center pt-2">
+        <i class="fa fa-lg fa-id-card-o" aria-hidden="true" style='font-size:18em;'></i>
+      </div> -->
     </div>
   </div>`
 })
 export class SegmentBasedContentComponent {
 
-  constructor() { }
+  @Input() SegmentBasedContentItem: any;
+
+  public html: any;
+
+  constructor(private _http: HttpClient,
+    private sanitizer: DomSanitizer) {
+      debugger
+    }
 
   ngOnInit() {
+    debugger
+    if (this.SegmentBasedContentItem != null && this.SegmentBasedContentItem.WidgetSetting != null && this.SegmentBasedContentItem.WidgetSetting != '' && this.testJSON(this.SegmentBasedContentItem.WidgetSetting)) {
+      let widgetSetting = JSON.parse(this.SegmentBasedContentItem.WidgetSetting);
+      debugger
+      if(widgetSetting.length > 0)
+      {
+        this.html = widgetSetting[0].Html;
+      }
+      else
+      {
+        this.html = '';
+      }
+    }
+    else {
+      this.html = '';
+    }
+  }
 
+  testJSON(text) {
+    if (typeof text !== "string") {
+      return false;
+    }
+    try {
+      JSON.parse(text);
+      return true;
+    }
+    catch (error) {
+      return false;
+    }
+  }
+
+  ngAfterViewInit() {
+    debugger
+    setTimeout(() => {
+      if (this.SegmentBasedContentItem != null && this.SegmentBasedContentItem.WidgetSetting != null && this.SegmentBasedContentItem.WidgetSetting != '' && this.testJSON(this.SegmentBasedContentItem.WidgetSetting)) {
+        let widgetSetting = JSON.parse(this.SegmentBasedContentItem.WidgetSetting);
+        debugger
+      } 
+    }, 100);
   }
 
 }

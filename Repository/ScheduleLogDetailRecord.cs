@@ -28,6 +28,5 @@ namespace nIS
         public System.DateTime CreationDate { get; set; }
         public string TenantCode { get; set; }
         public string StatementFilePath { get; set; }
-        public IList<StatementMetadataRecord> StatementMetadataRecords { get; set; }
     }
 }

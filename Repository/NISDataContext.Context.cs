@@ -21,10 +21,12 @@ namespace nIS
             : base("name=NISEntities")
         {
         }
+    
         public NISEntities(string connectionString)
-                                                                   : base(connectionString)
+            : base(connectionString)
         {
         }
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
