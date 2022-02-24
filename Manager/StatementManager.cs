@@ -851,6 +851,20 @@ namespace nIS
                                                                 }
                                                                 break;
 
+                                                            case HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_NAME:
+                                                                if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                                {
+                                                                    if (statementPages.Count == 1)
+                                                                    {
+                                                                        pageHtmlContent.Append(this.BranchDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    pageHtmlContent.Append(this.BranchDetailsWidgetFormatting(pageWidget, counter, page));
+                                                                }
+                                                                break;
+
                                                             case HtmlConstants.IMAGE_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.ImageWidgetFormatting(pageWidget, counter, statement, page, divHeight));
                                                                 break;
@@ -1397,6 +1411,10 @@ namespace nIS
 
                                 case HtmlConstants.BRANCH_DETAILS_WIDGET_NAME:
                                     this.BindDummyDataToBranchDetailsWidget(pageContent, page, widget, statement.Pages.Count);
+                                    break;
+
+                                case HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_NAME:
+                                    this.BindDummyDataToWealthBranchDetailsWidget(pageContent, page, widget, statement.Pages.Count);
                                     break;
 
                                 case HtmlConstants.IMAGE_WIDGET_NAME:
@@ -2793,6 +2811,40 @@ namespace nIS
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.BRANCH_DETAILS_WIDGET_NAME)
                                                 {
                                                     var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML);
+                                                    if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                    {
+                                                        if (statementPages.Count == 1)
+                                                        {
+                                                            htmlWidget.Replace("{{BankName}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                                                            htmlWidget.Replace("{{AddressLine0}}", string.Empty);
+                                                            htmlWidget.Replace("{{AddressLine1}}", string.Empty);
+                                                            htmlWidget.Replace("{{AddressLine2}}", string.Empty);
+                                                            htmlWidget.Replace("{{AddressLine3}}", string.Empty);
+                                                            htmlWidget.Replace("{{BankVATRegNo}}", string.Empty);
+                                                            htmlWidget.Replace("{{ContactCenter}}", "Professional Banking 24/7 Contact centre: " + "0860 555 111");
+                                                            htmlString.Append(htmlWidget.ToString());
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        string jsonstr = "{'BranchName': 'NEDBANK', 'AddressLine0':'Second Floor, Newtown Campus', 'AddressLine1':'141 Lilian Ngoyi Street, Newtown, Johannesburg 2001', 'AddressLine2':'PO Box 1144, Johannesburg, 2000','AddressLine3':'South Africa','VatRegNo':'4320116074','ContactNo':'0860 555 111'}";
+                                                        if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                        {
+                                                            var branchDetails = JsonConvert.DeserializeObject<DM_BranchMaster>(jsonstr);
+                                                            htmlWidget.Replace("{{BankName}}", branchDetails.BranchName.ToUpper());
+                                                            htmlWidget.Replace("{{AddressLine0}}", branchDetails.AddressLine0.ToUpper());
+                                                            htmlWidget.Replace("{{AddressLine1}}", branchDetails.AddressLine1.ToUpper());
+                                                            htmlWidget.Replace("{{AddressLine2}}", branchDetails.AddressLine2.ToUpper());
+                                                            htmlWidget.Replace("{{AddressLine3}}", branchDetails.AddressLine3.ToUpper());
+                                                            htmlWidget.Replace("{{BankVATRegNo}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
+                                                            htmlWidget.Replace("{{ContactCenter}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
+                                                            htmlString.Append(htmlWidget.ToString());
+                                                        }
+                                                    }
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_NAME)
+                                                {
+                                                    var htmlWidget = new StringBuilder(HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_HTML);
                                                     if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
                                                     {
                                                         if (statementPages.Count == 1)
@@ -5192,6 +5244,35 @@ namespace nIS
         private void BindDummyDataToBranchDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget, int pagesCount)
         {
             var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML);
+            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+            {
+                if (pagesCount == 1)
+                {
+                    pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                    htmlWidget.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Professional Banking 24/7 Contact centre " + "0860 555 111");
+                }
+            }
+            else
+            {
+                string jsonstr = "{'BranchName': 'NEDBANK', 'AddressLine0':'Second Floor, Newtown Campus', 'AddressLine1':'141 Lilian Ngoyi Street, Newtown, Johannesburg 2001', 'AddressLine2':'PO Box 1144, Johannesburg, 2000','AddressLine3':'South Africa','VatRegNo':'4320116074','ContactNo':'0860 555 111'}";
+                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                {
+                    var branchDetails = JsonConvert.DeserializeObject<DM_BranchMaster>(jsonstr);
+                    var BranchDetail = branchDetails.BranchName.ToUpper() + "<br>" +
+                            (!string.IsNullOrEmpty(branchDetails.AddressLine0) ? (branchDetails.AddressLine0.ToUpper() + "<br>") : string.Empty) +
+                            (!string.IsNullOrEmpty(branchDetails.AddressLine1) ? (branchDetails.AddressLine1.ToUpper() + "<br>") : string.Empty) +
+                            (!string.IsNullOrEmpty(branchDetails.AddressLine2) ? (branchDetails.AddressLine2.ToUpper() + "<br>") : string.Empty) +
+                            (!string.IsNullOrEmpty(branchDetails.AddressLine3) ? (branchDetails.AddressLine3.ToUpper() + "<br>") : string.Empty) +
+                            (!string.IsNullOrEmpty(branchDetails.VatRegNo) ? "Bank VAT Reg No " + branchDetails.VatRegNo : string.Empty);
+                    pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
+                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
+                }
+            }
+        }
+
+        private void BindDummyDataToWealthBranchDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget, int pagesCount)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_HTML);
             if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
             {
                 if (pagesCount == 1)

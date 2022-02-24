@@ -140,6 +140,10 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/BankDetails.JPG"
           this.widgetList[i].WidgetIcon = "fa fa-university";
         }
+        else if (this.widgetList[i].WidgetName == "WealthBranchDetails") {
+          this.widgetList[i].ImageSource = "assets/images/WealthBranchDetails.PNG"
+          this.widgetList[i].WidgetIcon = "fa fa-university";
+        }
         else if (this.widgetList[i].WidgetName == "BreakdownOfInvestmentAccounts") {
           this.widgetList[i].ImageSource = "assets/images/BreakdownOfInvestmentAccounts.JPG"
           this.widgetList[i].WidgetIcon = "icon-widget-single-column2";

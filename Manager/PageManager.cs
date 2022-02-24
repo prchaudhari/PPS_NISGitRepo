@@ -824,6 +824,38 @@ namespace nIS
                                                 }
 
                                             }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_NAME)
+                                            {
+                                                var htmlWidget = new StringBuilder(HtmlConstants.WEALTH_BRANCH_DETAILS_WIDGET_HTML);
+                                                if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                                {
+                                                    htmlWidget.Replace("{{BankName}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                                                    htmlWidget.Replace("{{AddressLine0}}", string.Empty);
+                                                    htmlWidget.Replace("{{AddressLine1}}", string.Empty);
+                                                    htmlWidget.Replace("{{AddressLine2}}", string.Empty);
+                                                    htmlWidget.Replace("{{AddressLine3}}", string.Empty);
+                                                    htmlWidget.Replace("{{BankVATRegNo}}", string.Empty);
+                                                    htmlWidget.Replace("{{ContactCenter}}", "Professional Banking 24/7 Contact centre " + "0860 555 111");
+                                                    htmlString.Append(htmlWidget.ToString());
+                                                }
+                                                else
+                                                {
+                                                    string jsonstr = "{'BranchName': 'NEDBANK', 'AddressLine0':'Second Floor, Newtown Campus', 'AddressLine1':'141 Lilian Ngoyi Street, Newtown, Johannesburg 2001', 'AddressLine2':'PO Box 1144, Johannesburg, 2000','AddressLine3':'South Africa','VatRegNo':'4320116074','ContactNo':'0860 555 111'}";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var branchDetails = JsonConvert.DeserializeObject<DM_BranchMaster>(jsonstr);
+                                                        htmlWidget.Replace("{{BankName}}", branchDetails.BranchName.ToUpper());
+                                                        htmlWidget.Replace("{{AddressLine0}}", branchDetails.AddressLine0.ToUpper());
+                                                        htmlWidget.Replace("{{AddressLine1}}", branchDetails.AddressLine1.ToUpper());
+                                                        htmlWidget.Replace("{{AddressLine2}}", branchDetails.AddressLine2.ToUpper());
+                                                        htmlWidget.Replace("{{AddressLine3}}", branchDetails.AddressLine3.ToUpper());
+                                                        htmlWidget.Replace("{{BankVATRegNo}}", "Bank VAT Reg No " + branchDetails.VatRegNo);
+                                                        htmlWidget.Replace("{{ContactCenter}}", "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo);
+                                                        htmlString.Append(htmlWidget.ToString());
+                                                    }
+                                                }
+
+                                            }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                             {
                                                 string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021','StatementDate':'21/01/2021', 'DsInvestorName' : '' }";

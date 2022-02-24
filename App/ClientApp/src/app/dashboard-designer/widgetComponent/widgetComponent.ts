@@ -1988,6 +1988,29 @@ export class BankDetailsComponent {
   widgetsGridsterItemArray: any[] = [];
 }
 
+// Component Created for Bank Details Widget -- Nedbank
+@Component({
+  selector: 'WealthBankDetails',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class='card border-0'>
+          <div class="card-body BranchDetails">
+              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
+              <br>Bank VAT Reg No XXXXXXXXXX
+          </div>
+          <div class="ConactCenterDiv text-success-w float-right pt-3">
+              Nedbank Private Wealth Service Suite: XXXX XXX XXX
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class WealthBankDetailsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+
 // Component Created for Investment Portfolio Statement Widget -- Nedbank
 @Component({
   selector: 'InvestmentPortfolioStatement',
@@ -2147,7 +2170,7 @@ export class InvestorPerformanceComponent {
                   <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
                       <tbody>
                           <tr>
-                              <td class='w-50' colspan='2'><span class='text-success fnt-18'>Notice deposits</span></td>
+                              <td class='w-50' colspan='2'><span class='text-success-w fnt-18'>Notice deposits</span></td>
                           </tr>
                           <tr>
                               <td class='w-50 fnt-14'>Opening balance</td>
@@ -2403,11 +2426,11 @@ export class BreakdownOfInvestmentAccountsComponent {
     <div class="widget-area height100">
       <div class='card border-0'>
           <div class='card-body text-left'>
-              <div class="card-body-header pb-2">Breakdown of your investment accounts</div>
+              <div class="card-body-header-w pb-2">Breakdown of your investment accounts</div>
               
                   <div id='JustInvest-9929' class='tab-pane fade in active show'>
                       <div style="background-color: #f3f3f3;padding:10px 0px">
-                          <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
+                          <h4 class="pl-25px"><span class='InvestmentProdDescW'>Product Desc</span></h4>
                           <table border="0" class="InvestmentDetailW customTable">
                               <tbody>
                                   <tr>
@@ -2437,8 +2460,8 @@ export class BreakdownOfInvestmentAccountsComponent {
                               </tbody>
                           </table>
                           <div class="InvestmentClosingBalanceDiv">
-                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success">Max Transaction date</span><br>
-                              <span class="text-success fnt-20">Total Closing Balance</span>
+                              <span class='fn-14'>Balance at&nbsp;</span> <span class="text-success-w">Max Transaction date</span><br>
+                              <span class="text-success-w fnt-20">Total Closing Balance</span>
                           </div>
                       </div>
 
@@ -2510,7 +2533,7 @@ export class BreakdownOfInvestmentAccountsComponent {
                       <br/><br/>
 
                       <div style="background-color: #f3f3f3;padding:10px 0px">
-                          <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
+                          <h4 class="pl-25px"><span class="InvestmentProdDescW">Product Desc</span></h4>
                           <table border="0" class="InvestmentDetailW customTable">
                               <tbody>
                                   <tr>
