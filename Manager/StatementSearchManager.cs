@@ -837,6 +837,11 @@ namespace nIS
                                         MarketingMessageCounter++;
                                         break;
 
+                                    case HtmlConstants.WEALTH_SERVICE_WIDGET_NAME:
+                                        this.BindMarketingServiceWidgetData(pageContent, Messages, page, widget, MarketingMessageCounter);
+                                        MarketingMessageCounter++;
+                                        break;
+
                                     case HtmlConstants.PERSONAL_LOAN_DETAIL_WIDGET_NAME:
                                         this.BindPersonalLoanDetailWidgetData(pageContent, batchMaster, customer, page, widget, tenantCode);
                                         break;

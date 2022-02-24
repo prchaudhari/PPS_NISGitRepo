@@ -443,6 +443,14 @@ namespace nIS
                                                 htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
                                             }
                                             PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
+                                        }else if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                        {
+                                            //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
+                                            if (MarketingMessageCounter == 0)
+                                            {
+                                                htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header-w pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                            }
+                                            PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
                                         }
                                         htmlString.Append("<div class='col-lg-" + divLength + PaddingClass + "'>");
 
@@ -871,6 +879,19 @@ namespace nIS
                                                     htmlString.Append(InvestorPerformanceHtmlWidget);
                                                 }
                                             }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME)
+                                            {
+                                                string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
+                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                {
+                                                    dynamic InvestmentPerformance = JObject.Parse(jsonstr);
+                                                    var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
+                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", Convert.ToString(InvestmentPerformance.ProductType));
+                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
+                                                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
+                                                    htmlString.Append(InvestorPerformanceHtmlWidget);
+                                                }
+                                            }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
                                             {
                                                 string jsonstr = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
@@ -958,7 +979,7 @@ namespace nIS
                                                     TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
                                                     InvestmentAccounts.ToList().ForEach(acc =>
                                                     {
-                                                        var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
+                                                        var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
                                                         InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
                                                         InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
                                                         InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : string.Empty));
@@ -1020,6 +1041,21 @@ namespace nIS
                                                     htmlString.Append(NotesHtmlWidget);
                                                 }
                                             }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME)
+                                            {
+                                                string jsonstr = "{'Note1': 'Fixed deposits — Total balance of all your fixed-type accounts.', 'Note2': 'Notice deposits — Total balance of all your notice deposit accounts.', 'Note3':'Linked deposits — Total balance of all your linked-type accounts.'}";
+                                                if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                {
+                                                    dynamic noteObj = JObject.Parse(jsonstr);
+                                                    var NotesHtmlWidget = HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_HTML;
+                                                    var notes = new StringBuilder();
+                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note1) + " </span> <br/>");
+                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note2) + " </span> <br/>");
+                                                    notes.Append("<span> " + Convert.ToString(noteObj.Note3) + " </span> ");
+                                                    NotesHtmlWidget = NotesHtmlWidget.Replace("{{Notes}}", notes.ToString());
+                                                    htmlString.Append(NotesHtmlWidget);
+                                                }
+                                            }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
                                             {
                                                 if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
@@ -1031,6 +1067,24 @@ namespace nIS
                                                         var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
 
                                                         var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML;
+                                                        htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
+                                                        htmlWidget = htmlWidget.Replace("{{ServiceMessageText}}", messageTxt);
+                                                        htmlString.Append(htmlWidget);
+                                                    }
+                                                }
+                                                MarketingMessageCounter++;
+                                            }
+                                            else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                            {
+                                                if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
+                                                {
+                                                    IList<MarketingMessage> _lstMarketingMessage = JsonConvert.DeserializeObject<List<MarketingMessage>>(MarketingMessages);
+                                                    var ServiceMessage = _lstMarketingMessage[MarketingMessageCounter];
+                                                    if (ServiceMessage != null)
+                                                    {
+                                                        var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
+
+                                                        var htmlWidget = HtmlConstants.WEALTH_SERVICE_WIDGET_HTML;
                                                         htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
                                                         htmlWidget = htmlWidget.Replace("{{ServiceMessageText}}", messageTxt);
                                                         htmlString.Append(htmlWidget);

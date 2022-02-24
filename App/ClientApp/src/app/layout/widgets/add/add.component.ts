@@ -168,12 +168,24 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/InvestorPerformance.JPG"
           this.widgetList[i].WidgetIcon = "icon-widget-line-chart2";
         }
+        else if (this.widgetList[i].WidgetName == "WealthInvestorPerformance") {
+          this.widgetList[i].ImageSource = "assets/images/WealthInvestorPerformance.PNG"
+          this.widgetList[i].WidgetIcon = "icon-widget-line-chart2";
+        }
         else if (this.widgetList[i].WidgetName == "ExplanatoryNotes") {
           this.widgetList[i].ImageSource = "assets/images/ExplanatoryNotes.JPG"
           this.widgetList[i].WidgetIcon = "fa fa-list";
         }
+        else if (this.widgetList[i].WidgetName == "WealthExplanatoryNotes") {
+          this.widgetList[i].ImageSource = "assets/images/WealthExplanatoryNotes.PNG"
+          this.widgetList[i].WidgetIcon = "fa fa-list";
+        }
         else if (this.widgetList[i].WidgetName == "NedbankService") {
           this.widgetList[i].ImageSource = "assets/images/NedbankService.JPG"
+          this.widgetList[i].WidgetIcon = "fa fa-newspaper-o";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthNedbankService") {
+          this.widgetList[i].ImageSource = "assets/images/WealthNedbankService.PNG"
           this.widgetList[i].WidgetIcon = "fa fa-newspaper-o";
         }
         else if (this.widgetList[i].WidgetName == "PersonalLoanDetail") {

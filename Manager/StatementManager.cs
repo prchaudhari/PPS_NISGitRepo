@@ -285,7 +285,7 @@ namespace nIS
         /// </returns>
         public string PreviewStatement(long statementIdentifier, string baseURL, string tenantCode)
         {
-            
+
             string StatmentPreviewHtml = "";
             try
             {
@@ -492,7 +492,7 @@ namespace nIS
 
                                                     //create new div with col-lg with newly finded div length and above padding zero value
                                                     pageHtmlContent.Append("<div class='col-lg-" + divLength + leftPaddingClass + "'>");
-                                                    
+
                                                     //check current widget is dynamic or static and start generating empty html template for current widget
                                                     if (!pageWidget.IsDynamicWidget)
                                                     {
@@ -812,6 +812,15 @@ namespace nIS
                                                         }
                                                         PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
                                                     }
+                                                    else if (pageWidget.WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                                    {
+                                                        //to add Nedbank services as a header for nedbank services div blocks...
+                                                        if (MarketingMessageCounter == 0)
+                                                        {
+                                                            pageHtmlContent.Append("<div class='col-lg-12 col-sm-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header-w pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                                        }
+                                                        PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
+                                                    }
 
                                                     //create new div with col-lg with newly finded div length and above padding zero value
                                                     pageHtmlContent.Append("<div class='col-lg-" + divLength + " col-sm-" + divLength + PaddingClass + "'>");
@@ -863,11 +872,15 @@ namespace nIS
                                                                 break;
 
                                                             case HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME:
-                                                                pageHtmlContent.Append(this.InvestmentPortfolioStatementWidgetFormatting(pageWidget, counter, page));
+                                                                pageHtmlContent.Append(this.WealthInvestmentPortfolioStatementWidgetFormatting(pageWidget, counter, page));
                                                                 break;
 
                                                             case HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.InvestorPerformanceWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
+                                                            case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.WealthInvestorPerformanceWidgetFormatting(pageWidget, counter, page));
                                                                 break;
 
                                                             case HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
@@ -882,7 +895,16 @@ namespace nIS
                                                                 pageHtmlContent.Append(this.ExplanatoryNotesWidgetFormatting(pageWidget, counter, page));
                                                                 break;
 
+                                                            case HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.WealthExplanatoryNotesWidgetFormatting(pageWidget, counter, page));
+                                                                break;
+
                                                             case HtmlConstants.SERVICE_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.MarketingServiceMessageWidgetFormatting(pageWidget, counter, page, MarketingMessageCounter));
+                                                                MarketingMessageCounter++;
+                                                                break;
+
+                                                            case HtmlConstants.WEALTH_SERVICE_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.MarketingServiceMessageWidgetFormatting(pageWidget, counter, page, MarketingMessageCounter));
                                                                 MarketingMessageCounter++;
                                                                 break;
@@ -1310,7 +1332,7 @@ namespace nIS
 
                 //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                 var scriptHtmlRenderer = new StringBuilder();
-                
+
                 var NavItemList = new StringBuilder();
                 var newStatementPageContents = new List<StatementPageContent>();
                 statementPageContents.ToList().ForEach(it => newStatementPageContents.Add(new StatementPageContent()
@@ -1404,19 +1426,32 @@ namespace nIS
                                     this.BindDummyDataToInvestorPerformanceWidget(pageContent, page, widget);
                                     break;
 
+                                case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
+                                    this.BindDummyDataToInvestorPerformanceWidget(pageContent, page, widget);
+                                    break;
+
                                 case HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
                                     this.BindDummyDataToBreakdownOfInvestmentAccountsWidget(pageContent, page, widget);
                                     break;
 
                                 case HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
-                                    this.BindDummyDataToBreakdownOfInvestmentAccountsWidget(pageContent, page, widget);
+                                    this.BindDummyDataToWealthBreakdownOfInvestmentAccountsWidget(pageContent, page, widget);
                                     break;
 
                                 case HtmlConstants.EXPLANATORY_NOTES_WIDGET_NAME:
                                     this.BindDummyDataToExplanatoryNotesWidget(pageContent, page, widget);
                                     break;
 
+                                case HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME:
+                                    this.BindDummyDataToExplanatoryNotesWidget(pageContent, page, widget);
+                                    break;
+
                                 case HtmlConstants.SERVICE_WIDGET_NAME:
+                                    this.BindDummyDataToMarketingServiceMessageWidget(pageContent, MarketingMessages, page, widget, MarketingMessageCounter);
+                                    MarketingMessageCounter++;
+                                    break;
+
+                                case HtmlConstants.WEALTH_SERVICE_WIDGET_NAME:
                                     this.BindDummyDataToMarketingServiceMessageWidget(pageContent, MarketingMessages, page, widget, MarketingMessageCounter);
                                     MarketingMessageCounter++;
                                     break;
@@ -1989,7 +2024,7 @@ namespace nIS
 
                                                         AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Name</div><label class='list-value mb-0'>" + accountInfo.RmName + "</label></div></div>");
 
-                                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber +"</label></div></div>");
+                                                        AccDivData.Append("<div class='list-row-small ht70px'><div class='list-middle-row'> <div class='list-text'>RM Contact Number</div><label class='list-value mb-0'>" + accountInfo.RmContactNumber + "</label></div></div>");
 
                                                         accountInfoData = HtmlConstants.ACCOUNT_INFORMATION_WIDGET_HTML.Replace("{{AccountInfoData}}", AccDivData.ToString());
                                                     }
@@ -2124,7 +2159,7 @@ namespace nIS
                                                             StringBuilder accSummary = new StringBuilder();
                                                             lstAccountSummary.ToList().ForEach(acc =>
                                                             {
-                                                                accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>"+ acc.Amount + "</td></tr>");
+                                                                accSummary.Append("<tr><td>" + acc.AccountType + "</td><td>" + acc.Currency + "</td><td>" + acc.Amount + "</td></tr>");
                                                             });
                                                             accountSummary = HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_HTML.Replace("{{AccountSummary}}", accSummary.ToString());
                                                         }
@@ -2497,7 +2532,7 @@ namespace nIS
                     IsPersonalLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
                     IsHomeLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList().Count > 0;
                     var MarketingMessages = string.Empty;
-                    
+
                     if (IsInvestmentStatement)
                     {
                         MarketingMessages = HtmlConstants.INVESTMENT_MARKETING_MESSAGE_JSON_STR;
@@ -2510,7 +2545,7 @@ namespace nIS
                     {
                         MarketingMessages = HtmlConstants.HOME_LOAN_MARKETING_MESSAGE_JSON_STR;
                     }
-                    else 
+                    else
                     {
                         MarketingMessages = HtmlConstants.PERSONAL_LOAN_MARKETING_MESSAGE_JSON_STR;
                     }
@@ -2544,9 +2579,9 @@ namespace nIS
                                 //Background image will set at child div of current div tag
                                 pageHeaderHtml = pageHeaderHtml.Replace("{{BackgroundImage}}", string.Empty);
                             }
-                            
+
                             htmlString.Append(pageHeaderHtml.Replace("{{DivId}}", tabClassName).Replace("{{ExtraClass}}", extraclass));
-                            
+
                             int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
                             int max = 0;
                             if (page.PageWidgets.Count > 0)
@@ -2609,6 +2644,15 @@ namespace nIS
                                                 if (MarketingMessageCounter == 0)
                                                 {
                                                     htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
+                                                }
+                                                PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
+                                            }
+                                            else if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                            {
+                                                //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
+                                                if (MarketingMessageCounter == 0)
+                                                {
+                                                    htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header-w pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
                                                 }
                                                 PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
                                             }
@@ -2835,6 +2879,19 @@ namespace nIS
                                                         htmlString.Append(InvestorPerformanceHtmlWidget);
                                                     }
                                                 }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        dynamic InvestmentPerformance = JObject.Parse(jsonstr);
+                                                        var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
+                                                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", Convert.ToString(InvestmentPerformance.ProductType));
+                                                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
+                                                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
+                                                        htmlString.Append(InvestorPerformanceHtmlWidget);
+                                                    }
+                                                }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
                                                 {
                                                     string jsonstr = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
@@ -2923,7 +2980,7 @@ namespace nIS
                                                         TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : "");
                                                         InvestmentAccounts.ToList().ForEach(acc =>
                                                         {
-                                                            var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
+                                                            var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
 
                                                             InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
                                                             InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
@@ -2986,6 +3043,21 @@ namespace nIS
                                                         htmlString.Append(NotesHtmlWidget);
                                                     }
                                                 }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = "{'Note1': 'Fixed deposits — Total balance of all your fixed-type accounts.', 'Note2': 'Notice deposits — Total balance of all your notice deposit accounts.', 'Note3':'Linked deposits — Total balance of all your linked-type accounts.'}";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        dynamic noteObj = JObject.Parse(jsonstr);
+                                                        var NotesHtmlWidget = HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_HTML;
+                                                        var notes = new StringBuilder();
+                                                        notes.Append("<span> " + Convert.ToString(noteObj.Note1) + " </span> <br/>");
+                                                        notes.Append("<span> " + Convert.ToString(noteObj.Note2) + " </span> <br/>");
+                                                        notes.Append("<span> " + Convert.ToString(noteObj.Note3) + " </span> ");
+                                                        NotesHtmlWidget = NotesHtmlWidget.Replace("{{Notes}}", notes.ToString());
+                                                        htmlString.Append(NotesHtmlWidget);
+                                                    }
+                                                }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.SERVICE_WIDGET_NAME)
                                                 {
                                                     if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
@@ -2997,6 +3069,24 @@ namespace nIS
                                                             var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
 
                                                             var htmlWidget = HtmlConstants.SERVICE_WIDGET_HTML;
+                                                            htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
+                                                            htmlWidget = htmlWidget.Replace("{{ServiceMessageText}}", messageTxt);
+                                                            htmlString.Append(htmlWidget);
+                                                        }
+                                                    }
+                                                    MarketingMessageCounter++;
+                                                }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                                {
+                                                    if (MarketingMessages != string.Empty && validationEngine.IsValidJson(MarketingMessages))
+                                                    {
+                                                        IList<MarketingMessage> _lstMarketingMessage = JsonConvert.DeserializeObject<List<MarketingMessage>>(MarketingMessages);
+                                                        var ServiceMessage = _lstMarketingMessage[MarketingMessageCounter];
+                                                        if (ServiceMessage != null)
+                                                        {
+                                                            var messageTxt = ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText1)) ? "<p>" + ServiceMessage.MarketingMessageText1 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText2)) ? "<p>" + ServiceMessage.MarketingMessageText2 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText3)) ? "<p>" + ServiceMessage.MarketingMessageText3 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText4)) ? "<p>" + ServiceMessage.MarketingMessageText4 + "</p>" : string.Empty) + ((!string.IsNullOrEmpty(ServiceMessage.MarketingMessageText5)) ? "<p>" + ServiceMessage.MarketingMessageText5 + "</p>" : string.Empty);
+
+                                                            var htmlWidget = HtmlConstants.WEALTH_SERVICE_WIDGET_HTML;
                                                             htmlWidget = htmlWidget.Replace("{{ServiceMessageHeader}}", ServiceMessage.MarketingMessageHeader);
                                                             htmlWidget = htmlWidget.Replace("{{ServiceMessageText}}", messageTxt);
                                                             htmlString.Append(htmlWidget);
@@ -4220,7 +4310,7 @@ namespace nIS
                 }
 
                 tempHtml.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "assets/images/eConfirm.png").Replace("{{NedBankLogo}}", "assets/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
-                
+
                 //NAV bar will append to html statement, only if statement definition have more than 1 pages 
                 if (statementPages.Count > 1)
                 {
@@ -4255,7 +4345,7 @@ namespace nIS
                 //    lastFooterText = "<div class='text-center mb-n2'> Directors: V Naidoo (Chairman) MWT Brown (Chief Executive) HR Body BA Dames NP Dongwana EM Kruger RAG Leiht </div> <div class='text-center mb-n2'> L Makalima PM Makwana Prof T Marwala Dr MA Matooane RK Morathi (Chief Finance Officer) MC Nkuhlu (Chief Operating Officer) </div> <div class='text-center mb-n2'> S Subramoney IG Williamson Company Secretory: J Katzin 01.06.2020 </div>";
                 //}
                 footerContent.Replace("{{LastFooterText}}", lastFooterText);
-                
+
                 tempHtml.Append(footerContent.ToString());
                 tempHtml.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER);
                 finalHtml = tempHtml.ToString();
@@ -4398,7 +4488,7 @@ namespace nIS
             var htmlWidget = new StringBuilder(HtmlConstants.BRANCH_DETAILS_WIDGET_HTML_SMT);
             htmlWidget.Replace("{{BranchDetails}}", "{{BranchDetails_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{ContactCenter}}", "{{ContactCenter_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
-             htmlWidget.Replace("{{WidgetId}}", widgetId);
+            htmlWidget.Replace("{{WidgetId}}", widgetId);
             return htmlWidget.ToString();
         }
 
@@ -4406,6 +4496,22 @@ namespace nIS
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             var InvestmentPortfolioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_HTML);
+            InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "{{DSName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", "{{TotalClosingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", "{{DayOfStatement_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{InvestorID}}", "{{InvestorID_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", "{{StatementPeriod_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", "{{StatementDate_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{WidgetId}}", widgetId);
+            InvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", "{{FirstName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestmentPortfolioHtmlWidget.Replace("{{SurName}}", "{{SurName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            return InvestmentPortfolioHtmlWidget.ToString();
+        }
+
+        private string WealthInvestmentPortfolioStatementWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var InvestmentPortfolioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML);
             InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "{{DSName_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", "{{TotalClosingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", "{{DayOfStatement_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
@@ -4429,6 +4535,17 @@ namespace nIS
             return InvestorPerformanceHtmlWidget;
         }
 
+        private string WealthInvestorPerformanceWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
+            InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", "{{ProductType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", "{{OpeningBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", "{{ClosingBalanceAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{WidgetId}}", widgetId);
+            return InvestorPerformanceHtmlWidget;
+        }
+
         private string BreakdownOfInvestmentAccountsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
@@ -4441,6 +4558,14 @@ namespace nIS
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             var htmlWidget = HtmlConstants.EXPLANATORY_NOTES_WIDGET_HTML.Replace("{{Notes}}", "{{Notes_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget;
+        }
+
+        private string WealthExplanatoryNotesWidgetFormatting(PageWidget pageWidget, int counter, Page page)
+        {
+            var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
+            var htmlWidget = HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_HTML.Replace("{{Notes}}", "{{Notes_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget = htmlWidget.Replace("{{WidgetId}}", widgetId);
             return htmlWidget;
         }
@@ -4994,7 +5119,7 @@ namespace nIS
             }
         }
 
-        private void BindDummyDataToAnalyticsWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page,List<FileData> SampleFiles, string AppBaseDirectory)
+        private void BindDummyDataToAnalyticsWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, Page page, List<FileData> SampleFiles, string AppBaseDirectory)
         {
             var fileData = new FileData();
             fileData.FileName = "analyticschartdata.json";
@@ -5060,7 +5185,7 @@ namespace nIS
                 (!string.IsNullOrEmpty(customerInfo.ADDR_LINE_3) ? (customerInfo.ADDR_LINE_3 + "<br>") : string.Empty) +
                 (!string.IsNullOrEmpty(customerInfo.ADDR_LINE_4) ? customerInfo.ADDR_LINE_4 : string.Empty);
                 pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
-                pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", "Cell: "+customerInfo.MASK_CELL_NO);
+                pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", "Cell: " + customerInfo.MASK_CELL_NO);
             }
         }
 
@@ -5142,6 +5267,71 @@ namespace nIS
                 InvestmentAccounts.ToList().ForEach(acc =>
                 {
                     var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
+                    InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
+                    InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
+                    InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : ""));
+
+                    var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
+                    //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                    while (InvestmentNo.Length != 13)
+                    {
+                        InvestmentNo = "0" + InvestmentNo;
+                    }
+                    InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
+                    InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
+
+                    InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
+                    InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
+                    InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate);
+                    InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
+                    InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
+                    InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
+
+                    InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
+                    InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
+
+                    var InvestmentTransactionRows = new StringBuilder();
+                    acc.Transactions.ForEach(trans =>
+                    {
+                        var tr = new StringBuilder();
+                        tr.Append("<tr class='ht-20'>");
+                        tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
+                        tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
+                        tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
+                        tr.Append("</tr>");
+                        InvestmentTransactionRows.Append(tr.ToString());
+                    });
+                    InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
+                    TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
+                    counter++;
+                });
+                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : "");
+                pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", TabContentHtml.ToString());
+            }
+        }
+
+        private void BindDummyDataToWealthBreakdownOfInvestmentAccountsWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
+
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                IList<InvestmentAccount> InvestmentAccounts = JsonConvert.DeserializeObject<List<InvestmentAccount>>(jsonstr);
+
+                //Create Nav tab if investment accounts is more than 1
+                var NavTabs = new StringBuilder();
+                var InvestmentAccountsCount = InvestmentAccounts.Count;
+                pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", NavTabs.ToString());
+
+                //create tab-content div if accounts is greater than 1, otherwise create simple div
+                var TabContentHtml = new StringBuilder();
+                var counter = 0;
+                TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : "");
+                InvestmentAccounts.ToList().ForEach(acc =>
+                {
+                    var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
                     InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
                     InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
                     InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : ""));

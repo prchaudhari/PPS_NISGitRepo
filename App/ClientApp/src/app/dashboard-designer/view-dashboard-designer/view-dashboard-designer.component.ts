@@ -14,7 +14,7 @@ import {
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, WealthBreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, NedbankServiceComponent,
+  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, WealthBreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent,NedbankServiceComponent, WealthNedbankServiceComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
@@ -344,6 +344,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
             else if (widgetName == 'InvestorPerformance') {
               gridObj.component = InvestorPerformanceComponent;
             }
+            else if (widgetName == 'WealthInvestorPerformance') {
+              gridObj.component = WealthInvestorPerformanceComponent;
+            }
             else if (widgetName == 'BreakdownOfInvestmentAccounts') {
               gridObj.component = BreakdownOfInvestmentAccountsComponent;
             }
@@ -352,6 +355,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widgetName == 'ExplanatoryNotes') {
               gridObj.component = ExplanatoryNotesComponent;
+            }
+            else if (widgetName == 'WealthExplanatoryNotes') {
+              gridObj.component = WealthExplanatoryNotesComponent;
             }
             else if (widgetName == 'PersonalLoanDetail') {
               gridObj.component = PersonalLoanDetailComponent;
@@ -370,6 +376,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widgetName == 'NedbankService') {
               gridObj.component = NedbankServiceComponent;
+            }
+            else if (widgetName == 'WealthNedbankService') {
+              gridObj.component = WealthNedbankServiceComponent;
             }
             else if (widgetName == 'PersonalLoanTotalAmountDetail') {
               gridObj.component = PersonalLoanTotalAmountDetailComponent;

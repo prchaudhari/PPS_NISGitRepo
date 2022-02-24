@@ -2011,12 +2011,12 @@ export class InvestmentPortfolioStatementComponent {
                       <div class='card-body-header-w pb-2'>Investment portfolio statement</div>
                       <div class='row pb-1'>
                           <div class='col-lg-4 pr-1'>
-                              <div class='TotalAmountDetailsDiv'>
+                              <div class='TotalAmountDetailsDivW'>
                                   <span class='fnt-14'>Current investor balance</span><br><span class="fnt-20">Total Closing Balance</span>&nbsp;<br>
                               </div>
                           </div>
                           <div class='col-lg-8 pl-0'>
-                              <div class='TotalAmountDetailsDiv'></div>
+                              <div class='TotalAmountDetailsDivW'></div>
                           </div>
                       </div>
 
@@ -2085,6 +2085,41 @@ export class InvestmentWealthPortfolioStatementComponent {
   </div>`
 })
 export class InvestorPerformanceComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Investor Performance Widget -- Nedbank
+@Component({
+  selector: 'WealthInvestorPerformance',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class='card border-0'>
+          <div class='card-body text-left'>
+              <div class='card-body-header-w pb-2'>Investor performance</div>
+              <div class='InvestmentPermanaceDiv'>
+                  <table class='InvestorPermanaceTable' border='0' id='InvestorPerformance'>
+                      <tbody>
+                          <tr>
+                              <td class='w-50' colspan='2'><span class='text-success fnt-18'>Notice deposits</span></td>
+                          </tr>
+                          <tr>
+                              <td class='w-50 fnt-14'>Opening balance</td>
+                              <td class='w-50 fnt-14'>Closing balance</td>
+                          </tr>
+                          <tr>
+                              <td class='w-50 fnt-20'>xxx.xx</td>
+                              <td class='w-50 fnt-20'>xxx.xx</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class WealthInvestorPerformanceComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 }
@@ -2327,7 +2362,7 @@ export class BreakdownOfInvestmentAccountsComponent {
                   <div id='JustInvest-9929' class='tab-pane fade in active show'>
                       <div style="background-color: #f3f3f3;padding:10px 0px">
                           <h4 class="pl-25px"><span class='InvestmentProdDesc'>Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetail customTable">
+                          <table border="0" class="InvestmentDetailW customTable">
                               <tbody>
                                   <tr>
                                       <td class="w-25">Investment no:</td>
@@ -2362,7 +2397,7 @@ export class BreakdownOfInvestmentAccountsComponent {
                       </div>
 
                       <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
+                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
                               <thead>
                                   <tr class='ht-30'>
                                       <th class="w-15">Date</th>
@@ -2430,7 +2465,7 @@ export class BreakdownOfInvestmentAccountsComponent {
 
                       <div style="background-color: #f3f3f3;padding:10px 0px">
                           <h4 class="pl-25px"><span class="InvestmentProdDesc">Product Desc</span></h4>
-                          <table border="0" class="InvestmentDetail customTable">
+                          <table border="0" class="InvestmentDetailW customTable">
                               <tbody>
                                   <tr>
                                       <td class="w-25">Investment no:</td>
@@ -2465,7 +2500,7 @@ export class BreakdownOfInvestmentAccountsComponent {
                       </div>
 
                       <div class="pt-1">
-                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdown customTable">
+                          <table id="TableWidget" style="width:100%;" class="table-striped InvestmentBreakdownW customTable">
                               <thead>
                                   <tr class='ht-30'>
                                       <th class="w-15">Date</th>
@@ -2564,6 +2599,29 @@ export class ExplanatoryNotesComponent {
   widgetsGridsterItemArray: any[] = [];
 }
 
+// Component Created for Explanatory Notes Widget -- Nedbank
+@Component({
+  selector: 'WealthExplanatoryNotes',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class='card border-0'>
+          <div class='card-body text-left'>
+              <div class="card-body-header-w pb-2">Explanatory notes</div>
+              <div class='ExplanatoryNotes'>
+                  <span>Fixed deposits — Total balance of all your fixed-type accounts.</span><br />
+                  <span>Notice deposits — Total balance of all your notice deposit accounts.</span><br />
+                  <span>Linked deposits — Total balance of all your linked-type accounts.</span>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class WealthExplanatoryNotesComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
 // Component Created for Nedbank service Widget -- Nedbank
 @Component({
   selector: 'NedbankService',
@@ -2583,6 +2641,29 @@ export class ExplanatoryNotesComponent {
   </div>`
 })
 export class NedbankServiceComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Nedbank service Widget -- Nedbank
+@Component({
+  selector: 'WealthNedbankService',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class="card border-0">
+          <div class="card-body text-left">
+              <div class="ServicesDiv">
+                  <div class="serviceHeaderW pb-2">Nedbank service message header</div>
+                  <span>Nedbank service message text</span><br>
+                  <span>Nedbank service message text</span><br>
+                  <span>Nedbank service message text</span>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class WealthNedbankServiceComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 }
