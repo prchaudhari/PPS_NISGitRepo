@@ -2520,6 +2520,7 @@ namespace nIS
                 var IsInvestmentStatement = false;
                 var IsPersonalLoanStatement = false;
                 var IsHomeLoanStatement = false;
+                bool IsWealthStatement = false;
 
                 var htmlString = new StringBuilder();
                 var NavItemList = new StringBuilder();
@@ -2573,6 +2574,11 @@ namespace nIS
                         for (int y = 0; y < pages.Count; y++)
                         {
                             var page = pages[y];
+                            if (page.PageWidgets.Any(a => a.WidgetName.Equals("InvestmentWealthPortfolioStatement") || a.WidgetName.Equals("WealthBreakdownOfInvestmentAccounts") || a.WidgetName.Equals("WealthNedbankService") || a.WidgetName.Equals("WealthInvestorPerformance") || a.WidgetName.Equals("WealthExplanatoryNotes") || a.WidgetName.Equals("WealthBranchDetails")))
+                            {
+                                IsWealthStatement = true;
+                            }
+
                             var MarketingMessageCounter = 0;
                             var tabClassName = Regex.Replace((page.DisplayName + " " + page.Version), @"\s+", "-");
 
@@ -4361,7 +4367,14 @@ namespace nIS
                     //}
                 }
 
-                tempHtml.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "assets/images/eConfirm.png").Replace("{{NedBankLogo}}", "assets/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
+                if (IsWealthStatement)
+                {
+                    tempHtml.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "assets/images/eConfirm.png").Replace("{{NedBankLogo}}", "assets/images/NedBankLogoBlack.PNG").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
+                }
+                else
+                {
+                    tempHtml.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "assets/images/eConfirm.png").Replace("{{NedBankLogo}}", "assets/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
+                }
 
                 //NAV bar will append to html statement, only if statement definition have more than 1 pages 
                 if (statementPages.Count > 1)
@@ -4389,7 +4402,15 @@ namespace nIS
                     tempHtml.Append("<input type = 'hidden' id = 'hiddenPieChartIds' value = '" + ids + "'>");
                 }
 
-                var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER.Replace("{{NedbankSloganImage}}", "assets/images/See_money_differently.PNG").Replace("{{NedbankNameImage}}", "assets/images/NEDBANK_Name.png").Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING));
+                var footerContent = new StringBuilder();
+                if (IsWealthStatement)
+                {
+                    footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING);
+                }
+                else
+                {
+                    footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER.Replace("{{NedbankSloganImage}}", "assets/images/See_money_differently.PNG").Replace("{{NedbankNameImage}}", "assets/images/NEDBANK_Name.png").Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING));
+                }
 
                 var lastFooterText = string.Empty;
                 //if (IsHomeLoanStatement)
