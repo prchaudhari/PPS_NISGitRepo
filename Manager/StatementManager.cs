@@ -2939,7 +2939,7 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME)
                                                 {
-                                                    string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'57 709.02', 'ClosingBalanceAmount':'57 709.02'}";
+                                                    string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'57 528.24', 'ClosingBalanceAmount':'57 709.02'}";
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
                                                         dynamic InvestmentPerformance = JObject.Parse(jsonstr);
@@ -3060,8 +3060,8 @@ namespace nIS
                                                             InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
                                                             InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
 
-                                                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
-                                                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
+                                                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 January 2022");
+                                                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "57 709.02" : "18 613.84"));
 
                                                             var InvestmentTransactionRows = new StringBuilder();
                                                             acc.Transactions.ForEach(trans =>
@@ -5483,8 +5483,8 @@ namespace nIS
                     InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
                     InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
 
-                    InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
-                    InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
+                    InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 January 2022");
+                    InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "57 709.02" : "18 613.84"));
 
                     var InvestmentTransactionRows = new StringBuilder();
                     acc.Transactions.ForEach(trans =>
