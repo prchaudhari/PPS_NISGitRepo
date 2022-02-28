@@ -2221,6 +2221,18 @@ export class AddDashboardDesignerComponent implements OnInit {
       else
       {
         var setting = JSON.parse(newItem.WidgetSetting);
+        var indexToRemove = 0;
+        for(var i=0;i< setting.length; i++)
+        {
+          if(segmentBasedContentConfig.SegmentId == setting[i].SegmentId)
+          {
+            indexToRemove = i;
+            break;
+          }
+        }
+
+        setting.splice(indexToRemove, 1);
+
         setting.push(segmentBasedContentConfig);
         newItem.WidgetSetting = JSON.stringify(setting);
       }

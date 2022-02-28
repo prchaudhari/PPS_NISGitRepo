@@ -1428,7 +1428,7 @@ namespace nIS
                                     this.BindDummyDataToStaticHtmlWidget(pageContent, statement, page, widget);
                                     break;
 
-                                case HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML:
+                                case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
                                     this.BindDummyDataToSegmentBasedContentWidget(pageContent, statement, page, widget);
                                     break;
 
@@ -2778,18 +2778,30 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
                                                 {
+                                                    //var html = "<div>This is sample SegmentBasedContent</div>";
+                                                    //if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                    //{
+                                                    //    dynamic widgetSetting = JArray.Parse(mergedlst[i].WidgetSetting);
+                                                    //    if (widgetSetting.html.ToString().Length > 0)
+                                                    //    {
+                                                    //        html = widgetSetting.html;
+                                                    //    }
+                                                    //}
+                                                    //var segmentBasedContentWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{SegmentBasedContent}}", html);
+                                                    //segmentBasedContentWidget = segmentBasedContentWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                    //htmlString.Append(segmentBasedContentWidget);
+
                                                     var html = "<div>This is sample SegmentBasedContent</div>";
                                                     if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                                     {
-                                                        dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                                        if (widgetSetting.html.ToString().Length > 0)
+                                                        //dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                        dynamic widgetSetting = JArray.Parse(mergedlst[i].WidgetSetting);
+                                                        if (widgetSetting[0].Html.ToString().Length > 0)
                                                         {
-                                                            html = widgetSetting.html;
+                                                            html = widgetSetting[0].Html; //TODO: ***Deepak: Remove hard coded line
                                                         }
                                                     }
-                                                    var segmentBasedContentWidget = HtmlConstants.STATIC_HTML_WIDGET_HTML.Replace("{{SegmentBasedContent}}", html);
-                                                    segmentBasedContentWidget = segmentBasedContentWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                    htmlString.Append(segmentBasedContentWidget);
+                                                    htmlString.Append(html);
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME)
                                                 {
@@ -6737,10 +6749,10 @@ namespace nIS
             var html = "<div>This is sample SegmentBasedContent</div>";
             if (widget.WidgetSetting != string.Empty && validationEngine.IsValidJson(widget.WidgetSetting))
             {
-                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
-                if (widgetSetting.html.ToString().Length > 0)
+                dynamic widgetSetting = JArray.Parse(widget.WidgetSetting);
+                if (widgetSetting[0].Html.ToString().Length > 0)
                 {
-                    html = widgetSetting.html;
+                    html = widgetSetting[0].Html.ToString();
                 }
             }
             pageContent.Replace("{{SegmentBasedContent_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);

@@ -605,18 +605,31 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME)
                                             {
+                                                //var html = "<div>This is sample SegmentBasedContent</div>";
+                                                //if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
+                                                //{
+                                                //    //dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                //    dynamic widgetSetting = JArray.Parse(mergedlst[i].WidgetSetting);
+                                                //    if (widgetSetting.html.ToString().Length > 0)
+                                                //    {
+                                                //        html = widgetSetting.html;
+                                                //    }
+                                                //}
+                                                //var segmentBasedContentWidget = HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML.Replace("{{SegmentBasedContent}}", html);
+                                                //segmentBasedContentWidget = segmentBasedContentWidget.Replace("{{WidgetDivHeight}}", divHeight);
+                                                //htmlString.Append(segmentBasedContentWidget);
+
                                                 var html = "<div>This is sample SegmentBasedContent</div>";
                                                 if (mergedlst[i].WidgetSetting != string.Empty && validationEngine.IsValidJson(mergedlst[i].WidgetSetting))
                                                 {
-                                                    dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
-                                                    if (widgetSetting.html.ToString().Length > 0)
+                                                    //dynamic widgetSetting = JObject.Parse(mergedlst[i].WidgetSetting);
+                                                    dynamic widgetSetting = JArray.Parse(mergedlst[i].WidgetSetting);
+                                                    if (widgetSetting[0].Html.ToString().Length > 0)
                                                     {
-                                                        html = widgetSetting.html;
+                                                        html = widgetSetting[0].Html; //TODO: ***Deepak: Remove hard coded line
                                                     }
                                                 }
-                                                var segmentBasedContentWidget = HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML.Replace("{{SegmentBasedContent}}", html);
-                                                segmentBasedContentWidget = segmentBasedContentWidget.Replace("{{WidgetDivHeight}}", divHeight);
-                                                htmlString.Append(segmentBasedContentWidget);
+                                                htmlString.Append(html);
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.SUMMARY_AT_GLANCE_WIDGET_NAME)
                                             {
