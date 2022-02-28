@@ -2807,7 +2807,7 @@ namespace nIS
                                                 {
                                                     if (statementPages.Count == 1)
                                                     {
-                                                        string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'BARCODE': 'http://3.69.64.41:8020/API/Barcode.png'}";
+                                                        string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'KOENA','SURNAME_TEXT':'MOLOTO','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'BARCODE': 'http://3.69.64.41:8020/API/Barcode.png'}";
                                                         if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                         {
                                                             var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(jsonstr);
@@ -2917,7 +2917,7 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                                 {
-                                                    string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'KOENA','SURNAME_TEXT':'SOLOMON MOLOTO','ADDR_LINE_0':'1917 THAGE STREET','ADDR_LINE_1':'MAMELODI GARDENS','ADDR_LINE_2':'PRETORIA','ADDR_LINE_3':'0122','ADDR_LINE_4':'', 'MASK_CELL_NO': '', 'FIRSTNAME': 'KOENA', 'LASTNAME': 'MOLOTO'";
+                                                    string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'KOENA','SURNAME_TEXT':'SOLOMON MOLOTO','ADDR_LINE_0':'1917 THAGE STREET','ADDR_LINE_1':'MAMELODI GARDENS','ADDR_LINE_2':'PRETORIA','ADDR_LINE_3':'0122','ADDR_LINE_4':'', 'MASK_CELL_NO': '', 'FIRSTNAME': 'KOENA', 'LASTNAME': 'MOLOTO'}";
                                                     string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '57 709.02', 'DayOfStatement':'25', 'InvestorId':'2836445','StatementPeriod':'26/12/2021 to 25/01/2022','StatementDate':'25/01/2022', 'DsInvestorName' : ''}";
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
@@ -5259,7 +5259,7 @@ namespace nIS
 
         private void BindDummyDataToCustomerDetailsWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {
-            string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN', 'ADDR_LINE_2':'NEDERLAND', 'ADDR_LINE_3':'9999', 'ADDR_LINE_4':'', 'MASK_CELL_NO':'******7786'}";
+            string jsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'KOENA','SURNAME_TEXT':'MOLOTO','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN', 'ADDR_LINE_2':'NEDERLAND', 'ADDR_LINE_3':'9999', 'ADDR_LINE_4':'', 'MASK_CELL_NO':'******7786'}";
             if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
             {
                 var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(jsonstr);
