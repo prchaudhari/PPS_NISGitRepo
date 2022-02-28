@@ -308,7 +308,7 @@ namespace nIS
             try
             {
                 var tenantConfiguration = this.tenantConfigurationManager.GetTenantConfigurations(tenantCode)?.FirstOrDefault();
-                
+
                 PageSearchParameter pageSearchParameter = new PageSearchParameter
                 {
                     Identifier = pageIdentifier,
@@ -327,7 +327,7 @@ namespace nIS
                     SearchMode = SearchMode.Equals
                 };
                 IList<Page> pages = this.pageRepository.GetPages(pageSearchParameter, tenantCode);
-                
+
                 var IsInvestmentStatement = pages.Where(it => it.PageTypeName == HtmlConstants.INVESTMENT_PAGE_TYPE).ToList().Count > 0;
                 var IsPersonalLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
                 var IsHomeLoanStatement = pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList().Count > 0;
@@ -443,7 +443,8 @@ namespace nIS
                                                 htmlString.Append("<div class='col-lg-12'><div class='card border-0'><div class='card-body text-left py-0'><div class='card-body-header pb-2'>Nedbank Services</div></div></div></div></div><div class='row'>");
                                             }
                                             PaddingClass = MarketingMessageCounter % 2 == 0 ? " pr-1 pl-35px" : " pl-1 pr-35px";
-                                        }else if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
+                                        }
+                                        else if (MarketingMessages.Length > 0 && mergedlst[i].WidgetName == HtmlConstants.WEALTH_SERVICE_WIDGET_NAME)
                                         {
                                             //to add Nedbank services header... to do-- Create separate static widgets for widget's header label
                                             if (MarketingMessageCounter == 0)
@@ -879,8 +880,9 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                             {
-                                                string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021','StatementDate':'21/01/2021', 'DsInvestorName' : '' }";
-                                                string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'FIRSTNAME': 'MATHYS', 'LASTNAME': 'SMIT', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
+
+                                                string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '57 709.02', 'DayOfStatement':'25', 'InvestorId':'2836445','StatementPeriod':'26/12/2021 to 25/01/2022','StatementDate':'25/01/2022', 'DsInvestorName' : ''}";
+                                                string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'KOENA','SURNAME_TEXT':'SOLOMON MOLOTO','ADDR_LINE_0':'1917 THAGE STREET','ADDR_LINE_1':'MAMELODI GARDENS','ADDR_LINE_2':'PRETORIA','ADDR_LINE_3':'0122','ADDR_LINE_4':'', 'MASK_CELL_NO': '', 'FIRSTNAME': 'KOENA', 'LASTNAME': 'MOLOTO', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
 
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
@@ -913,7 +915,7 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME)
                                             {
-                                                string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
+                                                string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'57 709.02', 'ClosingBalanceAmount':'57 709.02'}";
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
                                                     dynamic InvestmentPerformance = JObject.Parse(jsonstr);
@@ -993,7 +995,7 @@ namespace nIS
                                             }
                                             else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
                                             {
-                                                string jsonstr = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
+                                                string jsonstr = HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
 
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
@@ -2332,7 +2334,7 @@ namespace nIS
                                                 }
                                             }
                                         }
-                                        
+
                                         // To end current col-lg class div
                                         htmlString.Append("</div>");
 

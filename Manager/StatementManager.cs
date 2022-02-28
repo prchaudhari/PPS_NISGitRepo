@@ -1437,7 +1437,7 @@ namespace nIS
                                     break;
 
                                 case HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME:
-                                    this.BindDummyDataToInvestmentPortfolioStatementWidget(pageContent, page, widget);
+                                    this.BindDummyDataToWealthInvestmentPortfolioStatementWidget(pageContent, page, widget);
                                     break;
 
                                 case HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME:
@@ -1445,7 +1445,7 @@ namespace nIS
                                     break;
 
                                 case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
-                                    this.BindDummyDataToInvestorPerformanceWidget(pageContent, page, widget);
+                                    this.BindDummyDataToWealthInvestorPerformanceWidget(pageContent, page, widget);
                                     break;
 
                                 case HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
@@ -2905,8 +2905,8 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                                 {
-                                                    string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'FIRSTNAME': 'MATHYS', 'LASTNAME': 'SMIT'}";
-                                                    string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021','StatementDate':'21/01/2021', 'DsInvestorName' : ''}";
+                                                    string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'KOENA','SURNAME_TEXT':'SOLOMON MOLOTO','ADDR_LINE_0':'1917 THAGE STREET','ADDR_LINE_1':'MAMELODI GARDENS','ADDR_LINE_2':'PRETORIA','ADDR_LINE_3':'0122','ADDR_LINE_4':'', 'MASK_CELL_NO': '', 'FIRSTNAME': 'KOENA', 'LASTNAME': 'MOLOTO'";
+                                                    string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '57 709.02', 'DayOfStatement':'25', 'InvestorId':'2836445','StatementPeriod':'26/12/2021 to 25/01/2022','StatementDate':'25/01/2022', 'DsInvestorName' : ''}";
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
                                                         var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerJsonstr);
@@ -2939,7 +2939,7 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME)
                                                 {
-                                                    string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
+                                                    string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'57 709.02', 'ClosingBalanceAmount':'57 709.02'}";
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
                                                         dynamic InvestmentPerformance = JObject.Parse(jsonstr);
@@ -3020,7 +3020,7 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
                                                 {
-                                                    string jsonstr = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
+                                                    string jsonstr = HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
 
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
@@ -5337,9 +5337,38 @@ namespace nIS
             }
         }
 
+        private void BindDummyDataToWealthInvestmentPortfolioStatementWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{'FirstName': 'KOENA', 'LastName': 'SOLOMON','Currency': 'R', 'TotalClosingBalance': '57 709.02', 'DayOfStatement':'25', 'InvestorId':'2836445','StatementPeriod':'26/12/2021 to 25/01/2022', 'StatementDate':'25/01/2022', 'DsInvestorName' : '' }";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                dynamic InvestmentPortfolio = JObject.Parse(jsonstr);
+                pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.FirstName));
+                pageContent.Replace("{{SurName_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.LastName));
+                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.DsInvestorName));
+                pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", (Convert.ToString(InvestmentPortfolio.Currency) + Convert.ToString(InvestmentPortfolio.TotalClosingBalance)));
+                pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.DayOfStatement));
+                pageContent.Replace("{{InvestorID_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.InvestorId));
+                pageContent.Replace("{{StatementPeriod_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.StatementPeriod));
+                pageContent.Replace("{{StatementDate_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPortfolio.StatementDate));
+            }
+        }
+
         private void BindDummyDataToInvestorPerformanceWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {
             string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
+            if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+            {
+                dynamic InvestmentPerformance = JObject.Parse(jsonstr);
+                pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(InvestmentPerformance.ProductType));
+                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
+                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
+            }
+        }
+
+        private void BindDummyDataToWealthInvestorPerformanceWidget(StringBuilder pageContent, Page page, PageWidget widget)
+        {
+            string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'57 528.24', 'ClosingBalanceAmount':'57 528.24'}";
             if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
             {
                 dynamic InvestmentPerformance = JObject.Parse(jsonstr);
@@ -5416,7 +5445,7 @@ namespace nIS
 
         private void BindDummyDataToWealthBreakdownOfInvestmentAccountsWidget(StringBuilder pageContent, Page page, PageWidget widget)
         {
-            string jsonstr = HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
+            string jsonstr = HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
 
             if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
             {

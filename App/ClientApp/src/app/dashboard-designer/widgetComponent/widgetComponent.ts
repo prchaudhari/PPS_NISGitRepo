@@ -1955,7 +1955,7 @@ export class DynamicPieChartWidgetPreviewComponent {
     <div class="widget-area height100">
        <div class='card border-0'>
           <div class="card-body CustomerDetails">
-              Title First Name Surname <br>Cust Address Line 0 <br>Cust Address Line 1 <br>Cust Address Line 2 <br>Cust Address Line 3<br>Cust Address Line 4<br>
+          MR KOENA SOLOMON MOLOTO <br>1917 THAGE STREET <br>MAMELODI GARDENS <br>PRETORIA <br>0122<br>
           </div>
       </div>
     </div>
@@ -2721,12 +2721,8 @@ export class NedbankServiceComponent {
     <div class="widget-area height100">
       <div class="card border-0">
           <div class="card-body text-left">
-              <div class="ServicesDiv">
-                  <div class="serviceHeaderW pb-2">Nedbank service message header</div>
-                  <span>Nedbank service message text</span><br>
-                  <span>Nedbank service message text</span><br>
-                  <span>Nedbank service message text</span>
-              </div>
+          <div class='card-body-header-w pb-2'>Nedbank services</div>
+            
           </div>
       </div>
     </div>
