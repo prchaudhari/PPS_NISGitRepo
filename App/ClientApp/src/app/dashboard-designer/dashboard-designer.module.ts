@@ -25,6 +25,7 @@ import {
 } from './widgetComponent/widgetComponent';
 import { PageDesignPreviewComponent } from './page-design-preview/page-design-preview.component';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { SafeHtmlPip } from '../shared/pagepreview/pagepreview.component';
 
 @NgModule({
   declarations: [AddDashboardDesignerComponent, ViewDashboardDesignerComponent, CustomerInformationComponent, 

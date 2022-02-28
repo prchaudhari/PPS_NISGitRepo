@@ -1,4 +1,3 @@
-/// <reference path="../../appsettings.ts" />
 import { Component, ViewChild, Output, Input, EventEmitter, SecurityContext } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -9,12 +8,14 @@ import { ConfigConstants } from '../../shared/constants/configConstants';
 import * as Highcharts from 'highcharts';
 import * as $ from 'jquery';
 import { map } from 'rxjs/operators';
+import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+import { Pipe, PipeTransform } from '@angular/core';
+import { AppSettings } from '../../appsettings';
+
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
 let noData = require('highcharts/modules/no-data-to-display');
 let More = require('highcharts/highcharts-more');
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-import { AppSettings } from '../../appsettings';
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
@@ -1401,11 +1402,9 @@ export class StaticHtmlComponent {
 @Component({
   selector: 'Segment-based-content-widget',
   template: `<div class="widget">
-    <div class="widget-header">
-      <span class="widget-header-title"> Segment Based Content </span>
-    </div>
     <div class="widget-area position-relative width100">
-      <div>{{ html }}</div>
+    <div [innerHtml]="html">
+                    </div>
       <!-- <div class="widget-indicator-inner text-center pt-2">
         <i class="fa fa-lg fa-id-card-o" aria-hidden="true" style='font-size:18em;'></i>
       </div> -->
@@ -1430,7 +1429,7 @@ export class SegmentBasedContentComponent {
       debugger
       if(widgetSetting.length > 0)
       {
-        this.html = widgetSetting[0].Html;
+        this.html = this.sanitizer.bypassSecurityTrustHtml(widgetSetting[0].Html);
       }
       else
       {

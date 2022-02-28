@@ -179,7 +179,7 @@ namespace nIS
 
         public const string SPENDING_TRENDS_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'><div class='p-1 bg-light border-0 text-left'> <h5 class='m-0'>Spending Trends</h5></div><div class='card-body'> <div id=\"spendingTrendscontainer\" style='height: 75%; width: 90%; position: absolute;'></div></div></div> ";
 
-        public const string CUSTOMER_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body CustomerDetails py-1 ht-130px'><img src='{{Barcode}}' style='height:25px;' /><br>{{Title}} {{FirstName}} {{SurName}}<br>{{CustAddressLine0}}<br>{{CustAddressLine1}}<br>{{CustAddressLine2}}<br>{{CustAddressLine3}}<br>{{CustAddressLine4}}<br></div><div class='CustomerCellNoDiv pt-2'>{{MaskCellNo}}</div></div>";
+        public const string CUSTOMER_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body CustomerDetails py-1 ht-130px'>{{Title}} {{FirstName}} {{SurName}}<br>{{CustAddressLine0}}<br>{{CustAddressLine1}}<br>{{CustAddressLine2}}<br>{{CustAddressLine3}}<br>{{CustAddressLine4}}<br></div><div class='CustomerCellNoDiv pt-2'>{{MaskCellNo}}</div></div>";
 
         public const string CUSTOMER_DETAILS_WIDGET_HTML_SMT = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body CustomerDetails py-1 ht-130px'>{{CustomerDetails}}</div><div class='CustomerCellNoDiv pt-2'>{{MaskCellNo}}</div></div>";
 

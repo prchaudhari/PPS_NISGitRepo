@@ -19,6 +19,7 @@ namespace nIS
     using System.Net.Http.Headers;
     using System.Text;
     using System.Text.RegularExpressions;
+    using NedbankRepository;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Unity;
@@ -91,6 +92,8 @@ namespace nIS
         /// </summary>
         private readonly ICryptoManager cryptoManager;
 
+        private NedbankDbContext db = new NedbankDbContext();
+
         #endregion
 
         #region Constructor
@@ -144,7 +147,7 @@ namespace nIS
                 var logDetailRecord = this.GenerateStatements(statementRawData, tenantCode);
                 if (logDetailRecord != null)
                 {
-                    
+
                     //save schedule log details for current customer
                     var logDetails = new List<ScheduleLogDetail>();
                     logDetailRecord.ScheduleLogId = statementRawData.ScheduleLog.Identifier;
@@ -285,7 +288,7 @@ namespace nIS
                     NumberOfRetry = 1,
                     CreateDate = DateTime.UtcNow,
                     Status = ScheduleLogStatus.Failed.ToString(),
-                    LogMessage = "Something went wrong while generating statement: "+ ex.Message
+                    LogMessage = "Something went wrong while generating statement: " + ex.Message
                 });
                 this.scheduleLogRepository.SaveScheduleLogDetails(logDetails, tenantCode);
 
@@ -328,7 +331,7 @@ namespace nIS
                         var scheduleLogDetails = new List<ScheduleLogDetail>();
                         scheduleLogDetail.CustomerId = customer.Identifier;
                         scheduleLogDetail.CustomerName = customer.FirstName.Trim() + (customer.MiddleName == "" ? "" : " " + customer.MiddleName.Trim()) + " " + customer.LastName.Trim();
-                        scheduleLogDetail.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0; 
+                        scheduleLogDetail.RenderEngineId = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.Identifier : 0;
                         scheduleLogDetail.RenderEngineName = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.RenderEngineName : string.Empty;
                         scheduleLogDetail.RenderEngineURL = statementRawData.RenderEngine != null ? statementRawData.RenderEngine.URL : string.Empty;
                         scheduleLogDetail.LogMessage = logDetailRecord.LogMessage;
@@ -622,7 +625,7 @@ namespace nIS
                     },
                     SearchMode = SearchMode.Equals
                 }, tenantCode);
-                
+
                 if (customer != null && metadataRecords != null && metadataRecords.Count > 0)
                 {
                     var statementSearchRecord = metadataRecords.FirstOrDefault();
@@ -1534,6 +1537,53 @@ namespace nIS
                     if (IsInvestmentPageTypePresent)
                     {
                         investmentMasters = this.tenantTransactionDataRepository.Get_DM_InvestmasterMaster(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
+
+                        var investment = this.db.NB_InvestmentMaster.Where(m => m.CustomerId == customer.CustomerId.ToString() && m.BatchId == batchMaster.Identifier);
+
+                        var transactions = this.db.DM_InvestmentTransaction.Where(m => m.BatchId == batchMaster.Identifier && m.CustomerId == customer.Identifier).Select(n => new DM_InvestmentTransaction()
+                        {
+                            BatchId = n.BatchId,
+                            CustomerId = n.CustomerId,
+                            Identifier = n.Id,
+                            InvestmentId = n.InvestmentId,
+                            InvestorId = n.InvestorId,
+                            ProductId = n.ProductId,
+                            TenantCode = n.TenantCode,
+                            TransactionDate = n.TransactionDate,
+                            TransactionDesc = n.TransactionDesc,
+                            WJXBFS1 = n.WJXBFS1,
+                            WJXBFS2_Debit = n.WJXBFS2_Debit,
+                            WJXBFS3_Credit = n.WJXBFS3_Credit,
+                            WJXBFS4_Balance = n.WJXBFS4_Balance,
+                            WJXBFS5_TransId = n.WJXBFS5_TransId
+                        }).ToList();
+
+                        var intestmentMaster = investment.Select(n => new DM_InvestmentMaster()
+                        {
+                            Identifier = n.Id,
+                            AccountOpenDate = n.AccountOpenDate,
+                            AccuredInterest = n.AccuredInterest,
+                            BatchId = n.BatchId.Value,
+                            BranchId = n.BranchId.Value,
+                            ClosingBalance = n.ClosingBalance,
+                            Currenacy = n.Currency,
+                            CurrentInterestRate = n.CurrentInterestRate,
+                            CustomerId = n.InvestorId.Value, //TODO: ***Deepak fix data type
+                            DayOfStatement = n.DayOfStatement.ToString(),
+                            ExpiryDate = n.ExpiryDate,
+                            InterestDisposalDesc = n.InterestDisposalDesc,
+                            InvestmentId = n.InvestmentId.Value,
+                            InvestorId = n.InvestorId.Value,
+                            NoticePeriod = n.NoticePeriod,
+                            ProductDesc = n.ProductDesc,
+                            ProductId = n.ProductId.Value,
+                            ProductType = n.ProductType,
+                            StatementDate = n.StatementDate,
+                            StatementPeriod = n.StatementPeriod,
+                            TenantCode = n.TenantCode,
+                            investmentTransactions = transactions
+                        });
+
                         if (investmentMasters != null && investmentMasters.Count > 0)
                         {
                             //var totalAmount = 0.0m; var res = 0.0m;
@@ -1543,16 +1593,16 @@ namespace nIS
 
                                 //totalAmount = totalAmount + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
                             });
-                            
+
                             BranchId = (investmentMasters != null && investmentMasters.Count > 0) ? investmentMasters[0].BranchId : 0;
-                            
+
                             //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Investment", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
                         }
                     }
                     if (IsPersonalLoanPageTypePresent)
                     {
                         PersonalLoanAccounts = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
-                        
+
                         //var totalAmount = 0.0m; var res = 0.0m;
                         //totalAmount = PersonalLoanAccounts.Select(it => decimal.TryParse(it.CreditAdvance, out res) ? res : 0).ToList().Sum(it => it);
                         //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Personal Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
@@ -1562,7 +1612,7 @@ namespace nIS
                     if (IsHomeLoanPageTypePresent)
                     {
                         HomeLoanAccounts = this.tenantTransactionDataRepository.Get_DM_HomeLoanMaster(new CustomerHomeLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
-                        
+
                         //var totalAmount = 0.0m; var res = 0.0m;
                         //totalAmount = HomeLoanAccounts.Select(it => decimal.TryParse(it.LoanAmount, out res) ? res : 0).ToList().Sum(it => it);
                         //AccountsSummaries.Add(new DM_AccountsSummary() { AccountType = "Home Loan", TotalAmount = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, totalAmount) });
@@ -2880,14 +2930,14 @@ namespace nIS
 
         private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget)
         {
-            var CustomerDetails = customer.Title + " " + customer.FirstName + " " + customer.SurName + "<br>" + 
-                (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) + 
-                (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1 + "<br>") : string.Empty) + 
-                (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) + 
+            var CustomerDetails = customer.Title + " " + customer.FirstName + " " + customer.SurName + "<br>" +
+                (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
+                (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1 + "<br>") : string.Empty) +
+                (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) +
                 (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3 + "<br>") : string.Empty) +
                 (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
             pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
-            pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No != string.Empty ? "Cell: "+ customer.Mask_Cell_No : string.Empty);
+            pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No != string.Empty ? "Cell: " + customer.Mask_Cell_No : string.Empty);
         }
 
         private void BindBranchDetailsWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode)
@@ -2915,7 +2965,7 @@ namespace nIS
                 }
             }
             catch (Exception)
-            { 
+            {
             }
         }
 
@@ -3002,7 +3052,7 @@ namespace nIS
                     var res = 0.0m;
                     try
                     {
-                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace("," , "."), out res) ? res : 0).ToList().Sum(it => it);
+                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
                     }
                     catch (Exception)
                     {
@@ -3060,7 +3110,7 @@ namespace nIS
                     InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate != null ? acc.ExpiryDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : string.Empty);
                     InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc != null ? acc.InterestDisposalDesc : string.Empty);
                     InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod != null ? acc.NoticePeriod : string.Empty);
-                    
+
                     var res = 0.0m;
                     acc.AccuredInterest = acc.AccuredInterest.Replace(",", ".");
                     if (acc.AccuredInterest != null && decimal.TryParse(acc.AccuredInterest, out res))
@@ -3179,7 +3229,7 @@ namespace nIS
                 }
             }
             catch (Exception)
-            {             
+            {
             }
         }
 
@@ -3265,7 +3315,7 @@ namespace nIS
                 }
             }
             catch (Exception)
-            {             
+            {
             }
         }
 
@@ -3326,7 +3376,7 @@ namespace nIS
                 }
             }
             catch (Exception)
-            { 
+            {
             }
         }
 
@@ -3397,7 +3447,7 @@ namespace nIS
                 }
             }
             catch (Exception)
-            { 
+            {
             }
         }
 
@@ -3514,7 +3564,7 @@ namespace nIS
                 pageContent.Replace("{{OutstandingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOutstandingAmt));
                 pageContent.Replace("{{DueAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalLoanDueAmt));
             }
-            catch 
+            catch
             {
             }
         }
@@ -3712,7 +3762,7 @@ namespace nIS
                 }
             }
             catch
-            { 
+            {
             }
         }
 
@@ -4237,7 +4287,7 @@ namespace nIS
         private void BindPortfolioAccountAnalysisWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_AccountAnanlysis> _lstAccountAnalysis, Page page, PageWidget widget)
         {
             var data = "[]";
-            if(_lstAccountAnalysis != null && _lstAccountAnalysis.Count > 0)
+            if (_lstAccountAnalysis != null && _lstAccountAnalysis.Count > 0)
             {
                 data = JsonConvert.SerializeObject(_lstAccountAnalysis);
             }

@@ -123,9 +123,17 @@ namespace nIS
             {
                 var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
                 int userId;
-                int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
-                var userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
-
+                string userFullName;
+                try
+                {
+                    int.TryParse(claims?.FirstOrDefault(x => x.Type.Equals("UserId", StringComparison.OrdinalIgnoreCase)).Value, out userId);
+                    userFullName = claims?.FirstOrDefault(x => x.Type.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)).Value;
+                }
+                catch
+                {
+                    userId = 1;
+                    userFullName = "Admin";
+                }
                 this.SetAndValidateConnectionString(tenantCode);
                 IList<SystemActivityHistoryRecord> activityHistoryRecords = new List<SystemActivityHistoryRecord>();
 
