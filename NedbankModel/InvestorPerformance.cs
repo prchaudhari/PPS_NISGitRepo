@@ -20,5 +20,9 @@
         /// The opening balance.
         /// </value>
         public string OpeningBalance { get; set; }
+
+        public string ProductType { get; set; }
+
+        public string Currency { get; set; }
     }
 }

@@ -94,6 +94,7 @@
                         DayOfStatement = investmentRecord.DayOfStatement,
                         StatementPeriod = investmentRecord.StatementPeriod,
                         ClosingBalance = investmentRecord.ClosingBalance,
+                        Currency = investmentRecord.Currency,
                     });
                 });
                 investments = tempInvestments;
@@ -136,6 +137,8 @@
                     {
                         ClosingBalance = investmentRecord.ClosingBalance,
                         OpeningBalance = investmentRecord.OpeningBalance,
+                        ProductType = investmentRecord.ProductType,
+                        Currency = investmentRecord.Currency,
                     });
                 });
                 investors = tempInvestments;
@@ -214,7 +217,10 @@
                         AccountOpenDate = investmentRecord.AccountOpenDate,
                         NoticePeriod = investmentRecord.NoticePeriod,
                         LastTransactionDate = tempInvestmentTransactions.Count() > 0 ? tempInvestmentTransactions.Max(a => a.TransactionDate) : DateTime.Now,
-                        InvestmentTransaction = tempInvestmentTransactions
+                        InvestmentTransaction = tempInvestmentTransactions,
+                        InvestorId = investmentRecord.InvestorId,
+                        ProductDescription = investmentRecord.ProductDesc,
+                        Currency = investmentRecord.Currency
                     });
                 });
                 breakdownOfInvestmentAccounts = tempInvestments;

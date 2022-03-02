@@ -52,5 +52,7 @@
         /// The statement period.
         /// </value>
         public string StatementPeriod { get; set; }
+
+        public string Currency { get; set; }
     }
 }
