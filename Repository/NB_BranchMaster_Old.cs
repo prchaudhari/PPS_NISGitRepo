@@ -12,29 +12,18 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class DM_CustomerMasterRecord
+    public partial class NB_BranchMaster_Old
     {
         public long Id { get; set; }
-        public long BatchId { get; set; }
-        public long CustomerId { get; set; }
-        public long InvestorId { get; set; }
-        public string Title { get; set; }
-        public string FirstName { get; set; }
-        public string SurName { get; set; }
+        public long BranchId { get; set; }
+        public string Name { get; set; }
         public string AddressLine0 { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         public string AddressLine3 { get; set; }
         public string AddressLine4 { get; set; }
-        public string EmailAddress { get; set; }
-        public string MaskCellNo { get; set; }
-        public string Barcode { get; set; }
+        public string VatRegNo { get; set; }
+        public string ContactNo { get; set; }
         public string TenantCode { get; set; }
-        public string DS_Investor_Name { get; set; }
-        public string Mask_Cell_No { get; set; }
-        public string Field1 { get; set; }
-        public string Field2 { get; set; }
-        public string Field3 { get; set; }
-        public string Field4 { get; set; }
     }
 }

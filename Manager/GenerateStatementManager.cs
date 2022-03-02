@@ -19,7 +19,6 @@ namespace nIS
     using System.Net.Http.Headers;
     using System.Text;
     using System.Text.RegularExpressions;
-    using NedbankRepository;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Unity;
@@ -91,8 +90,6 @@ namespace nIS
         /// The crypto manager
         /// </summary>
         private readonly ICryptoManager cryptoManager;
-
-        private NedbankDbContext db = new NedbankDbContext();
 
         #endregion
 
@@ -1536,53 +1533,7 @@ namespace nIS
                     }
                     if (IsInvestmentPageTypePresent)
                     {
-                        investmentMasters = this.tenantTransactionDataRepository.Get_DM_InvestmasterMaster(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
-
-                        var investment = this.db.NB_InvestmentMaster.Where(m => m.CustomerId == customer.CustomerId.ToString() && m.BatchId == batchMaster.Identifier);
-
-                        var transactions = this.db.DM_InvestmentTransaction.Where(m => m.BatchId == batchMaster.Identifier && m.CustomerId == customer.Identifier).Select(n => new DM_InvestmentTransaction()
-                        {
-                            BatchId = n.BatchId,
-                            CustomerId = n.CustomerId,
-                            Identifier = n.Id,
-                            InvestmentId = n.InvestmentId,
-                            InvestorId = n.InvestorId,
-                            ProductId = n.ProductId,
-                            TenantCode = n.TenantCode,
-                            TransactionDate = n.TransactionDate,
-                            TransactionDesc = n.TransactionDesc,
-                            WJXBFS1 = n.WJXBFS1,
-                            WJXBFS2_Debit = n.WJXBFS2_Debit,
-                            WJXBFS3_Credit = n.WJXBFS3_Credit,
-                            WJXBFS4_Balance = n.WJXBFS4_Balance,
-                            WJXBFS5_TransId = n.WJXBFS5_TransId
-                        }).ToList();
-
-                        var intestmentMaster = investment.Select(n => new DM_InvestmentMaster()
-                        {
-                            Identifier = n.Id,
-                            AccountOpenDate = n.AccountOpenDate,
-                            AccuredInterest = n.AccuredInterest,
-                            BatchId = n.BatchId.Value,
-                            BranchId = n.BranchId.Value,
-                            ClosingBalance = n.ClosingBalance,
-                            Currenacy = n.Currency,
-                            CurrentInterestRate = n.CurrentInterestRate,
-                            CustomerId = n.InvestorId.Value, //TODO: ***Deepak fix data type
-                            DayOfStatement = n.DayOfStatement.ToString(),
-                            ExpiryDate = n.ExpiryDate,
-                            InterestDisposalDesc = n.InterestDisposalDesc,
-                            InvestmentId = n.InvestmentId.Value,
-                            InvestorId = n.InvestorId.Value,
-                            NoticePeriod = n.NoticePeriod,
-                            ProductDesc = n.ProductDesc,
-                            ProductId = n.ProductId.Value,
-                            ProductType = n.ProductType,
-                            StatementDate = n.StatementDate,
-                            StatementPeriod = n.StatementPeriod,
-                            TenantCode = n.TenantCode,
-                            investmentTransactions = transactions
-                        });
+                        investmentMasters = this.tenantTransactionDataRepository.Get_NB_InvestmasterMaster(new CustomerInvestmentSearchParameter() { InvestorId = customer.CustomerId, BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
 
                         if (investmentMasters != null && investmentMasters.Count > 0)
                         {
@@ -1710,6 +1661,14 @@ namespace nIS
 
                                     case HtmlConstants.VIDEO_WIDGET_NAME:
                                         IsFailed = this.BindVideoWidgetData(pageContent, ErrorMessages, customer.CustomerId, customerMedias, statementRawData.BatchDetails, statement, page, batchMaster, widget, tenantCode, statementRawData.OutputLocation);
+                                        break;
+
+                                    case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
+                                        IsFailed = this.BindSegmentBasedContentWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
+                                        break;
+
+                                    case HtmlConstants.STATIC_HTML_WIDGET_NAME:
+                                        IsFailed = this.BindStaticHtmlWidgetData(pageContent, customer, page, widget, statement, ErrorMessages);
                                         break;
 
                                     case HtmlConstants.INVESTMENT_PORTFOLIO_STATEMENT_WIDGET_NAME:
@@ -2605,6 +2564,58 @@ namespace nIS
 
         #endregion
 
+        private bool BindSegmentBasedContentWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, Statement statement, StringBuilder ErrorMessages)
+        {
+            try
+            {
+                var content = HtmlConstants.SEGMENT_BASED_CONTENT_WIDGET_HTML;
+
+                dynamic widgetSetting = JArray.Parse(widget.WidgetSetting);
+                var html = "";
+                if (widgetSetting[0].Html.ToString().Length > 0)
+                {
+                    html = widgetSetting[0].Html; //TODO: ***Deepak: Remove hard coded line
+                }
+
+                content = content.Replace("{{SegmentBasedContent}}", html);
+
+                pageContent.Replace("{{SegmentBasedContent_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", content);
+
+                return false;
+            }
+            catch(Exception ex)
+            {
+                ErrorMessages.Append("<li>Error occurred while configuring SegmentBasedContent widget for Page: " + page.Identifier + " and Widget: " + widget.Identifier + ". error: " + ex.Message + "!!</li>");
+                return true;
+            }
+        }
+
+        private bool BindStaticHtmlWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, Statement statement, StringBuilder ErrorMessages)
+        {
+            try
+            {
+                var content = HtmlConstants.STATIC_HTML_WIDGET_HTML;
+
+                dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
+                var html = "";
+                if (widgetSetting.html.ToString().Length > 0)
+                {
+                    html = widgetSetting.html;
+                }
+
+                content = content.Replace("{{StaticHtml}}", html);
+
+                pageContent.Replace("{{StaticHtml_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", content);
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.Append("<li>Error occurred while configuring StaticHtml widget for Page: " + page.Identifier + " and Widget: " + widget.Identifier + ". error: " + ex.Message + "!!</li>");
+                return true;
+            }
+        }
+
         #region These methods helps to bind data to Dynamic widgets
 
         private void BindDynamicTableWidgetData(StringBuilder pageContent, Page page, PageWidget widget, JObject searchParameter, DynamicWidget dynawidget, HttpClient httpClient)
@@ -3005,6 +3016,9 @@ namespace nIS
                         TotalClosingBalance = 0.0m;
                     }
                 });
+
+                pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.FirstName);
+                pageContent.Replace("{{SurName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.SurName);
 
                 pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.DS_Investor_Name);
                 pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance));

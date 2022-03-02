@@ -12,12 +12,13 @@ namespace nIS
     using System;
     using System.Collections.Generic;
     
-    public partial class DM_CustomerMasterRecord
+    public partial class NB_CustomerMaster_Old
     {
         public long Id { get; set; }
         public long BatchId { get; set; }
         public long CustomerId { get; set; }
         public long InvestorId { get; set; }
+        public long BranchId { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
         public string SurName { get; set; }
@@ -30,11 +31,5 @@ namespace nIS
         public string MaskCellNo { get; set; }
         public string Barcode { get; set; }
         public string TenantCode { get; set; }
-        public string DS_Investor_Name { get; set; }
-        public string Mask_Cell_No { get; set; }
-        public string Field1 { get; set; }
-        public string Field2 { get; set; }
-        public string Field3 { get; set; }
-        public string Field4 { get; set; }
     }
 }

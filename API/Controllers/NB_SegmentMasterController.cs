@@ -2,144 +2,101 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using NedbankRepository;
+using Unity;
 
 namespace nIS.Controllers
 {
     public class NB_SegmentMasterController : ApiController
     {
-        private NedbankDbContext db = new NedbankDbContext();
+        /// <summary>
+        /// The connection string
+        /// </summary>
+        private string connectionString = string.Empty;
+
+        /// <summary>
+        /// The validation engine object
+        /// </summary>
+        IValidationEngine validationEngine = null;
+
+        /// <summary>
+        /// The utility object
+        /// </summary>
+        private IConfigurationUtility configurationutility = null;
+
+        /// <summary>
+        /// The unity container
+        /// </summary>
+        private IUnityContainer unityContainer = null;
+
+        public NB_SegmentMasterController(IUnityContainer unityContainer)
+        {
+            this.unityContainer = unityContainer;
+            this.validationEngine = new ValidationEngine();
+            this.configurationutility = new ConfigurationUtility(this.unityContainer);
+        }
 
         // GET: api/NB_SegmentMaster
-        public IQueryable<Segment> GetNB_SegmentMaster()
+        public List<Segment> GetNB_SegmentMaster(string tenantCode)
         {
-            var result = db.NB_SegmentMaster.ToList();
+            this.SetAndValidateConnectionString(tenantCode);
+            List<NB_SegmentMaster> segments = new List<NB_SegmentMaster>();
+            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+            {
+                segments = nISEntitiesDataContext.NB_SegmentMaster.ToList();
+            }
 
-            return db.NB_SegmentMaster.OrderBy(m => m.Name).Select(n => new Segment()
+            return segments.OrderBy(m => m.Name).Select(n => new Segment()
             {
                 Id = n.Id,
                 Name = n.Name,
                 Code = n.Code,
                 SegmentTypeId = n.SegmentTypeId
-            });
+            }).ToList();
+        }
+
+        /// <summary>
+        /// This method help to set and validate connection string
+        /// </summary>
+        /// <param name="tenantCode">
+        /// The tenant code
+        /// </param>
+        private void SetAndValidateConnectionString(string tenantCode)
+        {
+            try
+            {
+                this.connectionString = validationEngine.IsValidText(this.connectionString) ? this.connectionString : this.configurationutility.GetConnectionString(ModelConstant.COMMON_SECTION, ModelConstant.NIS_CONNECTION_STRING, ModelConstant.CONFIGURATON_BASE_URL, ModelConstant.TENANT_CODE_KEY, tenantCode);
+                if (!this.validationEngine.IsValidText(this.connectionString))
+                {
+                    throw new ConnectionStringNotFoundException(tenantCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // GET: api/NB_SegmentMaster/5
         [ResponseType(typeof(Segment))]
-        public async Task<IHttpActionResult> GetNB_SegmentMaster(long id)
+        public async Task<IHttpActionResult> GetNB_SegmentMaster(long id, string tenantCode)
         {
-            NB_SegmentMaster nB_SegmentMaster = await db.NB_SegmentMaster.FindAsync(id);
+            this.SetAndValidateConnectionString(tenantCode);
+            NB_SegmentMaster nB_SegmentMaster = new NB_SegmentMaster();
+            using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+            {
+                nB_SegmentMaster = await nISEntitiesDataContext.NB_SegmentMaster.FirstOrDefaultAsync(m=> m.Id == id);
+            }
+
             if (nB_SegmentMaster == null)
             {
                 return NotFound();
             }
 
             return Ok(new Segment() { Id = nB_SegmentMaster.Id, Code = nB_SegmentMaster.Code, Name = nB_SegmentMaster.Name, SegmentTypeId = nB_SegmentMaster.SegmentTypeId });
-        }
-
-        // PUT: api/NB_SegmentMaster/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutNB_SegmentMaster(long id, Segment segment)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != segment.Id)
-            {
-                return BadRequest();
-            }
-            NB_SegmentMaster nbB_SegmentMaster = new NB_SegmentMaster()
-            {
-                Id = segment.Id,
-                Code = segment.Code,
-                Name = segment.Name,
-                SegmentTypeId = segment.SegmentTypeId
-            };
-
-            db.Entry(nbB_SegmentMaster).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NB_SegmentMasterExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/NB_SegmentMaster
-        [ResponseType(typeof(Segment))]
-        public async Task<IHttpActionResult> PostNB_SegmentMaster(Segment segment)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.NB_SegmentMaster.Add(new NB_SegmentMaster()
-            {
-                Id = segment.Id,
-                Code = segment.Code,
-                Name = segment.Name,
-                SegmentTypeId = segment.SegmentTypeId
-            });
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = segment.Id }, segment);
-        }
-
-        // DELETE: api/NB_SegmentMaster/5
-        [ResponseType(typeof(Segment))]
-        public async Task<IHttpActionResult> DeleteNB_SegmentMaster(long id)
-        {
-            NB_SegmentMaster nB_SegmentMaster = await db.NB_SegmentMaster.FindAsync(id);
-            if (nB_SegmentMaster == null)
-            {
-                return NotFound();
-            }
-
-            db.NB_SegmentMaster.Remove(nB_SegmentMaster);
-            await db.SaveChangesAsync();
-
-            return Ok(new Segment() {
-                Id = nB_SegmentMaster.Id,
-                Name = nB_SegmentMaster.Name,
-                Code = nB_SegmentMaster.Code,
-                SegmentTypeId = nB_SegmentMaster.SegmentTypeId
-            });
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool NB_SegmentMasterExists(long id)
-        {
-            return db.NB_SegmentMaster.Count(e => e.Id == id) > 0;
         }
     }
 }
