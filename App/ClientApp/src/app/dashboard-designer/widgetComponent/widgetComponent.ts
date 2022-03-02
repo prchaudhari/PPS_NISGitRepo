@@ -2075,7 +2075,7 @@ export class InvestmentPortfolioStatementComponent {
           <div class='col-lg-12'>
               <div class='card border-0'>
                   <div class='card-body text-left'>
-                      <div class="card-body-header-name-w pb-3">Dear Customer Name</div>
+                      <div class="card-body-header-w pb-3">Dear Customer Name</div>
                       <div class='card-body-header-w pb-2'>Investment portfolio statement</div>
                       <div class='row pb-1'>
                           <div class='col-lg-4 pr-1'>

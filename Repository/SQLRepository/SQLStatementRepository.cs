@@ -1184,13 +1184,13 @@ namespace nIS
                                     CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
                                     pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4");
 
-                                    string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
+                                    string customerName = customerInfo.FirstName + " " + customerInfo.SurName;
                                     pageContent.Replace("{{CustomerName}}", customerName);
 
                                     string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ";
                                     pageContent.Replace("{{Address1}}", address1);
 
-                                    string address2 = (customerInfo.City != "" ? customerInfo.City + ", " : "") + (customerInfo.State != "" ? customerInfo.State + ", " : "") + (customerInfo.Country != "" ? customerInfo.Country + ", " : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
+                                    string address2 = customerInfo.AddressLine3 + ", " + customerInfo.AddressLine4 + ", ";
                                     pageContent.Replace("{{Address2}}", address2);
                                 }
                             }
@@ -1657,13 +1657,13 @@ namespace nIS
                                     CustomerInformation customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
                                     pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4");
 
-                                    string customerName = customerInfo.FirstName + " " + customerInfo.MiddleName + " " + customerInfo.LastName;
+                                    string customerName = customerInfo.FirstName + " " + customerInfo.SurName;
                                     pageContent.Replace("{{CustomerName}}", customerName);
 
                                     string address1 = customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ";
                                     pageContent.Replace("{{Address1}}", address1);
 
-                                    string address2 = (customerInfo.City != "" ? customerInfo.City + ", " : "") + (customerInfo.State != "" ? customerInfo.State + ", " : "") + (customerInfo.Country != "" ? customerInfo.Country + ", " : "") + (customerInfo.Zip != "" ? customerInfo.Zip : "");
+                                    string address2 = customerInfo.AddressLine3 + ", " + customerInfo.AddressLine4 + ", ";
                                     pageContent.Replace("{{Address2}}", address2);
                                 }
                             }

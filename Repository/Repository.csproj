@@ -241,6 +241,8 @@
     <Compile Include="IRepository\IWidgetRepository.cs" />
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
+    <Compile Include="IRepository\NedBank\ICustomerRepository.cs" />
+    <Compile Include="IRepository\NedBank\IInvestmentRepository.cs" />
     <Compile Include="Mappings\ScheduleLogDetailRecord.cs" />
     <Compile Include="Mappings\View_PageRecord.cs" />
     <Compile Include="MultiTenantUserAccessMapRecord.cs">
@@ -343,6 +345,8 @@
     <Compile Include="ScheduleRunHistoryRecord.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLRepository\NedBank\SQLCustomerRepository.cs" />
+    <Compile Include="SQLRepository\NedBank\SQLInvestmentRepository.cs" />
     <Compile Include="SQLRepository\SQLAnalyticsDataRepository.cs" />
     <Compile Include="SQLRepository\SQLArchivalProcessRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureCityRepository.cs" />

@@ -105,6 +105,10 @@
     <Compile Include="InvestmentAccount.cs" />
     <Compile Include="MarketingMessage.cs" />
     <Compile Include="MultiTenantUserRoleAccess.cs" />
+    <Compile Include="NedBank\BreakdownOfInvestmentAccounts.cs" />
+    <Compile Include="NedBank\InvestmentPottfolio.cs" />
+    <Compile Include="NedBank\InvestmentTransaction.cs" />
+    <Compile Include="NedBank\InvestorPerformance.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="PageWidget.cs" />
     <Compile Include="PageWidgetVistorData.cs" />

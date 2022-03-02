@@ -15,12 +15,12 @@
     <RootNamespace>nIS</RootNamespace>
     <AssemblyName>nIS.API</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>44345</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -229,6 +229,10 @@
     </Reference>
     <Reference Include="Websym.Core.TenantManager.Manager">
       <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Manager.dll</HintPath>
+    </Reference>
+    <Reference Include="Websym.Core.TenantManager.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Model.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.TenantManager.Repository">
       <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Repository.dll</HintPath>
