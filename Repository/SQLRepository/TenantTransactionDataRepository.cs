@@ -480,9 +480,8 @@ namespace nIS
                                 AddressLine2 = item.AddressLine2,
                                 AddressLine3 = item.AddressLine3,
                                 AddressLine4 = item.AddressLine4,
-                                DS_Investor_Name = item.DS_Investor_Name,
                                 EmailAddress = item.EmailAddress,
-                                Mask_Cell_No = item.Mask_Cell_No,
+                                Mask_Cell_No = item.MaskCellNo,
                                 Barcode = item.Barcode,
                                 TenantCode = item.TenantCode
                             });
@@ -555,6 +554,76 @@ namespace nIS
         }
 
         /// <summary>
+        /// This method gets the specified list of customer investment master from investment master repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer investment search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer investment master
+        /// </returns>
+        public IList<DM_InvestmentMaster> Get_NB_InvestmasterMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode)
+        {
+            IList<DM_InvestmentMaster> InvestmentMasters = new List<DM_InvestmentMaster>();
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                string whereClause = this.WhereClauseGeneratorForCustomerInvestment(searchParameter, tenantCode);
+                using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
+                {
+                    //var InvestmentMasterRecords = nISEntitiesDataContext.NB_InvestmentMaster.Where(whereClause).ToList();
+                    var query = nISEntitiesDataContext.NB_InvestmentMaster.Where(m => m.TenantCode == tenantCode);
+                    if(searchParameter.InvestorId > 0)
+                    {
+                        query = query.Where(m => m.InvestorId == searchParameter.InvestorId);
+                    }
+                    if (searchParameter.BatchId > 0)
+                    {
+                        query = query.Where(m => m.BatchId == searchParameter.BatchId);
+                    }
+
+                    var InvestmentMasterRecords = query.ToList();
+                    if (InvestmentMasterRecords != null && InvestmentMasterRecords.Count > 0)
+                    {
+                        InvestmentMasterRecords.ForEach(item =>
+                        {
+                            InvestmentMasters.Add(new DM_InvestmentMaster()
+                            {
+                                Identifier = item.Id,
+                                BatchId = item.BatchId.Value,
+                                CustomerId = item.InvestorId.Value,
+                                InvestmentId = item.InvestmentId.Value,
+                                InvestorId = item.InvestorId.Value,
+                                AccountOpenDate = item.AccountOpenDate,
+                                AccuredInterest = item.AccuredInterest,
+                                BranchId = item.BranchId.Value,
+                                ClosingBalance = item.ClosingBalance,
+                                CurrentInterestRate = item.CurrentInterestRate,
+                                DayOfStatement = item.DayOfStatement.ToString(),
+                                ExpiryDate = item.ExpiryDate,
+                                InterestDisposalDesc = item.InterestDisposalDesc,
+                                NoticePeriod = item.NoticePeriod,
+                                ProductDesc = item.ProductDesc,
+                                ProductId = item.ProductId.Value,
+                                ProductType = item.ProductType,
+                                StatementDate = item.StatementDate,
+                                StatementPeriod = item.StatementPeriod,
+                                Currenacy = item.Currency,
+                                TenantCode = item.TenantCode
+                            });
+                        });
+                    }
+                }
+                return InvestmentMasters;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
+        /// <summary>
         /// This method gets the specified list of customer investment transaction from Investment transaction repository.
         /// </summary>
         /// <param name="searchParameter">The investment search parameter</param>
@@ -571,7 +640,21 @@ namespace nIS
                 string whereClause = this.WhereClauseGeneratorForCustomerInvestment(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var InvestmentTransactionRecords = nISEntitiesDataContext.DM_InvestmentTransactionRecord.Where(whereClause)?.OrderBy(it => it.TransactionDate).ToList();
+                    var query = nISEntitiesDataContext.NB_InvestmentTransaction.Where(m => m.TenantCode == tenantCode);
+                    if (searchParameter.InvestorId > 0)
+                    {
+                        query = query.Where(m => m.InvestorId == searchParameter.InvestorId);
+                    }
+                    if (searchParameter.InvestmentId > 0)
+                    {
+                        query = query.Where(m => m.InvestmentId == searchParameter.InvestmentId);
+                    }
+                    if (searchParameter.BatchId > 0)
+                    {
+                        query = query.Where(m => m.BatchId == searchParameter.BatchId);
+                    }
+
+                    var InvestmentTransactionRecords = query.OrderBy(it => it.TransactionDate).ToList();
                     if (InvestmentTransactionRecords != null && InvestmentTransactionRecords.Count > 0)
                     {
                         InvestmentTransactionRecords.ForEach(item =>
@@ -580,7 +663,7 @@ namespace nIS
                             {
                                 Identifier = item.Id,
                                 BatchId = item.BatchId,
-                                CustomerId = item.CustomerId,
+                                CustomerId = item.InvestorId,
                                 ProductId = item.ProductId,
                                 InvestmentId = item.InvestmentId,
                                 InvestorId = item.InvestorId,

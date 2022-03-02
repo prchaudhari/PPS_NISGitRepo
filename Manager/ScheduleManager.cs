@@ -5,7 +5,6 @@
 
 namespace nIS
 {
-    using NedbankRepository;
     using Newtonsoft.Json;
     #region References
 
@@ -84,8 +83,6 @@ namespace nIS
         /// The system activity history manager object.
         /// </summary>
         private SystemActivityHistoryManager systemActivityHistoryManager = null;
-
-        private NedbankDbContext db = new NedbankDbContext();
 
         #endregion
 
@@ -1320,7 +1317,8 @@ namespace nIS
             }
             catch (Exception ex)
             {
-                throw ex;
+                //TODO: ***Deepak: commenting below line
+                //throw ex;
             }
         }
 
@@ -1881,29 +1879,10 @@ namespace nIS
                     scheduleLog.ScheduleId = scheduleRecord.Identifier;
 
                     var tenantEntities = this.dynamicWidgetRepository.GetTenantEntities(tenantCode);
-                    //var customers = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
-                    //{
-                    //    BatchId = batch.Identifier,
-                    //}, tenantCode);
-
-                    var customers = db.NB_CustomerMaster.Where(n=> n.BatchId == batch.Identifier).Select(m => new DM_CustomerMaster()
+                    var customers = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
                     {
-                        AddressLine0 = m.AddressLine0,
-                        AddressLine1 = m.AddressLine1,
-                        CustomerId = m.Id,
-                        AddressLine2 = m.AddressLine2,
-                        AddressLine3 = m.AddressLine3,
-                        AddressLine4 = m.AddressLine4,
-                        Barcode = m.Barcode,
-                        BatchId = m.BatchId.Value,
-                        EmailAddress = m.EmailAddress,
-                        FirstName = m.FirstName,
-                        SurName = m.SurName,
-                        Identifier = m.Id,
-                        Mask_Cell_No = m.MaskCellNo,
-                        TenantCode = m.TenantCode,
-                        Title = m.Title
-                    }).Take(1).ToList();
+                        BatchId = batch.Identifier,
+                    }, tenantCode).ToList();
 
                     var scheduleRunStartTime = DateTime.UtcNow;
 

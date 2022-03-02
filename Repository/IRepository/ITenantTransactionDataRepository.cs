@@ -120,6 +120,16 @@ namespace nIS
         IList<DM_InvestmentMaster> Get_DM_InvestmasterMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode);
 
         /// <summary>
+        /// This method gets the specified list of customer investment master from investment master repository.
+        /// </summary>
+        /// <param name="searchParameter">The customer investment search parameter</param>
+        /// <param name="tenantCode">The tenant code</param>
+        /// <returns>
+        /// Returns the list of customer investment master
+        /// </returns>
+        IList<DM_InvestmentMaster> Get_NB_InvestmasterMaster(CustomerInvestmentSearchParameter searchParameter, string tenantCode);
+
+        /// <summary>
         /// This method gets the specified list of customer investment transaction from Investment transaction repository.
         /// </summary>
         /// <param name="searchParameter">The investment search parameter</param>
