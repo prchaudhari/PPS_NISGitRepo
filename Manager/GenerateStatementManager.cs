@@ -1621,7 +1621,7 @@ namespace nIS
                         string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                         NavItemList.Append("<li class='nav-item" + (i != statement.Pages.Count - 1 ? " nav-rt-border" : string.Empty) + "'><a id='tab" + i + "-tab' data-toggle='tab' data-target='#" + tabClassName + "' role='tab' class='nav-link" + (i == 0 ? " active" : string.Empty) + "'> " + statementPageContent.DisplayName + " </a></li>");
 
-                        string ExtraClassName = statement.Pages.Count > 1 ? (i == 0 ? " tab-pane fade in active show " : " tab-pane fade ") : string.Empty;
+                        string ExtraClassName = statement.Pages.Count > 1 ? (i == 0 ? " tab-pane fade in active show " : " tab-pane fade in active show ") : string.Empty;
                         PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
 
                         var newPageContent = new StringBuilder();
@@ -3137,9 +3137,9 @@ namespace nIS
                     }
 
                     var LastInvestmentTransaction = acc.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).OrderByDescending(it => it.TransactionDate)?.ToList()?.FirstOrDefault();
-                    LastInvestmentTransaction.WJXBFS4_Balance = LastInvestmentTransaction.WJXBFS4_Balance.Replace(",", ".");
                     if (LastInvestmentTransaction != null)
                     {
+                        LastInvestmentTransaction.WJXBFS4_Balance = LastInvestmentTransaction.WJXBFS4_Balance.Replace(",", ".");
                         InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", LastInvestmentTransaction.TransactionDate.ToString(ModelConstant.DATE_FORMAT_dd_MMM_yyyy));
                         if (decimal.TryParse(LastInvestmentTransaction.WJXBFS4_Balance, out res))
                         {

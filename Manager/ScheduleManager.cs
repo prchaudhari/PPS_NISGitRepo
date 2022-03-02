@@ -1882,7 +1882,7 @@ namespace nIS
                     var customers = this.tenantTransactionDataRepository.Get_DM_CustomerMasters(new CustomerSearchParameter()
                     {
                         BatchId = batch.Identifier,
-                    }, tenantCode).Take(1).ToList();
+                    }, tenantCode).ToList();
 
                     var scheduleRunStartTime = DateTime.UtcNow;
 

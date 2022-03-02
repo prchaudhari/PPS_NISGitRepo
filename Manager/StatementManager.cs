@@ -1346,7 +1346,7 @@ namespace nIS
                     var tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                     NavItemList.Append("<li class='nav-item" + (i != statement.Pages.Count - 1 ? " nav-rt-border" : string.Empty) + "'><a id='tab" + i + "-tab' data-toggle='tab' data-target='#" + tabClassName + "' role='tab' class='nav-link" + (i == 0 ? " active" : string.Empty) + "'> " + statementPageContent.DisplayName + " </a></li>");
 
-                    string ExtraClassName = statement.Pages.Count > 1 ? (i == 0 ? " tab-pane fade in active show " : " tab-pane fade ") : string.Empty;
+                    string ExtraClassName = statement.Pages.Count > 1 ? (i == 0 ? " tab-pane fade in active show " : " tab-pane fade in active show ") : string.Empty;
                     PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
 
                     var newPageContent = new StringBuilder();
@@ -2510,7 +2510,7 @@ namespace nIS
                             NavItemList.Append("<li class='nav-item " + (x != statementPages.Count - 1 ? "nav-rt-border" : string.Empty) + " '><a id='tab" + x + "-tab' data-toggle='tab' data-target='#" + tabClassName + "' role='tab' class='nav-link " + (x == 0 ? "active" : string.Empty) + " '> " + page.DisplayName + " </a></li>");
 
                             //var extraclass = x > 0 ? "d-none " + tabClassName : tabClassName;
-                            string extraclass = statementPages.Count > 1 ? (x == 0 ? " tab-pane fade in active show " : " tab-pane fade ") : string.Empty;
+                            string extraclass = statementPages.Count > 1 ? (x == 0 ? " tab-pane fade in active show " : " tab-pane fade in active show ") : string.Empty;
                             var pageHeaderHtml = "<div id='{{DivId}}' class='{{ExtraClass}}' {{BackgroundImage}}>";
                             if (page.BackgroundImageAssetId != 0)
                             {
