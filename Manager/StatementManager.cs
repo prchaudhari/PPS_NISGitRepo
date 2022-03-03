@@ -3075,16 +3075,16 @@ namespace nIS
                                                                 InvestmentNo = "0" + InvestmentNo;
                                                             }
                                                             InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
-                                                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate.ToString());
+                                                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToShortDateString() : "");
 
-                                                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate.ToString());
+                                                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToShortDateString() : "");
                                                             InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
                                                             InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", "");
                                                             InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
                                                             InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
                                                             InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.CurrentInterestRate.ToString());
 
-                                                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", acc.LastTransactionDate.ToString());
+                                                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", acc.LastTransactionDate != null ? Convert.ToDateTime(acc.LastTransactionDate).ToShortDateString() : "" );
                                                             InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.InvestmentTransaction.OrderByDescending(a => a.TransactionDate).Select(a => a.WJXBFS4_Balance).FirstOrDefault());
 
                                                             var InvestmentTransactionRows = new StringBuilder();

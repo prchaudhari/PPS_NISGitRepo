@@ -1883,7 +1883,7 @@ namespace nIS
                     {
                         BatchId = batch.Identifier,
                     }, tenantCode).ToList();
-
+                    customers = customers.Where(x => x.CustomerId == 2836445).ToList();
                     var scheduleRunStartTime = DateTime.UtcNow;
 
                     if (customers != null && customers.Count > 0)

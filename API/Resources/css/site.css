@@ -2126,6 +2126,13 @@
         font-family: sans-serif;
     }
 
+    .card-body-header-name-dear {
+        font-size: 18pt;
+        color: #2d6444 !important;
+        font-weight: bolder;
+        font-family: 'Mark Pro Bold';
+    }
+
     .card-body-sub-header {
         font-size: 18px;
         color: #005b00 !important;

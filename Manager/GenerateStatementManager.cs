@@ -51,6 +51,9 @@ namespace nIS
         /// </summary>
         private IDynamicWidgetRepository dynamicWidgetRepository = null;
 
+        private IInvestmentRepository investmentRepository = null;
+        private ICustomerRepository customerRepository = null;
+
         /// <summary>
         /// The tenant transaction data repository.
         /// </summary>
@@ -116,7 +119,8 @@ namespace nIS
                 this.dynamicWidgetRepository = this.unityContainer.Resolve<IDynamicWidgetRepository>();
                 this.statementSearchRepository = this.unityContainer.Resolve<IStatementSearchRepository>();
                 this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
-
+                this.investmentRepository = this.unityContainer.Resolve<IInvestmentRepository>();
+                this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
             }
             catch (Exception ex)
             {
@@ -1775,6 +1779,16 @@ namespace nIS
                                     case HtmlConstants.NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME:
                                         this.BindGreenbacksCategorySpendRewardPointsGraphWidgetData(pageContent, scriptHtmlRenderer, CustRewardSpendByCategory, page, widget);
                                         break;
+
+                                    case HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
+                                        this.BindDataToWealthBreakdownOfInvestmentAccountsWidget(pageContent, page, widget, tenantCode, investmentMasters);
+                                        break;
+                                    case HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME:
+                                        this.BindDataToWealthInvestmentPortfolioStatementWidget(pageContent, page, widget, tenantCode, investmentMasters);
+                                        break;
+                                    case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
+                                        this.BindDataToWealthInvestorPerformanceStatementWidget(pageContent, page, widget, tenantCode, investmentMasters);
+                                        break;
                                 }
                             }
                             else
@@ -2583,7 +2597,7 @@ namespace nIS
 
                 return false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ErrorMessages.Append("<li>Error occurred while configuring SegmentBasedContent widget for Page: " + page.Identifier + " and Widget: " + widget.Identifier + ". error: " + ex.Message + "!!</li>");
                 return true;
@@ -4389,6 +4403,141 @@ namespace nIS
             }
             pageContent.Replace("HiddenCategorySpendRewardsGraphValue_" + page.Identifier + "_" + widget.Identifier + "", data);
             scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_CATEGORY_SPEND_REWARD_POINTS_BAR_GRAPH_SCRIPT.Replace("CategorySpendRewardsPieChartcontainer", "CategorySpendRewardsPieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenCategorySpendRewardsGraph", "HiddenCategorySpendRewardsGraph_" + page.Identifier + "_" + widget.Identifier));
+        }
+
+        private void BindDataToWealthBreakdownOfInvestmentAccountsWidget(StringBuilder pageContent, Page page, PageWidget widget, string tenantCode, List<DM_InvestmentMaster> investmentMasters)
+        {
+            if (investmentMasters != null && investmentMasters.Count > 0)
+            {
+                //Create Nav tab if investment accounts is more than 1
+                var NavTabs = new StringBuilder();
+                var InvestmentAccountsCount = investmentMasters.Count;
+                pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", NavTabs.ToString());
+
+                //create tab-content div if accounts is greater than 1, otherwise create simple div
+                var TabContentHtml = new StringBuilder();
+                var counter = 0;
+                investmentMasters.ToList().ForEach(inv =>
+                {
+                    IList<BreakdownOfInvestmentAccounts> investments = this.investmentRepository.GetBreakdownOfInvestmentAccountsByInvesterId(inv.InvestorId, tenantCode);
+
+                    if (investments != null)
+                    {
+                        var InvestmentAccountBreakdownHtml = new StringBuilder(HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML);
+                        InvestmentAccountBreakdownHtml.Replace("{{NavTab}}", NavTabs.ToString());
+
+                        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : "");
+                        investments.ToList().ForEach(acc =>
+                        {
+                            var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
+
+                            InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDescription);
+                            InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId.ToString());
+                            InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : ""));
+
+                            var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
+                            //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                            while (InvestmentNo.Length != 13)
+                            {
+                                InvestmentNo = "0" + InvestmentNo;
+                            }
+                            InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
+                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToShortDateString() : "");
+
+                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToShortDateString() : "");
+                            InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
+                            InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", "");
+                            InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
+                            InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
+                            InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.CurrentInterestRate.ToString());
+
+                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", acc.LastTransactionDate != null ? Convert.ToDateTime(acc.LastTransactionDate).ToShortDateString() : "");
+                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.InvestmentTransaction.OrderByDescending(a => a.TransactionDate).Select(a => a.WJXBFS4_Balance).FirstOrDefault());
+
+                            var InvestmentTransactionRows = new StringBuilder();
+                            acc.InvestmentTransaction.ToList().ForEach(trans =>
+                            {
+                                var tr = new StringBuilder();
+                                tr.Append("<tr class='ht-20'>");
+                                tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate.ToShortDateString() + "</td>");
+                                tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : acc.Currency + trans.WJXBFS2_Debit) + "</td>");
+                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : acc.Currency + trans.WJXBFS3_Credit) + "</td>");
+                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : acc.Currency + trans.WJXBFS4_Balance) + "</td>");
+                                tr.Append("</tr>");
+                                InvestmentTransactionRows.Append(tr.ToString());
+                            });
+                            InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
+                            TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
+                            counter++;
+                        });
+                        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : "");
+
+                        InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
+                        pageContent.Append(InvestmentAccountBreakdownHtml.ToString());
+                    }
+                });
+            }
+        }
+
+        private void BindDataToWealthInvestmentPortfolioStatementWidget(StringBuilder pageContent, Page page, PageWidget widget, string tenantCode, List<DM_InvestmentMaster> investmentMasters)
+        {
+            if (investmentMasters != null && investmentMasters.Count > 0)
+            {
+                //Create Nav tab if investment accounts is more than 1
+                var NavTabs = new StringBuilder();
+                var InvestmentAccountsCount = investmentMasters.Count;
+                pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", NavTabs.ToString());
+
+                //create tab-content div if accounts is greater than 1, otherwise create simple div
+                var TabContentHtml = new StringBuilder();
+                var counter = 0;
+                investmentMasters.ToList().ForEach(inv =>
+                {
+                    IList<InvestmentPottfolio> investmentPortfolio = this.investmentRepository.GetInvestmentPottfolioByInvesterId(inv.InvestorId, tenantCode);
+                    IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(inv.InvestorId, tenantCode);
+
+                    if (investmentPortfolio != null)
+                    {
+                        var OuterInvestmentPortfolioHtmlWidget = HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML;
+                        var investmentPortfolioHtmlWidget = new StringBuilder(string.Empty);
+                        investmentPortfolio.ToList().ForEach(investment =>
+                        {
+                            var innerInvestmentPortoflioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML_REPEATED_PART);
+                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{TotalClosingBalance}}", investment.Currency + investment.ClosingBalance);
+                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{DayOfStatement}}", Convert.ToString(investment.DayOfStatement));
+                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{InvestorID}}", Convert.ToString(investment.InvestorId));
+                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{StatementPeriod}}", investment.StatementPeriod);
+                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{StatementDate}}", investment.StatementDate != null ? Convert.ToDateTime(investment.StatementDate).ToShortDateString() : "");
+                            investmentPortfolioHtmlWidget.Append(innerInvestmentPortoflioHtmlWidget);
+                        });
+                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "");
+                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", customers.FirstOrDefault().FirstName);
+                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{InvestmentWealthPortfolioRepetedPart}}", Convert.ToString(investmentPortfolioHtmlWidget));
+                        pageContent.Append(OuterInvestmentPortfolioHtmlWidget);
+                    }
+                });
+            }
+        }
+
+        private void BindDataToWealthInvestorPerformanceStatementWidget(StringBuilder pageContent, Page page, PageWidget widget, string tenantCode, List<DM_InvestmentMaster> investmentMasters)
+        {
+            IList<InvestorPerformance> investments = this.investmentRepository.GetInvestorPerformanceByInvesterId(11083, tenantCode);
+            if (investments != null)
+            {
+                var outerInvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
+                var investorPerformanceHtmlWidget = new StringBuilder();
+                investments.ToList().ForEach(investment =>
+                {
+                    var innerInvestorPerformanceHtmlWidget = new StringBuilder(HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML_REPEATED_PART);
+                    innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{ProductType}}", investment.ProductType);
+                    innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", investment.Currency + investment.OpeningBalance);
+                    innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", investment.Currency + investment.ClosingBalance);
+                    investorPerformanceHtmlWidget.Append(innerInvestorPerformanceHtmlWidget);
+                });
+                outerInvestorPerformanceHtmlWidget = outerInvestorPerformanceHtmlWidget.Replace("{{WealthInvestorPerformanceRepeatedPart}}", Convert.ToString(investorPerformanceHtmlWidget));
+                pageContent.Append(outerInvestorPerformanceHtmlWidget);
+            }
         }
 
         #endregion
