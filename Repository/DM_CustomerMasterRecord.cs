@@ -31,7 +31,9 @@ namespace nIS
         public string Barcode { get; set; }
         public string TenantCode { get; set; }
         public string DS_Investor_Name { get; set; }
+        public string Segment { get; set; }
         public string Mask_Cell_No { get; set; }
+        public string Language { get; set; }
         public string Field1 { get; set; }
         public string Field2 { get; set; }
         public string Field3 { get; set; }
