@@ -1789,7 +1789,7 @@ namespace nIS
                                         BindDataToWealthInvestmentPortfolioStatementWidget(pageContent, customer, investmentMasters, page, widget);
                                         break;
                                     case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
-                                        this.BindDataToWealthInvestorPerformanceStatementWidget(pageContent, investmentMasters, page, widget);
+                                        this.BindDataToWealthInvestorPerformanceStatementWidget(pageContent, investmentMasters, page, widget, customer);
                                         break;
                                 }
                             }
