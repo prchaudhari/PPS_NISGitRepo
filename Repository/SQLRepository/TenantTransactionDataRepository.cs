@@ -251,7 +251,8 @@ namespace nIS
                                      st.TenantCode
                                  }).Where(whereClause).ToList();
 
-                    query.ForEach(q => {
+                    query.ForEach(q =>
+                    {
                         savingTrends.Add(new SavingTrend
                         {
                             Identifier = q.Id,
@@ -484,7 +485,9 @@ namespace nIS
                                 Mask_Cell_No = item.MaskCellNo,
                                 Barcode = item.Barcode,
                                 TenantCode = item.TenantCode,
-                                DS_Investor_Name = item.DS_Investor_Name
+                                DS_Investor_Name = item.DS_Investor_Name,
+                                Language = item.Language,
+                                Segment = item.Segment
                             });
                         });
                     }
@@ -573,7 +576,7 @@ namespace nIS
                 {
                     //var InvestmentMasterRecords = nISEntitiesDataContext.NB_InvestmentMaster.Where(whereClause).ToList();
                     var query = nISEntitiesDataContext.NB_InvestmentMaster.Where(m => m.TenantCode == tenantCode);
-                    if(searchParameter.InvestorId > 0)
+                    if (searchParameter.InvestorId > 0)
                     {
                         query = query.Where(m => m.InvestorId == searchParameter.InvestorId);
                     }
@@ -582,7 +585,7 @@ namespace nIS
                         query = query.Where(m => m.BatchId == searchParameter.BatchId);
                     }
 
-                    var InvestmentMasterRecords = query.ToList();
+                    var InvestmentMasterRecords = query.OrderBy(m => m.ProductDesc).ToList();
                     if (InvestmentMasterRecords != null && InvestmentMasterRecords.Count > 0)
                     {
                         InvestmentMasterRecords.ForEach(item =>
@@ -1864,7 +1867,7 @@ namespace nIS
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
             }
-            
+
             if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
             {
                 var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);
@@ -1986,7 +1989,7 @@ namespace nIS
             {
                 queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") ");
             }
-            
+
             if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)
             {
                 var filterEntities = JsonConvert.DeserializeObject<List<DynamicWidgetFilterEntity>>(searchParameter.WidgetFilterSetting);

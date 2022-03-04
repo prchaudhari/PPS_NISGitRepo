@@ -440,6 +440,10 @@ namespace nIS
 
         public const string BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC = "balance brought forward";
 
+        public const string BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR = "saldo oorgedra";
+
+        public const string BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR = "saldo oorgebring";
+
         public const string PAYMENT_THANK_YOU_TRANSACTION_DESC = "Payment - Thank you";
 
         public const string DATE_FORMAT_dd_MM_yyyy = "dd'/'MM'/'yyyy";

@@ -9,8 +9,10 @@ namespace nIS
     #region References
 
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -1650,7 +1652,7 @@ namespace nIS
                                         {
                                             if (statement.Pages.Count == 1)
                                             {
-                                                this.BindBondDetailsWidgetData(pageContent, page, widget, HomeLoanAccounts);
+                                                this.BindBondDetailsWidgetData(pageContent, page, widget, HomeLoanAccounts, customer);
                                             }
                                         }
                                         else
@@ -1680,7 +1682,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME:
-                                        this.BindInvestorPerformanceWidgetData(pageContent, investmentMasters, page, widget);
+                                        this.BindInvestorPerformanceWidgetData(pageContent, investmentMasters, page, widget, customer);
                                         break;
 
                                     case HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
@@ -1964,6 +1966,8 @@ namespace nIS
                     finalHtml.Replace("{{StatementNumber}}", statement.Identifier.ToString());
                     finalHtml.Replace("{{FirstPageId}}", FirstPageId.ToString());
                     finalHtml.Replace("{{TenantCode}}", tenantCode);
+
+                    finalHtml = Translate(finalHtml, customer);
 
                     //If has any error while rendering html statement, then assign status as failed and all collected errors message to log message variable..
                     //Otherwise write html statement string to actual html file and store it at output location, then assign status as completed
@@ -2994,7 +2998,7 @@ namespace nIS
             }
         }
 
-        private void BindBondDetailsWidgetData(StringBuilder pageContent, Page page, PageWidget widget, List<DM_HomeLoanMaster> HomeLoans)
+        private void BindBondDetailsWidgetData(StringBuilder pageContent, Page page, PageWidget widget, List<DM_HomeLoanMaster> HomeLoans, DM_CustomerMaster customer)
         {
             try
             {
@@ -3069,39 +3073,72 @@ namespace nIS
             }
         }
 
-        private void BindInvestorPerformanceWidgetData(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
+        private void BindInvestorPerformanceWidgetData(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget, DM_CustomerMaster cust)
         {
             if (investmentMasters != null && investmentMasters.Count > 0)
             {
+                List<InvestorPerformanceWidgetData> investorPerformanceWidgetDatas = new List<InvestorPerformanceWidgetData>();
+
                 var TotalClosingBalance = 0.0m;
                 var TotalOpeningBalance = 0.0m;
                 investmentMasters.ForEach(invest =>
                 {
-                    var res = 0.0m;
-                    try
+                    InvestorPerformanceWidgetData item;
+                    var productType = invest.ProductType;
+                    if (investorPerformanceWidgetDatas.Any(m => m.ProductType == productType))
                     {
-                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+                        item = investorPerformanceWidgetDatas.FirstOrDefault(m => m.ProductType == productType);
                     }
-                    catch (Exception)
+                    else
                     {
-                        TotalClosingBalance = 0.0m;
+                        item = new InvestorPerformanceWidgetData() { ProductType = productType };
+                        investorPerformanceWidgetDatas.Add(item);
                     }
 
-                    res = 0.0m;
-                    try
+                    var res = 0.0m;
+
+                    foreach (var tran in invest.investmentTransactions)
                     {
-                        TotalOpeningBalance = TotalOpeningBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+                        if (tran.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR))
+                        {
+                            decimal.TryParse(tran.WJXBFS4_Balance.Replace(",", "."), out res);
+                            TotalClosingBalance += res;
+                            item.ClosingBalance = TotalClosingBalance.ToString();
+                        }
+
+                        res = 0.0m;
+
+                        if (tran.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR))
+                        {
+                            decimal.TryParse(tran.WJXBFS4_Balance.Replace(",", "."), out res);
+                            TotalOpeningBalance += res;
+                            item.OpeningBalance = TotalOpeningBalance.ToString();
+                        }
                     }
-                    catch (Exception)
-                    {
-                        TotalOpeningBalance = 0.0m;
-                    }
+
                 });
 
-                pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].ProductType);
-                pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOpeningBalance));
-                pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance));
+                var html = "";
+
+                int counter = 0;
+
+                foreach (var item in investorPerformanceWidgetDatas)
+                {
+                    var InvestorPerformanceHtmlWidget = HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_HTML;
+                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", item.ProductType);
+                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", item.OpeningBalance);
+                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", item.ClosingBalance);
+                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{WidgetId}}", "");
+
+                    if (counter != 0)
+                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("<div class='card-body-header pb-2'>Investor performance</div>", "");
+
+                    html += InvestorPerformanceHtmlWidget;
+                    counter++;
+                }
+                pageContent.Replace("{{" + HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
             }
+
         }
 
         private void BindBreakdownOfInvestmentAccountsWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget, BatchMaster batchMaster, DM_CustomerMaster customer, string outputLocation)
@@ -4537,45 +4574,98 @@ namespace nIS
             }
         }
 
-        private void BindDataToWealthInvestorPerformanceStatementWidget(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
+        private void BindDataToWealthInvestorPerformanceStatementWidget(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget, DM_CustomerMaster cust)
         {
+            if (investmentMasters != null && investmentMasters.Count > 0)
             {
-                if (investmentMasters != null && investmentMasters.Count > 0)
+                List<InvestorPerformanceWidgetData> investorPerformanceWidgetDatas = new List<InvestorPerformanceWidgetData>();
+
+                var TotalClosingBalance = 0.0m;
+                var TotalOpeningBalance = 0.0m;
+                investmentMasters.ForEach(invest =>
                 {
-                    var TotalClosingBalance = 0.0m;
-                    var TotalOpeningBalance = 0.0m;
-                    investmentMasters.ForEach(invest =>
+                    InvestorPerformanceWidgetData item;
+                    var productType = invest.ProductType;
+                    if (investorPerformanceWidgetDatas.Any(m => m.ProductType == productType))
                     {
-                        var res = 0.0m;
-                        try
+                        item = investorPerformanceWidgetDatas.FirstOrDefault(m => m.ProductType == productType);
+                    }
+                    else
+                    {
+                        item = new InvestorPerformanceWidgetData() { ProductType = productType };
+                        investorPerformanceWidgetDatas.Add(item);
+                    }
+
+                    var res = 0.0m;
+
+                    foreach (var tran in invest.investmentTransactions)
+                    {
+                        if (tran.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR))
                         {
-                            TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
-                        }
-                        catch (Exception)
-                        {
-                            TotalClosingBalance = 0.0m;
+                            decimal.TryParse(tran.WJXBFS4_Balance.Replace(",", "."), out res);
+                            TotalClosingBalance += res;
+                            item.ClosingBalance = TotalClosingBalance.ToString();
                         }
 
                         res = 0.0m;
-                        try
-                        {
-                            TotalOpeningBalance = TotalOpeningBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
-                        }
-                        catch (Exception)
-                        {
-                            TotalOpeningBalance = 0.0m;
-                        }
-                    });
 
-                    pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].ProductType);
-                    pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOpeningBalance));
-                    pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance));
+                        if (tran.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR))
+                        {
+                            decimal.TryParse(tran.WJXBFS4_Balance.Replace(",", "."), out res);
+                            TotalOpeningBalance += res;
+                            item.OpeningBalance = TotalOpeningBalance.ToString();
+                        }
+                    }
+
+                });
+
+                var html = "";
+
+                int counter = 0;
+
+                foreach (var item in investorPerformanceWidgetDatas)
+                {
+                    var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
+                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", item.ProductType);
+                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", item.OpeningBalance);
+                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", item.ClosingBalance);
+                    InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{WidgetId}}", "");
+
+                    if (counter != 0)
+                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("<div class='card-body-header pb-2'>Investor performance</div>", "");
+
+                    html += InvestorPerformanceHtmlWidget;
+                    counter++;
+                }
+                pageContent.Replace("{{" + HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
+            }
+        }
+
+        private StringBuilder Translate(StringBuilder inputStr, DM_CustomerMaster customer)
+        {
+            //Check the language using customer.Language and then translate it
+
+            if (customer.Language != "ENG")
+            {
+                var resourceItems = Properties.Resources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+
+                foreach (DictionaryEntry item in resourceItems)
+                {
+                    inputStr = inputStr.Replace(item.Key.ToString(), item.Value.ToString());
                 }
             }
+            return inputStr;
         }
 
         #endregion
 
         #endregion
+    }
+
+    public class InvestorPerformanceWidgetData
+    {
+        public string ProductType { get; set; }
+        public string OpeningBalance { get; set; }
+        public string ClosingBalance { get; set; }
     }
 }

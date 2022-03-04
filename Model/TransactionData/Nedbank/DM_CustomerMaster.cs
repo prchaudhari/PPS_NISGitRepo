@@ -27,6 +27,8 @@ namespace nIS
         public string Mask_Cell_No { get; set; }
         public string Barcode { get; set; }
         public string TenantCode { get; set; }
+        public string Language { get; set; }
+        public string Segment { get; set; }
     }
 
     public class DM_CustomerAccountSummary
