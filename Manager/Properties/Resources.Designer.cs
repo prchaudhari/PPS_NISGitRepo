@@ -70,11 +70,11 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saldo:.
+        ///   Looks up a localized string similar to Saldo.
         /// </summary>
-        internal static string Balance_ {
+        internal static string Balance {
             get {
-                return ResourceManager.GetString("Balance:", resourceCulture);
+                return ResourceManager.GetString("Balance", resourceCulture);
             }
         }
         
@@ -142,11 +142,11 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Datum:.
+        ///   Looks up a localized string similar to Datum.
         /// </summary>
-        internal static string Date_ {
+        internal static string Date {
             get {
-                return ResourceManager.GetString("Date:", resourceCulture);
+                return ResourceManager.GetString("Date", resourceCulture);
             }
         }
         

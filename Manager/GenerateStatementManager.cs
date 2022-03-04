@@ -3027,7 +3027,10 @@ namespace nIS
                     var res = 0.0m;
                     try
                     {
-                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(
+                            it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)
+                            || it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)
+                        ).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
                     }
                     catch (Exception)
                     {
@@ -4528,7 +4531,10 @@ namespace nIS
                     var res = 0.0m;
                     try
                     {
-                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => 
+                        it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)
+                        || it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)
+                        ).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
                     }
                     catch (Exception)
                     {
@@ -4644,14 +4650,19 @@ namespace nIS
         private StringBuilder Translate(StringBuilder inputStr, DM_CustomerMaster customer)
         {
             //Check the language using customer.Language and then translate it
-
+            List<TranslatedItem> list = new List<TranslatedItem>();
             if (customer.Language != "ENG")
             {
                 var resourceItems = Properties.Resources.ResourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
 
                 foreach (DictionaryEntry item in resourceItems)
                 {
-                    inputStr = inputStr.Replace(item.Key.ToString(), item.Value.ToString());
+                    list.Add(new TranslatedItem() { Eng = item.Key.ToString(), Translated = item.Value.ToString(), StringLength = item.Key.ToString().Length });
+                }
+
+                foreach(var item in list.OrderByDescending(m=> m.StringLength))
+                {
+                    inputStr = inputStr.Replace(item.Eng, item.Translated);
                 }
             }
             return inputStr;
@@ -4667,5 +4678,12 @@ namespace nIS
         public string ProductType { get; set; }
         public string OpeningBalance { get; set; }
         public string ClosingBalance { get; set; }
+    }
+
+    public class TranslatedItem
+    {
+        public string Eng { get; set; }
+        public string Translated { get; set; }
+        public int StringLength { get; set; }
     }
 }

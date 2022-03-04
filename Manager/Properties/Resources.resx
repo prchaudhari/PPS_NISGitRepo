@@ -120,11 +120,11 @@
   <data name="Account type" xml:space="preserve">
     <value>Soort rekening</value>
   </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Saldo</value>
+  </data>
   <data name="Balance at" xml:space="preserve">
     <value>Saldo soos op</value>
-  </data>
-  <data name="Balance:" xml:space="preserve">
-    <value>Saldo:</value>
   </data>
   <data name="Breakdown of your investment accounts" xml:space="preserve">
     <value>Uiteensetting van u beleggingsrekenings</value>
@@ -144,8 +144,8 @@
   <data name="Current investor balance" xml:space="preserve">
     <value>Huidige beleggersaldo</value>
   </data>
-  <data name="Date:" xml:space="preserve">
-    <value>Datum:</value>
+  <data name="Date" xml:space="preserve">
+    <value>Datum</value>
   </data>
   <data name="Dear" xml:space="preserve">
     <value>Geagte</value>
