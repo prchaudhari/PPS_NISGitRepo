@@ -1789,6 +1789,9 @@ namespace nIS
                                     case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
                                         this.BindDataToWealthInvestorPerformanceStatementWidget(pageContent, investmentMasters, page, widget);
                                         break;
+                                    case HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME:
+                                        this.BindExplanatoryNotesWidgetData(pageContent, batchMaster, page, widget, tenantCode);
+                                        break;
                                 }
                             }
                             else
@@ -4413,7 +4416,7 @@ namespace nIS
                 var NavTabs = new StringBuilder();
                 var InvestmentAccountsCount = investmentMasters.Count;
                 pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", NavTabs.ToString());
-
+                pageContent.Replace("Breakdown of your investment accounts", "");
                 //create tab-content div if accounts is greater than 1, otherwise create simple div
                 var TabContentHtml = new StringBuilder();
                 var counter = 0;
@@ -4442,28 +4445,28 @@ namespace nIS
                                 InvestmentNo = "0" + InvestmentNo;
                             }
                             InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
-                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToShortDateString() : "");
+                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : "");
 
-                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToShortDateString() : "");
+                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) : "");
                             InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
                             InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", "");
                             InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
                             InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
                             InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.CurrentInterestRate.ToString());
 
-                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", acc.LastTransactionDate != null ? Convert.ToDateTime(acc.LastTransactionDate).ToShortDateString() : "");
-                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.InvestmentTransaction.OrderByDescending(a => a.TransactionDate).Select(a => a.WJXBFS4_Balance).FirstOrDefault());
+                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", acc.LastTransactionDate != null ? Convert.ToDateTime(acc.LastTransactionDate).ToString(ModelConstant.DATE_FORMAT_dd_MMM_yyyy) : "");
+                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.InvestmentTransaction.OrderByDescending(a => a.TransactionDate).Select(a => "R" + a.WJXBFS4_Balance).FirstOrDefault());
 
                             var InvestmentTransactionRows = new StringBuilder();
                             acc.InvestmentTransaction.ToList().ForEach(trans =>
                             {
                                 var tr = new StringBuilder();
                                 tr.Append("<tr class='ht-20'>");
-                                tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate.ToShortDateString() + "</td>");
+                                tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>");
                                 tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
-                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : acc.Currency + trans.WJXBFS2_Debit) + "</td>");
-                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : acc.Currency + trans.WJXBFS3_Credit) + "</td>");
-                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : acc.Currency + trans.WJXBFS4_Balance) + "</td>");
+                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : "R" + acc.Currency + trans.WJXBFS2_Debit) + "</td>");
+                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : "R" + acc.Currency + trans.WJXBFS3_Credit) + "</td>");
+                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : "R" + acc.Currency + trans.WJXBFS4_Balance) + "</td>");
                                 tr.Append("</tr>");
                                 InvestmentTransactionRows.Append(tr.ToString());
                             });

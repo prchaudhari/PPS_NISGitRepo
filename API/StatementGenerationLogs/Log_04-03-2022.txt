@@ -1,0 +1,2 @@
+   at nIS.SQLScheduleRepository.GetSchedules(ScheduleSearchParameter scheduleSearchParameter, String tenantCode) in C:\Websym\NIS\Repository\SQLRepository\SQLScheduleRepository.cs:line 824
+   at nIS.ScheduleManager.RunScheduleNowNew(BatchMaster batchMaster, String baseURL, String outputLocation, TenantConfiguration tenantConfiguration, String tenantCode) in C:\Websym\NIS\Manager\ScheduleManager.cs:line 756

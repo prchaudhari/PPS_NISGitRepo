@@ -137,33 +137,33 @@
     </Reference>
     <Reference Include="Websym.Core.ConfigurationManager.Manager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\NIS\Phase3\References\Configuration Manager\Websym.Core.ConfigurationManager.Manager.dll</HintPath>
+      <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Manager.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.ConfigurationManager.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\NIS\Phase3\References\Configuration Manager\Websym.Core.ConfigurationManager.Repository.dll</HintPath>
+      <HintPath>..\References\Configuration Manager\Websym.Core.ConfigurationManager.Repository.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.EntityManager.Manager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\NIS\Phase3\References\Entity Manager\Websym.Core.EntityManager.Manager.dll</HintPath>
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Manager.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.EntityManager.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\NIS\Phase3\References\Entity Manager\Websym.Core.EntityManager.Repository.dll</HintPath>
+      <HintPath>..\References\Entity Manager\Websym.Core.EntityManager.Repository.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.EventManager.Manager">
-      <HintPath>..\..\NIS\Phase3\References\Event Manager\Websym.Core.EventManager.Manager.dll</HintPath>
+      <HintPath>..\References\Event Manager\Websym.Core.EventManager.Manager.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.EventManager.Repository">
-      <HintPath>..\..\NIS\Phase3\References\Event Manager\Websym.Core.EventManager.Repository.dll</HintPath>
+      <HintPath>..\References\Event Manager\Websym.Core.EventManager.Repository.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.TenantManager.Manager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\NIS\Phase3\References\Tenant Manager\Websym.Core.TenantManager.Manager.dll</HintPath>
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Manager.dll</HintPath>
     </Reference>
     <Reference Include="Websym.Core.TenantManager.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\NIS\Phase3\References\Tenant Manager\Websym.Core.TenantManager.Repository.dll</HintPath>
+      <HintPath>..\References\Tenant Manager\Websym.Core.TenantManager.Repository.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
