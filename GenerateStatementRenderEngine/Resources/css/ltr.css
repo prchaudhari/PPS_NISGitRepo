@@ -291,7 +291,7 @@
   }
 
 .CustomerDetails {
-    font-size: 8pt;
+    font-size: 10pt;
     text-align: left;
     font-family: 'Mark Pro Medium';
     height: 110px;
@@ -328,7 +328,7 @@
 .customTable td {
     padding: 0px 25px;
     font-family: 'Mark Pro Regular';
-    font-size: 8pt;
+    font-size: 9pt;
 }
 
 .customTable th {
@@ -343,7 +343,7 @@
 
 .ServicesDiv {
     background-color: #f3f3f3;
-    height: 200px;
+    height: 235px;
     font-family: 'Mark Pro Regular';
     padding: 1.5rem !important;
     font-size: 8pt;
@@ -592,12 +592,12 @@
 
 .ftr-rt-span1 {
     float: right;
-    margin-right: 1.75rem !important;
+    margin-right: 2.75rem !important;
 }
 
 .ftr-rt-span2 {
     float: right;
-    margin-right: 1.75rem !important;
+    margin-right: 2.75rem !important;
     color: #666666;
     font-size: 7pt;
     font-family: 'Mark Pro Regular'
@@ -676,7 +676,7 @@
 
 .ExplanatoryNotes {
     font-family: 'Mark Pro Regular';
-    font-size: 8pt;
+    font-size: 9pt;
 }
 
 .LoanAmountDetailsDiv {

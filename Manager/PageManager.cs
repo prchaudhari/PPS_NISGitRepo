@@ -805,7 +805,7 @@ namespace nIS
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", customerInfo.AddressLine2);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", customerInfo.AddressLine3);
                                                     customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", customerInfo.AddressLine4);
-                                                    customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", customerInfo.MaskCellNo != string.Empty ? "Cell: " + customerInfo.MaskCellNo : string.Empty);
+                                                    //customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", customerInfo.MaskCellNo != string.Empty ? "Cell: " + customerInfo.MaskCellNo : string.Empty);
                                                     //customerHtmlWidget = customerHtmlWidget.Replace("{{Barcode}}", customerInfo.Barcode != string.Empty ? customerInfo.Barcode : string.Empty);
                                                     htmlString.Append(customerHtmlWidget);
                                                 }
@@ -981,7 +981,7 @@ namespace nIS
                                                         var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML);
                                                         InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
                                                         InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
-                                                        InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : string.Empty));
+                                                        InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
 
                                                         var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
                                                         //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
@@ -1049,7 +1049,7 @@ namespace nIS
                                                         var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
                                                         InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDescription);
                                                         InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId.ToString());
-                                                        InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : string.Empty));
+                                                        InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
 
                                                         var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
                                                         //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
@@ -1482,7 +1482,7 @@ namespace nIS
                                                         {
                                                             string lastFourDigisOfAccountNumber = PersonalLoan.InvestorId.ToString().Length > 4 ? PersonalLoan.InvestorId.ToString().Substring(Math.Max(0, PersonalLoan.InvestorId.ToString().Length - 4)) : PersonalLoan.InvestorId.ToString();
 
-                                                            TabContentHtml.Append("<div id='PersonalLoan-" + lastFourDigisOfAccountNumber + "' class='tab-pane fade " + (counter == 0 ? "in active show" : string.Empty) + "'>");
+                                                            TabContentHtml.Append("<div id='PersonalLoan-" + lastFourDigisOfAccountNumber + "'>");
 
                                                             var LoanDetailHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNT_DETAIL);
                                                             LoanDetailHtml.Replace("{{AccountNumber}}", PersonalLoan.InvestorId.ToString());
@@ -1705,7 +1705,7 @@ namespace nIS
                                                             var accNo = HomeLoan.InvestorId.ToString();
                                                             string lastFourDigisOfAccountNumber = accNo.Length > 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
 
-                                                            TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "' class='tab-pane fade " + (counter == 0 ? "in active show" : string.Empty) + "'>");
+                                                            TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "' >");
 
                                                             var LoanDetailHtml = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNT_DETAIL_DIV_HTML);
                                                             LoanDetailHtml.Replace("{{BondNumber}}", accNo);

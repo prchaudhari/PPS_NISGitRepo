@@ -244,7 +244,7 @@
             try
             {
                 this.connectionString = this.configurationutility.GetConnectionString(ModelConstant.COMMON_SECTION, ModelConstant.NIS_CONNECTION_STRING, ModelConstant.CONFIGURATON_BASE_URL, ModelConstant.TENANT_CODE_KEY, tenantCode);
-                //this.connectionString = "metadata=res://*/NISDataContext.csdl|res://*/NISDataContext.ssdl|res://*/NISDataContext.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=nis.database.windows.net;Initial Catalog=NIS;User ID=websym;Password=Admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
+                //this.connectionString = "metadata=res://*/NISDataContext.csdl|res://*/NISDataContext.ssdl|res://*/NISDataContext.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=nis.database.windows.net;Initial Catalog=NIS_DEV;User ID=websym;Password=Admin@123;multipleactiveresultsets=True;application name=EntityFramework';";
 
                 if (!this.validationEngine.IsValidText(this.connectionString))
                 {

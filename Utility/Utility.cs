@@ -621,6 +621,7 @@
 
             //To move js, css and other assets contents which are common to each statment file
             //DirectoryCopy(resourceFilePath, (statementDestPath + "\\common"), true);
+
             return filepath;
         }
 

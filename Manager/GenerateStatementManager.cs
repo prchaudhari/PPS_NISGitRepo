@@ -1248,7 +1248,7 @@ namespace nIS
 
                                     SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' data-toggle='tab' " + "data-target='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' " + " role='tab' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
 
-                                    newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' class='tab-pane fade in " + (x == 0 ? "active show" : "") + "'>");
+                                    newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "-" + "AccountNumber-" + accountId + "' >");
 
                                     if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                                     {
@@ -1625,7 +1625,7 @@ namespace nIS
                         string tabClassName = Regex.Replace((statementPageContent.DisplayName + "-" + page.Identifier), @"\s+", "-");
                         NavItemList.Append("<li class='nav-item" + (i != statement.Pages.Count - 1 ? " nav-rt-border" : string.Empty) + "'><a id='tab" + i + "-tab' data-toggle='tab' data-target='#" + tabClassName + "' role='tab' class='nav-link" + (i == 0 ? " active" : string.Empty) + "'> " + statementPageContent.DisplayName + " </a></li>");
 
-                        string ExtraClassName = statement.Pages.Count > 1 ? (i == 0 ? " tab-pane fade in active show " : " tab-pane fade in active show ") : string.Empty;
+                        string ExtraClassName = string.Empty;
                         PageHeaderContent.Replace("{{ExtraClass}}", ExtraClassName).Replace("{{DivId}}", tabClassName);
 
                         var newPageContent = new StringBuilder();
@@ -1784,10 +1784,10 @@ namespace nIS
                                         this.BindDataToWealthBreakdownOfInvestmentAccountsWidget(pageContent, page, widget, tenantCode, investmentMasters);
                                         break;
                                     case HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME:
-                                        this.BindDataToWealthInvestmentPortfolioStatementWidget(pageContent, page, widget, tenantCode, investmentMasters);
+                                        BindDataToWealthInvestmentPortfolioStatementWidget(pageContent, customer, investmentMasters, page, widget);
                                         break;
                                     case HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME:
-                                        this.BindDataToWealthInvestorPerformanceStatementWidget(pageContent, page, widget, tenantCode, investmentMasters);
+                                        this.BindDataToWealthInvestorPerformanceStatementWidget(pageContent, investmentMasters, page, widget);
                                         break;
                                 }
                             }
@@ -2962,7 +2962,7 @@ namespace nIS
                 (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3 + "<br>") : string.Empty) +
                 (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
             pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
-            pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No != string.Empty ? "Cell: " + customer.Mask_Cell_No : string.Empty);
+            //pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No != string.Empty ? "Cell: " + customer.Mask_Cell_No : string.Empty);
         }
 
         private void BindBranchDetailsWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode)
@@ -3123,7 +3123,7 @@ namespace nIS
                     #region Account Details
                     InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
                     InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", Convert.ToString(acc.InvestmentId));
-                    InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : string.Empty));
+                    InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
 
                     var InvestmentNo = Convert.ToString(acc.InvestorId) + " " + Convert.ToString(acc.InvestmentId);
                     //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
@@ -3629,7 +3629,7 @@ namespace nIS
                     {
                         var AccountNumber = PersonalLoan.InvestorId.ToString();
                         string lastFourDigisOfAccountNumber = AccountNumber.Length > 4 ? AccountNumber.Substring(Math.Max(0, AccountNumber.Length - 4)) : AccountNumber;
-                        TabContentHtml.Append("<div id='PersonalLoan-" + lastFourDigisOfAccountNumber + counter + "' class='tab-pane fade " + (counter == 0 ? "in active show" : string.Empty) + "'>");
+                        TabContentHtml.Append("<div id='PersonalLoan-" + lastFourDigisOfAccountNumber + counter + "'>");
 
                         #region Loan Details
                         var LoanDetailHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNT_DETAIL);
@@ -3864,7 +3864,7 @@ namespace nIS
                         var accNo = HomeLoan.InvestorId.ToString();
                         string lastFourDigisOfAccountNumber = accNo.Length > 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
 
-                        TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "' class='tab-pane fade " + (counter == 0 ? "in active show" : string.Empty) + "'>");
+                        TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "' >");
 
                         #region Loan Details
                         var LoanDetailHtml = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNT_DETAIL_DIV_HTML);
@@ -4433,7 +4433,7 @@ namespace nIS
 
                             InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDescription);
                             InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId.ToString());
-                            InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "tab-pane fade " + (counter == 0 ? "in active show" : ""));
+                            InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "");
 
                             var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
                             //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
@@ -4474,69 +4474,103 @@ namespace nIS
                         TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : "");
 
                         InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
-                        pageContent.Append(InvestmentAccountBreakdownHtml.ToString());
+                        //pageContent.Append(InvestmentAccountBreakdownHtml.ToString());
+                        pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", InvestmentAccountBreakdownHtml.ToString());
                     }
                 });
             }
         }
 
-        private void BindDataToWealthInvestmentPortfolioStatementWidget(StringBuilder pageContent, Page page, PageWidget widget, string tenantCode, List<DM_InvestmentMaster> investmentMasters)
+        private void BindDataToWealthInvestmentPortfolioStatementWidget(StringBuilder pageContent, DM_CustomerMaster customer, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
         {
             if (investmentMasters != null && investmentMasters.Count > 0)
             {
-                //Create Nav tab if investment accounts is more than 1
-                var NavTabs = new StringBuilder();
-                var InvestmentAccountsCount = investmentMasters.Count;
-                pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", NavTabs.ToString());
-
-                //create tab-content div if accounts is greater than 1, otherwise create simple div
-                var TabContentHtml = new StringBuilder();
-                var counter = 0;
-                investmentMasters.ToList().ForEach(inv =>
+                var TotalClosingBalance = 0.0m;
+                investmentMasters.ForEach(invest =>
                 {
-                    IList<InvestmentPottfolio> investmentPortfolio = this.investmentRepository.GetInvestmentPottfolioByInvesterId(inv.InvestorId, tenantCode);
-                    IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(inv.InvestorId, tenantCode);
-
-                    if (investmentPortfolio != null)
+                    var res = 0.0m;
+                    try
                     {
-                        var OuterInvestmentPortfolioHtmlWidget = HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML;
-                        var investmentPortfolioHtmlWidget = new StringBuilder(string.Empty);
-                        investmentPortfolio.ToList().ForEach(investment =>
-                        {
-                            var innerInvestmentPortoflioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML_REPEATED_PART);
-                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{TotalClosingBalance}}", investment.Currency + investment.ClosingBalance);
-                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{DayOfStatement}}", Convert.ToString(investment.DayOfStatement));
-                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{InvestorID}}", Convert.ToString(investment.InvestorId));
-                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{StatementPeriod}}", investment.StatementPeriod);
-                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{StatementDate}}", investment.StatementDate != null ? Convert.ToDateTime(investment.StatementDate).ToShortDateString() : "");
-                            investmentPortfolioHtmlWidget.Append(innerInvestmentPortoflioHtmlWidget);
-                        });
-                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "");
-                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", customers.FirstOrDefault().FirstName);
-                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{InvestmentWealthPortfolioRepetedPart}}", Convert.ToString(investmentPortfolioHtmlWidget));
-                        pageContent.Append(OuterInvestmentPortfolioHtmlWidget);
+                        TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+                    }
+                    catch (Exception)
+                    {
+                        TotalClosingBalance = 0.0m;
                     }
                 });
+
+                pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.FirstName);
+                pageContent.Replace("{{SurName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.SurName);
+
+                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.DS_Investor_Name);
+                pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance));
+                pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].DayOfStatement);
+                pageContent.Replace("{{InvestorID_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(investmentMasters[0].InvestorId));
+
+                //to separate to string dates values into required date format -- 
+                //given date format for statement period is //2021-02-10 00:00:00.000 - 2021-03-09 23:00:00.000//
+                //1st try with string separator, if fails then try with char separator
+                var statementPeriod = string.Empty;
+                string[] stringSeparators = new string[] { " - ", "- ", " -" };
+                string[] dates = investmentMasters[0].StatementPeriod.Split(stringSeparators, StringSplitOptions.None);
+                if (dates.Length > 0)
+                {
+                    if (dates.Length > 1)
+                    {
+                        statementPeriod = Convert.ToDateTime(dates[0]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " to " + Convert.ToDateTime(dates[1]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy);
+                    }
+                    else
+                    {
+                        dates = investmentMasters[0].StatementPeriod.Split(new Char[] { ' ' });
+                        if (dates.Length > 2)
+                        {
+                            statementPeriod = Convert.ToDateTime(dates[0]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " to " + Convert.ToDateTime(dates[2]).ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy);
+                        }
+                    }
+                }
+                else
+                {
+                    statementPeriod = investmentMasters[0].StatementPeriod;
+                }
+                pageContent.Replace("{{StatementPeriod_" + page.Identifier + "_" + widget.Identifier + "}}", statementPeriod);
+                pageContent.Replace("{{StatementDate_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].StatementDate?.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
             }
         }
 
-        private void BindDataToWealthInvestorPerformanceStatementWidget(StringBuilder pageContent, Page page, PageWidget widget, string tenantCode, List<DM_InvestmentMaster> investmentMasters)
+        private void BindDataToWealthInvestorPerformanceStatementWidget(StringBuilder pageContent, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget)
         {
-            IList<InvestorPerformance> investments = this.investmentRepository.GetInvestorPerformanceByInvesterId(11083, tenantCode);
-            if (investments != null)
             {
-                var outerInvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
-                var investorPerformanceHtmlWidget = new StringBuilder();
-                investments.ToList().ForEach(investment =>
+                if (investmentMasters != null && investmentMasters.Count > 0)
                 {
-                    var innerInvestorPerformanceHtmlWidget = new StringBuilder(HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML_REPEATED_PART);
-                    innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{ProductType}}", investment.ProductType);
-                    innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", investment.Currency + investment.OpeningBalance);
-                    innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", investment.Currency + investment.ClosingBalance);
-                    investorPerformanceHtmlWidget.Append(innerInvestorPerformanceHtmlWidget);
-                });
-                outerInvestorPerformanceHtmlWidget = outerInvestorPerformanceHtmlWidget.Replace("{{WealthInvestorPerformanceRepeatedPart}}", Convert.ToString(investorPerformanceHtmlWidget));
-                pageContent.Append(outerInvestorPerformanceHtmlWidget);
+                    var TotalClosingBalance = 0.0m;
+                    var TotalOpeningBalance = 0.0m;
+                    investmentMasters.ForEach(invest =>
+                    {
+                        var res = 0.0m;
+                        try
+                        {
+                            TotalClosingBalance = TotalClosingBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+                        }
+                        catch (Exception)
+                        {
+                            TotalClosingBalance = 0.0m;
+                        }
+
+                        res = 0.0m;
+                        try
+                        {
+                            TotalOpeningBalance = TotalOpeningBalance + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
+                        }
+                        catch (Exception)
+                        {
+                            TotalOpeningBalance = 0.0m;
+                        }
+                    });
+
+                    pageContent.Replace("{{ProductType_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].ProductType);
+                    pageContent.Replace("{{OpeningBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOpeningBalance));
+                    pageContent.Replace("{{ClosingBalanceAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance));
+                }
             }
         }
 

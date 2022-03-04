@@ -483,7 +483,8 @@ namespace nIS
                                 EmailAddress = item.EmailAddress,
                                 Mask_Cell_No = item.MaskCellNo,
                                 Barcode = item.Barcode,
-                                TenantCode = item.TenantCode
+                                TenantCode = item.TenantCode,
+                                DS_Investor_Name = item.DS_Investor_Name
                             });
                         });
                     }

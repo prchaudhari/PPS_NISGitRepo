@@ -517,7 +517,7 @@ namespace nIS
                                     SubTabs.Append("<li class='nav-item " + (x == 0 ? "active" : "") + "'><a id='tab" + x + "-tab' " + "href='#" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") + "-" + lastFourDigisOfAccountNumber + "' class='nav-link " + (x == 0 ? "active" : "") + "'> Account - " + lastFourDigisOfAccountNumber + "</a></li>");
 
                                     newPageContent.Append("<div id='" + (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE ? "Saving" : "Current") +
-                                        "-" + lastFourDigisOfAccountNumber + "' class='tab-pane fade in active show'");
+                                        "-" + lastFourDigisOfAccountNumber + "'");
 
                                     if (page.PageTypeName == HtmlConstants.SAVING_ACCOUNT_PAGE)
                                     {

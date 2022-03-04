@@ -310,6 +310,7 @@
           <Property Name="MaskCellNo" Type="nvarchar" MaxLength="50" />
           <Property Name="Barcode" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+	      <Property Name="DS_Investor_Name" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="DM_CustomerNewsAndAlerts">
           <Key>
@@ -3838,6 +3839,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="MaskCellNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+		  <Property Name="DS_Investor_Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           </EntityType>
         <EntityType Name="DM_ExplanatoryNotesRecord">
           <Key>
@@ -5838,6 +5840,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="DM_CustomerMasterRecord">
             <EntityTypeMapping TypeName="NISModel.DM_CustomerMasterRecord">
               <MappingFragment StoreEntitySet="DM_CustomerMaster">
+				<ScalarProperty Name="DS_Investor_Name" ColumnName="DS_Investor_Name" />
                 <ScalarProperty Name="MaskCellNo" ColumnName="MaskCellNo" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="Barcode" ColumnName="Barcode" />
