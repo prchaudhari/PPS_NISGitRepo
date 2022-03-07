@@ -179,15 +179,6 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Datum.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Geagte.
         /// </summary>
         internal static string Dear {
