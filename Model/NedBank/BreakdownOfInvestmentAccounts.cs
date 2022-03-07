@@ -54,6 +54,7 @@
         public DateTime? LastTransactionDate { get; set; }
         public long? InvestorId { get; set; }
         public string ProductDescription { get; set; }
+        public string AccuredInterest { get; set; }
         public string Currency { get; set; }
         /// <summary>
         /// Gets or sets the investment transaction.

@@ -15,7 +15,7 @@
     <RootNamespace>nIS</RootNamespace>
     <AssemblyName>nIS.API</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44345</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
@@ -315,8 +315,10 @@
     <Content Include="Resources\css\ltr.css" />
     <Content Include="Resources\fonts\fontawesome-webfont.svg" />
     <Content Include="Resources\images\eConfirm.png" />
+    <Content Include="Resources\images\Footer_Image.png" />
     <Content Include="Resources\images\logo.png" />
     <Content Include="Resources\images\NEDBANKLogo.png" />
+    <Content Include="Resources\images\NedBankLogoBlack.png" />
     <Content Include="Resources\images\NEDBANK_Name.png" />
     <Content Include="Resources\images\nisLogo.png" />
     <Content Include="Resources\images\See_money_differently.PNG" />

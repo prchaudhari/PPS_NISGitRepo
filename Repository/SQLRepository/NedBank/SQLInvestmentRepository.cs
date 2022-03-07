@@ -215,7 +215,8 @@
                         InvestmentTransaction = tempInvestmentTransactions,
                         InvestorId = investmentRecord.InvestorId,
                         ProductDescription = investmentRecord.ProductDesc,
-                        Currency = investmentRecord.Currency
+                        Currency = investmentRecord.Currency,
+                        AccuredInterest = investmentRecord.AccuredInterest
                     });
                 });
                 breakdownOfInvestmentAccounts = tempInvestments;

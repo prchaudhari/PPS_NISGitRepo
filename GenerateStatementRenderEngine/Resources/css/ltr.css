@@ -322,7 +322,6 @@
     font-size: 8pt;
     font-family: 'Mark Pro Medium';
     text-align: right;
-    padding-right: 1.25rem;
 }
 
 .customTable td {
@@ -447,6 +446,13 @@
 }
 
 .InvestmentClosingBalanceDiv {
+    margin-top: 0.5rem !important;
+    padding-left: 25px;
+    margin-bottom: .25rem !important;
+    font-family: 'Mark Pro Regular';
+}
+
+.InvestmentClosingBalDiv {
     margin-top: 0.5rem !important;
     padding-left: 25px;
     margin-bottom: .25rem !important;
@@ -1007,4 +1013,8 @@ hr {
     font-size: 14pt;
     font-family: 'Mark Pro Bold';
     color: rgb(126, 84, 117) !important;
+}
+
+.InvestmentBreakdownW tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3 !important;
 }

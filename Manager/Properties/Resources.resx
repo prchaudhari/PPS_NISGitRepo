@@ -120,6 +120,15 @@
   <data name="Account type" xml:space="preserve">
     <value>Soort rekening</value>
   </data>
+  <data name="Annual investment fee review" xml:space="preserve">
+    <value>Jaarlikse beleggingsgeldehersiening</value>
+  </data>
+  <data name="As part of our annual pricing review, some of our fees have changed. You can view our 2022 pricing guide on the Nedbank website." xml:space="preserve">
+    <value>As deel van ons jaarlikse prysingshersiening hetsommige van ons gelde verander. Jy kan op dieNedbank-webwerf na ons 2022-prysingsgids gaankyk.</value>
+  </data>
+  <data name="Automatic reinvestment when your investment matures" xml:space="preserve">
+    <value>Outomatiese herbelegging wanneer ubelegging uitkeer</value>
+  </data>
   <data name="Balance" xml:space="preserve">
     <value>Saldo</value>
   </data>
@@ -128,6 +137,9 @@
   </data>
   <data name="Breakdown of your investment accounts" xml:space="preserve">
     <value>Uiteensetting van u beleggingsrekenings</value>
+  </data>
+  <data name="Click here for more information." xml:space="preserve">
+    <value>Kliek vir meer inligting.</value>
   </data>
   <data name="Closing balance" xml:space="preserve">
     <value>Eindsaldo</value>
@@ -156,14 +168,23 @@
   <data name="Description" xml:space="preserve">
     <value>Beskrywing</value>
   </data>
+  <data name="Explanatory notes" xml:space="preserve">
+    <value>Verklarende aantekeninge</value>
+  </data>
   <data name="Fixed deposits" xml:space="preserve">
     <value>Vaste deposito's</value>
+  </data>
+  <data name="If you do not want to click on a link, please type the following address in your browser (without the asterisks):" xml:space="preserve">
+    <value>As jy nie op ’n skakel wil klik nie, tik asseblief dievolgende adres in jou blaaier in (sonder die asteriske):</value>
   </data>
   <data name="Interest disposal" xml:space="preserve">
     <value>Rentebeskikking</value>
   </data>
   <data name="Interest due" xml:space="preserve">
     <value>Rente verskuldig</value>
+  </data>
+  <data name="Investment" xml:space="preserve">
+    <value>Belegging</value>
   </data>
   <data name="Investment no" xml:space="preserve">
     <value>Beleggingsno</value>
@@ -194,6 +215,9 @@
   </data>
   <data name="Opening date" xml:space="preserve">
     <value>Openingsdatum</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>Dienste</value>
   </data>
   <data name="Statement date" xml:space="preserve">
     <value>Staatdatum</value>
