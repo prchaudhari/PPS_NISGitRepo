@@ -586,20 +586,20 @@
 }
 
 .ftr-lt-span1 {
-    float:left;
-    margin-left: 1.75rem !important;
+    float: left;
+    margin-left: 4.75rem !important;
 }
 
 .ftr-rt-span1 {
     float: right;
-    margin-right: 2.75rem !important;
+    margin-right: 4.75rem !important;
 }
 
 .ftr-rt-span2 {
     float: right;
-    margin-right: 2.75rem !important;
+    margin-right: 4.75rem !important;
     color: #666666;
-    font-size: 7pt;
+    font-size: 10pt;
     font-family: 'Mark Pro Regular'
 }
 
