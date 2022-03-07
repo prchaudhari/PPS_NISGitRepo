@@ -4624,6 +4624,8 @@ namespace nIS
                 List<InvestorPerformanceWidgetData> investorPerformanceWidgetDatas = new List<InvestorPerformanceWidgetData>();
                 List<DM_InvestmentTransaction> transactions = new List<DM_InvestmentTransaction>();
 
+                var TotalClosingBalance = 0.0m;
+                var TotalOpeningBalance = 0.0m;
                 investmentMasters.ForEach(invest =>
                 {
                     InvestorPerformanceWidgetData item;
@@ -4639,7 +4641,6 @@ namespace nIS
                     }
 
                     var res = 0.0m;
-
                     foreach (var tran in invest.investmentTransactions)
                     {
                         if (tran.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR))
