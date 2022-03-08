@@ -44,5 +44,7 @@
         /// The WJXBF s4 balance.
         /// </value>
         public string WJXBFS4_Balance { get; set; }
+
+        public long ProductId { get; set; }
     }
 }

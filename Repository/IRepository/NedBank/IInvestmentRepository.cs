@@ -42,5 +42,7 @@ namespace nIS
         /// <returns></returns>
         IList<InvestorPerformance> GetInvestorPerformanceByInvesterId(long investorId, string tenantCode);
         #endregion
+
+        IList<NB_InvestmentTransaction> GetInvestmentTransactions(long investorId, string tenantCode);
     }
 }

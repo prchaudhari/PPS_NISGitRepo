@@ -1146,7 +1146,7 @@ namespace nIS
 
                     //get client logo in string format and pass it hidden input tag, so it will be render in right side of header of html statement
                     var clientlogo = statementRawData.Client.TenantLogo != null ? statementRawData.Client.TenantLogo : "";
-                    if(statement.Name == "Investment Wealth")
+                    if (statement.Name == "Investment Wealth")
                     {
                         clientlogo = "../common/images/NedBankLogoBlack.png";
                     }
@@ -1594,11 +1594,11 @@ namespace nIS
 
                     var htmlbody = new StringBuilder();
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-                    if(statement.Pages.Count() > 0)
+                    if (statement.Pages.Count() > 0)
                     {
                         var page = statement.Pages[0];
                         var pagewidgets = new List<PageWidget>(page.PageWidgets);
-                        if(pagewidgets.Where(x => x.WidgetName.Contains("Wealth")).Count() > 0)
+                        if (pagewidgets.Where(x => x.WidgetName.Contains("Wealth")).Count() > 0)
                         {
                             htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{ImgHeight}}", "100").Replace("{{NedBankLogo}}", "../common/images/NedBankLogoBlack.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
                         }
@@ -3123,7 +3123,6 @@ namespace nIS
                     item.OpeningBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(item.OpeningBalance));
                     item.ClosingBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(item.ClosingBalance));
 
-
                     var InvestorPerformanceHtmlWidget = HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_HTML;
                     InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", item.ProductType);
                     InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", item.OpeningBalance);
@@ -3156,14 +3155,14 @@ namespace nIS
                  {
                      var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.INVESTMENT_ACCOUNT_DETAILS_HTML_SMT);
 
-                    #region Account Details
-                    InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
+                     #region Account Details
+                     InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
                      InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", Convert.ToString(acc.InvestmentId));
                      InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
 
                      var InvestmentNo = Convert.ToString(acc.InvestorId) + " " + Convert.ToString(acc.InvestmentId);
-                    //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
-                    while (InvestmentNo.Length != 13)
+                     //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
+                     while (InvestmentNo.Length != 13)
                      {
                          InvestmentNo = "0" + InvestmentNo;
                      }
@@ -3206,10 +3205,10 @@ namespace nIS
                          InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", "");
                      }
 
-                    #endregion Account Details
+                     #endregion Account Details
 
-                    #region Transactions
-                    if (acc.investmentTransactions != null && acc.investmentTransactions.Count > 0)
+                     #region Transactions
+                     if (acc.investmentTransactions != null && acc.investmentTransactions.Count > 0)
                      {
                          acc.investmentTransactions.OrderBy(it => it.TransactionDate).ToList().ForEach(trans =>
                          {
@@ -3262,9 +3261,9 @@ namespace nIS
                      }
 
                      TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
-                    #endregion Transactions
+                     #endregion Transactions
 
-                    counter++;
+                     counter++;
                  });
                 TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : string.Empty);
 
@@ -4624,11 +4623,14 @@ namespace nIS
                 List<InvestorPerformanceWidgetData> investorPerformanceWidgetDatas = new List<InvestorPerformanceWidgetData>();
                 List<DM_InvestmentTransaction> transactions = new List<DM_InvestmentTransaction>();
 
-                var TotalClosingBalance = 0.0m;
-                var TotalOpeningBalance = 0.0m;
+                var html = "";
+                int counter = 0;
                 investmentMasters.ForEach(invest =>
                 {
+                    var TotalClosingBalance = 0.0m;
+                    var TotalOpeningBalance = 0.0m;
                     InvestorPerformanceWidgetData item;
+
                     var productType = invest.ProductType;
                     if (investorPerformanceWidgetDatas.Any(m => m.ProductType == productType))
                     {
@@ -4641,52 +4643,36 @@ namespace nIS
                     }
 
                     var res = 0.0m;
-                    foreach (var tran in invest.investmentTransactions)
+                    IList<NB_InvestmentTransaction> investmentTransactions = this.investmentRepository.GetInvestmentTransactions(invest.InvestorId, invest.TenantCode);
+                    if (investmentTransactions.Where(x => x.ProductId == invest.ProductId && x.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)).Count() > 0)
                     {
-                        if (tran.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR))
-                        {
-                            decimal.TryParse(tran.WJXBFS4_Balance.Replace(",", "."), out res);
-                            TotalClosingBalance += res;
-                            item.ClosingBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance);
-                        }
-
-                        res = 0.0m;
-
-                        if (tran.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR))
-                        {
-                            decimal.TryParse(tran.WJXBFS4_Balance.Replace(",", "."), out res);
-                            TotalOpeningBalance += res;
-                            item.OpeningBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOpeningBalance);
-                        }
+                        var totalClosingBalance = investmentTransactions.Where(x => x.ProductId == invest.ProductId && x.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)).Select(x => x.WJXBFS4_Balance).FirstOrDefault();
+                        decimal.TryParse(totalClosingBalance.Replace(",", "."), out res);
+                        TotalClosingBalance += res;
+                        item.ClosingBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance);
                     }
 
-                });
-
-                var html = "";
-
-                int counter = 0;
-
-                foreach (var item in investorPerformanceWidgetDatas.OrderBy(m => Convert.ToInt32(m.ProductId)))
-                {
-                    item.OpeningBalance = transactions.Where(m => m.ProductId.ToString() == item.ProductId && m.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR)).Sum(m => Convert.ToDecimal(m.WJXBFS4_Balance)).ToString();
-                    item.ClosingBalance = transactions.Where(m => m.ProductId.ToString() == item.ProductId && m.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)).Sum(m => Convert.ToDecimal(m.WJXBFS4_Balance)).ToString();
-
-                    item.OpeningBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(item.OpeningBalance));
-                    item.ClosingBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, Convert.ToDecimal(item.ClosingBalance));
-
+                    res = 0.0m;
+                    if (investmentTransactions.Where(x => x.ProductId == invest.ProductId && x.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR)).Count() > 0)
+                    {
+                        var totalOpeningBalance = investmentTransactions.Where(x => x.ProductId == invest.ProductId && x.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR)).Select(x => x.WJXBFS4_Balance).FirstOrDefault();
+                        decimal.TryParse(totalOpeningBalance.Replace(",", "."), out res);
+                        TotalOpeningBalance += res;
+                        item.OpeningBalance = utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOpeningBalance);
+                    }
                     var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
                     InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", item.ProductType);
                     InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", item.OpeningBalance == "0" || item.OpeningBalance == "0.00" ? "-" : item.OpeningBalance);
                     InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", item.ClosingBalance == "0" || item.ClosingBalance == "0.00" ? "-" : item.ClosingBalance);
                     InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{WidgetId}}", "");
 
-                    if (counter != 0)
-
-                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("<div class='card-body-header pb-2'>Investor performance</div>", "");
-
-                    html += InvestorPerformanceHtmlWidget;
+                    if (counter > 0)
+                    {
+                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("<div class='card-body-header-w pb-2'>Investor performance</div>", "");
+                    }
+                    html += InvestorPerformanceHtmlWidget + "<br />";
                     counter++;
-                }
+                });
                 pageContent.Replace("{{" + HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
             }
         }

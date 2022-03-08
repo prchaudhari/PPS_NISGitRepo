@@ -70,30 +70,20 @@ namespace nIS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Jaarlikse beleggingsgeldehersiening.
+        ///   Looks up a localized string similar to April.
         /// </summary>
-        internal static string Annual_investment_fee_review {
+        internal static string April {
             get {
-                return ResourceManager.GetString("Annual investment fee review", resourceCulture);
+                return ResourceManager.GetString("April", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to As deel van ons jaarlikse prysingshersiening hetsommige van ons gelde verander. Jy kan op dieNedbank-webwerf na ons 2022-prysingsgids gaankyk..
+        ///   Looks up a localized string similar to Augustus.
         /// </summary>
-        internal static string As_part_of_our_annual_pricing_review__some_of_our_fees_have_changed__You_can_view_our_2022_pricing_guide_on_the_Nedbank_website_ {
+        internal static string August {
             get {
-                return ResourceManager.GetString("As part of our annual pricing review, some of our fees have changed. You can view" +
-                        " our 2022 pricing guide on the Nedbank website.", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outomatiese herbelegging wanneer ubelegging uitkeer.
-        /// </summary>
-        internal static string Automatic_reinvestment_when_your_investment_matures {
-            get {
-                return ResourceManager.GetString("Automatic reinvestment when your investment matures", resourceCulture);
+                return ResourceManager.GetString("August", resourceCulture);
             }
         }
         
@@ -121,15 +111,6 @@ namespace nIS.Properties {
         internal static string Breakdown_of_your_investment_accounts {
             get {
                 return ResourceManager.GetString("Breakdown of your investment accounts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kliek vir meer inligting..
-        /// </summary>
-        internal static string Click_here_for_more_information_ {
-            get {
-                return ResourceManager.GetString("Click here for more information.", resourceCulture);
             }
         }
         
@@ -197,6 +178,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Desember.
+        /// </summary>
+        internal static string December {
+            get {
+                return ResourceManager.GetString("December", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beskrywing.
         /// </summary>
         internal static string Description {
@@ -215,21 +205,20 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Februarie.
+        /// </summary>
+        internal static string February {
+            get {
+                return ResourceManager.GetString("February", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vaste deposito&apos;s.
         /// </summary>
         internal static string Fixed_deposits {
             get {
                 return ResourceManager.GetString("Fixed deposits", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to As jy nie op ’n skakel wil klik nie, tik asseblief dievolgende adres in jou blaaier in (sonder die asteriske):.
-        /// </summary>
-        internal static string If_you_do_not_want_to_click_on_a_link__please_type_the_following_address_in_your_browser__without_the_asterisks__ {
-            get {
-                return ResourceManager.GetString("If you do not want to click on a link, please type the following address in your " +
-                        "browser (without the asterisks):", resourceCulture);
             }
         }
         
@@ -297,11 +286,56 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Januarie.
+        /// </summary>
+        internal static string January {
+            get {
+                return ResourceManager.GetString("January", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Julie.
+        /// </summary>
+        internal static string July {
+            get {
+                return ResourceManager.GetString("July", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Junie.
+        /// </summary>
+        internal static string June {
+            get {
+                return ResourceManager.GetString("June", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maart.
+        /// </summary>
+        internal static string March {
+            get {
+                return ResourceManager.GetString("March", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vervaldatum.
         /// </summary>
         internal static string Maturity_date {
             get {
                 return ResourceManager.GetString("Maturity date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mei.
+        /// </summary>
+        internal static string May {
+            get {
+                return ResourceManager.GetString("May", resourceCulture);
             }
         }
         
@@ -334,6 +368,24 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to November.
+        /// </summary>
+        internal static string November {
+            get {
+                return ResourceManager.GetString("November", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oktober.
+        /// </summary>
+        internal static string October {
+            get {
+                return ResourceManager.GetString("October", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beginsaldo.
         /// </summary>
         internal static string Opening_balance {
@@ -348,6 +400,15 @@ namespace nIS.Properties {
         internal static string Opening_date {
             get {
                 return ResourceManager.GetString("Opening date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to September.
+        /// </summary>
+        internal static string September {
+            get {
+                return ResourceManager.GetString("September", resourceCulture);
             }
         }
         

@@ -575,14 +575,14 @@ namespace nIS
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
                     //var InvestmentMasterRecords = nISEntitiesDataContext.NB_InvestmentMaster.Where(whereClause).ToList();
-                    var query = nISEntitiesDataContext.NB_InvestmentMaster.Where(m => m.TenantCode == tenantCode);
+                    IList<NB_InvestmentMaster> query = nISEntitiesDataContext.NB_InvestmentMaster.Where(m => m.TenantCode == tenantCode).ToList();
                     if (searchParameter.InvestorId > 0)
                     {
-                        query = query.Where(m => m.InvestorId == searchParameter.InvestorId);
+                        query = query.Where(m => m.InvestorId == searchParameter.InvestorId).ToList();
                     }
                     if (searchParameter.BatchId > 0)
                     {
-                        query = query.Where(m => m.BatchId == searchParameter.BatchId);
+                        query = query.Where(m => m.BatchId == searchParameter.BatchId).ToList();
                     }
 
                     var InvestmentMasterRecords = query.OrderBy(m => m.ProductDesc).ToList();

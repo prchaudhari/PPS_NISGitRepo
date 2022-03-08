@@ -149,6 +149,30 @@
             return investors;
         }
 
+        public IList<NB_InvestmentTransaction> GetInvestmentTransactions(long investorId, string tenantCode)
+        {
+            IList<NB_InvestmentTransaction> investorRecords = null;
+            try
+            {
+                this.SetAndValidateConnectionString(tenantCode);
+                using (NISEntities nedbankEntities = new NISEntities(this.connectionString))
+                {
+                    string whereClause = this.WhereClauseGenerator(investorId, tenantCode);
+                    investorRecords = new List<NB_InvestmentTransaction>();
+                    investorRecords = nedbankEntities.NB_InvestmentTransaction.Where(a => a.InvestorId == investorId && a.TenantCode == tenantCode).ToList();
+                }
+            }
+            catch (SqlException)
+            {
+                throw new RepositoryStoreNotAccessibleException(tenantCode);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            return investorRecords;
+        }
+
         /// <summary>
         /// Gets the breakdown of investment accounts by invester identifier.
         /// </summary>
@@ -197,6 +221,7 @@
                         WJXBFS2_Debit = investmentTransactionRecord.WJXBFS2_Debit,
                         WJXBFS3_Credit = investmentTransactionRecord.WJXBFS3_Credit,
                         WJXBFS4_Balance = investmentTransactionRecord.WJXBFS4_Balance,
+                        ProductId = investmentTransactionRecord.ProductId,
                     });
                 });
 
@@ -211,8 +236,8 @@
                         InterestDisposalDesc = investmentRecord.InterestDisposalDesc,
                         AccountOpenDate = investmentRecord.AccountOpenDate,
                         NoticePeriod = investmentRecord.NoticePeriod,
-                        LastTransactionDate = tempInvestmentTransactions.Count() > 0 ? tempInvestmentTransactions.Max(a => a.TransactionDate) : DateTime.Now,
-                        InvestmentTransaction = tempInvestmentTransactions,
+                        LastTransactionDate = tempInvestmentTransactions.Where(a => a.ProductId == investmentRecord.ProductId).Count() > 0 ? tempInvestmentTransactions.Where(a => a.ProductId == investmentRecord.ProductId).Max(a => a.TransactionDate) : DateTime.Now,
+                        InvestmentTransaction = tempInvestmentTransactions.Where(a => a.ProductId == investmentRecord.ProductId).ToList(),
                         InvestorId = investmentRecord.InvestorId,
                         ProductDescription = investmentRecord.ProductDesc,
                         Currency = investmentRecord.Currency,
