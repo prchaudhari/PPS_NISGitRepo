@@ -70,6 +70,24 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to April.
+        /// </summary>
+        internal static string April {
+            get {
+                return ResourceManager.GetString("April", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Augustus.
+        /// </summary>
+        internal static string August {
+            get {
+                return ResourceManager.GetString("August", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saldo.
         /// </summary>
         internal static string Balance {
@@ -160,11 +178,29 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Desember.
+        /// </summary>
+        internal static string December {
+            get {
+                return ResourceManager.GetString("December", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beskrywing.
         /// </summary>
         internal static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Februarie.
+        /// </summary>
+        internal static string Fabruary {
+            get {
+                return ResourceManager.GetString("Fabruary", resourceCulture);
             }
         }
         
@@ -232,11 +268,56 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Januarie.
+        /// </summary>
+        internal static string January {
+            get {
+                return ResourceManager.GetString("January", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Julie.
+        /// </summary>
+        internal static string July {
+            get {
+                return ResourceManager.GetString("July", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Junie.
+        /// </summary>
+        internal static string June {
+            get {
+                return ResourceManager.GetString("June", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maart.
+        /// </summary>
+        internal static string March {
+            get {
+                return ResourceManager.GetString("March", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vervaldatum.
         /// </summary>
         internal static string Maturity_date {
             get {
                 return ResourceManager.GetString("Maturity date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mei.
+        /// </summary>
+        internal static string May {
+            get {
+                return ResourceManager.GetString("May", resourceCulture);
             }
         }
         
@@ -269,6 +350,24 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to November.
+        /// </summary>
+        internal static string November {
+            get {
+                return ResourceManager.GetString("November", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oktober.
+        /// </summary>
+        internal static string October {
+            get {
+                return ResourceManager.GetString("October", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beginsaldo.
         /// </summary>
         internal static string Opening_balance {
@@ -283,6 +382,15 @@ namespace nIS.Properties {
         internal static string Opening_date {
             get {
                 return ResourceManager.GetString("Opening date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to September.
+        /// </summary>
+        internal static string September {
+            get {
+                return ResourceManager.GetString("September", resourceCulture);
             }
         }
         

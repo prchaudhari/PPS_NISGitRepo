@@ -3167,7 +3167,7 @@ namespace nIS
                      if (LastInvestmentTransaction != null)
                      {
                          LastInvestmentTransaction.WJXBFS4_Balance = LastInvestmentTransaction.WJXBFS4_Balance.Replace(",", ".");
-                         InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", LastInvestmentTransaction.TransactionDate.ToString(ModelConstant.DATE_FORMAT_dd_MMM_yyyy));
+                         InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", LastInvestmentTransaction.TransactionDate.ToString(ModelConstant.DATE_FORMAT_dd_MMMM_yyyy));
                          if (decimal.TryParse(LastInvestmentTransaction.WJXBFS4_Balance, out res))
                          {
                              InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", (LastInvestmentTransaction.WJXBFS4_Balance == "0" ? "-" : (decimal.TryParse(LastInvestmentTransaction.WJXBFS4_Balance, out res) ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, (Convert.ToDecimal(LastInvestmentTransaction.WJXBFS4_Balance))) : "0")));

@@ -120,6 +120,12 @@
   <data name="Account type" xml:space="preserve">
     <value>Soort rekening</value>
   </data>
+  <data name="April" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="August" xml:space="preserve">
+    <value>Augustus</value>
+  </data>
   <data name="Balance" xml:space="preserve">
     <value>Saldo</value>
   </data>
@@ -150,8 +156,14 @@
   <data name="Debit" xml:space="preserve">
     <value>Debiet</value>
   </data>
+  <data name="December" xml:space="preserve">
+    <value>Desember</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Beskrywing</value>
+  </data>
+  <data name="Fabruary" xml:space="preserve">
+    <value>Februarie</value>
   </data>
   <data name="Fixed deposits" xml:space="preserve">
     <value>Vaste deposito's</value>
@@ -174,8 +186,23 @@
   <data name="Investor performance" xml:space="preserve">
     <value>Beleggersprestasie</value>
   </data>
+  <data name="January" xml:space="preserve">
+    <value>Januarie</value>
+  </data>
+  <data name="July" xml:space="preserve">
+    <value>Julie</value>
+  </data>
+  <data name="June" xml:space="preserve">
+    <value>Junie</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>Maart</value>
+  </data>
   <data name="Maturity date" xml:space="preserve">
     <value>Vervaldatum</value>
+  </data>
+  <data name="May" xml:space="preserve">
+    <value>Mei</value>
   </data>
   <data name="Nedbank Ltd Reg No 1951/000009/06. Authorised financial services and registered credit provider (NCRCP16)." xml:space="preserve">
     <value>Nedbank Bpk Reg No 1951/000009/06. Gemagtigde finansiële diens- en geregistreerde kredietverskaffer (NCRCP16).</value>
@@ -186,11 +213,20 @@
   <data name="Notice period" xml:space="preserve">
     <value>Kennistydperk</value>
   </data>
+  <data name="November" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="October" xml:space="preserve">
+    <value>Oktober</value>
+  </data>
   <data name="Opening balance" xml:space="preserve">
     <value>Beginsaldo</value>
   </data>
   <data name="Opening date" xml:space="preserve">
     <value>Openingsdatum</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>September</value>
   </data>
   <data name="Statement date" xml:space="preserve">
     <value>Staatdatum</value>
