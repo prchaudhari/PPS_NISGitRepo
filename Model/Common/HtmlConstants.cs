@@ -466,5 +466,16 @@ namespace nIS
         public const string GREENBACKS_PRODUCT_RELATED_POINTS_EARNED_BAR_GRAPH_SCRIPT = "<script type='text/javascript'> $(document).ready(function(){setTimeout(function(){if(null!=$('#HiddenProductRelatedPointsEarnedGraph').val()&&''!=$('#HiddenProductRelatedPointsEarnedGraph').val()){let r=JSON.parse($('#HiddenProductRelatedPointsEarnedGraph').val());if(0!=r.length){var t=[],e=[];r[0].MonthwiseRewardPoints.forEach(e=>{t.push(e.Month)});for(let t=0;t<r.length;t++){var a=[];r[t].MonthwiseRewardPoints.forEach(t=>{a.push(t.RewardPoint)}),e.push({name:r[t].AccountType,data:a})}Highcharts.chart('ProductRelatedPointsEarnedBarGraphcontainer',{chart:{type:'column',style:{fontFamily:'Mark Pro Regular',fontSize:'8pt'}},title:{text:''},xAxis:{categories:t,crosshair:!0},yAxis:{title:{text:'Amount (R)'}},credits:{enabled:!1},tooltip:{headerFormat:'<span>{point.key}</span><table>',pointFormat:'<tr><td style=\"color:{series.color};padding:0\">{series.name}: </td> <td style=\"padding:0\"><b>{point.y:.2f}</b></td></tr>',footerFormat:'</table>',shared:!0,useHTML:!0},plotOptions:{column:{pointPadding:.2,borderWidth:0}},series:e})}else $('#ProductRelatedPointsEarnedBarGraphcontainer').html('<div class=\"text-danger text-center\">No data available.</div>')}},100)}); </script>";
 
         public const string GREENBACKS_CATEGORY_SPEND_REWARD_POINTS_BAR_GRAPH_SCRIPT = "<script type='text/javascript'> $(document).ready(function(){setTimeout(function(){if(null!=$('#HiddenCategorySpendRewardsGraph').val()&&''!=$('#HiddenCategorySpendRewardsGraph').val()){let t=JSON.parse($('#HiddenCategorySpendRewardsGraph').val());if(0!=t.length){var e=[];t.forEach(t=>{e.push({name:t.Category,y:t.SpendReward})}),Highcharts.chart('CategorySpendRewardsPieChartcontainer',{chart:{plotBackgroundColor:null,plotBorderWidth:null,plotShadow:!1,type:'pie',style:{fontFamily:'Mark Pro Regular',fontSize:'8pt'}},title:{text:''},credits:{enabled:!1},tooltip:{pointFormat:'{series.name}: <b>{point.percentage:.1f}%</b>'},accessibility:{point:{valueSuffix:'%'}},plotOptions:{pie:{allowPointSelect:!0,cursor:'pointer',dataLabels:{enabled:!0,format:'{point.percentage:.1f} %'},showInLegend:!0}},series:[{name:'Percentage',colorByPoint:!0,data:e}]})}else $('#CategorySpendRewardsPieChartcontainer').html('<div class=\"text-danger text-center\">No data available.</div>')}},100)}); </script>";
+
+        public const string CONSUMER_BANKING = "Contact centre is 0860 555 111";
+
+        public const string PRIVATE_BANKING = "24/7-contact centre 0860 555 222";
+
+        public const string SBS_BANKING = "24/7-contact centre 0860 116 400";
+
+        public const string NBB_BANKING = "Contact centre is 0860 555 333";
+
+        public const string CORPORATE_BANKING = "Contact centre is 0860 102 187";
+
     }
 }

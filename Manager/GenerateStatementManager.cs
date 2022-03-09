@@ -1676,7 +1676,7 @@ namespace nIS
                                         }
                                         else
                                         {
-                                            this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode);
+                                            this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
                                         }
                                         break;
 
@@ -2992,7 +2992,7 @@ namespace nIS
             //pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No != string.Empty ? "Cell: " + customer.Mask_Cell_No : string.Empty);
         }
 
-        private void BindBranchDetailsWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode)
+        private void BindBranchDetailsWidgetData(StringBuilder pageContent, long BranchId, Page page, PageWidget widget, string tenantCode, DM_CustomerMaster customer)
         {
             try
             {
@@ -3008,7 +3008,28 @@ namespace nIS
                         (!string.IsNullOrEmpty(branchDetails.VatRegNo) ? "Nedbank Private Wealth Service Suite: " + branchDetails.ContactNo : string.Empty);
 
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
-                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Contact centre: " + branchDetails.ContactNo);
+                    var contactCenter = string.Empty;
+                    switch(customer.Segment.ToLower())
+                    {
+                        case "consumer banking":
+                        case "ncb":
+                        case "pbvcm":
+                            contactCenter = HtmlConstants.CONSUMER_BANKING;
+                            break;
+                        case "prb":
+                            contactCenter = HtmlConstants.PRIVATE_BANKING;
+                            break;
+                        case "sbs":
+                            contactCenter = HtmlConstants.SBS_BANKING;
+                            break;
+                        case "nbb":
+                            contactCenter = HtmlConstants.NBB_BANKING;
+                            break;
+                        case "cib":
+                            contactCenter = HtmlConstants.CORPORATE_BANKING;
+                            break;
+                    }
+                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", contactCenter);
                 }
                 else
                 {
