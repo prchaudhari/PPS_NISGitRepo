@@ -183,7 +183,6 @@
         public IList<BreakdownOfInvestmentAccounts> GetBreakdownOfInvestmentAccountsByInvesterId(long investorId, string tenantCode)
         {
             IList<BreakdownOfInvestmentAccounts> breakdownOfInvestmentAccounts = new List<BreakdownOfInvestmentAccounts>();
-            //IList<InvestmentTransaction> investmentTransactions = new List<InvestmentTransaction>();
             IList<NB_InvestmentMaster> investmentRecords = null;
             IList<NB_InvestmentTransaction> investmentTransactionRecords = null;
             try
@@ -196,19 +195,6 @@
                     investmentTransactionRecords = nedbankEntities.NB_InvestmentTransaction.Where(a => a.InvestorId == investorId && a.TenantCode == tenantCode).ToList();
                     investmentRecords = new List<NB_InvestmentMaster>();
                     investmentRecords = nedbankEntities.NB_InvestmentMaster.Where(a => a.InvestorId == investorId && a.TenantCode == tenantCode).ToList();
-                    //breakdownOfInvestmentAccounts = nedbankEntities.NB_InvestmentMaster
-                    //    .Join(investmentTransactionRecords, i => i.InvestorId, it => it.InvestorId, (i, it) => new { i, it})
-                    //    .Where(whereClause)
-                    //    .Select(item => new BreakdownOfInvestmentAccounts()
-                    //    {
-                    //        InvestmentId = item.i.InvestorId,
-                    //        CurrentInterestRate = item.i.CurrentInterestRate,
-                    //        InterestDisposalDesc = item.i.InterestDisposalDesc,
-                    //        AccountOpenDate = item.i.AccountOpenDate,
-                    //        NoticePeriod = item.i.NoticePeriod,
-                    //        TransactionDate = item.it.TransactionDate,
-                    //    }).ToList();
-
                 }
 
                 IList<InvestmentTransaction> tempInvestmentTransactions = new List<InvestmentTransaction>();

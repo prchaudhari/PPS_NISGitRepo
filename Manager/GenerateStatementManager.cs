@@ -1968,13 +1968,23 @@ namespace nIS
                     });
                     htmlbody.Append(HtmlConstants.END_DIV_TAG); // end tab-content div
 
-                    var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER);
-                    //footerContent.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG");
-                    //footerContent.Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png");
-                    //footerContent.Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING);
-                    //footerContent.Replace("{{LastFooterText}}", string.Empty);
-                    footerContent.Replace("{{NedbankSloganImage}}", "../common/images/Footer_Image.png");
-                    htmlbody.Append(footerContent.ToString());
+                    var firstPage = statement.Pages[0];
+                    var widgets = new List<PageWidget>(firstPage.PageWidgets);
+                    if (widgets.Where(x => x.WidgetName.Contains("Wealth")).Count() > 0)
+                    {
+                        var footerContent = new StringBuilder(HtmlConstants.WEALTH_NEDBANK_STATEMENT_FOOTER);
+                        footerContent.Replace("{{NedbankSloganImage}}", "../common/images/Footer_Image.png");
+                        htmlbody.Append(footerContent.ToString());
+                    }
+                    else
+                    {
+                        var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER);
+                        footerContent.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG");
+                        footerContent.Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png");
+                        footerContent.Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING);
+                        footerContent.Replace("{{LastFooterText}}", string.Empty);
+                        htmlbody.Append(footerContent.ToString());
+                    }
 
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER); // end of container-fluid div
 
@@ -2982,7 +2992,7 @@ namespace nIS
 
         private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget)
         {
-            var CustomerDetails = customer.Title + " " + customer.FirstName + " " + customer.SurName + "<br>" +
+            var CustomerDetails = (!string.IsNullOrEmpty(customer.Title) && customer.Title.ToLower() != "null" ? customer.Title + " " : string.Empty) + (!string.IsNullOrEmpty(customer.FirstName) && customer.FirstName.ToLower() != "null" ? customer.FirstName + " " : string.Empty) + (!string.IsNullOrEmpty(customer.SurName) && customer.SurName.ToLower() != "null" ? customer.SurName + " " : string.Empty) + "<br>" +
                 (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
                 (!string.IsNullOrEmpty(customer.AddressLine1) ? (customer.AddressLine1 + "<br>") : string.Empty) +
                 (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) +
@@ -3009,7 +3019,7 @@ namespace nIS
 
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
                     var contactCenter = string.Empty;
-                    switch(customer.Segment.ToLower())
+                    switch (customer.Segment.ToLower())
                     {
                         case "consumer banking":
                         case "ncb":
@@ -3087,7 +3097,7 @@ namespace nIS
                 pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.FirstName);
                 pageContent.Replace("{{SurName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.SurName);
 
-                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.DS_Investor_Name);
+                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", !string.IsNullOrEmpty(customer.DS_Investor_Name) ? ": " + customer.DS_Investor_Name : string.Empty);
                 pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance));
                 pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].DayOfStatement);
                 pageContent.Replace("{{InvestorID_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(investmentMasters[0].InvestorId));
@@ -4600,7 +4610,7 @@ namespace nIS
                 pageContent.Replace("{{FirstName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.FirstName);
                 pageContent.Replace("{{SurName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.SurName);
 
-                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", customer.DS_Investor_Name);
+                pageContent.Replace("{{DSName_" + page.Identifier + "_" + widget.Identifier + "}}", !string.IsNullOrEmpty(customer.DS_Investor_Name) ? ": " + customer.DS_Investor_Name : string.Empty);
                 pageContent.Replace("{{TotalClosingBalance_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalClosingBalance));
                 pageContent.Replace("{{DayOfStatement_" + page.Identifier + "_" + widget.Identifier + "}}", investmentMasters[0].DayOfStatement);
                 pageContent.Replace("{{InvestorID_" + page.Identifier + "_" + widget.Identifier + "}}", Convert.ToString(investmentMasters[0].InvestorId));
