@@ -2084,6 +2084,12 @@
         font-family: 'Mark Pro Medium';
     }
 
+    .serviceHeaderW {
+        font-size: 10pt;
+        color: rgb(126, 84, 117) !important;
+        font-family: 'Mark Pro Bold';
+    }
+
     .LoanTransactionTable th {
         background-color: #1c6a41 !important;
         color: #fff;
