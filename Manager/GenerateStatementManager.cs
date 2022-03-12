@@ -3193,7 +3193,7 @@ namespace nIS
 
                 int counter = 0;
 
-                foreach (var item in investorPerformanceWidgetDatas.OrderBy(m => Convert.ToInt32(m.ProductId)))
+                foreach (var item in investorPerformanceWidgetDatas)
                 {
                     item.OpeningBalance = transactions.Where(m => m.ProductId.ToString() == item.ProductId && m.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR)).Sum(m => Convert.ToDecimal(m.WJXBFS4_Balance)).ToString();
                     item.ClosingBalance = transactions.Where(m => m.ProductId.ToString() == item.ProductId && m.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)).Sum(m => Convert.ToDecimal(m.WJXBFS4_Balance)).ToString();
@@ -4757,7 +4757,7 @@ namespace nIS
 
                 int counter = 0;
 
-                foreach (var item in investorPerformanceWidgetDatas.OrderBy(m => Convert.ToInt32(m.ProductId)))
+                foreach (var item in investorPerformanceWidgetDatas)
                 {
                     item.OpeningBalance = transactions.Where(m => m.ProductId.ToString() == item.ProductId && m.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_BROUGHT_FORWARD_TRANSACTION_DESC_AFR)).Sum(m => Convert.ToDecimal(m.WJXBFS4_Balance)).ToString();
                     item.ClosingBalance = transactions.Where(m => m.ProductId.ToString() == item.ProductId && m.TransactionDesc.ToLower().Contains(cust.Language == "ENG" ? ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC : ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)).Sum(m => Convert.ToDecimal(m.WJXBFS4_Balance)).ToString();
