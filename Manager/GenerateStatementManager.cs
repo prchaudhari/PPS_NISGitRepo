@@ -1550,7 +1550,7 @@ namespace nIS
                             //var totalAmount = 0.0m; var res = 0.0m;
                             investmentMasters.ForEach(invest =>
                             {
-                                invest.investmentTransactions = this.tenantTransactionDataRepository.Get_DM_InvestmentTransaction(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier, InvestmentId = invest.InvestmentId }, tenantCode)?.ToList();
+                                invest.investmentTransactions = this.tenantTransactionDataRepository.Get_DM_InvestmentTransaction(new CustomerInvestmentSearchParameter() { CustomerId = customer.CustomerId, BatchId = batchMaster.Identifier, InvestmentId = invest.InvestmentId, InvestorId = invest.InvestorId }, tenantCode)?.ToList();
 
                                 //totalAmount = totalAmount + invest.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC)).Select(it => decimal.TryParse(it.WJXBFS4_Balance.Replace(",", "."), out res) ? res : 0).ToList().Sum(it => it);
                             });
@@ -1596,9 +1596,7 @@ namespace nIS
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
                     if (statement.Pages.Count() > 0)
                     {
-                        var page = statement.Pages[0];
-                        var pagewidgets = new List<PageWidget>(page.PageWidgets);
-                        if (pagewidgets.Where(x => x.WidgetName.Contains("Wealth")).Count() > 0)
+                        if (customer.Segment == "WEA" ? true : false)
                         {
                             htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{ImgHeight}}", "100").Replace("{{NedBankLogo}}", "../common/images/NedBankLogoBlack.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
                         }
@@ -1691,7 +1689,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.STATIC_SEGMENT_BASED_CONTENT_NAME:
-                                        IsFailed = this.BindSegmentBasedContentWidgetData(pageContent, customer, page, widget, statement, ErrorMessages, widgets.Any(x => x.WidgetName.Contains("Wealth")));
+                                        IsFailed = this.BindSegmentBasedContentWidgetData(pageContent, customer, page, widget, statement, ErrorMessages, customer.Segment == "WEA" ? true : false);
                                         break;
 
                                     case HtmlConstants.STATIC_HTML_WIDGET_NAME:
@@ -1804,7 +1802,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME:
-                                        this.BindDataToWealthBreakdownOfInvestmentAccountsWidget(pageContent, scriptHtmlRenderer, investmentMasters, page, widget, batchMaster, customer, statementRawData.OutputLocation, widgets.Any(x => x.WidgetName.Contains("Wealth")));
+                                        this.BindDataToWealthBreakdownOfInvestmentAccountsWidget(pageContent, scriptHtmlRenderer, investmentMasters, page, widget, batchMaster, customer, statementRawData.OutputLocation);
                                         break;
                                     case HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME:
                                         BindDataToWealthInvestmentPortfolioStatementWidget(pageContent, customer, investmentMasters, page, widget);
@@ -1970,7 +1968,7 @@ namespace nIS
                     });
                     htmlbody.Append(HtmlConstants.END_DIV_TAG); // end tab-content div
                     
-                    if (widgets.Where(x => x.WidgetName.Contains("Wealth")).Count() > 0)
+                    if (customer.Segment == "WEA" ? true : false)
                     {
                         var footerContent = new StringBuilder(HtmlConstants.WEALTH_NEDBANK_STATEMENT_FOOTER);
                         footerContent.Replace("{{NedbankSloganImage}}", "../common/images/Footer_Image.png");
@@ -2691,6 +2689,9 @@ namespace nIS
                         break;
                     case "cib":
                         contactCenter = HtmlConstants.CORPORATE_BANKING;
+                        break;
+                    case "wea":
+                        contactCenter = HtmlConstants.WEA_BANKING;
                         break;
                 }
 
@@ -4522,7 +4523,7 @@ namespace nIS
             scriptHtmlRenderer.Append(HtmlConstants.GREENBACKS_CATEGORY_SPEND_REWARD_POINTS_BAR_GRAPH_SCRIPT.Replace("CategorySpendRewardsPieChartcontainer", "CategorySpendRewardsPieChartcontainer_" + page.Identifier + "_" + widget.Identifier).Replace("HiddenCategorySpendRewardsGraph", "HiddenCategorySpendRewardsGraph_" + page.Identifier + "_" + widget.Identifier));
         }
 
-        private void BindDataToWealthBreakdownOfInvestmentAccountsWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget, BatchMaster batchMaster, DM_CustomerMaster customer, string outputLocation, bool isWealthStatement)
+        private void BindDataToWealthBreakdownOfInvestmentAccountsWidget(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_InvestmentMaster> investmentMasters, Page page, PageWidget widget, BatchMaster batchMaster, DM_CustomerMaster customer, string outputLocation)
         {
             if (investmentMasters != null && investmentMasters.Count > 0)
             {

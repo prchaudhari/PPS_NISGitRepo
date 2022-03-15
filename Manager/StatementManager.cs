@@ -2816,23 +2816,20 @@ namespace nIS
                                                 {
                                                     if (statementPages.Count == 1)
                                                     {
-                                                        IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(11083, tenantCode);
-                                                        if (customers != null)
-                                                        {
-                                                            var customerHtmlWidget = HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML;
-                                                            CustomerInformation customerInfo = customers.FirstOrDefault();
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{Title}}", customerInfo.Title != null ? customerInfo.Title : "");
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{FirstName}}", customerInfo.FirstName);
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{SurName}}", customerInfo.SurName);
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine0}}", customerInfo.AddressLine0);
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine1}}", customerInfo.AddressLine1);
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", customerInfo.AddressLine2);
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", customerInfo.AddressLine3);
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", customerInfo.AddressLine4);
-                                                            //customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", customerInfo.MaskCellNo != string.Empty ? "Cell: " + customerInfo.MaskCellNo : string.Empty);
-                                                            customerHtmlWidget = customerHtmlWidget.Replace("{{Barcode}}", customerInfo.Barcode != string.Empty ? customerInfo.Barcode : string.Empty);
-                                                            htmlString.Append(customerHtmlWidget);
-                                                        }
+                                                        //IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(11083, tenantCode);
+                                                        var customerHtmlWidget = HtmlConstants.CUSTOMER_DETAILS_WIDGET_HTML;
+                                                        //CustomerInformation customerInfo = customers.FirstOrDefault();
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{Title}}", "Title");
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{FirstName}}", "FirstName");
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{SurName}}", "SurName");
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine0}}", "Line0");
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine1}}", "Line1");
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine2}}", "Line2");
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine3}}", "Line3");
+                                                        customerHtmlWidget = customerHtmlWidget.Replace("{{CustAddressLine4}}", "Line4");
+                                                        //customerHtmlWidget = customerHtmlWidget.Replace("{{MaskCellNo}}", customerInfo.MaskCellNo != string.Empty ? "Cell: " + customerInfo.MaskCellNo : string.Empty);
+                                                        //customerHtmlWidget = customerHtmlWidget.Replace("{{Barcode}}", customerInfo.Barcode != string.Empty ? customerInfo.Barcode : string.Empty);
+                                                        htmlString.Append(customerHtmlWidget);
                                                     }
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.BRANCH_DETAILS_WIDGET_NAME)
@@ -2925,27 +2922,23 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_NAME)
                                                 {
-                                                    IList<InvestmentPottfolio> investments = this.investmentRepository.GetInvestmentPottfolioByInvesterId(11083, tenantCode);
-                                                    IList<CustomerInformation> customers = this.customerRepository.GetCustomersByInvesterId(11083, tenantCode);
+                                                    string jsonstr = "{'Currency': 'R', 'TotalClosingBalance': '23 920.98', 'DayOfStatement':'21', 'InvestorId':'204626','StatementPeriod':'22/12/2020 to 21/01/2021','StatementDate':'21/01/2021', 'DsInvestorName' : '' }";
+                                                    string customerJsonstr = "{'TITLE_TEXT': 'MR', 'FIRST_NAME_TEXT':'MATHYS','SURNAME_TEXT':'SMIT','ADDR_LINE_0':'VAN DER MEULENSTRAAT 39','ADDR_LINE_1':'3971 EB DRIEBERGEN','ADDR_LINE_2':'NEDERLAND','ADDR_LINE_3':'9999','ADDR_LINE_4':'', 'MASK_CELL_NO': '******7786', 'FIRSTNAME': 'MATHYS', 'LASTNAME': 'SMIT', 'BARCODE': 'C:\\\\temp\\barcode.png'}";
 
-                                                    if (investments != null)
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
-                                                        var OuterInvestmentPortfolioHtmlWidget = HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML;
-                                                        var investmentPortfolioHtmlWidget = new StringBuilder(string.Empty);
-                                                        investments.ToList().ForEach(investment =>
-                                                        {
-                                                            var innerInvestmentPortoflioHtmlWidget = new StringBuilder(HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML_REPEATED_PART);
-                                                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{TotalClosingBalance}}", investment.Currency + investment.ClosingBalance);
-                                                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{DayOfStatement}}", Convert.ToString(investment.DayOfStatement));
-                                                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{InvestorID}}", Convert.ToString(investment.InvestorId));
-                                                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{StatementPeriod}}", investment.StatementPeriod);
-                                                            innerInvestmentPortoflioHtmlWidget = innerInvestmentPortoflioHtmlWidget.Replace("{{StatementDate}}", investment.StatementDate != null ? Convert.ToDateTime(investment.StatementDate).ToShortDateString() : "");
-                                                            investmentPortfolioHtmlWidget.Append(innerInvestmentPortoflioHtmlWidget);
-                                                        });
-                                                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{DSName}}", "");
-                                                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", customers.FirstOrDefault().FirstName);
-                                                        OuterInvestmentPortfolioHtmlWidget = OuterInvestmentPortfolioHtmlWidget.Replace("{{InvestmentWealthPortfolioRepetedPart}}", Convert.ToString(investmentPortfolioHtmlWidget));
-                                                        htmlString.Append(OuterInvestmentPortfolioHtmlWidget);
+                                                        dynamic InvestmentPortfolio = JObject.Parse(jsonstr);
+                                                        var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerJsonstr);
+                                                        var InvestmentPortfolioHtmlWidget = HtmlConstants.INVESTMENT_WEALTH_PORTFOLIO_STATEMENT_WIDGET_HTML;
+                                                        InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{DSName}}", Convert.ToString(InvestmentPortfolio.DsInvestorName));
+                                                        InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{TotalClosingBalance}}", (Convert.ToString(InvestmentPortfolio.Currency) + Convert.ToString(InvestmentPortfolio.TotalClosingBalance)));
+                                                        InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{DayOfStatement}}", Convert.ToString(InvestmentPortfolio.DayOfStatement));
+                                                        InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{InvestorID}}", Convert.ToString(InvestmentPortfolio.InvestorId));
+                                                        InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{StatementPeriod}}", Convert.ToString(InvestmentPortfolio.StatementPeriod));
+                                                        InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{StatementDate}}", Convert.ToString(InvestmentPortfolio.StatementDate));
+                                                        InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{FirstName}}", Convert.ToString(customerInfo.FirstName));
+                                                        InvestmentPortfolioHtmlWidget = InvestmentPortfolioHtmlWidget.Replace("{{SurName}}", Convert.ToString(customerInfo.SurName));
+                                                        htmlString.Append(InvestmentPortfolioHtmlWidget);
                                                     }
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME)
@@ -2963,21 +2956,15 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME)
                                                 {
-                                                    IList<InvestorPerformance> investments = this.investmentRepository.GetInvestorPerformanceByInvesterId(11083, tenantCode);
-                                                    if (investments != null)
+                                                    string jsonstr = "{'Currency': 'R', 'ProductType': 'Notice deposits', 'OpeningBalanceAmount':'23 875.36', 'ClosingBalanceAmount':'23 920.98'}";
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
-                                                        var outerInvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
-                                                        var investorPerformanceHtmlWidget = new StringBuilder();
-                                                        investments.ToList().ForEach(investment =>
-                                                        {
-                                                            var innerInvestorPerformanceHtmlWidget = new StringBuilder(HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML_REPEATED_PART);
-                                                            innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{ProductType}}", investment.ProductType);
-                                                            innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", investment.Currency + investment.OpeningBalance);
-                                                            innerInvestorPerformanceHtmlWidget = innerInvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", investment.Currency + investment.ClosingBalance);
-                                                            investorPerformanceHtmlWidget.Append(innerInvestorPerformanceHtmlWidget);
-                                                        });
-                                                        outerInvestorPerformanceHtmlWidget = outerInvestorPerformanceHtmlWidget.Replace("{{WealthInvestorPerformanceRepeatedPart}}", Convert.ToString(investorPerformanceHtmlWidget));
-                                                        htmlString.Append(outerInvestorPerformanceHtmlWidget);
+                                                        dynamic InvestmentPerformance = JObject.Parse(jsonstr);
+                                                        var InvestorPerformanceHtmlWidget = HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_HTML;
+                                                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ProductType}}", Convert.ToString(InvestmentPerformance.ProductType));
+                                                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{OpeningBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.OpeningBalanceAmount)));
+                                                        InvestorPerformanceHtmlWidget = InvestorPerformanceHtmlWidget.Replace("{{ClosingBalanceAmount}}", (Convert.ToString(InvestmentPerformance.Currency) + Convert.ToString(InvestmentPerformance.ClosingBalanceAmount)));
+                                                        htmlString.Append(InvestorPerformanceHtmlWidget);
                                                     }
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
@@ -3050,30 +3037,28 @@ namespace nIS
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_NAME)
                                                 {
-                                                    //string jsonstr = HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
-                                                    IList<BreakdownOfInvestmentAccounts> investments = this.investmentRepository.GetBreakdownOfInvestmentAccountsByInvesterId(11083, tenantCode);
+                                                    string jsonstr = HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_PREVIEW_JSON_STRING;
 
-                                                    if (investments != null)
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
                                                         var InvestmentAccountBreakdownHtml = new StringBuilder(HtmlConstants.WEALTH_BREAKDOWN_OF_INVESTMENT_ACCOUNTS_WIDGET_HTML);
-                                                        //IList<InvestmentAccount> InvestmentAccounts = JsonConvert.DeserializeObject<List<InvestmentAccount>>(jsonstr);
+                                                        IList<InvestmentAccount> InvestmentAccounts = JsonConvert.DeserializeObject<List<InvestmentAccount>>(jsonstr);
 
                                                         //Create Nav tab if investment accounts is more than 1
                                                         var NavTabs = new StringBuilder();
-                                                        var InvestmentAccountsCount = investments.Count;
+                                                        var InvestmentAccountsCount = InvestmentAccounts.Count;
                                                         InvestmentAccountBreakdownHtml.Replace("{{NavTab}}", NavTabs.ToString());
 
                                                         //create tab-content div if accounts is greater than 1, otherwise create simple div
                                                         var TabContentHtml = new StringBuilder();
                                                         var counter = 0;
-                                                        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : "");
-                                                        investments.ToList().ForEach(acc =>
+                                                        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "<div class='tab-content'>" : string.Empty);
+                                                        InvestmentAccounts.ToList().ForEach(acc =>
                                                         {
                                                             var InvestmentAccountDetailHtml = new StringBuilder(HtmlConstants.WEALTH_INVESTMENT_ACCOUNT_DETAILS_HTML);
-
-                                                            InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDescription);
-                                                            InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId.ToString());
-                                                            InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", "");
+                                                            InvestmentAccountDetailHtml.Replace("{{ProductDesc}}", acc.ProductDesc);
+                                                            InvestmentAccountDetailHtml.Replace("{{InvestmentId}}", acc.InvestmentId);
+                                                            InvestmentAccountDetailHtml.Replace("{{TabPaneClass}}", string.Empty);
 
                                                             var InvestmentNo = acc.InvestorId + " " + acc.InvestmentId;
                                                             //actual length is 12, due to space in between investor id and investment id we comparing for 13 characters
@@ -3082,28 +3067,28 @@ namespace nIS
                                                                 InvestmentNo = "0" + InvestmentNo;
                                                             }
                                                             InvestmentAccountDetailHtml.Replace("{{InvestmentNo}}", InvestmentNo);
-                                                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToShortDateString() : "");
+                                                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
 
-                                                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.AccountOpenDate != null ? Convert.ToDateTime(acc.AccountOpenDate).ToShortDateString() : "");
+                                                            InvestmentAccountDetailHtml.Replace("{{AccountOpenDate}}", acc.OpenDate);
                                                             InvestmentAccountDetailHtml.Replace("{{InterestRate}}", acc.CurrentInterestRate + "% pa");
-                                                            InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", "");
+                                                            InvestmentAccountDetailHtml.Replace("{{MaturityDate}}", acc.ExpiryDate);
                                                             InvestmentAccountDetailHtml.Replace("{{InterestDisposal}}", acc.InterestDisposalDesc);
                                                             InvestmentAccountDetailHtml.Replace("{{NoticePeriod}}", acc.NoticePeriod);
-                                                            InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.CurrentInterestRate.ToString());
+                                                            InvestmentAccountDetailHtml.Replace("{{InterestDue}}", acc.Currency + acc.AccuredInterest);
 
-                                                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", acc.LastTransactionDate != null ? Convert.ToDateTime(acc.LastTransactionDate).ToShortDateString() : "" );
-                                                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.InvestmentTransaction.OrderByDescending(a => a.TransactionDate).Select(a => a.WJXBFS4_Balance).FirstOrDefault());
+                                                            InvestmentAccountDetailHtml.Replace("{{LastTransactionDate}}", "25 November 2020");
+                                                            InvestmentAccountDetailHtml.Replace("{{BalanceOfLastTransactionDate}}", acc.Currency + (counter == 0 ? "5 307.14" : "18 613.84"));
 
                                                             var InvestmentTransactionRows = new StringBuilder();
-                                                            acc.InvestmentTransaction.ToList().ForEach(trans =>
+                                                            acc.Transactions.ForEach(trans =>
                                                             {
                                                                 var tr = new StringBuilder();
                                                                 tr.Append("<tr class='ht-20'>");
                                                                 tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
                                                                 tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
-                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS2_Debit == "0" ? "-" : acc.Currency + trans.WJXBFS2_Debit) + "</td>");
-                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS3_Credit == "0" ? "-" : acc.Currency + trans.WJXBFS3_Credit) + "</td>");
-                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.WJXBFS4_Balance == "0" ? "-" : acc.Currency + trans.WJXBFS4_Balance) + "</td>");
+                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Debit == "0" ? "-" : acc.Currency + trans.Debit) + "</td>");
+                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Credit == "0" ? "-" : acc.Currency + trans.Credit) + "</td>");
+                                                                tr.Append("<td class='w-15 text-right pt-1'>" + (trans.Balance == "0" ? "-" : acc.Currency + trans.Balance) + "</td>");
                                                                 tr.Append("</tr>");
                                                                 InvestmentTransactionRows.Append(tr.ToString());
                                                             });
@@ -3111,7 +3096,7 @@ namespace nIS
                                                             TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
                                                             counter++;
                                                         });
-                                                        TabContentHtml.Append((InvestmentAccountsCount > 1) ? "</div>" : "");
+                                                        TabContentHtml.Append((InvestmentAccountsCount > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
 
                                                         InvestmentAccountBreakdownHtml.Replace("{{TabContentsDiv}}", TabContentHtml.ToString());
                                                         htmlString.Append(InvestmentAccountBreakdownHtml.ToString());

@@ -12,7 +12,7 @@ namespace nIS
     public class DM_CustomerMaster
     {
         public long Identifier { get; set; }
-        public long BatchId { get; set; }
+        public long? BatchId { get; set; }
         public long CustomerId { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }

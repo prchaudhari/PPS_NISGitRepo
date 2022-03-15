@@ -477,6 +477,8 @@ namespace nIS
 
         public const string CORPORATE_BANKING = "Contact centre is 0860 102 187";
 
+        public const string WEA_BANKING = "Nedbank Private Wealth Service Suite: 0860 111 263";
+
         public const string CHANCE_TO_WIN = "<div class='serviceHeader pb-2'>Save and stand a chance to win</div><p>Already have a notice deposit? Sign up for Structured Saver and stand a chance to win R30 000! Increase your winning by setting up a recurring payment and you could be in the draw for R50 000!</p><p>Visit <span style='text-decoration: underline;'><a class='e-rte-anchor' href='http://nedbank.co.za/greenbacks' title='http://nedbank.co.za/greenbacks' target='_blank'>http://nedbank.co.za/greenbacks</a></span> to find more.</p><p>Term and condition apply.</p>";
 
         public const string CHANCE_TO_WIN_AFR = "<div class='serviceHeader pb-2'>Spaar en staan 'n kans om te wen</div><p>Het jy reeds 'n kennisdeposito? Teken in vir Structured Saver en staan 'n kans om R30 000 te wen. As jy boonop 'n herhalende betaling opstel en jy wen, kan jou prysgeld tot R50 000 styg.</p><p>Besoek http://nedbank.co.za/greenbacks om meer uit.</p><p>te vind. Bepalings en voorwaardes geld.</p>";
