@@ -39,6 +39,7 @@ namespace nIS
         public string TenantCode { get; set; }
         public string OpeningBalance { get; set; }
         public Nullable<long> SegmentMasterId { get; set; }
+        public string BonusInterest { get; set; }
     
         public virtual NB_SegmentMaster NB_SegmentMaster { get; set; }
     }

@@ -1562,6 +1562,7 @@ namespace nIS
                     }
                     if (IsPersonalLoanPageTypePresent)
                     {
+                        //PersonalLoanAccounts = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = 753, CustomerId = 151000262666 }, "94461633-b316-42c3-a188-db8d78075ef4")?.ToList();
                         PersonalLoanAccounts = this.tenantTransactionDataRepository.Get_DM_PersonalLoanMaster(new CustomerPersonalLoanSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList();
 
                         //var totalAmount = 0.0m; var res = 0.0m;
@@ -1609,6 +1610,7 @@ namespace nIS
                     {
                         htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{ImgHeight}}", "80").Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
                     }
+                    //htmlbody.Append(statementRawData.StatementPageContents.FirstOrDefault().PageHeaderContent);
                     //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                     var scriptHtmlRenderer = new StringBuilder();
                     HttpClient httpClient = null;
@@ -1967,7 +1969,7 @@ namespace nIS
                         htmlbody.Append(HtmlConstants.PAGE_FOOTER_HTML);
                     });
                     htmlbody.Append(HtmlConstants.END_DIV_TAG); // end tab-content div
-                    
+
                     if (customer.Segment == "WEA" ? true : false)
                     {
                         var footerContent = new StringBuilder(HtmlConstants.WEALTH_NEDBANK_STATEMENT_FOOTER);
@@ -1983,6 +1985,7 @@ namespace nIS
                         footerContent.Replace("{{LastFooterText}}", string.Empty);
                         htmlbody.Append(footerContent.ToString());
                     }
+                    //htmlbody.Append(statementRawData.StatementPageContents.FirstOrDefault().PageFooterContent);
 
                     htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER); // end of container-fluid div
 
@@ -3262,6 +3265,17 @@ namespace nIS
                      else
                      {
                          InvestmentAccountDetailHtml.Replace("{{InterestDue}}", "R0.00");
+                     }
+
+                     if (acc.ProductType == "Fixed deposits" || acc.ProductType == "Linked Deposits" || acc.ProductType == "Vaste deposito's" || acc.ProductType == "Gekoppelde deposito's")
+                     {
+                         InvestmentAccountDetailHtml.Replace("{{BonusIntrestLabel}}", "Bonus Interest:");
+                         InvestmentAccountDetailHtml.Replace("{{BonusIntrestValue}}", (acc.BonusInterest + "% pa"));
+                     }
+                     else
+                     {
+                         InvestmentAccountDetailHtml.Replace("{{BonusIntrestLabel}}", "&nbsp;");
+                         InvestmentAccountDetailHtml.Replace("{{BonusIntrestValue}}", "&nbsp;");
                      }
 
                      var LastInvestmentTransaction = acc.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC) || it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)).OrderByDescending(it => it.TransactionDate)?.ToList()?.FirstOrDefault();
@@ -4569,6 +4583,17 @@ namespace nIS
                     else
                     {
                         InvestmentAccountDetailHtml.Replace("{{InterestDue}}", "R0.00");
+                    }
+
+                    if (acc.ProductType == "Fixed deposit" || acc.ProductType == "Linked Deposit" || acc.ProductType == "Vaste deposito's" || acc.ProductType == "Gekoppelde deposito's")
+                    {
+                        InvestmentAccountDetailHtml.Replace("{{BonusIntrestLabel}}", "Bonus Interest:");
+                        InvestmentAccountDetailHtml.Replace("{{BonusIntrestValue}}", (acc.BonusInterest + "% pa"));
+                    }
+                    else
+                    {
+                        InvestmentAccountDetailHtml.Replace("{{BonusIntrestLabel}}", "&nbsp;");
+                        InvestmentAccountDetailHtml.Replace("{{BonusIntrestValue}}", "&nbsp;");
                     }
 
                     var LastInvestmentTransaction = acc.investmentTransactions.Where(it => it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC) || it.TransactionDesc.ToLower().Contains(ModelConstant.BALANCE_CARRIED_FORWARD_TRANSACTION_DESC_AFR)).OrderByDescending(it => it.TransactionDate)?.ToList()?.FirstOrDefault();

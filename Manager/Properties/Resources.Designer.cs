@@ -106,6 +106,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bonus rente.
+        /// </summary>
+        internal static string Bonus_Interest {
+            get {
+                return ResourceManager.GetString("Bonus Interest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uiteensetting van u beleggingsrekenings.
         /// </summary>
         internal static string Breakdown_of_your_investment_accounts {

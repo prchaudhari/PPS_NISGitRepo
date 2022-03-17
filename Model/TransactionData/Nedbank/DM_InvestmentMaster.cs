@@ -36,5 +36,6 @@ namespace nIS
         public string ClosingBalance { get; set; }
         public string TenantCode { get; set; }
         public List<DM_InvestmentTransaction> investmentTransactions { get; set; }
-    }
+        public string BonusInterest { get; set; }
+}
 }

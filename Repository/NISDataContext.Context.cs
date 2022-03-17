@@ -126,7 +126,6 @@ namespace nIS
         public virtual DbSet<NB_BranchMaster> NB_BranchMaster { get; set; }
         public virtual DbSet<NB_BranchMaster_Old> NB_BranchMaster_Old { get; set; }
         public virtual DbSet<NB_CustomerMaster> NB_CustomerMaster { get; set; }
-        public virtual DbSet<NB_CustomerMaster_Old> NB_CustomerMaster_Old { get; set; }
         public virtual DbSet<NB_Investment_Source> NB_Investment_Source { get; set; }
         public virtual DbSet<NB_InvestmentMaster> NB_InvestmentMaster { get; set; }
         public virtual DbSet<NB_InvestmentMaster_Old> NB_InvestmentMaster_Old { get; set; }

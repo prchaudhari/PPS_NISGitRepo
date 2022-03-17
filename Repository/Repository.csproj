@@ -260,9 +260,6 @@
     <Compile Include="NB_CustomerMaster.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="NB_CustomerMaster_Old.cs">
-      <DependentUpon>NISDataContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="NB_InvestmentMaster.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

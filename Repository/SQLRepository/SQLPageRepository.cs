@@ -389,7 +389,9 @@ namespace nIS
                             UpdatedBy = pageRecord.UpdateBy ?? 0,
                             BackgroundImageAssetLibraryId = pageRecord.BackgroundImageAssetLibraryId ?? 0,
                             BackgroundImageAssetId = pageRecord.BackgroundImageAssetId ?? 0,
-                            BackgroundImageURL = pageRecord.BackgroundImageURL
+                            BackgroundImageURL = pageRecord.BackgroundImageURL,
+                            HeaderHTML = pageRecord.HeaderHTML,
+                            FooterHTML = pageRecord.FooterHTML,
                         });
                     });
                 }

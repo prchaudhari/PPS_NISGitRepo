@@ -1419,14 +1419,11 @@ export class SegmentBasedContentComponent {
 
   constructor(private _http: HttpClient,
     private sanitizer: DomSanitizer) {
-      debugger
     }
 
   ngOnInit() {
-    debugger
     if (this.SegmentBasedContentItem != null && this.SegmentBasedContentItem.WidgetSetting != null && this.SegmentBasedContentItem.WidgetSetting != '' && this.testJSON(this.SegmentBasedContentItem.WidgetSetting)) {
       let widgetSetting = JSON.parse(this.SegmentBasedContentItem.WidgetSetting);
-      debugger
       if(widgetSetting.length > 0)
       {
         this.html = this.sanitizer.bypassSecurityTrustHtml(widgetSetting[0].Html);
@@ -1455,11 +1452,9 @@ export class SegmentBasedContentComponent {
   }
 
   ngAfterViewInit() {
-    debugger
     setTimeout(() => {
       if (this.SegmentBasedContentItem != null && this.SegmentBasedContentItem.WidgetSetting != null && this.SegmentBasedContentItem.WidgetSetting != '' && this.testJSON(this.SegmentBasedContentItem.WidgetSetting)) {
         let widgetSetting = JSON.parse(this.SegmentBasedContentItem.WidgetSetting);
-        debugger
       } 
     }, 100);
   }
@@ -1688,7 +1683,6 @@ export class AnalyticsWidgetPreviewComponent {
   }
 
   ngOnInit() {
-    debugger
     $(document).ready(function () {
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));

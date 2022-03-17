@@ -395,7 +395,6 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   isVideoConfigForm(widgetId, widgetItemCount) {
-    debugger
     this.videoFormErrorObject.showAssetLibraryError = false;
     this.videoFormErrorObject.showAssetError = false;
     this.isMasterSaveBtnDisabled = true;
@@ -484,7 +483,6 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   isStaticHtmlConfigForm(widgetId, widgetItemCount) {
-    debugger
     this.isMasterSaveBtnDisabled = true;
     this.isStaticHtmlConfig = true;
     this.staticHtmlWidgetId = widgetId;
@@ -509,7 +507,6 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   isSegmentBasedContentConfigForm(widgetId, widgetItemCount) {
-    debugger
     this.isMasterSaveBtnDisabled = true;
     this.issegmentBasedContentConfig = true;
     this.segmentBasedContentWidgetId = widgetId;
@@ -762,7 +759,6 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   selectWidget(widgetId, widgetName) {
-    debugger
     let widgets = this.widgetsArray.filter(x => x.Identifier == widgetId && x.WidgetName == widgetName);
     if (widgets.length != 0) {
       let widget = widgets[0];
@@ -1540,7 +1536,6 @@ export class AddDashboardDesignerComponent implements OnInit {
             })
           }
           else if (widget.WidgetName == "StaticHtml") {
-            debugger
             return this.widgetsGridsterItemArray.push({
               cols: 4,
               rows: 3,
@@ -1557,7 +1552,6 @@ export class AddDashboardDesignerComponent implements OnInit {
             })
           }
           else if (widget.WidgetName == "SegmentBasedContent") {
-            debugger
             return this.widgetsGridsterItemArray.push({
               cols: 4,
               rows: 3,
@@ -1891,7 +1885,6 @@ export class AddDashboardDesignerComponent implements OnInit {
         gridObj.component = StaticHtmlComponent
       }
       else if (widget.WidgetName == "SegmentBasedContent") {
-        debugger
         gridObj.component = SegmentBasedContentComponent
       }
     }
@@ -2183,7 +2176,6 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   OnStaticHtmlConfigBtnClicked(actionFor) {
-    debugger
     if (actionFor == 'submit') {
       let staticHtmlContent = this.StaticConfigForm.value['staticHtml'];
       let staticHtmlConfig: any = {};
@@ -2204,7 +2196,6 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   OnSegmentBasedContentConfigBtnClicked(actionFor) {
-    debugger
     if (actionFor == 'submit') {
       let segmentId = this.SegmentBasedContentForm.value.SegmentId;
       let segmentBasedContent = this.SegmentBasedContentForm.value.SegmentBasedContent;
@@ -2246,7 +2237,6 @@ export class AddDashboardDesignerComponent implements OnInit {
   }
 
   onSegmentSelected(event) {
-    debugger
 
     var selectedSegmentId = event.target.value;
     this.isMasterSaveBtnDisabled = true;
@@ -2285,9 +2275,9 @@ export class AddDashboardDesignerComponent implements OnInit {
     if (!this.pageEditModeOn) {
       this.uiLoader.start();
     }
+
     this._http.get(this.baseURL + URLConfiguration.segmentGetUrl).subscribe(
       data => {
-        debugger
         if (!this.pageEditModeOn) {
           this.uiLoader.stop();
         }

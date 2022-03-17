@@ -15,7 +15,7 @@ namespace nIS
     public partial class DM_CustomerMasterRecord
     {
         public long Id { get; set; }
-        public long BatchId { get; set; }
+        public Nullable<long> BatchId { get; set; }
         public long CustomerId { get; set; }
         public long InvestorId { get; set; }
         public string Title { get; set; }
@@ -31,12 +31,8 @@ namespace nIS
         public string Barcode { get; set; }
         public string TenantCode { get; set; }
         public string DS_Investor_Name { get; set; }
-        public string Segment { get; set; }
-        public string Mask_Cell_No { get; set; }
         public string Language { get; set; }
-        public string Field1 { get; set; }
-        public string Field2 { get; set; }
-        public string Field3 { get; set; }
-        public string Field4 { get; set; }
+        public string Segment { get; set; }
+        public Nullable<long> BranchId { get; set; }
     }
 }

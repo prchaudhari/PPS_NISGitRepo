@@ -255,4 +255,7 @@
   <data name="Total balance of all your notice deposit accounts." xml:space="preserve">
     <value>Totale saldo van al u kennisdepositorekenings.</value>
   </data>
+  <data name="Bonus Interest" xml:space="preserve">
+    <value>Bonus rente</value>
+  </data>
 </root>

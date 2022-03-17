@@ -343,6 +343,8 @@ namespace nIS
         public long BackgroundImageAssetId { get; set; }
         public long BackgroundImageAssetLibraryId { get; set; }
         public string BackgroundImageURL { get; set; }
+        public string HeaderHTML { get; set; }
+        public string FooterHTML { get; set; }
 
         #endregion
 

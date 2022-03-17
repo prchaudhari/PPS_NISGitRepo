@@ -295,10 +295,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" />
           <Property Name="CustomerId" Type="bigint" Nullable="false" />
           <Property Name="InvestorId" Type="bigint" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="BranchId" Type="bigint" />
+          <Property Name="Title" Type="nvarchar" MaxLength="20" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="SurName" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="AddressLine0" Type="nvarchar" MaxLength="500" />
@@ -307,12 +308,12 @@
           <Property Name="AddressLine3" Type="nvarchar" MaxLength="500" />
           <Property Name="AddressLine4" Type="nvarchar" MaxLength="500" />
           <Property Name="EmailAddress" Type="nvarchar" MaxLength="500" />
-          <Property Name="MaskCellNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="MaskCellNo" Type="nvarchar" MaxLength="500" />
           <Property Name="Barcode" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
-	      <Property Name="DS_Investor_Name" Type="nvarchar" MaxLength="500" />
-		  <Property Name="Language" Type="nvarchar" MaxLength="50" />
-		  <Property Name="Segment" Type="nvarchar" MaxLength="50" />
+          <Property Name="DS_Investor_Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Language" Type="nvarchar" MaxLength="50" />
+          <Property Name="Segment" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="DM_CustomerNewsAndAlerts">
           <Key>
@@ -821,28 +822,6 @@
           <Property Name="Barcode" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="NB_CustomerMaster_Old">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BatchId" Type="bigint" Nullable="false" />
-          <Property Name="CustomerId" Type="bigint" Nullable="false" />
-          <Property Name="InvestorId" Type="bigint" Nullable="false" />
-          <Property Name="BranchId" Type="bigint" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="SurName" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="AddressLine0" Type="nvarchar" MaxLength="500" />
-          <Property Name="AddressLine1" Type="nvarchar" MaxLength="500" />
-          <Property Name="AddressLine2" Type="nvarchar" MaxLength="500" />
-          <Property Name="AddressLine3" Type="nvarchar" MaxLength="500" />
-          <Property Name="AddressLine4" Type="nvarchar" MaxLength="500" />
-          <Property Name="EmailAddress" Type="nvarchar" MaxLength="500" />
-          <Property Name="MaskCellNo" Type="nvarchar" MaxLength="50" />
-          <Property Name="Barcode" Type="nvarchar" MaxLength="200" />
-          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="NB_Investment_Source">
           <Key>
             <PropertyRef Name="Id" />
@@ -933,6 +912,7 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
           <Property Name="OpeningBalance" Type="nvarchar" MaxLength="200" />
           <Property Name="SegmentMasterId" Type="bigint" />
+          <Property Name="BonusInterest" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="NB_InvestmentMaster_Old">
           <Key>
@@ -1067,6 +1047,8 @@
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="HeaderHTML" Type="nvarchar(max)" />
+          <Property Name="FooterHTML" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="PageWidgetMap">
           <Key>
@@ -1419,7 +1401,7 @@
           <Property Name="RequestType" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.TenantSecurityCodeFormat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.TenantSecurityCodeFormat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TenantSecurityCodeFormat">
           <Key>
             <PropertyRef Name="Id" />
@@ -1623,7 +1605,7 @@ warning 6002: The table/view 'NIS.NIS.TenantSecurityCodeFormat' does not have a 
           <Property Name="IsTenantConfigured" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_DynamicWidget' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_DynamicWidget">
           <Key>
             <PropertyRef Name="Id" />
@@ -1667,7 +1649,7 @@ warning 6002: The table/view 'NIS.NIS.View_DynamicWidget' does not have a primar
           <Property Name="PageTypeId" Type="bigint" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_MultiTenantUserAccessMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_MultiTenantUserAccessMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -1707,7 +1689,7 @@ warning 6002: The table/view 'NIS.NIS.View_MultiTenantUserAccessMap' does not ha
           <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_Page' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_Page' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_Page">
           <Key>
             <PropertyRef Name="Id" />
@@ -1742,9 +1724,11 @@ warning 6002: The table/view 'NIS.NIS.View_Page' does not have a primary key def
           <Property Name="PublishedByName" Type="nvarchar" MaxLength="201" />
           <Property Name="PageOwnerName" Type="nvarchar" MaxLength="201" Nullable="false" />
           <Property Name="BackgroundImageAssetLibraryId" Type="bigint" />
+          <Property Name="HeaderHTML" Type="nvarchar(max)" />
+          <Property Name="FooterHTML" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_PageWidgetMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_PageWidgetMap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_PageWidgetMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -1771,7 +1755,7 @@ warning 6002: The table/view 'NIS.NIS.View_PageWidgetMap' does not have a primar
           <Property Name="WidgetName" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_Schedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_Schedule">
           <Key>
             <PropertyRef Name="Id" />
@@ -1817,7 +1801,7 @@ warning 6002: The table/view 'NIS.NIS.View_Schedule' does not have a primary key
           <Property Name="ExecutedBatchCount" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_ScheduleLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_ScheduleLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_ScheduleLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -1845,7 +1829,7 @@ warning 6002: The table/view 'NIS.NIS.View_ScheduleLog' does not have a primary 
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_SourceData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_SourceData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_SourceData">
           <Key>
             <PropertyRef Name="Id" />
@@ -1871,7 +1855,7 @@ warning 6002: The table/view 'NIS.NIS.View_SourceData' does not have a primary k
           <Property Name="PageTypeName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_StatementDefinition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_StatementDefinition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_StatementDefinition">
           <Key>
             <PropertyRef Name="Id" />
@@ -1905,7 +1889,7 @@ warning 6002: The table/view 'NIS.NIS.View_StatementDefinition' does not have a 
           <Property Name="OwnerName" Type="nvarchar" MaxLength="201" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_StatementMetadata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_StatementMetadata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_StatementMetadata">
           <Key>
             <PropertyRef Name="Id" />
@@ -1939,7 +1923,7 @@ warning 6002: The table/view 'NIS.NIS.View_StatementMetadata' does not have a pr
           <Property Name="BatchName" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_TenantSubscription' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_TenantSubscription' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_TenantSubscription">
           <Key>
             <PropertyRef Name="TenantCode" />
@@ -1959,7 +1943,7 @@ warning 6002: The table/view 'NIS.NIS.View_TenantSubscription' does not have a p
           <Property Name="LastModifiedName" Type="nvarchar" MaxLength="201" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_User">
           <Key>
             <PropertyRef Name="Id" />
@@ -1993,7 +1977,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="IsPasswordResetByAdmin" Type="bit" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <Association Name="FK__NB_Invest__Segme__29CC2871">
+        <Association Name="FK__NB_Invest__Segme__589C25F3">
           <End Role="NB_SegmentMaster" Type="Self.NB_SegmentMaster" Multiplicity="0..1" />
           <End Role="NB_InvestmentMaster" Type="Self.NB_InvestmentMaster" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2005,7 +1989,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__NB_Segmen__Segme__28D80438">
+        <Association Name="FK__NB_Segmen__Segme__59904A2C">
           <End Role="NB_SegmentTypeMaster" Type="Self.NB_SegmentTypeMaster" Multiplicity="1" />
           <End Role="NB_SegmentMaster" Type="Self.NB_SegmentMaster" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2062,6 +2046,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
                 <Property Name="IsActive" Type="bit" Nullable="false" />
                 <Property Name="IsDeleted" Type="bit" Nullable="false" />
                 <Property Name="ParentTenantCode" Type="nvarchar(max)" />
+                <Property Name="IsTenantConfigured" Type="bit" Nullable="false" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -2146,7 +2131,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="NB_BranchMaster" EntityType="Self.NB_BranchMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_BranchMaster_Old" EntityType="Self.NB_BranchMaster_Old" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_CustomerMaster" EntityType="Self.NB_CustomerMaster" Schema="NIS" store:Type="Tables" />
-          <EntitySet Name="NB_CustomerMaster_Old" EntityType="Self.NB_CustomerMaster_Old" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_Investment_Source" EntityType="Self.NB_Investment_Source" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_InvestmentMaster" EntityType="Self.NB_InvestmentMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_InvestmentMaster_Old" EntityType="Self.NB_InvestmentMaster_Old" Schema="NIS" store:Type="Tables" />
@@ -2274,7 +2258,9 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_Page].[Name] AS [Name], 
     [View_Page].[PublishedByName] AS [PublishedByName], 
     [View_Page].[PageOwnerName] AS [PageOwnerName], 
-    [View_Page].[BackgroundImageAssetLibraryId] AS [BackgroundImageAssetLibraryId]
+    [View_Page].[BackgroundImageAssetLibraryId] AS [BackgroundImageAssetLibraryId], 
+    [View_Page].[HeaderHTML] AS [HeaderHTML], 
+    [View_Page].[FooterHTML] AS [FooterHTML]
     FROM [NIS].[View_Page] AS [View_Page]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="View_PageWidgetMap" EntityType="Self.View_PageWidgetMap" store:Type="Views" store:Schema="NIS">
@@ -2427,11 +2413,11 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
     [View_User].[Name] AS [Name]
     FROM [NIS].[View_User] AS [View_User]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__NB_Invest__Segme__29CC2871" Association="Self.FK__NB_Invest__Segme__29CC2871">
+          <AssociationSet Name="FK__NB_Invest__Segme__589C25F3" Association="Self.FK__NB_Invest__Segme__589C25F3">
             <End Role="NB_SegmentMaster" EntitySet="NB_SegmentMaster" />
             <End Role="NB_InvestmentMaster" EntitySet="NB_InvestmentMaster" />
           </AssociationSet>
-          <AssociationSet Name="FK__NB_Segmen__Segme__28D80438" Association="Self.FK__NB_Segmen__Segme__28D80438">
+          <AssociationSet Name="FK__NB_Segmen__Segme__59904A2C" Association="Self.FK__NB_Segmen__Segme__59904A2C">
             <End Role="NB_SegmentTypeMaster" EntitySet="NB_SegmentTypeMaster" />
             <End Role="NB_SegmentMaster" EntitySet="NB_SegmentMaster" />
           </AssociationSet>
@@ -2545,7 +2531,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySet Name="NB_BranchMaster" EntityType="NISModel.NB_BranchMaster" />
           <EntitySet Name="NB_BranchMaster_Old" EntityType="NISModel.NB_BranchMaster_Old" />
           <EntitySet Name="NB_CustomerMaster" EntityType="NISModel.NB_CustomerMaster" />
-          <EntitySet Name="NB_CustomerMaster_Old" EntityType="NISModel.NB_CustomerMaster_Old" />
           <EntitySet Name="NB_Investment_Source" EntityType="NISModel.NB_Investment_Source" />
           <EntitySet Name="NB_InvestmentMaster" EntityType="NISModel.NB_InvestmentMaster" />
           <EntitySet Name="NB_InvestmentMaster_Old" EntityType="NISModel.NB_InvestmentMaster_Old" />
@@ -2697,6 +2682,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="TenantCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="HeaderHTML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FooterHTML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PageWidgetMapRecord">
           <Key>
@@ -3179,6 +3166,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="BackgroundImageAssetId" Type="Int64" />
           <Property Name="BackgroundImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="BackgroundImageAssetLibraryId" Type="Int64" />
+          <Property Name="HeaderHTML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FooterHTML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="View_StatementDefinitionRecord">
           <Key>
@@ -3826,10 +3815,10 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="BatchId" Type="Int64" />
           <Property Name="CustomerId" Type="Int64" Nullable="false" />
           <Property Name="InvestorId" Type="Int64" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="SurName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="AddressLine0" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -3844,6 +3833,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
 		  <Property Name="DS_Investor_Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
 		  <Property Name="Language" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
 		  <Property Name="Segment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BranchId" Type="Int64" />
           </EntityType>
         <EntityType Name="DM_ExplanatoryNotesRecord">
           <Key>
@@ -4353,45 +4343,23 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int64" />
           <Property Name="BatchId" Type="Int64" />
-          <Property Name="CustomerId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="InvestorId" Nullable="false" Type="Int64" />
           <Property Name="BranchId" Type="Int64" />
-          <Property Name="Title" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SurName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine0" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine4" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="EmailAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="MaskCellNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="NB_CustomerMaster_Old">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchId" Type="Int64" Nullable="false" />
-          <Property Name="CustomerId" Type="Int64" Nullable="false" />
-          <Property Name="InvestorId" Type="Int64" Nullable="false" />
-          <Property Name="BranchId" Type="Int64" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SurName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine0" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AddressLine4" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="EmailAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="MaskCellNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" MaxLength="20" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="FirstName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="SurName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="AddressLine0" MaxLength="500" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="AddressLine1" MaxLength="500" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="AddressLine2" MaxLength="500" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="AddressLine3" MaxLength="500" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="AddressLine4" MaxLength="500" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="EmailAddress" MaxLength="500" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="MaskCellNo" MaxLength="500" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Barcode" MaxLength="200" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="TenantCode" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
         </EntityType>
         <EntityType Name="NB_Investment_Source">
           <Key>
@@ -4484,6 +4452,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <Property Name="OpeningBalance" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="SegmentMasterId" Type="Int64" />
           <NavigationProperty Name="NB_SegmentMaster" Relationship="NISModel.FK__NB_Invest__Segme__29CC2871" FromRole="NB_InvestmentMaster" ToRole="NB_SegmentMaster" />
+          <Property Name="BonusInterest" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NB_InvestmentMaster_Old">
           <Key>
@@ -4757,6 +4726,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="PageTypeRecords">
             <EntityTypeMapping TypeName="NISModel.PageTypeRecord">
               <MappingFragment StoreEntitySet="PageType">
+                <ScalarProperty Name="FooterHTML" ColumnName="FooterHTML" />
+                <ScalarProperty Name="HeaderHTML" ColumnName="HeaderHTML" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
@@ -5228,6 +5199,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="View_PageRecord">
             <EntityTypeMapping TypeName="NISModel.View_PageRecord">
               <MappingFragment StoreEntitySet="View_Page">
+                <ScalarProperty Name="FooterHTML" ColumnName="FooterHTML" />
+                <ScalarProperty Name="HeaderHTML" ColumnName="HeaderHTML" />
                 <ScalarProperty Name="BackgroundImageAssetLibraryId" ColumnName="BackgroundImageAssetLibraryId" />
                 <ScalarProperty Name="BackgroundImageURL" ColumnName="BackgroundImageURL" />
                 <ScalarProperty Name="BackgroundImageAssetId" ColumnName="BackgroundImageAssetId" />
@@ -5844,7 +5817,8 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="DM_CustomerMasterRecord">
             <EntityTypeMapping TypeName="NISModel.DM_CustomerMasterRecord">
               <MappingFragment StoreEntitySet="DM_CustomerMaster">
-				<ScalarProperty Name="Segment" ColumnName="Segment" />
+				<ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="Segment" ColumnName="Segment" />
 				<ScalarProperty Name="Language" ColumnName="Language" />
 				<ScalarProperty Name="DS_Investor_Name" ColumnName="DS_Investor_Name" />
                 <ScalarProperty Name="MaskCellNo" ColumnName="MaskCellNo" />
@@ -6420,29 +6394,6 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="NB_CustomerMaster_Old">
-            <EntityTypeMapping TypeName="NISModel.NB_CustomerMaster_Old">
-              <MappingFragment StoreEntitySet="NB_CustomerMaster_Old">
-                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
-                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
-                <ScalarProperty Name="MaskCellNo" ColumnName="MaskCellNo" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="AddressLine4" ColumnName="AddressLine4" />
-                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
-                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
-                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
-                <ScalarProperty Name="AddressLine0" ColumnName="AddressLine0" />
-                <ScalarProperty Name="SurName" ColumnName="SurName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
-                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="NB_Investment_Source">
             <EntityTypeMapping TypeName="NISModel.NB_Investment_Source">
               <MappingFragment StoreEntitySet="NB_Investment_Source">
@@ -6508,6 +6459,7 @@ warning 6002: The table/view 'NIS.NIS.View_User' does not have a primary key def
           <EntitySetMapping Name="NB_InvestmentMaster">
             <EntityTypeMapping TypeName="NISModel.NB_InvestmentMaster">
               <MappingFragment StoreEntitySet="NB_InvestmentMaster">
+                <ScalarProperty Name="BonusInterest" ColumnName="BonusInterest" />
                 <ScalarProperty Name="SegmentMasterId" ColumnName="SegmentMasterId" />
                 <ScalarProperty Name="OpeningBalance" ColumnName="OpeningBalance" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />

@@ -612,6 +612,7 @@ namespace nIS
                                 StatementDate = item.StatementDate,
                                 StatementPeriod = item.StatementPeriod,
                                 Currenacy = item.Currency,
+                                BonusInterest = item.BonusInterest,
                                 TenantCode = item.TenantCode
                             });
                         });
@@ -1935,15 +1936,15 @@ namespace nIS
 
             if (validationEngine.IsValidLong(searchParameter.Identifier))
             {
-                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id.Equals({0}) ", item))) + ") and ");
+                queryString.Append("(" + string.Join("or ", searchParameter.Identifier.ToString().Split(',').Select(item => string.Format("Id == {0} ", item))) + ") and ");
             }
             if (validationEngine.IsValidLong(searchParameter.CustomerId))
             {
-                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId.Equals({0}) ", item))) + ") and ");
+                queryString.Append("(" + string.Join("or ", searchParameter.CustomerId.ToString().Split(',').Select(item => string.Format("CustomerId == {0} ", item))) + ") and ");
             }
             if (validationEngine.IsValidLong(searchParameter.BatchId))
             {
-                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId.Equals({0}) ", item))) + ") ");
+                queryString.Append("(" + string.Join("or ", searchParameter.BatchId.ToString().Split(',').Select(item => string.Format("BatchId == {0} ", item))) + ") ");
             }
 
             if (searchParameter.WidgetFilterSetting != null && searchParameter.WidgetFilterSetting != string.Empty)

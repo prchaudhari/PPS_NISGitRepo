@@ -166,7 +166,6 @@ export class ViewDashboardDesignerComponent implements OnInit {
     }
 
     isSegmentBasedContentForm(widgetId, widgetItemCount) {
-      debugger
       this.isSegmentBasedContentConfig = true;
       this.SegmentBasedContentWidgetId = widgetId;
       this.selectedWidgetItemCount = widgetItemCount;
@@ -176,7 +175,6 @@ export class ViewDashboardDesignerComponent implements OnInit {
           var widgetSetting = records[0].WidgetSetting;
           if(widgetSetting != null && widgetSetting != '' && this.testJSON(widgetSetting)) {
               var widgetConfigObj = JSON.parse(widgetSetting);
-              debugger
           }else {
               this.isNoConfigurationSaved = true;
           }
