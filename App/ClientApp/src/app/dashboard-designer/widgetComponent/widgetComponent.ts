@@ -3012,12 +3012,6 @@ export class PersonalLoanTotalAmountDetailComponent {
     <div class="widget-area height100">
       <div class='card border-0'>
         <div class='card-body text-left py-0'>
-
-            <ul class="nav nav-tabs Personalloan-nav-tabs">
-                <li class="nav-item active"><a id="tab0-tab" data-toggle="tab" data-target="#PersonalLoan-4001" role="tab" class="nav-link active"> Personal Loan - 4001</a></li>
-                <li class="nav-item "><a id="tab0-tab" data-toggle="tab" data-target="#PersonalLoan-6001" role="tab" class="nav-link "> Personal Loan - 6001</a></li>
-            </ul>
-
             <div class="tab-content">
                 <div id="PersonalLoan-4001" class="tab-pane fade in active show">
                     <div class="PersonalLoanDetailDiv">
@@ -3306,12 +3300,6 @@ export class HomeLoanTotalAmountDetailComponent {
     <div class="widget-area height100">
       <div class='card border-0 pt-4'>
         <div class='card-body text-left py-1'>
-
-            <ul class="nav nav-tabs Homeloan-nav-tabs">
-                <li class="nav-item active"><a id="tab0-tab" data-toggle="tab" data-target="#HomeLoan-4001" role="tab" class="nav-link active"> Home Loan - 4001</a></li>
-                <li class="nav-item "><a id="tab0-tab" data-toggle="tab" data-target="#HomeLoan-6001" role="tab" class="nav-link "> Home Loan - 6001</a></li>
-            </ul>
-
             <div class="tab-content">
                 <div id='HomeLoan-4001' class='tab-pane fade in active show'>
                     <div class="HomeLoanDetailDiv">

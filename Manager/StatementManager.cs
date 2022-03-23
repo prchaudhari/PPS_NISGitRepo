@@ -718,12 +718,12 @@ namespace nIS
                                     statementPageContent.DisplayName = page.DisplayName;
                                     statement.Pages.Add(page);
 
-                                    StringBuilder pageHeaderContent = new StringBuilder();
-                                    pageHeaderContent.Append(HtmlConstants.NEDBANK_PAGE_HEADER_HTML);
+                                    //StringBuilder pageHeaderContent = new StringBuilder();
+                                    //pageHeaderContent.Append(HtmlConstants.NEDBANK_PAGE_HEADER_HTML);
 
                                     //pageHeaderContent.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
 
-                                    statementPageContent.PageHeaderContent = pageHeaderContent.ToString();
+                                    statementPageContent.PageHeaderContent = page.HeaderHTML;
 
                                     int tempRowWidth = 0; // variable to check col-lg div length (bootstrap)
                                     int max = 0;
@@ -1108,6 +1108,7 @@ namespace nIS
                                     //}
                                     //footerContent.Replace("{{LastFooterText}}", lastFooterText);
                                     //statementPageContent.PageFooterContent = footerContent.ToString() + HtmlConstants.WIDGET_HTML_FOOTER;
+                                    statementPageContent.PageFooterContent = page.FooterHTML;
                                 }
                             }
                             else
@@ -1346,14 +1347,14 @@ namespace nIS
                 //start to render common html content data
                 var htmlbody = new StringBuilder();
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_HEADER);
-                if (statement.Name == "Investment Wealth")
-                {
-                    htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NedBankLogoBlack.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
-                }
-                else
-                {
-                    htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
-                }
+                //if (statement.Name == "Investment Wealth")
+                //{
+                //    htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NedBankLogoBlack.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
+                //}
+                //else
+                //{
+                //    htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
+                //}
 
                 //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                 var scriptHtmlRenderer = new StringBuilder();
@@ -1627,12 +1628,12 @@ namespace nIS
                 });
                 htmlbody.Append(HtmlConstants.END_DIV_TAG); // end tab-content div
 
-                var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER);
-                footerContent.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG");
-                footerContent.Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png");
-                footerContent.Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING);
-                footerContent.Replace("{{LastFooterText}}", string.Empty);
-                htmlbody.Append(footerContent.ToString());
+                //var footerContent = new StringBuilder(HtmlConstants.NEDBANK_STATEMENT_FOOTER);
+                //footerContent.Replace("{{NedbankSloganImage}}", "../common/images/See_money_differently.PNG");
+                //footerContent.Replace("{{NedbankNameImage}}", "../common/images/NEDBANK_Name.png");
+                //footerContent.Replace("{{FooterText}}", HtmlConstants.NEDBANK_STATEMENT_FOOTER_TEXT_STRING);
+                //footerContent.Replace("{{LastFooterText}}", string.Empty);
+                //htmlbody.Append(footerContent.ToString());
 
                 htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER); // end of container-fluid div
 
@@ -3467,23 +3468,6 @@ namespace nIS
                                                         var PersonalLoans = JsonConvert.DeserializeObject<List<DM_PersonalLoanMaster>>(jsonstr);
                                                         if (PersonalLoans != null && PersonalLoans.Count > 0)
                                                         {
-                                                            //Create Nav tab if customer has more than 1 personal loan accounts
-                                                            var NavTabs = new StringBuilder();
-                                                            if (PersonalLoans.Count > 1)
-                                                            {
-                                                                NavTabs.Append("<ul class='nav nav-tabs Personalloan-nav-tabs'>");
-                                                                var cnt = 0;
-                                                                PersonalLoans.ToList().ForEach(acc =>
-                                                                {
-                                                                    var AccountNumber = acc.InvestorId.ToString();
-                                                                    string lastFourDigisOfAccountNumber = AccountNumber.Length > 4 ? AccountNumber.Substring(Math.Max(0, AccountNumber.Length - 4)) : AccountNumber;
-                                                                    NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : string.Empty) + "'><a id='tab0-tab' data-toggle='tab' data-target='#PersonalLoan-" + lastFourDigisOfAccountNumber + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : string.Empty) + "'> Personal Loan - " + lastFourDigisOfAccountNumber + "</a></li>");
-                                                                    cnt++;
-                                                                });
-                                                                NavTabs.Append("</ul>");
-                                                            }
-                                                            widgetHtml.Replace("{{NavTab}}", NavTabs.ToString());
-
                                                             //create tab-content div if accounts is greater than 1, otherwise create simple div
                                                             var TabContentHtml = new StringBuilder();
                                                             var counter = 0;
@@ -3689,23 +3673,6 @@ namespace nIS
                                                         var HomeLoans = JsonConvert.DeserializeObject<List<DM_HomeLoanMaster>>(jsonstr);
                                                         if (HomeLoans != null && HomeLoans.Count > 0)
                                                         {
-                                                            //Create Nav tab if customer has more than 1 personal loan accounts
-                                                            var NavTabs = new StringBuilder();
-                                                            if (HomeLoans.Count > 1)
-                                                            {
-                                                                NavTabs.Append("<ul class='nav nav-tabs Homeloan-nav-tabs'>");
-                                                                var cnt = 0;
-                                                                HomeLoans.ToList().ForEach(acc =>
-                                                                {
-                                                                    var accNo = acc.InvestorId.ToString();
-                                                                    string lastFourDigisOfAccountNumber = accNo.Length > 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
-                                                                    NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : string.Empty) + "'><a id='tab0-tab' data-toggle='tab' data-target='#HomeLoan-" + lastFourDigisOfAccountNumber + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : string.Empty) + "'> Home Loan - " + lastFourDigisOfAccountNumber + "</a></li>");
-                                                                    cnt++;
-                                                                });
-                                                                NavTabs.Append("</ul>");
-                                                            }
-                                                            widgetHtml.Replace("{{NavTab}}", NavTabs.ToString());
-
                                                             //create tab-content div if accounts is greater than 1, otherwise create simple div
                                                             var TabContentHtml = new StringBuilder();
                                                             var counter = 0;
@@ -4737,7 +4704,7 @@ namespace nIS
         private string PersonalLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_HTML).Replace("{{NavTab}}", "{{NavTab_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            var htmlWidget = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_HTML).Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{WidgetId}}", widgetId);
             return htmlWidget.ToString();
         }
@@ -4755,7 +4722,7 @@ namespace nIS
         private string HomeLoanAccountsBreakdownsWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
             var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
-            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_HTML).Replace("{{NavTab}}", "{{NavTab_" + page.Identifier + "_" + pageWidget.Identifier + "}}").Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_HTML).Replace("{{TabContentsDiv}}", "{{TabContentsDiv_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{WidgetId}}", widgetId);
             return htmlWidget.ToString();
         }

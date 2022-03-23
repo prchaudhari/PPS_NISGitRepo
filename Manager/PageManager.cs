@@ -1438,22 +1438,6 @@ namespace nIS
                                                     var PersonalLoans = JsonConvert.DeserializeObject<List<DM_PersonalLoanMaster>>(jsonstr);
                                                     if (PersonalLoans != null && PersonalLoans.Count > 0)
                                                     {
-                                                        //Create Nav tab if customer has more than 1 personal loan accounts
-                                                        var NavTabs = new StringBuilder();
-                                                        if (PersonalLoans.Count > 1)
-                                                        {
-                                                            NavTabs.Append("<ul class='nav nav-tabs Personalloan-nav-tabs'>");
-                                                            var cnt = 0;
-                                                            PersonalLoans.ToList().ForEach(acc =>
-                                                            {
-                                                                string lastFourDigisOfAccountNumber = acc.InvestorId.ToString().Length > 4 ? acc.InvestorId.ToString().Substring(Math.Max(0, acc.InvestorId.ToString().Length - 4)) : acc.InvestorId.ToString();
-                                                                NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : string.Empty) + "'><a id='tab0-tab' data-toggle='tab' data-target='#PersonalLoan-" + lastFourDigisOfAccountNumber + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : string.Empty) + "'> Personal Loan - " + lastFourDigisOfAccountNumber + "</a></li>");
-                                                                cnt++;
-                                                            });
-                                                            NavTabs.Append("</ul>");
-                                                        }
-                                                        widgetHtml.Replace("{{NavTab}}", NavTabs.ToString());
-
                                                         //create tab-content div if accounts is greater than 1, otherwise create simple div
                                                         var TabContentHtml = new StringBuilder();
                                                         var counter = 0;
@@ -1659,23 +1643,6 @@ namespace nIS
                                                     var HomeLoans = JsonConvert.DeserializeObject<List<DM_HomeLoanMaster>>(jsonstr);
                                                     if (HomeLoans != null && HomeLoans.Count > 0)
                                                     {
-                                                        //Create Nav tab if customer has more than 1 personal loan accounts
-                                                        var NavTabs = new StringBuilder();
-                                                        if (HomeLoans.Count > 1)
-                                                        {
-                                                            NavTabs.Append("<ul class='nav nav-tabs Homeloan-nav-tabs'>");
-                                                            var cnt = 0;
-                                                            HomeLoans.ToList().ForEach(acc =>
-                                                            {
-                                                                var accNo = acc.InvestorId.ToString();
-                                                                string lastFourDigisOfAccountNumber = accNo.Length > 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
-                                                                NavTabs.Append("<li class='nav-item " + (cnt == 0 ? "active" : string.Empty) + "'><a id='tab0-tab' data-toggle='tab' data-target='#HomeLoan-" + lastFourDigisOfAccountNumber + "' role='tab' class='nav-link " + (cnt == 0 ? "active" : string.Empty) + "'> Home Loan - " + lastFourDigisOfAccountNumber + "</a></li>");
-                                                                cnt++;
-                                                            });
-                                                            NavTabs.Append("</ul>");
-                                                        }
-                                                        widgetHtml.Replace("{{NavTab}}", NavTabs.ToString());
-
                                                         //create tab-content div if accounts is greater than 1, otherwise create simple div
                                                         var TabContentHtml = new StringBuilder();
                                                         var counter = 0;

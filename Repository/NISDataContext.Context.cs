@@ -134,6 +134,10 @@ namespace nIS
         public virtual DbSet<NB_SegmentMaster> NB_SegmentMaster { get; set; }
         public virtual DbSet<NB_SegmentTypeMaster> NB_SegmentTypeMaster { get; set; }
         public virtual DbSet<NB_ServiceMessagesAndContacts> NB_ServiceMessagesAndContacts { get; set; }
+        public virtual DbSet<NB_HomeLoanArrears> NB_HomeLoanArrears { get; set; }
+        public virtual DbSet<NB_HomeLoanMaster> NB_HomeLoanMaster { get; set; }
+        public virtual DbSet<NB_HomeLoanSummary> NB_HomeLoanSummary { get; set; }
+        public virtual DbSet<NB_HomeLoanTransaction> NB_HomeLoanTransaction { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

@@ -599,17 +599,17 @@
 
 .ftr-lt-span1 {
     float: left;
-    margin-left: 4.75rem !important;
+    margin-left: 1.25rem !important;
 }
 
 .ftr-rt-span1 {
     float: right;
-    margin-right: 4.75rem !important;
+    margin-right: 2.25rem !important;
 }
 
 .ftr-rt-span2 {
     float: right;
-    margin-right: 4.75rem !important;
+    margin-right: 2.25rem !important;
     color: #666666;
     font-size: 10pt;
     font-family: 'Mark Pro Regular'
@@ -766,7 +766,7 @@
 
 .PaymentDueSpecialMessageDiv {
     font-family: 'Mark Pro Regular';
-    font-size: 9pt;
+    font-size: 12pt;
     background-color: #2d6444 !important;
     padding: 5px 25px;
     color: #fff !important;

@@ -260,6 +260,18 @@
     <Compile Include="NB_CustomerMaster.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="NB_HomeLoanArrears.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_HomeLoanMaster.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_HomeLoanSummary.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_HomeLoanTransaction.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="NB_InvestmentMaster.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>

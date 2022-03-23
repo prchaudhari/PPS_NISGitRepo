@@ -1045,7 +1045,7 @@ namespace nIS
                 string whereClause = this.WhereClauseGeneratorForCustomerHomeLoan(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var HomeLoanMasterRecords = nISEntitiesDataContext.DM_HomeLoanMasterRecord.Where(whereClause).ToList();
+                    var HomeLoanMasterRecords = nISEntitiesDataContext.NB_HomeLoanMaster.Where(whereClause).ToList();
                     if (HomeLoanMasterRecords != null && HomeLoanMasterRecords.Count > 0)
                     {
                         HomeLoanMasterRecords.ForEach(item =>
@@ -1101,7 +1101,7 @@ namespace nIS
                 string whereClause = this.WhereClauseGeneratorForCustomerHomeLoan(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var HomeLoanTransactionRecords = nISEntitiesDataContext.DM_HomeLoanTransactionRecord.Where(whereClause)?.OrderBy(it => it.Posting_Date)?.ToList();
+                    var HomeLoanTransactionRecords = nISEntitiesDataContext.NB_HomeLoanTransaction.Where(whereClause)?.OrderBy(it => it.Posting_Date)?.ToList();
                     if (HomeLoanTransactionRecords != null && HomeLoanTransactionRecords.Count > 0)
                     {
                         HomeLoanTransactionRecords.ForEach(item =>
@@ -1148,7 +1148,7 @@ namespace nIS
                 string whereClause = this.WhereClauseGeneratorForCustomerHomeLoan(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var HomeLoanArrearRecords = nISEntitiesDataContext.DM_HomeLoanArrearsRecord.Where(whereClause).ToList();
+                    var HomeLoanArrearRecords = nISEntitiesDataContext.NB_HomeLoanArrears.Where(whereClause).ToList();
                     if (HomeLoanArrearRecords != null && HomeLoanArrearRecords.Count > 0)
                     {
                         HomeLoanArrearRecords.ForEach(item =>
@@ -1194,7 +1194,7 @@ namespace nIS
                 string whereClause = this.WhereClauseGeneratorForCustomerHomeLoan(searchParameter, tenantCode);
                 using (NISEntities nISEntitiesDataContext = new NISEntities(this.connectionString))
                 {
-                    var HomeLoanSummaryRecords = nISEntitiesDataContext.DM_HomeLoanSummaryRecord.Where(whereClause).ToList();
+                    var HomeLoanSummaryRecords = nISEntitiesDataContext.NB_HomeLoanSummary.Where(whereClause).ToList();
                     if (HomeLoanSummaryRecords != null && HomeLoanSummaryRecords.Count > 0)
                     {
                         HomeLoanSummaryRecords.ForEach(item =>

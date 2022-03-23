@@ -109,6 +109,10 @@
         <EntityTypeShape EntityType="NISModel.NB_ServiceMessagesAndContacts" Width="1.5" PointX="15.75" PointY="18.75" />
         <AssociationConnector Association="NISModel.FK__NB_Invest__Segme__29CC2871" />
         <AssociationConnector Association="NISModel.FK__NB_Segmen__Segme__28D80438" />
+        <EntityTypeShape EntityType="NISModel.NB_HomeLoanArrears" Width="1.5" PointX="7.375" PointY="18.75" />
+        <EntityTypeShape EntityType="NISModel.NB_HomeLoanMaster" Width="1.5" PointX="18.375" PointY="18.75" />
+        <EntityTypeShape EntityType="NISModel.NB_HomeLoanSummary" Width="1.5" PointX="3.375" PointY="19.75" />
+        <EntityTypeShape EntityType="NISModel.NB_HomeLoanTransaction" Width="1.5" PointX="20.375" PointY="18.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

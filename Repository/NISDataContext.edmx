@@ -822,6 +822,83 @@
           <Property Name="Barcode" Type="nvarchar" MaxLength="200" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="NB_HomeLoanArrears">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="CurrentDue" Type="varchar" MaxLength="50" />
+          <Property Name="ARREARS_30" Type="varchar" MaxLength="50" />
+          <Property Name="ARREARS_60" Type="varchar" MaxLength="50" />
+          <Property Name="ARREARS_90" Type="varchar" MaxLength="50" />
+          <Property Name="ARREARS_120" Type="varchar" MaxLength="50" />
+          <Property Name="TenantCode" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NB_HomeLoanMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="Currency" Type="varchar" MaxLength="50" />
+          <Property Name="LoanAmount" Type="varchar" MaxLength="50" />
+          <Property Name="Balance" Type="varchar" MaxLength="50" />
+          <Property Name="IntialDue" Type="varchar" MaxLength="50" />
+          <Property Name="ArrearStatus" Type="varchar" MaxLength="50" />
+          <Property Name="ChargeRate" Type="varchar" MaxLength="50" />
+          <Property Name="LoanTerm" Type="varchar" MaxLength="50" />
+          <Property Name="SecDescription1" Type="varchar" MaxLength="50" />
+          <Property Name="SecDescription2" Type="varchar" MaxLength="50" />
+          <Property Name="SecDescription3" Type="varchar" MaxLength="50" />
+          <Property Name="RegisteredDate" Type="datetime" />
+          <Property Name="RegisteredAmount" Type="varchar" MaxLength="50" />
+          <Property Name="TenantCode" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NB_HomeLoanSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="Annual_Interest" Type="varchar" MaxLength="50" />
+          <Property Name="Annual_Insurance" Type="varchar" MaxLength="50" />
+          <Property Name="Annual_Service_Fee" Type="varchar" MaxLength="50" />
+          <Property Name="Annual_Legal_Costs" Type="varchar" MaxLength="50" />
+          <Property Name="Annual_Total_Recvd" Type="varchar" MaxLength="50" />
+          <Property Name="Basic_Instalment" Type="varchar" MaxLength="50" />
+          <Property Name="Houseowner_Ins" Type="varchar" MaxLength="50" />
+          <Property Name="Loan_Protection" Type="varchar" MaxLength="50" />
+          <Property Name="Recovery_Fee_Debit" Type="varchar" MaxLength="50" />
+          <Property Name="Capital_Redemption" Type="varchar" MaxLength="50" />
+          <Property Name="Total_Instalment" Type="varchar" MaxLength="50" />
+          <Property Name="Service_Fee" Type="varchar" MaxLength="50" />
+          <Property Name="Message1" Type="varchar" MaxLength="50" />
+          <Property Name="Message2" Type="varchar" MaxLength="50" />
+          <Property Name="TenantCode" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NB_HomeLoanTransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="bigint" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="Posting_Date" Type="datetime" />
+          <Property Name="Effective_Date" Type="datetime" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="Debit" Type="varchar" MaxLength="50" />
+          <Property Name="Credit" Type="varchar" MaxLength="50" />
+          <Property Name="RunningBalance" Type="varchar" MaxLength="50" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="NB_Investment_Source">
           <Key>
             <PropertyRef Name="Id" />
@@ -2131,6 +2208,10 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySet Name="NB_BranchMaster" EntityType="Self.NB_BranchMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_BranchMaster_Old" EntityType="Self.NB_BranchMaster_Old" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_CustomerMaster" EntityType="Self.NB_CustomerMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_HomeLoanArrears" EntityType="Self.NB_HomeLoanArrears" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_HomeLoanMaster" EntityType="Self.NB_HomeLoanMaster" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_HomeLoanSummary" EntityType="Self.NB_HomeLoanSummary" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_HomeLoanTransaction" EntityType="Self.NB_HomeLoanTransaction" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_Investment_Source" EntityType="Self.NB_Investment_Source" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_InvestmentMaster" EntityType="Self.NB_InvestmentMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_InvestmentMaster_Old" EntityType="Self.NB_InvestmentMaster_Old" Schema="NIS" store:Type="Tables" />
@@ -2547,6 +2628,10 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
             <End Role="NB_SegmentTypeMaster" EntitySet="NB_SegmentTypeMaster" />
             <End Role="NB_SegmentMaster" EntitySet="NB_SegmentMaster" />
           </AssociationSet>
+          <EntitySet Name="NB_HomeLoanArrears" EntityType="NISModel.NB_HomeLoanArrears" />
+          <EntitySet Name="NB_HomeLoanMaster" EntityType="NISModel.NB_HomeLoanMaster" />
+          <EntitySet Name="NB_HomeLoanSummary" EntityType="NISModel.NB_HomeLoanSummary" />
+          <EntitySet Name="NB_HomeLoanTransaction" EntityType="NISModel.NB_HomeLoanTransaction" />
           </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -4583,6 +4668,83 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="NB_HomeLoanArrears">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="CurrentDue" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARREARS_30" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARREARS_60" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARREARS_90" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARREARS_120" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="NB_HomeLoanMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="Currency" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LoanAmount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Balance" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IntialDue" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ArrearStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ChargeRate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LoanTerm" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SecDescription1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SecDescription2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SecDescription3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegisteredDate" Type="DateTime" Precision="3" />
+          <Property Name="RegisteredAmount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="NB_HomeLoanSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="Annual_Interest" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Annual_Insurance" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Annual_Service_Fee" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Annual_Legal_Costs" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Annual_Total_Recvd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Basic_Instalment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Houseowner_Ins" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Loan_Protection" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Recovery_Fee_Debit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Capital_Redemption" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Total_Instalment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Service_Fee" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Message1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Message2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="NB_HomeLoanTransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="Int64" Nullable="false" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="Posting_Date" Type="DateTime" Precision="3" />
+          <Property Name="Effective_Date" Type="DateTime" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Debit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Credit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RunningBalance" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6592,6 +6754,87 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
                 <ScalarProperty Name="Segment" ColumnName="Segment" />
                 <ScalarProperty Name="Language" ColumnName="Language" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_HomeLoanArrears">
+            <EntityTypeMapping TypeName="NISModel.NB_HomeLoanArrears">
+              <MappingFragment StoreEntitySet="NB_HomeLoanArrears">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="ARREARS_120" ColumnName="ARREARS_120" />
+                <ScalarProperty Name="ARREARS_90" ColumnName="ARREARS_90" />
+                <ScalarProperty Name="ARREARS_60" ColumnName="ARREARS_60" />
+                <ScalarProperty Name="ARREARS_30" ColumnName="ARREARS_30" />
+                <ScalarProperty Name="CurrentDue" ColumnName="CurrentDue" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_HomeLoanMaster">
+            <EntityTypeMapping TypeName="NISModel.NB_HomeLoanMaster">
+              <MappingFragment StoreEntitySet="NB_HomeLoanMaster">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="RegisteredAmount" ColumnName="RegisteredAmount" />
+                <ScalarProperty Name="RegisteredDate" ColumnName="RegisteredDate" />
+                <ScalarProperty Name="SecDescription3" ColumnName="SecDescription3" />
+                <ScalarProperty Name="SecDescription2" ColumnName="SecDescription2" />
+                <ScalarProperty Name="SecDescription1" ColumnName="SecDescription1" />
+                <ScalarProperty Name="LoanTerm" ColumnName="LoanTerm" />
+                <ScalarProperty Name="ChargeRate" ColumnName="ChargeRate" />
+                <ScalarProperty Name="ArrearStatus" ColumnName="ArrearStatus" />
+                <ScalarProperty Name="IntialDue" ColumnName="IntialDue" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="LoanAmount" ColumnName="LoanAmount" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_HomeLoanSummary">
+            <EntityTypeMapping TypeName="NISModel.NB_HomeLoanSummary">
+              <MappingFragment StoreEntitySet="NB_HomeLoanSummary">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="Message2" ColumnName="Message2" />
+                <ScalarProperty Name="Message1" ColumnName="Message1" />
+                <ScalarProperty Name="Service_Fee" ColumnName="Service_Fee" />
+                <ScalarProperty Name="Total_Instalment" ColumnName="Total_Instalment" />
+                <ScalarProperty Name="Capital_Redemption" ColumnName="Capital_Redemption" />
+                <ScalarProperty Name="Recovery_Fee_Debit" ColumnName="Recovery_Fee_Debit" />
+                <ScalarProperty Name="Loan_Protection" ColumnName="Loan_Protection" />
+                <ScalarProperty Name="Houseowner_Ins" ColumnName="Houseowner_Ins" />
+                <ScalarProperty Name="Basic_Instalment" ColumnName="Basic_Instalment" />
+                <ScalarProperty Name="Annual_Total_Recvd" ColumnName="Annual_Total_Recvd" />
+                <ScalarProperty Name="Annual_Legal_Costs" ColumnName="Annual_Legal_Costs" />
+                <ScalarProperty Name="Annual_Service_Fee" ColumnName="Annual_Service_Fee" />
+                <ScalarProperty Name="Annual_Insurance" ColumnName="Annual_Insurance" />
+                <ScalarProperty Name="Annual_Interest" ColumnName="Annual_Interest" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_HomeLoanTransaction">
+            <EntityTypeMapping TypeName="NISModel.NB_HomeLoanTransaction">
+              <MappingFragment StoreEntitySet="NB_HomeLoanTransaction">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="RunningBalance" ColumnName="RunningBalance" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Effective_Date" ColumnName="Effective_Date" />
+                <ScalarProperty Name="Posting_Date" ColumnName="Posting_Date" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
