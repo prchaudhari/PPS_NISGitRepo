@@ -3306,6 +3306,7 @@ namespace nIS
                      #endregion Account Details
 
                      #region Transactions
+                     var InvestmentTransactionRows = new StringBuilder();
                      if (acc.investmentTransactions != null && acc.investmentTransactions.Count > 0)
                      {
                          acc.investmentTransactions.OrderBy(it => it.TransactionDate).ToList().ForEach(trans =>
@@ -3342,20 +3343,30 @@ namespace nIS
                              {
                                  trans.WJXBFS4_Balance = "-";
                              }
+                             var tr = new StringBuilder();
+                             tr.Append("<tr class='ht-20'>");
+                             tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
+                             tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                             tr.Append("<td class='w-15 text-right pt-1'>" + trans.WJXBFS2_Debit + "</td>");
+                             tr.Append("<td class='w-15 text-right pt-1'>" + trans.WJXBFS3_Credit + "</td>");
+                             tr.Append("<td class='w-15 text-right pt-1'>" + trans.WJXBFS4_Balance + "</td>");
+                             tr.Append("</tr>");
+                             InvestmentTransactionRows.Append(tr.ToString());
                          });
 
-                         var Transactionjson = "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + "=" + JsonConvert.SerializeObject(acc.investmentTransactions);
-                         this.utility.WriteToJsonFile(Transactionjson, "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + ".json", batchMaster.Identifier, customer.CustomerId, outputLocation);
-                         scriptHtmlRenderer.Append("<script type='text/javascript' src='./InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + ".json'></script>");
+                         //var Transactionjson = "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + "=" + JsonConvert.SerializeObject(acc.investmentTransactions);
+                         //this.utility.WriteToJsonFile(Transactionjson, "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + ".json", batchMaster.Identifier, customer.CustomerId, outputLocation);
+                         //scriptHtmlRenderer.Append("<script type='text/javascript' src='./InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + ".json'></script>");
 
-                         InvestmentAccountDetailHtml.Replace("InvestmentTransactionTable", "InvestmentTransactionTable_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
-                         InvestmentAccountDetailHtml.Replace("PersonalLoanTransactionTablePagination", "InvestmentTransactionTablePagination_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
+                         //InvestmentAccountDetailHtml.Replace("InvestmentTransactionTable", "InvestmentTransactionTable_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
+                         //InvestmentAccountDetailHtml.Replace("PersonalLoanTransactionTablePagination", "InvestmentTransactionTablePagination_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
 
-                         var scriptval = new StringBuilder(HtmlConstants.INVESTMENT_TRANSACTION_TABLE_VIEW_SCRIPT);
-                         scriptval.Replace("InvestmentTransctiondata", "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier);
-                         scriptval.Replace("InvestmentTransactionTable", "InvestmentTransactionTable_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
-                         scriptval.Replace("InvestmentTransactionTablePagination", "InvestmentTransactionTablePagination_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
-                         scriptHtmlRenderer.Append(scriptval);
+                         //var scriptval = new StringBuilder(HtmlConstants.INVESTMENT_TRANSACTION_TABLE_VIEW_SCRIPT);
+                         //scriptval.Replace("InvestmentTransctiondata", "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier);
+                         //scriptval.Replace("InvestmentTransactionTable", "InvestmentTransactionTable_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
+                         //scriptval.Replace("InvestmentTransactionTablePagination", "InvestmentTransactionTablePagination_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
+                         //scriptHtmlRenderer.Append(scriptval);
+                         InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
                      }
 
                      TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
@@ -4046,29 +4057,29 @@ namespace nIS
                                 res = 0.0m;
                                 if (decimal.TryParse(trans.Debit, out res))
                                 {
-                                    trans.Debit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
+                                    trans.Debit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.Debit;
                                 }
                                 else
                                 {
-                                    trans.Debit = "-";
+                                    trans.Debit = trans.Debit;
                                 }
 
                                 if (decimal.TryParse(trans.Credit, out res))
                                 {
-                                    trans.Credit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
+                                    trans.Credit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.Credit;
                                 }
                                 else
                                 {
-                                    trans.Credit = "-";
+                                    trans.Credit = trans.Credit;
                                 }
 
                                 if (decimal.TryParse(trans.RunningBalance, out res))
                                 {
-                                    trans.RunningBalance = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : "-";
+                                    trans.RunningBalance = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.RunningBalance;
                                 }
                                 else
                                 {
-                                    trans.RunningBalance = "-";
+                                    trans.RunningBalance = trans.RunningBalance;
                                 }
                             });
 
@@ -4334,7 +4345,7 @@ namespace nIS
                             LoanInstalmentHtml.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
                         }
 
-                        TabContentHtml.Append(LoanSummaryForTaxPurposesHtml.ToString());
+                        //TabContentHtml.Append(LoanSummaryForTaxPurposesHtml.ToString());
                         TabContentHtml.Append(LoanInstalmentHtml.ToString());
                         #endregion Loan Summary and Instalment detail
 
@@ -4590,6 +4601,7 @@ namespace nIS
                     #endregion Account Details
 
                     #region Transactions
+                    var InvestmentTransactionRows = new StringBuilder();
                     if (acc.investmentTransactions != null && acc.investmentTransactions.Count > 0)
                     {
                         acc.investmentTransactions.OrderBy(it => it.TransactionDate).ToList().ForEach(trans =>
@@ -4626,20 +4638,30 @@ namespace nIS
                             {
                                 trans.WJXBFS4_Balance = "-";
                             }
+                            var tr = new StringBuilder();
+                            tr.Append("<tr class='ht-20'>");
+                            tr.Append("<td class='w-15 pt-1'>" + trans.TransactionDate + "</td>");
+                            tr.Append("<td class='w-40 pt-1'>" + trans.TransactionDesc + "</td>");
+                            tr.Append("<td class='w-15 text-right pt-1'>" + trans.WJXBFS2_Debit + "</td>");
+                            tr.Append("<td class='w-15 text-right pt-1'>" + trans.WJXBFS3_Credit + "</td>");
+                            tr.Append("<td class='w-15 text-right pt-1'>" + trans.WJXBFS4_Balance + "</td>");
+                            tr.Append("</tr>");
+                            InvestmentTransactionRows.Append(tr.ToString());
                         });
 
-                        var Transactionjson = "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + "=" + JsonConvert.SerializeObject(acc.investmentTransactions);
-                        this.utility.WriteToJsonFile(Transactionjson, "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + ".json", batchMaster.Identifier, customer.CustomerId, outputLocation);
-                        scriptHtmlRenderer.Append("<script type='text/javascript' src='./InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + ".json'></script>");
+                        //var Transactionjson = "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + "=" + JsonConvert.SerializeObject(acc.investmentTransactions);
+                        //this.utility.WriteToJsonFile(Transactionjson, "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + ".json", batchMaster.Identifier, customer.CustomerId, outputLocation);
+                        //scriptHtmlRenderer.Append("<script type='text/javascript' src='./InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier + ".json'></script>");
 
-                        InvestmentAccountDetailHtml.Replace("InvestmentTransactionTable", "InvestmentTransactionTable_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
-                        InvestmentAccountDetailHtml.Replace("PersonalLoanTransactionTablePagination", "InvestmentTransactionTablePagination_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
+                        //InvestmentAccountDetailHtml.Replace("InvestmentTransactionTable", "InvestmentTransactionTable_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
+                        //InvestmentAccountDetailHtml.Replace("PersonalLoanTransactionTablePagination", "InvestmentTransactionTablePagination_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
 
-                        var scriptval = new StringBuilder(HtmlConstants.INVESTMENT_TRANSACTION_TABLE_VIEW_SCRIPT);
-                        scriptval.Replace("InvestmentTransctiondata", "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier);
-                        scriptval.Replace("InvestmentTransactionTable", "InvestmentTransactionTable_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
-                        scriptval.Replace("InvestmentTransactionTablePagination", "InvestmentTransactionTablePagination_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
-                        scriptHtmlRenderer.Append(scriptval);
+                        //var scriptval = new StringBuilder(HtmlConstants.INVESTMENT_TRANSACTION_TABLE_VIEW_SCRIPT);
+                        //scriptval.Replace("InvestmentTransctiondata", "InvestmentTransctiondata" + acc.InvestorId + acc.InvestmentId + page.Identifier);
+                        //scriptval.Replace("InvestmentTransactionTable", "InvestmentTransactionTable_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
+                        //scriptval.Replace("InvestmentTransactionTablePagination", "InvestmentTransactionTablePagination_" + acc.InvestorId + acc.InvestmentId + "_" + page.Identifier);
+                        //scriptHtmlRenderer.Append(scriptval);
+                        InvestmentAccountDetailHtml.Replace("{{InvestmentTransactionRows}}", InvestmentTransactionRows.ToString());
                     }
 
                     TabContentHtml.Append(InvestmentAccountDetailHtml.ToString());
