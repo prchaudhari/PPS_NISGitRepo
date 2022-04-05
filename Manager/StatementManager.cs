@@ -959,6 +959,10 @@ namespace nIS
                                                                 pageHtmlContent.Append(this.HomeLoanTotalAmountDetailWidgetFormatting(pageWidget, counter, page));
                                                                 break;
 
+                                                            case HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME:
+                                                                pageHtmlContent.Append(this.HomeLoanSummaryTaxPupose(pageWidget));
+                                                                break;
+
                                                             case HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
                                                                 pageHtmlContent.Append(this.HomeLoanAccountsBreakdownsWidgetFormatting(pageWidget, counter, page));
                                                                 break;
@@ -4054,6 +4058,24 @@ namespace nIS
                                                         }
                                                     }
                                                 }
+                                                else if (mergedlst[i].WidgetName == HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME)
+                                                {
+                                                    string jsonstr = HtmlConstants.HOME_LOAN_ACCOUNTS_PREVIEW_JSON_STRING;
+                                                    var widgetHtml = new StringBuilder(HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_HTML);
+                                                    if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
+                                                    {
+                                                        var summaryTax = JsonConvert.DeserializeObject<DM_HomeLoanSummary>(jsonstr);
+                                                        if (summaryTax != null)
+                                                        {
+                                                            widgetHtml.Replace("{{Interest}}", summaryTax.Annual_Interest);
+                                                            widgetHtml.Replace("{{Insurance}}", summaryTax.Annual_Insurance);
+                                                            widgetHtml.Replace("{{Servicefee}}", summaryTax.Annual_Service_Fee);
+                                                            widgetHtml.Replace("{{Legalcosts}}", summaryTax.Annual_Legal_Costs);
+                                                            widgetHtml.Replace("{{AmountReceived}}", summaryTax.Annual_Total_Recvd);
+                                                        }
+                                                        htmlString.Append(widgetHtml.ToString());
+                                                    }
+                                                }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME)
                                                 {
                                                     string jsonstr = "{'CustomerId': 171001255307, 'Title': 'MR.', 'FirstName':'MATHYS','SurName':'NKHUMISE','AddressLine0':'VERDEAU LIFESTYLE ESTATE', 'AddressLine1':'6 HERCULE CRESCENT DRIVE','AddressLine2':'WELLINGTON','AddressLine3':'7655','AddressLine4':'', 'Mask_Cell_No': '+2367 345 786', 'EmailAddress' : 'mknumise@domain.com'}";
@@ -4583,7 +4605,7 @@ namespace nIS
 
         private string InvestorPerformanceWidgetFormatting(PageWidget pageWidget, int counter, Page page)
         {
-            return "{{"+ HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME +"_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
+            return "{{" + HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + pageWidget.Identifier + "}}";
 
             //var widgetId = "PageWidgetId_" + pageWidget.Identifier + "_Counter" + counter.ToString();
             //var InvestorPerformanceHtmlWidget = HtmlConstants.INVESTOR_PERFORMANCE_WIDGET_HTML;
@@ -4716,6 +4738,17 @@ namespace nIS
             htmlWidget.Replace("{{TotalHomeLoansAmount}}", "{{TotalHomeLoansAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{TotalHomeLoansBalanceOutstanding}}", "{{TotalHomeLoansBalanceOutstanding_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{WidgetId}}", widgetId);
+            return htmlWidget.ToString();
+        }
+
+        private string HomeLoanSummaryTaxPupose(PageWidget pageWidget)
+        {
+            var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_HTML);
+            htmlWidget.Replace("{{Interest}}", "{{{{Interest_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Insurance}}", "{{{{Insurance_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Servicefee}}", "{{{{Servicefee_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Legalcosts}}", "{{{{Legalcosts_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{AmountReceived}}", "{{{{AmountReceived_" + pageWidget.Identifier + "}}");
             return htmlWidget.ToString();
         }
 
@@ -5014,7 +5047,7 @@ namespace nIS
             {
                 var customerInfo = JsonConvert.DeserializeObject<CustomerInformation>(customerInfoJson);
                 pageContent.Replace("{{VideoSource_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", AppBaseDirectory + "\\Resources\\sampledata\\SampleVideo.mp4");
-                pageContent.Replace("{{CustomerName}}", customerInfo.FirstName + " " +  customerInfo.SurName);
+                pageContent.Replace("{{CustomerName}}", customerInfo.FirstName + " " + customerInfo.SurName);
                 pageContent.Replace("{{Address1}}", customerInfo.AddressLine1 + ", " + customerInfo.AddressLine2 + ", ");
                 pageContent.Replace("{{Address2}}", customerInfo.AddressLine3 + ", " + customerInfo.AddressLine4 + ", ");
             }

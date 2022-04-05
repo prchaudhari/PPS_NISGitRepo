@@ -1656,6 +1656,7 @@ namespace nIS
                         var newPageContent = new StringBuilder();
                         var pagewidgets = new List<PageWidget>(page.PageWidgets);
                         var pageContent = new StringBuilder(statementPageContent.HtmlContent);
+
                         for (int j = 0; j < pagewidgets.Count; j++)
                         {
                             var widget = pagewidgets[j];
@@ -1664,9 +1665,14 @@ namespace nIS
                                 switch (widget.WidgetName)
                                 {
                                     case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
+                                        bool isShowCellNo = false;
                                         if (statement.Pages.Count == 1)
                                         {
-                                            this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget);
+                                            if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
+                                            {
+                                                isShowCellNo = true;
+                                            }
+                                            this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget, isShowCellNo);
                                         }
                                         break;
 
@@ -1755,6 +1761,10 @@ namespace nIS
 
                                     case HtmlConstants.HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
                                         this.BindHomeLoanAccountsBreakdownWidgetData(pageContent, scriptHtmlRenderer, HomeLoanAccounts, page, widget, batchMaster, customer, statementRawData.OutputLocation);
+                                        break;
+
+                                    case HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME:
+                                        this.BindHomeLoanSummaryTaxPurposeWidgetData(pageContent, HomeLoanAccounts, widget);
                                         break;
 
                                     case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME:
@@ -3041,7 +3051,7 @@ namespace nIS
 
         #region These methods helps to bind data to static widgets of Nedbank HTML statment
 
-        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget)
+        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, bool isShowCellNo = false)
         {
             var CustomerDetails = (!string.IsNullOrEmpty(customer.Title) && customer.Title.ToLower() != "null" ? customer.Title + " " : string.Empty) + (!string.IsNullOrEmpty(customer.FirstName) && customer.FirstName.ToLower() != "null" ? customer.FirstName + " " : string.Empty) + (!string.IsNullOrEmpty(customer.SurName) && customer.SurName.ToLower() != "null" ? customer.SurName + " " : string.Empty) + "<br>" +
                 (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
@@ -3049,6 +3059,12 @@ namespace nIS
                 (!string.IsNullOrEmpty(customer.AddressLine2) ? (customer.AddressLine2 + "<br>") : string.Empty) +
                 (!string.IsNullOrEmpty(customer.AddressLine3) ? (customer.AddressLine3 + "<br>") : string.Empty) +
                 (!string.IsNullOrEmpty(customer.AddressLine4) ? customer.AddressLine4 : string.Empty);
+
+            if (isShowCellNo)
+            {
+                CustomerDetails += "<br> Cell:" + customer.Mask_Cell_No;
+            }
+
             pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
             //pageContent.Replace("{{MaskCellNo_" + page.Identifier + "_" + widget.Identifier + "}}", customer.Mask_Cell_No != string.Empty ? "Cell: " + customer.Mask_Cell_No : string.Empty);
         }
@@ -3090,7 +3106,6 @@ namespace nIS
                         contactCenter;
 
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
-
                     pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "");
                 }
                 else
@@ -4364,6 +4379,22 @@ namespace nIS
             }
             catch
             {
+            }
+        }
+
+        private void BindHomeLoanSummaryTaxPurposeWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, PageWidget widget)
+        {
+            if (HomeLoans != null && HomeLoans.Count > 0)
+            {
+                foreach (var item in HomeLoans)
+                {
+                    var homeLoanSummary = item.LoanSummary;
+                    pageContent.Replace("{{Interest_" + widget.Identifier + "}}", homeLoanSummary.Annual_Interest);
+                    pageContent.Replace("{{Insurance_" + widget.Identifier + "}}", homeLoanSummary.Annual_Insurance);
+                    pageContent.Replace("{{Servicefee_" + widget.Identifier + "}}", homeLoanSummary.Annual_Service_Fee);
+                    pageContent.Replace("{{Legalcosts_" + widget.Identifier + "}}", homeLoanSummary.Annual_Legal_Costs);
+                    pageContent.Replace("{{AmountReceived_" + widget.Identifier + "}}", homeLoanSummary.Annual_Total_Recvd);
+                }
             }
         }
 

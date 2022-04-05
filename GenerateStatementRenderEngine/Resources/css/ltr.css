@@ -1024,3 +1024,17 @@ hr {
 .InvestmentBreakdownW tbody tr:nth-of-type(even) {
     background-color: #f3f3f3 !important;
 }
+
+.SummaryTable td {
+    padding: 0px 25px;
+    font-family: 'Mark Pro Regular';
+    font-size: 10pt;
+}
+
+.margin_left_15 {
+    margin-left: 15px !important;
+}
+
+.margin_right_15 {
+    margin-right: 15px !important;
+}
