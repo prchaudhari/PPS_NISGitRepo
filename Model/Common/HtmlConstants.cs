@@ -113,6 +113,8 @@ namespace nIS
 
         public const string HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME = "HomeLoanSummaryTaxPurpose";
 
+        public const string NEDBANK_MESSAGE_WIDGET_NAME = "NedbankMessage";
+
         public const string NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME = "PortfolioCustomerDetails";
 
         public const string NEDBANK_PORTFOLIO_CUSTOMER_ADDRESS_WIDGET_NAME = "CustomerAddressDetails";
@@ -477,15 +479,35 @@ namespace nIS
 
         public const string CONSUMER_BANKING = "Contact centre is 0860 555 111";
 
-        public const string PRIVATE_BANKING = "24/7-contact centre 0860 555 222";
+        public const string PML_BANKING = "Contact centre is 0860 555 111";
 
-        public const string SBS_BANKING = "24/7-contact centre 0860 116 400";
+        public const string INVESTMENT_PRIVATE_BANKING = "24/7-contact centre 0860 555 222";
+
+        public const string HOME_LOAN_PRIVATE_BANKING = "Private Clients 24/7 Contact Centre 0860 555 222";
+
+        public const string INVESTMENT_SBS_BANKING = "24/7-contact centre 0860 116 400";
+
+        public const string HOME_LOAN_SBS_BANKING = "Small Business Services 24/7 Contact Centre 0860 116 400";
 
         public const string NBB_BANKING = "Contact centre is 0860 555 333";
 
         public const string CORPORATE_BANKING = "Contact centre is 0860 102 187";
 
+        public const string BANK_DETAILS = "Nedbank <br> 135 Rivonia Road, Sandton 2196 <br>PO Box 1144, Johannesburg, 2000 <br> South Africa <br> Bank VAT Reg No 4320116074<br><br><br>";
+
         public const string WEA_BANKING = "Nedbank Private Wealth Service Suite: 0860 111 263";
+
+        public const string HOME_LOAN_NBB_SPECIAL_MESSAGE = "<div class='card-body text-left padding_left_0' style='padding-bottom: 0px;'><div class='row pt-2'><p>If you have any questions about the content of your statements, please feel free to contact your Business Manager or e-mail: business @nedbank.co.za. <br><br>We value your continued support and look forward to being of service to you.</p></div></div>";
+
+        public const string HOME_LOAN_NCB_SPECIAL_MESSAGE = "<div class='card-body text-left padding_left_0' style='padding-bottom: 0px;'><div class='row pt-2'><p>If you have any questions about the content of your statement, please feel free to call us on 0860 555 111. <br><br>We value your continued support and look forward to being of service to you.</p></div></div>";
+
+        public const string HOME_LOAN_PML_SPECIAL_MESSAGE = "<div class='card-body text-left padding_left_0' style='padding-bottom: 0px;'><div class='row pt-2'><p>If you have any questions about the content of your statement, please feel free to call us on 0860 555 111. <br><br>We value your continued support and look forward to being of service to you.</p></div></div>";
+
+        public const string HOME_LOAN_PRB_SPECIAL_MESSAGE = "<div class='card-body text-left padding_left_0' style='padding-bottom: 0px;'><div class='row pt-2'><p>If you have any questions about the content of your statement, please feel free to call us on 0860 555 222. <br><br>We value your continued support and look forward to being of service to you.</p></div></div>";
+
+        public const string HOME_LOAN_SBS_SPECIAL_MESSAGE = "<div class='card-body text-left padding_left_0' style='padding-bottom: 0px;'><div class='row pt-2'><p>If you have any questions about the content of your statement, please feel free to call us on 0860 116 400. <br><br>We value your continued support and look forward to being of service to you.</p></div></div>";
+
+        public const string HOME_LOAN_WEA_SPECIAL_MESSAGE = "<div class='card-body text-left padding_left_0' style='padding-bottom: 0px;'><div class='row pt-2'><p>If you have any questions about the content of your statement, please contact your private banker or the Nedbank Private Wealth Service Suite on 0860 111 263. <br><br>We value your continued support and look forward to being of service to you.</p></div></div>";
 
         public const string CHANCE_TO_WIN = "<div class='serviceHeader pb-2'>Save and stand a chance to win</div><p>Already have a notice deposit? Sign up for Structured Saver and stand a chance to win R30 000! Increase your winning by setting up a recurring payment and you could be in the draw for R50 000!</p><p>Visit <span style='text-decoration: underline;'><a class='e-rte-anchor' href='http://nedbank.co.za/greenbacks' title='http://nedbank.co.za/greenbacks' target='_blank'>http://nedbank.co.za/greenbacks</a></span> to find more.</p><p>Term and condition apply.</p>";
 

@@ -236,6 +236,10 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/HL_InstalmentDetails.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-table";
         }
+        else if (this.widgetList[i].WidgetName == "HomeLoanSummaryTaxPurpose") {
+          this.widgetList[i].ImageSource = "assets/images/SummaryTaxPurpose.jpg";
+          this.widgetList[i].WidgetIcon = "fa fa-tags";
+        }
         else if (this.widgetList[i].WidgetName == "PortfolioCustomerDetails") {
           this.widgetList[i].ImageSource = "assets/images/PortfolioCustomerDetails.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-address-book-o";

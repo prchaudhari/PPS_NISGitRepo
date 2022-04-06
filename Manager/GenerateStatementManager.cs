@@ -1611,7 +1611,7 @@ namespace nIS
                     //    htmlbody.Append(HtmlConstants.NEDBANK_STATEMENT_HEADER.Replace("{{ImgHeight}}", "80").Replace("{{eConfirmLogo}}", "../common/images/eConfirm.png").Replace("{{NedBankLogo}}", "../common/images/NEDBANKLogo.png").Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd)));
                     //}
 
-                    htmlbody.Append(statementRawData.StatementPageContents?.FirstOrDefault().PageHeaderContent);
+                    //htmlbody.Append(statementRawData.StatementPageContents?.FirstOrDefault().PageHeaderContent);
 
                     //this variable is used to bind all script to html statement, which helps to render data on chart and graph widgets
                     var scriptHtmlRenderer = new StringBuilder();
@@ -1740,7 +1740,7 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.SPECIAL_MESSAGE_WIDGET_NAME:
-                                        this.BindSpecialMessageWidgetData(pageContent, SpecialMessage, page, widget);
+                                        this.BindSpecialMessageWidgetData(pageContent, SpecialMessage, page, widget, customer);
                                         break;
 
                                     case HtmlConstants.PERSONAL_LOAN_INSURANCE_MESSAGE_WIDGET_NAME:
@@ -1998,7 +1998,7 @@ namespace nIS
                     //    htmlbody.Append(footerContent.ToString());
                     //}
 
-                    htmlbody.Append(statementRawData.StatementPageContents?.FirstOrDefault().PageFooterContent);
+                    //htmlbody.Append(statementRawData.StatementPageContents?.FirstOrDefault().PageFooterContent);
 
                     //htmlbody.Append(HtmlConstants.CONTAINER_DIV_HTML_FOOTER); // end of container-fluid div
 
@@ -2695,10 +2695,10 @@ namespace nIS
                         contactCenter = HtmlConstants.CONSUMER_BANKING;
                         break;
                     case "prb":
-                        contactCenter = HtmlConstants.PRIVATE_BANKING;
+                        contactCenter = HtmlConstants.INVESTMENT_PRIVATE_BANKING;
                         break;
                     case "sbs":
-                        contactCenter = HtmlConstants.SBS_BANKING;
+                        contactCenter = HtmlConstants.INVESTMENT_SBS_BANKING;
                         break;
                     case "nbb":
                         contactCenter = HtmlConstants.NBB_BANKING;
@@ -3085,10 +3085,10 @@ namespace nIS
                             contactCenter = HtmlConstants.CONSUMER_BANKING;
                             break;
                         case "prb":
-                            contactCenter = HtmlConstants.PRIVATE_BANKING;
+                            contactCenter = HtmlConstants.INVESTMENT_PRIVATE_BANKING;
                             break;
                         case "sbs":
-                            contactCenter = HtmlConstants.SBS_BANKING;
+                            contactCenter = HtmlConstants.INVESTMENT_SBS_BANKING;
                             break;
                         case "nbb":
                             contactCenter = HtmlConstants.NBB_BANKING;
@@ -3098,12 +3098,7 @@ namespace nIS
                             break;
                     }
 
-                    var BranchDetail = "Nedbank" + "<br>" +
-                        "135 Rivonia Road, Sandton 2196" + "<br>" +
-                        "PO Box 1144, Johannesburg, 2000" + "<br>" +
-                        "South Africa" + "<br>" +
-                        "Bank VAT Reg No " + "4320116074" + "<br>" + "<br>" + "<br>" +
-                        contactCenter;
+                    var BranchDetail = HtmlConstants.BANK_DETAILS + contactCenter;
 
                     pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
                     pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "");
@@ -3130,8 +3125,33 @@ namespace nIS
                 }
                 BondDetails.Append(DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
 
+                var contactCenter = string.Empty;
+
+                switch (customer.Segment.ToLower())
+                {
+                    case "nbb":
+                        contactCenter = HtmlConstants.NBB_BANKING;
+                        break;
+                    case "ncb":
+                        contactCenter = HtmlConstants.CONSUMER_BANKING;
+                        break;
+                    case "pml":
+                        contactCenter = HtmlConstants.PML_BANKING;
+                        break;
+                    case "prb":
+                        contactCenter = HtmlConstants.HOME_LOAN_PRIVATE_BANKING;
+                        break;
+                    case "sbs":
+                        contactCenter = HtmlConstants.HOME_LOAN_SBS_BANKING;
+                        break;
+                    case "wea":
+                        contactCenter = HtmlConstants.WEA_BANKING;
+                        break;
+                }
+
+                //BondDetails.Append();
                 pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BondDetails.ToString());
-                pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "Professional Banking 24/7 Contact centre " + " 0860 555 222");
+                pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", contactCenter);
             }
             catch (Exception)
             {
@@ -3642,24 +3662,36 @@ namespace nIS
             }
         }
 
-        private void BindSpecialMessageWidgetData(StringBuilder pageContent, SpecialMessage SpecialMessage, Page page, PageWidget widget)
+        private void BindSpecialMessageWidgetData(StringBuilder pageContent, SpecialMessage SpecialMessage, Page page, PageWidget widget, DM_CustomerMaster customer)
         {
             if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
             {
-                var jsonstr = HtmlConstants.HOME_LOAN_SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
-                SpecialMessage = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
-                if (SpecialMessage != null)
+                var htmlWidget = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
+                var specialMsgTxtData = string.Empty;
+                switch (customer.Segment.ToLower())
                 {
-                    var htmlWidget = new StringBuilder(HtmlConstants.SPECIAL_MESSAGE_HTML);
-                    var specialMsgTxtData = (!string.IsNullOrEmpty(SpecialMessage.Header) ? "<div class='SpecialMessageHeader'> " + SpecialMessage.Header + " </div>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message1) ? "<p> " + SpecialMessage.Message1 + " </p>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message2) ? "<p> " + SpecialMessage.Message2 + " </p>" : string.Empty);
-                    htmlWidget.Replace("{{SpecialMessageTextData}}", specialMsgTxtData);
-                    htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + widget.Identifier + "_Counter" + (new Random().Next(100)).ToString());
-                    pageContent.Replace("{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + widget.Identifier + "}}", htmlWidget.ToString());
+                    case "nbb":
+                        specialMsgTxtData = HtmlConstants.HOME_LOAN_NBB_SPECIAL_MESSAGE;
+                        break;
+                    case "ncb":
+                        specialMsgTxtData = HtmlConstants.HOME_LOAN_NCB_SPECIAL_MESSAGE;
+                        break;
+                    case "pml":
+                        specialMsgTxtData = HtmlConstants.HOME_LOAN_PML_SPECIAL_MESSAGE;
+                        break;
+                    case "prb":
+                        specialMsgTxtData = HtmlConstants.HOME_LOAN_PRB_SPECIAL_MESSAGE;
+                        break;
+                    case "sbs":
+                        specialMsgTxtData = HtmlConstants.HOME_LOAN_SBS_SPECIAL_MESSAGE;
+                        break;
+                    case "wea":
+                        specialMsgTxtData = HtmlConstants.HOME_LOAN_WEA_SPECIAL_MESSAGE;
+                        break;
                 }
-                else
-                {
-                    pageContent.Replace("{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
-                }
+                htmlWidget.Replace("{{SpecialMessageTextData}}", specialMsgTxtData);
+                htmlWidget = htmlWidget.Replace("{{WidgetId}}", "PageWidgetId_" + widget.Identifier + "_Counter" + (new Random().Next(100)).ToString());
+                pageContent.Replace("{{SpecialMessageTextDataDiv_" + page.Identifier + "_" + widget.Identifier + "}}", htmlWidget.ToString());
             }
             else
             {

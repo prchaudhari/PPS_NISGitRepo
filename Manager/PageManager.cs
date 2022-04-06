@@ -1338,7 +1338,7 @@ namespace nIS
                                                         var SpecialMessage = JsonConvert.DeserializeObject<SpecialMessage>(jsonstr);
                                                         if (SpecialMessage != null)
                                                         {
-                                                            var specialMsgTxtData = (!string.IsNullOrEmpty(SpecialMessage.Header) ? "<div class='SpecialMessageHeader'> " + SpecialMessage.Header + " </div>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message1) ? "<p> " + SpecialMessage.Message1 + " </p>" : string.Empty) + (!string.IsNullOrEmpty(SpecialMessage.Message2) ? "<p> " + SpecialMessage.Message2 + " </p>" : string.Empty);
+                                                            var specialMsgTxtData = HtmlConstants.HOME_LOAN_NBB_SPECIAL_MESSAGE;
 
                                                             widgetHtml.Replace("{{SpecialMessageTextData}}", specialMsgTxtData);
                                                             htmlString.Append(widgetHtml.ToString());
