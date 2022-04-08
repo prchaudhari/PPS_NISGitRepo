@@ -20,7 +20,7 @@ import {
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
-  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent,
+  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -760,6 +760,7 @@ export class AddDashboardDesignerComponent implements OnInit {
 
   selectWidget(widgetId, widgetName) {
     let widgets = this.widgetsArray.filter(x => x.Identifier == widgetId && x.WidgetName == widgetName);
+    console.log(widgets)
     if (widgets.length != 0) {
       let widget = widgets[0];
       let widgetItems = this.widgetsGridsterItemArray.filter(w => w.WidgetId == widget.Identifier && w.value == widget.WidgetName);
@@ -1567,6 +1568,22 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "HomeLoanSummaryTaxPurpose") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 1,
+              y: 0,
+              x: 0,
+              component: HomeLoanSummaryTaxPurposeComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
         }
         else {
           if (widget.WidgetType == 'Table') {
@@ -1659,6 +1676,7 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: true
             })
           }
+          
         }
       }
     }
@@ -1886,6 +1904,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widget.WidgetName == "SegmentBasedContent") {
         gridObj.component = SegmentBasedContentComponent
+      }
+      else if (widget.WidgetName == "HomeLoanSummaryTaxPurpose") {
+        gridObj.component = HomeLoanSummaryTaxPurposeComponent
       }
     }
     else {

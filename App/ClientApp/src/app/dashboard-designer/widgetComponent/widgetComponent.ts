@@ -2715,12 +2715,13 @@ export class NedbankServiceComponent {
       <div class="card border-0">
           <div class="card-body text-left">
           <div class='card-body-header-w pb-2'>Nedbank services</div>
-            
+
           </div>
       </div>
     </div>
   </div>`
 })
+
 export class WealthNedbankServiceComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
@@ -4853,4 +4854,26 @@ export class CategorySpendRewardsPreviewComponent {
       }, 10);
     });
   }
+}
+
+// Component Created for special message Widget -- Nedbank
+@Component({
+  selector: 'HomeLoanSummaryTaxPurpose',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class="card border-0">
+          <div class="card-body text-left pb-1 pt-1">
+              <div class="SpecialMessageDiv">
+                  <div class="SpecialMessageHeader">Special message header Text</div>
+                  <p>Personalize special message text 1</p>
+                  <p>Personalize special message text 2</p>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class HomeLoanSummaryTaxPurposeComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
 }
