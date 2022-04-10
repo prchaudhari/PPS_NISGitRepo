@@ -20,7 +20,8 @@ import {
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
-  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent
+  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent,
+  HomeLoanInstalmentComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -1584,6 +1585,22 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "HomeLoanInstalment") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 1,
+              y: 0,
+              x: 0,
+              component: HomeLoanInstalmentComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
         }
         else {
           if (widget.WidgetType == 'Table') {
@@ -1907,6 +1924,9 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widget.WidgetName == "HomeLoanSummaryTaxPurpose") {
         gridObj.component = HomeLoanSummaryTaxPurposeComponent
+      }
+      else if (widget.WidgetName == "HomeLoanInstalment") {
+        gridObj.component = HomeLoanInstalmentComponent
       }
     }
     else {

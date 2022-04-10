@@ -4877,3 +4877,25 @@ export class HomeLoanSummaryTaxPurposeComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 }
+
+// Component Created for Home Loan Instalment Widget -- Nedbank
+@Component({
+  selector: 'HomeLoanInstalment',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class="card border-0">
+          <div class="card-body text-left pb-1 pt-1">
+              <div class="HomeLoneInstalmentDiv">
+                  <div class="HomeLoneInstalmentHeader">Home Loan Instalment Text</div>
+                  <p>HomeLoneInstalment text 1</p>
+                  <p>HomeLoneInstalment text 2</p>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class HomeLoanInstalmentComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}

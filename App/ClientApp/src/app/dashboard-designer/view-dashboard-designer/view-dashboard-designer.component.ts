@@ -14,7 +14,7 @@ import {
     SavingAvailableBalanceComponent, CurrentAvailableBalanceComponent, SavingTransactionDetailsComponent,
     SpendindTrendsComponent, TopIncomeSourcesComponent, SavingTrendsComponent, AnalyticsWidgetComponent, ReminderAndRecommComponent,
   DynamicBarChartWidgetComponent, DynamicLineChartWidgetComponent, DynamicPieChartWidgetComponent, DynamicHhtmlComponent, StaticHtmlComponent, SegmentBasedContentComponent, CustomerDetailsComponent, BankDetailsComponent,WealthBankDetailsComponent,
-  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, WealthBreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent,NedbankServiceComponent, WealthNedbankServiceComponent, HomeLoanSummaryTaxPurposeComponent,
+  InvestmentPortfolioStatementComponent, InvestmentWealthPortfolioStatementComponent, InvestorPerformanceComponent, WealthInvestorPerformanceComponent, BreakdownOfInvestmentAccountsComponent, WealthBreakdownOfInvestmentAccountsComponent, ExplanatoryNotesComponent, WealthExplanatoryNotesComponent,NedbankServiceComponent, WealthNedbankServiceComponent, HomeLoanSummaryTaxPurposeComponent,HomeLoanInstalmentComponent,
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
@@ -466,6 +466,9 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widgetName == "HomeLoanSummaryTaxPurpose") {
               gridObj.component = HomeLoanSummaryTaxPurposeComponent
+            }
+            else if (widgetName == "HomeLoanInstalment") {
+              gridObj.component = HomeLoanInstalmentComponent
             }
         }
         else {
