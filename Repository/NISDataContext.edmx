@@ -314,6 +314,8 @@
           <Property Name="DS_Investor_Name" Type="nvarchar" MaxLength="500" />
           <Property Name="Language" Type="nvarchar" MaxLength="50" />
           <Property Name="Segment" Type="nvarchar" MaxLength="50" />
+          <Property Name="AddressLine5" Type="nvarchar" MaxLength="500" />
+          <Property Name="AddressLine6" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="DM_CustomerNewsAndAlerts">
           <Key>
@@ -858,6 +860,7 @@
           <Property Name="RegisteredDate" Type="datetime" />
           <Property Name="RegisteredAmount" Type="varchar" MaxLength="50" />
           <Property Name="TenantCode" Type="varchar" MaxLength="50" />
+          <Property Name="SegmentType" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="NB_HomeLoanSummary">
           <Key>
@@ -3919,6 +3922,8 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
 		  <Property Name="Language" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
 		  <Property Name="Segment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BranchId" Type="Int64" />
+          <Property Name="AddressLine5" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine6" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           </EntityType>
         <EntityType Name="DM_ExplanatoryNotesRecord">
           <Key>
@@ -4704,6 +4709,7 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <Property Name="RegisteredDate" Type="DateTime" Precision="3" />
           <Property Name="RegisteredAmount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SegmentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="NB_HomeLoanSummary">
           <Key>
@@ -5979,7 +5985,9 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySetMapping Name="DM_CustomerMasterRecord">
             <EntityTypeMapping TypeName="NISModel.DM_CustomerMasterRecord">
               <MappingFragment StoreEntitySet="DM_CustomerMaster">
-				<ScalarProperty Name="BranchId" ColumnName="BranchId" />
+				<ScalarProperty Name="AddressLine6" ColumnName="AddressLine6" />
+                <ScalarProperty Name="AddressLine5" ColumnName="AddressLine5" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
                 <ScalarProperty Name="Segment" ColumnName="Segment" />
 				<ScalarProperty Name="Language" ColumnName="Language" />
 				<ScalarProperty Name="DS_Investor_Name" ColumnName="DS_Investor_Name" />
@@ -6777,6 +6785,7 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySetMapping Name="NB_HomeLoanMaster">
             <EntityTypeMapping TypeName="NISModel.NB_HomeLoanMaster">
               <MappingFragment StoreEntitySet="NB_HomeLoanMaster">
+                <ScalarProperty Name="SegmentType" ColumnName="SegmentType" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="RegisteredAmount" ColumnName="RegisteredAmount" />
                 <ScalarProperty Name="RegisteredDate" ColumnName="RegisteredDate" />

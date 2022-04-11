@@ -3478,49 +3478,6 @@ export class HomeLoanTotalAmountDetailComponent {
                           </table>
                       </div>
 
-                      <div class='card-body-sub-header pt-2'>Instalment details</div>
-                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
-                      <div class="pt-1">
-                          <table class="LoanTransactionTable customTable">
-                              <thead>
-                                  <tr class="ht-30">
-                                      <th class="w-50">Payments</th>
-                                      <th class="w-50 text-right">Amount</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Basic instalment </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Homeowner's insurance </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Credit life insurance </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Transaction fees </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Subsidised account capital redemption </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Monthly service fee </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
-                                      <td class="text-right font-weight-bold">R0.00</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-
                 </div>
 
                 <div id='HomeLoan-6001' class='tab-pane fade'>
@@ -3694,49 +3651,6 @@ export class HomeLoanTotalAmountDetailComponent {
                                   <tr class="ht-20">
                                       <td class="text-left">Total amount received </td>
                                       <td class="text-right">R0.00</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-
-                      <div class='card-body-sub-header pt-2'>Instalment details</div>
-                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
-                      <div class="pt-1">
-                          <table class="LoanTransactionTable customTable">
-                              <thead>
-                                  <tr class="ht-30">
-                                      <th class="w-50">Payments</th>
-                                      <th class="w-50 text-right">Amount</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Basic instalment </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Homeowner's insurance </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Credit life insurance </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Transaction fees </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Subsidised account capital redemption </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left">Monthly service fee </td>
-                                      <td class="text-right">R0.00</td>
-                                  </tr>
-                                  <tr class="ht-20">
-                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
-                                      <td class="text-right font-weight-bold">R0.00</td>
                                   </tr>
                               </tbody>
                           </table>
@@ -4860,18 +4774,27 @@ export class CategorySpendRewardsPreviewComponent {
 @Component({
   selector: 'HomeLoanSummaryTaxPurpose',
   template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class="card border-0">
-          <div class="card-body text-left pb-1 pt-1">
-              <div class="SpecialMessageDiv">
-                  <div class="SpecialMessageHeader">Special message header Text</div>
-                  <p>Personalize special message text 1</p>
-                  <p>Personalize special message text 2</p>
+      <div class="widget-area width100">
+        <div class='card border-0'>
+          <div class='card-body text-left py-1'>
+            <div class='py-2'>
+              <div class='card-body-sub-header'> Summary for Tax Purposes</div>
+                <div class='d-flex flex-row mt-1 HomeLoanDetailDiv margin_right_15'>
+                  <table class='SummaryTable mt-2' border='0' style="width: 100%;margin-left: 10px !important;">
+                    <tbody>
+                      <tr><td>Interest</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+                      <tr><td>Insurance/Assurance</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+                      <tr><td>Service fee</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+                      <tr><td>Legal costs </td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+                      <tr><td>Total amount received</td><td class='text-right pr-4 text-success'>R0.00</td></tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+            </div>
+           </div>
           </div>
-      </div>
-    </div>
-  </div>`
+        </div>`
 })
 export class HomeLoanSummaryTaxPurposeComponent {
   @Input()
@@ -4882,18 +4805,51 @@ export class HomeLoanSummaryTaxPurposeComponent {
 @Component({
   selector: 'HomeLoanInstalment',
   template: `<div class="widget">
-    <div class="widget-area height100">
-      <div class="card border-0">
-          <div class="card-body text-left pb-1 pt-1">
-              <div class="HomeLoneInstalmentDiv">
-                  <div class="HomeLoneInstalmentHeader">Home Loan Instalment Text</div>
-                  <p>HomeLoneInstalment text 1</p>
-                  <p>HomeLoneInstalment text 2</p>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>`
+                <div class="widget-area width100">
+                    <div class='card-body-sub-header pt-2'>Instalment details</div>
+                      <div class="card-body-sub-header2">Due to insurance changes, your new instalment details are as follows:</div>
+                      <div class="pt-1">
+                          <table class="LoanTransactionTable customTable">
+                              <thead>
+                                  <tr class="ht-30">
+                                      <th class="w-50">Payments</th>
+                                      <th class="w-50 text-right">Amount</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Basic instalment </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Homeowner's insurance </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Credit life insurance </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Transaction fees </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Subsidised account capital redemption </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left">Monthly service fee </td>
+                                      <td class="text-right">R0.00</td>
+                                  </tr>
+                                  <tr class="ht-20">
+                                      <td class="text-left font-weight-bold">Total instalment (effective from 01/04/2021) </td>
+                                      <td class="text-right font-weight-bold">R0.00</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                          </div>
+                        </div>
+                      </div>`
 })
 export class HomeLoanInstalmentComponent {
   @Input()

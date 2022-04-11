@@ -3640,7 +3640,7 @@ namespace nIS
                                                     var widgetHtml = new StringBuilder(HtmlConstants.HOME_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
                                                     var TotalLoanAmt = 0.0m;
                                                     var TotalOutstandingAmt = 0.0m;
-
+                                                    string instalmentLabel = string.Empty;
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
                                                         var HomeLoans = JsonConvert.DeserializeObject<List<DM_HomeLoanMaster>>(jsonstr);
@@ -3665,8 +3665,26 @@ namespace nIS
                                                             {
                                                                 TotalOutstandingAmt = 0.0m;
                                                             }
-                                                        }
 
+                                                            var segmentType = HomeLoans.Select(it => it.SegmentType).FirstOrDefault();
+
+                                                            switch (segmentType.ToLower())
+                                                            {
+                                                                case HtmlConstants.MONTHLY_SEGMENT_FREQUENCY:
+                                                                    instalmentLabel = HtmlConstants.MONTHLY_INSTALMENT_LABEL;
+                                                                    break;
+                                                                case HtmlConstants.QUARTERLY_SEGMENT_FREQUENCY:
+                                                                    instalmentLabel = HtmlConstants.QUARTERLY_INSTALMENT_LABEL;
+                                                                    break;
+                                                                case HtmlConstants.ANNUAL_SEGMENT_FREQUENCY:
+                                                                    instalmentLabel = HtmlConstants.ANNUAL_INSTALMENT_LABEL;
+                                                                    break;
+                                                                default:
+                                                                    instalmentLabel = HtmlConstants.MONTHLY_INSTALMENT_LABEL;
+                                                                    break;
+                                                            }
+                                                        }
+                                                        widgetHtml.Replace("{{InstalmentType}}", instalmentLabel);
                                                         widgetHtml.Replace("{{TotalHomeLoansAmount}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalLoanAmt));
                                                         widgetHtml.Replace("{{TotalHomeLoansBalanceOutstanding}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOutstandingAmt));
                                                         htmlString.Append(widgetHtml.ToString());
@@ -4086,7 +4104,8 @@ namespace nIS
                                                     if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                     {
                                                         var summaryTax = JsonConvert.DeserializeObject<DM_HomeLoanSummary>(jsonstr);
-                                                        var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_WIDGET_HTML);
+                                                        var htmlWidgetDetails = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_WIDGET_HTML);
+                                                        var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_HTML);
                                                         var res = 0.0m;
                                                         if (!string.IsNullOrEmpty(summaryTax.Basic_Instalment) && decimal.TryParse(summaryTax.Basic_Instalment, out res))
                                                         {
@@ -4157,7 +4176,8 @@ namespace nIS
                                                         }
 
                                                         htmlWidget.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
-                                                        htmlString.Append(htmlWidget);
+                                                        htmlWidgetDetails.Replace("{{Home_Loan_Instalment_Details}}", htmlWidget.ToString());
+                                                        htmlString.Append(htmlWidgetDetails);
                                                     }
                                                 }
                                                 else if (mergedlst[i].WidgetName == HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME)
@@ -4803,6 +4823,7 @@ namespace nIS
             htmlWidget.Replace("{{TotalLoanAmount}}", "{{TotalLoanAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{OutstandingBalance}}", "{{OutstandingBalance_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{DueAmount}}", "{{DueAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{InstalmentType}}", "{{InstalmentType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{WidgetId}}", widgetId);
             return htmlWidget.ToString();
         }
@@ -4821,6 +4842,7 @@ namespace nIS
             var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
             htmlWidget.Replace("{{TotalHomeLoansAmount}}", "{{TotalHomeLoansAmount_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{TotalHomeLoansBalanceOutstanding}}", "{{TotalHomeLoansBalanceOutstanding_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{InstalmentType}}", "{{InstalmentType_" + page.Identifier + "_" + pageWidget.Identifier + "}}");
             htmlWidget.Replace("{{WidgetId}}", widgetId);
             return htmlWidget.ToString();
         }
@@ -4828,24 +4850,18 @@ namespace nIS
         private string HomeLoanSummaryTaxPurpose(PageWidget pageWidget)
         {
             var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_SUMMARY_TAX_PURPOSE_HTML);
-            htmlWidget.Replace("{{Interest}}", "{{{{Interest_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Insurance}}", "{{{{Insurance_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Servicefee}}", "{{{{Servicefee_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{Legalcosts}}", "{{{{Legalcosts_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{AmountReceived}}", "{{{{AmountReceived_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Interest}}", "{{Interest_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Insurance}}", "{{Insurance_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Servicefee}}", "{{Servicefee_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Legalcosts}}", "{{Legalcosts_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{AmountReceived}}", "{{AmountReceived_" + pageWidget.Identifier + "}}");
             return htmlWidget.ToString();
         }
 
         private string HomeLoanInstalment(PageWidget pageWidget)
         {
             var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_WIDGET_HTML);
-            htmlWidget.Replace("{{BasicInstalment}}", "{{{{BasicInstalment_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{HouseownerInsurance}}", "{{{{HouseownerInsurance_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{LoanProtectionAssurance}}", "{{{{LoanProtectionAssurance_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{RecoveryOfFeeDebits}}", "{{{{RecoveryOfFeeDebits_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{CapitalRedemption}}", "{{{{CapitalRedemption_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{ServiceFee}}", "{{{{ServiceFee_" + pageWidget.Identifier + "}}");
-            htmlWidget.Replace("{{TotalInstalment}}", "{{{{TotalInstalment_" + pageWidget.Identifier + "}}");
+            htmlWidget.Replace("{{Home_Loan_Instalment_Details}}", "{{Home_Loan_Instalment_Details_" + pageWidget.Identifier + "}}");
             return htmlWidget.ToString();
         }
 

@@ -61,11 +61,104 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;n Enkele platform wat jou toegang tot verskeie stelsels bied. Jy kan digitaal om produkte of dienste aansoek doen en self jou sake bestuur sonder om enige vorms in te vul.
+        /// </summary>
+        internal static string A_single_platform_giving_you_access_to_multiple_systems_and_enabling_you_to_apply_digitally_for_products_or_services_and_perform_self_maintenance_without_any_forms {
+            get {
+                return ResourceManager.GetString("A single platform giving you access to multiple systems and enabling you to apply" +
+                        " digitally for products or services and perform self-maintenance without any for" +
+                        "ms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;n Oplossing wat jou intydse kliënt-tot-bank-dataoutomatisering bied vir sakebedrywighede wat seepglad verloop.
+        /// </summary>
+        internal static string A_solution_that_offers_you_real_time_client_to_bank_data_automation_to_streamline_your_business_operations {
+            get {
+                return ResourceManager.GetString("A solution that offers you real-time client-to-bank data automation to streamline" +
+                        " your business operations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Soort rekening.
         /// </summary>
         internal static string Account_type {
             get {
                 return ResourceManager.GetString("Account type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adres.
+        /// </summary>
+        internal static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ná 120+ dae.
+        /// </summary>
+        internal static string After_120__days {
+            get {
+                return ResourceManager.GetString("After 120+ days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ná 30 dae.
+        /// </summary>
+        internal static string After_30_days {
+            get {
+                return ResourceManager.GetString("After 30 days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ná 60 dae.
+        /// </summary>
+        internal static string After_60_days {
+            get {
+                return ResourceManager.GetString("After 60 days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ná 90 dae.
+        /// </summary>
+        internal static string After_90_days {
+            get {
+                return ResourceManager.GetString("After 90 days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bedrag.
+        /// </summary>
+        internal static string Amount {
+            get {
+                return ResourceManager.GetString("Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jaarlikse huisleningstaat.
+        /// </summary>
+        internal static string Annual_home_loan_statement {
+            get {
+                return ResourceManager.GetString("Annual home loan statement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
             }
         }
         
@@ -79,11 +172,56 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is jy op die punt om jou huislening af te betaal?.
+        /// </summary>
+        internal static string Are_you_about_to_settle_your_home_loan_ {
+            get {
+                return ResourceManager.GetString("Are you about to settle your home loan?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agterstallige bedrag.
+        /// </summary>
+        internal static string Arreas {
+            get {
+                return ResourceManager.GetString("Arreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to soos op.
+        /// </summary>
+        internal static string as_at {
+            get {
+                return ResourceManager.GetString("as at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Augustus.
         /// </summary>
         internal static string August {
             get {
                 return ResourceManager.GetString("August", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geoutomatiseerde kontantdepositoinligting.
+        /// </summary>
+        internal static string Automated_cash_depositing_information {
+            get {
+                return ResourceManager.GetString("Automated cash-depositing information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avo-sake.
+        /// </summary>
+        internal static string Avo_Business {
+            get {
+                return ResourceManager.GetString("Avo Business", resourceCulture);
             }
         }
         
@@ -106,6 +244,42 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uitstaande saldo.
+        /// </summary>
+        internal static string Balance_Outstanding {
+            get {
+                return ResourceManager.GetString("Balance Outstanding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basiese paaiement.
+        /// </summary>
+        internal static string Basic_instalment {
+            get {
+                return ResourceManager.GetString("Basic instalment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Om &apos;n huiseienaar te word, was nog nooit so maklik nie.
+        /// </summary>
+        internal static string Becoming_a_homewoner_has_never_been_easier {
+            get {
+                return ResourceManager.GetString("Becoming a homewoner has never been easier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verbandno.
+        /// </summary>
+        internal static string Bond_No {
+            get {
+                return ResourceManager.GetString("Bond No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bonus rente.
         /// </summary>
         internal static string Bonus_Interest {
@@ -115,11 +289,56 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Book an appointment.
+        /// </summary>
+        internal static string Book_an_appointment {
+            get {
+                return ResourceManager.GetString("Book an appointment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maak &apos;n afspraak met jou bankier.
+        /// </summary>
+        internal static string Book_an_appointment_with_your_banker {
+            get {
+                return ResourceManager.GetString("Book an appointment with your banker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maak jou afspraak op Aanlyn Banksake.
+        /// </summary>
+        internal static string Book_your_appointment_on_Online_Banking {
+            get {
+                return ResourceManager.GetString("Book your appointment on Online Banking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maak jou afspraak op die Money-toep.
+        /// </summary>
+        internal static string Book_your_appointment_on_the_Money_app {
+            get {
+                return ResourceManager.GetString("Book your appointment on the Money app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uiteensetting van u beleggingsrekenings.
         /// </summary>
         internal static string Breakdown_of_your_investment_accounts {
             get {
                 return ResourceManager.GetString("Breakdown of your investment accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Klik vir.
+        /// </summary>
+        internal static string click_here {
+            get {
+                return ResourceManager.GetString("click here", resourceCulture);
             }
         }
         
@@ -142,11 +361,38 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kontak jou verhoudingsbankier om aansoek te doen.
+        /// </summary>
+        internal static string Contact_your_relationship_banker_to_apply {
+            get {
+                return ResourceManager.GetString("Contact your relationship banker to apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Krediet.
         /// </summary>
         internal static string Credit {
             get {
                 return ResourceManager.GetString("Credit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kredietlewensversekering.
+        /// </summary>
+        internal static string Credit_life_insurance {
+            get {
+                return ResourceManager.GetString("Credit life insurance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lopend.
+        /// </summary>
+        internal static string Current {
+            get {
+                return ResourceManager.GetString("Current", resourceCulture);
             }
         }
         
@@ -205,6 +451,42 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to As gevolg van versekeringsveranderings is u nuwe paaiementbesonderhede soos volg.
+        /// </summary>
+        internal static string Due_to_insurance_changes__your_new_instalment_details_are_as_follows {
+            get {
+                return ResourceManager.GetString("Due to insurance changes, your new instalment details are as follows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Effektiewedatum.
+        /// </summary>
+        internal static string Effective_date {
+            get {
+                return ResourceManager.GetString("Effective date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to effektief vanaf.
+        /// </summary>
+        internal static string effective_from {
+            get {
+                return ResourceManager.GetString("effective from", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to eStatements.
+        /// </summary>
+        internal static string eStatements {
+            get {
+                return ResourceManager.GetString("eStatements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verklarende aantekeninge.
         /// </summary>
         internal static string Explanatory_notes {
@@ -232,6 +514,259 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to vir meer inligting.
+        /// </summary>
+        internal static string For_more_information {
+            get {
+                return ResourceManager.GetString("For more information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Besoek nedbank.co.za/ Business Banking/MPS vir meer inligting.
+        /// </summary>
+        internal static string For_more_information_visit_nedbank_co_za__Business_Banking_MPS {
+            get {
+                return ResourceManager.GetString("For more information visit nedbank.co.za/ Business Banking/MPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Besoek nedbank.co.za/Business Banking/Protect vir meer inligting.
+        /// </summary>
+        internal static string For_more_information_visit_nedbank_co_za_Business_Banking_Protect {
+            get {
+                return ResourceManager.GetString("For more information visit nedbank.co.za/Business Banking/Protect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Besoek nedbank.co.za/ Business Banking/Receive/Cash vir meer besonderhede.
+        /// </summary>
+        internal static string For_more_information_visit_nedbank_co_za_Business_Banking_Receive_Cash {
+            get {
+                return ResourceManager.GetString("For more information visit nedbank.co.za/Business Banking/Receive/Cash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vir jou gerief, kan jy nou aanlyn &apos;n afspraak met jou bankier maak. Teken net in op die Money-toep of Aanlyn Banksake, kies &apos;n tyd wat jou pas en sê of jy jou bankier persoonlik wil ontmoet of oor die telefoon wil gesels.
+        /// </summary>
+        internal static string For_your_convenience__you_can_now_book_an_appointment_with_your_banker_online__Simply_log_in_to_the_Money_app_or_Online_Banking__choose_a_time_slot_that_suits_you_and_specify_whether_you_prefer_to_have_the_meeting_over_the_phone_or_in_person {
+            get {
+                return ResourceManager.GetString("For your convenience, you can now book an appointment with your banker online. Si" +
+                        "mply log in to the Money app or Online Banking, choose a time slot that suits yo" +
+                        "u and specify whether you prefer to have the meeting over the phone or in person" +
+                        "", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Algemene besigheidsversekering.
+        /// </summary>
+        internal static string General_business_insurance {
+            get {
+                return ResourceManager.GetString("General business insurance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kry toegang tot duisende nuwe kliënte.
+        /// </summary>
+        internal static string Get_access_to_thousands_of_new_customers {
+            get {
+                return ResourceManager.GetString("Get access to thousands of new customers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kry advertensies, afslagkoopbewyse, meesterklasse, voorbeelde van dokumente, voorleggings, toegang tot kundiges om probleme op te los en meer – alles wat jou besigheid nodig het met die druk van &apos;n knoppie! Sluit vandag nog aan by.
+        /// </summary>
+        internal static string Get_advertising__discounted_vouchers__masterclasses__templates__pitch_decks__troubleshooting_chats_with_experts_and_more___everything_your_business_needs_at_your_fingertips__Join_today_at {
+            get {
+                return ResourceManager.GetString("Get advertising, discounted vouchers, masterclasses, templates, pitch-decks, trou" +
+                        "bleshooting chats with experts and more - everything your business needs at your" +
+                        " fingertips! Join today at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get in touch.
+        /// </summary>
+        internal static string Get_in_touch {
+            get {
+                return ResourceManager.GetString("Get in touch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to voorafgoedkeuring* kry vir die huisleningsbedrag waarvoor jy kwalifiseer.
+        /// </summary>
+        internal static string get_preapproval__on_the_home_loan_amount_you_qualify_for {
+            get {
+                return ResourceManager.GetString("get preapproval* on the home loan amount you qualify for", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kry die beste kaartaanvaardingsoplossing vir jou besigheid.
+        /// </summary>
+        internal static string Get_the_best_card_acceptance_solution_for_your_business {
+            get {
+                return ResourceManager.GetString("Get the best card acceptance solution for your business", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kry die beste dekking teen alledaagse risiko&apos;s.
+        /// </summary>
+        internal static string Get_the_best_cover_against_everyday_risks {
+            get {
+                return ResourceManager.GetString("Get the best cover against everyday risks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to drie gratis eiendomsverslae kry, wat jou inligting oor eiendomswaardes, vergelykende waardes, naaste geriewe en meer gee; en.
+        /// </summary>
+        internal static string get_three_property_reports_for_free__giving_you_information_about_property_values__comparative_values__nearest_amenities_and_more__and {
+            get {
+                return ResourceManager.GetString("get three property reports for free, giving you information about property values" +
+                        ", comparative values, nearest amenities and more; and", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kry tot R15 000 kontant terug.
+        /// </summary>
+        internal static string Get_up_to_R15_000_cash_back {
+            get {
+                return ResourceManager.GetString("Get up to R15 000 cash back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kry tot R15 000 van jou goedgekeurde huisleningsbedrag in kontant terug as jy aanlyn aansoek doen.
+        /// </summary>
+        internal static string Get_up_to_R15_000_cash_back_on_your_approved_home_loan_amount_if_you_apply_online {
+            get {
+                return ResourceManager.GetString("Get up to R15 000 cash back on your approved home loan amount if you apply online" +
+                        "", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Besoek nedbank.co.za/Business Banking/Contact Us om met jou bankier te skakel.
+        /// </summary>
+        internal static string Go_to_nedbank_co_za_Business_Banking_Contact_Us_to_get_in_touch_with_your_banker {
+            get {
+                return ResourceManager.GetString("Go to nedbank.co.za/Business Banking/Contact Us to get in touch with your banker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home-buying Toolkit.
+        /// </summary>
+        internal static string Home_buying_Toolkit {
+            get {
+                return ResourceManager.GetString("Home-buying Toolkit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Huisleningsgelde.
+        /// </summary>
+        internal static string Home_loan_fees {
+            get {
+                return ResourceManager.GetString("Home loan fees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Huisleningstaatoorsig.
+        /// </summary>
+        internal static string Home_loan_statement_overview {
+            get {
+                return ResourceManager.GetString("Home loan statement overview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Huiseienaarsversekering.
+        /// </summary>
+        internal static string Homeowner_s_insurance {
+            get {
+                return ResourceManager.GetString("Homeowner\'s insurance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to As u enige navrae oor die inhoud van u staat het, skakel u privaat bankier of die Nedbank Private Wealth-dienssuite by.
+        /// </summary>
+        internal static string If_you_have_any_questions_about_the_content_of_your_statement__please_contact_your_private_banker_or_the_Nedbank_Private_Wealth_Service_Suite_on {
+            get {
+                return ResourceManager.GetString("If you have any questions about the content of your statement, please contact you" +
+                        "r private banker or the Nedbank Private Wealth Service Suite on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to As u enige navrae oor die inhoud van u staat het, skakel ons gerus by.
+        /// </summary>
+        internal static string If_you_have_any_questions_about_the_content_of_your_statement__please_feel_free_to_call_us_on {
+            get {
+                return ResourceManager.GetString("If you have any questions about the content of your statement, please feel free t" +
+                        "o call us on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to As jy enige vrae oor jou staat het kontant gerus besigheidsbestuurder of stuur ‘n e-pos na: business@nedbank.co.za.
+        /// </summary>
+        internal static string If_you_have_any_questions_about_the_content_of_your_statements__please_feel_free_to_contact_your_Business_Manager_or_e_mail__business__nedbank_co_za {
+            get {
+                return ResourceManager.GetString("If you have any questions about the content of your statements, please feel free " +
+                        "to contact your Business Manager or e-mail: business @nedbank.co.za", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paaiement.
+        /// </summary>
+        internal static string Instalment {
+            get {
+                return ResourceManager.GetString("Instalment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paaiementbesonderhede.
+        /// </summary>
+        internal static string Instalment_details {
+            get {
+                return ResourceManager.GetString("Instalment details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Versekering.
+        /// </summary>
+        internal static string Insurance_Assurance {
+            get {
+                return ResourceManager.GetString("Insurance/Assurance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rente.
+        /// </summary>
+        internal static string Interest {
+            get {
+                return ResourceManager.GetString("Interest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rentebeskikking.
         /// </summary>
         internal static string Interest_disposal {
@@ -246,6 +781,15 @@ namespace nIS.Properties {
         internal static string Interest_due {
             get {
                 return ResourceManager.GetString("Interest due", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rente.
+        /// </summary>
+        internal static string Interest_rate {
+            get {
+                return ResourceManager.GetString("Interest rate", resourceCulture);
             }
         }
         
@@ -304,6 +848,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sluit aan by Nedbank Money Message en nooi jou kliënte om vinnige en veilige betalings via WhatsApp te doen. Dit is maklik om as &apos;n Money Message-handelaar te registreer - daar is geen papierwerk of wagtyd nie. Voeg net die Money Message-nommer, +27 (0) 87 240 6272, by jou kontaklys en begin gesels in WhatsApp deur &apos;Hi&apos; te stuur. Volg dan die stappe om jou registrasie te voltooi en stuur fakture aan jou kliënte.
+        /// </summary>
+        internal static string Join_Nedbank_Money_Message_and_invite_your_customers_to_make_quick_and_secure_payments_through_WhatsApp__Registering_as_a_Money_Message_merchant_is_easy___there_s_no_paperwork_and_no_waiting_period__Simply_add_the_number_for_Money_Message___27__0_87_240_6272__to_your_contact_list_and_start_chatting_in_WhatsApp_by_sending__Hi___Follow_the_prompts_to_complete_your_registration_and_start_sending_invoices_to_your_customers {
+            get {
+                return ResourceManager.GetString(@"Join Nedbank Money Message and invite your customers to make quick and secure payments through WhatsApp. Registering as a Money Message merchant is easy - there's no paperwork and no waiting period. Simply add the number for Money Message, +27 (0)87 240 6272, to your contact list and start chatting in WhatsApp by sending 'Hi'. Follow the prompts to complete your registration and start sending invoices to your customers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Julie.
         /// </summary>
         internal static string July {
@@ -318,6 +871,43 @@ namespace nIS.Properties {
         internal static string June {
             get {
                 return ResourceManager.GetString("June", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Regskoste.
+        /// </summary>
+        internal static string Legal_costs {
+            get {
+                return ResourceManager.GetString("Legal costs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leningstermyn.
+        /// </summary>
+        internal static string Loan_term {
+            get {
+                return ResourceManager.GetString("Loan term", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to na eiendomme soek.
+        /// </summary>
+        internal static string look_for_properties {
+            get {
+                return ResourceManager.GetString("look for properties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bestuur jou kontantvloei beter met CASHtrack wat gedetailleerde inligting vanaf jou bestaande kontantoplossing regstreeks na jou besigheidstelsel stuur.
+        /// </summary>
+        internal static string Manage_your_cash_flow_better_with_CASHtrack_that_sends_detailed_information_from_your_existing_cash_solution_directly_into_your_line_of_business_system {
+            get {
+                return ResourceManager.GetString("Manage your cash flow better with CASHtrack that sends detailed information from " +
+                        "your existing cash solution directly into your line-of-business system", resourceCulture);
             }
         }
         
@@ -349,12 +939,129 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Handelaarsoplossings.
+        /// </summary>
+        internal static string Merchant_solutions {
+            get {
+                return ResourceManager.GetString("Merchant solutions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MoneyTracker.
+        /// </summary>
+        internal static string MoneyTracker {
+            get {
+                return ResourceManager.GetString("MoneyTracker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maandelikse diensgelde.
+        /// </summary>
+        internal static string Monthly_service_fee {
+            get {
+                return ResourceManager.GetString("Monthly service fee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More.
+        /// </summary>
+        internal static string More {
+            get {
+                return ResourceManager.GetString("More", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedbank Business Hub.
+        /// </summary>
+        internal static string Nedbank_Business_Hub {
+            get {
+                return ResourceManager.GetString("Nedbank Business Hub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedbank-huislening.
+        /// </summary>
+        internal static string Nedbank_home_loan {
+            get {
+                return ResourceManager.GetString("Nedbank home loan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nedbank Bpk Reg No 1951/000009/06. Gemagtigde finansiële diens- en geregistreerde kredietverskaffer (NCRCP16)..
         /// </summary>
         internal static string Nedbank_Ltd_Reg_No_1951_000009_06__Authorised_financial_services_and_registered_credit_provider__NCRCP16__ {
             get {
                 return ResourceManager.GetString("Nedbank Ltd Reg No 1951/000009/06. Authorised financial services and registered c" +
                         "redit provider (NCRCP16).", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedbank Money-toep.
+        /// </summary>
+        internal static string Nedbank_Money_App {
+            get {
+                return ResourceManager.GetString("Nedbank Money App", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedbank Money Message.
+        /// </summary>
+        internal static string Nedbank_Money_Message {
+            get {
+                return ResourceManager.GetString("Nedbank Money Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedbank PocketPOS.
+        /// </summary>
+        internal static string Nedbank_PocketPOS {
+            get {
+                return ResourceManager.GetString("Nedbank PocketPOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedbank Private Wealth digitale opsies.
+        /// </summary>
+        internal static string Nedbank_Private_Wealth_digital_tools {
+            get {
+                return ResourceManager.GetString("Nedbank Private Wealth digital tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedbank private welvaartdienssuite.
+        /// </summary>
+        internal static string Nedbank_Private_Wealth_Service_Suite {
+            get {
+                return ResourceManager.GetString("Nedbank Private Wealth Service Suite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedbank-dienste.
+        /// </summary>
+        internal static string Nedbank_Services {
+            get {
+                return ResourceManager.GetString("Nedbank Services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nuwe paaiement.
+        /// </summary>
+        internal static string New_instalment {
+            get {
+                return ResourceManager.GetString("New instalment", resourceCulture);
             }
         }
         
@@ -413,6 +1120,99 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to af of.
+        /// </summary>
+        internal static string or_visit {
+            get {
+                return ResourceManager.GetString("or visit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ons vlagskip-PocketPOS-toestel vir eienaars van kleinsakeondernemings is &apos;n gerieflike, goedkoop oplossing wat jy in die winkel of selfs elders kan gebruik. Dit is nou beskikbaar vir Nedbank-kliënte teen slegs R89.
+        /// </summary>
+        internal static string Our_flagship_PocketPOS_device_for_small_business_owners_is_a_convenient__low_cost_solution_that_you_can_use_in_store_and_on_the_go__It_s_now_available_to_Nedbank_clients_for_only_R89 {
+            get {
+                return ResourceManager.GetString("Our flagship PocketPOS device for small-business owners is a convenient, low-cost" +
+                        " solution that you can use in-store and on the go. It\'s now available to Nedbank" +
+                        " clients for only R89", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ons hersiene pryslys geld vanaf 1 Januarie 2022. Besoek nedbankprivatewealth.co.za vir meer inligting.
+        /// </summary>
+        internal static string Our_revised_pricing_schedule_applies_from_1_January_2022__For_more_information_go_to {
+            get {
+                return ResourceManager.GetString("Our revised pricing schedule applies from 1 January 2022. For more information go" +
+                        " to", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Betalings.
+        /// </summary>
+        internal static string Payments {
+            get {
+                return ResourceManager.GetString("Payments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agterstallige paaiemente.
+        /// </summary>
+        internal static string Payments_overdue {
+            get {
+                return ResourceManager.GetString("Payments overdue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posdatum.
+        /// </summary>
+        internal static string Post_date {
+            get {
+                return ResourceManager.GetString("Post date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Professionele Bankdienste 24/7 Kontaksentrum.
+        /// </summary>
+        internal static string Professional_Banking_24_7_Contact_Centre {
+            get {
+                return ResourceManager.GetString("Professional Banking 24/7 Contact Centre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kwartaallikse huisleningsstaat.
+        /// </summary>
+        internal static string Quarterly_home_loan_statement {
+            get {
+                return ResourceManager.GetString("Quarterly home loan statement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geregistreerde bedrag.
+        /// </summary>
+        internal static string Registered_amount {
+            get {
+                return ResourceManager.GetString("Registered amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registrasiedatum.
+        /// </summary>
+        internal static string Registration_date {
+            get {
+                return ResourceManager.GetString("Registration date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to September.
         /// </summary>
         internal static string September {
@@ -422,11 +1222,96 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Diensgelde.
+        /// </summary>
+        internal static string Service_fee {
+            get {
+                return ResourceManager.GetString("Service fee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dienssuite.
+        /// </summary>
+        internal static string Service_Suite {
+            get {
+                return ResourceManager.GetString("Service Suite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dienste.
         /// </summary>
         internal static string Services {
             get {
                 return ResourceManager.GetString("Services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Om jou huislening af te betaal is &apos;n groot finansiële mylpaal. As jy op daardie punt is, gebruik asseblief die Nedbank Money-toep of Aanlyn Banksake (die&apos;features&apos;-oortjie) om jou vereffeningsbedrag te vra,of bel ons by.
+        /// </summary>
+        internal static string Settling_your_home_loan_is_a_huge_financial_accomplishment__If_you_are_about_to_do_so__please_use_the_Nedbank_Money_app_or_Online_Banking__features_tab__to_request_your_settlement_amount_or_call_us_on {
+            get {
+                return ResourceManager.GetString("Settling your home loan is a huge financial accomplishment. If you are about to d" +
+                        "o so, please use the Nedbank Money app or Online Banking (features tab) to reque" +
+                        "st your settlement amount or call us on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Om jou huislening af te betaal is &apos;n groot finansiële mylpaal. As jy op daardie punt is, gebruik asseblief die Nedbank Private Wealth- toep of Aanlyn Banksake (die &apos;features&apos;- oortjie) om jou vereffeningsbedrag te vra, of bel ons by.
+        /// </summary>
+        internal static string Settling_your_home_loan_is_a_huge_financial_accomplishment__If_you_are_about_to_do_so__please_use_the_Nedbank_Private_Wealth_app_or_Online_Banking__features_tab__to_request_your_settlement_amount_or_call_us_on {
+            get {
+                return ResourceManager.GetString("Settling your home loan is a huge financial accomplishment. If you are about to d" +
+                        "o so, please use the Nedbank Private Wealth app or Online Banking (features tab)" +
+                        " to request your settlement amount or call us on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SimplyBiz - die gratis, eenstop-platform vir sake-eienaars wanneer jy dit nodig het.
+        /// </summary>
+        internal static string SimplyBiz___the_free__one_stop_platform_for_business_owners_when_you_need_it {
+            get {
+                return ResourceManager.GetString("SimplyBiz - the free, one-stop platform for business owners when you need it", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kleinsakedienste 24/7 Kontaksentrum.
+        /// </summary>
+        internal static string Small_Business_Services_24_7_Contact_Centre {
+            get {
+                return ResourceManager.GetString("Small Business Services 24/7 Contact Centre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sosiale media.
+        /// </summary>
+        internal static string Social_Media {
+            get {
+                return ResourceManager.GetString("Social Media", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sonkragfinansiering.
+        /// </summary>
+        internal static string Solar_energy_finance {
+            get {
+                return ResourceManager.GetString("Solar energy finance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startup Bundle.
+        /// </summary>
+        internal static string Startup_Bundle {
+            get {
+                return ResourceManager.GetString("Startup Bundle", resourceCulture);
             }
         }
         
@@ -458,6 +1343,89 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bly in beheer van jou geldsake en bestuur jou huisleningsrekening soos wat vir jou gerieflik is. Laai die.
+        /// </summary>
+        internal static string Stay_in_control_of_your_finances_and_manage_your_home_loan_account_at_your_convenience__Download {
+            get {
+                return ResourceManager.GetString("Stay in control of your finances and manage your home loan account at your conven" +
+                        "ience. Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hang van ondersoek en eiendomswaardasie af.
+        /// </summary>
+        internal static string Subject_to_verification_and_property_valuation {
+            get {
+                return ResourceManager.GetString("Subject to verification and property valuation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kapitaaldelging tov gesubsidieerde rekening.
+        /// </summary>
+        internal static string Subsidised_account_capital_redemption {
+            get {
+                return ResourceManager.GetString("Subsidised account capital redemption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opsomming vir belastingdoeleindes.
+        /// </summary>
+        internal static string Summary_for_Tax_Purposes {
+            get {
+                return ResourceManager.GetString("Summary for Tax Purposes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bepalings en voorwaardes geld.
+        /// </summary>
+        internal static string Terms_and_conditions_apply {
+            get {
+                return ResourceManager.GetString("Terms and conditions apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Nedbank Private Wealth-dienssuite is 24/7 beskikbaar vir enige navrae wat jy het. Bel ons by.
+        /// </summary>
+        internal static string The_Nedbank_Private_Wealth_Service_Suite_is_available_24_7_for_any_queries_you_may_have__Call_us_on {
+            get {
+                return ResourceManager.GetString("The Nedbank Private Wealth Service Suite is available 24/7 for any queries you ma" +
+                        "y have. Call us on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dink jy daaraan om nog &apos;n besigheid te begin? Dan is die bondelrekening vir nuwe besighede (Startup Bundle) net wat jy nodig het. Jy betaal geen maandelikse gelde vir ses maande nie, kry 20 gratis elektroniese transaksies, &apos;n toegewyde verhoudingsbankier en ondersteuning wat verder as net banksake strek. Ons help jou om groot dinge te doen. Doen nou aansoek. B&amp;V’s geld.
+        /// </summary>
+        internal static string Thinking_of_starting_another_business__Then_the_Startup_Bundle_is_just_what_you_need__Enjoy_six_months_of_no_monthly_fees_plus_20_free_electronic_transactions__a_dedicated_relationship_banker_and_beyond_banking_support__Helping_you_do_big_things__Apply_now__T_Cs_apply {
+            get {
+                return ResourceManager.GetString(@"Thinking of starting another business? Then the Startup Bundle is just what you need. Enjoy six months of no monthly fees plus 20 free electronic transactions, a dedicated relationship banker and beyond-banking support. Helping you do big things. Apply now. T&Cs apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moeg vir die pos gewag? Skakel vandag nog oor na eState.
+        /// </summary>
+        internal static string Tired_of_waiting_for_the_post_to_arrive__Switch_to_eStatements_today {
+            get {
+                return ResourceManager.GetString("Tired of waiting for the post to arrive? Switch to eStatements today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Totale bedrag ontvang.
+        /// </summary>
+        internal static string Total_amount_received {
+            get {
+                return ResourceManager.GetString("Total amount received", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Totale saldo van al u vaste rekenings..
         /// </summary>
         internal static string Total_balance_of_all_your_fixed_type_accounts_ {
@@ -481,6 +1449,165 @@ namespace nIS.Properties {
         internal static string Total_balance_of_all_your_notice_deposit_accounts_ {
             get {
                 return ResourceManager.GetString("Total balance of all your notice deposit accounts.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Totaal.
+        /// </summary>
+        internal static string Total_instalment {
+            get {
+                return ResourceManager.GetString("Total instalment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Totale leningsbedrag.
+        /// </summary>
+        internal static string Total_loan_amount {
+            get {
+                return ResourceManager.GetString("Total loan amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaksie.
+        /// </summary>
+        internal static string Transaction {
+            get {
+                return ResourceManager.GetString("Transaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaksiegelde.
+        /// </summary>
+        internal static string Transaction_fees {
+            get {
+                return ResourceManager.GetString("Transaction fees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gebruik ons toep en aanlyn banksake. Bly op hoogte van plaaslike en glob.
+        /// </summary>
+        internal static string Try_our_app_and_Online_Banking__Stay_in_touch_with_local_and_global_markets__your_wealth_and_us {
+            get {
+                return ResourceManager.GetString("Try our app and Online Banking. Stay in touch with local and global markets, your" +
+                        " wealth and us", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probeer vandag nog die Nedbank Home-buying Toolkit op die Nedbank Money-toep. Maak net die toep oop en klik op.
+        /// </summary>
+        internal static string Try_the_Nedbank_Home_buying_Toolkit_on_the_Nedbank_Money_app_today__Simply_open_the_app_and_click_on {
+            get {
+                return ResourceManager.GetString("Try the Nedbank Home-buying Toolkit on the Nedbank Money app today. Simply open t" +
+                        "he app and click on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Besoek.
+        /// </summary>
+        internal static string Visit {
+            get {
+                return ResourceManager.GetString("Visit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Besoek money-message.co.za vir meer inligting.
+        /// </summary>
+        internal static string Visit_money_message_co_za_to_find_out_more {
+            get {
+                return ResourceManager.GetString("Visit money-message.co.za to find out more", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Besoek nedbank.co.za/homeloans of bel ons dienssuite om te registreer.
+        /// </summary>
+        internal static string Visit_nedbank_co_za_homeloans_or_call_our_service_suite_to_register {
+            get {
+                return ResourceManager.GetString("Visit nedbank.co.za/homeloans or call our service suite to register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wil jy weet waarheen jou geld gaan? Hou jou geld dop, stel begrotings op, skep en bestuur fakture en meer met MoneyTracker - &apos;n gratis geldbestuurshulpmiddel op die Nedbank Money-toep en Aanlyn Banksake. Kontak jou verhoudingsbankier of besoek nedbank.co.za/moneytracker vir meer inligting.
+        /// </summary>
+        internal static string Want_better_control_of_your_cashflow__Track_your_finances__set_budgets__create_and_manage_invoices__and_more_with_MoneyTracker___a_free_money_management_tool_available_on_the_Money_app_and_Online_Banking__Visit_nedbank_co_za_moneytracker_for_more_information {
+            get {
+                return ResourceManager.GetString(@"Want better control of your cashflow? Track your finances, set budgets, create and manage invoices, and more with MoneyTracker - a free money management tool available on the Money app and Online Banking. Visit nedbank.co.za/moneytracker for more information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ons verstaan dat jy die uitdagings van elektrisiteitskoste aan jou beursie voel. Ons wil graag ons geldvernuf inspan en jou help om jou elektrisiteitsbegroting te bestuur. Jy kan sonkragoplossings saam met jou huislening finansier, wat sal help om jou maandelikse elektrisiteitsrekening minder te maak of selfs heeltemal uit te skakel, en jy hoef jou nie oor toekomstige elektrisiteitstariefverhogings te bekommer nie. Vir meer inligting, besoek.
+        /// </summary>
+        internal static string We_understand_that_the_cost_of_electricity_is_putting_strain_on_your_wallet__We_would_like_to_use_our_money_expertise_to_help_you_manage_your_electricity_budget__You_can_finance_solar_energy_solutions_with_your_home_loan__which_will_help_you_reduce_or_negate_your_monthly_electricity_bill__and_you_won_t_have_to_worry_about_future_electricity_tariff_hikes__For_more_information_visit {
+            get {
+                return ResourceManager.GetString(@"We understand that the cost of electricity is putting strain on your wallet. We would like to use our money expertise to help you manage your electricity budget. You can finance solar energy solutions with your home loan, which will help you reduce or negate your monthly electricity bill, and you won't have to worry about future electricity tariff hikes. For more information visit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ons waardeer jou volgehoue ondersteuning en wil jou graag van diens wees.
+        /// </summary>
+        internal static string We_value_your_continued_support_and_look_forward_to_being_of_service_to_you {
+            get {
+                return ResourceManager.GetString("We value your continued support and look forward to being of service to you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Met die Nedbank Home-buying Toolkit kan jy.
+        /// </summary>
+        internal static string With_the_Nedbank_Home_buying_Toolkit_you_can {
+            get {
+                return ResourceManager.GetString("With the Nedbank Home-buying Toolkit you can", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jy kan Nedbank Private Wealth nou op LinkedIn, Facebook en Twitter volg.
+        /// </summary>
+        internal static string You_can_now_follow_Nedbank_Private_Wealth_on_LinkedIn__Facebook_and_Twitter {
+            get {
+                return ResourceManager.GetString("You can now follow Nedbank Private Wealth on LinkedIn, Facebook and Twitter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jou rekening sluit nie outomaties as jy jou huislening afbetaal het nie – jy moet nog &apos;n verbandkanselleringproses volg. Jou vereffeningsbrief het meer inligting, of bel ons by.
+        /// </summary>
+        internal static string Your_account_does_not_automatically_close_once_you_have_paid_up_your_home_loan___you_have_to_follow_a_bond_cancellation_process_Your_settlement_letter_has_more_information__or_call_us_on {
+            get {
+                return ResourceManager.GetString("Your account does not automatically close once you have paid up your home loan - " +
+                        "you have to follow a bond cancellation process.Your settlement letter has more i" +
+                        "nformation, or call us on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jou rekening sluit nie outomaties as jy jou huislening afbetaal het nie – jy moet nog &apos;n verbandkanselleringproses volg. Jou vereffeningsbrief het meer inligting, of bel ons by.
+        /// </summary>
+        internal static string Your_account_does_not_automatically_close_once_you_have_paid_up_your_home_loan__you_have_to_follow_a_bond_cancellation_process__Your_settlement_letter_has_more_information__or_call_us_on {
+            get {
+                return ResourceManager.GetString("Your account does not automatically close once you have paid up your home loan, y" +
+                        "ou have to follow a bond cancellation process. Your settlement letter has more i" +
+                        "nformation, or call us on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your banker.
+        /// </summary>
+        internal static string Your_banker {
+            get {
+                return ResourceManager.GetString("Your banker", resourceCulture);
             }
         }
     }

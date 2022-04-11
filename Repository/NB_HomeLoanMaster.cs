@@ -31,5 +31,6 @@ namespace nIS
         public Nullable<System.DateTime> RegisteredDate { get; set; }
         public string RegisteredAmount { get; set; }
         public string TenantCode { get; set; }
+        public string SegmentType { get; set; }
     }
 }

@@ -1224,7 +1224,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           }
           else if (widget.WidgetName == "NedbankService") {
             return this.widgetsGridsterItemArray.push({
-              cols: 6,
+              cols: 12,
               rows: 3,
               y: 0,
               x: 0,
@@ -1330,7 +1330,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "HomeLoanInstalmentDetail") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 3,
+              rows: 4,
               y: 0,
               x: 0,
               component: HomeLoanInstalmentDetailComponent,
@@ -1572,7 +1572,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "HomeLoanSummaryTaxPurpose") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 1,
+              rows: 2,
               y: 0,
               x: 0,
               component: HomeLoanSummaryTaxPurposeComponent,
@@ -1588,7 +1588,7 @@ export class AddDashboardDesignerComponent implements OnInit {
           else if (widget.WidgetName == "HomeLoanInstalment") {
             return this.widgetsGridsterItemArray.push({
               cols: 12,
-              rows: 1,
+              rows: 2,
               y: 0,
               x: 0,
               component: HomeLoanInstalmentComponent,

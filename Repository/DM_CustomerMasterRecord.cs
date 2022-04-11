@@ -34,5 +34,7 @@ namespace nIS
         public string Language { get; set; }
         public string Segment { get; set; }
         public Nullable<long> BranchId { get; set; }
+        public string AddressLine5 { get; set; }
+        public string AddressLine6 { get; set; }
     }
 }

@@ -1602,7 +1602,7 @@ namespace nIS
                                                 var widgetHtml = new StringBuilder(HtmlConstants.HOME_LOAN_TOTAL_AMOUNT_DETAIL_WIDGET_HTML);
                                                 var TotalLoanAmt = 0.0m;
                                                 var TotalOutstandingAmt = 0.0m;
-
+                                                string instalmentLabel = string.Empty;
                                                 if (jsonstr != string.Empty && validationEngine.IsValidJson(jsonstr))
                                                 {
                                                     var HomeLoans = JsonConvert.DeserializeObject<List<DM_HomeLoanMaster>>(jsonstr);
@@ -1627,8 +1627,27 @@ namespace nIS
                                                         {
                                                             TotalOutstandingAmt = 0.0m;
                                                         }
+
+                                                        var segmentType = HomeLoans.Select(it => it.SegmentType).FirstOrDefault();
+
+                                                        switch (segmentType.ToLower())
+                                                        {
+                                                            case HtmlConstants.MONTHLY_SEGMENT_FREQUENCY:
+                                                                instalmentLabel = HtmlConstants.MONTHLY_INSTALMENT_LABEL;
+                                                                break;
+                                                            case HtmlConstants.QUARTERLY_SEGMENT_FREQUENCY:
+                                                                instalmentLabel = HtmlConstants.QUARTERLY_INSTALMENT_LABEL;
+                                                                break;
+                                                            case HtmlConstants.ANNUAL_SEGMENT_FREQUENCY:
+                                                                instalmentLabel = HtmlConstants.ANNUAL_INSTALMENT_LABEL;
+                                                                break;
+                                                            default:
+                                                                instalmentLabel = HtmlConstants.MONTHLY_INSTALMENT_LABEL;
+                                                                break;
+                                                        }
                                                     }
 
+                                                    widgetHtml.Replace("{{InstalmentType}}", instalmentLabel);
                                                     widgetHtml.Replace("{{TotalHomeLoansAmount}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalLoanAmt));
                                                     widgetHtml.Replace("{{TotalHomeLoansBalanceOutstanding}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOutstandingAmt));
                                                     htmlString.Append(widgetHtml.ToString());
@@ -2045,76 +2064,78 @@ namespace nIS
                                                 {
                                                     var summaryTax = JsonConvert.DeserializeObject<DM_HomeLoanSummary>(jsonstr);
                                                     var htmlWidget = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_WIDGET_HTML);
+                                                    var htmlWidgetDetails = new StringBuilder(HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_HTML);
                                                     var res = 0.0m;
                                                     if (!string.IsNullOrEmpty(summaryTax.Basic_Instalment) && decimal.TryParse(summaryTax.Basic_Instalment, out res))
                                                     {
-                                                        htmlWidget.Replace("{{BasicInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        htmlWidgetDetails.Replace("{{BasicInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
                                                     }
                                                     else
                                                     {
-                                                        htmlWidget.Replace("{{BasicInstalment}}", "R0.00");
+                                                        htmlWidgetDetails.Replace("{{BasicInstalment}}", "R0.00");
                                                     }
                                                     res = 0.0m;
                                                     if (!string.IsNullOrEmpty(summaryTax.Houseowner_Ins) && decimal.TryParse(summaryTax.Houseowner_Ins, out res))
                                                     {
-                                                        htmlWidget.Replace("{{HouseownerInsurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        htmlWidgetDetails.Replace("{{HouseownerInsurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
                                                     }
                                                     else
                                                     {
-                                                        htmlWidget.Replace("{{HouseownerInsurance}}", "R0.00");
+                                                        htmlWidgetDetails.Replace("{{HouseownerInsurance}}", "R0.00");
                                                     }
 
                                                     res = 0.0m;
                                                     if (!string.IsNullOrEmpty(summaryTax.Loan_Protection) && decimal.TryParse(summaryTax.Loan_Protection, out res))
                                                     {
-                                                        htmlWidget.Replace("{{LoanProtectionAssurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        htmlWidgetDetails.Replace("{{LoanProtectionAssurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
                                                     }
                                                     else
                                                     {
-                                                        htmlWidget.Replace("{{LoanProtectionAssurance}}", "R0.00");
+                                                        htmlWidgetDetails.Replace("{{LoanProtectionAssurance}}", "R0.00");
                                                     }
 
                                                     res = 0.0m;
                                                     if (!string.IsNullOrEmpty(summaryTax.Recovery_Fee_Debit) && decimal.TryParse(summaryTax.Recovery_Fee_Debit, out res))
                                                     {
-                                                        htmlWidget.Replace("{{RecoveryOfFeeDebits}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        htmlWidgetDetails.Replace("{{RecoveryOfFeeDebits}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
                                                     }
                                                     else
                                                     {
-                                                        htmlWidget.Replace("{{RecoveryOfFeeDebits}}", "R0.00");
+                                                        htmlWidgetDetails.Replace("{{RecoveryOfFeeDebits}}", "R0.00");
                                                     }
 
                                                     res = 0.0m;
                                                     if (!string.IsNullOrEmpty(summaryTax.Capital_Redemption) && decimal.TryParse(summaryTax.Capital_Redemption, out res))
                                                     {
-                                                        htmlWidget.Replace("{{CapitalRedemption}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        htmlWidgetDetails.Replace("{{CapitalRedemption}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
                                                     }
                                                     else
                                                     {
-                                                        htmlWidget.Replace("{{CapitalRedemption}}", "R0.00");
+                                                        htmlWidgetDetails.Replace("{{CapitalRedemption}}", "R0.00");
                                                     }
 
                                                     res = 0.0m;
                                                     if (!string.IsNullOrEmpty(summaryTax.Service_Fee) && decimal.TryParse(summaryTax.Service_Fee, out res))
                                                     {
-                                                        htmlWidget.Replace("{{ServiceFee}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        htmlWidgetDetails.Replace("{{ServiceFee}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
                                                     }
                                                     else
                                                     {
-                                                        htmlWidget.Replace("{{ServiceFee}}", "R0.00");
+                                                        htmlWidgetDetails.Replace("{{ServiceFee}}", "R0.00");
                                                     }
 
                                                     res = 0.0m;
                                                     if (!string.IsNullOrEmpty(summaryTax.Total_Instalment) && decimal.TryParse(summaryTax.Total_Instalment, out res))
                                                     {
-                                                        htmlWidget.Replace("{{TotalInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                                                        htmlWidgetDetails.Replace("{{TotalInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
                                                     }
                                                     else
                                                     {
-                                                        htmlWidget.Replace("{{TotalInstalment}}", "R0.00");
+                                                        htmlWidgetDetails.Replace("{{TotalInstalment}}", "R0.00");
                                                     }
 
-                                                    htmlWidget.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                                                    htmlWidgetDetails.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                                                    htmlWidget.Replace("{{Home_Loan_Instalment_Details}}", htmlWidgetDetails.ToString());
                                                     htmlString.Append(htmlWidget);
                                                 }
                                             }

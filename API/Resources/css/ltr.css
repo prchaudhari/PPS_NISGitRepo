@@ -1039,6 +1039,10 @@ hr {
     font-size: 10pt;
 }
 
+.SummaryTable {
+    width: 100%;
+}
+
 .margin_left_15 {
     margin-left: 15px !important;
 }
