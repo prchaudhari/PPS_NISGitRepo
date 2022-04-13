@@ -237,13 +237,32 @@ export class AddComponent implements OnInit {
           this.widgetList[i].WidgetIcon = "fa fa-table";
         }
         else if (this.widgetList[i].WidgetName == "HomeLoanSummaryTaxPurpose") {
-          console.log(this.widgetList[i].WidgetName);
           this.widgetList[i].ImageSource = "assets/images/SummaryTaxPurpose.jpg";
           this.widgetList[i].WidgetIcon = "fa fa-tags";
         }
         else if (this.widgetList[i].WidgetName == "HomeLoanInstalment") {
           this.widgetList[i].ImageSource = "assets/images/NewInstalment.jpg";
           this.widgetList[i].WidgetIcon = "fa fa-repeat";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthHomeLoanTotalAmountDetail") {
+          this.widgetList[i].ImageSource = "assets/images/WealthHomeLoanTotalAmountDetail.jpg";
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthHomeLoanAccountsBreakdown") {
+          this.widgetList[i].ImageSource = "assets/images/WealthHomeLoanAccountsBreakdown.jpg";
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthHomeLoanSummaryTaxPurpose") {
+          this.widgetList[i].ImageSource = "assets/images/WealthSummaryTaxPurpose.jpg";
+          this.widgetList[i].WidgetIcon = "fa fa-tags";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthHomeLoanInstalment") {
+          this.widgetList[i].ImageSource = "assets/images/NewInstalment.jpg";
+          this.widgetList[i].WidgetIcon = "fa fa-repeat";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthHomeLoanBranchDetails") {
+          this.widgetList[i].ImageSource = "assets/images/WealthBranchDetails.PNG"
+          this.widgetList[i].WidgetIcon = "fa fa-university";
         }
         else if (this.widgetList[i].WidgetName == "PortfolioCustomerDetails") {
           this.widgetList[i].ImageSource = "assets/images/PortfolioCustomerDetails.JPG";

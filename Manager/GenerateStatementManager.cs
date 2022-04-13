@@ -1768,7 +1768,27 @@ namespace nIS
                                         break;
 
                                     case HtmlConstants.HOME_LOAN_INSTALMENT_WIDGET_NAME:
-                                        IsFailed = this.BindInstalmentWidgetData(pageContent, HomeLoanAccounts, customer, page, widget, statement, ErrorMessages);
+                                        IsFailed = this.BindHomeLoanInstalmentWidgetData(pageContent, HomeLoanAccounts, customer, page, widget, statement, ErrorMessages);
+                                        break;
+
+                                    case HtmlConstants.WEALTH_HOME_LOAN_TOTAL_AMOUNT_WIDGET_NAME:
+                                        this.BindHomeLoanWealthTotalAmountDetailWidgetData(pageContent, HomeLoanAccounts, page, widget);
+                                        break;
+
+                                    case HtmlConstants.WEALTH_HOME_LOAN_ACCOUNTS_BREAKDOWN_WIDGET_NAME:
+                                        this.BindHomeLoanWealthAccountsBreakdownWidgetData(pageContent, scriptHtmlRenderer, HomeLoanAccounts, page, widget, batchMaster, customer, statementRawData.OutputLocation);
+                                        break;
+
+                                    case HtmlConstants.WEALTH_HOME_LOAN_SUMMARY_TAX_PURPOSE_WIDGET_NAME:
+                                        this.BindHomeLoanWealthSummaryTaxPurposeWidgetData(pageContent, HomeLoanAccounts, widget);
+                                        break;
+
+                                    case HtmlConstants.WEALTH_HOME_LOAN_INSTALMENT_WIDGET_NAME:
+                                        IsFailed = this.BindHomeLoanWealthInstalmentWidgetData(pageContent, HomeLoanAccounts, customer, page, widget, statement, ErrorMessages);
+                                        break;
+
+                                    case HtmlConstants.WEALTH_HOME_LOAN_BRANCH_DETAILS_WIDGET_NAME:
+                                        IsFailed = this.BindHomeLoanWealthBranchDetailsData(pageContent, page, widget, ErrorMessages);
                                         break;
 
                                     case HtmlConstants.NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_NAME:
@@ -3102,10 +3122,12 @@ namespace nIS
                             break;
                     }
 
-                    var BranchDetail = HtmlConstants.BANK_DETAILS + contactCenter;
+                    StringBuilder BranchDetail = new StringBuilder();
+                    BranchDetail.Append(HtmlConstants.BANK_DETAILS);
+                    BranchDetail.Replace("{{TodayDate}}", string.Empty);
 
-                    pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail);
-                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", "");
+                    pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", BranchDetail.ToString());
+                    pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", contactCenter);
                 }
                 else
                 {
@@ -4061,6 +4083,63 @@ namespace nIS
             }
         }
 
+        private void BindHomeLoanWealthTotalAmountDetailWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget)
+        {
+            try
+            {
+                var TotalLoanAmt = 0.0m;
+                var TotalOutstandingAmt = 0.0m;
+                string instalmentLabel = string.Empty;
+                if (HomeLoans != null && HomeLoans.Count > 0)
+                {
+                    var res = 0.0m;
+                    try
+                    {
+                        TotalLoanAmt = HomeLoans.Select(it => decimal.TryParse(it.LoanAmount, out res) ? res : 0).ToList().Sum(it => it);
+                    }
+                    catch
+                    {
+                        TotalLoanAmt = 0.0m;
+                    }
+
+                    res = 0.0m;
+                    try
+                    {
+                        TotalOutstandingAmt = HomeLoans.Select(it => decimal.TryParse(it.Balance, out res) ? res : 0).ToList().Sum(it => it);
+                    }
+                    catch
+                    {
+                        TotalOutstandingAmt = 0.0m;
+                    }
+
+                    var segmentType = HomeLoans.Select(it => it.SegmentType).FirstOrDefault();
+
+                    switch (segmentType.ToLower())
+                    {
+                        case HtmlConstants.MONTHLY_SEGMENT_FREQUENCY:
+                            instalmentLabel = HtmlConstants.MONTHLY_INSTALMENT_LABEL;
+                            break;
+                        case HtmlConstants.QUARTERLY_SEGMENT_FREQUENCY:
+                            instalmentLabel = HtmlConstants.QUARTERLY_INSTALMENT_LABEL;
+                            break;
+                        case HtmlConstants.ANNUAL_SEGMENT_FREQUENCY:
+                            instalmentLabel = HtmlConstants.ANNUAL_INSTALMENT_LABEL;
+                            break;
+                        default:
+                            instalmentLabel = HtmlConstants.MONTHLY_INSTALMENT_LABEL;
+                            break;
+                    }
+                }
+
+                pageContent.Replace("{{InstalmentType_" + page.Identifier + "_" + widget.Identifier + "}}", instalmentLabel);
+                pageContent.Replace("{{TotalHomeLoansAmount_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalLoanAmt));
+                pageContent.Replace("{{TotalHomeLoansBalanceOutstanding_" + page.Identifier + "_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, TotalOutstandingAmt));
+            }
+            catch
+            {
+            }
+        }
+
         private void BindHomeLoanAccountsBreakdownWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget, BatchMaster batchMaster, DM_CustomerMaster customer, string outputLocation)
         {
             try
@@ -4147,7 +4226,7 @@ namespace nIS
                         #endregion  Loan Details
 
                         #region Loan Transaction table
-                        var LoanTransactionHtml = new StringBuilder(HtmlConstants.HOME_LOAN_TRANSACTION_DETAIL_DIV_HTML_SMT);
+                        var LoanTransactionHtml = new StringBuilder(HtmlConstants.HOME_LOAN_TRANSACTION_DETAIL_DIV_HTML);
                         LoanTransactionHtml.Replace("HomeLoanTransactionTable", "HomeLoanTransactionTable_" + HomeLoan.InvestorId + "_" + page.Identifier);
                         StringBuilder tableHTML = new StringBuilder();
                         if (HomeLoan.LoanTransactions != null && HomeLoan.LoanTransactions.Count > 0)
@@ -4195,14 +4274,14 @@ namespace nIS
                             //scriptval.Replace("HomeLoanTransactionTablePagination", "HomeLoanTransactionTablePagination_" + HomeLoan.InvestorId + "_" + page.Identifier);
                             //scriptHtmlRenderer.Append(scriptval);
                         }
-                        LoanTransactionHtml.Replace("{{HomeLoanTransactionsTableBody}}", tableHTML.ToString());
+                        LoanTransactionHtml.Replace("{{HomeLoanTransactionRow}}", tableHTML.ToString());
                         TabContentHtml.Append(LoanTransactionHtml.ToString());
                         #endregion Loan Transaction table
 
                         #region Loan arrears
                         var paddingClass = HomeLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
                         var LoanArrearHtml = new StringBuilder(HtmlConstants.HOME_LOAN_STATEMENT_OVERVIEW_AND_PAYMENT_DUE_DIV_HTML).Replace("{{PaddingClass}}", paddingClass);
-                        LoanArrearHtml.Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                        LoanArrearHtml.Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MMMM_yyyy));
                         res = 0.0m;
                         if (decimal.TryParse(HomeLoan.Balance, out res))
                         {
@@ -4310,6 +4389,231 @@ namespace nIS
             }
         }
 
+        private void BindHomeLoanWealthAccountsBreakdownWidgetData(StringBuilder pageContent, StringBuilder scriptHtmlRenderer, List<DM_HomeLoanMaster> HomeLoans, Page page, PageWidget widget, BatchMaster batchMaster, DM_CustomerMaster customer, string outputLocation)
+        {
+            try
+            {
+                if (HomeLoans != null && HomeLoans.Count > 0)
+                {
+                    //create tab-content div if accounts is greater than 1, otherwise create simple div
+                    var TabContentHtml = new StringBuilder();
+                    var counter = 0;
+                    TabContentHtml.Append((HomeLoans.Count > 1) ? "<div class='tab-content'>" : string.Empty);
+                    HomeLoans.ForEach(HomeLoan =>
+                    {
+                        var accNo = HomeLoan.InvestorId.ToString();
+                        string lastFourDigisOfAccountNumber = accNo.Length > 4 ? accNo.Substring(Math.Max(0, accNo.Length - 4)) : accNo;
+
+                        TabContentHtml.Append("<div id='HomeLoan-" + lastFourDigisOfAccountNumber + "' >");
+
+                        #region Loan Details
+                        var LoanDetailHtml = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_ACCOUNT_DETAIL_DIV_HTML);
+                        LoanDetailHtml.Replace("{{BondNumber}}", accNo);
+                        LoanDetailHtml.Replace("{{RegistrationDate}}", HomeLoan.RegisteredDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+
+                        var secDesc1 = string.Empty;
+                        var secDesc2 = string.Empty;
+                        var secDesc3 = string.Empty;
+                        if (HomeLoan.SecDescription1.Length > 15 || ((HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2).Length > 25))
+                        {
+                            secDesc1 = HomeLoan.SecDescription1;
+                            if ((HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3).Length > 25)
+                            {
+                                secDesc2 = HomeLoan.SecDescription2;
+                                secDesc3 = HomeLoan.SecDescription3;
+                            }
+                            else
+                            {
+                                secDesc2 = HomeLoan.SecDescription2 + " " + HomeLoan.SecDescription3;
+                            }
+                        }
+                        else
+                        {
+                            secDesc1 = HomeLoan.SecDescription1 + " " + HomeLoan.SecDescription2;
+                            secDesc2 = HomeLoan.SecDescription3;
+                        }
+
+                        LoanDetailHtml.Replace("{{SecDescription1}}", secDesc1);
+                        LoanDetailHtml.Replace("{{SecDescription2}}", secDesc2);
+                        LoanDetailHtml.Replace("{{SecDescription3}}", secDesc3);
+
+                        var res = 0.0m;
+                        if (decimal.TryParse(HomeLoan.IntialDue, out res))
+                        {
+                            LoanDetailHtml.Replace("{{Instalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                        }
+                        else
+                        {
+                            LoanDetailHtml.Replace("{{Instalment}}", "R0.00");
+                        }
+
+                        LoanDetailHtml.Replace("{{InterestRate}}", HomeLoan.ChargeRate + "% pa");
+
+                        res = 0.0m;
+                        if (decimal.TryParse(HomeLoan.ArrearStatus, out res))
+                        {
+                            LoanDetailHtml.Replace("{{Arrears}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                        }
+                        else
+                        {
+                            LoanDetailHtml.Replace("{{Arrears}}", "R0.00");
+                        }
+
+                        res = 0.0m;
+                        if (decimal.TryParse(HomeLoan.RegisteredAmount, out res))
+                        {
+                            LoanDetailHtml.Replace("{{RegisteredAmount}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                        }
+                        else
+                        {
+                            LoanDetailHtml.Replace("{{RegisteredAmount}}", "R0.00");
+                        }
+
+                        LoanDetailHtml.Replace("{{LoanTerms}}", HomeLoan.LoanTerm + " months");
+                        TabContentHtml.Append(LoanDetailHtml.ToString());
+
+                        #endregion  Loan Details
+
+                        #region Loan Transaction table
+                        var LoanTransactionHtml = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_TRANSACTION_DETAIL_DIV_HTML);
+                        LoanTransactionHtml.Replace("HomeLoanTransactionTable", "HomeLoanTransactionTable_" + HomeLoan.InvestorId + "_" + page.Identifier);
+                        StringBuilder tableHTML = new StringBuilder();
+                        if (HomeLoan.LoanTransactions != null && HomeLoan.LoanTransactions.Count > 0)
+                        {
+                            HomeLoan.LoanTransactions.ForEach(trans =>
+                            {
+                                res = 0.0m;
+                                if (decimal.TryParse(trans.Debit, out res))
+                                {
+                                    trans.Debit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.Debit;
+                                }
+                                else
+                                {
+                                    trans.Debit = trans.Debit;
+                                }
+
+                                if (decimal.TryParse(trans.Credit, out res))
+                                {
+                                    trans.Credit = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.Credit;
+                                }
+                                else
+                                {
+                                    trans.Credit = trans.Credit;
+                                }
+
+                                if (decimal.TryParse(trans.RunningBalance, out res))
+                                {
+                                    trans.RunningBalance = res > 0 ? utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res) : trans.RunningBalance;
+                                }
+                                else
+                                {
+                                    trans.RunningBalance = trans.RunningBalance;
+                                }
+
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_date + "</td><td class='w-13 text-center'>" + trans.Effective_date + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" + trans.RunningBalance + "</td></tr>");
+                            });
+                        }
+                        LoanTransactionHtml.Replace("{{HomeLoanTransactionRow}}", tableHTML.ToString());
+                        TabContentHtml.Append(LoanTransactionHtml.ToString());
+                        #endregion Loan Transaction table
+
+                        #region Loan arrears
+                        var paddingClass = HomeLoan.LoanTransactions.Count > 10 ? "pb-2 pt-5" : "py-2";
+                        var LoanArrearHtml = new StringBuilder(HtmlConstants.HOME_LOAN_WEALTH_STATEMENT_OVERVIEW_AND_PAYMENT_DUE_DIV_HTML).Replace("{{PaddingClass}}", paddingClass);
+                        LoanArrearHtml.Replace("{{StatementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MMMM_yyyy));
+                        res = 0.0m;
+                        if (decimal.TryParse(HomeLoan.Balance, out res))
+                        {
+                            LoanArrearHtml.Replace("{{BalanceOutstanding}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                        }
+                        else
+                        {
+                            LoanArrearHtml.Replace("{{BalanceOutstanding}}", "R0.00");
+                        }
+
+                        if (HomeLoan.LoanArrear != null)
+                        {
+                            var plArrears = HomeLoan.LoanArrear;
+                            res = 0.0m;
+                            if (decimal.TryParse(plArrears.ARREARS_120, out res))
+                            {
+                                LoanArrearHtml.Replace("{{After120Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                LoanArrearHtml.Replace("{{After120Days}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (decimal.TryParse(plArrears.ARREARS_90, out res))
+                            {
+                                LoanArrearHtml.Replace("{{After90Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                LoanArrearHtml.Replace("{{After90Days}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (decimal.TryParse(plArrears.ARREARS_60, out res))
+                            {
+                                LoanArrearHtml.Replace("{{After60Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                LoanArrearHtml.Replace("{{After60Days}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (decimal.TryParse(plArrears.ARREARS_30, out res))
+                            {
+                                LoanArrearHtml.Replace("{{After30Days}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                LoanArrearHtml.Replace("{{After30Days}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (decimal.TryParse(plArrears.CurrentDue, out res))
+                            {
+                                LoanArrearHtml.Replace("{{CurrentPaymentDue}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                LoanArrearHtml.Replace("{{CurrentPaymentDue}}", "R0.00");
+                            }
+                        }
+                        else
+                        {
+                            LoanArrearHtml.Replace("{{After120Days}}", "R0.00");
+                            LoanArrearHtml.Replace("{{After90Days}}", "R0.00");
+                            LoanArrearHtml.Replace("{{After60Days}}", "R0.00");
+                            LoanArrearHtml.Replace("{{After30Days}}", "R0.00");
+                            LoanArrearHtml.Replace("{{CurrentPaymentDue}}", "R0.00");
+                        }
+                        TabContentHtml.Append(LoanArrearHtml.ToString());
+
+                        #endregion  Loan arrears
+
+                        TabContentHtml.Append(HtmlConstants.END_DIV_TAG);
+                        counter++;
+                    });
+
+                    TabContentHtml.Append((HomeLoans.Count > 1) ? HtmlConstants.END_DIV_TAG : string.Empty);
+                    pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", TabContentHtml.ToString());
+                }
+                else
+                {
+                    pageContent.Replace("{{NavTab_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                    pageContent.Replace("{{TabContentsDiv_" + page.Identifier + "_" + widget.Identifier + "}}", string.Empty);
+                }
+            }
+            catch
+            {
+            }
+        }
+
         private void BindHomeLoanSummaryTaxPurposeWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, PageWidget widget)
         {
             if (HomeLoans != null && HomeLoans.Count > 0)
@@ -4370,7 +4674,67 @@ namespace nIS
             }
         }
 
-        private bool BindInstalmentWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, DM_CustomerMaster customer, Page page, PageWidget widget, Statement statement, StringBuilder ErrorMessages)
+        private void BindHomeLoanWealthSummaryTaxPurposeWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, PageWidget widget)
+        {
+            if (HomeLoans != null && HomeLoans.Count > 0)
+            {
+                foreach (var item in HomeLoans)
+                {
+                    var homeLoanSummary = item.LoanSummary;
+                    var res = 0.0m;
+                    if (!string.IsNullOrEmpty(homeLoanSummary.Annual_Interest) && decimal.TryParse(homeLoanSummary.Annual_Interest, out res))
+                    {
+                        pageContent.Replace("{{Interest_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{Interest_" + widget.Identifier + "}}", "R0.00");
+                    }
+
+                    res = 0.0m;
+                    if (!string.IsNullOrEmpty(homeLoanSummary.Annual_Insurance) && decimal.TryParse(homeLoanSummary.Annual_Insurance, out res))
+                    {
+                        pageContent.Replace("{{Insurance_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{Insurance_" + widget.Identifier + "}}", "R0.00");
+                    }
+
+                    res = 0.0m;
+                    if (!string.IsNullOrEmpty(homeLoanSummary.Annual_Service_Fee) && decimal.TryParse(homeLoanSummary.Annual_Service_Fee, out res))
+                    {
+                        pageContent.Replace("{{Servicefee_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{Servicefee_" + widget.Identifier + "}}", "R0.00");
+                    }
+
+                    res = 0.0m;
+                    if (!string.IsNullOrEmpty(homeLoanSummary.Annual_Legal_Costs) && decimal.TryParse(homeLoanSummary.Annual_Legal_Costs, out res))
+                    {
+                        pageContent.Replace("{{Legalcosts_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{Legalcosts_" + widget.Identifier + "}}", "R0.00");
+                    }
+
+                    res = 0.0m;
+                    if (!string.IsNullOrEmpty(homeLoanSummary.Annual_Total_Recvd) && decimal.TryParse(homeLoanSummary.Annual_Total_Recvd, out res))
+                    {
+                        pageContent.Replace("{{AmountReceived_" + widget.Identifier + "}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                    }
+                    else
+                    {
+                        pageContent.Replace("{{AmountReceived_" + widget.Identifier + "}}", "R0.00");
+                    }
+                }
+            }
+        }
+
+        private bool BindHomeLoanInstalmentWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, DM_CustomerMaster customer, Page page, PageWidget widget, Statement statement, StringBuilder ErrorMessages)
         {
             try
             {
@@ -4383,6 +4747,129 @@ namespace nIS
                         {
                             #region Installment details div
                             var htmlWidget = HtmlConstants.HOME_LOAN_INSTALMENT_DETAILS_HTML;
+                            StringBuilder htmlForWidget = new StringBuilder();
+                            htmlForWidget.Append(htmlWidget);
+                            var res = 0.0m;
+                            if (!string.IsNullOrEmpty(HomeLoanSummary.Basic_Instalment) && decimal.TryParse(HomeLoanSummary.Basic_Instalment, out res))
+                            {
+                                htmlForWidget.Replace("{{BasicInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                htmlForWidget.Replace("{{BasicInstalment}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (!string.IsNullOrEmpty(HomeLoanSummary.Houseowner_Ins) && decimal.TryParse(HomeLoanSummary.Houseowner_Ins, out res))
+                            {
+                                htmlForWidget.Replace("{{HouseownerInsurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                htmlForWidget.Replace("{{HouseownerInsurance}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (!string.IsNullOrEmpty(HomeLoanSummary.Loan_Protection) && decimal.TryParse(HomeLoanSummary.Loan_Protection, out res))
+                            {
+                                htmlForWidget.Replace("{{LoanProtectionAssurance}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                htmlForWidget.Replace("{{LoanProtectionAssurance}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (!string.IsNullOrEmpty(HomeLoanSummary.Recovery_Fee_Debit) && decimal.TryParse(HomeLoanSummary.Recovery_Fee_Debit, out res))
+                            {
+                                htmlForWidget.Replace("{{RecoveryOfFeeDebits}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                htmlForWidget.Replace("{{RecoveryOfFeeDebits}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (!string.IsNullOrEmpty(HomeLoanSummary.Capital_Redemption) && decimal.TryParse(HomeLoanSummary.Capital_Redemption, out res))
+                            {
+                                htmlForWidget.Replace("{{CapitalRedemption}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                htmlForWidget.Replace("{{CapitalRedemption}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (!string.IsNullOrEmpty(HomeLoanSummary.Service_Fee) && decimal.TryParse(HomeLoanSummary.Service_Fee, out res))
+                            {
+                                htmlForWidget.Replace("{{ServiceFee}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                htmlForWidget.Replace("{{ServiceFee}}", "R0.00");
+                            }
+
+                            res = 0.0m;
+                            if (!string.IsNullOrEmpty(HomeLoanSummary.Total_Instalment) && decimal.TryParse(HomeLoanSummary.Total_Instalment, out res))
+                            {
+                                htmlForWidget.Replace("{{TotalInstalment}}", utility.CurrencyFormatting(ModelConstant.SA_COUNTRY_CULTURE_INFO_CODE, ModelConstant.DOT_AS_CURERNCY_DECIMAL_SEPARATOR, ModelConstant.CURRENCY_FORMAT_VALUE, res));
+                            }
+                            else
+                            {
+                                htmlForWidget.Replace("{{TotalInstalment}}", "R0.00");
+                            }
+
+                            htmlForWidget.Replace("{{InstalmentDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                            pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", htmlForWidget.ToString());
+
+                            #endregion
+                        }
+                        else
+                        {
+                            pageContent.Replace("{{Home_Loan_Instalment_Details_" + widget.Identifier + "}}", string.Empty);
+                        }
+                    });
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.Append("<li>Error occurred while configuring StaticHtml widget for Page: " + page.Identifier + " and Widget: " + widget.Identifier + ". error: " + ex.Message + "!!</li>");
+                return true;
+            }
+        }
+
+        private bool BindHomeLoanWealthBranchDetailsData(StringBuilder pageContent, Page page, PageWidget widget, StringBuilder ErrorMessages)
+        {
+            try
+            {
+                StringBuilder htmlString = new StringBuilder();
+                htmlString.Append(HtmlConstants.BANK_DETAILS);
+                htmlString.Replace("{{TodayDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
+                pageContent.Replace("{{BranchDetails_" + page.Identifier + "_" + widget.Identifier + "}}", htmlString.ToString());
+                pageContent.Replace("{{ContactCenter_" + page.Identifier + "_" + widget.Identifier + "}}", HtmlConstants.WEA_BANKING);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.Append("<li>Error occurred while configuring StaticHtml widget for Page: " + page.Identifier + " and Widget: " + widget.Identifier + ". error: " + ex.Message + "!!</li>");
+                return true;
+            }
+        }
+
+        private bool BindHomeLoanWealthInstalmentWidgetData(StringBuilder pageContent, List<DM_HomeLoanMaster> HomeLoans, DM_CustomerMaster customer, Page page, PageWidget widget, Statement statement, StringBuilder ErrorMessages)
+        {
+            try
+            {
+                if (HomeLoans.Count > 0)
+                {
+                    HomeLoans.ForEach(HomeLoan =>
+                    {
+                        var HomeLoanSummary = HomeLoan.LoanSummary;
+                        if (HomeLoanSummary != null && !string.IsNullOrEmpty(HomeLoanSummary.Total_Instalment) && HomeLoanSummary.Total_Instalment != "0" && HomeLoanSummary.Total_Instalment != "0.00")
+                        {
+                            #region Installment details div
+                            var htmlWidget = HtmlConstants.HOME_LOAN_WEALTH_INSTALMENT_DETAILS_HTML;
                             StringBuilder htmlForWidget = new StringBuilder();
                             htmlForWidget.Append(htmlWidget);
                             var res = 0.0m;

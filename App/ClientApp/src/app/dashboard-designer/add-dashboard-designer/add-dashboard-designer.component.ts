@@ -21,7 +21,7 @@ import {
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
   PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent,
-  HomeLoanInstalmentComponent
+  HomeLoanInstalmentComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -1601,6 +1601,83 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "WealthHomeLoanTotalAmountDetail") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: WealthHomeLoanTotalAmountDetailComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "WealthHomeLoanAccountsBreakdown") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 10,
+              y: 0,
+              x: 0,
+              component: WealthHomeLoanAccountsBreakdownComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "WealthHomeLoanSummaryTaxPurpose") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: WealthHomeLoanSummaryTaxPurposeComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "WealthHomeLoanInstalment") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: WealthHomeLoanInstalmentComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              TempImageIdentifier: '' + widget.Identifier + this.widgetItemCount,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "WealthHomeLoanBranchDetails") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: WealthHomeLoanBankDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
         }
         else {
           if (widget.WidgetType == 'Table') {
@@ -1927,6 +2004,21 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widget.WidgetName == "HomeLoanInstalment") {
         gridObj.component = HomeLoanInstalmentComponent
+      }
+      else if (widget.WidgetName == "WealthHomeLoanTotalAmountDetail") {
+        gridObj.component = WealthHomeLoanTotalAmountDetailComponent
+      }
+      else if (widget.WidgetName == "WealthHomeLoanAccountsBreakdown") {
+        gridObj.component = WealthHomeLoanAccountsBreakdownComponent
+      }
+      else if (widget.WidgetName == "WealthHomeLoanSummaryTaxPurpose") {
+        gridObj.component = WealthHomeLoanSummaryTaxPurposeComponent
+      }
+      else if (widget.WidgetName == "WealthHomeLoanInstalment") {
+        gridObj.component = WealthHomeLoanInstalmentComponent
+      }
+      else if (widget.WidgetName == "WealthHomeLoanBranchDetails") {
+        gridObj.component = WealthHomeLoanBankDetailsComponent
       }
     }
     else {

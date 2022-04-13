@@ -18,7 +18,7 @@ import {
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
-  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent
+  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -469,6 +469,21 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widgetName == "HomeLoanInstalment") {
               gridObj.component = HomeLoanInstalmentComponent
+            }
+            else if (widgetName == "WealthHomeLoanTotalAmountDetail") {
+              gridObj.component = WealthHomeLoanTotalAmountDetailComponent
+            }
+            else if (widgetName == "WealthHomeLoanAccountsBreakdown") {
+              gridObj.component = WealthHomeLoanAccountsBreakdownComponent
+            }
+            else if (widgetName == "WealthHomeLoanSummaryTaxPurpose") {
+              gridObj.component = WealthHomeLoanSummaryTaxPurposeComponent
+            }
+            else if (widgetName == "WealthHomeLoanInstalment") {
+              gridObj.component = WealthHomeLoanInstalmentComponent
+            }
+            else if (widgetName == "WealthHomeLoanBranchDetails") {
+              gridObj.component = WealthHomeLoanBankDetailsComponent
             }
         }
         else {
