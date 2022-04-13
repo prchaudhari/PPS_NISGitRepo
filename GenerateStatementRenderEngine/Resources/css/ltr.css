@@ -379,7 +379,14 @@
     font-family: 'Mark Pro Regular';
 }
 
-.LoanTransactionTable tbody {
+.LoanTransactionTable-W th {
+    background-color: black !important;
+    color: #fff;
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
+}
+
+.LoanTransactionTable tbody, .LoanTransactionTable-W tbody {
     font-size: 8pt;
     font-family: 'Mark Pro Regular';
 }
@@ -426,6 +433,13 @@
 .card-body-sub-header {
     font-size: 12pt;
     color: #005b00 !important;
+    font-family: 'Mark Pro Medium';
+    padding: 0px 25px;
+}
+
+.card-body-sub-header-w {
+    font-size: 12pt;
+    color: rgb(126, 84, 117) !important;
     font-family: 'Mark Pro Medium';
     padding: 0px 25px;
 }
@@ -651,6 +665,16 @@
     line-height: 30px;
 }
 
+.paymentDueHeaderBlock-W {
+    background-color: black !important;
+    text-align: center;
+    color: white;
+    width: 20%;
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
+    line-height: 30px;
+}
+
 .paymentDueFooterBlock {
     background-color: #f3f3f3 !important;
     text-align: center;
@@ -705,7 +729,7 @@
     font-size: 12pt !important;
 }
 
-.LoanTransactionTable tbody tr:nth-of-type(odd) {
+.LoanTransactionTable tbody tr:nth-of-type(odd) .LoanTransactionTable-W tbody tr:nth-of-type(odd) {
     background-color: #f3f3f3 !important;
 }
 
@@ -760,6 +784,12 @@
 
 .NedbankHomeLoanTxt {
     color: #005b00 !important;
+    font-family: 'Mark Pro Bold' !important;
+    font-size: 12pt !important;
+}
+
+.NedbankHomeLoanTxt-W {
+    color: rgb(126, 84, 117) !important;
     font-family: 'Mark Pro Bold' !important;
     font-size: 12pt !important;
 }

@@ -1353,6 +1353,15 @@ namespace nIS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hang van ondersoek en eiendomswaardasie af.
         /// </summary>
         internal static string Subject_to_verification_and_property_valuation {

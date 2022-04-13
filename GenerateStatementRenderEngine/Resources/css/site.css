@@ -2097,7 +2097,14 @@
         font-family: 'Mark Pro Regular';
     }
 
-    .LoanTransactionTable tbody {
+    .LoanTransactionTable-W th {
+        background-color: rgb(126, 84, 117) !important;
+        color: #fff;
+        font-size: 8pt;
+        font-family: 'Mark Pro Regular';
+    }
+
+    .LoanTransactionTable tbody, .LoanTransactionTable-W tbody {
         font-size: 14px;
         font-family: 'Mark Pro Regular';
     }
@@ -2142,6 +2149,13 @@
     .card-body-sub-header {
         font-size: 18px;
         color: #005b00 !important;
+        font-family: 'Mark Pro Medium';
+        padding: 0px 25px;
+    }
+
+    .card-body-sub-header-w {
+        font-size: 18px;
+        color: rgb(126, 84, 117) !important;
         font-family: 'Mark Pro Medium';
         padding: 0px 25px;
     }
@@ -2314,6 +2328,16 @@
 
     .paymentDueHeaderBlock {
         background-color: #1c6a41 !important;
+        text-align: center;
+        padding-top: .25rem !important;
+        height: 30px;
+        color: white;
+        width: 20%;
+        font-family: 'Mark Pro Regular';
+    }
+
+    .paymentDueHeaderBlock-W {
+        background-color: black !important;
         text-align: center;
         padding-top: .25rem !important;
         height: 30px;

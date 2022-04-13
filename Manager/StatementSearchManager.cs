@@ -3016,7 +3016,7 @@ namespace nIS
                         }
                         TabContentHtml.Append(LoanArrearHtml.ToString());
 
-                        var PaymentDueMessageDivHtml = new StringBuilder(HtmlConstants.HOME_LAON_PAYMENT_DUE_SPECIAL_MESSAGE_DIV_HTML);
+                        var PaymentDueMessageDivHtml = new StringBuilder(HtmlConstants.HOME_LOAN_PAYMENT_DUE_SPECIAL_MESSAGE_DIV_HTML);
                         var spjsonstr = HtmlConstants.HOME_LOAN_SPECIAL_MESSAGES_WIDGET_PREVIEW_JSON_STRING;
                         if (spjsonstr != string.Empty && validationEngine.IsValidJson(spjsonstr))
                         {
