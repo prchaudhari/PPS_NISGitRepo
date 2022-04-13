@@ -3876,6 +3876,7 @@ namespace nIS
 
                         #region Loan Transaction
                         var LoanTransactionHtml = new StringBuilder(HtmlConstants.PERSONAL_LOAN_ACCOUNT_TRANSACTION_DETAIL_SMT);
+                        StringBuilder tableHTML = new StringBuilder();
                         if (PersonalLoan.LoanTransactions != null && PersonalLoan.LoanTransactions.Count > 0)
                         {
                             PersonalLoan.LoanTransactions.ForEach(trans =>
@@ -3907,22 +3908,28 @@ namespace nIS
                                 {
                                     trans.OutstandingCapital = "-";
                                 }
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate 
+                                    + "</td><td class='w-13 text-center'>" + trans.EffectiveDate + "</td><td class='w-35'>" 
+                                    + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit 
+                                    + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" 
+                                    + trans.OutstandingCapital + "</td></tr>");
                             });
 
-                            var LoanTransactionjson = "PersonalLoanTransactiondata" + PersonalLoan.InvestorId + page.Identifier + "=" + JsonConvert.SerializeObject(PersonalLoan.LoanTransactions);
-                            this.utility.WriteToJsonFile(LoanTransactionjson, "PersonalLoanTransactiondata" + PersonalLoan.InvestorId + page.Identifier + ".json", batchMaster.Identifier, customer.CustomerId, outputLocation);
-                            scriptHtmlRenderer.Append("<script type='text/javascript' src='./PersonalLoanTransactiondata" + PersonalLoan.InvestorId + page.Identifier + ".json'></script>");
+                            //var LoanTransactionjson = "PersonalLoanTransactiondata" + PersonalLoan.InvestorId + page.Identifier + "=" + JsonConvert.SerializeObject(PersonalLoan.LoanTransactions);
+                            //this.utility.WriteToJsonFile(LoanTransactionjson, "PersonalLoanTransactiondata" + PersonalLoan.InvestorId + page.Identifier + ".json", batchMaster.Identifier, customer.CustomerId, outputLocation);
+                            //scriptHtmlRenderer.Append("<script type='text/javascript' src='./PersonalLoanTransactiondata" + PersonalLoan.InvestorId + page.Identifier + ".json'></script>");
 
                             LoanTransactionHtml.Replace("PersonalLoanTransactionTable", "PersonalLoanTransactionTable_" + PersonalLoan.InvestorId + "_" + page.Identifier);
                             LoanTransactionHtml.Replace("PersonalLoanTransactionTablePagination", "PersonalLoanTransactionTablePagination_" + PersonalLoan.InvestorId + "_" + page.Identifier);
 
-                            var scriptval = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TRANSACTION_TABLE_VIEW_SCRIPT);
-                            scriptval.Replace("PersonalLoanTransactiondata", "PersonalLoanTransactiondata" + PersonalLoan.InvestorId + page.Identifier);
-                            scriptval.Replace("PersonalLoanTransactionTable", "PersonalLoanTransactionTable_" + PersonalLoan.InvestorId + "_" + page.Identifier);
-                            scriptval.Replace("PersonalLoanTransactionTablePagination", "PersonalLoanTransactionTablePagination_" + PersonalLoan.InvestorId + "_" + page.Identifier);
-                            scriptHtmlRenderer.Append(scriptval);
+                            //var scriptval = new StringBuilder(HtmlConstants.PERSONAL_LOAN_TRANSACTION_TABLE_VIEW_SCRIPT);
+                            //scriptval.Replace("PersonalLoanTransactiondata", "PersonalLoanTransactiondata" + PersonalLoan.InvestorId + page.Identifier);
+                            //scriptval.Replace("PersonalLoanTransactionTable", "PersonalLoanTransactionTable_" + PersonalLoan.InvestorId + "_" + page.Identifier);
+                            //scriptval.Replace("PersonalLoanTransactionTablePagination", "PersonalLoanTransactionTablePagination_" + PersonalLoan.InvestorId + "_" + page.Identifier);
+                            //scriptHtmlRenderer.Append(scriptval);
                         }
 
+                        LoanTransactionHtml.Replace("{{PersonalLoanTransactionsTableBody}}", tableHTML.ToString());
                         TabContentHtml.Append(LoanTransactionHtml.ToString());
                         #endregion Loan Transaction
 
