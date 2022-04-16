@@ -324,6 +324,34 @@ export class AddComponent implements OnInit {
           this.widgetList[i].ImageSource = "assets/images/SegmentBasedContent.JPG";
           this.widgetList[i].WidgetIcon = "fa fa-id-card-o";
         }
+        else if (this.widgetList[i].WidgetName == "MCAAccountSummary") {
+          this.widgetList[i].ImageSource = "assets/images/MCAAccountSummary.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "MCATransaction") {
+          this.widgetList[i].ImageSource = "assets/images/MCATransaction.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "MCAVATAnalysis") {
+          this.widgetList[i].ImageSource = "assets/images/MCAVATAnalysis.JPG"
+          this.widgetList[i].WidgetIcon = "fa fa-bar-chart";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthMCAAccountSummary") {
+          this.widgetList[i].ImageSource = "assets/images/WealthMCAAccountSummary.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-single-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthMCATransaction") {
+          this.widgetList[i].ImageSource = "assets/images/WealthMCATransaction.JPG"
+          this.widgetList[i].WidgetIcon = "icon-widget-multi-column2";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthMCAVATAnalysis") {
+          this.widgetList[i].ImageSource = "assets/images/WealthMCAVATAnalysis.JPG"
+          this.widgetList[i].WidgetIcon = "fa fa-bar-chart";
+        }
+        else if (this.widgetList[i].WidgetName == "WealthMCABranchDetails") {
+          this.widgetList[i].ImageSource = "assets/images/WealthBranchDetails.PNG"
+          this.widgetList[i].WidgetIcon = "fa fa-university";
+        }
       }
     }
 

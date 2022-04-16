@@ -1061,6 +1061,46 @@
           <Property Name="WJXBFS5_TransId" Type="nvarchar" MaxLength="500" />
           <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NIS_DEV2.NIS.NB_MCAMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="NB_MCAMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+            
+            
+            
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="VatNo" Type="nvarchar" MaxLength="12" />
+          <Property Name="OverdraftLimit" Type="money" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="20" />
+          <Property Name="FreeBalance" Type="money" />
+          <Property Name="StatementNo" Type="varchar" MaxLength="50" />
+          <Property Name="StatementDate" Type="datetime" Nullable="false" />
+          <Property Name="StatementFrequency" Type="nvarchar" MaxLength="100" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NB_MCATransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchId" Type="bigint" Nullable="false" />
+          <Property Name="CustomerId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InvestorId" Type="bigint" Nullable="false" />
+          <Property Name="TransactionDate" Type="datetime" />
+          <Property Name="TransactionDescription" Type="nvarchar(max)" />
+          <Property Name="Debit" Type="money" />
+          <Property Name="Credit" Type="money" />
+          <Property Name="Rate" Type="money" />
+          <Property Name="Days" Type="bigint" />
+          <Property Name="AccuredInterest" Type="money" />
+          <Property Name="TenantCode" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="NB_SegmentMaster">
           <Key>
             <PropertyRef Name="Id" />
@@ -2220,6 +2260,7 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySet Name="NB_InvestmentMaster_Old" EntityType="Self.NB_InvestmentMaster_Old" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_InvestmentTransaction" EntityType="Self.NB_InvestmentTransaction" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_InvestmentTransaction_Old" EntityType="Self.NB_InvestmentTransaction_Old" Schema="NIS" store:Type="Tables" />
+          <EntitySet Name="NB_MCATransaction" EntityType="Self.NB_MCATransaction" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_SegmentMaster" EntityType="Self.NB_SegmentMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_SegmentTypeMaster" EntityType="Self.NB_SegmentTypeMaster" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="NB_ServiceMessagesAndContacts" EntityType="Self.NB_ServiceMessagesAndContacts" Schema="NIS" store:Type="Tables" />
@@ -2258,6 +2299,22 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySet Name="Widget" EntityType="Self.Widget" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="WidgetPageTypeMap" EntityType="Self.WidgetPageTypeMap" Schema="NIS" store:Type="Tables" />
           <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="TenantManager" store:Type="Tables" />
+          <EntitySet Name="NB_MCAMaster" EntityType="Self.NB_MCAMaster" store:Type="Tables" store:Schema="NIS">
+            <DefiningQuery>SELECT 
+    [NB_MCAMaster].[Id] AS [Id], 
+    [NB_MCAMaster].[BatchId] AS [BatchId], 
+    [NB_MCAMaster].[CustomerId] AS [CustomerId], 
+    [NB_MCAMaster].[InvestorId] AS [InvestorId], 
+    [NB_MCAMaster].[VatNo] AS [VatNo], 
+    [NB_MCAMaster].[OverdraftLimit] AS [OverdraftLimit], 
+    [NB_MCAMaster].[Currency] AS [Currency], 
+    [NB_MCAMaster].[FreeBalance] AS [FreeBalance], 
+    [NB_MCAMaster].[StatementNo] AS [StatementNo], 
+    [NB_MCAMaster].[StatementDate] AS [StatementDate], 
+    [NB_MCAMaster].[StatementFrequency] AS [StatementFrequency], 
+    [NB_MCAMaster].[TenantCode] AS [TenantCode]
+    FROM [NIS].[NB_MCAMaster] AS [NB_MCAMaster]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="TenantSecurityCodeFormat" EntityType="Self.TenantSecurityCodeFormat" store:Type="Tables" store:Schema="NIS">
             <DefiningQuery>SELECT 
     [TenantSecurityCodeFormat].[Id] AS [Id], 
@@ -2635,6 +2692,8 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySet Name="NB_HomeLoanMaster" EntityType="NISModel.NB_HomeLoanMaster" />
           <EntitySet Name="NB_HomeLoanSummary" EntityType="NISModel.NB_HomeLoanSummary" />
           <EntitySet Name="NB_HomeLoanTransaction" EntityType="NISModel.NB_HomeLoanTransaction" />
+          <EntitySet Name="NB_MCAMaster" EntityType="NISModel.NB_MCAMaster" />
+          <EntitySet Name="NB_MCATransaction" EntityType="NISModel.NB_MCATransaction" />
           </EntityContainer>
         <EntityType Name="UserRecord">
           <Key>
@@ -4751,6 +4810,40 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <Property Name="RunningBalance" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="NB_MCAMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="VatNo" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="OverdraftLimit" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Currency" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FreeBalance" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="StatementNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StatementDate" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="StatementFrequency" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NB_MCATransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchId" Type="Int64" Nullable="false" />
+          <Property Name="CustomerId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvestorId" Type="Int64" Nullable="false" />
+          <Property Name="TransactionDate" Type="DateTime" Precision="3" />
+          <Property Name="TransactionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Debit" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Credit" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Rate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Days" Type="Int64" />
+          <Property Name="AccuredInterest" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6841,6 +6934,42 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Effective_Date" ColumnName="Effective_Date" />
                 <ScalarProperty Name="Posting_Date" ColumnName="Posting_Date" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_MCAMaster">
+            <EntityTypeMapping TypeName="NISModel.NB_MCAMaster">
+              <MappingFragment StoreEntitySet="NB_MCAMaster">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="StatementFrequency" ColumnName="StatementFrequency" />
+                <ScalarProperty Name="StatementDate" ColumnName="StatementDate" />
+                <ScalarProperty Name="StatementNo" ColumnName="StatementNo" />
+                <ScalarProperty Name="FreeBalance" ColumnName="FreeBalance" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="OverdraftLimit" ColumnName="OverdraftLimit" />
+                <ScalarProperty Name="VatNo" ColumnName="VatNo" />
+                <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NB_MCATransaction">
+            <EntityTypeMapping TypeName="NISModel.NB_MCATransaction">
+              <MappingFragment StoreEntitySet="NB_MCATransaction">
+                <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
+                <ScalarProperty Name="AccuredInterest" ColumnName="AccuredInterest" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="TransactionDescription" ColumnName="TransactionDescription" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
                 <ScalarProperty Name="InvestorId" ColumnName="InvestorId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />

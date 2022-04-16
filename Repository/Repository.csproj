@@ -242,6 +242,7 @@
     <Compile Include="IRepository\IRoleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
     <Compile Include="IRepository\NedBank\ICustomerRepository.cs" />
+    <Compile Include="IRepository\NedBank\IMCARepository.cs" />
     <Compile Include="IRepository\NedBank\IInvestmentRepository.cs" />
     <Compile Include="Mappings\ScheduleLogDetailRecord.cs" />
     <Compile Include="Mappings\View_PageRecord.cs" />
@@ -285,6 +286,12 @@
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_Investment_Source.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_MCAMaster.cs">
+      <DependentUpon>NISDataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NB_MCATransaction.cs">
       <DependentUpon>NISDataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="NB_SegmentMaster.cs">
@@ -356,6 +363,7 @@
     </Compile>
     <Compile Include="SQLRepository\NedBank\SQLCustomerRepository.cs" />
     <Compile Include="SQLRepository\NedBank\SQLInvestmentRepository.cs" />
+    <Compile Include="SQLRepository\NedBank\SQLMCARepository.cs" />
     <Compile Include="SQLRepository\SQLAnalyticsDataRepository.cs" />
     <Compile Include="SQLRepository\SQLArchivalProcessRepository.cs" />
     <Compile Include="SQLRepository\SQLAzureCityRepository.cs" />

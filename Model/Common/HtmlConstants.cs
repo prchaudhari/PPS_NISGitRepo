@@ -151,6 +151,20 @@ namespace nIS
 
         public const string NEDBANK_CATEGORY_SPEND_REWARDS_PIE_CHART_WIDGET_NAME = "CategorySpendRewards";
 
+        public const string NEDBANK_MCA_ACCOUNT_SUMMARY_WIDGET_NAME = "MCAAccountSummary";
+
+        public const string NEDBANK_MCA_TRANSACTION_WIDGET_NAME = "MCATransaction";
+
+        public const string NEDBANK_MCA_VAT_ANALYSIS_WIDGET_NAME = "MCAVATAnalysis";
+
+        public const string NEDBANK_WEALTH_MCA_ACCOUNT_SUMMARY_WIDGET_NAME = "WealthMCAAccountSummary";
+
+        public const string NEDBANK_WEALTH_MCA_TRANSACTION_WIDGET_NAME = "WealthMCATransaction";
+
+        public const string NEDBANK_WEALTH_MCA_VAT_ANALYSIS_WIDGET_NAME = "WealthMCAVATAnalysis";
+
+        public const string NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME = "WealthMCABranchDetails";
+
         public const string AT_A_GLANCE_PAGE_TYPE = "At a Glance";
 
         public const string INVESTMENT_PAGE_TYPE = "Investment";
@@ -160,6 +174,8 @@ namespace nIS
         public const string PERSONAL_LOAN_PAGE_TYPE = "Personal Loan";
 
         public const string HOME_LOAN_PAGE_TYPE = "Home Loan ENG";
+
+        public const string MULTI_CURRENCY_PAGE_TYPE = "Multi Currency";
 
         public const string GREENBACKS_PAGE_TYPE = "Greenbacks";
 
@@ -187,7 +203,7 @@ namespace nIS
 
         public const string VIDEO_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-center'><video class='video-widget w-100 float-left {{NewVideoClass}}' controls><source src='{{VideoSource}}' type='video/mp4'></video></div></div>";
         
-        public const string STATIC_HTML_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-left padding_left_0' style='padding-bottom: 0px;'>{{StaticHtml}}</div></div>";
+        public const string STATIC_HTML_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-left' style='padding-bottom: 0px;'>{{StaticHtml}}</div></div>";
 
         public const string SEGMENT_BASED_CONTENT_WIDGET_HTML = "<div class='card border-0' style='height:{{WidgetDivHeight}}'> <div class='card-body text-left padding_right_0 padding_left_0'>{{SegmentBasedContent}}</div></div><br><br>";
 
@@ -306,6 +322,20 @@ namespace nIS
         public const string HOME_LOAN_WEALTH_TRANSACTION_DETAIL_DIV_HTML = "<div class='pt-1'><table class='LoanTransactionTable-W customTable'><thead><tr class='ht-30'><th class='w-12 text-center'>Post date</th><th class='w-15 text-center'>Effective date</th><th class='w-35'>Transaction</th><th class='w-12 text-right'>Debit (R)</th><th class='w-12 text-right'>Credit (R)</th><th class='w-13 text-right'>Balance (R)</th></tr></thead></table><div class='pt-0 overflow-auto'><table id='HomeLoanTransactionTable' class='LoanTransactionTable customTable'><tbody>{{HomeLoanTransactionRow}}</tbody></table></div></div>";
 
         public const string HOME_LOAN_WEALTH_BRANCH_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body BranchDetails py-1 ht-130px'>{{BranchDetails}}</div><div class='card-body ConactCenterDiv text-success-w float-right pt-2'>{{ContactCenter}}</div></div>";
+
+        public const string MCA_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='mca_header_label pb-2'>Currency Account Statement</div><div class='mca_sub_header_label pb-2'>Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div></div></div><div class='card border-0'><div class='card-body text-left py-0'><div class='MCADetailDiv'><h4 class='pl-25px'><span class='mca_detail_statement_label'>Account summary</span></h4><table class='mca_custom_table mt-2' border='0'><tbody><tr><td class='w-25'>Account no:</td><td class='w-25 text-right pr-4 mca_text_custom_color'>{{AccountNo}}</td><td class='w-25'>Statement no:</td><td class='w-25 text-right mca_text_custom_color'>{{StatementNo}}</td></tr><tr><td class='w-25'>Overdraft limit:</td><td class='w-25 text-right pr-4 mca_text_custom_color'>{{OverdraftLimit}}</td><td class='w-25'>Statement date</td><td class='w-25 text-right mca_text_custom_color'>{{StatementDate}}</td></tr><tr><td class='w-25'>Currency:</td><td class='w-25 text-right pr-4 mca_text_custom_color'>{{Currency}}</td><td class='w-25'>Statement frequency</td><td class='w-25 text-right mca_text_custom_color'>{{Statementfrequency}}</td></tr><tr><td class='w-25'>Free balance:</td><td class='w-25 text-right pr-4 mca_text_custom_color'>{{FreeBalance}}</td><td class='w-25'></td><td class='w-25 text-right pr-4 mca_text_custom_color'></td></tr></tbody></table></div></div></div>";
+
+        public const string MCA_TRANSACTION_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable mca_custom_table'><thead><tr class='ht-30'><th class='w-15 text-center'>Transaction date</th><th class='w-35 text-left'>Description and additional information</th><th class='w-12 text-right'>Debit</th><th class='w-12 text-right'>Credit</th><th class='w-7 text-center'>Rate</th><th class='w-7 text-center'>Days</th><th class='w-12 text-right'>Accrued interest</th></tr></thead></table><div class='pt-0 overflow-auto'><table id='MCATransactionTable' class='MCATransactionTable mca_custom_table'><tbody>{{MCATransactionRow}}</tbody></table></div></div></div></div>";
+
+        public const string MCA_VAT_ANALYSIS_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable mca_small_table'><thead><tr class='ht-30'><th class='ip-w-25 text-left'>From</th><th class='ip-w-25 text-left'>To</th><th class='ip-w-25 text-right'>Rate</th><th class='ip-w-25 text-right'>Amount</th></tr></thead></table><div class='pt-0 overflow-auto'><table class='MCATransactionTable mca_small_table' id='MCAVATTable'><tbody>{{MCAVATTable}}</tbody></table></div></div></div></div>";
+
+        public const string MCA_WEALTH_ACCOUNT_SUMMARY_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='mca_header_label-w pb-2'>Currency Account Statement</div><div class='mca_sub_header_label pb-2'>Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div></div></div><div class='card border-0'><div class='card-body text-left py-0'><div class='MCADetailDiv'><h4 class='pl-25px'><span class='mca_detail_statement_label-w'>Account summary</span></h4><table class='mca_custom_table mt-2' border='0'><tbody><tr><td class='w-25'>Account no:</td><td class='w-25 text-right pr-4 mca_text_custom_color-w'>{{AccountNo}}</td><td class='w-25'>Statement no:</td><td class='w-25 text-right mca_text_custom_color-w'>{{StatementNo}}</td></tr><tr><td class='w-25'>Overdraft limit:</td><td class='w-25 text-right pr-4 mca_text_custom_color-w'>{{OverdraftLimit}}</td><td class='w-25'>Statement date</td><td class='w-25 text-right mca_text_custom_color-w'>{{StatementDate}}</td></tr><tr><td class='w-25'>Currency:</td><td class='w-25 text-right pr-4 mca_text_custom_color-w'>{{Currency}}</td><td class='w-25'>Statement frequency</td><td class='w-25 text-right mca_text_custom_color-w'>{{Statementfrequency}}</td></tr><tr><td class='w-25'>Free balance:</td><td class='w-25 text-right pr-4 mca_text_custom_color-w'>{{FreeBalance}}</td><td class='w-25'></td><td class='w-25 text-right pr-4 mca_text_custom_color-w'></td></tr></tbody></table></div>";
+
+        public const string MCA_WEALTH_TRANSACTION_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable-W mca_custom_table'><thead><tr class='ht-30'><th class='w-15 text-center'>Transaction date</th><th class='w-35 text-left'>Description and additional information</th><th class='w-12 text-right'>Debit</th><th class='w-12 text-right'>Credit</th><th class='w-7 text-center'>Rate</th><th class='w-7 text-center'>Days</th><th class='w-12 text-right'>Accrued interest</th></tr></thead></table><div class='pt-0 overflow-auto'><table id='MCATransactionTable' class='MCATransactionTable-W mca_custom_table'><tbody>{{MCATransactionRow}}</tbody></table></div></div></div></div>";
+
+        public const string MCA_WEALTH_VAT_ANALYSIS_DETAIL_DIV_HTML = "<div id={{WidgetId}} class='card border-0'><div class='card-body text-left py-0'><div class='pt-1'><table class='MCATransactionTable-W mca_small_table'><thead><tr class='ht-30'><th class='ip-w-25 text-left'>From</th><th class='ip-w-25 text-left'>To</th><th class='ip-w-25 text-right'>Rate</th><th class='ip-w-25 text-right'>Amount</th></tr></thead></table><div class='pt-0 overflow-auto'><table class='MCATransactionTable-W mca_small_table' id='MCAVATTable'><tbody>{{MCAVATTable}}</tbody></table></div></div></div></div>";
+
+        public const string MCA_WEALTH_BRANCH_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card border-0 ht-150px'><div class='card-body BranchDetails py-1 ht-130px'>{{BranchDetails}}</div><div class='card-body ConactCenterDiv text-success-w float-right pt-2'>{{ContactCenter}}</div></div>";
 
         public const string NEDBANK_PORTFOLIO_CUSTOMER_DETAILS_WIDGET_HTML = "<div id={{WidgetId}} class='card OnlyBorderRight ht-130px'><div class='card-body CustomerDetails'><span class='fnt-14pt pt-1'>{{CustomerName}}</span> <br/><p class='fnt-8pt pt-1'>Customer Id: {{CustomerId}}</p><p class='fnt-8pt'>Mobile No: {{MobileNumber}}</p><p class='fnt-8pt'>Email: {{EmailAddress}}</p> </div></div>";
 
@@ -499,6 +529,10 @@ namespace nIS
 
         public const string GREENBACKS_CATEGORY_SPEND_REWARD_POINTS_BAR_GRAPH_SCRIPT = "<script type='text/javascript'> $(document).ready(function(){setTimeout(function(){if(null!=$('#HiddenCategorySpendRewardsGraph').val()&&''!=$('#HiddenCategorySpendRewardsGraph').val()){let t=JSON.parse($('#HiddenCategorySpendRewardsGraph').val());if(0!=t.length){var e=[];t.forEach(t=>{e.push({name:t.Category,y:t.SpendReward})}),Highcharts.chart('CategorySpendRewardsPieChartcontainer',{chart:{plotBackgroundColor:null,plotBorderWidth:null,plotShadow:!1,type:'pie',style:{fontFamily:'Mark Pro Regular',fontSize:'8pt'}},title:{text:''},credits:{enabled:!1},tooltip:{pointFormat:'{series.name}: <b>{point.percentage:.1f}%</b>'},accessibility:{point:{valueSuffix:'%'}},plotOptions:{pie:{allowPointSelect:!0,cursor:'pointer',dataLabels:{enabled:!0,format:'{point.percentage:.1f} %'},showInLegend:!0}},series:[{name:'Percentage',colorByPoint:!0,data:e}]})}else $('#CategorySpendRewardsPieChartcontainer').html('<div class=\"text-danger text-center\">No data available.</div>')}},100)}); </script>";
 
+        public const string MCA_ACCOUNT_SUMMARY_PREVIEW_JSON_STRING = "{'Identifier': 1, 'CustomerId': 171001255307,'InvestorId': 8000478630101,'VatNo': '4160247682','OverdraftLimit': '1.00','Currency': 'GBP','FreeBalance': '0.28','StatementNo': '180', 'StatementDate': '08/12/2021', 'StatementFrequency': 'Weekly' }";
+
+        public const string MCA_TRANSACTION_PREVIEW_JSON_STRING = "[{'Identifier': 1, 'CustomerId': 171001255307,'InvestorId': 8000478630101,'Transaction_Date': '08/09/2021','Description': 'IP91010010CF4F80 CHEMICAL OF AFRI','Debit': '','Rate': '2.90','Credit': '20558.41', 'Days': '1', 'AccuredInterest': '0.40' }, {'Identifier': 2, 'CustomerId': 171001255307,'InvestorId': 8000478630101,'Transaction_Date': '08/10/2021','Description': 'CARRIED FORWARD','Debit': '','Rate': '2.90','Credit': '20559.41', 'Days': '2', 'AccuredInterest': '0.50' }, {'Identifier': 2, 'CustomerId': 171001255307,'InvestorId': 8000478630101,'Transaction_Date': '08/11/2021','Description': 'BROUGHT FORWARD','Debit': '547.12','Rate': '2.70','Credit': '', 'Days': '3', 'AccuredInterest': '0.60' }]";
+
         public const string CONSUMER_BANKING = "Contact centre is 0860 555 111";
 
         public const string PML_BANKING = "Contact centre is 0860 555 111";
@@ -515,7 +549,7 @@ namespace nIS
 
         public const string CORPORATE_BANKING = "Contact centre is 0860 102 187";
 
-        public const string BANK_DETAILS = "Nedbank <br> 135 Rivonia Road, Sandton 2196 <br>PO Box 1144, Johannesburg, 2000 <br> South Africa <br> Bank VAT Reg No 4320116074<br>{{TodayDate}}<br>";
+        public const string BANK_DETAILS = "Nedbank <br> 135 Rivonia Road, Sandton 2196 <br>PO Box 1144, Johannesburg, 2000 <br> South Africa <br> Bank VAT Reg No 43201 16074<br>{{TodayDate}}<br>";
 
         public const string WEA_BANKING = "Nedbank Private Wealth Service Suite: 0860 111 263";
 

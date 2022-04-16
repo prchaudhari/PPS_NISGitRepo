@@ -21,7 +21,8 @@ import {
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
   PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthBreakdownOfInvestmentAccountsComponent, HomeLoanSummaryTaxPurposeComponent,
-  HomeLoanInstalmentComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent
+  HomeLoanInstalmentComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent,
+  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent, WealthMCABranchDetailsComponent
 } from '../widgetComponent/widgetComponent';
 import { AssetLibraryService } from '../../layout/asset-libraries/asset-library.service';
 import { AssetSearchParameter } from '../../layout/asset-libraries/asset-library';
@@ -1678,6 +1679,111 @@ export class AddDashboardDesignerComponent implements OnInit {
               IsDynamicWidget: false
             })
           }
+          else if (widget.WidgetName == "MCAAccountSummary") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: MCAAccountSummaryComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "MCATransaction") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: MCATransactionComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "MCAVATAnalysis") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: MCAVATAnalysisComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "WealthMCAAccountSummary") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 3,
+              y: 0,
+              x: 0,
+              component: WealthMCAAccountSummaryComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "WealthMCATransaction") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 4,
+              y: 0,
+              x: 0,
+              component: WealthMCATransactionComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "WealthMCAVATAnalysis") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 12,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: WealthMCAVATAnalysisComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
+          else if (widget.WidgetName == "WealthMCABranchDetails") {
+            return this.widgetsGridsterItemArray.push({
+              cols: 6,
+              rows: 2,
+              y: 0,
+              x: 0,
+              component: WealthMCABranchDetailsComponent,
+              value: widget.WidgetName,
+              WidgetId: widget.Identifier,
+              widgetItemCount: this.widgetItemCount,
+              WidgetSetting: '',
+              WidgetType: widget.WidgetType,
+              IsDynamicWidget: false
+            })
+          }
         }
         else {
           if (widget.WidgetType == 'Table') {
@@ -2019,6 +2125,27 @@ export class AddDashboardDesignerComponent implements OnInit {
       }
       else if (widget.WidgetName == "WealthHomeLoanBranchDetails") {
         gridObj.component = WealthHomeLoanBankDetailsComponent
+      }
+      else if (widget.WidgetName == "MCAAccountSummary") {
+        gridObj.component = MCAAccountSummaryComponent
+      }
+      else if (widget.WidgetName == "MCATransaction") {
+        gridObj.component = MCATransactionComponent
+      }
+      else if (widget.WidgetName == "MCAVATAnalysis") {
+        gridObj.component = MCAVATAnalysisComponent
+      }
+      else if (widget.WidgetName == "WealthMCAAccountSummary") {
+        gridObj.component = WealthMCAAccountSummaryComponent
+      }
+      else if (widget.WidgetName == "WealthMCATransaction") {
+        gridObj.component = WealthMCATransactionComponent
+      }
+      else if (widget.WidgetName == "WealthMCAVATAnalysis") {
+        gridObj.component = WealthMCAVATAnalysisComponent
+      }
+      else if (widget.WidgetName == "WealthMCABranchDetails") {
+        gridObj.component = WealthMCABranchDetailsComponent
       }
     }
     else {

@@ -138,6 +138,8 @@ namespace nIS
         public virtual DbSet<NB_HomeLoanMaster> NB_HomeLoanMaster { get; set; }
         public virtual DbSet<NB_HomeLoanSummary> NB_HomeLoanSummary { get; set; }
         public virtual DbSet<NB_HomeLoanTransaction> NB_HomeLoanTransaction { get; set; }
+        public virtual DbSet<NB_MCAMaster> NB_MCAMaster { get; set; }
+        public virtual DbSet<NB_MCATransaction> NB_MCATransaction { get; set; }
     
         [DbFunction("NISEntities", "FnUserTenant")]
         public virtual IQueryable<FnUserTenant_Result> FnUserTenant(Nullable<int> userId)

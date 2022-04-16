@@ -61,6 +61,8 @@ namespace nIS
         /// </summary>
         private ITenantTransactionDataRepository tenantTransactionDataRepository = null;
 
+        private IMCARepository mcaDataRepository = null;
+
         /// <summary>
         /// The schedule log repository.
         /// </summary>
@@ -123,6 +125,7 @@ namespace nIS
                 this.cryptoManager = this.unityContainer.Resolve<ICryptoManager>();
                 this.investmentRepository = this.unityContainer.Resolve<IInvestmentRepository>();
                 this.customerRepository = this.unityContainer.Resolve<ICustomerRepository>();
+                this.mcaDataRepository = this.unityContainer.Resolve<IMCARepository>();
             }
             catch (Exception ex)
             {
@@ -1515,6 +1518,7 @@ namespace nIS
                     var investmentMasters = new List<DM_InvestmentMaster>();
                     var PersonalLoanAccounts = new List<DM_PersonalLoanMaster>();
                     var HomeLoanAccounts = new List<DM_HomeLoanMaster>();
+                    var MCA = new List<DM_MCAMaster>();
 
                     var AccountsSummaries = new List<DM_AccountsSummary>();
                     var _lstAccountAnalysis = new List<DM_AccountAnanlysis>();
@@ -1533,6 +1537,7 @@ namespace nIS
                     var IsPersonalLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.PERSONAL_LOAN_PAGE_TYPE).ToList().Count > 0;
                     var IsHomeLoanPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE).ToList().Count > 0;
                     var IsRewardPageTypePresent = statement.Pages.Where(it => it.PageTypeName == HtmlConstants.GREENBACKS_PAGE_TYPE).ToList().Count > 0;
+                    var IsMCAPageTypePresent = statement.Pages.Where(it => it.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE).ToList().Count > 0;
 
                     if (IsPortFolioPageTypePresent)
                     {
@@ -1587,6 +1592,10 @@ namespace nIS
                         GreenbacksRedeemedPoints = this.tenantTransactionDataRepository.GET_DM_GreenbacksRewardPointsRedeemed(customerSearchParameter, tenantCode)?.ToList();
                         CustProductMonthwiseRewardPoints = this.tenantTransactionDataRepository.GET_DM_CustomerProductWiseRewardPoints(customerSearchParameter, tenantCode)?.ToList();
                         CustRewardSpendByCategory = this.tenantTransactionDataRepository.GET_DM_CustomerRewardSpendByCategory(customerSearchParameter, tenantCode)?.ToList();
+                    }
+                    if (IsMCAPageTypePresent)
+                    {
+                        MCA = this.mcaDataRepository.Get_DM_MCAMaster(new CustomerMCASearchParameter() { BatchId = batchMaster.Identifier }, tenantCode)?.ToList();
                     }
 
                     var SpecialMessage = this.tenantTransactionDataRepository.Get_DM_SpecialMessages(new MessageAndNoteSearchParameter() { BatchId = batchMaster.Identifier, CustomerId = customer.CustomerId }, tenantCode)?.ToList()?.FirstOrDefault();
@@ -1666,13 +1675,21 @@ namespace nIS
                                 {
                                     case HtmlConstants.CUSTOMER_DETAILS_WIDGET_NAME:
                                         bool isShowCellNo = false;
+                                        string vatNo = string.Empty;
                                         if (statement.Pages.Count == 1)
                                         {
                                             if (page.PageTypeName == HtmlConstants.HOME_LOAN_PAGE_TYPE)
                                             {
                                                 isShowCellNo = true;
                                             }
-                                            this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget, isShowCellNo);
+                                            if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE)
+                                            {
+                                                if (MCA != null && MCA.Count > 0)
+                                                {
+                                                    vatNo = MCA[0].VatNo;
+                                                }
+                                            }
+                                            this.BindCustomerDetailsWidgetData(pageContent, customer, page, widget, isShowCellNo, vatNo);
                                         }
                                         break;
 
@@ -1850,6 +1867,33 @@ namespace nIS
                                         break;
                                     case HtmlConstants.WEALTH_EXPLANATORY_NOTES_WIDGET_NAME:
                                         this.BindExplanatoryNotesWidgetData(pageContent, batchMaster, page, widget, tenantCode);
+                                        break;
+                                    case HtmlConstants.NEDBANK_MCA_ACCOUNT_SUMMARY_WIDGET_NAME:
+                                        this.BindMCAAccountSummaryDetailWidgetData(pageContent, MCA, widget);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_MCA_TRANSACTION_WIDGET_NAME:
+                                        this.BindMCATransactionDetailWidgetData(pageContent, MCA, widget, page);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_MCA_VAT_ANALYSIS_WIDGET_NAME:
+                                        this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_WEALTH_MCA_ACCOUNT_SUMMARY_WIDGET_NAME:
+                                        this.BindMCAAccountSummaryDetailWidgetData(pageContent, MCA, widget);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_WEALTH_MCA_TRANSACTION_WIDGET_NAME:
+                                        this.BindMCATransactionDetailWidgetData(pageContent, MCA, widget, page);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_WEALTH_MCA_VAT_ANALYSIS_WIDGET_NAME:
+                                        this.BindMCAVATAnalysisDetailWidgetData(pageContent, MCA, widget, page);
+                                        break;
+
+                                    case HtmlConstants.NEDBANK_WEALTH_MCA_BRANCH_DETAILS_WIDGET_NAME:
+                                        this.BindBranchDetailsWidgetData(pageContent, BranchId, page, widget, tenantCode, customer);
                                         break;
                                 }
                             }
@@ -2701,8 +2745,6 @@ namespace nIS
         {
             try
             {
-                var content = HtmlConstants.STATIC_HTML_WIDGET_HTML;
-
                 dynamic widgetSetting = JObject.Parse(widget.WidgetSetting);
                 var html = "";
                 if (widgetSetting.html.ToString().Length > 0)
@@ -2736,12 +2778,8 @@ namespace nIS
                 }
 
                 html = html.Replace("{{contactCenter}}", contactCenter);
-
                 html = html.Replace("{{statementDate}}", DateTime.Now.ToString(ModelConstant.DATE_FORMAT_yyyy_MM_dd));
-
-                content = content.Replace("{{StaticHtml}}", html);
-
-                pageContent.Replace("{{StaticHtml_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", content);
+                pageContent.Replace("{{StaticHtml_" + statement.Identifier + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
 
                 return false;
             }
@@ -3075,7 +3113,7 @@ namespace nIS
 
         #region These methods helps to bind data to static widgets of Nedbank HTML statment
 
-        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, bool isShowCellNo = false)
+        private void BindCustomerDetailsWidgetData(StringBuilder pageContent, DM_CustomerMaster customer, Page page, PageWidget widget, bool isShowCellNo = false, string vatNo = "")
         {
             var CustomerDetails = (!string.IsNullOrEmpty(customer.Title) && customer.Title.ToLower() != "null" ? customer.Title + " " : string.Empty) + (!string.IsNullOrEmpty(customer.FirstName) && customer.FirstName.ToLower() != "null" ? customer.FirstName + " " : string.Empty) + (!string.IsNullOrEmpty(customer.SurName) && customer.SurName.ToLower() != "null" ? customer.SurName + " " : string.Empty) + "<br>" +
                 (!string.IsNullOrEmpty(customer.AddressLine0) ? (customer.AddressLine0 + "<br>") : string.Empty) +
@@ -3087,6 +3125,11 @@ namespace nIS
             if (isShowCellNo)
             {
                 CustomerDetails += "<br> Cell:" + customer.Mask_Cell_No;
+            }
+
+            if (page.PageTypeName.Trim() == HtmlConstants.MULTI_CURRENCY_PAGE_TYPE)
+            {
+                CustomerDetails += "<br><br><br> Vat no : " + vatNo;
             }
 
             pageContent.Replace("{{CustomerDetails_" + page.Identifier + "_" + widget.Identifier + "}}", CustomerDetails);
@@ -3120,6 +3163,9 @@ namespace nIS
                         case "cib":
                             contactCenter = HtmlConstants.CORPORATE_BANKING;
                             break;
+                        case "wea":
+                            contactCenter = HtmlConstants.WEA_BANKING;
+                            break;
                     }
 
                     StringBuilder BranchDetail = new StringBuilder();
@@ -3139,6 +3185,7 @@ namespace nIS
             {
             }
         }
+
 
         private void BindBondDetailsWidgetData(StringBuilder pageContent, Page page, PageWidget widget, List<DM_HomeLoanMaster> HomeLoans, DM_CustomerMaster customer)
         {
@@ -3930,10 +3977,10 @@ namespace nIS
                                 {
                                     trans.OutstandingCapital = "-";
                                 }
-                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate 
-                                    + "</td><td class='w-13 text-center'>" + trans.EffectiveDate + "</td><td class='w-35'>" 
-                                    + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit 
-                                    + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" 
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.PostingDate
+                                    + "</td><td class='w-13 text-center'>" + trans.EffectiveDate + "</td><td class='w-35'>"
+                                    + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit
+                                    + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>"
                                     + trans.OutstandingCapital + "</td></tr>");
                             });
 
@@ -4063,8 +4110,8 @@ namespace nIS
                     }
 
                     var segmentType = HomeLoans.Select(it => it.SegmentType).FirstOrDefault();
-                    
-                    switch(segmentType.ToLower())
+
+                    switch (segmentType.ToLower())
                     {
                         case HtmlConstants.MONTHLY_SEGMENT_FREQUENCY:
                             instalmentLabel = HtmlConstants.MONTHLY_INSTALMENT_LABEL;
@@ -5401,6 +5448,98 @@ namespace nIS
                 pageContent.Replace("{{" + HtmlConstants.WEALTH_INVESTOR_PERFORMANCE_WIDGET_NAME + "_" + page.Identifier + "_" + widget.Identifier + "}}", html);
             }
         }
+
+        private void BindMCAAccountSummaryDetailWidgetData(StringBuilder pageContent, List<DM_MCAMaster> MCAMasterList, PageWidget widget)
+        {
+            try
+            {
+                if (MCAMasterList != null && MCAMasterList.Count > 0)
+                {
+                    var mcaMaster = MCAMasterList[0];
+                    pageContent.Replace("{{AccountNo_" + widget.Identifier + "}}", mcaMaster.CustomerId);
+                    pageContent.Replace("{{StatementNo_" + widget.Identifier + "}}", mcaMaster.StatementNo);
+                    pageContent.Replace("{{OverdraftLimit_" + widget.Identifier + "}}", mcaMaster.OverdraftLimit != null ? mcaMaster.OverdraftLimit.ToString() : "");
+                    pageContent.Replace("{{StatementDate_" + widget.Identifier + "}}", mcaMaster.StatementDate.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy));
+                    pageContent.Replace("{{Currency_" + widget.Identifier + "}}", mcaMaster.Currency);
+                    pageContent.Replace("{{Statementfrequency_" + widget.Identifier + "}}", mcaMaster.StatementFrequency);
+                    pageContent.Replace("{{FreeBalance_" + widget.Identifier + "}}", mcaMaster.FreeBalance != null ? mcaMaster.FreeBalance.ToString() : "");
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private void BindMCATransactionDetailWidgetData(StringBuilder pageContent, List<DM_MCAMaster> MCAMasterList, PageWidget widget, Page page)
+        {
+            StringBuilder tableHTML = new StringBuilder();
+            if (MCAMasterList != null && MCAMasterList.Count > 0)
+            {
+                var MCAMaster = MCAMasterList[0];
+                if (MCAMaster.MCATransactions != null && MCAMaster.MCATransactions.Count > 0)
+                {
+                    var res = 0.0m;
+                    MCAMaster.MCATransactions.ForEach(trans =>
+                    {
+                        string debit = string.Empty;
+                        string credit = string.Empty;
+                        res = 0.0m;
+                        if (trans.Debit != null && decimal.TryParse(trans.Debit.ToString(), out res))
+                        {
+                            debit = res > 0 ? res.ToString() : trans.Debit.ToString();
+                        }
+                        else
+                        {
+                            debit = "";
+                        }
+
+                        if (trans.Credit != null && decimal.TryParse(trans.Credit.ToString(), out res))
+                        {
+                            credit = res > 0 ? res.ToString() : trans.Credit.ToString();
+                        }
+                        else
+                        {
+                            credit = "";
+                        }
+
+                        tableHTML.Append("<tr class='ht-20'>" +
+                                         "<td class='w-15 text-center'>" + trans.Transaction_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                         "<td class='w-35 text-left'>" + trans.Description + "</td>" +
+                                         "<td class='w-12 text-right'>" + debit + "</td>" +
+                                         "<td class='w-12 text-right'>" + credit + "</td>" +
+                                         "<td class='w-7 text-center'>" + trans.Rate + "</td>" +
+                                         "<td class='w-7 text-center'>" + trans.Days + "</td>" +
+                                         "<td class='w-12 text-right'>" + trans.AccuredInterest + "</td>" +
+                                         "</tr>");
+                    });
+                }
+                pageContent.Replace("{{MCATransactionRow_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
+            }
+        }
+
+        private void BindMCAVATAnalysisDetailWidgetData(StringBuilder pageContent, List<DM_MCAMaster> MCAMasterList, PageWidget widget, Page page)
+        {
+            StringBuilder tableHTML = new StringBuilder();
+            if (MCAMasterList != null && MCAMasterList.Count > 0)
+            {
+                var MCAMaster = MCAMasterList[0];
+                if (MCAMaster.MCATransactions != null && MCAMaster.MCATransactions.Count > 0)
+                {
+                    MCAMaster.MCATransactions.ForEach(trans =>
+                    {
+                        tableHTML.Append("<tr class='ht-20'>" +
+                                         "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                         "<td class='ip-w-25 text-left'>" + DateTime.Now.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td>" +
+                                         "<td class='ip-w-25 text-right'>" + trans.Rate + "</td>" +
+                                         "<td class='ip-w-25 text-right'>" + trans.Credit + "</td>" +
+                                         "</tr>");
+                    });
+                }
+                pageContent.Replace("{{MCAVATTable_" + page.Identifier + "_" + widget.Identifier + "}}", tableHTML.ToString());
+            }
+        }
+
+
 
         private StringBuilder Translate(StringBuilder inputStr, DM_CustomerMaster customer)
         {

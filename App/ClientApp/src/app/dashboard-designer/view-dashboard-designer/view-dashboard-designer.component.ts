@@ -18,7 +18,8 @@ import {
   PersonalLoanDetailComponent, PersonalLoanTransactionComponent, PersonalLoanPaymentDueComponent, SpecialMessageComponent, PersonalLoanInsuranceMessageComponent,
   PersonalLoanTotalAmountDetailComponent, PersonalLoanAccountsBreakdownComponent, HomeLoanTotalAmountDetailComponent, HomeLoanAccountsBreakdownComponent, HomeLoanPaymentDueSpecialMsgComponent,
   HomeLoanInstalmentDetailComponent, PortfolioCustomerDetailsComponent, PortfolioCustomerAddressDetailsComponent, PortfolioClientContactDetailsComponent, PortfolioAccountSummaryDetailsComponent,
-  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent
+  PortfolioAccountAnalysisComponent, PortfolioRemindersComponent, PortfolioNewsAlertsComponent, GreenbacksContactUsComponent, YTDRewardPointsComponent, PointsRedeemedYTDComponent, ProductRelatedPointsEarnedComponent, CategorySpendRewardsComponent, GreenbacksTotalRewardPointsComponent, WealthHomeLoanTotalAmountDetailComponent, WealthHomeLoanAccountsBreakdownComponent, WealthHomeLoanSummaryTaxPurposeComponent, WealthHomeLoanInstalmentComponent, WealthHomeLoanBankDetailsComponent,
+  MCAAccountSummaryComponent, MCATransactionComponent, MCAVATAnalysisComponent, WealthMCAVATAnalysisComponent, WealthMCATransactionComponent, WealthMCAAccountSummaryComponent
   } from '../widgetComponent/widgetComponent';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -484,6 +485,24 @@ export class ViewDashboardDesignerComponent implements OnInit {
             }
             else if (widgetName == "WealthHomeLoanBranchDetails") {
               gridObj.component = WealthHomeLoanBankDetailsComponent
+            }
+            else if (widgetName == "MCAAccountSummary") {
+              gridObj.component = MCAAccountSummaryComponent
+            }
+            else if (widgetName == "MCATransaction") {
+              gridObj.component = MCATransactionComponent
+            }
+            else if (widgetName == "MCAVATAnalysis") {
+              gridObj.component = MCAVATAnalysisComponent
+            }
+            else if (widgetName == "WealthMCAAccountSummary") {
+              gridObj.component = WealthMCAAccountSummaryComponent
+            }
+            else if (widgetName == "WealthMCATransaction") {
+              gridObj.component = WealthMCATransactionComponent
+            }
+            else if (widgetName == "WealthMCAVATAnalysis") {
+              gridObj.component = WealthMCAVATAnalysisComponent
             }
         }
         else {

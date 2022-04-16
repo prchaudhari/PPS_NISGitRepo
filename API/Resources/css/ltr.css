@@ -362,7 +362,7 @@
 
 .serviceHeader {
     font-size: 10pt;
-    color: #2d6444 !important;
+    color: rgb(0, 91, 0) !important;
     font-family: 'Mark Pro Bold';
 }
 
@@ -413,7 +413,7 @@
 .card-body-header {
     font-size: 14pt;
     font-family: 'Mark Pro Bold';
-    color: #2d6444 !important;
+    color: rgb(0, 91, 0) !important;
 }
 
 .card-body-header-name {
@@ -488,6 +488,10 @@
         font-size: 8pt;
     }
 
+.w-7 {
+    width: 7%;
+}
+
 .w-12 {
     width: 12%;
 }
@@ -506,6 +510,10 @@
 
 .w-40 {
     width: 40%;
+}
+
+.w-8 {
+    width: 8%;
 }
 
 .fnt-8pt {
@@ -1013,7 +1021,7 @@ hr {
 .card-body-header-w {
     font-size: 14pt;
     font-family: 'Mark Pro Bold';
-    color: rgb(126, 84, 117) !important;
+    color: rgb(128, 84, 119) !important;
 }
 
 .TotalAmountDetailsDivW {
@@ -1050,7 +1058,7 @@ hr {
     font-size: 11pt;
     font-size: 14pt;
     font-family: 'Mark Pro Bold';
-    color: rgb(126, 84, 117) !important;
+    color: rgb(128, 84, 119) !important;
 }
 
 .padding_right_0 {
@@ -1081,4 +1089,112 @@ hr {
 
 .margin_right_15 {
     margin-right: 15px !important;
+}
+
+.mca_header_label {
+    font-size: 14pt;
+    font-family: 'Mark Pro Bold';
+    color: rgb(0, 91, 0) !important;
+}
+
+.mca_sub_header_label {
+    font-size: 7pt;
+    color: rgb(0, 0, 0) !important;
+    font-family: 'Mark Pro Regular';
+}
+
+.mca_text_custom_color-w {
+    color: rgb(128, 84, 119) !important;
+}
+
+.mca_detail_statement_label-w {
+    color: rgb(128, 84, 119) !important;
+    font-family: 'Mark Pro Bold' !important;
+    font-size: 12pt !important;
+}
+
+.mca_header_label-w {
+    font-size: 14pt;
+    font-family: 'Mark Pro Bold';
+    color: rgb(128, 84, 119) !important;
+}
+
+.MCADetailDiv {
+    background-color: #f3f3f3;
+    padding: 10px 0px;
+}
+
+.mca_detail_statement_label {
+    color: rgb(0, 91, 0) !important;
+    font-family: 'Mark Pro Bold' !important;
+    font-size: 12pt !important;
+}
+
+.mca_small_table {
+    width: 40%;
+    border-collapse: collapse;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+    .mca_small_table td {
+        padding: 0px 25px;
+        font-family: 'Mark Pro Regular';
+        font-size: 8pt;
+    }
+
+    .mca_small_table th {
+        padding: 0px 25px;
+        font-family: 'Mark Pro Regular';
+        color: rgb(0, 0, 0);
+        font-size: 9pt;
+        padding-bottom: 10px !important;
+    }
+
+.mca_custom_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+.mca_custom_table td {
+    padding: 0px 25px;
+    font-family: 'Mark Pro Regular';
+    font-size: 8pt;
+}
+
+.mca_custom_table th {
+    padding: 0px 25px;
+    font-family: 'Mark Pro Regular';
+    color: rgb(0, 0, 0);
+    font-size: 9pt;
+    padding-bottom: 10px !important;
+}
+
+.mca_text_custom_color {
+    color: rgb(0, 91, 0) !important;
+}
+
+.MCATransactionTable th {
+    background-color: rgb(28, 106, 65) !important;
+    color: rgb(255, 255, 255);
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
+}
+
+.MCATransactionTable tbody, .MCATransactionTable-W tbody {
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
+}
+
+    .MCATransactionTable tbody tr:nth-of-type(odd), .MCATransactionTable-W tbody tr:nth-of-type(odd) {
+        background-color: #f3f3f3 !important;
+    }
+
+.MCATransactionTable-W th {
+    background-color: rgb(128, 84, 119) !important;
+    color: rgb(255, 255, 255);
+    font-size: 8pt;
+    font-family: 'Mark Pro Regular';
 }

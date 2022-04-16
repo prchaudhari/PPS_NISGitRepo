@@ -5333,3 +5333,325 @@ export class WealthHomeLoanBankDetailsComponent {
   @Input()
   widgetsGridsterItemArray: any[] = [];
 }
+
+// Component Created for MCA Account Summary for Widget -- Nedbank
+@Component({
+  selector: 'MCAAccountSummary',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+     <div id class="card border-0">
+      <div class="card-body text-left py-0">
+        <div class="mca_header_label pb-2">Currency Account Statement</div>
+          <div class="mca_sub_header_label pb-2">Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div>
+        </div>
+       </div>
+       <div class="MCADetailDiv">
+        <h4 class="pl-25px">
+          <span class="mca_detail_statement_label">Account summary</span>
+        </h4>
+        <table class="mca_custom_table mt-2" border="0" style='width: 100%'><tbody>
+          <tr>
+            <td class="w-25">Account no:</td>
+            <td class="w-25 text-right pr-4 mca_text_custom_color">7503010231</td>
+            <td class="w-25">Statement no:</td><td class="w-25 text-right mca_text_custom_color">96</td>
+          </tr>
+          <tr>
+            <td class="w-25">Overdraft limit:</td><td class="w-25 text-right pr-4 mca_text_custom_color">0.00</td>
+            <td class="w-25">Statement date</td><td class="w-25 text-right mca_text_custom_color">09/05/2020</td>
+          </tr>
+          <tr>
+            <td class="w-25">Currency:</td><td class="w-25 text-right pr-4 mca_text_custom_color">USD</td>
+            <td class="w-25">Statement frequency</td><td class="w-25 text-right mca_text_custom_color">WEEKLY</td>
+          </tr>
+          <tr>
+            <td class="w-25">Free balance:</td><td class="w-25 text-right pr-4 mca_text_custom_color">0.00</td>
+            <td class="w-25"></td><td class="w-25 text-right pr-4 mca_text_custom_color"></td>
+          </tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>`
+})
+export class MCAAccountSummaryComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for MCA Transaction for Widget -- Nedbank
+@Component({
+  selector: 'MCATransaction',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+     <div class='pt-1'>
+      <table class='MCATransactionTable mca_custom_table' style='width: 100%'>
+        <thead>
+          <tr class='ht-30'>
+            <th class='w-15 text-center'>Transaction date</th>
+            <th class='w-35 text-left'>Description and additional information</th>
+            <th class='w-12 text-right'>Debit</th>
+            <th class='w-12 text-right'>Credit</th>
+            <th class='w-7 text-center'>Rate</th>
+            <th class='w-7 text-center'>Days</th>
+            <th class='w-12 text-right'>Accrued interest</th>
+          </tr>
+        </thead>
+      </table>
+     <div class='pt-0 overflow-auto'>
+        <table id='MCATransactionTable' class='MCATransactionTable mca_custom_table' style='width: 100%'>
+          <tbody>
+            <tr class='ht-20'>
+              <td class='w-15 text-center'>02/05/2020</td>
+              <td class='w-35 text-left'>BROUGHT FORWARD</td>
+              <td class='w-12 text-right'></td>
+              <td class='w-12 text-right'>50 606.44</td>
+              <td class='w-7 text-center'>0.03</td>
+              <td class='w-7 text-center'></td>
+              <td class='w-12 text-right'>0.04</td>
+            </tr>
+            <tr class='ht-20'>
+              <td class='w-15 text-center'>08/05/2020</td>
+              <td class='w-35 text-left'>INTEREST ACCRUED ON 50606.64 CR FROM 2020-05-02 TO 2020-05-08</td>
+              <td class='w-12 text-right'></td>
+              <td class='w-12 text-right'></td>
+              <td class='w-7 text-center'>0.03</td>
+              <td class='w-7 text-center'>7</td>
+              <td class='w-12 text-right'>0.28</td>
+            </tr>
+            <tr class='ht-20'>
+              <td class='w-15 text-center'>09/05/2020</td>
+              <td class='w-35 text-left'>CARRIED FORWARD</td>
+              <td class='w-12 text-right'></td>
+              <td class='w-12 text-right'>50 606.64</td>
+              <td class='w-7 text-center'>0.03</td>
+              <td class='w-7 text-center'></td>
+              <td class='w-12 text-right'>0.32</td>
+            </tr>
+            <tr class='ht-20'>
+              <td class='w-15 text-center'>10/05/2020</td>
+              <td class='w-35 text-left'>BROUGHT FORWARD</td>
+              <td class='w-12 text-right'></td>
+              <td class='w-12 text-right'>50 606.44</td>
+              <td class='w-7 text-center'>0.03</td>
+              <td class='w-7 text-center'></td>
+              <td class='w-12 text-right'>0.04</td>
+            </tr>
+          </tbody>
+         </table>
+        </div>
+      </div>
+    </div>
+  </div>`
+})
+export class MCATransactionComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for MCA VAT Analysis for Widget -- Nedbank
+@Component({
+  selector: 'MCAVATAnalysis',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+     <div class='pt-1'>
+      <table class='MCATransactionTable mca_small_table' style='width: 40%'>
+        <thead>
+          <tr class='ht-30'>
+            <th class='ip-w-25 text-left'>From</th>
+            <th class='ip-w-25 text-left'>To</th>
+            <th class='ip-w-25 text-right'>Rate</th>
+            <th class='ip-w-25 text-right'>Amount</th>
+          </tr>
+        </thead>
+      </table>
+     <div class='pt-0 overflow-auto'>
+        <table id='MCATransactionTable' class='MCATransactionTable mca_small_table' style='width: 40%'>
+          <tbody>
+            <tr class='ht-20'>
+              <td class='ip-w-25 text-left'>02/05/2020</td>
+              <td class='ip-w-25 text-left'>02/05/2020</td>
+              <td class='ip-w-25 text-right'>0.3</td>
+              <td class='ip-w-25 text-right'>50 606.44</td>
+            </tr>
+          </tbody>
+         </table>
+        </div>
+      </div>
+    </div>
+  </div>`
+})
+export class MCAVATAnalysisComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for MCA Account Summary for Widget -- Nedbank
+@Component({
+  selector: 'WealthMCAAccountSummary',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+     <div id class="card border-0">
+      <div class="card-body text-left py-0">
+        <div class="mca_header_label-w pb-2">Currency Account Statement</div>
+          <div class="mca_sub_header_label pb-2">Please examine this statement at once. If no errors are reported to us within 15 days, this statement will be considered correct.</div>
+        </div>
+       </div>
+       <div class="MCADetailDiv">
+        <h4 class="pl-25px">
+          <span class="mca_detail_statement_label-w">Account summary</span>
+        </h4>
+        <table class="mca_custom_table mt-2" border="0" style='width: 100%'><tbody>
+          <tr>
+            <td class="w-25">Account no:</td>
+            <td class="w-25 text-right pr-4 mca_text_custom_color-w">7503010231</td>
+            <td class="w-25">Statement no:</td><td class="w-25 text-right mca_text_custom_color-w">96</td>
+          </tr>
+          <tr>
+            <td class="w-25">Overdraft limit:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">0.00</td>
+            <td class="w-25">Statement date</td><td class="w-25 text-right mca_text_custom_color-w">09/05/2020</td>
+          </tr>
+          <tr>
+            <td class="w-25">Currency:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">USD</td>
+            <td class="w-25">Statement frequency</td><td class="w-25 text-right mca_text_custom_color-w">WEEKLY</td>
+          </tr>
+          <tr>
+            <td class="w-25">Free balance:</td><td class="w-25 text-right pr-4 mca_text_custom_color-w">0.00</td>
+            <td class="w-25"></td><td class="w-25 text-right pr-4 mca_text_custom_color-w"></td>
+          </tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>`
+})
+export class WealthMCAAccountSummaryComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for MCA Transaction for Widget -- Nedbank
+@Component({
+  selector: 'WealthMCATransaction',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+     <div class='pt-1'>
+      <table class='MCATransactionTable-W mca_custom_table' style='width: 100%'>
+        <thead>
+          <tr class='ht-30'>
+            <th class='w-15 text-center'>Transaction date</th>
+            <th class='w-35 text-left'>Description and additional information</th>
+            <th class='w-12 text-right'>Debit</th>
+            <th class='w-12 text-right'>Credit</th>
+            <th class='w-7 text-center'>Rate</th>
+            <th class='w-7 text-center'>Days</th>
+            <th class='w-12 text-right'>Accrued interest</th>
+          </tr>
+        </thead>
+      </table>
+     <div class='pt-0 overflow-auto'>
+        <table id='MCATransactionTable' class='MCATransactionTable-W mca_custom_table' style='width: 100%'>
+          <tbody>
+            <tr class='ht-20'>
+              <td class='w-15 text-center'>02/05/2020</td>
+              <td class='w-35 text-left'>BROUGHT FORWARD</td>
+              <td class='w-12 text-right'></td>
+              <td class='w-12 text-right'>50 606.44</td>
+              <td class='w-7 text-center'>0.03</td>
+              <td class='w-7 text-center'></td>
+              <td class='w-12 text-right'>0.04</td>
+            </tr>
+            <tr class='ht-20'>
+              <td class='w-15 text-center'>08/05/2020</td>
+              <td class='w-35 text-left'>INTEREST ACCRUED ON 50606.64 CR FROM 2020-05-02 TO 2020-05-08</td>
+              <td class='w-12 text-right'></td>
+              <td class='w-12 text-right'></td>
+              <td class='w-7 text-center'>0.03</td>
+              <td class='w-7 text-center'>7</td>
+              <td class='w-12 text-right'>0.28</td>
+            </tr>
+            <tr class='ht-20'>
+              <td class='w-15 text-center'>09/05/2020</td>
+              <td class='w-35 text-left'>CARRIED FORWARD</td>
+              <td class='w-12 text-right'></td>
+              <td class='w-12 text-right'>50 606.64</td>
+              <td class='w-7 text-center'>0.03</td>
+              <td class='w-7 text-center'></td>
+              <td class='w-12 text-right'>0.32</td>
+            </tr>
+            <tr class='ht-20'>
+              <td class='w-15 text-center'>10/05/2020</td>
+              <td class='w-35 text-left'>BROUGHT FORWARD</td>
+              <td class='w-12 text-right'></td>
+              <td class='w-12 text-right'>50 606.44</td>
+              <td class='w-7 text-center'>0.03</td>
+              <td class='w-7 text-center'></td>
+              <td class='w-12 text-right'>0.04</td>
+            </tr>
+          </tbody>
+         </table>
+        </div>
+      </div>
+    </div>
+  </div>`
+})
+export class WealthMCATransactionComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for MCA VAT Analysis for Widget -- Nedbank
+@Component({
+  selector: 'WealthMCAVATAnalysis',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+     <div class='pt-1'>
+      <table class='MCATransactionTable-W mca_small_table' style='width: 40%'>
+        <thead>
+          <tr class='ht-30'>
+            <th class='ip-w-25 text-left'>From</th>
+            <th class='ip-w-25 text-left'>To</th>
+            <th class='ip-w-25 text-right'>Rate</th>
+            <th class='ip-w-25 text-right'>Amount</th>
+          </tr>
+        </thead>
+      </table>
+     <div class='pt-0 overflow-auto'>
+        <table id='MCATransactionTable' class='MCATransactionTable-W mca_small_table' style='width: 40%'>
+          <tbody>
+            <tr class='ht-20'>
+              <td class='ip-w-25 text-left'>02/05/2020</td>
+              <td class='ip-w-25 text-left'>02/05/2020</td>
+              <td class='ip-w-25 text-right'>0.3</td>
+              <td class='ip-w-25 text-right'>50 606.44</td>
+            </tr>
+          </tbody>
+         </table>
+        </div>
+      </div>
+    </div>
+  </div>`
+})
+export class WealthMCAVATAnalysisComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
+
+// Component Created for Bank Details Widget -- Nedbank
+@Component({
+  selector: 'WealthMCABranchDetails',
+  template: `<div class="widget">
+    <div class="widget-area height100">
+      <div class='card border-0'>
+          <div class="card-body BranchDetails">
+              BankName<br>Address Line1, City, ZipCode<br>Address Line2, City, ZipCode<br>Country Name
+              <br>Bank VAT Reg No XXXXXXXXXX
+          </div>
+          <div class="ConactCenterDiv text-success-w float-right pt-3">
+              Nedbank Private Wealth Service Suite: XXXX XXX XXX
+          </div>
+      </div>
+    </div>
+  </div>`
+})
+export class WealthMCABranchDetailsComponent {
+  @Input()
+  widgetsGridsterItemArray: any[] = [];
+}
