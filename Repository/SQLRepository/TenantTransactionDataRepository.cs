@@ -875,6 +875,26 @@ namespace nIS
                                 OutstandingBalance = item.OutstandingBalance,
                                 ProductType = item.ProductType,
                                 TenantCode = item.TenantCode,
+                                Messages = new List<string>
+                                {
+                                    item.InsuranceMessage1,
+                                    item.InsuranceMessage2,
+                                    item.InsuranceMessage3,
+                                    item.InsuranceMessage4,
+                                    item.InsuranceMessage5,
+                                    item.InsuranceMessage6,
+                                    item.InsuranceMessage7,
+                                    item.InsuranceMessage8,
+                                    item.InsuranceMessage9,
+                                    item.InsuranceMessage10,
+                                    item.InsuranceMessage11,
+                                    item.InsuranceMessage12,
+                                    item.InsuranceMessage13,
+                                    item.InsuranceMessage14,
+                                    item.InsuranceMessage15,
+                                    item.InsuranceMessage16,
+                                    item.InsuranceMessage17,
+                                },
                                 LoanTransactions = this.Get_DM_PersonalLoanTransaction(new CustomerPersonalLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList(),
                                 LoanArrears = this.Get_DM_PersonalLoanArrears(new CustomerPersonalLoanSearchParameter() { CustomerId = searchParameter.CustomerId, InvestorId = item.InvestorId, BatchId = searchParameter.BatchId }, tenantCode)?.ToList()?.FirstOrDefault()
                             });
@@ -1116,8 +1136,8 @@ namespace nIS
                                 Credit = item.Credit,
                                 Debit = item.Debit,
                                 Description = item.Description,
-                                Effective_date = item.Effective_Date ?? DateTime.Now,
-                                Posting_date = item.Posting_Date ?? DateTime.Now,
+                                Effective_Date = item.Effective_Date ?? DateTime.Now,
+                                Posting_Date = item.Posting_Date ?? DateTime.Now,
                                 RunningBalance = item.RunningBalance,
                                 TenantCode = item.TenantCode
                             });

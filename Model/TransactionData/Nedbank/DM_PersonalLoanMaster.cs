@@ -32,6 +32,7 @@ namespace nIS
         public string AnnualRate { get; set; }
         public string Term { get; set; }
         public string TenantCode { get; set; }
+        public List<string> Messages { get; set; }
         public List<DM_PersonalLoanTransaction> LoanTransactions { get; set; }
         public DM_PersonalLoanArrears LoanArrears { get; set; }
     }

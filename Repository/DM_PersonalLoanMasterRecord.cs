@@ -32,5 +32,22 @@ namespace nIS
         public string AnnualRate { get; set; }
         public string Term { get; set; }
         public string TenantCode { get; set; }
+        public string InsuranceMessage1 { get; set; }
+        public string InsuranceMessage2 { get; set; }
+        public string InsuranceMessage3 { get; set; }
+        public string InsuranceMessage4 { get; set; }
+        public string InsuranceMessage5 { get; set; }
+        public string InsuranceMessage6 { get; set; }
+        public string InsuranceMessage7 { get; set; }
+        public string InsuranceMessage8 { get; set; }
+        public string InsuranceMessage9 { get; set; }
+        public string InsuranceMessage10 { get; set; }
+        public string InsuranceMessage11 { get; set; }
+        public string InsuranceMessage12 { get; set; }
+        public string InsuranceMessage13 { get; set; }
+        public string InsuranceMessage14 { get; set; }
+        public string InsuranceMessage15 { get; set; }
+        public string InsuranceMessage16 { get; set; }
+        public string InsuranceMessage17 { get; set; }
     }
 }

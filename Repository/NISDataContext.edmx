@@ -644,6 +644,23 @@
           <Property Name="AnnualRate" Type="varchar" MaxLength="50" />
           <Property Name="Term" Type="varchar" MaxLength="50" />
           <Property Name="TenantCode" Type="varchar" MaxLength="50" />
+          <Property Name="InsuranceMessage1" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage2" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage3" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage4" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage5" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage6" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage7" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage8" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage9" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage10" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage11" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage12" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage13" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage14" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage15" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage16" Type="nvarchar(max)" />
+          <Property Name="InsuranceMessage17" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="DM_PersonalLoanTransaction">
           <Key>
@@ -4082,6 +4099,23 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <Property Name="AnnualRate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Term" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="TenantCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InsuranceMessage1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage4" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage5" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage6" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage7" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage8" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage9" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage10" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage11" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage12" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage13" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage14" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage15" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage16" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceMessage17" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DM_PersonalLoanTransactionRecord">
           <Key>
@@ -6186,6 +6220,23 @@ warning 6002: The table/view 'NIS_DEV2.NIS.View_User' does not have a primary ke
           <EntitySetMapping Name="DM_PersonalLoanMasterRecord">
             <EntityTypeMapping TypeName="NISModel.DM_PersonalLoanMasterRecord">
               <MappingFragment StoreEntitySet="DM_PersonalLoanMaster">
+                <ScalarProperty Name="InsuranceMessage17" ColumnName="InsuranceMessage17" />
+                <ScalarProperty Name="InsuranceMessage16" ColumnName="InsuranceMessage16" />
+                <ScalarProperty Name="InsuranceMessage15" ColumnName="InsuranceMessage15" />
+                <ScalarProperty Name="InsuranceMessage14" ColumnName="InsuranceMessage14" />
+                <ScalarProperty Name="InsuranceMessage13" ColumnName="InsuranceMessage13" />
+                <ScalarProperty Name="InsuranceMessage12" ColumnName="InsuranceMessage12" />
+                <ScalarProperty Name="InsuranceMessage11" ColumnName="InsuranceMessage11" />
+                <ScalarProperty Name="InsuranceMessage10" ColumnName="InsuranceMessage10" />
+                <ScalarProperty Name="InsuranceMessage9" ColumnName="InsuranceMessage9" />
+                <ScalarProperty Name="InsuranceMessage8" ColumnName="InsuranceMessage8" />
+                <ScalarProperty Name="InsuranceMessage7" ColumnName="InsuranceMessage7" />
+                <ScalarProperty Name="InsuranceMessage6" ColumnName="InsuranceMessage6" />
+                <ScalarProperty Name="InsuranceMessage5" ColumnName="InsuranceMessage5" />
+                <ScalarProperty Name="InsuranceMessage4" ColumnName="InsuranceMessage4" />
+                <ScalarProperty Name="InsuranceMessage3" ColumnName="InsuranceMessage3" />
+                <ScalarProperty Name="InsuranceMessage2" ColumnName="InsuranceMessage2" />
+                <ScalarProperty Name="InsuranceMessage1" ColumnName="InsuranceMessage1" />
                 <ScalarProperty Name="TenantCode" ColumnName="TenantCode" />
                 <ScalarProperty Name="Term" ColumnName="Term" />
                 <ScalarProperty Name="AnnualRate" ColumnName="AnnualRate" />
