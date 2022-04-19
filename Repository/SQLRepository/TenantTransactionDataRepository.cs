@@ -1136,8 +1136,8 @@ namespace nIS
                                 Credit = item.Credit,
                                 Debit = item.Debit,
                                 Description = item.Description,
-                                Effective_date = item.Effective_Date ?? DateTime.Now,
-                                Posting_date = item.Posting_Date ?? DateTime.Now,
+                                Effective_Date = item.Effective_Date ?? DateTime.Now,
+                                Posting_Date = item.Posting_Date ?? DateTime.Now,
                                 RunningBalance = item.RunningBalance,
                                 TenantCode = item.TenantCode
                             });

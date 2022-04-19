@@ -2899,8 +2899,8 @@ namespace nIS
                             {
                                 tr = new StringBuilder();
                                 tr.Append("<tr class='ht-20'>");
-                                tr.Append("<td class='w-13 text-center'> " + trans.Posting_date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " </td>");
-                                tr.Append("<td class='w-15 text-center'> " + trans.Effective_date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " </td>");
+                                tr.Append("<td class='w-13 text-center'> " + trans.Posting_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " </td>");
+                                tr.Append("<td class='w-15 text-center'> " + trans.Effective_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + " </td>");
                                 tr.Append("<td class='w-35'> " + (!string.IsNullOrEmpty(trans.Description) ? trans.Description : ModelConstant.PAYMENT_THANK_YOU_TRANSACTION_DESC) + " </td>");
 
                                 res = 0.0m;

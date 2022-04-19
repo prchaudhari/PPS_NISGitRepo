@@ -4314,7 +4314,7 @@ namespace nIS
                                     trans.RunningBalance = trans.RunningBalance;
                                 }
 
-                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_date + "</td><td class='w-13 text-center'>" + trans.Effective_date + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" + trans.RunningBalance + "</td></tr>");
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-13 text-center'>" + trans.Effective_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" + trans.RunningBalance + "</td></tr>");
                             });
                         }
                         LoanTransactionHtml.Replace("{{HomeLoanTransactionRow}}", tableHTML.ToString());
@@ -4537,7 +4537,7 @@ namespace nIS
                                     trans.RunningBalance = trans.RunningBalance;
                                 }
 
-                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_date + "</td><td class='w-13 text-center'>" + trans.Effective_date + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" + trans.RunningBalance + "</td></tr>");
+                                tableHTML.Append("<tr class='ht-20'><td class='w-13 text-center'>" + trans.Posting_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-13 text-center'>" + trans.Effective_Date.ToString(ModelConstant.DATE_FORMAT_dd_MM_yyyy) + "</td><td class='w-35'>" + trans.Description + "</td><td class='w-12 text-right'>" + trans.Debit + "</td><td class='w-12 text-right'>" + trans.Credit + "</td><td class='w-15 text-right'>" + trans.RunningBalance + "</td></tr>");
                             });
                         }
                         LoanTransactionHtml.Replace("{{HomeLoanTransactionRow}}", tableHTML.ToString());
